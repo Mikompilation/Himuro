@@ -1,0 +1,1664 @@
+{
+  "$defs": {
+    "Compiler": {
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "asm_function_macro": {
+          "default": "glabel",
+          "description": "",
+          "title": "Asm Function Macro",
+          "type": "string"
+        },
+        "asm_function_alt_macro": {
+          "default": "glabel",
+          "description": "",
+          "title": "Asm Function Alt Macro",
+          "type": "string"
+        },
+        "asm_jtbl_label_macro": {
+          "default": "glabel",
+          "description": "",
+          "title": "Asm Jtbl Label Macro",
+          "type": "string"
+        },
+        "asm_data_macro": {
+          "default": "glabel",
+          "description": "",
+          "title": "Asm Data Macro",
+          "type": "string"
+        },
+        "asm_end_label": {
+          "default": "",
+          "description": "",
+          "title": "Asm End Label",
+          "type": "string"
+        },
+        "c_newline": {
+          "default": "\n",
+          "description": "",
+          "title": "C Newline",
+          "type": "string"
+        },
+        "asm_inc_header": {
+          "default": "",
+          "description": "",
+          "title": "Asm Inc Header",
+          "type": "string"
+        },
+        "include_macro_inc": {
+          "default": true,
+          "description": "",
+          "title": "Include Macro Inc",
+          "type": "boolean"
+        },
+        "asm_emit_size_directive": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "",
+          "title": "Asm Emit Size Directive"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "Compiler",
+      "type": "object"
+    },
+    "DictSegment": {
+      "properties": {
+        "start": {
+          "default": null,
+          "description": "",
+          "title": "Start",
+          "type": "integer"
+        },
+        "rom_start": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "",
+          "title": "Rom Start"
+        },
+        "rom_end": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "",
+          "title": "Rom End"
+        },
+        "type": {
+          "description": "",
+          "title": "Type",
+          "type": "string"
+        },
+        "name": {
+          "description": "",
+          "title": "Name",
+          "type": "string"
+        },
+        "vram": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "",
+          "title": "Vram"
+        },
+        "vram_start": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "",
+          "title": "Vram Start"
+        },
+        "vram_symbol": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "",
+          "title": "Vram Symbol"
+        },
+        "vram_class": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/VramClass"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": ""
+        },
+        "follows_vram": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "",
+          "title": "Follows Vram"
+        },
+        "align": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "",
+          "title": "Align"
+        },
+        "subalign": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "",
+          "title": "Subalign"
+        },
+        "section_order": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "",
+          "title": "Section Order"
+        },
+        "subsegments": {
+          "anyOf": [
+            {
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/DictSegment"
+                  },
+                  {
+                    "$ref": "#/$defs/ListSegment"
+                  }
+                ]
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "",
+          "title": "Subsegments"
+        },
+        "bss_size": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "",
+          "title": "Bss Size"
+        },
+        "args": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "",
+          "title": "Args"
+        }
+      },
+      "required": [
+        "type",
+        "name"
+      ],
+      "title": "DictSegment",
+      "type": "object"
+    },
+    "ListSegment": {
+      "anyOf": [
+        {
+          "maxItems": 3,
+          "minItems": 3,
+          "prefixItems": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "type": "array"
+        },
+        {
+          "maxItems": 2,
+          "minItems": 2,
+          "prefixItems": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "type": "array"
+        },
+        {
+          "maxItems": 1,
+          "minItems": 1,
+          "prefixItems": [
+            {
+              "type": "integer"
+            }
+          ],
+          "type": "array"
+        }
+      ],
+      "title": "ListSegment"
+    },
+    "SplatOpts": {
+      "properties": {
+        "verbose": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Verbose",
+          "title": "Verbose"
+        },
+        "dump_symbols": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Dump symbols",
+          "title": "Dump Symbols"
+        },
+        "modes": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "modes",
+          "title": "Modes"
+        },
+        "base_path": {
+          "default": null,
+          "description": "Determines the base path of the project. Everything is relative to this path",
+          "format": "path",
+          "title": "Base Path",
+          "type": "string"
+        },
+        "target_path": {
+          "anyOf": [
+            {
+              "format": "path",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines the path to the target binary",
+          "title": "Target Path"
+        },
+        "elf_path": {
+          "anyOf": [
+            {
+              "format": "path",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Path to the final elf target",
+          "title": "Elf Path"
+        },
+        "platform": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines the platform of the target binary",
+          "title": "Platform"
+        },
+        "compiler": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Compiler"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines the compiler used to compile the target binary",
+          "title": "Compiler"
+        },
+        "endianness": {
+          "anyOf": [
+            {
+              "enum": [
+                "big",
+                "little"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines the endianness of the target binary",
+          "title": "Endianness"
+        },
+        "section_order": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines the default section order of the target binary. This can be overridden per-segment",
+          "title": "Section Order"
+        },
+        "generated_c_preamble": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines the code that is inserted by default in generated .c files",
+          "title": "Generated C Preamble"
+        },
+        "generated_s_preamble": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines the code that is inserted by default in generated .s files",
+          "title": "Generated S Preamble"
+        },
+        "use_o_as_suffix": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines whether to use .o as the suffix for all binary files?... TODO document",
+          "title": "Use O As Suffix"
+        },
+        "gp_value": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "the value of the $gp register to correctly calculate offset to %gp_rel relocs",
+          "title": "Gp Value"
+        },
+        "check_consecutive_segment_types": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Checks and errors if there are any non consecutive segment types",
+          "title": "Check Consecutive Segment Types"
+        },
+        "asset_path": {
+          "anyOf": [
+            {
+              "format": "path",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "",
+          "title": "Asset Path"
+        },
+        "symbol_addrs_paths": {
+          "anyOf": [
+            {
+              "items": {
+                "format": "path",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines the path to the symbol addresses file(s)\nA symbol_addrs file is to be updated/curated manually and contains addresses of symbols\nas well as optional metadata such as rom address, type, and more\n\nIt's possible to use more than one file by supplying a list instead of a string",
+          "title": "Symbol Addrs Paths"
+        },
+        "reloc_addrs_paths": {
+          "anyOf": [
+            {
+              "items": {
+                "format": "path",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "",
+          "title": "Reloc Addrs Paths"
+        },
+        "build_path": {
+          "anyOf": [
+            {
+              "format": "path",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines the path to the project build directory",
+          "title": "Build Path"
+        },
+        "src_path": {
+          "anyOf": [
+            {
+              "format": "path",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines the path to the source code directory",
+          "title": "Src Path"
+        },
+        "asm_path": {
+          "anyOf": [
+            {
+              "format": "path",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines the path to the asm code directory",
+          "title": "Asm Path"
+        },
+        "data_path": {
+          "anyOf": [
+            {
+              "format": "path",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines the path to the asm data directory",
+          "title": "Data Path"
+        },
+        "nonmatchings_path": {
+          "anyOf": [
+            {
+              "format": "path",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines the path to the asm nonmatchings directory",
+          "title": "Nonmatchings Path"
+        },
+        "cache_path": {
+          "anyOf": [
+            {
+              "format": "path",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines the path to the cache file (used when supplied --use-cache via the CLI)",
+          "title": "Cache Path"
+        },
+        "hasm_in_src_path": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Tells splat to consider `hasm` files to be relative to `src_path` instead of `asm_path`.",
+          "title": "Hasm In Src Path"
+        },
+        "create_undefined_funcs_auto": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines whether to create an automatically-generated undefined functions fil. This file stores all functions that are referenced in the code but are not defined as seen by splat",
+          "title": "Create Undefined Funcs Auto"
+        },
+        "undefined_funcs_auto_path": {
+          "anyOf": [
+            {
+              "format": "path",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines the path to the undefined_funcs_auto file",
+          "title": "Undefined Funcs Auto Path"
+        },
+        "create_undefined_syms_auto": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines whether to create an automatically-generated undefined symbols file. This file stores all symbols that are referenced in the code but are not defined as seen by splat",
+          "title": "Create Undefined Syms Auto"
+        },
+        "undefined_syms_auto_path": {
+          "anyOf": [
+            {
+              "format": "path",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines the path to the undefined_symbols_auto file",
+          "title": "Undefined Syms Auto Path"
+        },
+        "extensions_path": {
+          "anyOf": [
+            {
+              "format": "path",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines the path in which to search for custom splat extensions",
+          "title": "Extensions Path"
+        },
+        "lib_path": {
+          "anyOf": [
+            {
+              "format": "path",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines the path to library files that are to be linked into the target binary",
+          "title": "Lib Path"
+        },
+        "elf_section_list_path": {
+          "anyOf": [
+            {
+              "format": "path",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "",
+          "title": "Elf Section List Path"
+        },
+        "subalign": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines the default subalign value to be specified in the generated linker script",
+          "title": "Subalign"
+        },
+        "auto_all_sections": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "The following option determines whether to automatically configure the linker script to link against specified sections for all \"base\" (asm/c) files when the yaml doesn't have manual configurations for these sections.",
+          "title": "Auto All Sections"
+        },
+        "ld_script_path": {
+          "anyOf": [
+            {
+              "format": "path",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines the desired path to the linker script that splat will generate",
+          "title": "Ld Script Path"
+        },
+        "ld_symbol_header_path": {
+          "anyOf": [
+            {
+              "format": "path",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines the desired path to the linker symbol header, which exposes externed definitions for all segment ram/rom start/end locations",
+          "title": "Ld Symbol Header Path"
+        },
+        "ld_discard_section": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines whether to add a discard section with a wildcard to the linker script",
+          "title": "Ld Discard Section"
+        },
+        "ld_sections_allowlist": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "A list of sections to preserve during link time. It can be useful to preserve debugging sections",
+          "title": "Ld Sections Allowlist"
+        },
+        "ld_sections_denylist": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "A list of sections to discard during link time. It can be useful to avoid using the wildcard discard. Note that this option does not turn off `ld_discard_section`",
+          "title": "Ld Sections Denylist"
+        },
+        "ld_wildcard_sections": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines whether to add wildcards for section linking in the linker script (.rodata* for example)",
+          "title": "Ld Wildcard Sections"
+        },
+        "ld_use_symbolic_vram_addresses": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines whether to use `follows_vram` (segment option) and `vram_symbol` / `follows_classes` (vram_class options) to calculate vram addresses in the linker script. If disabled, this uses the plain integer values for vram addresses defined in the yaml.",
+          "title": "Ld Use Symbolic Vram Addresses"
+        },
+        "ld_partial_linking": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Change linker script generation to allow partially linking segments. Requires both `ld_partial_scripts_path` and `ld_partial_build_segments_path` to be set.",
+          "title": "Ld Partial Linking"
+        },
+        "ld_partial_scripts_path": {
+          "anyOf": [
+            {
+              "format": "path",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Folder were each intermediary linker script will be written to.",
+          "title": "Ld Partial Scripts Path"
+        },
+        "ld_partial_build_segments_path": {
+          "anyOf": [
+            {
+              "format": "path",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Folder where the built partially linked segments will be placed by the build system.",
+          "title": "Ld Partial Build Segments Path"
+        },
+        "ld_dependencies": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Generate a dependency file for every linker script generated. Dependency files will have the same path and name as the corresponding linker script, but changing the extension to `.d`. Requires `elf_path` to be set.",
+          "title": "Ld Dependencies"
+        },
+        "ld_legacy_generation": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Legacy linker script generation does not impose the section_order specified in the yaml options or per-segment options.",
+          "title": "Ld Legacy Generation"
+        },
+        "segment_end_before_align": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "If enabled, the end symbol for each segment will be placed before the alignment directive for the segment",
+          "title": "Segment End Before Align"
+        },
+        "segment_symbols_style": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Controls the style of the auto-generated segment symbols in the linker script. Possible values: Optional[splat, makerom",
+          "title": "Segment Symbols Style"
+        },
+        "ld_rom_start": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Specifies the starting offset for rom address symbols in the linker script.",
+          "title": "Ld Rom Start"
+        },
+        "ld_fill_value": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "The value passed to the FILL statement on each segment. `None` disables using FILL statements on the linker script. Defaults to a fill value of 0.",
+          "title": "Ld Fill Value"
+        },
+        "ld_bss_is_noload": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Allows to control if `bss` sections (and derivative sections) will be put on a `NOLOAD` segment on the generated linker script or not.",
+          "title": "Ld Bss Is Noload"
+        },
+        "ld_align_segment_vram_end": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Allows to toggle aligning the `*_VRAM_END` linker symbol for each segment.",
+          "title": "Ld Align Segment Vram End"
+        },
+        "ld_align_section_vram_end": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Allows to toggle aligning the `*_END` linker symbol for each section of each section.",
+          "title": "Ld Align Section Vram End"
+        },
+        "ld_generate_symbol_per_data_segment": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "If enabled, the generated linker script will have a linker symbol for each data file",
+          "title": "Ld Generate Symbol Per Data Segment"
+        },
+        "ld_bss_contains_common": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Sets the default option for the `bss_contains_common` attribute of all segments.",
+          "title": "Ld Bss Contains Common"
+        },
+        "create_c_files": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines whether to create new c files if they don't exist",
+          "title": "Create C Files"
+        },
+        "auto_decompile_empty_functions": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines whether to \"auto-decompile\" empty functions",
+          "title": "Auto Decompile Empty Functions"
+        },
+        "do_c_func_detection": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines whether to detect matched/unmatched functions in existing c files so we can avoid creating .s files for already-decompiled functions",
+          "title": "Do C Func Detection"
+        },
+        "c_newline": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines the newline char(s) to be used in c files",
+          "title": "C Newline"
+        },
+        "symbol_name_format": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "The following options determine the format that symbols should be named by default",
+          "title": "Symbol Name Format"
+        },
+        "symbol_name_format_no_rom": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Same as above but for symbols with no rom address",
+          "title": "Symbol Name Format No Rom"
+        },
+        "find_file_boundaries": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines whether to detect and hint to the user about likely file splits when disassembling",
+          "title": "Find File Boundaries"
+        },
+        "pair_rodata_to_text": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines whether to detect and hint to the user about possible rodata sections corresponding to a text section",
+          "title": "Pair Rodata To Text"
+        },
+        "migrate_rodata_to_functions": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines whether to attempt to automatically migrate rodata into functions (only works in certain circumstances)",
+          "title": "Migrate Rodata To Functions"
+        },
+        "asm_inc_header": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines the header to be used in every asm file that's included from c files",
+          "title": "Asm Inc Header"
+        },
+        "asm_function_macro": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines the macro used to declare functions in asm files",
+          "title": "Asm Function Macro"
+        },
+        "asm_function_alt_macro": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines the macro used to declare symbols in the middle of functions in asm files (which may be alternative entries)",
+          "title": "Asm Function Alt Macro"
+        },
+        "asm_jtbl_label_macro": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines the macro used to declare jumptable labels in asm files",
+          "title": "Asm Jtbl Label Macro"
+        },
+        "asm_data_macro": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines the macro used to declare data symbols in asm files",
+          "title": "Asm Data Macro"
+        },
+        "asm_end_label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines the macro used at the end of a function, such as endlabel or .end",
+          "title": "Asm End Label"
+        },
+        "asm_emit_size_directive": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Toggles the .size directive emitted by the disassembler",
+          "title": "Asm Emit Size Directive"
+        },
+        "include_macro_inc": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines including the macro.inc file on non-migrated rodata variables",
+          "title": "Include Macro Inc"
+        },
+        "mnemonic_ljust": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines the number of characters to left align before the TODO finish documenting",
+          "title": "Mnemonic Ljust"
+        },
+        "rom_address_padding": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines whether to pad the rom address",
+          "title": "Rom Address Padding"
+        },
+        "mips_abi_gpr": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines which ABI names to use for general purpose registers",
+          "title": "Mips Abi Gpr"
+        },
+        "mips_abi_float_regs": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines which ABI names to use for floating point registers\nValid values: 'numeric', 'o32', 'n32', 'n64'\no32 is highly recommended, as it provides logically named registers for floating point instructions\nFor more info, see https://gist.github.com/EllipticEllipsis/27eef11205c7a59d8ea85632bc49224d",
+          "title": "Mips Abi Float Regs"
+        },
+        "named_regs_for_c_funcs": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines whether functions inside c files should have named registers",
+          "title": "Named Regs For C Funcs"
+        },
+        "add_set_gp_64": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines whether to add \".set gp=64\" to asm/hasm files",
+          "title": "Add Set Gp 64"
+        },
+        "create_asm_dependencies": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Generate .asmproc.d dependency files for each C file which still reference functions in assembly files",
+          "title": "Create Asm Dependencies"
+        },
+        "string_encoding": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Global option for rodata string encoding. This can be overridden per segment",
+          "title": "String Encoding"
+        },
+        "data_string_encoding": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Global option for data string encoding. This can be overridden per segment",
+          "title": "Data String Encoding"
+        },
+        "rodata_string_guesser_level": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Global option for the rodata string guesser. 0 disables the guesser completely.",
+          "title": "Rodata String Guesser Level"
+        },
+        "data_string_guesser_level": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Global option for the data string guesser. 0 disables the guesser completely.",
+          "title": "Data String Guesser Level"
+        },
+        "allow_data_addends": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Global option for allowing data symbols using addends on symbol references. It can be overridden per symbol",
+          "title": "Allow Data Addends"
+        },
+        "disasm_unknown": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Tells the disassembler to try disassembling functions with unknown instructions instead of falling back to disassembling as raw data",
+          "title": "Disasm Unknown"
+        },
+        "detect_redundant_function_end": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Tries to detect redundant and unreferenced functions ends and merge them together. This option is ignored if the compiler is not set to IDO.",
+          "title": "Detect Redundant Function End"
+        },
+        "disassemble_all": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Don't skip disassembling already matched functions and migrated sections",
+          "title": "Disassemble All"
+        },
+        "header_encoding": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines the encoding of the header",
+          "title": "Header Encoding"
+        },
+        "gfx_ucode": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines the type gfx ucode (used by gfx segments)\nValid options are ['f3d', 'f3db', 'f3dex', 'f3dexb', 'f3dex2']",
+          "title": "Gfx Ucode"
+        },
+        "libultra_symbols": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Use named libultra symbols by default. Those will need to be added to a linker script manually by the user",
+          "title": "Libultra Symbols"
+        },
+        "ique_symbols": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Use named libultra symbols by default. Those will need to be added to a linker script manually by the user",
+          "title": "Ique Symbols"
+        },
+        "hardware_regs": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Use named hardware register symbols by default. Those will need to be added to a linker script manually by the user",
+          "title": "Hardware Regs"
+        },
+        "image_type_in_extension": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Append the image type to the output file extension",
+          "title": "Image Type In Extension"
+        },
+        "use_legacy_include_asm": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines whether to use a legacy INCLUDE_ASM macro format in c files only applies to GCC/SN64",
+          "title": "Use Legacy Include Asm"
+        }
+      },
+      "title": "SplatOpts",
+      "type": "object"
+    },
+    "VramClass": {
+      "properties": {
+        "name": {
+          "description": "",
+          "title": "Name",
+          "type": "string"
+        },
+        "vram": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "",
+          "title": "Vram"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "VramClass",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "name": {
+      "title": "Name",
+      "type": "string"
+    },
+    "sha1": {
+      "title": "Sha1",
+      "type": "string"
+    },
+    "options": {
+      "$ref": "#/$defs/SplatOpts"
+    },
+    "segments": {
+      "items": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/DictSegment"
+          },
+          {
+            "$ref": "#/$defs/ListSegment"
+          }
+        ]
+      },
+      "title": "Segments",
+      "type": "array"
+    }
+  },
+  "required": [
+    "name",
+    "sha1",
+    "options",
+    "segments"
+  ],
+  "title": "Config",
+  "type": "object"
+}

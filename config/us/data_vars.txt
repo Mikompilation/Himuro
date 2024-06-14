@@ -1,0 +1,7 @@
+msl_bg_btl            = 0x250180; // type:SPRT_DAT  numel:11
+msl_bg_fsm            = 0x2502E0; // type:SPRT_DAT  numel:11
+msl_bg_opt            = 0x250440; // type:SPRT_DAT  numel:11
+msl_bg_snd            = 0x2505A0; // type:SPRT_DAT  numel:11
+msl_bg_sty            = 0x250700; // type:SPRT_DAT  numel:11
+msel_sprt             = 0x250860; // type:SPRT_DAT  numel:148
+adpcm_vol_tbl         = 0x266C40; // type:ADPCM_VOL numel:368

@@ -1,0 +1,291 @@
+name: Project Zero 1 (EU)
+sha1: cb36d4365e70be9e9dc5bb66e2aa083811a39f12
+options:
+    basename: SLES_508.21
+    target_path: SLES_508.21
+    base_path: .
+    asm_path: asm
+    src_path: ../../src
+    build_path: build
+    asset_path: assets
+    compiler: EEGCC
+    find_file_boundaries: False
+    platform: ps2
+    string_encoding: EUC-JP
+    create_undefined_funcs_auto: False
+    create_undefined_syms_auto: True
+    undefined_funcs_auto_path: undefined_funcs_auto.txt
+    undefined_syms_auto_path: undefined_syms_auto.txt
+    symbol_addrs_path: symbol_addrs.txt
+    extensions_path: ../../tools/splat_ext
+    section_order: [".text", ".vutext", ".data", ".vudata", ".rodata", ".lit4", ".sdata", ".sbss", ".bss", ".vubss"]
+    auto_all_sections: [".data", ".sdata", ".sbss", ".lit4", ".rodata", ".bss"]
+    disasm_unknown: True
+    subalign: 4
+    named_regs_for_c_funcs: False
+    gp_value: 0x363cf0
+# custom field used by fix_linkerscript.py to fix linkerscript alignments
+_section_subalign:
+    elf_header: 8
+    main: 2
+    main_bss: 1
+    reg_info: 4
+    mips_debug: 4
+    rest: 4
+segments:
+    - [0, databin, elf_header]
+    - name: main
+      type: code
+      start: 0x1000
+      vram: 0x100000
+      bss_size: 0x0b2cb0
+      align: 1
+      subalign: 2 # safe subalign value. proper values are applied by fix_linkerscript.py where necessary
+      # text has align 8 but other sections may have a different alignment ...
+      # explicit align correction is performed by fix_linkerscript.py during
+      # project configuration. vram address is used, when reported, in non text
+      # sections to calculate the correct align value.
+      subsegments:
+          - [0x1000,   asm, crt0]
+          - [0x10c8,   c,   main/main]
+          - [0x1380,   c,   outgame/mode_slct]
+          - [0x4b68,   c,   outgame/memory_album]
+          - [0xbf68,   c,   main/gamemain]
+          - [0xc488,   c,   main/glob]
+          - [0xc488,   c,   os/system]
+          - [0xcb60,   c,   os/fileload]
+          - [0xccc8,   c,   os/key_cnf]
+          - [0xce70,   c,   os/backup]
+          - [0xd108,   c,   os/pad]
+          - [0xdc90,   c,   os/eeiop/eeiop]
+          - [0xe048,   c,   os/eeiop/cdvd/eecdvd]
+          - [0xe558,   c,   os/eeiop/adpcm/ea_ctrl]
+          - [0xf118,   c,   os/eeiop/adpcm/ea_cmd]
+          - [0xf558,   c,   os/eeiop/adpcm/ea_dat]
+          - [0xf5a8,   c,   os/eeiop/adpcm/ea_btlmode]
+          - [0xf8a8,   c,   os/eeiop/adpcm/ea_gameover]
+          - [0xfab0,   c,   os/eeiop/adpcm/ea_scene]
+          - [0xfd60,   c,   os/eeiop/adpcm/ea_magatoki]
+          - [0x10090,  c,   os/eeiop/adpcm/ea_shinkan]
+          - [0x103e0,  c,   os/eeiop/adpcm/ea_puzzle]
+          - [0x106e0,  c,   os/eeiop/adpcm/ea_soul]
+          - [0x109a8,  c,   os/eeiop/adpcm/ea_tape]
+          - [0x10bb0,  c,   os/eeiop/adpcm/ea_gdead]
+          - [0x10df8,  c,   os/eeiop/adpcm/ea_event]
+          - [0x11250,  c,   os/eeiop/adpcm/ea_ghost]
+          - [0x116b8,  asm, os/eeiop/adpcm/ea_autog]
+          - [0x11c40,  asm, os/eeiop/adpcm/ea_hiso]
+          - [0x12000,  asm, os/eeiop/adpcm/ea_furn]
+          - [0x12500,  asm, os/eeiop/adpcm/ea_map]
+          - [0x12748,  asm, os/eeiop/eese]
+          - [0x143f0,  asm, os/eeiop/se_cmd]
+          - [0x14a70,  asm, os/eeiop/se_data]
+          - [0x14f70,  asm, os/eeiop/se_ev]
+          - [0x152d0,  asm, os/eeiop/se_trans]
+          - [0x15708,  asm, os/eeiop/se_door]
+          - [0x15c40,  asm, os/eeiop/se_foot]
+          - [0x160f8,  asm, os/eeiop/se_event]
+          - [0x16438,  asm, os/eeiop/se_srund]
+          - [0x16778,  asm, os/eeiop/sd_room]
+          - [0x16968,  asm, os/eeiop/se_plyr]
+          - [0x16fb8,  asm, common/ul_math]
+          - [0x172b0,  asm, common/utility]
+          - [0x17310,  asm, graphics/graph2d/compress]
+          - [0x18cf0,  asm, graphics/graph2d/effect]
+          - [0x1b448,  asm, graphics/graph2d/effect_sub]
+          - [0x214a0,  asm, graphics/graph2d/effect_sub2]
+          - [0x28f98,  asm, graphics/graph2d/effect_scr]
+          - [0x32bd8,  asm, graphics/graph2d/effect_obj]
+          - [0x37598,  asm, graphics/graph2d/effect_oth]
+          - [0x47498,  asm, graphics/graph2d/effect_rdr]
+          - [0x48c20,  asm, graphics/graph2d/effect_ene]
+          - [0x54038,  asm, graphics/graph2d/g2d_debug]
+          - [0x55f20,  asm, graphics/graph2d/g2d_main]
+          - [0x561c8,  asm, graphics/graph2d/subtitles]
+          - [0x56e98,  asm, graphics/graph2d/message]
+          - [0x5bef8,  asm, graphics/graph2d/number]
+          - [0x5c2e8,  asm, graphics/graph2d/snapshot]
+          - [0x5c560,  asm, graphics/graph2d/tim2]
+          - [0x60190,  asm, graphics/graph2d/tim2_new]
+          - [0x613e0,  asm, graphics/graph2d/rare_ene]
+          - [0x62210,  asm, graphics/graph3d/gra3d]
+          - [0x668c8,  asm, graphics/graph3d/leditor]
+          - [0x67c08,  asm, graphics/graph3d/load3d]
+          - [0x68d40,  asm, graphics/motion/mdlwork]
+          - [0x6a418,  asm, graphics/motion/mdlact]
+          - [0x6b350,  asm, graphics/motion/mime]
+          - [0x6ce58,  asm, graphics/motion/accessory]
+          - [0x70b70,  asm, graphics/motion/motion]
+          - [0x73c80,  asm, graphics/motion/anicode]
+          - [0x74538,  asm, graphics/graph3d/object]
+          - [0x74570,  asm, graphics/graph3d/sce_pp3]
+          - [0x747c8,  asm, graphics/graph3d/sgsgd]
+          - [0x75160,  asm, graphics/graph3d/sglib]
+          - [0x75f68,  asm, graphics/graph3d/sgsu]
+          - [0x776d8,  asm, graphics/graph3d/sgdma]
+          - [0x78218,  asm, graphics/graph3d/sglight]
+          - [0x7b3c0,  asm, graphics/graph3d/sgsup]
+          - [0x7c140,  asm, graphics/graph3d/sgcam]
+          - [0x7d1e0,  asm, graphics/graph3d/shadow]
+          - [0x7fc50,  asm, graphics/graph3d/mirror]
+          - [0x81440,  asm, graphics/mov/movie]
+          - [0x85b28,  asm, graphics/scene/fod]
+          - [0x87560,  asm, graphics/scene/scene]
+          - [0x8a4e0,  asm, ingame/ingame]
+          - [0x8b280,  asm, ingame/ig_init]
+          - [0x8b7e8,  asm, ingame/camera/camera]
+          - [0x90328,  asm, ingame/enemy/ene_ctl]
+          - [0x93bb0,  asm, ingame/enemy/move_ctl]
+          - [0x9b430,  asm, ingame/entry/entry]
+          - [0x9b618,  asm, ingame/plyr/time_ctl]
+          - [0x9b9c8,  asm, ingame/entry/ap_bgost]
+          - [0x9bce0,  asm, ingame/entry/ap_dgost]
+          - [0x9c1f0,  asm, ingame/entry/ap_fgost]
+          - [0x9ce98,  asm, ingame/entry/ap_ggost]
+          - [0x9d588,  asm, ingame/entry/ap_pgost]
+          - [0x9db58,  asm, ingame/entry/ap_rgost]
+          - [0x9ea58,  asm, ingame/entry/ap_sgost]
+          - [0x9f920,  asm, ingame/entry/ap_zgost]
+          - [0xa0210,  asm, ingame/event/ev_main]
+          - [0xa24c8,  asm, ingame/event/ev_spcl]
+          - [0xb4520,  asm, ingame/event/ev_load]
+          - [0xb5940,  asm, ingame/event/mv_cmnd]
+          - [0xb5aa0,  asm, ingame/info/inf_disp]
+          - [0xbd250,  asm, ingame/map/map_ctrl]
+          - [0xc0be8,  asm, ingame/map/map_area]
+          - [0xc1530,  asm, ingame/map/door_ctl]
+          - [0xc8f20,  asm, ingame/map/doortype]
+          - [0xc9048,  asm, ingame/map/rotd_ctl]
+          - [0xc95b0,  asm, ingame/map/find_ctl]
+          - [0xc9968,  asm, ingame/map/furn_ctl]
+          - [0xcb3e8,  asm, ingame/map/furn_dat]
+          - [0xcb408,  asm, ingame/map/furn_eff]
+          - [0xcb998,  asm, ingame/map/item_ctl]
+          - [0xcc4f8,  asm, ingame/map/map_htck]
+          - [0xcd1a8,  asm, ingame/map/furn_spe/furn_spe]
+          - [0xd0d50,  asm, ingame/map/furn_spe/fsla_main]
+          - [0xd1538,  asm, ingame/map/furn_spe/fspe_acs]
+          - [0xd15d8,  asm, ingame/map/furn_spe/adj_valg]
+          - [0xd18f0,  asm, ingame/menu/item]
+          - [0xd7308,  asm, ingame/menu/gameover]
+          - [0xd7950,  asm, ingame/menu/pause]
+          - [0xd82f0,  asm, ingame/menu/ig_album]
+          - [0xdfac8,  asm, ingame/menu/ig_camra]
+          - [0xe35b0,  asm, ingame/menu/ig_menu]
+          - [0xe7ed0,  asm, ingame/menu/ig_spd_menu]
+          - [0xe8778,  asm, ingame/menu/item_get]
+          - [0xea250,  asm, ingame/menu/ig_file]
+          - [0xf10a8,  asm, ingame/menu/ig_rank]
+          - [0xf43b0,  asm, ingame/menu/ig_glst]
+          - [0xf67b8,  asm, ingame/menu/ig_map]
+          - [0xf9bb8,  asm, ingame/menu/ig_option]
+          - [0xfca68,  asm, ingame/menu/sp_menu]
+          - [0x102fe8, asm, ingame/map/door_conte]
+          - [0x1033c8, asm, ingame/photo/photo]
+          - [0x103e48, asm, ingame/photo/pht_main]
+          - [0x104680, asm, ingame/photo/pht_make]
+          - [0x108538, asm, ingame/plyr/plyr_ctl]
+          - [0x1111c0, asm, ingame/plyr/unit_ctl]
+          - [0x111948, asm, edit/test_2d]
+          - [0x111b18, asm, outgame/scn_test]
+          - [0x1168f8, asm, outgame/title]
+          - [0x11a300, asm, graphics/graph2d/takep_pe]
+          - [0x11b088, asm, mc/mc_main]
+          - [0x11d210, asm, mc/mc_acs]
+          - [0x11db68, asm, mc/mc_album]
+          - [0x11e770, asm, mc/mc_exec]
+          - [0x11fb48, asm, mc/mc_start]
+          - [0x1203a8, asm, mc/mc_disp]
+          - [0x1204b8, asm, mc/mc_at]
+          - [0x120c70, asm, outgame/outgame]
+          - [0x121398, asm, outgame/btl_mode/btl_menu]
+          - [0x122720, asm, outgame/btl_mode/btl_mode]
+          - [0x123020, asm, ingame/event/wan_soul]
+          - [0x124a80, asm, ingame/event/wan_dat]
+          - [0x124ae8, asm, outgame/sound_test]
+          - [0x126010, textbin, text_rest]
+          - [0x14b340, textbin, vutext]
+          # ######################## DATA    (vram: 0x253f00) ##################################
+          - { start: 0x154f00, type: .data,   vram: 0x253f00, name: outgame/mode_slct          }
+          - { start: 0x156860, type: .data,   vram: 0x255860, name: outgame/memory_album       }
+          - { start: 0x157040, type: .data,   vram: 0x256040, name: main/glob                  }
+          - { start: 0x16ac30, type: .data,   vram: 0x269c30, name: os/system                  }
+          - { start: 0x16ae60, type: .data,   vram: 0x269e60, name: os/key_cnf                 }
+          - { start: 0x16af80, type: .data,   vram: 0x269f80, name: os/pad                     }
+          - { start: 0x16afc0, type: .data,   vram: 0x269fc0, name: os/eeiop/eeiop             }
+          - { start: 0x16b580, type: .data,   vram: 0x26a580, name: os/eeiop/adpcm/ea_ctrl     }
+          - { start: 0x16b9c0, type: .data,   vram: 0x26a9c0, name: os/eeiop/adpcm/ea_dat      }
+          - { start: 0x16c540, type: data,    vram: 0x26b540, name: data_10                    }
+          # ######################## VUDATA  (vram: 0x34f948) ##################################
+          - [0x250948, databin, vudata]
+          # ######################## RODATA  (vram: 0x34f980) ##################################
+          - { start: 0x250980, type: .rodata, vram: 0x34f980, name: outgame/mode_slct          }
+          - { start: 0x250ae0, type: .rodata, vram: 0x34fae0, name: outgame/memory_album       }
+          - { start: 0x250bb0, type: .rodata, vram: 0x34fbb0, name: main/gamemain              }
+          - { start: 0x250c00, type: .rodata, vram: 0x34fc00, name: os/system                  }
+          - { start: 0x250cc0, type: .rodata, vram: 0x34fcc0, name: os/backup                  }
+          - { start: 0x250ce0, type: .rodata, vram: 0x34fce0, name: os/pad                     }
+          - { start: 0x250cf0, type: .rodata, vram: 0x34fcf0, name: os/eeiop/eeiop             }
+          - { start: 0x250d20, type: .rodata, vram: 0x34fd20, name: os/eeiop/adpcm/ea_ctrl     }
+          - { start: 0x250d60, type: .rodata, vram: 0x34fd60, name: os/eeiop/adpcm/ea_btlmode  }
+          - { start: 0x250d80, type: .rodata, vram: 0x34fd80, name: os/eeiop/adpcm/ea_scene    }
+          - { start: 0x250da0, type: .rodata, vram: 0x34fda0, name: os/eeiop/adpcm/ea_magatoki }
+          - { start: 0x250dc0, type: .rodata, vram: 0x34fdc0, name: os/eeiop/adpcm/ea_shinkan  }
+          - { start: 0x250de0, type: .rodata, vram: 0x34fde0, name: os/eeiop/adpcm/ea_puzzle   }
+          - { start: 0x250e00, type: .rodata, vram: 0x34fe00, name: os/eeiop/adpcm/ea_soul     }
+          - { start: 0x250e20, type: .rodata, vram: 0x34fe20, name: os/eeiop/adpcm/ea_tape     }
+          - { start: 0x250e40, type: .rodata, vram: 0x34fe40, name: os/eeiop/adpcm/ea_gdead    }
+          - { start: 0x250e60, type: .rodata, vram: 0x34fe60, name: os/eeiop/adpcm/ea_event    }
+          - { start: 0x250ef0, type: .rodata, vram: 0x34fef0, name: os/eeiop/adpcm/ea_ghost    }
+          - { start: 0x250f10, type: rodata,  vram: 0x34ff10, name: rodata_19                  }
+          # ######################## LIT4    (vram: 0x35bd00) ##################################
+          - { start: 0x25cd00, type: .lit4,   vram: 0x35bd00, name: outgame/mode_slct          }
+          - { start: 0x25cd08, type: .lit4,   vram: 0x35bd08, name: outgame/memory_album       }
+          - { start: 0x25cda8, type: .lit4,   vram: 0x35bda8, name: os/pad                     }
+          - { start: 0x25cdb4, type: .lit4,   vram: 0x35bdb4, name: os/eeiop/adpcm/ea_ctrl     }
+          - { start: 0x25cdcc, type: lit4,    vram: 0x35bdcc, name: lit4_5                     }
+          # ######################## SDATA   (vram: 0x35cf80) ##################################
+          - { start: 0x25df80, type: .sdata,  vram: 0x35cf80, name: outgame/mode_slct          }
+          - { start: 0x25df9a, type: .sdata,  vram: 0x35cf9a, name: outgame/memory_album       }
+          - { start: 0x25df9c, type: .sdata,  vram: 0x35cf9c, name: main/gamemain              }
+          - { start: 0x25dfa8, type: .sdata,  vram: 0x35cfa8, name: main/glob                  }
+          - { start: 0x25dfb8, type: .sdata,  vram: 0x35cfb8, name: os/system                  }
+          - { start: 0x25dfd0, type: .sdata,  vram: 0x35cfd0, name: os/eeiop/adpcm/ea_ghost    }
+          - { start: 0x25dfd4, type: sdata,   vram: 0x35cfd4, name: sdata_7                    }
+          # ######################## SBSS    (vram: 0x35e500) ##################################
+          - { start: 0x25f500, type: .sbss,   vram: 0x35e500, name: outgame/mode_slct          }
+          - { start: 0x25f500, type: .sbss,   vram: 0x35e508, name: outgame/memory_album       }
+          - { start: 0x25f500, type: .sbss,   vram: 0x35e514, name: os/system                  }
+          - { start: 0x25f500, type: .sbss,   vram: 0x35e518, name: os/eeiop/cdvd/eecdvd       }
+          - { start: 0x25f500, type: .sbss,   vram: 0x35e51b, name: os/eeiop/adpcm/ea_ctrl     }
+          - { start: 0x25f500, type: .sbss,   vram: 0x35e51c, name: os/eeiop/adpcm/ea_ghost     }
+          - { start: 0x25f500, type: sbss,    vram: 0x35e520, name: sbss_7                     }
+          # ######################## BSS     (vram: 0x35e900) ##################################
+          - { start: 0x25f514, type: bss,     vram: 0x35e900, name: bss_1                      }
+          - { start: 0x25f514, type: .bss,    vram: 0x35ea48, name: outgame/mode_slct          }
+          - { start: 0x25f514, type: .bss,    vram: 0x35ea70, name: outgame/memory_album       }
+          - { start: 0x25f514, type: .bss,    vram: 0x35eac0, name: os/fileload                }
+          - { start: 0x25f514, type: .bss,    vram: 0x35eb28, name: os/eeiop/cdvd/eecdvd       }
+          - { start: 0x25f514, type: bss,     vram: 0x35eb50, name: bss_5                      }
+          # ######################## VUBSS   (vram: 0x4115b0) ##################################
+          - { start: 0x25f514, type: bss,     vram: 0x4115b0, name: vubss_1                    }
+    - [0x25f500, databin, reg_info]
+    - [0x25f52c, databin, mips_debug]
+    - [0x73c880, databin, rest]
+    - [0x797d64]
+
+# Section Headers:
+#   [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
+#   [ 0]                   NULL            00000000 000000 000000 00      0   0  0
+#   [ 1] .text             PROGBITS        00100000 001000 14a334 00  AX  0   0 64
+#   [ 2] .vutext           PROGBITS        0024a340 14b340 009b80 00  AX  0   0 16
+#   [ 3] .reginfo          MIPS_REGINFO    00253ec0 25f514 000018 01      0   0  4
+#   [ 4] .data             PROGBITS        00253f00 154f00 0fba48 00  WA  0   0 64
+#   [ 5] .vudata           PROGBITS        0034f948 250948 000000 00  WA  0   0  1
+#   [ 6] .rodata           PROGBITS        0034f980 250980 00c318 00   A  0   0 16
+#   [ 7] .lit4             PROGBITS        0035bd00 25cd00 001268 00 WAp  0   0  4
+#   [ 8] .sdata            PROGBITS        0035cf80 25df80 00154c 00 WAp  0   0  8
+#   [ 9] .sbss             NOBITS          0035e500 25f500 0003ec 00 WAp  0   0  8
+#   [10] .bss              NOBITS          0035e900 25f514 0b2cb0 00  WA  0   0 64
+#   [11] .vubss            NOBITS          004115b0 25f514 000000 00  WA  0   0  1
+#   [12] .mdebug           MIPS_DEBUG      004115b0 25f52c 4dd354 01      0   0  4
