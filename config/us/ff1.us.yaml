@@ -73,7 +73,7 @@ segments:
           - [0x10948,  c,   os/eeiop/adpcm/ea_gdead]
           - [0x10b78,  c,   os/eeiop/adpcm/ea_event]
           - [0x10f98,  c,   os/eeiop/adpcm/ea_ghost]
-          - [0x11400,  asm, os/eeiop/adpcm/ea_autog]
+          - [0x11400,  c,   os/eeiop/adpcm/ea_autog]
           - [0x11958,  asm, os/eeiop/adpcm/ea_hiso]
           - [0x11d18,  asm, os/eeiop/adpcm/ea_furn]
           - [0x12218,  asm, os/eeiop/adpcm/ea_map]
@@ -236,7 +236,8 @@ segments:
           - { start: 0x24ab10, type: .rodata, vram: 0x349b10, name: os/eeiop/adpcm/ea_gdead    }
           - { start: 0x24ab30, type: .rodata, vram: 0x349b30, name: os/eeiop/adpcm/ea_event    }
           - { start: 0x24abc0, type: .rodata, vram: 0x349bc0, name: os/eeiop/adpcm/ea_ghost    }
-          - { start: 0x24abe0, type: rodata,  vram: 0x349be0, name: rodata_19                  }
+          - { start: 0x24abe0, type: .rodata, vram: 0x349be0, name: os/eeiop/adpcm/ea_autog    }
+          - { start: 0x24ac00, type: rodata,  vram: 0x349c00, name: rodata_20                  }
           # ######################## LIT4    (vram: 0x355080) ##################################
           - { start: 0x256080, type: .lit4,   vram: 0x355080, name: outgame/mode_slct          }
           - { start: 0x256088, type: .lit4,   vram: 0x355088, name: outgame/memory_album       }
@@ -250,7 +251,8 @@ segments:
           - { start: 0x257328, type: .sdata,  vram: 0x356328, name: main/glob                  }
           - { start: 0x257338, type: .sdata,  vram: 0x356338, name: os/system                  }
           - { start: 0x257350, type: .sdata,  vram: 0x356350, name: os/eeiop/adpcm/ea_ghost    }
-          - { start: 0x257354, type: sdata,   vram: 0x356354, name: sdata_7                    }
+          - { start: 0x257354, type: .sdata,  vram: 0x356354, name: os/eeiop/adpcm/ea_autog    }
+          - { start: 0x257360, type: sdata,   vram: 0x356360, name: sdata_8                    }
           # ######################## SBSS    (vram: 0x357880) ##################################
           - { start: 0x258880, type: .sbss,   vram: 0x357880, name: outgame/mode_slct          }
           - { start: 0x258880, type: .sbss,   vram: 0x357888, name: outgame/memory_album       }

@@ -98,7 +98,8 @@
         "ea_shinkan.h": "c",
         "ea_dat.h": "c",
         "ea_puzzle.h": "c",
-        "ea_ghost.h": "c"
+        "ea_ghost.h": "c",
+        "ea_autog.h": "c"
     },
     "editor.rulers": [
         120

@@ -4,8 +4,8 @@ MAKEFLAGS += --no-print-directory
 NUMPROC ?= $(shell nproc)
 
 .PHONY: help \
-		us-configure .us-build-only .us-check-files-on-error us-build \
-		eu-configure .eu-build-only .eu-check-files-on-error eu-build
+		.us-build-only .us-check-files-on-error us-configure us-build us-extract-data us-make-asm us-map-mismatch us-clean \
+		.eu-build-only .eu-check-files-on-error eu-configure eu-build eu-extract-data eu-make-asm eu-map-mismatch eu-clean
 
 .DEFAULT_GOAL := help
 
@@ -78,6 +78,10 @@ us-make-asm:  ## Create expected asm folder in US config directory
 us-map-mismatch:  ## Check for mismatches in US mapfile
 	@python3 tools/python/map_mismatch.py --language us
 
+us-clean:  ## Clean artifact in EU config directory
+	@cd config/us; \
+	ninja -t clean;
+
 ##
 ## EU Commands:
 eu-configure: ## Configure EU project (needs SLES_508.21)
@@ -102,6 +106,10 @@ eu-make-asm:  ## Create expected asm folder in EU config directory
 
 eu-map-mismatch:  ## Check for mismatches in EU mapfile
 	@python3 tools/python/map_mismatch.py --language eu
+
+eu-clean:  ## Clean artifact in US config directory
+	@cd config/eu; \
+	ninja -t clean;
 
 # Include custom makefile for user-defined commands
 -include Makefile.custom
