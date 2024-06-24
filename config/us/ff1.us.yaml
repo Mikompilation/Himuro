@@ -76,7 +76,7 @@ segments:
           - [0x11400,  c,   os/eeiop/adpcm/ea_autog]
           - [0x11958,  c,   os/eeiop/adpcm/ea_hiso]
           - [0x11d18,  c,   os/eeiop/adpcm/ea_furn]
-          - [0x12218,  asm, os/eeiop/adpcm/ea_map]
+          - [0x12218,  c,   os/eeiop/adpcm/ea_map]
           - [0x12460,  asm, os/eeiop/eese]
           - [0x14108,  asm, os/eeiop/se_cmd]
           - [0x14788,  asm, os/eeiop/se_data]
@@ -263,7 +263,8 @@ segments:
           - { start: 0x258880, type: .sbss,   vram: 0x357898, name: os/eeiop/cdvd/eecdvd       }
           - { start: 0x258880, type: .sbss,   vram: 0x35789b, name: os/eeiop/adpcm/ea_ctrl     }
           - { start: 0x258880, type: .sbss,   vram: 0x35789c, name: os/eeiop/adpcm/ea_ghost    }
-          - { start: 0x258880, type: sbss,    vram: 0x3578a0, name: sbss_7                     }
+          - { start: 0x258880, type: .sbss,   vram: 0x3578a0, name: os/eeiop/adpcm/ea_map      }
+          - { start: 0x258880, type: sbss,    vram: 0x3578a4, name: sbss_8                     }
           # ######################## BSS     (vram: 0x357c80) ##################################
           - { start: 0x25888c, type: bss,     vram: 0x357c80, name: bss_1                      }
           - { start: 0x25888c, type: .bss,    vram: 0x357dc8, name: outgame/mode_slct          }
