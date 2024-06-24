@@ -2672,3 +2672,6 @@ end_cam_pos__local_1                     = 0x00409c00;
 cam_move_speed__local_1                  = 0x00409c10;
 cam_ref_adjust_val__local_1              = 0x00409c20;
 stf__local_1                             = 0x00409c30;
+
+/* labels found by spimdisasm that are not symbols */
+D_00350000                               = 0x00350000;

@@ -75,7 +75,7 @@ segments:
           - [0x11250,  c,   os/eeiop/adpcm/ea_ghost]
           - [0x116b8,  c,   os/eeiop/adpcm/ea_autog]
           - [0x11c40,  c,   os/eeiop/adpcm/ea_hiso]
-          - [0x12000,  asm, os/eeiop/adpcm/ea_furn]
+          - [0x12000,  c,   os/eeiop/adpcm/ea_furn]
           - [0x12500,  asm, os/eeiop/adpcm/ea_map]
           - [0x12748,  asm, os/eeiop/eese]
           - [0x143f0,  asm, os/eeiop/se_cmd]
@@ -239,7 +239,8 @@ segments:
           - { start: 0x250ef0, type: .rodata, vram: 0x34fef0, name: os/eeiop/adpcm/ea_ghost    }
           - { start: 0x250f10, type: .rodata, vram: 0x34ff10, name: os/eeiop/adpcm/ea_autog    }
           - { start: 0x250f30, type: .rodata, vram: 0x34ff30, name: os/eeiop/adpcm/ea_hiso     }
-          - { start: 0x250fb0, type: rodata,  vram: 0x34ffb0, name: rodata_21                  }
+          - { start: 0x250fb0, type: .rodata, vram: 0x34ffb0, name: os/eeiop/adpcm/ea_furn     }
+          - { start: 0x251040, type: rodata,  vram: 0x350040, name: rodata_22                  }
           # ######################## LIT4    (vram: 0x35bd00) ##################################
           - { start: 0x25cd00, type: .lit4,   vram: 0x35bd00, name: outgame/mode_slct          }
           - { start: 0x25cd08, type: .lit4,   vram: 0x35bd08, name: outgame/memory_album       }
@@ -254,14 +255,15 @@ segments:
           - { start: 0x25dfb8, type: .sdata,  vram: 0x35cfb8, name: os/system                  }
           - { start: 0x25dfd0, type: .sdata,  vram: 0x35cfd0, name: os/eeiop/adpcm/ea_ghost    }
           - { start: 0x25dfd4, type: .sdata,  vram: 0x35cfd4, name: os/eeiop/adpcm/ea_autog    }
-          - { start: 0x25dfe0, type: sdata,   vram: 0x35cfe0, name: sdata_8                    }
+          - { start: 0x25dfd8, type: .sdata,  vram: 0x35cfd8, name: os/eeiop/adpcm/ea_furn     }
+          - { start: 0x25dfe0, type: sdata,   vram: 0x35cfe0, name: sdata_9                    }
           # ######################## SBSS    (vram: 0x35e500) ##################################
           - { start: 0x25f500, type: .sbss,   vram: 0x35e500, name: outgame/mode_slct          }
           - { start: 0x25f500, type: .sbss,   vram: 0x35e508, name: outgame/memory_album       }
           - { start: 0x25f500, type: .sbss,   vram: 0x35e514, name: os/system                  }
           - { start: 0x25f500, type: .sbss,   vram: 0x35e518, name: os/eeiop/cdvd/eecdvd       }
           - { start: 0x25f500, type: .sbss,   vram: 0x35e51b, name: os/eeiop/adpcm/ea_ctrl     }
-          - { start: 0x25f500, type: .sbss,   vram: 0x35e51c, name: os/eeiop/adpcm/ea_ghost     }
+          - { start: 0x25f500, type: .sbss,   vram: 0x35e51c, name: os/eeiop/adpcm/ea_ghost    }
           - { start: 0x25f500, type: sbss,    vram: 0x35e520, name: sbss_7                     }
           # ######################## BSS     (vram: 0x35e900) ##################################
           - { start: 0x25f514, type: bss,     vram: 0x35e900, name: bss_1                      }
