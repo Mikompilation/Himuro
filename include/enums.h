@@ -3772,4 +3772,13 @@ enum A_MODE_FURN_MODE {
 	AMFR_MODE_END = 4
 };
 
+enum SE_WRK_STATUS
+{
+    SEW_STAT_FREE = 0,
+    SEW_STAT_RING = 1,
+    SEW_STAT_FDIN = 2,
+    SEW_STAT_FDOUT = 3,
+    SEW_STAT_RESERVED = 4
+};
+
 #endif // ENUMS_H

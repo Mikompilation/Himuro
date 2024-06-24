@@ -77,7 +77,7 @@ segments:
           - [0x11c40,  c,   os/eeiop/adpcm/ea_hiso]
           - [0x12000,  c,   os/eeiop/adpcm/ea_furn]
           - [0x12500,  c,   os/eeiop/adpcm/ea_map]
-          - [0x12748,  asm, os/eeiop/eese]
+          - [0x12748,  c,   os/eeiop/eese]
           - [0x143f0,  asm, os/eeiop/se_cmd]
           - [0x14a70,  asm, os/eeiop/se_data]
           - [0x14f70,  asm, os/eeiop/se_ev]
@@ -215,7 +215,8 @@ segments:
           - { start: 0x16afc0, type: .data,   vram: 0x269fc0, name: os/eeiop/eeiop             }
           - { start: 0x16b580, type: .data,   vram: 0x26a580, name: os/eeiop/adpcm/ea_ctrl     }
           - { start: 0x16b9c0, type: .data,   vram: 0x26a9c0, name: os/eeiop/adpcm/ea_dat      }
-          - { start: 0x16c540, type: data,    vram: 0x26b540, name: data_10                    }
+          - { start: 0x16c540, type: .data,   vram: 0x26b540, name: os/eeiop/eese              }
+          - { start: 0x16c5b8, type: data,    vram: 0x26b5b8, name: data_11                    }
           # ######################## VUDATA  (vram: 0x34f948) ##################################
           - [0x250948, databin, vudata]
           # ######################## RODATA  (vram: 0x34f980) ##################################
@@ -240,7 +241,8 @@ segments:
           - { start: 0x250f10, type: .rodata, vram: 0x34ff10, name: os/eeiop/adpcm/ea_autog    }
           - { start: 0x250f30, type: .rodata, vram: 0x34ff30, name: os/eeiop/adpcm/ea_hiso     }
           - { start: 0x250fb0, type: .rodata, vram: 0x34ffb0, name: os/eeiop/adpcm/ea_furn     }
-          - { start: 0x251040, type: rodata,  vram: 0x350040, name: rodata_22                  }
+          - { start: 0x251040, type: .rodata, vram: 0x350040, name: os/eeiop/eese              }
+          - { start: 0x251290, type: rodata,  vram: 0x350290, name: rodata_23                  }
           # ######################## LIT4    (vram: 0x35bd00) ##################################
           - { start: 0x25cd00, type: .lit4,   vram: 0x35bd00, name: outgame/mode_slct          }
           - { start: 0x25cd08, type: .lit4,   vram: 0x35bd08, name: outgame/memory_album       }
@@ -272,7 +274,8 @@ segments:
           - { start: 0x25f514, type: .bss,    vram: 0x35ea70, name: outgame/memory_album       }
           - { start: 0x25f514, type: .bss,    vram: 0x35eac0, name: os/fileload                }
           - { start: 0x25f514, type: .bss,    vram: 0x35eb28, name: os/eeiop/cdvd/eecdvd       }
-          - { start: 0x25f514, type: bss,     vram: 0x35eb50, name: bss_5                      }
+          - { start: 0x25f514, type: .bss,    vram: 0x35eb50, name: os/eeiop/eese              }
+          - { start: 0x25f514, type: bss,     vram: 0x35f750, name: bss_7                      }
           # ######################## VUBSS   (vram: 0x4115b0) ##################################
           - { start: 0x25f514, type: bss,     vram: 0x4115b0, name: vubss_1                    }
     - [0x25f500, databin, reg_info]
