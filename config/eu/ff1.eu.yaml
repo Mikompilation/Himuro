@@ -74,7 +74,7 @@ segments:
           - [0x10df8,  c,   os/eeiop/adpcm/ea_event]
           - [0x11250,  c,   os/eeiop/adpcm/ea_ghost]
           - [0x116b8,  c,   os/eeiop/adpcm/ea_autog]
-          - [0x11c40,  asm, os/eeiop/adpcm/ea_hiso]
+          - [0x11c40,  c,   os/eeiop/adpcm/ea_hiso]
           - [0x12000,  asm, os/eeiop/adpcm/ea_furn]
           - [0x12500,  asm, os/eeiop/adpcm/ea_map]
           - [0x12748,  asm, os/eeiop/eese]
@@ -238,7 +238,8 @@ segments:
           - { start: 0x250e60, type: .rodata, vram: 0x34fe60, name: os/eeiop/adpcm/ea_event    }
           - { start: 0x250ef0, type: .rodata, vram: 0x34fef0, name: os/eeiop/adpcm/ea_ghost    }
           - { start: 0x250f10, type: .rodata, vram: 0x34ff10, name: os/eeiop/adpcm/ea_autog    }
-          - { start: 0x250f30, type: rodata,  vram: 0x34ff30, name: rodata_20                  }
+          - { start: 0x250f30, type: .rodata, vram: 0x34ff30, name: os/eeiop/adpcm/ea_hiso     }
+          - { start: 0x250fb0, type: rodata,  vram: 0x34ffb0, name: rodata_21                  }
           # ######################## LIT4    (vram: 0x35bd00) ##################################
           - { start: 0x25cd00, type: .lit4,   vram: 0x35bd00, name: outgame/mode_slct          }
           - { start: 0x25cd08, type: .lit4,   vram: 0x35bd08, name: outgame/memory_album       }
