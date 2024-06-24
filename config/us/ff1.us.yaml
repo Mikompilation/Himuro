@@ -204,79 +204,145 @@ segments:
           - [0x121098, asm, outgame/sound_test]
           - [0x1225c0, textbin, text_rest]
           - [0x1475b0, textbin, vutext]
-          # ######################## DATA    (vram: 0x250180) ##################################
-          - { start: 0x151180, type: .data,   vram: 0x250180, name: outgame/mode_slct          }
-          - { start: 0x152ae0, type: .data,   vram: 0x251ae0, name: outgame/memory_album       }
-          - { start: 0x1532c0, type: .data,   vram: 0x2522c0, name: main/glob                  }
-          - { start: 0x166eb0, type: .data,   vram: 0x265eb0, name: os/system                  }
-          - { start: 0x1670e0, type: .data,   vram: 0x2660e0, name: os/key_cnf                 }
-          - { start: 0x167200, type: .data,   vram: 0x266200, name: os/pad                     }
-          - { start: 0x167240, type: .data,   vram: 0x266240, name: os/eeiop/eeiop             }
-          - { start: 0x167800, type: .data,   vram: 0x266800, name: os/eeiop/adpcm/ea_ctrl     }
-          - { start: 0x167c40, type: .data,   vram: 0x266c40, name: os/eeiop/adpcm/ea_dat      }
-          - { start: 0x1687c0, type: .data,   vram: 0x2677c0, name: os/eeiop/eese              }
-          - { start: 0x168838, type: data,    vram: 0x267838, name: data_11                    }
-          # ######################## VUDATA  (vram: 0x349608) ##################################
-          - [0x24a608, databin, vudata]
-          # ######################## RODATA  (vram: 0x349680) ##################################
-          - { start: 0x24a680, type: .rodata, vram: 0x349680, name: outgame/mode_slct          }
-          - { start: 0x24a7e0, type: .rodata, vram: 0x3497e0, name: outgame/memory_album       }
-          - { start: 0x24a8b0, type: .rodata, vram: 0x3498b0, name: main/gamemain              }
-          - { start: 0x24a8d0, type: .rodata, vram: 0x3498d0, name: os/system                  }
-          - { start: 0x24a990, type: .rodata, vram: 0x349990, name: os/backup                  }
-          - { start: 0x24a9b0, type: .rodata, vram: 0x3499b0, name: os/pad                     }
-          - { start: 0x24a9c0, type: .rodata, vram: 0x3499c0, name: os/eeiop/eeiop             }
-          - { start: 0x24a9f0, type: .rodata, vram: 0x3499f0, name: os/eeiop/adpcm/ea_ctrl     }
-          - { start: 0x24aa30, type: .rodata, vram: 0x349a30, name: os/eeiop/adpcm/ea_btlmode  }
-          - { start: 0x24aa50, type: .rodata, vram: 0x349a50, name: os/eeiop/adpcm/ea_scene    }
-          - { start: 0x24aa70, type: .rodata, vram: 0x349a70, name: os/eeiop/adpcm/ea_magatoki }
-          - { start: 0x24aa90, type: .rodata, vram: 0x349a90, name: os/eeiop/adpcm/ea_shinkan  }
-          - { start: 0x24aab0, type: .rodata, vram: 0x349ab0, name: os/eeiop/adpcm/ea_puzzle   }
-          - { start: 0x24aad0, type: .rodata, vram: 0x349ad0, name: os/eeiop/adpcm/ea_soul     }
-          - { start: 0x24aaf0, type: .rodata, vram: 0x349af0, name: os/eeiop/adpcm/ea_tape     }
-          - { start: 0x24ab10, type: .rodata, vram: 0x349b10, name: os/eeiop/adpcm/ea_gdead    }
-          - { start: 0x24ab30, type: .rodata, vram: 0x349b30, name: os/eeiop/adpcm/ea_event    }
-          - { start: 0x24abc0, type: .rodata, vram: 0x349bc0, name: os/eeiop/adpcm/ea_ghost    }
-          - { start: 0x24abe0, type: .rodata, vram: 0x349be0, name: os/eeiop/adpcm/ea_autog    }
-          - { start: 0x24ac00, type: .rodata, vram: 0x349c00, name: os/eeiop/adpcm/ea_hiso     }
-          - { start: 0x24ac80, type: .rodata, vram: 0x349c80, name: os/eeiop/adpcm/ea_furn     }
-          - { start: 0x24ad10, type: .rodata, vram: 0x349d10, name: os/eeiop/eese              }
-          - { start: 0x24af60, type: rodata,  vram: 0x349f60, name: rodata_23                  }
-          # ######################## LIT4    (vram: 0x355080) ##################################
-          - { start: 0x256080, type: .lit4,   vram: 0x355080, name: outgame/mode_slct          }
-          - { start: 0x256088, type: .lit4,   vram: 0x355088, name: outgame/memory_album       }
-          - { start: 0x256120, type: .lit4,   vram: 0x355120, name: os/pad                     }
-          - { start: 0x25612c, type: .lit4,   vram: 0x35512c, name: os/eeiop/adpcm/ea_cmd      }
-          - { start: 0x256144, type: lit4,    vram: 0x355144, name: lit4_5                     }
-          # ######################## SDATA   (vram: 0x356300) ##################################
-          - { start: 0x257300, type: .sdata,  vram: 0x356300, name: outgame/mode_slct          }
-          - { start: 0x25731a, type: .sdata,  vram: 0x35631a, name: outgame/memory_album       }
-          - { start: 0x25731c, type: .sdata,  vram: 0x35631c, name: main/gamemain              }
-          - { start: 0x257328, type: .sdata,  vram: 0x356328, name: main/glob                  }
-          - { start: 0x257338, type: .sdata,  vram: 0x356338, name: os/system                  }
-          - { start: 0x257350, type: .sdata,  vram: 0x356350, name: os/eeiop/adpcm/ea_ghost    }
-          - { start: 0x257354, type: .sdata,  vram: 0x356354, name: os/eeiop/adpcm/ea_autog    }
-          - { start: 0x257358, type: .sdata,  vram: 0x356358, name: os/eeiop/adpcm/ea_furn     }
-          - { start: 0x257360, type: sdata,   vram: 0x356360, name: sdata_9                    }
-          # ######################## SBSS    (vram: 0x357880) ##################################
-          - { start: 0x258880, type: .sbss,   vram: 0x357880, name: outgame/mode_slct          }
-          - { start: 0x258880, type: .sbss,   vram: 0x357888, name: outgame/memory_album       }
-          - { start: 0x258880, type: .sbss,   vram: 0x357894, name: os/system                  }
-          - { start: 0x258880, type: .sbss,   vram: 0x357898, name: os/eeiop/cdvd/eecdvd       }
-          - { start: 0x258880, type: .sbss,   vram: 0x35789b, name: os/eeiop/adpcm/ea_ctrl     }
-          - { start: 0x258880, type: .sbss,   vram: 0x35789c, name: os/eeiop/adpcm/ea_ghost    }
-          - { start: 0x258880, type: .sbss,   vram: 0x3578a0, name: os/eeiop/adpcm/ea_map      }
-          - { start: 0x258880, type: sbss,    vram: 0x3578a4, name: sbss_8                     }
-          # ######################## BSS     (vram: 0x357c80) ##################################
-          - { start: 0x25888c, type: bss,     vram: 0x357c80, name: bss_1                      }
-          - { start: 0x25888c, type: .bss,    vram: 0x357dc8, name: outgame/mode_slct          }
-          - { start: 0x25888c, type: .bss,    vram: 0x357df0, name: outgame/memory_album       }
-          - { start: 0x25888c, type: .bss,    vram: 0x357e40, name: os/fileload                }
-          - { start: 0x25888c, type: .bss,    vram: 0x357ea8, name: os/eeiop/cdvd/eecdvd       }
-          - { start: 0x25888c, type: .bss,    vram: 0x357ed0, name: os/eeiop/eese              }
-          - { start: 0x25888c, type: bss,     vram: 0x358ad0, name: bss_7                      }
-          # ######################## VUBSS   (vram: 0x40a8b0) ##################################
-          - { start: 0x25888c, type: bss,     vram: 0x40a8b0, name: vubss_1                    }
+          # ######################## DATA    (vram: 0x250180) #####################################
+          - { start: 0x151180, type: .data,   vram: 0x250180, name: outgame/mode_slct             }
+          - { start: 0x152ae0, type: .data,   vram: 0x251ae0, name: outgame/memory_album          }
+          - { start: 0x1532c0, type: .data,   vram: 0x2522c0, name: main/glob                     }
+          - { start: 0x166eb0, type: .data,   vram: 0x265eb0, name: os/system                     }
+          - { start: 0x1670e0, type: .data,   vram: 0x2660e0, name: os/key_cnf                    }
+          - { start: 0x167200, type: .data,   vram: 0x266200, name: os/pad                        }
+          - { start: 0x167240, type: .data,   vram: 0x266240, name: os/eeiop/eeiop                }
+          - { start: 0x167800, type: .data,   vram: 0x266800, name: os/eeiop/adpcm/ea_ctrl        }
+          - { start: 0x167c40, type: .data,   vram: 0x266c40, name: os/eeiop/adpcm/ea_dat         }
+          - { start: 0x1687c0, type: .data,   vram: 0x2677c0, name: os/eeiop/eese                 }
+          - { start: 0x168838, type:  data,   vram: 0x267838, name: data_11                       }
+          # ######################## VUDATA  (vram: 0x349608) #####################################
+          - { start: 0x24a608, type: databin, vram: 0x349608, name: vudata                        }
+          # ######################## RODATA  (vram: 0x349680) #####################################
+          - { start: 0x24a680, type: .rodata, vram: 0x349680, name: outgame/mode_slct             }
+          - { start: 0x24a7e0, type: .rodata, vram: 0x3497e0, name: outgame/memory_album          }
+          - { start: 0x24a8b0, type: .rodata, vram: 0x3498b0, name: main/gamemain                 }
+          - { start: 0x24a8d0, type: .rodata, vram: 0x3498d0, name: os/system                     }
+          - { start: 0x24a990, type: .rodata, vram: 0x349990, name: os/backup                     }
+          - { start: 0x24a9b0, type: .rodata, vram: 0x3499b0, name: os/pad                        }
+          - { start: 0x24a9c0, type: .rodata, vram: 0x3499c0, name: os/eeiop/eeiop                }
+          - { start: 0x24a9f0, type: .rodata, vram: 0x3499f0, name: os/eeiop/adpcm/ea_ctrl        }
+          - { start: 0x24aa30, type: .rodata, vram: 0x349a30, name: os/eeiop/adpcm/ea_btlmode     }
+          - { start: 0x24aa50, type: .rodata, vram: 0x349a50, name: os/eeiop/adpcm/ea_scene       }
+          - { start: 0x24aa70, type: .rodata, vram: 0x349a70, name: os/eeiop/adpcm/ea_magatoki    }
+          - { start: 0x24aa90, type: .rodata, vram: 0x349a90, name: os/eeiop/adpcm/ea_shinkan     }
+          - { start: 0x24aab0, type: .rodata, vram: 0x349ab0, name: os/eeiop/adpcm/ea_puzzle      }
+          - { start: 0x24aad0, type: .rodata, vram: 0x349ad0, name: os/eeiop/adpcm/ea_soul        }
+          - { start: 0x24aaf0, type: .rodata, vram: 0x349af0, name: os/eeiop/adpcm/ea_tape        }
+          - { start: 0x24ab10, type: .rodata, vram: 0x349b10, name: os/eeiop/adpcm/ea_gdead       }
+          - { start: 0x24ab30, type: .rodata, vram: 0x349b30, name: os/eeiop/adpcm/ea_event       }
+          - { start: 0x24abc0, type: .rodata, vram: 0x349bc0, name: os/eeiop/adpcm/ea_ghost       }
+          - { start: 0x24abe0, type: .rodata, vram: 0x349be0, name: os/eeiop/adpcm/ea_autog       }
+          - { start: 0x24ac00, type: .rodata, vram: 0x349c00, name: os/eeiop/adpcm/ea_hiso        }
+          - { start: 0x24ac80, type: .rodata, vram: 0x349c80, name: os/eeiop/adpcm/ea_furn        }
+          - { start: 0x24ad10, type: .rodata, vram: 0x349d10, name: os/eeiop/eese                 }
+          - { start: 0x24af60, type:  rodata, vram: 0x349f60, name: rodata_23                     }
+          # ######################## LIT4    (vram: 0x355080) #####################################
+          - { start: 0x256080, type: .lit4,   vram: 0x355080, name: outgame/mode_slct             }
+          - { start: 0x256088, type: .lit4,   vram: 0x355088, name: outgame/memory_album          }
+          - { start: 0x256120, type: .lit4,   vram: 0x355120, name: os/pad                        }
+          - { start: 0x25612c, type: .lit4,   vram: 0x35512c, name: os/eeiop/adpcm/ea_cmd         }
+          - { start: 0x256144, type:  lit4,   vram: 0x355144, name: os/eeiop/se_cmd               }
+          - { start: 0x256154, type:  lit4,   vram: 0x355154, name: os/eeiop/se_plyr              }
+          - { start: 0x256158, type:  lit4,   vram: 0x355158, name: graphics/graph2d/compress     }
+          - { start: 0x25615c, type:  lit4,   vram: 0x35515c, name: graphics/graph2d/effect       }
+          - { start: 0x256178, type:  lit4,   vram: 0x355178, name: graphics/graph2d/effect_sub   }
+          - { start: 0x2561e4, type:  lit4,   vram: 0x3551e4, name: graphics/graph2d/effect_sub2  }
+          - { start: 0x25620c, type:  lit4,   vram: 0x35520c, name: graphics/graph2d/effect_scr   }
+          - { start: 0x256308, type:  lit4,   vram: 0x355308, name: graphics/graph2d/effect_obj   }
+          - { start: 0x2563b4, type:  lit4,   vram: 0x3553b4, name: graphics/graph2d/effect_oth   }
+          - { start: 0x256658, type:  lit4,   vram: 0x355658, name: graphics/graph2d/effect_rdr   }
+          - { start: 0x256688, type:  lit4,   vram: 0x355688, name: graphics/graph2d/effect_ene   }
+          - { start: 0x256874, type:  lit4,   vram: 0x355874, name: graphics/graph2d/g2d_debug    }
+          - { start: 0x256890, type:  lit4,   vram: 0x355890, name: graphics/graph2d/message      }
+          - { start: 0x256894, type:  lit4,   vram: 0x355894, name: graphics/graph2d/tim2         }
+          - { start: 0x25689c, type:  lit4,   vram: 0x35589c, name: graphics/graph2d/rare_ene     }
+          - { start: 0x2568ac, type:  lit4,   vram: 0x3558ac, name: graphics/graph3d/gra3d        }
+          - { start: 0x25691c, type:  lit4,   vram: 0x35591c, name: graphics/graph3d/leditor      }
+          - { start: 0x256944, type:  lit4,   vram: 0x355944, name: graphics/motion/mdlact        }
+          - { start: 0x256990, type:  lit4,   vram: 0x355990, name: graphics/motion/mime          }
+          - { start: 0x256998, type:  lit4,   vram: 0x355998, name: graphics/motion/accessory     }
+          - { start: 0x2569fc, type:  lit4,   vram: 0x3559fc, name: graphics/motion/motion        }
+          - { start: 0x256a10, type:  lit4,   vram: 0x355a10, name: graphics/motion/anicode       }
+          - { start: 0x256a14, type:  lit4,   vram: 0x355a14, name: graphics/graph3d/sglib        }
+          - { start: 0x256a9c, type:  lit4,   vram: 0x355a9c, name: graphics/graph3d/sglight      }
+          - { start: 0x256aa0, type:  lit4,   vram: 0x355aa0, name: graphics/graph3d/shadow       }
+          - { start: 0x256ab0, type:  lit4,   vram: 0x355ab0, name: graphics/graph3d/mirror       }
+          - { start: 0x256ac0, type:  lit4,   vram: 0x355ac0, name: graphics/scene/fod            }
+          - { start: 0x256b08, type:  lit4,   vram: 0x355b08, name: graphics/scene/scene          }
+          - { start: 0x256b24, type:  lit4,   vram: 0x355b24, name: ingame/ig_init                }
+          - { start: 0x256b38, type:  lit4,   vram: 0x355b38, name: ingame/camera/camera          }
+          - { start: 0x256c04, type:  lit4,   vram: 0x355c04, name: ingame/enemy/ene_ctl          }
+          - { start: 0x256c38, type:  lit4,   vram: 0x355c38, name: ingame/enemy/move_ctl         }
+          - { start: 0x256cec, type:  lit4,   vram: 0x355cec, name: ingame/entry/ap_dgost         }
+          - { start: 0x256cf0, type:  lit4,   vram: 0x355cf0, name: ingame/entry/ap_fgost         }
+          - { start: 0x256cf4, type:  lit4,   vram: 0x355cf4, name: ingame/entry/ap_zgost         }
+          - { start: 0x256cf8, type:  lit4,   vram: 0x355cf8, name: ingame/event/ev_main          }
+          - { start: 0x256d04, type:  lit4,   vram: 0x355d04, name: ingame/event/ev_spcl          }
+          - { start: 0x256d3c, type:  lit4,   vram: 0x355d3c, name: ingame/info/inf_disp          }
+          - { start: 0x256d8c, type:  lit4,   vram: 0x355d8c, name: ingame/map/map_ctrl           }
+          - { start: 0x256d9c, type:  lit4,   vram: 0x355d9c, name: ingame/map/door_ctl           }
+          - { start: 0x256e30, type:  lit4,   vram: 0x355e30, name: ingame/map/rotd_ctl           }
+          - { start: 0x256e3c, type:  lit4,   vram: 0x355e3c, name: ingame/map/find_ctl           }
+          - { start: 0x256e44, type:  lit4,   vram: 0x355e44, name: ingame/map/furn_ctl           }
+          - { start: 0x256e48, type:  lit4,   vram: 0x355e48, name: ingame/map/furn_eff           }
+          - { start: 0x256e4c, type:  lit4,   vram: 0x355e4c, name: ingame/map/item_ctl           }
+          - { start: 0x256e84, type:  lit4,   vram: 0x355e84, name: ingame/map/furn_spe/furn_spe  }
+          - { start: 0x256ea0, type:  lit4,   vram: 0x355ea0, name: ingame/map/furn_spe/fsla_main }
+          - { start: 0x256ea8, type:  lit4,   vram: 0x355ea8, name: ingame/menu/item              }
+          - { start: 0x256ed4, type:  lit4,   vram: 0x355ed4, name: ingame/menu/pause             }
+          - { start: 0x256ed8, type:  lit4,   vram: 0x355ed8, name: ingame/menu/ig_album          }
+          - { start: 0x256f04, type:  lit4,   vram: 0x355f04, name: ingame/menu/ig_camra          }
+          - { start: 0x256f24, type:  lit4,   vram: 0x355f24, name: ingame/menu/item_get          }
+          - { start: 0x256f28, type:  lit4,   vram: 0x355f28, name: ingame/menu/ig_file           }
+          - { start: 0x256f38, type:  lit4,   vram: 0x355f38, name: ingame/menu/ig_rank           }
+          - { start: 0x256f54, type:  lit4,   vram: 0x355f54, name: ingame/menu/ig_glst           }
+          - { start: 0x256f68, type:  lit4,   vram: 0x355f68, name: ingame/menu/ig_map            }
+          - { start: 0x256fa0, type:  lit4,   vram: 0x355fa0, name: ingame/menu/ig_option         }
+          - { start: 0x256fd4, type:  lit4,   vram: 0x355fd4, name: ingame/menu/sp_menu           }
+          - { start: 0x257014, type:  lit4,   vram: 0x356014, name: ingame/photo/pht_make         }
+          - { start: 0x257024, type:  lit4,   vram: 0x356024, name: ingame/plyr/plyr_ctl          }
+          - { start: 0x257208, type:  lit4,   vram: 0x356208, name: ingame/plyr/unit_ctl          }
+          - { start: 0x257238, type:  lit4,   vram: 0x356238, name: outgame/scn_test              }
+          - { start: 0x257284, type:  lit4,   vram: 0x356284, name: outgame/title                 }
+          - { start: 0x257290, type:  lit4,   vram: 0x356290, name: graphics/graph2d/takep_pe     }
+          - { start: 0x257298, type:  lit4,   vram: 0x356298, name: mc/mc_start                   }
+          - { start: 0x25729c, type:  lit4,   vram: 0x35629c, name: ingame/event/wan_soul         }
+          - { start: 0x2572d4, type:  lit4,   vram: 0x3562d4, name: outgame/sound_test            }
+          # ######################## SDATA   (vram: 0x356300) #####################################
+          - { start: 0x257300, type: .sdata,  vram: 0x356300, name: outgame/mode_slct             }
+          - { start: 0x25731a, type: .sdata,  vram: 0x35631a, name: outgame/memory_album          }
+          - { start: 0x25731c, type: .sdata,  vram: 0x35631c, name: main/gamemain                 }
+          - { start: 0x257328, type: .sdata,  vram: 0x356328, name: main/glob                     }
+          - { start: 0x257338, type: .sdata,  vram: 0x356338, name: os/system                     }
+          - { start: 0x257350, type: .sdata,  vram: 0x356350, name: os/eeiop/adpcm/ea_ghost       }
+          - { start: 0x257354, type: .sdata,  vram: 0x356354, name: os/eeiop/adpcm/ea_autog       }
+          - { start: 0x257358, type: .sdata,  vram: 0x356358, name: os/eeiop/adpcm/ea_furn        }
+          - { start: 0x257360, type:  sdata,  vram: 0x356360, name: sdata_9                       }
+          # ######################## SBSS    (vram: 0x357880) #####################################
+          - { start: 0x258880, type: .sbss,   vram: 0x357880, name: outgame/mode_slct             }
+          - { start: 0x258880, type: .sbss,   vram: 0x357888, name: outgame/memory_album          }
+          - { start: 0x258880, type: .sbss,   vram: 0x357894, name: os/system                     }
+          - { start: 0x258880, type: .sbss,   vram: 0x357898, name: os/eeiop/cdvd/eecdvd          }
+          - { start: 0x258880, type: .sbss,   vram: 0x35789b, name: os/eeiop/adpcm/ea_ctrl        }
+          - { start: 0x258880, type: .sbss,   vram: 0x35789c, name: os/eeiop/adpcm/ea_ghost       }
+          - { start: 0x258880, type: .sbss,   vram: 0x3578a0, name: os/eeiop/adpcm/ea_map         }
+          - { start: 0x258880, type:  sbss,   vram: 0x3578a4, name: sbss_8                        }
+          # ######################## BSS     (vram: 0x357c80) #####################################
+          - { start: 0x25888c, type: bss,     vram: 0x357c80, name: bss_1                         }
+          - { start: 0x25888c, type: .bss,    vram: 0x357dc8, name: outgame/mode_slct             }
+          - { start: 0x25888c, type: .bss,    vram: 0x357df0, name: outgame/memory_album          }
+          - { start: 0x25888c, type: .bss,    vram: 0x357e40, name: os/fileload                   }
+          - { start: 0x25888c, type: .bss,    vram: 0x357ea8, name: os/eeiop/cdvd/eecdvd          }
+          - { start: 0x25888c, type: .bss,    vram: 0x357ed0, name: os/eeiop/eese                 }
+          - { start: 0x25888c, type:  bss,    vram: 0x358ad0, name: bss_7                         }
+          # ######################## VUBSS   (vram: 0x40a8b0) #####################################
+          - { start: 0x25888c, type:  bss,    vram: 0x40a8b0, name: vubss_1                       }
     - [0x258880, databin, reg_info]
     - [0x2588a4, databin, mips_debug]
     - [0x71d5d4, databin, rest]
