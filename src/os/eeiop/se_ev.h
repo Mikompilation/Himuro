@@ -9,7 +9,10 @@ typedef struct {
 	char mode;
 } SE_EV_WRK;
 
-// extern SE_EV_WRK se_ev_wrk[24];
+
+#define SE_EV_WRK_SIZE 24
+
+extern SE_EV_WRK se_ev_wrk[SE_EV_WRK_SIZE];
 
 void SeEvInit();
 void SeEvMain();

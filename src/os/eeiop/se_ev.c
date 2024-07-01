@@ -6,8 +6,6 @@
 #include "os/eeiop/eese.h"
 #include "os/eeiop/se_data.h"
 
-#define SE_EV_WRK_SIZE 24
-
 SE_EV_WRK se_ev_wrk[SE_EV_WRK_SIZE] = {0};
 
 static void SeEvInitOne(SE_EV_WRK *seewp);
