@@ -3948,4 +3948,34 @@ enum
     SE_FUSUMA_OPN = 30
 };
 
+enum SE_TRANS_MODE
+{
+    STMODE_READY = 0,
+    STMODE_EE2IOP = 1,
+    STMODE_IOP2SPU = 2,
+    STMODE_USEOK = 3
+};
+
+enum CDVD_SE_TRANS_STATUS
+{
+    CDVD_SE_NOCMD = 0,
+    CDVD_SE_WAIT = 1,
+    CDVD_SE_FINISHED = 2
+};
+
+enum
+{
+    PMODE_NORMAL = 0,
+    PMODE_FINDER = 1,
+    PMODE_DMG = 2,
+    PMODE_FINDER_END = 3,
+    PMODE_MSG_DISP = 4,
+    PMODE_POSE = 5,
+    PMODE_FINDER_IN = 6,
+    PMODE_PRE_DMG = 7,
+    PMODE_OVERHEAT = 8,
+    PMODE_FIN_CAM = 9,
+    PMODE_ANIME = 10
+};
+
 #endif // ENUMS_H

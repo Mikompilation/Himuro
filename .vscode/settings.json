@@ -102,7 +102,11 @@
         "ea_autog.h": "c",
         "se_cmd.h": "c",
         "se_ste_tbl.h": "c",
-        "se_data.h": "c"
+        "se_data.h": "c",
+        "se_trans.h": "c",
+        "se_ev.h": "c",
+        "fgf_tbl.h": "c",
+        "entry.h": "c"
     },
     "editor.rulers": [
         120

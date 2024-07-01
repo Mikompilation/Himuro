@@ -81,7 +81,7 @@ segments:
           - [0x14108,  c,   os/eeiop/se_cmd]
           - [0x14788,  c,   os/eeiop/se_data]
           - [0x14c88,  c,   os/eeiop/se_ev]
-          - [0x14fe8,  asm, os/eeiop/se_trans]
+          - [0x14fe8,  c,   os/eeiop/se_trans]
           - [0x15420,  asm, os/eeiop/se_door]
           - [0x15958,  asm, os/eeiop/se_foot]
           - [0x15e10,  asm, os/eeiop/se_event]
@@ -217,7 +217,8 @@ segments:
           - { start: 0x1687c0, type: .data,   vram: 0x2677c0, name: os/eeiop/eese                 }
           - { start: 0x168838, type: .data,   vram: 0x267838, name: os/eeiop/se_data              }
           - { start: 0x168870, type: .data,   vram: 0x267870, name: os/eeiop/se_ev                }
-          - { start: 0x168930, type:  data,   vram: 0x267930, name: data_13                       }
+          - { start: 0x168930, type: .data,   vram: 0x267930, name: os/eeiop/se_trans             }
+          - { start: 0x168960, type:  data,   vram: 0x267960, name: data_14                       }
           # ######################## VUDATA  (vram: 0x349608) #####################################
           - { start: 0x24a608, type: databin, vram: 0x349608, name: vudata                        }
           # ######################## RODATA  (vram: 0x349680) #####################################

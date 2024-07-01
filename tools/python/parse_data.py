@@ -56,6 +56,15 @@ class SE_STE(CStructure):
     se_no1: c_uint16
 
 
+# typedef struct { // 0x8
+#     /* 0x0 */ int file_no;
+#     /* 0x4 */ u_char fg_no;
+# } FG_FILE_TBL;
+class FG_FILE_TBL(CStructure):
+    file_no: c_int32
+    fg_no: c_uint8
+
+
 elf_names: dict[str, str] = {
     "us": "SLUS_203.88",
     "eu": "SLES_508.21",

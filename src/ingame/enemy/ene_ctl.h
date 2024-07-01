@@ -74,7 +74,7 @@ typedef struct {
 // extern ENE_DAT fene_dat4[0];
 // extern AENE_INFO_DAT aene_info_dat4[0];
 // extern ENE_DAT *jene_dat[0];
-// extern ENE_DAT *fene_dat[0];
+extern ENE_DAT *fene_dat[0];
 // extern AENE_INFO_DAT *aene_info_dat[0];
 // extern u_char req_dmg_ef[3];
 // extern int ene_dead_load;

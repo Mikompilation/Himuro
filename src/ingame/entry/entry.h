@@ -31,7 +31,7 @@ typedef struct {
 	u_short fg_ap;
 } AP_WRK;
 
-// extern AP_WRK ap_wrk;
+extern AP_WRK ap_wrk;
 
 void EntryInit();
 void ClearAppearWrkInfo();
