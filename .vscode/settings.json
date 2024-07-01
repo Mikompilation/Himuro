@@ -107,7 +107,9 @@
         "se_ev.h": "c",
         "fgf_tbl.h": "c",
         "entry.h": "c",
-        "door_ctl.h": "c"
+        "door_ctl.h": "c",
+        "doortype.h": "c",
+        "sd_room.h": "c"
     },
     "editor.rulers": [
         120

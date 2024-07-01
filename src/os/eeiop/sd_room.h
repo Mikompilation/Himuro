@@ -18,7 +18,7 @@ typedef struct {
 } ROOM_SOUND_INFO;
 
 // extern ADPCM_ROOM_PLAY adpcm_param_tbl[0];
-// extern int foot_se_index[0];
+extern int foot_se_index[];
 
 ROOM_SOUND_INFO* GetSdrDatP(u_char room_id);
 int GetSdrAdpcmFno(u_char room_id);
