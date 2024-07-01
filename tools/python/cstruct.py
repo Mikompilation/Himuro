@@ -55,10 +55,12 @@ class CStructure(LittleEndianStructure, metaclass=LittleEndianStructureFieldsFro
         return cstructs
 
     @classmethod
-    def dumps(cls, name: str, data: bytes):
+    def dumps(cls, name: str, data: bytes, static: bool = False, nosize: bool = False):
         cstructs = cls.parse(data)
         stream = io.StringIO()
-        stream.write(f"{cls.__name__} {name}[{len(cstructs)}] = {{\n")
+        prefix = "static " if static else ""
+        numel = f"{len(cstructs)}" if not nosize else ""
+        stream.write(f"{prefix}{cls.__name__} {name}[{numel}] = {{\n")
         for s in cstructs:
             stream.write(f"{s}\n")
         stream.write("};\n\n")

@@ -5,4 +5,4 @@ msl_bg_snd            = 0x254320; // type:SPRT_DAT  numel:11
 msl_bg_sty            = 0x254480; // type:SPRT_DAT  numel:11
 msel_sprt             = 0x2545E0; // type:SPRT_DAT  numel:148
 adpcm_vol_tbl         = 0x26A9C0; // type:ADPCM_VOL numel:368
-se_ste_tbl            = 0x26B5B8; // type:SE_STE numel:14
+se_ste_tbl            = 0x26B5B8; // type:SE_STE    numel:14   nosize static

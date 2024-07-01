@@ -79,7 +79,7 @@ segments:
           - [0x12500,  c,   os/eeiop/adpcm/ea_map]
           - [0x12748,  c,   os/eeiop/eese]
           - [0x143f0,  c,   os/eeiop/se_cmd]
-          - [0x14a70,  asm, os/eeiop/se_data]
+          - [0x14a70,  c,   os/eeiop/se_data]
           - [0x14f70,  asm, os/eeiop/se_ev]
           - [0x152d0,  asm, os/eeiop/se_trans]
           - [0x15708,  asm, os/eeiop/se_door]
@@ -216,7 +216,8 @@ segments:
           - { start: 0x16b580, type: .data,   vram: 0x26a580, name: os/eeiop/adpcm/ea_ctrl        }
           - { start: 0x16b9c0, type: .data,   vram: 0x26a9c0, name: os/eeiop/adpcm/ea_dat         }
           - { start: 0x16c540, type: .data,   vram: 0x26b540, name: os/eeiop/eese                 }
-          - { start: 0x16c5b8, type:  data,   vram: 0x26b5b8, name: data_11                       }
+          - { start: 0x16c5b8, type: .data,   vram: 0x26b5b8, name: os/eeiop/se_data              }
+          - { start: 0x16c5f0, type:  data,   vram: 0x26b5f0, name: data_12                       }
           # ######################## VUDATA  (vram: 0x34f948) #####################################
           - { start: 0x250948, type: databin, vram: 0x34f948, name: vudata                        }
           # ######################## RODATA  (vram: 0x34f980) #####################################
@@ -243,7 +244,7 @@ segments:
           - { start: 0x250fb0, type: .rodata, vram: 0x34ffb0, name: os/eeiop/adpcm/ea_furn        }
           - { start: 0x251040, type: .rodata, vram: 0x350040, name: os/eeiop/eese                 }
           - { start: 0x251290, type: .rodata, vram: 0x350290, name: os/eeiop/se_cmd               }
-          - { start: 0x2512b0, type:  rodata, vram: 0x3502b0, name: os/eeiop/se_data              }
+          - { start: 0x2512b0, type: .rodata, vram: 0x3502b0, name: os/eeiop/se_data              }
           - { start: 0x251568, type:  rodata, vram: 0x350568, name: os/eeiop/se_ev                }
           - { start: 0x2515a0, type:  rodata, vram: 0x3505a0, name: os/eeiop/se_plyr              }
           - { start: 0x2515b0, type:  rodata, vram: 0x3505b0, name: graphics/graph2d/effect       }

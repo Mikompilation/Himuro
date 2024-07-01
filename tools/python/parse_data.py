@@ -62,9 +62,9 @@ elf_names: dict[str, str] = {
 }
 
 # matches "var_name = 0x12345678; // attr1:val1 attr2:val2 ... attrN:valN"
-line_pattern = re.compile(r"^([^\s=]+)\s*=\s*(0x[0-9a-fA-F]+);\s*\/\/((?:\s*[0-9a-zA-Z_]+:[0-9a-zA-Z_]+)+)\s*$")
-# matches multiple attributes in the form of attr:val
-attr_pattern = re.compile(r"([0-9a-zA-Z_]+):([0-9a-zA-Z_]+)")
+line_pattern = re.compile(r"^([^\s=]+)\s*=\s*(0x[0-9a-fA-F]+);\s*\/\/((?:\s*[0-9a-zA-Z_]+(:?:[0-9a-zA-Z_]+)?)+)\s*$")
+# matches multiple attributes in the form of attr:val or attr
+attr_pattern = re.compile(r"([0-9a-zA-Z_]+)(?::([0-9a-zA-Z_]+))?")
 
 
 class DataVar(pydantic.BaseModel):
@@ -74,6 +74,8 @@ class DataVar(pydantic.BaseModel):
     name: str
     type: type[CStructure]
     numel: int = 0
+    nosize: bool = False
+    static: bool = False
 
     @pydantic.field_validator("type", mode="before")
     @classmethod
@@ -103,6 +105,9 @@ def parse_data_vars(data_vars_txt: Path, strict: bool = True):
                 options = line_match.group(3)
                 if attr_match := attr_pattern.findall(options):
                     attrs = dict(attr_match)
+                    for key, value in attrs.items():
+                        if len(value) == 0:
+                            attrs[key] = True
                     try:
                         data_var = DataVar(address=address, name=name, **attrs)
                         data_vars.append(data_var)
@@ -134,7 +139,9 @@ def parse_data(lang: str):
         for data_var in data_vars:
             elf.seek(vram2offset(data_var.address), os.SEEK_SET)
             numel = max(1, data_var.numel)
-            var_str = data_var.type.dumps(data_var.name, elf.read(numel * data_var.type.sizeof()))
+            var_str = data_var.type.dumps(
+                data_var.name, elf.read(numel * data_var.type.sizeof()), static=data_var.static, nosize=data_var.nosize
+            )
             with open(include_path / f"{data_var.name}.h", mode="w") as fw:
                 fw.write(var_str)
 
