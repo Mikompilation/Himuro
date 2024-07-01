@@ -109,7 +109,8 @@
         "entry.h": "c",
         "door_ctl.h": "c",
         "doortype.h": "c",
-        "sd_room.h": "c"
+        "sd_room.h": "c",
+        "se_foot.h": "c"
     },
     "editor.rulers": [
         120
