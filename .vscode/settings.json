@@ -106,7 +106,8 @@
         "se_trans.h": "c",
         "se_ev.h": "c",
         "fgf_tbl.h": "c",
-        "entry.h": "c"
+        "entry.h": "c",
+        "door_ctl.h": "c"
     },
     "editor.rulers": [
         120

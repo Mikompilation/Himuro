@@ -82,7 +82,7 @@ segments:
           - [0x14a70,  c,   os/eeiop/se_data]
           - [0x14f70,  c,   os/eeiop/se_ev]
           - [0x152d0,  c,   os/eeiop/se_trans]
-          - [0x15708,  asm, os/eeiop/se_door]
+          - [0x15708,  c,   os/eeiop/se_door]
           - [0x15c40,  asm, os/eeiop/se_foot]
           - [0x160f8,  asm, os/eeiop/se_event]
           - [0x16438,  asm, os/eeiop/se_srund]
