@@ -47,6 +47,15 @@ class ADPCM_VOL(CStructure):
     vol: c_uint16
 
 
+# typedef struct { // 0x4
+#     /* 0x0 */ u_short se_no0;
+#     /* 0x2 */ u_short se_no1;
+# } SE_STE;
+class SE_STE(CStructure):
+    se_no0: c_uint16
+    se_no1: c_uint16
+
+
 elf_names: dict[str, str] = {
     "us": "SLUS_203.88",
     "eu": "SLES_508.21",

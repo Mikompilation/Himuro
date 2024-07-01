@@ -3781,4 +3781,11 @@ enum SE_WRK_STATUS
     SEW_STAT_RESERVED = 4
 };
 
+enum SE_FADE_MODE
+{
+    SE_FADE_NONE = 0,
+    SE_FADE_IN = 1,
+    SE_FADE_OUT = 2
+};
+
 #endif // ENUMS_H

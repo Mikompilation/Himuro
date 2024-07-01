@@ -99,7 +99,8 @@
         "ea_dat.h": "c",
         "ea_puzzle.h": "c",
         "ea_ghost.h": "c",
-        "ea_autog.h": "c"
+        "ea_autog.h": "c",
+        "se_cmd.h": "c"
     },
     "editor.rulers": [
         120

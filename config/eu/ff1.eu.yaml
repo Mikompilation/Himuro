@@ -78,7 +78,7 @@ segments:
           - [0x12000,  c,   os/eeiop/adpcm/ea_furn]
           - [0x12500,  c,   os/eeiop/adpcm/ea_map]
           - [0x12748,  c,   os/eeiop/eese]
-          - [0x143f0,  asm, os/eeiop/se_cmd]
+          - [0x143f0,  c,   os/eeiop/se_cmd]
           - [0x14a70,  asm, os/eeiop/se_data]
           - [0x14f70,  asm, os/eeiop/se_ev]
           - [0x152d0,  asm, os/eeiop/se_trans]
@@ -242,7 +242,7 @@ segments:
           - { start: 0x250f30, type: .rodata, vram: 0x34ff30, name: os/eeiop/adpcm/ea_hiso        }
           - { start: 0x250fb0, type: .rodata, vram: 0x34ffb0, name: os/eeiop/adpcm/ea_furn        }
           - { start: 0x251040, type: .rodata, vram: 0x350040, name: os/eeiop/eese                 }
-          - { start: 0x251290, type:  rodata, vram: 0x350290, name: os/eeiop/se_cmd               }
+          - { start: 0x251290, type: .rodata, vram: 0x350290, name: os/eeiop/se_cmd               }
           - { start: 0x2512b0, type:  rodata, vram: 0x3502b0, name: os/eeiop/se_data              }
           - { start: 0x251568, type:  rodata, vram: 0x350568, name: os/eeiop/se_ev                }
           - { start: 0x2515a0, type:  rodata, vram: 0x3505a0, name: os/eeiop/se_plyr              }
@@ -336,7 +336,7 @@ segments:
           - { start: 0x25cd08, type: .lit4,   vram: 0x35bd08, name: outgame/memory_album          }
           - { start: 0x25cda8, type: .lit4,   vram: 0x35bda8, name: os/pad                        }
           - { start: 0x25cdb4, type: .lit4,   vram: 0x35bdb4, name: os/eeiop/adpcm/ea_cmd         }
-          - { start: 0x25cdcc, type:  lit4,   vram: 0x35bdcc, name: os/eeiop/se_cmd               }
+          - { start: 0x25cdcc, type: .lit4,   vram: 0x35bdcc, name: os/eeiop/se_cmd               }
           - { start: 0x25cddc, type:  lit4,   vram: 0x35bddc, name: os/eeiop/se_plyr              }
           - { start: 0x25cde0, type:  lit4,   vram: 0x35bde0, name: graphics/graph2d/compress     }
           - { start: 0x25cde4, type:  lit4,   vram: 0x35bde4, name: graphics/graph2d/effect       }
