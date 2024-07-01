@@ -1061,6 +1061,7 @@
         "SEMAI",
         "sendtexaddr",
         "sereq",
+        "sesp",
         "setlight",
         "setpoly",
         "sflm",
