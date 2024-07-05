@@ -116,7 +116,8 @@
         "rm_foot.h": "c",
         "adpcm_param_tbl.h": "c",
         "foot_se_index.h": "c",
-        "map_ctrl.h": "c"
+        "map_ctrl.h": "c",
+        "ul_math.h": "c"
     },
     "editor.rulers": [
         120
