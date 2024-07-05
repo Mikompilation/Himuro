@@ -19,15 +19,15 @@ def vram2offset(vram: int):
 
 
 # struct SPRT_DAT { // size:0x20
-#     /* 0x00 */ u_long tex0;
-#     /* 0x08 */ u_short u;
-#     /* 0x0a */ u_short v;
-#     /* 0x0c */ u_short w;
-#     /* 0x0e */ u_short h;
-#     /* 0x10 */ int x;
-#     /* 0x14 */ int y;
-#     /* 0x18 */ int pri;
-#     /* 0x1c */ u_char alpha;
+#     u_long tex0;
+#     u_short u;
+#     u_short v;
+#     u_short w;
+#     u_short h;
+#     int x;
+#     int y;
+#     int pri;
+#     u_char alpha;
 # };
 class SPRT_DAT(CStructure):
     tex0: c_uint64
@@ -42,8 +42,8 @@ class SPRT_DAT(CStructure):
 
 
 # typedef struct { // 0x8
-#     /* 0x0 */ int file_no;
-#     /* 0x4 */ u_short vol;
+#     int file_no;
+#     u_short vol;
 # } ADPCM_VOL;
 class ADPCM_VOL(CStructure):
     file_no: c_int32
@@ -51,8 +51,8 @@ class ADPCM_VOL(CStructure):
 
 
 # typedef struct { // 0x4
-#     /* 0x0 */ u_short se_no0;
-#     /* 0x2 */ u_short se_no1;
+#     u_short se_no0;
+#     u_short se_no1;
 # } SE_STE;
 class SE_STE(CStructure):
     se_no0: c_uint16
@@ -60,8 +60,8 @@ class SE_STE(CStructure):
 
 
 # typedef struct { // 0x8
-#     /* 0x0 */ int file_no;
-#     /* 0x4 */ u_char fg_no;
+#     int file_no;
+#     u_char fg_no;
 # } FG_FILE_TBL;
 class FG_FILE_TBL(CStructure):
     file_no: c_int32
@@ -106,6 +106,15 @@ class ROOM_DOOR_SE(CStructure):
 # } ROOM_FOOT_SE;
 class ROOM_FOOT_SE(CStructure):
     fno: c_uint32 * 5
+
+
+# typedef struct {
+#   u_char num;
+#   u_char rate[4];
+# } SE_FOOT_RAND_ITA;
+class SE_FOOT_RAND_ITA(CStructure):
+    num: c_uint8
+    rate: c_uint8 * 4
 
 
 elf_names: dict[str, str] = {

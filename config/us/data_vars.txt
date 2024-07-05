@@ -14,3 +14,4 @@ rm_door               = 0x267cb0; // type:ROOM_DOOR_SE numel:43 nosize static
 rm_foot               = 0x267eb8; // type:ROOM_FOOT_SE numel:42 nosize static
 rm_srund              = 0x268200; // type:u_int numel:42 nosize static 
 rm_event              = 0x2682a8; // type:u_int numel:42 nosize static 
+rand_ita_tbl          = 0x268350; // type:SE_FOOT_RAND_ITA numel:11 nosize

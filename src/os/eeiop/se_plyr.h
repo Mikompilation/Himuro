@@ -3,7 +3,12 @@
 
 #include "typedefs.h"
 
-// extern SE_FOOT_RAND_ITA rand_ita_tbl[0];
+typedef struct {
+    u_char num;
+    u_char rate[4];
+} SE_FOOT_RAND_ITA;
+
+extern SE_FOOT_RAND_ITA rand_ita_tbl[];
 
 int SeReqFootStep(float *pos);
 u_char IsKarehaZone();
