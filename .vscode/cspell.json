@@ -1146,6 +1146,7 @@
         "stli",
         "STMODE",
         "strindex",
+        "strp",
         "strt",
         "Stts",
         "subalign",

@@ -89,7 +89,7 @@ segments:
           - [0x16778,  c,   os/eeiop/sd_room]
           - [0x16968,  c,   os/eeiop/se_plyr]
           - [0x16fb8,  c,   common/ul_math]
-          - [0x172b0,  asm, common/utility]
+          - [0x172b0,  c,   common/utility]
           - [0x17310,  asm, graphics/graph2d/compress]
           - [0x18cf0,  asm, graphics/graph2d/effect]
           - [0x1b448,  asm, graphics/graph2d/effect_sub]

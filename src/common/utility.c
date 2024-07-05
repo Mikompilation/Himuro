@@ -1,3 +1,19 @@
 #include "common.h"
+#include "typedefs.h"
+#include "enums.h"
+#include "utility.h"
 
-INCLUDE_ASM(const s32, "common/utility", StrToLower);
+char *StrToLower(char *str)
+{
+    char *strp;
+    
+    strp = str;
+    
+    while (*strp)
+    {
+        *strp = tolower(*strp);
+        strp++;
+    }
+    
+    return str;
+}
