@@ -111,7 +111,11 @@
         "doortype.h": "c",
         "sd_room.h": "c",
         "se_foot.h": "c",
-        "se_event.h": "c"
+        "se_event.h": "c",
+        "rm_door.h": "c",
+        "rm_foot.h": "c",
+        "adpcm_param_tbl.h": "c",
+        "foot_se_index.h": "c"
     },
     "editor.rulers": [
         120
