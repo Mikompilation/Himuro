@@ -1,14 +1,15 @@
 import os
 import re
+import io
 import enum
 import argparse
 import pydantic
 
-from ctypes import c_uint16, c_uint64, c_int32, c_uint8
-from typing import Protocol, Type, cast
+from ctypes import c_uint16, c_uint64, c_uint32, c_int32, c_uint8, sizeof as c_sizeof, Array as CTypesArray
+from typing import Protocol, BinaryIO, Type, Iterable, cast
 from pathlib import Path
 
-from cstruct import CStructure
+from cstruct import CStructure, ctypes_types, CTypeType
 
 
 def vram2offset(vram: int):
@@ -65,6 +66,46 @@ class FG_FILE_TBL(CStructure):
     fg_no: c_uint8
 
 
+# typedef struct {
+# 	int file_no;
+# 	u_short vol;
+# } ADPCM_ROOM_PLAY;
+class ADPCM_ROOM_PLAY(CStructure):
+    file_no: c_int32
+    vol: c_uint16
+
+
+# typedef struct {
+# 	u_short rvol;
+# 	u_char door_no;
+# 	u_char foot_no;
+# 	u_char srund_no;
+# 	u_char event_no;
+# 	u_char adpcm[5];
+# } ROOM_SOUND_INFO;
+class ROOM_SOUND_INFO(CStructure):
+    rvol: c_uint16
+    door_no: c_uint8
+    foot_no: c_uint8
+    srund_no: c_uint8
+    event_no: c_uint8
+    adpcm: c_uint8 * 5
+
+
+# typedef struct {
+#   u_int fno[3];
+# } ROOM_DOOR_SE;
+class ROOM_DOOR_SE(CStructure):
+    fno: c_uint32 * 3
+
+
+# typedef struct {
+#   u_int fno[5];
+# } ROOM_FOOT_SE;
+class ROOM_FOOT_SE(CStructure):
+    fno: c_uint32 * 5
+
+
 elf_names: dict[str, str] = {
     "us": "SLUS_203.88",
     "eu": "SLES_508.21",
@@ -81,18 +122,45 @@ class DataVar(pydantic.BaseModel):
 
     address: int
     name: str
-    type: type[CStructure]
+    type: Type[CStructure] | CTypeType
     numel: int = 0
     nosize: bool = False
     static: bool = False
 
     @pydantic.field_validator("type", mode="before")
     @classmethod
-    def type_from_str(cls, v: str) -> Type[CStructure]:
+    def type_from_str(cls, v: str) -> Type[CStructure] | CTypeType:
+        if v in ctypes_types:
+            return ctypes_types[v]
         class_type = globals()[v]
         if issubclass(class_type, CStructure):
             return class_type
         raise ValueError(f"{v} is unknown/not a valid type")
+
+    def data_var_dumps(self, elf: BinaryIO):
+        numel = max(1, self.numel)
+        if issubclass(self.type, CStructure):
+            return self.type.dumps(
+                self.name,
+                elf.read(numel * self.type.sizeof()),
+                static=self.static,
+                nosize=self.nosize,
+            )
+        else:
+            var_data = (self.type * numel).from_buffer_copy(elf.read(numel * c_sizeof(self.type)))
+            type_str = next(k for k, v in ctypes_types.items() if getattr(v, "_type_") == getattr(self.type, "_type_"))
+            stream = io.StringIO()
+            if self.static:
+                stream.write("static ")
+            stream.write(f"{type_str} {self.name}")
+            if numel > 1:
+                numel = f"{self.numel}" if not self.nosize else ""
+                var_str = f"{{ {', '.join(f'{var}' for var in cast(Iterable[CTypeType], var_data))} }}"
+                stream.write(f"[{numel}]")
+            else:
+                var_str = f"{var_data.value}"
+            stream.write(f" = {var_str};")
+        return stream.getvalue()
 
 
 def parse_data_vars(data_vars_txt: Path, strict: bool = True):
@@ -147,12 +215,8 @@ def parse_data(lang: str):
     with open(elf_path, mode="rb") as elf:
         for data_var in data_vars:
             elf.seek(vram2offset(data_var.address), os.SEEK_SET)
-            numel = max(1, data_var.numel)
-            var_str = data_var.type.dumps(
-                data_var.name, elf.read(numel * data_var.type.sizeof()), static=data_var.static, nosize=data_var.nosize
-            )
             with open(include_path / f"{data_var.name}.h", mode="w") as fw:
-                fw.write(var_str)
+                fw.write(data_var.data_var_dumps(elf))
 
 
 def main():

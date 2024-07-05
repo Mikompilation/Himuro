@@ -5,6 +5,28 @@ import ctypes
 from typing import Type, TypeVar, Any
 from ctypes import LittleEndianStructure, Union, Array, c_uint
 
+CTypeType = (
+    type[ctypes.c_int8]
+    | type[ctypes.c_uint8]
+    | type[ctypes.c_int16]
+    | type[ctypes.c_uint16]
+    | type[ctypes.c_int32]
+    | type[ctypes.c_uint32]
+    | type[ctypes.c_float]
+    | type[ctypes.c_double]
+)
+
+ctypes_types: dict[str, CTypeType] = {
+    "char": ctypes.c_int8,
+    "u_char": ctypes.c_uint8,
+    "short": ctypes.c_int16,
+    "u_short": ctypes.c_uint16,
+    "int": ctypes.c_int32,
+    "u_int": ctypes.c_uint32,
+    "float": ctypes.c_float,
+    "double": ctypes.c_double,
+}
+
 
 class c_addr(c_uint):
     def __str__(self):
@@ -58,9 +80,10 @@ class CStructure(LittleEndianStructure, metaclass=LittleEndianStructureFieldsFro
     def dumps(cls, name: str, data: bytes, static: bool = False, nosize: bool = False):
         cstructs = cls.parse(data)
         stream = io.StringIO()
-        prefix = "static " if static else ""
+        if static:
+            stream.write("static ")
         numel = f"{len(cstructs)}" if not nosize else ""
-        stream.write(f"{prefix}{cls.__name__} {name}[{numel}] = {{\n")
+        stream.write(f"{cls.__name__} {name}[{numel}] = {{\n")
         for s in cstructs:
             stream.write(f"{s}\n")
         stream.write("};\n\n")
