@@ -1,3 +1,5 @@
+# pyright: reportInvalidTypeForm=false
+
 import os
 import re
 import io
@@ -5,7 +7,7 @@ import enum
 import argparse
 import pydantic
 
-from ctypes import c_uint16, c_uint64, c_uint32, c_int32, c_uint8, sizeof as c_sizeof, Array as CTypesArray
+from ctypes import c_uint16, c_uint64, c_uint32, c_int32, c_uint8, sizeof as c_sizeof
 from typing import Protocol, BinaryIO, Type, Iterable, cast
 from pathlib import Path
 
