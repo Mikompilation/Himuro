@@ -509,7 +509,63 @@ segments:
           - { start: 0x25f500, type: .sbss,   vram: 0x35e51b, name: os/eeiop/adpcm/ea_ctrl        }
           - { start: 0x25f500, type: .sbss,   vram: 0x35e51c, name: os/eeiop/adpcm/ea_ghost       }
           - { start: 0x25f500, type: .sbss,   vram: 0x35e520, name: os/eeiop/adpcm/ea_map         }
-          - { start: 0x25f500, type:  sbss,   vram: 0x35e524, name: sbss_8                        }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e524, name: graphics/graph2d/compress     }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e540, name: graphics/graph2d/effect       }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e550, name: graphics/graph2d/effect_sub   }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e560, name: graphics/graph2d/effect_scr   }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e57c, name: graphics/graph2d/effect_obj   }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e580, name: graphics/graph2d/effect_oth   }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e5b4, name: graphics/graph2d/effect_rdr   }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e5c4, name: graphics/graph2d/g2d_debug    }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e5c8, name: graphics/graph2d/tim2         }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e5d8, name: graphics/graph3d/gra3d        }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e610, name: graphics/graph3d/leditor      }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e620, name: graphics/graph3d/load3d       }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e634, name: graphics/motion/mdlwork       }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e638, name: graphics/motion/mdlact        }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e63c, name: graphics/motion/accessory     }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e640, name: graphics/graph3d/sgsgd        }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e648, name: graphics/graph3d/sgsu         }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e650, name: graphics/graph3d/sgdma        }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e658, name: graphics/graph3d/sglight      }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e65c, name: graphics/graph3d/sgsup        }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e664, name: graphics/graph3d/shadow       }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e66c, name: graphics/graph3d/mirror       }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e684, name: graphics/mov/movie            }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e690, name: graphics/scene/scene          }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e6a0, name: ingame/camera/camera          }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e6b8, name: ingame/enemy/ene_ctl          }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e6d0, name: ingame/enemy/move_ctl         }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e700, name: ingame/entry/ap_sgost         }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e708, name: ingame/event/ev_spcl          }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e720, name: ingame/info/inf_disp          }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e73c, name: ingame/map/door_ctl           }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e748, name: ingame/menu/item              }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e768, name: ingame/menu/gameover          }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e770, name: ingame/menu/pause             }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e77a, name: ingame/menu/ig_camra          }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e780, name: ingame/menu/ig_menu           }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e7a0, name: ingame/menu/ig_spd_menu       }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e7b0, name: ingame/menu/item_get          }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e7c8, name: ingame/menu/ig_file           }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e7d8, name: ingame/menu/ig_rank           }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e7e8, name: ingame/menu/ig_glst           }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e7f0, name: ingame/menu/ig_map            }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e7f8, name: ingame/menu/ig_option         }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e808, name: ingame/menu/sp_menu           }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e828, name: ingame/photo/pht_main         }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e830, name: ingame/photo/pht_make         }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e832, name: ingame/plyr/plyr_ctl          }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e838, name: outgame/scn_test              }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e840, name: outgame/title                 }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e864, name: graphics/graph2d/takep_pe     }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e870, name: mc/mc_main                    }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e880, name: mc/mc_album                   }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e888, name: mc/mc_start                   }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e890, name: mc/mc_at                      }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e8a4, name: outgame/outgame               }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e8a8, name: ingame/event/wan_soul         }
+          - { start: 0x25f500, type:  sbss,   vram: 0x35e8d0, name: outgame/sound_test            }
           # ######################## BSS     (vram: 0x35e900) #####################################
           - { start: 0x25f514, type: bss,     vram: 0x35e900, name: bss_1                         }
           - { start: 0x25f514, type: .bss,    vram: 0x35ea48, name: outgame/mode_slct             }
