@@ -13,12 +13,16 @@ typedef struct {
     char col;
 } DCT_ROOT;
 
-extern DCT_ROOT ZigZag[64];
+#define N           8
+#define BUF_SIZE 2048	// tmp of ring buffer
+#define F		   18	// upper limit for match_length
+
+extern DCT_ROOT ZigZag[N * N];
 extern PHOTO_EXPAND photo_expand;
-extern short int dad[2049];
-extern short int lson[2049];
-extern short int rson[2305];
-extern u_char text[2065];
+extern short int dad[BUF_SIZE + 1];
+extern short int lson[BUF_SIZE + 1];
+extern short int rson[BUF_SIZE + 1 + 256];
+extern u_char text[BUF_SIZE + F - 1];
 extern short int matchpos;
 extern short int matchlen;
 

@@ -10,11 +10,7 @@
 // https://www-igm.univ-mlv.fr/~mac/ENS/DOC/COMP/BITIO.C
 // https://www-igm.univ-mlv.fr/~mac/ENS/DOC/COMP/DCT.C
 
-#define N           8
 #define COLS      384
-
-#define BUF_SIZE 2048	// tmp of ring buffer
-#define F		   18	// upper limit for match_length
 #define THRESHOLD	2   // encode string into position and length
 
 #define PI 3.1415927f
