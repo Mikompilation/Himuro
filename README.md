@@ -100,10 +100,11 @@ To have a list all available commands, run `make` without targets:
 make
 ```
 
-## Adding a TU
-1. Update `config/{region}/ff1.{region}.yaml`:
-   1. Replace `asm` with `c` for the TU you want to splat
+## Decompiling a TU
+1. Add the decompiled code to the TU's `c` file in `src/`
+2. Update `config/{region}/ff1.{region}.yaml`:
+   1. Replace `asm` with `c` for the TU you are decompiling
    2. Add a leading dot (`.`) to the type (e.g., `rodata` -> `.rodata`) of each subsection that belongs to the TU
-2. Reconfigure the project
-3. Build the project
+3. Reconfigure the project
+4. Build the project
 
