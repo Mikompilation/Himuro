@@ -333,9 +333,8 @@ def make_asm(config_path: Path, config: dict[str, Any]):
                             subsegment[1] = "c"
                         new_subsegments.append(subsegment)
                     elif isinstance(subsegment, dict):
-                        start = cast(int, subsegment["start"])
-                        new_subsegments.append([start, "textbin", "end_of_subsegments"])
-                        break
+                        subsegment["type"] = subsegment["type"].strip(".")
+                        new_subsegments.append(subsegment)
                 segment["subsegments"] = new_subsegments
                 new_segments.append(segment)
         config["segments"] = new_segments
