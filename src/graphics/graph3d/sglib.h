@@ -152,7 +152,7 @@
 // extern int vu1tag_num;
 // extern int sbuffer_p;
 // extern int edge_check;
-// extern sceVu0FMATRIX SgWSMtx;
+extern sceVu0FMATRIX SgWSMtx;
 // extern sceVu0FMATRIX SgCMtx;
 // extern sceVu0FMATRIX SgCMVtx;
 // extern sceVu0FMATRIX DLightMtx;

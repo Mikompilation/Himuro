@@ -75,29 +75,44 @@ typedef struct {
 	MONO_STR mn;
 } SBTSET;
 
-// extern SPRT_DAT effdat[0];
-// extern SPRT_DAT camdat[0];
-// extern int change_efbank;
-// extern int eff_blur_off;
-// extern int effect_disp_flg;
-// extern int eff_filament_off;
-// extern int now_buffer[2];
-// extern int eff_dith_off;
-// extern int stop_effects;
-// extern int monochrome_mode;
-// extern int magatoki_mode;
-// extern int shibata_set_off;
-// extern SBTSET msbtset;
-// extern EFFECT_CONT efcnt[64];
-// extern EFFECT_CONT efcntm[48];
-// extern EFFECT_CONT efcnt_cnt[64];
-// extern EFFECT_CONT efcntm_cnt[48];
-// extern int look_debugmenu;
+static inline float vu0Rand()
+{
+    float r;
+    
+    __asm__ volatile(
+        "vrnext.x $vf12x,R\n"
+        "vsubw.x $vf12x,$vf12x,$vf0w\n"
+        "qmfc2   %0,$vf12\n"
+        :"=r"(r)
+    );
+
+    return r;
+}
+
+extern SPRT_DAT effdat[]; // [60] = {...}
+extern SPRT_DAT camdat[]; // [14] = {...}
+extern int change_efbank; // = 0
+extern int eff_blur_off; // = 0
+extern int effect_disp_flg; // = 0
+extern int eff_filament_off; // = 0
+extern int now_buffer[2]; // = {0,0}
+extern int eff_dith_off; // = 0
+extern int stop_effects; // = 0
+extern int monochrome_mode; // = 0
+extern int magatoki_mode; // = 0
+extern int shibata_set_off; // = 0
+extern SBTSET msbtset; // = {0}
+extern EFFECT_CONT efcnt[64]; // = {0}
+extern EFFECT_CONT efcntm[48]; // = {0}
+extern EFFECT_CONT efcnt_cnt[64]; // = {0}
+extern EFFECT_CONT efcntm_cnt[48]; // = {0}
+extern int look_debugmenu;
+extern int set_buffer[2];
 
 void InitEffects();
 void InitEffectsEF();
 void EffectEndSet();
-void* SetEffects(int id, int fl);
+void* SetEffects(int id, int fl, ...);
 void ResetEffects(void *p);
 int SearchEmptyEffectBuf();
 void EffectZSort();

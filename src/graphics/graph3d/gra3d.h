@@ -46,7 +46,7 @@ typedef struct {
 #include "graphics/graph3d/sglight.h"
 #include "graphics/motion/accessory.h"
 
-// extern u_int fly_display[3];
+extern u_int fly_display[3];
 // extern sceVu0FVECTOR fog_param[64];
 // extern sceVu0IVECTOR fog_rgb[64];
 // extern sceVu0FVECTOR fog_param_finder[64];

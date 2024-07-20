@@ -24,7 +24,7 @@ typedef struct {
 } EVENT_WRK;
 
 // extern u_char event_stts[250];
-// extern EVENT_WRK ev_wrk;
+extern EVENT_WRK ev_wrk;
 // extern int black_time;
 // extern int load_file_id;
 // extern int ending_mode;

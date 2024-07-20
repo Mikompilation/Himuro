@@ -15,3 +15,5 @@ rm_foot               = 0x26bc38; // type:ROOM_FOOT_SE numel:42 nosize static
 rm_srund              = 0x26bf80; // type:u_int numel:42 nosize static 
 rm_event              = 0x26c028; // type:u_int numel:42 nosize static 
 rand_ita_tbl          = 0x26c0d0; // type:SE_FOOT_RAND_ITA numel:11 nosize
+effdat                = 0x26fbc0; // type:SPRT_DAT numel:60 nosize
+camdat                = 0x270340; // type:SPRT_DAT numel:14 nosize
