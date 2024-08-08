@@ -2771,8 +2771,7 @@ void LocalCopyBtoL_NB(int no, int addr)
 
 void ClearLocalCopyLtoLCache()
 {
-    old_ltol_addr2 = -1;
-    old_ltol_addr1 = -1;
+    old_ltol_addr1 = old_ltol_addr2 = -1;
 }
 
 int LocalCopyLtoLDraw(int addr1, int addr2)
