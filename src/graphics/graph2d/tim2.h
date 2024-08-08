@@ -146,13 +146,13 @@ typedef struct {
 #include "graphics/graph2d/effect_sub.h"
 #include "outgame/mode_slct.h"
 
-// extern u_char g_bInterlace;
-// extern int ndpkt;
+extern u_char g_bInterlace;
+extern int ndpkt;
 // extern int ndpri;
 // extern int nmdpkt;
 // extern int nmdpri;
 // extern int mes_swap;
-// extern Q_WORDDATA *pbuf;
+extern Q_WORDDATA *pbuf;
 // extern u_int draw_pri[4096][2];
 // extern Q_WORDDATA *mpbuf;
 // extern Q_WORDDATA mpbufw[2][8192];

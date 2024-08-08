@@ -45,10 +45,10 @@ typedef struct {
 	u_long prim;
 } DRAW_ENV;
 
-// extern int vib1_time;
-// extern int vib2_time;
-// extern int vib2_pow;
-// extern int tecmo_logo_flow;
+extern int vib1_time;
+extern int vib2_time;
+extern int vib2_pow;
+extern int tecmo_logo_flow;
 
 #include "graphics/graph2d/effect_sub.h"
 
@@ -69,13 +69,13 @@ void SetLine(int pri, float x1, float y1, float x2, float y2, u_char r, u_char g
 void SetLine2(int pri, float x1, float y1, float x2, float y2, u_char r, u_char g, u_char b, u_char a);
 void DrawPoint(float *mpos, int no);
 void DrawPoint2(float *mpos, u_char r, u_char g, u_char b, u_char a);
-void DrawLine(float *mpos1, u_char r1, u_char g1, u_char b1, u_char a1, float *mpos2, u_char r2, u_char g2, int b2, int a2);
-void Set3DPosTexure(float *wlm[4], DRAW_ENV *de, int texno, float w, float h, u_char r, u_char g, u_char b, u_char a);
+void DrawLine(float *mpos1, u_char r1, u_char g1, u_char b1, u_char a1, float *mpos2, u_char r2, u_char g2, u_char b2, u_char a2);
+void Set3DPosTexure(sceVu0FMATRIX wlm, DRAW_ENV *de, int texno, float w, float h, u_char r, u_char g, u_char b, u_char a);
 void _SetTexDirectS(int pri, SPRITE_DATA *sd, int atype);
 void SetTexDirectS(int pri, SPRITE_DATA *sd, int atype);
 void SetTexDirectS2(int pri, SPRITE_DATA *sd, DRAW_ENV *de, int type);
-void SetTexDirect2(int pri, sceVu0FVECTOR *v);
-void SetTexDirect(int atype);
+void SetTexDirect2(int pri, SPRITE_DATA *sd, DRAW_ENV *de, sceVu0FVECTOR *v);
+void SetTexDirect(SPRITE_DATA *sd, int atype);
 void SetScreenDSlide(int addr, int type, int alpha, float ang, float scl, int z);
 void SetScreenZ(int addr);
 void CaptureScreen(u_int addr);
@@ -86,11 +86,11 @@ void CamSave();
 int CamChangeCheck();
 void* GetEmptyBuffer(int no);
 void CheckPointDepth(PP_JUDGE *ppj);
-void GetCamI2DPos(float *pos, float *tx, float *ty);
-void Get2PosRot(float *v1, float *v2, float *x, float *y);
-void Get2PosRot2(float *v1, float *v2, float *x, float *z);
+void GetCamI2DPos(sceVu0FVECTOR pos, float *tx, float *ty);
+void Get2PosRot(sceVu0FVECTOR v1, sceVu0FVECTOR v2, float *x, float *y);
+void Get2PosRot2(sceVu0FVECTOR v1, sceVu0FVECTOR v2, float *x, float *z);
 void GetTrgtRotType2(float *p0, float *p1, float *rot, int id);
-void CalcSimEquations(double *sq[3], float *x, float *y);
+void CalcSimEquations(double (*sq)[3], float *x, float *y);
 float Get2PLength(float *v1, float *v2);
 int log_2(float num);
 void LocalCopyLtoB_Sub(int no, int type, int addr);
@@ -119,10 +119,10 @@ int SetTecmoLogo();
 #endif
 
 void set_vect(float *v, float x, float y, float z, float w);
-void Vu0SubOuterProduct(float *v0, float *v1, float *v2, float *v3);
-void Vu0Normalize(float *v0, float *v1);
-void Vu0ApplyMatrix(float *v0, float *m0[4], float *v1);
-void Vu0MulVector(float *v0, float *v1, float *v2);
-void Vu0FTOI0Vector(int *v0, float *v1);
+void Vu0SubOuterProduct(sceVu0FVECTOR v0, sceVu0FVECTOR v1, sceVu0FVECTOR v2, sceVu0FVECTOR v3);
+void Vu0Normalize(sceVu0FVECTOR v0, sceVu0FVECTOR v1);
+void Vu0ApplyMatrix(sceVu0FVECTOR v0, sceVu0FMATRIX m0, sceVu0FVECTOR v1);
+void Vu0MulVector(sceVu0FVECTOR v0, sceVu0FVECTOR v1, sceVu0FVECTOR v2);
+void Vu0FTOI0Vector(sceVu0IVECTOR v0, sceVu0FVECTOR v1);
 
 #endif // GRAPHICS_GRAPH2D_EFFECT_SUB_H
