@@ -23,7 +23,7 @@ typedef struct {
 	u_char face_stts[4];
 } EVENT_WRK;
 
-// extern u_char event_stts[250];
+extern u_char event_stts[250];
 extern EVENT_WRK ev_wrk;
 // extern int black_time;
 // extern int load_file_id;

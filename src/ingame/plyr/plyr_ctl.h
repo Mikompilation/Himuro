@@ -20,7 +20,7 @@
 // extern float spd_sdr;
 // extern float spd_sur;
 // extern PWARP_DAT pwarp_dat[0];
-// extern u_char plyr_vib_time;
+extern u_char plyr_vib_time;
 // extern PWARP_WRK pwarp_wrk;
 
 void PlyrCtrlMain();

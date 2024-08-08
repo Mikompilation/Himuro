@@ -39,7 +39,7 @@ typedef struct {
 	u_char snum;
 } FURN_DATA_POP;
 
-// extern int furn_disp_flg;
+extern int furn_disp_flg;
 
 void FurnCtrlMain();
 void InitFurnDispFlg();

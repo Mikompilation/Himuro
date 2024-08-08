@@ -3,8 +3,8 @@
 
 #include "typedefs.h"
 
-// extern int start_msn;
-// extern int msn0_wait_timer;
+extern int start_msn;
+extern int msn0_wait_timer;
 
 void InGameCtrl();
 int InGameFirstLoad();
