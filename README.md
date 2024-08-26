@@ -16,7 +16,7 @@ sudo apt install python3-full
 The original GCC compiler is a 32-bit executable, so on a 64-bit system the `i386` architecture must be added in order for the system to run it. On Ubuntu you can use the following commands:
 ```bash
 sudo dpkg --add-architecture i386
-sudo apt upgrade
+sudo apt update
 sudo apt install libc6:i386 libstdc++6:i386
 ```
 
