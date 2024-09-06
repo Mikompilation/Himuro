@@ -28,9 +28,9 @@ extern EVENT_WRK ev_wrk;
 // extern int black_time;
 // extern int load_file_id;
 // extern int ending_mode;
-// extern int clear_disp;
-// extern int clear_disp_mode;
-// extern int first_clear_flg;
+extern int clear_disp;
+extern int clear_disp_mode;
+extern int first_clear_flg;
 
 void EventWrkInit();
 void EventInit();

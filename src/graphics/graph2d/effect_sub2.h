@@ -3,10 +3,9 @@
 
 #include "typedefs.h"
 
-#include "ingame/event/ev_spcl.h"
+#include "graphics/graph2d/sprt.h"
 
-struct ANM2D_DAT_TABLE
-{ // 0x14
+typedef struct { // 0x14
     /* 0x00 */ short int x_trans;
     /* 0x02 */ short int y_trans;
     /* 0x04 */ short int x_scale;
@@ -15,10 +14,9 @@ struct ANM2D_DAT_TABLE
     /* 0x0a */ short int alpha;
     /* 0x0c */ short int counter;
     /* 0x10 */ u_int attribute;
-};
+} ANM2D_DAT_TABLE;
 
-struct ANM2D_WRK_TABLE
-{ // 0x110
+typedef struct { // 0x110
     /* 0x000 */ int anm_index;
     /* 0x004 */ SPRT_SDAT *sdat_p;
     /* 0x008 */ SPRT_SDAT sdat[8];
@@ -34,11 +32,11 @@ struct ANM2D_WRK_TABLE
     /* 0x10a */ short int alpha_off;
     /* 0x10c */ short int counter;
     /* 0x10e */ short int pad;
-};
+} ANM2D_WRK_TABLE;
 
-#include "ingame/event/ev_spcl.h"
+// #include "ingame/event/ev_spcl.h"
 
-// extern FALL_TABLE fall_table[0];
+// extern FALL_TABLE fall_table[];
 // extern short int fallen_effect_switch;
 // extern short int gus_effect_switch;
 // extern short int hole_effect_switch;
@@ -48,9 +46,9 @@ struct ANM2D_WRK_TABLE
 // extern SPRT_SDAT msg_strt;
 // extern SPRT_SDAT btl_msel[0];
 // extern SPRT_SDAT btl_msel2[0];
-// extern ANM2D_DAT_TABLE anm2d_dat[0][12];
-// extern ANM2D_WRK_TABLE wrk_table[0];
-// extern ANM_WRK anm_wrk;
+// extern ANM2D_DAT_TABLE anm2d_dat[][12];
+// extern ANM2D_WRK_TABLE wrk_table[];
+// // extern ANM_WRK anm_wrk;
 // extern int clear_anime_timer;
 // extern SPRT_DAT clear_all[11];
 // extern SPRT_DAT story_end[11];
@@ -77,7 +75,7 @@ void FallObjTrans(float *leaf, float *axel, float *aim, int fall_mode);
 void FallObjRot(float *rotation, float *axel, float *aim, int fall_mode);
 void FallObjWind(float *leaf, int fall_mode);
 void FallObjLight(float *leaf, short int *rgba, int fall_mode);
-void FallObjDraw(float *mpos, float *rotation, int fall_mode);
+void FallObjDraw(float *mpos, float *rotation, short int *rgba, int fall_mode);
 void GusObjDebug();
 void CallGusEffect(float *mpos, int area, int height);
 void StopGusEffect();
@@ -122,17 +120,17 @@ int BtlAnmInit(int anm_no);
 int BtlAnmMain();
 void* BtlTblIncl(ANM2D_DAT_TABLE *b_table, void *p_table, short int *count_keep);
 void BtlDataDirectSet(ANM2D_WRK_TABLE *w_table);
-void BtlTblTransX(SPRT_SDAT *ssd_p);
-void BtlTblTransY(SPRT_SDAT *ssd_p);
-void BtlTblRotate(SPRT_SDAT *ssd_p, void *p_table);
-void BtlTblScale(SPRT_SDAT *ssd_p, void *p_table);
-void TblAlphaChg(SPRT_SDAT *ssd_p, void *p_table);
-void ZanzouEffect(SPRT_SDAT *ssd_p, void *p_table);
-void BtlReadyDisp();
+void BtlTblTransX(ANM2D_WRK_TABLE *w_table, ANM2D_DAT_TABLE *b_table, SPRT_SDAT *ssd_p);
+void BtlTblTransY(ANM2D_WRK_TABLE *w_table, ANM2D_DAT_TABLE *b_table, SPRT_SDAT *ssd_p);
+void BtlTblRotate(ANM2D_WRK_TABLE *w_table, SPRT_SDAT *ssd_p, void *p_table);
+void BtlTblScale(ANM2D_WRK_TABLE *w_table, SPRT_SDAT *ssd_p, void *p_table);
+void TblAlphaChg(ANM2D_WRK_TABLE *w_table, SPRT_SDAT *ssd_p, void *p_table);
+void ZanzouEffect(ANM2D_WRK_TABLE *w_table, SPRT_SDAT *ssd_p, void *p_table);
+void BtlReadyDisp(ANM2D_WRK_TABLE *w_table);
 void SimpleMaskDraw(u_char alpha);
 void DispSprt2(SPRT_SDAT *ssd, u_int addr, int sp_no, SPRT_SROT *srot, SPRT_SSCL *sscl, u_char alp_rate);
-void DispSprt3(SPRT_SDAT *ssd, u_int addr, int sp_no, u_char alp_rate);
-void DispSprtTemp(SPRT_SDAT *ssd, u_int addr, int sp_no, u_char alp_rate);
+void DispSprt3(SPRT_SDAT *ssd, u_int addr, int sp_no, SPRT_SROT *srot, SPRT_SSCL *sscl, u_char alp_rate);
+void DispSprtTemp(SPRT_SDAT *ssd, u_int addr, int sp_no, SPRT_SROT *srot, SPRT_SSCL *sscl, u_char alp_rate);
 void TestPk2Data_2dg(long int sendtexaddr);
 
 #endif // GRAPHICS_GRAPH2D_EFFECT_SUB2_H

@@ -23,7 +23,7 @@ typedef struct {
 	sceVu0FVECTOR rgpos[5];
 } STAGE_DAT;
 
-extern STAGE_DAT stage_dat[0];
+extern STAGE_DAT stage_dat[];
 
 
 #endif // OUTGAME_BTL_MODE_BTL_DAT_H
