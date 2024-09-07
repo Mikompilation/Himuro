@@ -4,3 +4,4 @@ rabbitizer>=1.9.4
 splat64[mips]
 pydantic>=2.0,<3.0
 pyelftools
+numpy
