@@ -334,6 +334,10 @@ def make_asm(config_path: Path, config: dict[str, Any]):
                         new_subsegments.append(subsegment)
                     elif isinstance(subsegment, dict):
                         subsegment["type"] = subsegment["type"].strip(".")
+                        if subsegment["type"] == "rodata":
+                            # splat now requires rodata to be always prefixed with a dot (.)
+                            # for the rodata migration to work properly
+                            subsegment["type"] = ".rodata"
                         new_subsegments.append(subsegment)
                 segment["subsegments"] = new_subsegments
                 new_segments.append(segment)

@@ -19,7 +19,7 @@ options:
     symbol_addrs_path: symbol_addrs.txt
     extensions_path: ../../tools/splat_ext
     section_order: [".text", ".vutext", ".data", ".vudata", ".rodata", ".lit4", ".sdata", ".sbss", ".bss", ".vubss"]
-    auto_all_sections: [".data", ".sdata", ".sbss", ".lit4", ".rodata", ".bss"]
+    #auto_all_sections: [".data", ".sdata", ".sbss", ".lit4", ".rodata", ".bss"]
     disasm_unknown: True
     subalign: 4
     named_regs_for_c_funcs: False
