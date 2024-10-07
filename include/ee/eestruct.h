@@ -24,6 +24,11 @@
 #define	SCE_GS_FALSE			(0)
 #define	SCE_GS_TRUE			    (1)
 
+#define SCE_GS_REPEAT			(0)
+#define SCE_GS_CLAMP			(1)
+#define SCE_GS_REGION_CLAMP		(2)
+#define SCE_GS_REGION_REPEAT	(3)
+
 #define SCE_GS_ZNOUSE			(0)
 #define SCE_GS_ZALWAYS			(1)
 #define SCE_GS_ZGEQUAL			(2)
@@ -258,6 +263,10 @@
 #define SCE_GS_SET_SCISSOR(scax0, scax1, scay0, scay1) \
     ((u_long)(scax0)        | ((u_long)(scax1) << 16) | \
     ((u_long)(scay0) << 32) | ((u_long)(scay1) << 48))
+
+#define SCE_GS_SET_RGBAQ(r, g, b, a, q) \
+    ((u_long)(r)        | ((u_long)(g) << 8) | ((u_long)(b) << 16) | \
+    ((u_long)(a) << 24) | ((u_long)(q) << 32))
 
 typedef struct {
     unsigned long CLAMP:1;

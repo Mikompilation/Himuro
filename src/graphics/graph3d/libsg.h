@@ -3,7 +3,7 @@
 
 #include "typedefs.h"
 
-static inline void sceVu0CopyVector(sceVu0FVECTOR v0, sceVu0FVECTOR v1)
+static inline void Vu0CopyVector(sceVu0FVECTOR v0, sceVu0FVECTOR v1)
 {
     __asm__ __volatile__("\n\
     lq    $6,0x0(%1)\n\

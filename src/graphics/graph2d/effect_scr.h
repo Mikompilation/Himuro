@@ -11,13 +11,13 @@
 // extern float blur_x_offset;
 // extern float blur_y_offset;
 // extern int gameover_flow;
-// extern int ef_exfade1_flow1;
-// extern int ef_exfade1_flow2;
-// extern int ef_exfade1_time1;
-// extern int ef_exfade2_flow1;
-// extern int ef_exfade2_time1;
-// extern int ef_exfade2_time2;
-// extern int ef_exfade2_time3;
+extern int ef_exfade1_flow1;
+extern int ef_exfade1_flow2;
+extern int ef_exfade1_time1;
+extern int ef_exfade2_flow1;
+extern int ef_exfade2_time1;
+extern int ef_exfade2_time2;
+extern int ef_exfade2_time3;
 
 #include "graphics/graph2d/effect.h"
 
@@ -48,7 +48,7 @@ void SubDeform(int type, float rate, u_char alp);
 void SetDeform();
 void RunDeform();
 void CallDeform2(int in, int keep, int out, int type, int max);
-void MakeScrDeformPacket(int pnumw, int pnumh, u_long tex0, SCRDEF *scrdef[33], int alp);
+void MakeScrDeformPacket(int pnumw, int pnumh, u_long tex0, SCRDEF (*scrdef)[33], int alp);
 void SetDeform0(int type, float rate, u_char alp);
 void SetDeform2(int type, float rate, u_char alp);
 void SetDeform3(int type, float rate, u_char alp);

@@ -2850,11 +2850,11 @@ int LocalCopyLtoLDraw(int addr1, int addr2)
     ppbuf[0].ul64[0] = SCE_GIF_SET_TAG(3, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 1);
     ppbuf[0].ul64[1] = SCE_GIF_PACKED_AD;
     
-    sceVu0CopyVector(ppbuf[1].fl32, (float *)&pdrawenv->frame1);
+    Vu0CopyVector(ppbuf[1].fl32, (float *)&pdrawenv->frame1);
     
-    sceVu0CopyVector(ppbuf[2].fl32, (float *)&pdrawenv->zbuf1);
+    Vu0CopyVector(ppbuf[2].fl32, (float *)&pdrawenv->zbuf1);
     
-    sceVu0CopyVector(ppbuf[3].fl32, (float *)&pdrawenv->xyoffset1);
+    Vu0CopyVector(ppbuf[3].fl32, (float *)&pdrawenv->xyoffset1);
     
     old_ndpkt = ndpkt;
     

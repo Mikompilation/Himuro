@@ -291,6 +291,239 @@ class BTL_ANM_LOAD(CStructure):
     pad: c_int16
 
 
+# typedef struct { // 0x60
+# 	/* 0x00 */ sceGsTex0 g_GsTex0;
+# 	/* 0x08 */ u_int g_nTexSizeW;
+# 	/* 0x0c */ u_int g_nTexSizeH;
+# 	/* 0x10 */ u_char g_bMipmapLv;
+# 	/* 0x18 */ long unsigned int g_GsMiptbp1;
+# 	/* 0x20 */ long unsigned int g_GsMiptbp2;
+# 	/* 0x28 */ float pos_x;
+# 	/* 0x2c */ float pos_y;
+# 	/* 0x30 */ int pos_z;
+# 	/* 0x34 */ float size_w;
+# 	/* 0x38 */ float size_h;
+# 	/* 0x3c */ float scale_w;
+# 	/* 0x40 */ float scale_h;
+# 	/* 0x44 */ int clamp_u;
+# 	/* 0x48 */ int clamp_v;
+# 	/* 0x4c */ u_int rot_center;
+# 	/* 0x50 */ float angle;
+# 	/* 0x54 */ u_char r;
+# 	/* 0x55 */ u_char g;
+# 	/* 0x56 */ u_char b;
+# 	/* 0x57 */ u_char alpha;
+# 	/* 0x58 */ u_int mask;
+# } SPRITE_DATA;
+class SPRITE_DATA(CStructure):
+    g_GsTex0: c_uint64  # sceGsTex0
+    g_nTexSizeW: c_uint32
+    g_nTexSizeH: c_uint32
+    g_bMipmapLv: c_uint8
+    g_GsMiptbp1: c_uint64
+    g_GsMiptbp2: c_uint64
+    pos_x: c_float
+    pos_y: c_float
+    pos_z: c_int32
+    size_w: c_float
+    size_h: c_float
+    scale_w: c_float
+    scale_h: c_float
+    clamp_u: c_int32
+    clamp_v: c_int32
+    rot_center: c_uint32
+    angle: c_float
+    r: c_uint8
+    g: c_uint8
+    b: c_uint8
+    alpha: c_uint8
+    mask: c_uint32
+
+
+# typedef struct { // 0x30
+# 	/* 0x00 */ u_long tex1;
+# 	/* 0x08 */ u_long alpha;
+# 	/* 0x10 */ u_long zbuf;
+# 	/* 0x18 */ u_long test;
+# 	/* 0x20 */ u_long clamp;
+# 	/* 0x28 */ u_long prim;
+# } DRAW_ENV;
+class DRAW_ENV(CStructure):
+    tex1: c_uint64
+    alpha: c_uint64
+    zbuf: c_uint64
+    test: c_uint64
+    clamp: c_uint64
+    prim: c_uint64
+
+
+###########################################################################
+
+
+# typedef struct { // 0x14
+# 	/* 0x00 */ u_char sw;
+# 	/* 0x01 */ u_char alp;
+# 	/* 0x04 */ int scl;
+# 	/* 0x08 */ int rot;
+# 	/* 0x0c */ float x;
+# 	/* 0x10 */ float y;
+# } BLUR_STR;
+class BLUR_STR(CStructure):
+    sw: c_uint8
+    alp: c_uint8
+    scl: c_int32
+    rot: c_int32
+    x: c_float
+    y: c_float
+
+
+# typedef struct { // 0x4
+# 	/* 0x0 */ u_char sw;
+# 	/* 0x1 */ u_char type;
+# 	/* 0x2 */ u_char col;
+# 	/* 0x3 */ u_char alp;
+# } CONTRAST_STR;
+class CONTRAST_STR(CStructure):
+    sw: c_uint8
+    type: c_uint8
+    col: c_uint8
+    alp: c_uint8
+
+
+# typedef struct { // 0x2
+# 	/* 0x0 */ u_char sw;
+# 	/* 0x1 */ u_char alp;
+# } FFRAME_STR;
+class FFRAME_STR(CStructure):
+    sw: c_uint8
+    alp: c_uint8
+
+
+# typedef struct { // 0x10
+# 	/* 0x0 */ u_char sw;
+# 	/* 0x1 */ u_char type;
+# 	/* 0x4 */ float spd;
+# 	/* 0x8 */ float alp;
+# 	/* 0xc */ u_char amax;
+# 	/* 0xd */ u_char cmax;
+# } DITHER_STR;
+class DITHER_STR(CStructure):
+    sw: c_uint8
+    type: c_uint8
+    spd: c_float
+    alp: c_float
+    amax: c_uint8
+    cmax: c_uint8
+
+
+# typedef struct { // 0x3
+# 	/* 0x0 */ u_char sw;
+# 	/* 0x1 */ u_char type;
+# 	/* 0x2 */ u_char rate;
+# } DEFORM_STR;
+class DEFORM_STR(CStructure):
+    sw: c_uint8
+    type: c_uint8
+    rate: c_uint8
+
+
+# typedef struct { // 0x4
+# 	/* 0x0 */ u_char sw;
+# 	/* 0x1 */ u_char col;
+# 	/* 0x2 */ u_char alp;
+# 	/* 0x3 */ u_char alp2;
+# } NEGA_STR;
+class NEGA_STR(CStructure):
+    sw: c_uint8
+    col: c_uint8
+    alp: c_uint8
+    alp2: c_uint8
+
+
+# typedef struct { // 0x1
+# 	/* 0x0 */ u_char sw;
+# } MONO_STR;
+class MONO_STR(CStructure):
+    sw: c_uint8
+
+
+# typedef struct { // 0x34
+# 	/* 0x00 */ BLUR_STR bl;
+# 	/* 0x14 */ CONTRAST_STR cn;
+# 	/* 0x18 */ FFRAME_STR ff;
+# 	/* 0x1c */ DITHER_STR dt;
+# 	/* 0x2c */ DEFORM_STR df;
+# 	/* 0x2f */ NEGA_STR ng;
+# 	/* 0x33 */ MONO_STR mn;
+# } SBTSET;
+class SBTSET(CStructure):
+    bl: BLUR_STR
+    cn: CONTRAST_STR
+    ff: FFRAME_STR
+    dt: DITHER_STR
+    df: DEFORM_STR
+    ng: NEGA_STR
+    mn: MONO_STR
+
+
+# typedef struct { // 0x28
+# 	/* 0x00 */ u_int flow;
+# 	/* 0x04 */ u_int cnt;
+# 	/* 0x08 */ u_int in;
+# 	/* 0x0c */ u_int keep;
+# 	/* 0x10 */ u_int out;
+# 	/* 0x14 */ u_int alp;
+# 	/* 0x18 */ float scl;
+# 	/* 0x1c */ float rot;
+# 	/* 0x20 */ float cx;
+# 	/* 0x24 */ float cy;
+# } EFF_BLUR;
+class EFF_BLUR(CStructure):
+    flow: c_uint32
+    cnt: c_uint32
+    _in: c_uint32
+    keep: c_uint32
+    out: c_uint32
+    alp: c_uint32
+    scl: c_float
+    rot: c_float
+    cx: c_float
+    cy: c_float
+
+
+# typedef struct { // 0x18
+# 	/* 0x00 */ u_int flow;
+# 	/* 0x04 */ u_int cnt;
+# 	/* 0x08 */ u_int in;
+# 	/* 0x0c */ u_int keep;
+# 	/* 0x10 */ u_int out;
+# 	/* 0x14 */ u_int max;
+# } EFF_FOCUS;
+class EFF_FOCUS(CStructure):
+    flow: c_uint32
+    cnt: c_uint32
+    _in: c_uint32
+    keep: c_uint32
+    out: c_uint32
+    max: c_uint32
+
+
+# typedef struct { // 0x4
+# 	/* 0x0 */ u_char type;
+# 	/* 0x1 */ u_char otype;
+# 	/* 0x2 */ u_char init;
+# 	/* 0x3 */ u_char pass;
+# } EFF_DEFORM;
+class EFF_DEFORM(CStructure):
+    type: c_uint8
+    otype: c_uint8
+    init: c_uint8
+    _pass: c_uint8
+
+
+###########################################################################
+
+
 elf_names: dict[str, str] = {
     "us": "SLUS_203.88",
     "eu": "SLES_508.21",
@@ -316,7 +549,9 @@ class DataVar(pydantic.BaseModel):
 
     @pydantic.field_validator("type", mode="before")
     @classmethod
-    def type_from_str(cls, v: str) -> Type[CStructure] | CTypeType:
+    def type_from_str(cls, v: str | Type[CStructure] | CTypeType) -> Type[CStructure] | CTypeType:
+        if not isinstance(v, str):
+            return v
         if v in ctypes_types:
             return ctypes_types[v]
         class_type = globals()[v]

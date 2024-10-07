@@ -38,7 +38,7 @@ INCLUDE_ASM(const s32, "ingame/map/furn_ctl", FurnPicNoDspOff);
 
 INCLUDE_ASM(const s32, "ingame/map/furn_ctl", FurnPicNoDspOn);
 
-INCLUDE_ASM(const s32, "ingame/map/furn_ctl", func_001C69A0);
+INCLUDE_ASM(const s32, "ingame/map/furn_ctl", FurnSortFurnWrk);
 
 INCLUDE_ASM(const s32, "ingame/map/furn_ctl", FurnDataRenewNow);
 

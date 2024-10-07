@@ -193,6 +193,8 @@ class CStructure(LittleEndianStructure, metaclass=LittleEndianStructureFieldsFro
         stream.write("    {\n")
         for f, *_ in self._fields_:
             v = getattr(self, f)
+            if f in ("_in", "_pass"):
+                f = f[1:]
             if not isinstance(v, Array):
                 stream.write(f"        .{f} = {v},\n")
             else:

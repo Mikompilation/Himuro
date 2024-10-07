@@ -25,7 +25,7 @@ typedef struct {
 
 #include "graphics/graph2d/effect.h"
 
-// extern EFFINFO2 efi[8];
+extern EFFINFO2 efi[8];
 
 void InitEffectObj();
 void InitEffectObjEF();

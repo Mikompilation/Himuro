@@ -885,7 +885,7 @@ void EffectZSort()
                 v1 = ecm[i].pnt[0];
                 
                 // inlined from ../../graphics/graph3d/libsg.h
-                sceVu0CopyVector(vpos, v1);
+                Vu0CopyVector(vpos, v1);
                 // end of inlined section
                 
                 sceVu0UnitMatrix(wlm);
@@ -1020,7 +1020,7 @@ void EffectZSort2()
                 v1 = ecm[i].pnt[0];
                 
                 // inlined from ../../graphics/graph3d/libsg.h
-                sceVu0CopyVector(vpos, v1);
+                Vu0CopyVector(vpos, v1);
                 // end of inlined section
                 
                 sceVu0UnitMatrix(wlm);
@@ -1111,7 +1111,7 @@ void EffectZSort3()
                 v1 = ecm[i].pnt[0];
                 
                 // inlined from ../../graphics/graph3d/libsg.h
-                sceVu0CopyVector(vpos, v1);
+                Vu0CopyVector(vpos, v1);
                 // end of inlined section
                 
                 sceVu0UnitMatrix(wlm);
@@ -1478,7 +1478,7 @@ void pblur()
         ll = 2.0f;
         
         // inlined from ../../graphics/graph3d/libsg.h
-        sceVu0CopyVector(vpos, plyr_wrk.move_box.pos);
+        Vu0CopyVector(vpos, plyr_wrk.move_box.pos);
         // end of inlined section
 
         xx = (camera.p[0] - vpos[0]) * (camera.p[0] - vpos[0]);
@@ -1561,7 +1561,7 @@ void tes_p20()
             alp = dbg_wrk.eff_new_ene_ef_alp;
             
             // inlined from ../../graphics/graph3d/libsg.h
-            sceVu0CopyVector(fire_pos, plyr_wrk.move_box.pos);
+            Vu0CopyVector(fire_pos, plyr_wrk.move_box.pos);
             // end of inlined section
             
             fx = (fire_pos[0] - camera.p[0]) * (fire_pos[0] - camera.p[0]);
@@ -1576,7 +1576,7 @@ void tes_p20()
             fire_pos[3] = 1.0f;
             
             // inlined from ../../graphics/graph3d/libsg.h
-            sceVu0CopyVector(fire_pos2, fire_pos);
+            Vu0CopyVector(fire_pos2, fire_pos);
             // end of inlined section
             
             fire_pos2[0] += off_x;
