@@ -136,7 +136,7 @@ segments:
           - [0x89ae0,  asm, ingame/camera/camera]
           - [0x8e618,  asm, ingame/enemy/ene_ctl]
           - [0x91ea8,  asm, ingame/enemy/move_ctl]
-          - [0x99728,  asm, ingame/entry/entry]
+          - [0x99728,  c,   ingame/entry/entry]
           - [0x99910,  asm, ingame/plyr/time_ctl]
           - [0x99cc0,  asm, ingame/entry/ap_bgost]
           - [0x99fd8,  asm, ingame/entry/ap_dgost]
@@ -260,7 +260,7 @@ segments:
           - { start: 0x21b6c0, type:  data,   vram: 0x31a6c0, name: ingame/camera/camera          }
           - { start: 0x221060, type:  data,   vram: 0x320060, name: ingame/enemy/ene_ctl          }
           - { start: 0x223550, type:  data,   vram: 0x322550, name: ingame/enemy/move_ctl         }
-          - { start: 0x223778, type:  data,   vram: 0x322778, name: ingame/entry/entry            }
+          - { start: 0x223778, type: .data,   vram: 0x322778, name: ingame/entry/entry            }
           - { start: 0x2237d8, type:  data,   vram: 0x3227d8, name: ingame/entry/ap_bgost         }
           - { start: 0x2237e8, type:  data,   vram: 0x3227e8, name: ingame/entry/ap_dgost         }
           - { start: 0x223810, type:  data,   vram: 0x322810, name: ingame/entry/ap_fgost         }
