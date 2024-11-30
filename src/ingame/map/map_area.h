@@ -31,7 +31,7 @@ typedef struct {
 
 // extern u_char area_dat[11][6];
 // extern u_char one_room_load_ok;
-// extern AREA_WRK area_wrk;
+extern AREA_WRK area_wrk;
 
 void MapAreaInit();
 void MapAreaMain();

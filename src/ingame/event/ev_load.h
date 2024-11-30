@@ -156,7 +156,7 @@ typedef struct {
 // extern SPRT_SDAT stg_title_sp_bak[0];
 // extern SPRT_SDAT stg_title_sp_flr[0];
 // extern SPRT_SDAT stg_title_sp_ttl[0];
-// extern MSN_LOAD_DAT load_dat_wrk[40];
+extern MSN_LOAD_DAT load_dat_wrk[40];
 // extern MSN_TITLE_WRK mttl_wrk;
 // extern EVENT_LOAD_WRK ev_load_wrk;
 
