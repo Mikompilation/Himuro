@@ -1,5 +1,6 @@
 #include "common.h"
 #include "typedefs.h"
+#include "enums.h"
 #include "ig_init.h"
 
 #include "main/glob.h"
@@ -98,11 +99,7 @@ void InitEnemy(void)
 
 void EnemyActDataLoad()
 {
-#ifdef BUILD_EU_VERSION
-    int eadat_tbl[3] = {46, 46, 46};
-#else
-    int eadat_tbl[3] = {22, 22, 22};
-#endif
+    int eadat_tbl[3] = {ENE_ACT1_OBJ, ENE_ACT1_OBJ, ENE_ACT1_OBJ};
 
     FileLoadB(eadat_tbl[ingame_wrk.msn_no], 0x7e0000);
 }
