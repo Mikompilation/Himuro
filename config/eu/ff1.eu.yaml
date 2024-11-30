@@ -202,7 +202,7 @@ segments:
           - [0x121398, asm, outgame/btl_mode/btl_menu]
           - [0x122720, asm, outgame/btl_mode/btl_mode]
           - [0x123020, asm, ingame/event/wan_soul]
-          - [0x124a80, asm, ingame/event/wan_dat]
+          - [0x124a80, c,   ingame/event/wan_dat]
           - [0x124ae8, asm, outgame/sound_test]
           - [0x126010, textbin, text_rest]
           - [0x14b340, textbin, vutext]
@@ -313,7 +313,7 @@ segments:
           - { start: 0x24b9b0, type:  data,   vram: 0x34a9b0, name: outgame/btl_mode/btl_mode     }
           - { start: 0x24bb90, type:  data,   vram: 0x34ab90, name: outgame/btl_mode/btl_dat      }
           - { start: 0x24ca90, type:  data,   vram: 0x34ba90, name: ingame/event/wan_soul         }
-          - { start: 0x24cb60, type:  data,   vram: 0x34bb60, name: ingame/event/wan_dat          }
+          - { start: 0x24cb60, type: .data,   vram: 0x34bb60, name: ingame/event/wan_dat          }
           - { start: 0x24d128, type:  data,   vram: 0x34c128, name: outgame/sound_test            }
           - { start: 0x24d1c0, type:  data,   vram: 0x34c1c0, name: data_rest                     }
           # ######################## VUDATA  (vram: 0x34f948) #####################################

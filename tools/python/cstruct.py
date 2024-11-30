@@ -101,7 +101,7 @@ def format_array(lst: Sequence[_G], dims: Sequence[int], file: TextIO):
             file.write(f"{x}{sep}")
 
 
-class LittleEndianStructureFieldsFromTypeHints(type(LittleEndianStructure)):
+class LittleEndianStructureFieldsFromTypeHints(type(LittleEndianStructure)):  # pyright: ignore
     def __new__(
         cls: Type[type],
         name: str,
@@ -116,7 +116,7 @@ class LittleEndianStructureFieldsFromTypeHints(type(LittleEndianStructure)):
         namespace["_align_"] = align
         namespace["_pack_"] = pack
         namespace["_fields_"] = list(annotations.items())
-        return type(LittleEndianStructure).__new__(cls, name, bases, namespace)
+        return type(LittleEndianStructure).__new__(cls, name, bases, namespace)  # pyright: ignore
 
 
 class CStructure(LittleEndianStructure, metaclass=LittleEndianStructureFieldsFromTypeHints):
@@ -155,7 +155,7 @@ class CStructure(LittleEndianStructure, metaclass=LittleEndianStructureFieldsFro
         stream = io.StringIO()
         if static:
             stream.write("static ")
-        stream.write(f"{cls.__name__} {name}")
+        stream.write(f"{cls.__name__} {name}")  # pyright: ignore
         assert not (noarray and isinstance(numel, list))
         if not noarray:
             if isinstance(numel, int):
@@ -191,10 +191,10 @@ class CStructure(LittleEndianStructure, metaclass=LittleEndianStructureFieldsFro
     def __str__(self):
         stream = io.StringIO()
         stream.write("    {\n")
-        for f, *_ in self._fields_:
-            v = getattr(self, f)
+        for f, *_ in self._fields_:  # pyright: ignore
+            v = getattr(self, f)  # pyright: ignore
             if f in ("_in", "_pass"):
-                f = f[1:]
+                f = f[1:]  # pyright: ignore
             if not isinstance(v, Array):
                 stream.write(f"        .{f} = {v},\n")
             else:
@@ -222,7 +222,7 @@ class CStructure(LittleEndianStructure, metaclass=LittleEndianStructureFieldsFro
         return stream.getvalue()
 
 
-class UnionFieldsFromTypeHints(type(Union)):
+class UnionFieldsFromTypeHints(type(Union)):  # pyright: ignore
     def __new__(
         cls: Type[type],
         name: str,
@@ -237,7 +237,7 @@ class UnionFieldsFromTypeHints(type(Union)):
         namespace["_align_"] = align
         namespace["_pack_"] = pack
         namespace["_fields_"] = list(annotations.items())
-        return type(Union).__new__(cls, name, bases, namespace)
+        return type(Union).__new__(cls, name, bases, namespace)  # pyright: ignore
 
 
 class CUnion(Union, metaclass=UnionFieldsFromTypeHints):
@@ -270,7 +270,7 @@ def parse_cstruct(cstruct_type: Type[_T], data: bytes) -> list[_T]:
 
 def print_cstruct(name: str, cstruct_type: Type[CStructure], data: bytes):
     cstructs = parse_cstruct(cstruct_type, data)
-    print(f"{cstruct_type.__name__} {name}[{len(cstructs)}] = {{")
+    print(f"{cstruct_type.__name__} {name}[{len(cstructs)}] = {{")  # pyright: ignore
     for s in cstructs:
         print(s)
     print("};\n")

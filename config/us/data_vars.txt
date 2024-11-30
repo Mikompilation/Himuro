@@ -32,6 +32,35 @@ gus_wrk               = 0x277bc0; // type:LEAVES_TABLE
 hole_wrk              = 0x279370; // type:LEAVES_TABLE
 line_wrk              = 0x27ab20; // type:LEAVES_TABLE numel:4
 
+// ingame/event/wan_dat.c
+soul_des100           = 0x345820; // type:sceVu0FVECTOR numel:2 nosize
+soul_des101           = 0x345840; // type:sceVu0FVECTOR numel:5 nosize
+soul_des102           = 0x345890; // type:sceVu0FVECTOR numel:2 nosize
+soul_des103           = 0x3458b0; // type:sceVu0FVECTOR numel:2 nosize
+soul_des105           = 0x3458d0; // type:sceVu0FVECTOR numel:6 nosize
+soul_des110           = 0x345930; // type:sceVu0FVECTOR numel:2 nosize
+soul_des112           = 0x345950; // type:sceVu0FVECTOR numel:2 nosize
+soul_des114           = 0x345970; // type:sceVu0FVECTOR numel:2 nosize
+soul_des119           = 0x345990; // type:sceVu0FVECTOR numel:2 nosize
+soul_des120           = 0x3459b0; // type:sceVu0FVECTOR numel:5 nosize
+soul_des121           = 0x345a00; // type:sceVu0FVECTOR numel:2 nosize
+soul_des123           = 0x345a20; // type:sceVu0FVECTOR numel:2 nosize
+soul_des128           = 0x345a40; // type:sceVu0FVECTOR numel:5 nosize
+soul_des130           = 0x345a90; // type:sceVu0FVECTOR numel:2 nosize
+soul_des131           = 0x345ab0; // type:sceVu0FVECTOR numel:2 nosize
+soul_des132           = 0x345ad0; // type:sceVu0FVECTOR numel:2 nosize
+soul_des202           = 0x345af0; // type:sceVu0FVECTOR numel:2 nosize
+soul_des203           = 0x345b10; // type:sceVu0FVECTOR numel:5 nosize
+soul_des204           = 0x345b60; // type:sceVu0FVECTOR numel:2 nosize
+soul_des206           = 0x345b80; // type:sceVu0FVECTOR numel:2 nosize
+soul_des211           = 0x345ba0; // type:sceVu0FVECTOR numel:2 nosize
+soul_des212           = 0x345bc0; // type:sceVu0FVECTOR numel:2 nosize
+soul_des214           = 0x345be0; // type:sceVu0FVECTOR numel:2 nosize
+soul_des215           = 0x345c00; // type:sceVu0FVECTOR numel:2 nosize
+soul_des216           = 0x345c20; // type:sceVu0FVECTOR numel:2 nosize
+soul_des000           = 0x345c40; // type:sceVu0FVECTOR numel:10 nosize
+wander_soul_dat       = 0x345d48; // type:WANDER_SOUL_DAT numel:26 nosize
+
 // known addresses
 0x270f30                 = &btl_strt[0];   // wrk_table
 0x270f3e                 = &btl_strt[1];   // wrk_table

@@ -23,6 +23,8 @@ def vram2offset(vram: int):
 sceVu0FVECTOR = c_float * 4
 sceVu0IVECTOR = c_int32 * 4
 
+# CTypeTypeEX = CTypeType | type[sceVu0FVECTOR] | type[sceVu0IVECTOR]
+
 
 # struct SPRT_DAT { // size:0x20
 #     u_long tex0;
@@ -524,6 +526,19 @@ class EFF_DEFORM(CStructure):
 ###########################################################################
 
 
+# typedef struct { // 0x6
+# 	/* 0x0 */ u_char destination_id;
+# 	/* 0x1 */ u_char message_id;
+# 	/* 0x2 */ u_short face_id;
+# 	/* 0x4 */ u_short adpcm_id;
+# } WANDER_SOUL_DAT;
+class WANDER_SOUL_DAT(CStructure):
+    destination_id: c_uint8
+    message_id: c_uint8
+    face_id: c_uint16
+    adpcm_id: c_uint16
+
+
 elf_names: dict[str, str] = {
     "us": "SLUS_203.88",
     "eu": "SLES_508.21",
@@ -542,18 +557,20 @@ class DataVar(pydantic.BaseModel):
 
     address: int
     name: str
-    type: Type[CStructure] | CTypeType
+    type: Type[CStructure] | CTypeType | type[sceVu0FVECTOR]
     numel: int | list[int] = 0
     nosize: bool = False
     static: bool = False
 
     @pydantic.field_validator("type", mode="before")
     @classmethod
-    def type_from_str(cls, v: str | Type[CStructure] | CTypeType) -> Type[CStructure] | CTypeType:
+    def type_from_str(cls, v: str | Type[CStructure] | CTypeType) -> Type[CStructure] | CTypeType | sceVu0FVECTOR:  # pyright: ignore
         if not isinstance(v, str):
             return v
         if v in ctypes_types:
             return ctypes_types[v]
+        if v == "sceVu0FVECTOR":
+            return sceVu0FVECTOR
         class_type = globals()[v]
         if issubclass(class_type, CStructure):
             return class_type
@@ -564,7 +581,7 @@ class DataVar(pydantic.BaseModel):
             numel = math.prod(self.numel)
         else:
             numel = max(1, self.numel)
-        if issubclass(self.type, CStructure):
+        if issubclass(self.type, CStructure):  # pyright: ignore
             return self.type.dumps(
                 self.name,
                 elf.read(numel * self.type.sizeof()),
@@ -573,9 +590,29 @@ class DataVar(pydantic.BaseModel):
                 nosize=self.nosize,
                 noarray=self.numel == 0,
             )
+        elif self.type == sceVu0FVECTOR:  # pyright: ignore[reportUnknownMemberType]
+            var_data = (sceVu0FVECTOR * numel).from_buffer_copy(elf.read(numel * c_sizeof(sceVu0FVECTOR)))
+            type_str = "sceVu0FVECTOR"
+            stream = io.StringIO()
+            if self.static:
+                stream.write("static ")
+            stream.write(f"{type_str} {self.name}")
+
+            def sceVu0FVECTOR_to_str(_v: sceVu0FVECTOR):  # pyright: ignore
+                return f"{{ {', '.join(f"{flt}f" for flt in cast(Iterable[c_float], _v))} }}"
+
+            if numel > 1:
+                numel = f"{self.numel}" if not self.nosize else ""
+                var_str = (
+                    f"{{ {', '.join(sceVu0FVECTOR_to_str(var) for var in cast(Iterable[sceVu0FVECTOR], var_data))}, }}"  # pyright: ignore
+                )
+                stream.write(f"[{numel}]")
+            else:
+                var_str = sceVu0FVECTOR_to_str(var_data)
+            stream.write(f" = {var_str};")
         else:
-            var_data = (self.type * numel).from_buffer_copy(elf.read(numel * c_sizeof(self.type)))
-            type_str = next(k for k, v in ctypes_types.items() if getattr(v, "_type_") == getattr(self.type, "_type_"))
+            var_data = (self.type * numel).from_buffer_copy(elf.read(numel * c_sizeof(self.type)))  # pyright: ignore
+            type_str = next(k for k, v in ctypes_types.items() if getattr(v, "_type_") == getattr(self.type, "_type_"))  # pyright: ignore
             stream = io.StringIO()
             if self.static:
                 stream.write("static ")
@@ -585,7 +622,7 @@ class DataVar(pydantic.BaseModel):
                 var_str = f"{{ {', '.join(f'{var}' for var in cast(Iterable[CTypeType], var_data))} }}"
                 stream.write(f"[{numel}]")
             else:
-                var_str = f"{var_data.value}"
+                var_str = f"{var_data.value}"  # pyright: ignore
             stream.write(f" = {var_str};")
         return stream.getvalue()
 
