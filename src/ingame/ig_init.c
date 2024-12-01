@@ -24,12 +24,7 @@ typedef struct {
 	int load_id;
 } LOAD_START_WRK;
 
-// `load_start_wrk` is located in `.sdata`, so it needs to be initialized.
-// However, it *must* be initialized in `LoadStartDataInit`, not here.
-// Initializing it here would interfere with the initialization logic
-// in `LoadStartDataInit`, causing it to be modified. Therefore, we
-// initialize it here with `{}` rather than `{0}`.
-LOAD_START_WRK load_start_wrk = {};
+LOAD_START_WRK load_start_wrk = {0};
 
 void InitCamera()
 {
@@ -116,7 +111,16 @@ void InitFilm()
 
 void LoadStartDataInit()
 {
+    // THIS SHOULD BE:
     // memset(&load_start_wrk, 0, sizeof(LOAD_START_WRK));
+    // BUT DUES NOT MATCH.
+    // EXPLANATION:
+    // `load_start_wrk` resides in `.sdata`, so it must be initialized at
+    // the point of declaration. The structure is being 'reset' to its
+    // initial state here. Interestingly, if we use memset, the compiler
+    // optimizes it away in favor of a simpler `sd` instruction, as
+    // `LOAD_START_WRK` is exactly 8 bytes long. To ensure the memset
+    // is executed, explicit structure initialization is necessary.
     load_start_wrk = (LOAD_START_WRK){0};
 
     ingame_wrk.stts |= 0x28;
