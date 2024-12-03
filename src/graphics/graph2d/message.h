@@ -89,7 +89,7 @@ int GetStrWidthST(u_char *str);
 void FontDispSample();
 
 #ifdef BUILD_EU_VERSION
-int SetMessageMov(int path, int type);
+int SetMessageMov(int path, int type, DISP_STR *s);
 #endif
 
 #endif // GRAPHICS_GRAPH2D_MESSAGE_H

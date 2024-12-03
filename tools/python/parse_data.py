@@ -5,6 +5,7 @@ import re
 import io
 import enum
 import math
+import tqdm
 import argparse
 import pydantic
 import subprocess
@@ -526,6 +527,62 @@ class EFF_DEFORM(CStructure):
 ###########################################################################
 
 
+# typedef struct { // 0x10
+# 	/* 0x0 */ int mesno;
+# 	/* 0x4 */ u_int in;
+# 	/* 0x8 */ u_int out;
+# 	/* 0xc */ u_int attr;
+# } SUBTITLES;
+class SUBTITLES(CStructure):
+    mesno: c_int32
+    _in: c_uint32
+    out: c_uint32
+    attr: c_uint32
+
+
+# typedef struct { // 0x20
+# 	/* 0x00 */ int pos_x;
+# 	/* 0x04 */ int pos_y;
+# 	/* 0x08 */ int path;
+# 	/* 0x0c */ int fr_rate;
+# 	/* 0x10 */ int pri;
+# 	/* 0x14 */ u_int attr;
+# 	/* 0x18 */ int *tbl;
+# 	/* 0x1c */ SUBTITLES **list;
+# } SUBTITLES_DAT;
+class SUBTITLES_DAT(CStructure):
+    pos_x: c_int32
+    pos_y: c_int32
+    path: c_int32
+    fr_rate: c_int32
+    pri: c_int32
+    attr: c_uint32
+    tbl: c_addr_ptr
+    list: c_addr_ptr
+
+
+# typedef struct { // 0x10
+# 	/* 0x0 */ u_int type;
+# 	/* 0x4 */ u_int no;
+# 	/* 0x8 */ u_int cnt;
+# 	/* 0xc */ u_char alp;
+# 	/* 0xd */ u_char flg;
+# 	/* 0xe */ u_char run;
+# 	/* 0xf */ u_char dummy;
+# } SUBTITLES_SYS;
+class SUBTITLES_SYS(CStructure):
+    type: c_uint32
+    no: c_uint32
+    cnt: c_uint32
+    alp: c_uint8
+    flg: c_uint8
+    run: c_uint8
+    dummy: c_uint8
+
+
+###########################################################################
+
+
 # typedef struct { // 0x6
 # 	/* 0x0 */ u_char destination_id;
 # 	/* 0x1 */ u_char message_id;
@@ -693,7 +750,7 @@ def parse_data(lang: str):
     c_addr_ptr.set_addresses(addr_vals)
 
     with open(elf_path, mode="rb") as elf:
-        for data_var in data_vars:
+        for data_var in tqdm.tqdm(data_vars, desc="Extracting data"):
             elf.seek(vram2offset(data_var.address), os.SEEK_SET)
             header_path = include_path / f"{data_var.name}.h"
             with open(header_path, mode="w") as fw:
