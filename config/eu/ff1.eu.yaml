@@ -101,7 +101,7 @@ segments:
           - [0x47498,  asm, graphics/graph2d/effect_rdr]
           - [0x48c20,  asm, graphics/graph2d/effect_ene]
           - [0x54038,  asm, graphics/graph2d/g2d_debug]
-          - [0x55f20,  asm, graphics/graph2d/g2d_main]
+          - [0x55f20,  c,   graphics/graph2d/g2d_main]
           - [0x561c8,  c,   graphics/graph2d/subtitles]
           - [0x56e98,  asm, graphics/graph2d/message]
           - [0x5bef8,  asm, graphics/graph2d/number]
@@ -523,7 +523,7 @@ segments:
           - { start: 0x25e2f0, type:  sdata,  vram: 0x35d2f0, name: graphics/graph2d/effect_rdr   }
           - { start: 0x25e304, type:  sdata,  vram: 0x35d304, name: graphics/graph2d/effect_ene   }
           - { start: 0x25e350, type:  sdata,  vram: 0x35d350, name: graphics/graph2d/g2d_debug    }
-          - { start: 0x25e700, type:  sdata,  vram: 0x35d700, name: graphics/graph2d/g2d_main     }
+          - { start: 0x25e700, type: .sdata,  vram: 0x35d700, name: graphics/graph2d/g2d_main     }
           - { start: 0x25e708, type: .sdata,  vram: 0x35d708, name: graphics/graph2d/subtitles    }
           - { start: 0x25e710, type:  sdata,  vram: 0x35d710, name: graphics/graph2d/message      }
           - { start: 0x25e748, type:  sdata,  vram: 0x35d748, name: graphics/graph2d/snapshot     }
