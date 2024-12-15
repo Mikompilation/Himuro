@@ -27,6 +27,8 @@
 
 G2D_LOAD_FLG g2d_load_flg = {0};
 
+static void gra2dSubLAST();
+
 void gra2dInitBG()
 {
 	int i;

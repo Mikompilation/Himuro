@@ -23,8 +23,8 @@ typedef struct {
 
 // extern int dither_alp;
 // extern int dither_col;
-// extern int hint_test_sw;
-// extern int hint_test_posx;
+extern int hint_test_sw;
+extern int hint_test_posx;
 
 void gra2dInitDbgMenu();
 void gra2dDrawDbgMenuSub(DEBUG_MENU *wlp);

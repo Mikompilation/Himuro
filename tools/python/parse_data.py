@@ -14,7 +14,7 @@ from ctypes import c_uint16, c_int16, c_uint64, c_uint32, c_int32, c_uint8, c_fl
 from typing import Protocol, BinaryIO, Type, Iterable, cast
 from pathlib import Path
 
-from cstruct import CStructure, ctypes_types, CTypeType, c_addr_ptr
+from cstruct import CStructure, ctypes_types, CTypeType, c_addr_ptr, c_str
 
 
 def vram2offset(vram: int):
@@ -581,6 +581,40 @@ class SUBTITLES_SYS(CStructure):
 
 
 ###########################################################################
+# typedef struct
+# { // 0xc
+#     /* 0x0 */ char *name;
+#     /* 0x4 */ int subnum;
+#     /* 0x8 */ int nmax;
+# } DEBUG_SUB_MENU;
+class DEBUG_SUB_MENU(CStructure, pack=1):
+    name: c_str
+    subnum: c_int32
+    nmax: c_int32
+
+
+# typedef struct {
+# 	int parent;
+# 	int off_num;
+# 	int mnum;
+# 	int kai;
+# 	int max;
+# 	int pos;
+# 	char *title;
+# 	DEBUG_SUB_MENU submenu[10];
+# } DEBUG_MENU;
+class DEBUG_MENU(CStructure):
+    parent: c_int32
+    off_num: c_int32
+    mnum: c_int32
+    kai: c_int32
+    max: c_int32
+    pos: c_int32
+    title: c_str
+    submenu: DEBUG_SUB_MENU * 10
+
+
+###########################################################################
 
 
 # typedef struct { // 0x6
@@ -601,6 +635,18 @@ elf_names: dict[str, str] = {
     "eu": "SLES_508.21",
 }
 
+
+class VRamElf(BinaryIO):
+    def __init__(self, elf: BinaryIO):
+        self.elf = elf
+
+    def read(self, n: int = -1):
+        return self.elf.read(n)
+
+    def seek(self, offset: int, whence: int = 0):
+        return self.elf.seek(vram2offset(offset), whence)
+
+
 # matches "var_name = 0x12345678; // attr1:val1 attr2:val2 ... attrN:valN"
 line_pattern = re.compile(r"^([^\s=]+)\s*=\s*(0x[0-9a-fA-F]+);\s*\/\/((?:\s*[0-9a-zA-Z_]+(:?:[0-9a-zA-Z_]+)?)+)\s*$")
 # matches multiple attributes in the form of attr:val or attr
@@ -611,6 +657,8 @@ addr_pattern = re.compile(r"^\s*(0x[0-9a-fA-F]+)\s*=\s*(.*)\s*;\s*(\/\/.*)?$")
 
 class DataVar(pydantic.BaseModel):
     model_config = pydantic.ConfigDict(extra="forbid")
+
+    _elf: VRamElf = pydantic.PrivateAttr()
 
     address: int
     name: str
@@ -633,22 +681,26 @@ class DataVar(pydantic.BaseModel):
             return class_type
         raise ValueError(f"{v} is unknown/not a valid type")
 
-    def data_var_dumps(self, elf: BinaryIO, addresses: dict[int, str]):
+    def data_var_dumps(self, addresses: dict[int, str]):
+        self._elf.seek(self.address, os.SEEK_SET)
+
         if isinstance(self.numel, list):
             numel = math.prod(self.numel)
         else:
             numel = max(1, self.numel)
         if issubclass(self.type, CStructure):  # pyright: ignore
+            data = self._elf.read(numel * self.type.sizeof())
+
             return self.type.dumps(
                 self.name,
-                elf.read(numel * self.type.sizeof()),
+                data,
                 numel=self.numel,
                 static=self.static,
                 nosize=self.nosize,
                 noarray=self.numel == 0,
             )
         elif self.type == sceVu0FVECTOR:  # pyright: ignore[reportUnknownMemberType]
-            var_data = (sceVu0FVECTOR * numel).from_buffer_copy(elf.read(numel * c_sizeof(sceVu0FVECTOR)))
+            var_data = (sceVu0FVECTOR * numel).from_buffer_copy(self._elf.read(numel * c_sizeof(sceVu0FVECTOR)))
             type_str = "sceVu0FVECTOR"
             stream = io.StringIO()
             if self.static:
@@ -668,7 +720,7 @@ class DataVar(pydantic.BaseModel):
                 var_str = sceVu0FVECTOR_to_str(var_data)
             stream.write(f" = {var_str};")
         else:
-            var_data = (self.type * numel).from_buffer_copy(elf.read(numel * c_sizeof(self.type)))  # pyright: ignore
+            var_data = (self.type * numel).from_buffer_copy(self._elf.read(numel * c_sizeof(self.type)))  # pyright: ignore
             type_str = next(k for k, v in ctypes_types.items() if getattr(v, "_type_") == getattr(self.type, "_type_"))  # pyright: ignore
             stream = io.StringIO()
             if self.static:
@@ -750,11 +802,16 @@ def parse_data(lang: str):
     c_addr_ptr.set_addresses(addr_vals)
 
     with open(elf_path, mode="rb") as elf:
+        vram_elf = VRamElf(elf)
+        CStructure.__elf__ = vram_elf
+
         for data_var in tqdm.tqdm(data_vars, desc="Extracting data"):
-            elf.seek(vram2offset(data_var.address), os.SEEK_SET)
             header_path = include_path / f"{data_var.name}.h"
+
             with open(header_path, mode="w") as fw:
-                fw.write(data_var.data_var_dumps(elf, addr_vals))
+                data_var._elf = vram_elf  # pyright: ignore[reportPrivateUsage]
+
+                fw.write(data_var.data_var_dumps(addr_vals))
 
             try:
                 subprocess.run(["clang-format", "-i", "--style=Microsoft", header_path])

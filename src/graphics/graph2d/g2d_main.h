@@ -11,7 +11,7 @@ typedef struct {
 	u_char enedmg[4];
 } G2D_LOAD_FLG;
 
-// extern G2D_LOAD_FLG g2d_load_flg;
+extern G2D_LOAD_FLG g2d_load_flg;
 
 void gra2dInitBG();
 void gra2dInitST();

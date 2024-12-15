@@ -3,7 +3,7 @@
 
 #include "typedefs.h"
 
-// extern SPRT_DAT hintdat[0];
+extern SPRT_DAT hintdat[];
 // extern SPRT_DAT hintreadat[0];
 // extern int pazene_load_tbl[0];
 // extern int frm_type;

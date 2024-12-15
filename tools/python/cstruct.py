@@ -6,7 +6,7 @@ import ctypes
 import numpy as np
 import numpy.typing as npt
 from collections.abc import Sized, Sequence
-from typing import Type, TypeVar, Any, cast, TextIO
+from typing import Type, TypeVar, Any, cast, TextIO, BinaryIO
 from ctypes import LittleEndianStructure, Union, Array, c_uint32
 
 _G = TypeVar("_G")
@@ -41,6 +41,17 @@ class c_addr(c_uint32):
 
         # return f"0x{self.value:08x}"
         return f"0x{self.value:x}"
+
+
+class c_str(c_uint32):
+    def to_str(self, elf: BinaryIO):
+        if self.value == 0:
+            return "NULL"
+        elf.seek(self.value)
+        buf = io.BytesIO()
+        while (c := elf.read(1)) != b"\0":
+            buf.write(c)
+        return '"' + buf.getvalue().decode("ASCII") + '"'
 
 
 class c_addr_ptr(c_uint32):
@@ -113,6 +124,8 @@ class LittleEndianStructureFieldsFromTypeHints(type(LittleEndianStructure)):  # 
         pack: int = 0,
     ) -> LittleEndianStructureFieldsFromTypeHints:
         annotations = namespace.get("__annotations__", {})
+        if "__elf__" in annotations:
+            annotations.pop("__elf__")
         namespace["_align_"] = align
         namespace["_pack_"] = pack
         namespace["_fields_"] = list(annotations.items())
@@ -120,6 +133,8 @@ class LittleEndianStructureFieldsFromTypeHints(type(LittleEndianStructure)):  # 
 
 
 class CStructure(LittleEndianStructure, metaclass=LittleEndianStructureFieldsFromTypeHints):
+    __elf__: BinaryIO
+
     @classmethod
     def sizeof(cls) -> int:
         align = getattr(cls, "_align_", 0)
@@ -188,6 +203,7 @@ class CStructure(LittleEndianStructure, metaclass=LittleEndianStructureFieldsFro
         stream.write(";\n\n")
         return stream.getvalue()
 
+    # def to_str(self, elf: BinaryIO):
     def __str__(self):
         stream = io.StringIO()
         stream.write("    {\n")
@@ -195,7 +211,9 @@ class CStructure(LittleEndianStructure, metaclass=LittleEndianStructureFieldsFro
             v = getattr(self, f)  # pyright: ignore
             if f in ("_in", "_pass"):
                 f = f[1:]  # pyright: ignore
-            if not isinstance(v, Array):
+            if isinstance(v, c_str):
+                stream.write(f"        .{f} = {v.to_str(self.__elf__)},\n")
+            elif not isinstance(v, Array):
                 stream.write(f"        .{f} = {v},\n")
             else:
                 arr = cast(Sized, v)

@@ -25,7 +25,7 @@ typedef struct
 
 void ReadLights(ROOM_LIGHT *rdata, void *buf);
 void ApplyLight(int room_no);
-void MakeLightEditorData(int now_tree);
+void MakeLightEditorData(DEBUG_MENU **dbgmenu_tbl, int now_tree);
 void MakeFogData(DEBUG_SUB_MENU **dbgmenu_tbl, int pos);
 void ApplyFogData();
 
