@@ -32,6 +32,18 @@ gus_wrk                        = 0x277bc0; // type:LEAVES_TABLE
 hole_wrk                       = 0x279370; // type:LEAVES_TABLE
 line_wrk                       = 0x27ab20; // type:LEAVES_TABLE numel:4
 
+// graphics/graph2d/effect_rdr.c
+sunshine                       = 0x297ad0; // type:SUNSHINE numel:7 nosize static
+ef_pazzene_p                   = 0x297d00; // type:sceVu0FVECTOR static
+ef_smoke_pos11                 = 0x297d10; // type:sceVu0FVECTOR static
+ef_smoke_pos12                 = 0x297d20; // type:sceVu0FVECTOR static
+ef_smoke_pos13                 = 0x297d30; // type:sceVu0FVECTOR static
+ef_smoke_pos14                 = 0x297d40; // type:sceVu0FVECTOR static
+ef_smoke_pos21                 = 0x297d50; // type:sceVu0FVECTOR static
+ef_smoke_pos22                 = 0x297d60; // type:sceVu0FVECTOR static
+ef_smoke_pos23                 = 0x297d70; // type:sceVu0FVECTOR static
+ef_smoke_pos24                 = 0x297d80; // type:sceVu0FVECTOR static
+
 // graphics/graph2d/g2d_debug.c
 dbg_menu_t                     = 0x2a7580; // type:DEBUG_MENU
 dbg_menu_lt                    = 0x2a7618; // type:DEBUG_MENU

@@ -98,7 +98,7 @@ segments:
           - [0x28f98,  c,   graphics/graph2d/effect_scr]
           - [0x32bd8,  asm, graphics/graph2d/effect_obj]
           - [0x37598,  asm, graphics/graph2d/effect_oth]
-          - [0x47498,  asm, graphics/graph2d/effect_rdr]
+          - [0x47498,  c,   graphics/graph2d/effect_rdr]
           - [0x48c20,  asm, graphics/graph2d/effect_ene]
           - [0x54038,  c,   graphics/graph2d/g2d_debug]
           - [0x55f20,  c,   graphics/graph2d/g2d_main]
@@ -229,7 +229,7 @@ segments:
           - { start: 0x185800, type: .data,   vram: 0x284800, name: graphics/graph2d/effect_scr   }
           - { start: 0x185880, type:  data,   vram: 0x284880, name: graphics/graph2d/effect_obj   }
           - { start: 0x19c250, type:  data,   vram: 0x29b250, name: graphics/graph2d/effect_oth   }
-          - { start: 0x19c8e0, type:  data,   vram: 0x29b8e0, name: graphics/graph2d/effect_rdr   }
+          - { start: 0x19c8e0, type: .data,   vram: 0x29b8e0, name: graphics/graph2d/effect_rdr   }
           - { start: 0x19d000, type:  data,   vram: 0x29c000, name: graphics/graph2d/effect_ene   }
           - { start: 0x1ac390, type: .data,   vram: 0x2ab390, name: graphics/graph2d/g2d_debug    }
           - { start: 0x1ae968, type: .data,   vram: 0x2ad968, name: graphics/graph2d/subtitles    }
@@ -351,7 +351,7 @@ segments:
           - { start: 0x251bd0, type: .rodata, vram: 0x350bd0, name: graphics/graph2d/effect_scr   }
           - { start: 0x252660, type:  rodata, vram: 0x351660, name: graphics/graph2d/effect_obj   }
           - { start: 0x2529b0, type:  rodata, vram: 0x3519b0, name: graphics/graph2d/effect_oth   }
-          - { start: 0x252f80, type:  rodata, vram: 0x351f80, name: graphics/graph2d/effect_rdr   }
+          - { start: 0x252f80, type: .rodata, vram: 0x351f80, name: graphics/graph2d/effect_rdr   }
           - { start: 0x253020, type:  rodata, vram: 0x352020, name: graphics/graph2d/effect_ene   }
           - { start: 0x2536a0, type: .rodata, vram: 0x3526a0, name: graphics/graph2d/g2d_debug    }
           - { start: 0x253d78, type: .rodata, vram: 0x352d78, name: graphics/graph2d/subtitles    }
@@ -444,7 +444,7 @@ segments:
           - { start: 0x25ce94, type: .lit4,   vram: 0x35be94, name: graphics/graph2d/effect_scr   }
           - { start: 0x25cf90, type:  lit4,   vram: 0x35bf90, name: graphics/graph2d/effect_obj   }
           - { start: 0x25d03c, type:  lit4,   vram: 0x35c03c, name: graphics/graph2d/effect_oth   }
-          - { start: 0x25d2e0, type:  lit4,   vram: 0x35c2e0, name: graphics/graph2d/effect_rdr   }
+          - { start: 0x25d2e0, type: .lit4,   vram: 0x35c2e0, name: graphics/graph2d/effect_rdr   }
           - { start: 0x25d310, type:  lit4,   vram: 0x35c310, name: graphics/graph2d/effect_ene   }
           - { start: 0x25d4fc, type: .lit4,   vram: 0x35c4fc, name: graphics/graph2d/g2d_debug    }
           - { start: 0x25d518, type:  lit4,   vram: 0x35c518, name: graphics/graph2d/message      }
@@ -520,8 +520,8 @@ segments:
           - { start: 0x25e0b8, type: .sdata,  vram: 0x35d0b8, name: graphics/graph2d/effect_scr   }
           - { start: 0x25e1d8, type:  sdata,  vram: 0x35d1d8, name: graphics/graph2d/effect_obj   }
           - { start: 0x25e1f8, type:  sdata,  vram: 0x35d1f8, name: graphics/graph2d/effect_oth   }
-          - { start: 0x25e2f0, type:  sdata,  vram: 0x35d2f0, name: graphics/graph2d/effect_rdr   }
-          - { start: 0x25e304, type:  sdata,  vram: 0x35d304, name: graphics/graph2d/effect_ene   }
+          - { start: 0x25e2f0, type: .sdata,  vram: 0x35d2f0, name: graphics/graph2d/effect_rdr   }
+          - { start: 0x25e2f8, type:  sdata,  vram: 0x35d2f8, name: graphics/graph2d/effect_ene   }
           - { start: 0x25e350, type: .sdata,  vram: 0x35d350, name: graphics/graph2d/g2d_debug    }
           - { start: 0x25e700, type: .sdata,  vram: 0x35d700, name: graphics/graph2d/g2d_main     }
           - { start: 0x25e708, type: .sdata,  vram: 0x35d708, name: graphics/graph2d/subtitles    }
@@ -610,7 +610,7 @@ segments:
           - { start: 0x25f500, type: .sbss,   vram: 0x35e560, name: graphics/graph2d/effect_scr   }
           - { start: 0x25f500, type:  sbss,   vram: 0x35e57c, name: graphics/graph2d/effect_obj   }
           - { start: 0x25f500, type:  sbss,   vram: 0x35e580, name: graphics/graph2d/effect_oth   }
-          - { start: 0x25f500, type:  sbss,   vram: 0x35e5b4, name: graphics/graph2d/effect_rdr   }
+          - { start: 0x25f500, type: .sbss,   vram: 0x35e5b4, name: graphics/graph2d/effect_rdr   }
           - { start: 0x25f500, type: .sbss,   vram: 0x35e5c4, name: graphics/graph2d/g2d_debug    }
           - { start: 0x25f500, type:  sbss,   vram: 0x35e5c8, name: graphics/graph2d/tim2         }
           - { start: 0x25f500, type:  sbss,   vram: 0x35e5d8, name: graphics/graph3d/gra3d        }
@@ -676,7 +676,7 @@ segments:
           - { start: 0x25f514, type: .bss,    vram: 0x36c290, name: graphics/graph2d/effect_scr   }
           - { start: 0x25f514, type:  bss,    vram: 0x3809c0, name: graphics/graph2d/effect_obj   }
           - { start: 0x25f514, type:  bss,    vram: 0x389200, name: graphics/graph2d/effect_oth   }
-          - { start: 0x25f514, type:  bss,    vram: 0x3bfea0, name: graphics/graph2d/effect_rdr   }
+          - { start: 0x25f514, type: .bss,    vram: 0x3bfea0, name: graphics/graph2d/effect_rdr   }
           - { start: 0x25f514, type:  bss,    vram: 0x3bfee0, name: graphics/graph2d/effect_ene   }
           - { start: 0x25f514, type: .bss,    vram: 0x3c1e20, name: graphics/graph2d/subtitles    }
           - { start: 0x25f514, type:  bss,    vram: 0x3c1f28, name: graphics/graph2d/message      }

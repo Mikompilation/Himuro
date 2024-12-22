@@ -3,6 +3,7 @@
 
 #include "typedefs.h"
 
+#include "ingame/map/furn_dat.h"
 #include "graphics/motion/acs_dat.h"
 
 typedef struct {
@@ -35,7 +36,7 @@ typedef struct {
 	u_char pad;
 } MIME_CTRL;
 
-#include "graphics/graph2d/effect_rdr.h"
+// #include "graphics/graph2d/effect_rdr.h"
 
 u_int* mimInitMimeCtrl(MIME_CTRL *m_ctrl, MIME_DAT *mdat, u_int *mim_p, u_int *mdl_p, u_int *tmp_p);
 void mimInitAcsCtrl(ANI_CTRL *ani_ctrl, u_short mdl_no);

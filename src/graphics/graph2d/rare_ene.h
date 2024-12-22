@@ -3,7 +3,7 @@
 
 #include "typedefs.h"
 
-// extern u_int pazz_textbl[0];
+extern u_int pazz_textbl[];
 
 void LoadRareEneTex();
 void DrawRareEne_Sub(int mno, int dno, float *pos, int tblno, int ani, int al);

@@ -4,15 +4,6 @@
 #include "typedefs.h"
 
 typedef struct {
-	u_char TexNum;
-	u_char pads;
-	u_char AnmON;
-	u_char AnmStep;
-	u_char AnmCnt;
-	u_char AnmLoop;
-} TextureAnimation;
-
-typedef struct {
 	sceVu0FVECTOR direction;
 	sceVu0FVECTOR diffuse;
 } PARARELL_WRK;
@@ -40,18 +31,7 @@ typedef struct {
 	sceVu0FMATRIX mat;
 } TREMBLE_H_WRK;
 
-typedef struct {
-	signed char nochkflg;
-	void *p;
-	u_char chknum[4];
-} SPE_CHK_COND;
-
-typedef struct {
-	u_char regmode;
-	u_char looptype;
-	char nowstep;
-} FSPE_TEXTURE_ANM;
-
+#include "ingame/map/furn_dat.h"
 #include "graphics/graph2d/effect_rdr.h"
 #include "ingame/enemy/move_ctl.h"
 

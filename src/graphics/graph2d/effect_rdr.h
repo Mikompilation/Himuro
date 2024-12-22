@@ -3,45 +3,7 @@
 
 #include "typedefs.h"
 
-#include "ingame/map/furn_spe/furn_spe.h"
-
-typedef enum
-{
-    ST_FACT_VACANT = 0,
-    ST_FACT_WAITWAIT = 1,
-    ST_FACT_WAIT = 2,
-    ST_FACT_EXEC = 3,
-    ST_FACT_END = 4
-} ST_FACT;
-
-typedef struct {
-	u_char attribute;
-	void *wp;
-	void *ap;
-	SPE_CHK_COND chk_occ;
-	SPE_CHK_COND chk_end;
-	ST_FACT state;
-	u_char flg;
-	u_char eventflg;
-	signed char trembleflg;
-	u_char prejudge;
-	signed char lw_id;
-	void *buff;
-	u_short furn_id;
-	u_short fact_no;
-	int fw_id;
-	u_char room_no;
-	sceVu0FVECTOR *vecp_temp;
-	sceVu0FVECTOR util_v;
-	sceVu0FVECTOR pos;
-	sceVu0FVECTOR rot_speed;
-	sceVu0FVECTOR rot_speed2;
-	u_short count;
-	int adj_valg_num;
-	u_short se_no;
-	TextureAnimation *pta;
-	FSPE_TEXTURE_ANM ta;
-} FURN_ACT_WRK;
+#include "ingame/map/furn_dat.h"
 
 typedef struct {
 	void *adr;

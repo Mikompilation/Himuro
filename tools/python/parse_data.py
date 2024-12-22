@@ -615,8 +615,80 @@ class DEBUG_MENU(CStructure):
 
 
 ###########################################################################
+# typedef struct { // 0x50
+# 	/* 0x00 */ sceVu0FVECTOR bpos;
+# 	/* 0x10 */ sceVu0FVECTOR brot;
+# 	/* 0x20 */ sceVu0FVECTOR lpos;
+# 	/* 0x30 */ float ww;
+# 	/* 0x34 */ float hh;
+# 	/* 0x38 */ int power;
+# 	/* 0x3c */ u_char r;
+# 	/* 0x3d */ u_char g;
+# 	/* 0x3e */ u_char b;
+# 	/* 0x3f */ u_char a;
+# 	/* 0x40 */ void *adr;
+# } SUNSHINE;
+class SUNSHINE(CStructure, align=16):
+    bpos: sceVu0FVECTOR
+    brot: sceVu0FVECTOR
+    lpos: sceVu0FVECTOR
+    ww: c_float
+    hh: c_float
+    power: c_int32
+    r: c_uint8
+    g: c_uint8
+    b: c_uint8
+    a: c_uint8
+    adr: c_addr_ptr
 
 
+# typedef struct {
+# 	sceVu0FVECTOR ligdiff;
+# 	sceVu0FVECTOR ligpos;
+# 	sceVu0FVECTOR fpos;
+# 	void *ebuf;
+# 	float ligpow;
+# 	float wavew;
+# 	float rate;
+# 	float szw;
+# 	float szh;
+# 	float sw;
+# 	float sh;
+# 	u_short furn_id;
+# 	u_char lignum;
+# 	u_char usefl;
+# 	u_char sta;
+# } BURN_FIRE;
+class BURN_FIRE(CStructure, align=16):
+    ligdiff: sceVu0FVECTOR
+    ligpos: sceVu0FVECTOR
+    fpos: sceVu0FVECTOR
+    ebuf: c_addr_ptr
+    ligpow: c_float
+    wavew: c_float
+    rate: c_float
+    szw: c_float
+    szh: c_float
+    sw: c_float
+    sh: c_float
+    furn_id: c_uint16
+    lignum: c_uint8
+    usefl: c_uint8
+    sta: c_uint8
+
+
+# typedef struct {
+# 	void *adr;
+# 	short int furn_id;
+# 	u_short dummy;
+# } EFFRDR_RSV;
+class EFFRDR_RSV(CStructure):
+    adr: c_addr_ptr
+    furn_id: c_int16
+    dummy: c_uint16
+
+
+###########################################################################
 # typedef struct { // 0x6
 # 	/* 0x0 */ u_char destination_id;
 # 	/* 0x1 */ u_char message_id;
@@ -717,7 +789,9 @@ class DataVar(pydantic.BaseModel):
                 )
                 stream.write(f"[{numel}]")
             else:
-                var_str = sceVu0FVECTOR_to_str(var_data)
+                # should have been parsed as c_float_Array_4_Array_1
+                assert len(var_data) == 1 and var_data[0].__class__ is sceVu0FVECTOR
+                var_str = sceVu0FVECTOR_to_str(var_data[0])
             stream.write(f" = {var_str};")
         else:
             var_data = (self.type * numel).from_buffer_copy(self._elf.read(numel * c_sizeof(self.type)))  # pyright: ignore
