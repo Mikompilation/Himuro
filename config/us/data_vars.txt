@@ -104,6 +104,9 @@ dbg_menu_param                 = 0x2a9628; // type:DEBUG_MENU
 dbg_menu_ccustom               = 0x2a96c0; // type:DEBUG_MENU
 dbg_menu_param_item            = 0x2a9758; // type:DEBUG_MENU
 
+// graphics/graph2d/number.c
+number_tex                     = 0x2ab388; // type:SPRT_DAT numel:4 numel:10 nosize
+
 // ingame/event/wan_dat.c
 soul_des100                    = 0x345820; // type:sceVu0FVECTOR numel:2 nosize
 soul_des101                    = 0x345840; // type:sceVu0FVECTOR numel:5 nosize

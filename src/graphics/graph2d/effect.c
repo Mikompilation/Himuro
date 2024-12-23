@@ -14,6 +14,7 @@
 #include "graphics/graph3d/gra3d.h"
 #include "graphics/graph3d/sglib.h"
 #include "graphics/graph3d/libsg.h"
+#include "graphics/graph2d/sprt.h"
 #include "graphics/graph2d/message.h"
 #include "graphics/graph2d/rare_ene.h"
 #include "graphics/graph2d/g2d_debug.h"

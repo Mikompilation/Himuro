@@ -11,6 +11,7 @@
 // #include "os/pad.h"
 #include "ingame/ig_init.h"
 #include "common/ul_math.h"
+#include "graphics/graph2d/sprt.h"
 #include "graphics/graph2d/tim2.h"
 #include "graphics/graph2d/effect_oth.h"
 #include "graphics/graph2d/tim2_new.h"

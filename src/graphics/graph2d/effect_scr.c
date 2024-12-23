@@ -16,6 +16,7 @@
 #include "sce/libvu0.h"
 
 #include "main/glob.h"
+#include "graphics/graph2d/sprt.h"
 #include "graphics/graph2d/tim2.h"
 #include "graphics/graph2d/tim2_new.h"
 #include "graphics/graph2d/effect.h"

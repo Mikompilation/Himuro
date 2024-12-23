@@ -22,6 +22,7 @@
 #include "outgame/outgame.h"
 #include "outgame/btl_mode/btl_menu.h"
 #include "outgame/btl_mode/btl_mode.h"
+#include "graphics/graph2d/sprt.h"
 #include "graphics/graph2d/tim2.h"
 #include "graphics/graph2d/effect_sub.h"
 #include "graphics/motion/mdlwork.h"

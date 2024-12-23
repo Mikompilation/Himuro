@@ -3,17 +3,7 @@
 
 #include "typedefs.h"
 
-typedef struct {
-	u_long tex0;
-	u_short u;
-	u_short v;
-	u_short w;
-	u_short h;
-	int x;
-	int y;
-	int pri;
-	u_char alpha;
-} SPRT_DAT;
+#include "graphics/graph2d/sprt.h"
 
 typedef struct {
 	u_char costume;

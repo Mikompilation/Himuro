@@ -20,6 +20,7 @@
 #include "outgame/mode_slct.h"
 #include "outgame/btl_mode/btl_dat.h"
 #include "outgame/btl_mode/btl_mode.h"
+#include "graphics/graph2d/sprt.h"
 #include "graphics/graph2d/tim2.h"
 #include "graphics/graph2d/effect.h"
 #include "graphics/graph2d/message.h"
