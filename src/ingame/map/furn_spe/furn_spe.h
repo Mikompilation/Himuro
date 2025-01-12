@@ -2,11 +2,7 @@
 #define INGAME_MAP_FURN_SPE_FURN_SPE_H
 
 #include "typedefs.h"
-
-typedef struct {
-	sceVu0FVECTOR direction;
-	sceVu0FVECTOR diffuse;
-} PARARELL_WRK;
+#include "graphics/graph3d/libsg.h"
 
 typedef struct {
 	u_char eventflg;

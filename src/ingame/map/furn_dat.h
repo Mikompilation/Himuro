@@ -2,6 +2,7 @@
 #define INGAME_MAP_FURN_DAT_H
 
 #include "typedefs.h"
+#include "graphics/graph3d/light_dat.h"
 
 typedef struct {
 	u_short attr_no;
@@ -17,7 +18,6 @@ typedef struct {
 	u_char ef_type;
 	u_char ef_no;
 } FURN_DAT;
-
 
 typedef enum
 {
@@ -77,6 +77,40 @@ typedef struct {
 	TextureAnimation *pta;
 	FSPE_TEXTURE_ANM ta;
 } FURN_ACT_WRK;
+
+typedef struct {
+	u_short furn_no;
+	short int stts;
+	sceVu0FVECTOR pos;
+	sceVu0FVECTOR rotate;
+	float rot;
+	int fewrk_no;
+	u_short id;
+	u_short fno_bk;
+	u_short dist;
+	u_short score;
+	float ratio;
+	u_char use;
+	u_char cmdflg;
+	u_short attr_id;
+	u_char room_id;
+	u_char fs_flg;
+	LIGHT_PACK mylight;
+} FURN_WRK;
+
+typedef struct {
+	float rot_y;
+	float rot_x;
+	u_short pos_x;
+	short int pos_y;
+	u_short pos_z;
+	u_short attr_id;
+	u_short model_no;
+	u_short id;
+	short int top;
+	short int btm;
+	u_char snum;
+} FURN_DATA_POP;
 
 // extern FURN_DAT furn_dat[0];
 // extern u_int furn_attr_dat[0][5];

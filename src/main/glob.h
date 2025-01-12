@@ -8,6 +8,7 @@
 typedef struct ENE_WRK ENE_WRK;
 
 #include "os/system.h"
+#include "graphics/graph3d/light_dat.h"
 
 typedef struct {
 	u_long count;

@@ -12,6 +12,10 @@
 #define SCE_NOBUF       0x4000
 #define SCE_NOWAIT      0x8000
 
+#define SCE_SEEK_SET    0
+#define SCE_SEEK_CUR    1
+#define SCE_SEEK_END    2
+
 int sceOpen(const char *filename, int flag, ...);
 int sceClose(int fd);
 int sceRead(int fd, void *buf, int nbyte);

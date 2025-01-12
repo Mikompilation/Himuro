@@ -720,9 +720,9 @@ class VRamElf(BinaryIO):
 
 
 # matches "var_name = 0x12345678; // attr1:val1 attr2:val2 ... attrN:valN"
-line_pattern = re.compile(r"^([^\s=]+)\s*=\s*(0x[0-9a-fA-F]+);\s*\/\/((?:\s*[0-9a-zA-Z_]+(:?:[0-9a-zA-Z_]+)?)+)\s*$")
+line_pattern = re.compile(r"^([^\s=]+)\s*=\s*(0x[0-9a-fA-F]+);\s*\/\/((?:\s*[0-9a-zA-Z_]+(:?:[0-9a-zA-Z_\*]+)?)+)\s*$")
 # matches multiple attributes in the form of attr:val or attr
-attr_pattern = re.compile(r"([0-9a-zA-Z_]+)(?::([0-9a-zA-Z_]+))?")
+attr_pattern = re.compile(r"([0-9a-zA-Z_]+)(?::([0-9a-zA-Z_\*]+))?")
 # match address lines: "0xaabbccdd = &var"
 addr_pattern = re.compile(r"^\s*(0x[0-9a-fA-F]+)\s*=\s*(.*)\s*;\s*(\/\/.*)?$")
 
@@ -734,7 +734,7 @@ class DataVar(pydantic.BaseModel):
 
     address: int
     name: str
-    type: Type[CStructure] | CTypeType | type[sceVu0FVECTOR]
+    type: Type[CStructure] | CTypeType | type[sceVu0FVECTOR] | type[c_str]
     numel: int | list[int] = 0
     nosize: bool = False
     static: bool = False
@@ -744,10 +744,13 @@ class DataVar(pydantic.BaseModel):
     def type_from_str(cls, v: str | Type[CStructure] | CTypeType) -> Type[CStructure] | CTypeType | sceVu0FVECTOR:  # pyright: ignore
         if not isinstance(v, str):
             return v
+        v = v.rstrip("*")  # remove pointer(s)
         if v in ctypes_types:
             return ctypes_types[v]
         if v == "sceVu0FVECTOR":
             return sceVu0FVECTOR
+        if v == "c_str":
+            return c_str
         class_type = globals()[v]
         if issubclass(class_type, CStructure):
             return class_type
@@ -793,6 +796,17 @@ class DataVar(pydantic.BaseModel):
                 assert len(var_data) == 1 and var_data[0].__class__ is sceVu0FVECTOR
                 var_str = sceVu0FVECTOR_to_str(var_data[0])
             stream.write(f" = {var_str};")
+        elif self.type == c_str:
+            assert numel > 1, "we only handle string arrays here, simple strings should be embedded in the source"
+            var_data = (self.type * numel).from_buffer_copy(self._elf.read(numel * c_sizeof(self.type)))  # pyright: ignore
+            stream = io.StringIO()
+            if self.static:
+                stream.write("static ")
+            numel = f"{self.numel}" if not self.nosize else ""
+            stream.write(f"char *{self.name}[{numel}] = {{")
+            for var in cast(Iterable[c_str], var_data):
+                stream.write(f"{var.to_str(self._elf)},")
+            stream.write("};")
         else:
             var_data = (self.type * numel).from_buffer_copy(self._elf.read(numel * c_sizeof(self.type)))  # pyright: ignore
             type_str = next(k for k, v in ctypes_types.items() if getattr(v, "_type_") == getattr(self.type, "_type_"))  # pyright: ignore
@@ -831,9 +845,9 @@ def parse_data_vars(data_vars_txt: Path, strict: bool = True):
                 valid = True
 
             elif line_match := line_pattern.match(line):
-                name = line_match.group(1)
                 address = int(line_match.group(2), 16)
                 options = line_match.group(3)
+                name = line_match.group(1)
                 if attr_match := attr_pattern.findall(options):
                     attrs: dict[str, str | list[str] | bool] = {}
                     for attr_name, attr_val in cast(list[tuple[str, str]], attr_match):

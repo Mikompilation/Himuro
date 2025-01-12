@@ -7,6 +7,7 @@
 #include "ingame/map/furn_spe/furn_spe.h"
 #include "ingame/map/furn_spe/fsla_main.h"
 #include "graphics/graph3d/load3d.h"
+#include "graphics/graph3d/light_dat.h"
 
 typedef struct {
 	void *shadow_model;
@@ -21,36 +22,15 @@ typedef struct {
 	u_long shadow_tex0;
 } ShadowHandle;
 
-typedef struct {
-	sceVu0FVECTOR pos;
-	sceVu0FVECTOR direction;
-	sceVu0FVECTOR diffuse;
-	float intens;
-	float power;
-	float pad[2];
-} SPOT_WRK;
-
-typedef struct {
-	int parallel_num;
-	int point_num;
-	int spot_num;
-	int pad;
-	sceVu0FVECTOR ambient;
-	PARARELL_WRK parallel[3];
-	POINT_WRK point[3];
-	SPOT_WRK spot[3];
-} LIGHT_PACK;
-
-// include FURN_WRK, but only AFTER the definition of LIGHT_PACK
 #include "ingame/map/furn_ctl.h"
 #include "graphics/graph3d/sglight.h"
 #include "graphics/motion/accessory.h"
 
 extern u_int fly_display[3];
-// extern sceVu0FVECTOR fog_param[64];
-// extern sceVu0IVECTOR fog_rgb[64];
-// extern sceVu0FVECTOR fog_param_finder[64];
-// extern sceVu0IVECTOR fog_rgb_finder[64];
+extern sceVu0FVECTOR fog_param[64];
+extern sceVu0IVECTOR fog_rgb[64];
+extern sceVu0FVECTOR fog_param_finder[64];
+extern sceVu0IVECTOR fog_rgb_finder[64];
 // extern int disp_frame_counter;
 // extern u_char mimchodo_num[0];
 // extern u_int *pmanmodel[70];

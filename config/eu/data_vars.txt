@@ -107,6 +107,9 @@ dbg_menu_param_item            = 0x2ad568; // type:DEBUG_MENU
 // graphics/graph2d/number.c
 number_tex                     = 0x2b0fd0; // type:SPRT_DAT numel:4 numel:10 nosize
 
+// graphics/graph3d/leditor.c
+room_name                      = 0x2feb80; // type:c_str numel:42 nosize static
+
 // ingame/event/wan_dat.c
 soul_des100                    = 0x34bb60; // type:sceVu0FVECTOR numel:2 nosize
 soul_des101                    = 0x34bb80; // type:sceVu0FVECTOR numel:5 nosize
