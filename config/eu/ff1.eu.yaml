@@ -118,7 +118,7 @@ segments:
           - [0x6ce58,  asm, graphics/motion/accessory]
           - [0x70b70,  asm, graphics/motion/motion]
           - [0x73c80,  asm, graphics/motion/anicode]
-          - [0x74538,  asm, graphics/graph3d/object]
+          - [0x74538,  c, graphics/graph3d/object]
           - [0x74570,  asm, graphics/graph3d/sce_pp3]
           - [0x747c8,  asm, graphics/graph3d/sgsgd]
           - [0x75160,  asm, graphics/graph3d/sglib]
