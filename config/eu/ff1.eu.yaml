@@ -118,7 +118,7 @@ segments:
           - [0x6ce58,  asm, graphics/motion/accessory]
           - [0x70b70,  asm, graphics/motion/motion]
           - [0x73c80,  asm, graphics/motion/anicode]
-          - [0x74538,  c, graphics/graph3d/object]
+          - [0x74538,  c,   graphics/graph3d/object]
           - [0x74570,  asm, graphics/graph3d/sce_pp3]
           - [0x747c8,  asm, graphics/graph3d/sgsgd]
           - [0x75160,  asm, graphics/graph3d/sglib]
@@ -538,7 +538,7 @@ segments:
           - { start: 0x25e854, type:  sdata,  vram: 0x35d854, name: graphics/motion/mime          }
           - { start: 0x25e864, type:  sdata,  vram: 0x35d864, name: graphics/motion/accessory     }
           - { start: 0x25e878, type:  sdata,  vram: 0x35d878, name: graphics/motion/motion        }
-          - { start: 0x25e8c8, type:  sdata,  vram: 0x35d8c8, name: graphics/graph3d/object       }
+          - { start: 0x25e8c8, type: .sdata,  vram: 0x35d8c8, name: graphics/graph3d/object       }
           - { start: 0x25e8dc, type:  sdata,  vram: 0x35d8dc, name: graphics/graph3d/sce_pp3      }
           - { start: 0x25e8ec, type:  sdata,  vram: 0x35d8ec, name: graphics/graph3d/sgsgd        }
           - { start: 0x25e8f0, type:  sdata,  vram: 0x35d8f0, name: graphics/graph3d/sglib        }
@@ -687,7 +687,7 @@ segments:
           - { start: 0x25f514, type:  bss,    vram: 0x3fc2d0, name: graphics/graph3d/load3d       }
           - { start: 0x25f514, type:  bss,    vram: 0x3fc410, name: graphics/motion/accessory     }
           - { start: 0x25f514, type:  bss,    vram: 0x3fd7e0, name: graphics/motion/motion        }
-          - { start: 0x25f514, type:  bss,    vram: 0x400120, name: graphics/graph3d/object       }
+          - { start: 0x25f514, type: .bss,    vram: 0x400120, name: graphics/graph3d/object       }
           - { start: 0x25f514, type:  bss,    vram: 0x402120, name: graphics/graph3d/sce_pp3      }
           - { start: 0x25f514, type:  bss,    vram: 0x4023b0, name: graphics/graph3d/sgsu         }
           - { start: 0x25f514, type:  bss,    vram: 0x4024b0, name: graphics/graph3d/sglight      }
