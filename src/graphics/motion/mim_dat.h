@@ -14,7 +14,7 @@ typedef struct {
 // extern u_char mimchodo_r011[0];
 // extern u_char mimchodo_r021[0];
 // extern u_char mimchodo_r041[0];
-// extern MIME_LOAD mimchodo_tbl[0];
+extern MIME_LOAD mimchodo_tbl[];
 
 
 #endif // GRAPHICS_MOTION_MIM_DAT_H

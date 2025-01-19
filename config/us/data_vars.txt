@@ -110,6 +110,10 @@ number_tex                     = 0x2ab388; // type:SPRT_DAT numel:4 numel:10 nos
 // graphics/graph3d/leditor.c
 room_name                      = 0x2f8f40; // type:c_str numel:42 nosize static
 
+// graphics/graph3d/load3d.c
+load_furn_num                  = 0x2f9170; // type:short numel:156 nosize static
+load_door_num                  = 0x2f92a8; // type:short numel:81 nosize static
+
 // ingame/event/wan_dat.c
 soul_des100                    = 0x345820; // type:sceVu0FVECTOR numel:2 nosize
 soul_des101                    = 0x345840; // type:sceVu0FVECTOR numel:5 nosize

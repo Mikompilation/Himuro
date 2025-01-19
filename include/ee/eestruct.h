@@ -359,4 +359,18 @@ typedef struct {
     unsigned long Z:32;
 } sceGsXyz;
 
+typedef struct {
+    unsigned long LCM:1;
+    unsigned long pad01:1;
+    unsigned long MXL:3;
+    unsigned long MMAG:1;
+    unsigned long MMIN:3;
+    unsigned long MTBA:1;
+    unsigned long pad10:9;
+    unsigned long L:2;
+    unsigned long pad21:11;
+    unsigned long K:12;
+    unsigned long pad44:20;
+} sceGsTex1;
+
 #endif // EE_EESTRUCT_H
