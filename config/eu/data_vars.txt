@@ -114,6 +114,9 @@ room_name                      = 0x2feb80; // type:c_str numel:42 nosize static
 load_furn_num                  = 0x2fedb0; // type:short numel:156 nosize static
 load_door_num                  = 0x2feee8; // type:short numel:81 nosize static
 
+// graphics/motion/mdlwork.c
+plyr_file_id                   = 0x3024e8; // type:PLYR_FILE_ID numel:5 nosize static
+
 // ingame/event/wan_dat.c
 soul_des100                    = 0x34bb60; // type:sceVu0FVECTOR numel:2 nosize
 soul_des101                    = 0x34bb80; // type:sceVu0FVECTOR numel:5 nosize

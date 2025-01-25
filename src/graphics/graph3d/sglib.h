@@ -174,7 +174,7 @@ extern sceVu0FMATRIX SgWSMtx;
 // extern int SgSpotNum;
 // extern int SgSpotGroupNum;
 // extern SgSPOTGROUP SgSpotGroup[1];
-// extern void *sgd_top_addr;
+extern void *sgd_top_addr;
 // extern CoordCache ccahe;
 // extern sceDmaChan *dvif0;
 // extern sceDmaChan *dvif1;

@@ -5,15 +5,6 @@
 
 #include "graphics/motion/acs_dat.h"
 
-typedef u_short ANI_CODE;
-
-typedef struct
-{ // 0x8
-    /* 0x0 */ ANI_CODE code;
-    /* 0x2 */ u_short cnt;
-    /* 0x4 */ u_int stat;
-} ANI_BUF;
-
 typedef struct {
 	float scale;
 	u_char neck_id;
@@ -515,6 +506,5 @@ typedef struct {
 // extern ANI_CODE *arei_loopanm_tbl[0];
 // extern MANMDL_DAT manmdl_dat[0];
 // extern ANI_CODE **anm_tbl[0];
-
 
 #endif // GRAPHICS_MOTION_MDLDAT_H

@@ -4,47 +4,7 @@
 #include "typedefs.h"
 #include "ee/eestruct.h"
 
-#include "graphics/motion/accessory.h"
-
-typedef struct {
-	short int cn0;
-	short int cn1;
-	u_short vIdx;
-	u_short vOff;
-} ONELIST;
-
-typedef struct {
-	int list_num;
-	ONELIST lists[1];
-} VERTEXLIST;
-
-typedef struct {
-	u_int primtype;
-	char name[12];
-	sceVu0FVECTOR Ambient;
-	sceVu0FVECTOR Diffuse;
-	sceVu0FVECTOR Specular;
-	sceVu0FVECTOR Emission;
-	u_int vifcode[4];
-	u_long128 giftag;
-	u_int Tex0[4];
-	u_int Tex1[4];
-	u_int Miptbp1[4];
-	u_int Miptbp2[4];
-} SgMaterial;
-
-typedef struct {
-	u_int VersionID;
-	u_char MAPFLAG;
-	u_char kind;
-	u_short materials;
-	SgCOORDUNIT *coordp;
-	SgMaterial *matp;
-	u_int *phead;
-	u_int blocks;
-	u_int **primitives;
-} HeaderSection;
-
+#include "graphics/graph3d/sg_dat.h"
 
 void MappingVUVNData(u_int *intpointer, HeaderSection *hs);
 void MappingVUVNDataPreset(u_int *intpointer, int mtype, int gloops, int hsize);

@@ -3,26 +3,7 @@
 
 #include "typedefs.h"
 
-
-typedef struct {
-	sceVu0FVECTOR pos;
-	sceVu0FVECTOR direction;
-	sceVu0FVECTOR ldirection;
-	sceVu0FVECTOR spvector;
-	sceVu0FVECTOR diffuse;
-	sceVu0FVECTOR specular;
-	sceVu0FVECTOR ambient;
-	float intens;
-	float intens_b;
-	float power;
-	float btimes;
-	float spower;
-	int Enable;
-	int SEnable;
-	int num;
-} SgLIGHT;
-
-#include "graphics/motion/accessory.h"
+#include "graphics/graph3d/sg_dat.h"
 #include "graphics/graph3d/sgsgd.h"
 
 void SgPreRenderDbgOn();

@@ -3,8 +3,8 @@
 
 #include "typedefs.h"
 
-// extern u_int *save_tri2_pointer;
-// extern u_int *save_bw_pointer;
+extern u_int *save_tri2_pointer;
+extern u_int *save_bw_pointer;
 
 void SgSuPDbgOn();
 void SgSuPDbgOff();

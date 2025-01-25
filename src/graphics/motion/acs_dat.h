@@ -48,6 +48,44 @@ typedef struct {
 } CLOTH_DAT;
 
 typedef struct {
+	sceVu0FVECTOR p;
+	sceVu0FVECTOR old;
+	sceVu0FVECTOR v;
+	sceVu0FVECTOR f;
+} C_PARTICLE;
+
+typedef struct {
+	u_short p1;
+	u_short p2;
+	float ldef;
+} SPRING;
+
+typedef struct {
+	C_PARTICLE *particle;
+	SPRING *spring;
+	CLOTH_DAT *cdat;
+	u_short p_num;
+	u_short spring_num;
+	u_char w;
+	u_char h;
+	u_char reset_flg;
+	u_char pad;
+} CLOTH_CTRL;
+
+typedef struct {
+	short int alpha;
+	short int stat;
+} ACS_ALPHA;
+
+typedef struct {
+	u_int type;
+	u_int furn_id;
+	u_int timer;
+	u_int req;
+	u_char alpha;
+} CMOVE_CTRL;
+
+typedef struct {
 	u_char *name;
 	float mass;
 	float Ks;

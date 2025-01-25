@@ -689,6 +689,24 @@ class EFFRDR_RSV(CStructure):
 
 
 ###########################################################################
+# typedef struct {
+# 	u_short pk2;
+# 	u_short mpk;
+# 	u_short acs;
+# 	u_short anm;
+# 	u_short bwc;
+# 	u_short clt;
+# } PLYR_FILE_ID;
+class PLYR_FILE_ID(CStructure):
+    pk2: c_uint16
+    mpk: c_uint16
+    acs: c_uint16
+    anm: c_uint16
+    bwc: c_uint16
+    clt: c_uint16
+
+
+###########################################################################
 # typedef struct { // 0x6
 # 	/* 0x0 */ u_char destination_id;
 # 	/* 0x1 */ u_char message_id;
@@ -783,7 +801,7 @@ class DataVar(pydantic.BaseModel):
             stream.write(f"{type_str} {self.name}")
 
             def sceVu0FVECTOR_to_str(_v: sceVu0FVECTOR):  # pyright: ignore
-                return f"{{ {', '.join(f"{flt}f" for flt in cast(Iterable[c_float], _v))} }}"
+                return f"{{ {', '.join(f'{flt}f' for flt in cast(Iterable[c_float], _v))} }}"
 
             if numel > 1:
                 numel = f"{self.numel}" if not self.nosize else ""

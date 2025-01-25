@@ -12,14 +12,12 @@ typedef struct {
 	sceVu0FVECTOR *diffuse;
 } POINT_LIGHT_WRK;
 
-typedef struct
-{ // 0x8
-    /* 0x0 */ u_short time;
-    /* 0x4 */ float magnif;
+typedef struct {
+    u_short time;
+    float magnif;
 } FSPE_LIGHT_ANM;
 
-typedef enum
-{
+typedef enum {
     ST_FSLA_VACANT = 0,
     ST_FSLA_IN = 1,
     ST_FSLA_EXEC = 2,

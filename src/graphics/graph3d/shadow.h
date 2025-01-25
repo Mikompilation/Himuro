@@ -3,13 +3,13 @@
 
 #include "typedefs.h"
 
-typedef struct
-{ // 0x8
-    /* 0x0 */ int s;
-    /* 0x4 */ int e;
-} BoundLine;
-
+#include "graphics/graph3d/sg_dat.h"
 #include "graphics/graph3d/gra3d.h"
+
+typedef struct {
+    int s;
+    int e;
+} BoundLine;
 
 // extern SgCAMERA scamera;
 

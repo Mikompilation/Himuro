@@ -8,6 +8,8 @@
 #include "ingame/map/furn_spe/fsla_main.h"
 #include "graphics/graph3d/load3d.h"
 #include "graphics/graph3d/light_dat.h"
+#include "graphics/graph3d/sg_dat.h"
+#include "graphics/graph3d/sglight.h"
 
 typedef struct {
 	void *shadow_model;
@@ -22,9 +24,9 @@ typedef struct {
 	u_long shadow_tex0;
 } ShadowHandle;
 
-#include "ingame/map/furn_ctl.h"
-#include "graphics/graph3d/sglight.h"
-#include "graphics/motion/accessory.h"
+// #include "ingame/map/furn_ctl.h"
+// #include "graphics/graph3d/sglight.h"
+// #include "graphics/motion/accessory.h"
 
 extern u_int fly_display[3];
 extern sceVu0FVECTOR fog_param[64];

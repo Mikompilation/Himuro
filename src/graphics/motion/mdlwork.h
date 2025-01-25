@@ -3,56 +3,23 @@
 
 #include "typedefs.h"
 
-typedef struct ANI_CTRL ANI_CTRL;
-
+#include "graphics/graph3d/sg_dat.h"
+#include "graphics/motion/ani_dat.h"
 #include "graphics/motion/mdldat.h"
 #include "graphics/motion/motion.h"
-#include "graphics/motion/mime.h"
+#include "graphics/motion/mime_dat.h"
 
 typedef struct {
-	int playnum;
-	int stat;
-	int loop_rest;
-	int timer;
-	ANI_BUF buf[10];
-	ANI_CODE *code_head;
-	ANI_CODE *code_now;
-	ANI_CODE *loop_start;
-} ANI_CODE_CTRL;
+	u_short pk2;
+	u_short mpk;
+	u_short acs;
+	u_short anm;
+	u_short bwc;
+	u_short clt;
+} PLYR_FILE_ID;
 
-struct ANI_CTRL {
-	ANI_CODE_CTRL anm;
-	MOT_CTRL mot;
-	sceVu0FVECTOR pbak;
-	u_int *mdl_p;
-	u_int *pk2_p;
-	u_int *mpk_p;
-	u_int *base_p;
-	u_int *anm_p;
-	u_int *mtop;
-	u_int *mdat;
-	u_int *tanm_p;
-	MIME_CTRL *mim;
-	MIME_CTRL *bgmim;
-	WMIM_CTRL *wmim;
-	CLOTH_CTRL *cloth_ctrl;
-	u_int mot_num;
-	u_int mim_num;
-	u_int bg_num;
-	u_int wmim_num;
-	u_short ftype;
-	u_short interp_flg;
-};
-
-typedef struct {
-	u_char map_flg;
-	u_short anm_no;
-	u_int *anm_p;
-	u_char pkt_no;
-} ANI_MDL_CTRL;
-
-// extern u_int *plyr_clut_addr;
-// extern u_int *plyr_bwc_addr;
+extern u_int *plyr_clut_addr;
+extern u_int *plyr_bwc_addr;
 
 void ManmdlSetAlpha(void *sgd_top, u_char alpha);
 char motCheckTrRateMdl(u_int mdl_no);

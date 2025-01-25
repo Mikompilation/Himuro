@@ -2,6 +2,7 @@
 #define GRAPHICS_GRAPH3D_SGSU_H
 
 #include "typedefs.h"
+#include "graphics/graph3d/sg_dat.h"
 
 typedef struct {
 	long unsigned int TBP0 : 14;
@@ -34,11 +35,11 @@ typedef struct {
 	u_int *pWeightedList;
 } PHEAD;
 
-// extern SgCOORDUNIT *lcp;
-// extern PHEAD *lphead;
+extern SgCOORDUNIT *lcp;
+extern PHEAD *lphead;
 // extern u_int nextprim;
 // extern u_int *vuvnprim;
-// extern int blocksm;
+extern int blocksm;
 // extern int write_coord;
 
 void _AddColor(float *v);

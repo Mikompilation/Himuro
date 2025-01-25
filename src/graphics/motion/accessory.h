@@ -3,59 +3,8 @@
 
 #include "typedefs.h"
 
+#include "graphics/graph3d/sg_dat.h"
 #include "graphics/motion/acs_dat.h"
-
-typedef struct _SgCOORDUNIT SgCOORDUNIT;
-typedef struct _SgCOORDUNIT _SgCOORDUNIT;
-
-struct _SgCOORDUNIT {
-	sceVu0FMATRIX matrix;
-	sceVu0FMATRIX lwmtx;
-	sceVu0FMATRIX workm;
-	sceVu0FVECTOR rot;
-	_SgCOORDUNIT *parent;
-	u_int flg;
-	u_int edge_check;
-	u_int camin;
-};
-
-typedef struct {
-	sceVu0FVECTOR p;
-	sceVu0FVECTOR old;
-	sceVu0FVECTOR v;
-	sceVu0FVECTOR f;
-} C_PARTICLE;
-
-typedef struct {
-	u_short p1;
-	u_short p2;
-	float ldef;
-} SPRING;
-
-typedef struct {
-	C_PARTICLE *particle;
-	SPRING *spring;
-	CLOTH_DAT *cdat;
-	u_short p_num;
-	u_short spring_num;
-	u_char w;
-	u_char h;
-	u_char reset_flg;
-	u_char pad;
-} CLOTH_CTRL;
-
-typedef struct {
-	short int alpha;
-	short int stat;
-} ACS_ALPHA;
-
-typedef struct {
-	u_int type;
-	u_int furn_id;
-	u_int timer;
-	u_int req;
-	u_char alpha;
-} CMOVE_CTRL;
 
 #include "ingame/map/furn_ctl.h"
 #include "graphics/motion/mdlwork.h"

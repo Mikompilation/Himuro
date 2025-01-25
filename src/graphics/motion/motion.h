@@ -3,7 +3,9 @@
 
 #include "typedefs.h"
 
-#include "graphics/motion/accessory.h"
+#include "graphics/motion/ani_dat.h"
+#include "graphics/motion/mot_dat.h"
+#include "graphics/graph3d/sg_dat.h"
 
 typedef struct {
 	C_PARTICLE *particle;
@@ -18,26 +20,6 @@ typedef struct {
 	u_char stat;
 	u_char move_mode;
 } ROPE_CTRL;
-
-typedef struct {
-	sceVu0FVECTOR rot;
-	sceVu0FVECTOR scale;
-	sceVu0FVECTOR trans;
-} RST_DATA;
-
-typedef struct {
-	u_int *top;
-	u_int *dat;
-	u_int play_id;
-	int cnt;
-	int all_cnt;
-	int inp_allcnt;
-	int inp_cnt;
-	int reso;
-	int reso_cnt;
-	RST_DATA *rst0;
-	RST_DATA *rst1;
-} MOT_CTRL;
 
 typedef struct {
 	u_int *mdl_p;
@@ -86,20 +68,20 @@ typedef struct {
 // extern MIME_CTRL mim_chodo[20];
 // extern u_char mim_chodo_se[20];
 // extern MIME_DAT mim_cdat[2][20];
-// extern ANI_CTRL ani_mdl[20];
-// extern ANI_MDL_CTRL ani_mdl_ctrl[20];
-// extern ENE_PKT_CTRL ene_pkt_ctrl[4];
+extern ANI_CTRL ani_mdl[20];
+extern ANI_MDL_CTRL ani_mdl_ctrl[20];
+extern ENE_PKT_CTRL ene_pkt_ctrl[4];
 // extern ACS_ALPHA plyracs_ctrl[2];
 // extern ROPE_CTRL rope_ctrl[20];
 // extern CMOVE_CTRL cmove_ctrl[10];
-// extern ENE_VRAM_CTRL ene_vram_ctrl[4];
-// extern ENE_VRAM_CTRL ene_vram_bak[4];
-// extern ENE_CHILD_CTRL ene_child_ctrl[4];
-// extern MSN_PLYR_INIT plyr_init_ctrl;
-// extern char plyr_mdl_no;
-// extern u_char mim_mepati_id;
-// extern u_char mim_nigiri_l_id;
-// extern u_char mim_nigiri_r_id;
+extern ENE_VRAM_CTRL ene_vram_ctrl[4];
+extern ENE_VRAM_CTRL ene_vram_bak[4];
+extern ENE_CHILD_CTRL ene_child_ctrl[4];
+extern MSN_PLYR_INIT plyr_init_ctrl;
+extern char plyr_mdl_no;
+extern u_char mim_mepati_id;
+extern u_char mim_nigiri_l_id;
+extern u_char mim_nigiri_r_id;
 // extern QUAKE_CTRL quake;
 // extern PLYR_ACT_WRK plyr_act_wrk;
 // extern float now_frot_x;

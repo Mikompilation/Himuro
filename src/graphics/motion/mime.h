@@ -4,39 +4,9 @@
 #include "typedefs.h"
 
 #include "ingame/map/furn_dat.h"
+#include "graphics/motion/mime_dat.h"
 #include "graphics/motion/acs_dat.h"
-
-typedef struct {
-	sceVu0FVECTOR *vtx;
-	sceVu0FVECTOR *pkt;
-	u_int *dat;
-	u_int vtx_num;
-	u_int p_no;
-} MIME_DAT;
-
-typedef struct {
-	WMIM_DAT *wdat;
-	sceVu0FVECTOR v;
-	sceVu0FVECTOR w;
-	sceVu0FVECTOR pbak;
-} WMIM_CTRL;
-
-typedef struct {
-	MIME_DAT *mdat;
-	int frame;
-	u_short furn_id;
-	u_short cnt;
-	u_char weight_id;
-	u_char parts_id;
-	u_char reso;
-	u_char loop;
-	u_char stat;
-	u_char rev;
-	u_char flg;
-	u_char pad;
-} MIME_CTRL;
-
-// #include "graphics/graph2d/effect_rdr.h"
+#include "graphics/motion/ani_dat.h"
 
 u_int* mimInitMimeCtrl(MIME_CTRL *m_ctrl, MIME_DAT *mdat, u_int *mim_p, u_int *mdl_p, u_int *tmp_p);
 void mimInitAcsCtrl(ANI_CTRL *ani_ctrl, u_short mdl_no);

@@ -4,8 +4,8 @@
 #include "typedefs.h"
 
 extern int init_load_id;
-// extern int init_load_adr;
-// extern int init_load_size;
+extern int init_load_adr;
+extern int init_load_size;
 
 void GameMain();
 int GameInit();
