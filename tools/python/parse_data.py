@@ -707,6 +707,22 @@ class PLYR_FILE_ID(CStructure):
 
 
 ###########################################################################
+# typedef struct {
+# 	float rot0;
+# 	float rot1;
+# 	float spd;
+# 	u_short timer;
+# 	u_short move_type;
+# } PLYR_FURI_DAT;
+class PLYR_FURI_DAT(CStructure):
+    rot0: c_float
+    rot1: c_float
+    spd: c_float
+    timer: c_uint16
+    move_type: c_uint16
+
+
+###########################################################################
 # typedef struct { // 0x6
 # 	/* 0x0 */ u_char destination_id;
 # 	/* 0x1 */ u_char message_id;

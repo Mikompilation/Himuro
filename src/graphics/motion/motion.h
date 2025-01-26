@@ -82,8 +82,8 @@ extern char plyr_mdl_no;
 extern u_char mim_mepati_id;
 extern u_char mim_nigiri_l_id;
 extern u_char mim_nigiri_r_id;
-// extern QUAKE_CTRL quake;
-// extern PLYR_ACT_WRK plyr_act_wrk;
+extern QUAKE_CTRL quake;
+extern PLYR_ACT_WRK plyr_act_wrk;
 // extern float now_frot_x;
 
 void motInitPlayerAnm(char mdl_no);
@@ -116,13 +116,13 @@ void GetPlyrAcsLightPos(float *pos);
 void GetToushuKatanaPos(float *p0, float *p1);
 u_short GetPlyrFtype();
 void motInitInterpAnime(int flame);
-void motInterpMatrix(float *interp[4], float *m1[4], float rate);
-void motMatrix2Quaternion(float *q, float *m[4]);
-void motQuaternion2Matrix(float *m[4], float *q);
+void motInterpMatrix(sceVu0FMATRIX interp, sceVu0FMATRIX m0, sceVu0FMATRIX m1, float rate);
+void motMatrix2Quaternion(float *q, sceVu0FMATRIX m);
+void motQuaternion2Matrix(sceVu0FMATRIX m, float *q);
 void motQuaternionSlerp(float *q, float *q1, float *q2, float rate);
-void LocalRotMatrixX(float *m1[4], float rx);
-void LocalRotMatrixY(float *m1[4], float ry);
-void LocalRotMatrixZ(float *m1[4], float rz);
+void LocalRotMatrixX(sceVu0FMATRIX m0, sceVu0FMATRIX m1, float rx);
+void LocalRotMatrixY(sceVu0FMATRIX m0, sceVu0FMATRIX m1, float ry);
+void LocalRotMatrixZ(sceVu0FMATRIX m0, sceVu0FMATRIX m1, float rz);
 void motInversKinematics(SgCOORDUNIT *cp, float *target, u_int *top_addr, u_char bone_id);
 void movGetMoveval(u_int frame_num);
 void motSetHierarchy(SgCOORDUNIT *coord, u_int *top_addr);
@@ -130,9 +130,9 @@ u_int* SceneInitAnime(u_int *mdl_p, u_int *mot_p, u_int *mim_p, u_int *pkt_p, u_
 u_int* SceneInitOtherAnime(u_int *mdl_p, u_int *mot_p, u_int *mim_p, u_int *pkt_p);
 void motSetCoordFrame(u_int frame);
 void SceneSetCoordFrame(u_int frame, u_int type);
-void motSetInvMatrix(float *m1[4]);
+void motSetInvMatrix(sceVu0FMATRIX m0, sceVu0FMATRIX m1);
 u_int* motAlign128(u_int *addr);
 void motPrintVector(char *str, float *vec);
-void sceRotMatrixXYZ(float *m1[4], float *rot);
+void sceRotMatrixXYZ(sceVu0FMATRIX m0, sceVu0FMATRIX m1, float *rot);
 
 #endif // GRAPHICS_MOTION_MOTION_H

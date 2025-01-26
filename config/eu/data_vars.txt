@@ -117,6 +117,12 @@ load_door_num                  = 0x2feee8; // type:short numel:81 nosize static
 // graphics/motion/mdlwork.c
 plyr_file_id                   = 0x3024e8; // type:PLYR_FILE_ID numel:5 nosize static
 
+// graphics/motion/mdlact.c
+plyr_act_furi0                 = 0x302548; // type:PLYR_FURI_DAT numel:9 nosize
+plyr_act_furi1                 = 0x3025d8; // type:PLYR_FURI_DAT numel:4 nosize
+plyr_act_furi2                 = 0x302618; // type:PLYR_FURI_DAT numel:4 nosize
+plyr_act_furi3                 = 0x302658; // type:PLYR_FURI_DAT numel:6 nosize
+
 // ingame/event/wan_dat.c
 soul_des100                    = 0x34bb60; // type:sceVu0FVECTOR numel:2 nosize
 soul_des101                    = 0x34bb80; // type:sceVu0FVECTOR numel:5 nosize

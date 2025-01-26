@@ -3,13 +3,23 @@
 
 #include "typedefs.h"
 
-#include "graphics/motion/accessory.h"
+#include "graphics/graph3d/sg_dat.h"
 
-// extern char (*plyr_act_func[0])(/* parameters unknown */);
-// extern PLYR_FURI_DAT plyr_act_furi0[0];
-// extern PLYR_FURI_DAT plyr_act_furi1[0];
-// extern PLYR_FURI_DAT plyr_act_furi2[0];
-// extern PLYR_FURI_DAT plyr_act_furi3[0];
+typedef char (*plyr_act_func_t)(SgCOORDUNIT *cp);
+
+typedef struct {
+	float rot0;
+	float rot1;
+	float spd;
+	u_short timer;
+	u_short move_type;
+} PLYR_FURI_DAT;
+
+// extern plyr_act_func_t plyr_act_func[];
+// extern PLYR_FURI_DAT plyr_act_furi0[];
+// extern PLYR_FURI_DAT plyr_act_furi1[];
+// extern PLYR_FURI_DAT plyr_act_furi2[];
+// extern PLYR_FURI_DAT plyr_act_furi3[];
 
 char motPlayerActCtrl(SgCOORDUNIT *cp);
 void motPlyrActExec(SgCOORDUNIT *cp);
