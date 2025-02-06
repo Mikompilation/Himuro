@@ -112,7 +112,7 @@ typedef struct {
 	u_char snum;
 } FURN_DATA_POP;
 
-// extern FURN_DAT furn_dat[0];
+extern FURN_DAT furn_dat[];
 // extern u_int furn_attr_dat[0][5];
 // extern sceVu0FVECTOR furn_photo_center00[0];
 // extern sceVu0FVECTOR furn_photo_center01[0];

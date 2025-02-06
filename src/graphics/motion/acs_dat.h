@@ -137,7 +137,7 @@ typedef struct {
 // extern ROPE_DAT rope_dat8;
 // extern ROPE_DAT rope_dat9;
 // extern ROPE_DAT rope_dat10;
-// extern ROPE_DAT *rope_tbl[0];
+extern ROPE_DAT *rope_tbl[];
 // extern CLOTH cloth_manto0;
 // extern CLOTH cloth_manto1;
 // extern CLOTH cloth_manto2;

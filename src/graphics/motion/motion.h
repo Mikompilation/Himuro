@@ -71,9 +71,9 @@ typedef struct {
 extern ANI_CTRL ani_mdl[20];
 extern ANI_MDL_CTRL ani_mdl_ctrl[20];
 extern ENE_PKT_CTRL ene_pkt_ctrl[4];
-// extern ACS_ALPHA plyracs_ctrl[2];
-// extern ROPE_CTRL rope_ctrl[20];
-// extern CMOVE_CTRL cmove_ctrl[10];
+extern ACS_ALPHA plyracs_ctrl[2];
+extern ROPE_CTRL rope_ctrl[20];
+extern CMOVE_CTRL cmove_ctrl[10];
 extern ENE_VRAM_CTRL ene_vram_ctrl[4];
 extern ENE_VRAM_CTRL ene_vram_bak[4];
 extern ENE_CHILD_CTRL ene_child_ctrl[4];

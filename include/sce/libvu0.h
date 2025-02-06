@@ -3,11 +3,18 @@
 
 #include "typedefs.h"
 
+void sceVu0AddVector(sceVu0FVECTOR v0, sceVu0FVECTOR v1, sceVu0FVECTOR v2);
+void sceVu0SubVector(sceVu0FVECTOR v0, sceVu0FVECTOR v1, sceVu0FVECTOR v2);
+void sceVu0MulVector(sceVu0FVECTOR v0, sceVu0FVECTOR v1, sceVu0FVECTOR v2);
 void sceVu0CopyVector(sceVu0FVECTOR v0, sceVu0FVECTOR v1);
 void sceVu0Normalize(sceVu0FVECTOR v0, sceVu0FVECTOR v1);
 float sceVu0InnerProduct(sceVu0FVECTOR v0, sceVu0FVECTOR v1);
 void sceVu0OuterProduct(sceVu0FVECTOR v0, sceVu0FVECTOR v1, sceVu0FVECTOR v2);
 void sceVu0UnitMatrix(sceVu0FMATRIX m);
+void sceVu0TransposeMatrix(sceVu0FMATRIX m0, sceVu0FMATRIX m1);
+void sceVu0MulMatrix(sceVu0FMATRIX m0, sceVu0FMATRIX m1, sceVu0FMATRIX m2);
+void sceVu0InversMatrix(sceVu0FMATRIX m0, sceVu0FMATRIX m1);
+void sceVu0CopyMatrix(sceVu0FMATRIX m0, sceVu0FMATRIX m1);
 void sceVu0RotMatrixZ(sceVu0FMATRIX m0, sceVu0FMATRIX m1, float rz);
 void sceVu0ApplyMatrix(sceVu0FVECTOR v0, sceVu0FMATRIX m, sceVu0FVECTOR v1);
 void sceVu0RotMatrixX(sceVu0FMATRIX m0, sceVu0FMATRIX m1, float rx);

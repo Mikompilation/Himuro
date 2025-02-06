@@ -45,7 +45,7 @@ ROOT = Path(__file__).parent.resolve()
 TOOLS_DIR = ROOT / "tools"
 
 COMPILER = "ee-gcc2.9-991111-01"
-COMPILER_FLAGS = "-O2 -g2 -gstabs"  # -malign-functions=3
+COMPILER_FLAGS = "-DMATCHING_DECOMP -O2 -g2 -gstabs"  # -malign-functions=3
 
 LANGUAGES: dict[str, str] = {
     "SLUS_203.88": "us",
@@ -65,7 +65,7 @@ def make_compiler_cmd(config_dir: Path, src_path: Path, language: str):
         language_define = "-DBUILD_EU_VERSION"
 
     compiler_includes = f"-I{src_path.parent / 'src'} -I{src_path.parent / 'include'} -Iinclude -isystem include/sdk/ee -isystem include/gcc"
-    assembler_includes = f"-Wa,-I{src_path.parent /'include'} -Wa,-I{src_path.parent}"
+    assembler_includes = f"-Wa,-I{src_path.parent / 'include'} -Wa,-I{src_path.parent}"
     common_includes = f"{compiler_includes} {assembler_includes} {language_define}"
     game_compile_cmd = f"{game_cc_dir}/ee-gcc -c {common_includes} {COMPILER_FLAGS}"
     lib_compile_cmd = f"{lib_cc_dir}/ee-gcc -c -isystem include/{COMPILER} {common_includes} {COMPILER_FLAGS}"
@@ -406,7 +406,7 @@ def main():
     config_dir = Path(args.YAML_FILE).parent
 
     if basename not in LANGUAGES:
-        supported_elfs = f'{set(f"{elf} ({lang})" for elf, lang in LANGUAGES.items())}'.replace("'", "")
+        supported_elfs = f"{set(f'{elf} ({lang})' for elf, lang in LANGUAGES.items())}".replace("'", "")
         print(f"unsupported game ELF. Supported versions are: {supported_elfs}")
         exit(1)
 

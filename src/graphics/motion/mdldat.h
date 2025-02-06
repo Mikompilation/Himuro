@@ -504,7 +504,7 @@ typedef struct {
 // extern ANI_CODE *m042anm_tbl[0];
 // extern ANI_CODE *arei_anm_tbl[0];
 // extern ANI_CODE *arei_loopanm_tbl[0];
-// extern MANMDL_DAT manmdl_dat[0];
+extern MANMDL_DAT manmdl_dat[];
 // extern ANI_CODE **anm_tbl[0];
 
 #endif // GRAPHICS_MOTION_MDLDAT_H

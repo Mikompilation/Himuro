@@ -123,6 +123,11 @@ plyr_act_furi1                 = 0x3025d8; // type:PLYR_FURI_DAT numel:4 nosize
 plyr_act_furi2                 = 0x302618; // type:PLYR_FURI_DAT numel:4 nosize
 plyr_act_furi3                 = 0x302658; // type:PLYR_FURI_DAT numel:6 nosize
 
+// graphics/motion/accessory.c
+ofs                            = 0x3026d0; // type:sceVu0FVECTOR static
+rot                            = 0x3026e0; // type:sceVu0FVECTOR static numel:13
+trans                          = 0x3027b0; // type:sceVu0FVECTOR static numel:13
+
 // ingame/event/wan_dat.c
 soul_des100                    = 0x34bb60; // type:sceVu0FVECTOR numel:2 nosize
 soul_des101                    = 0x34bb80; // type:sceVu0FVECTOR numel:5 nosize
