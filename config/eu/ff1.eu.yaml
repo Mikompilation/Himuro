@@ -114,7 +114,7 @@ segments:
           - [0x67c08,  c,   graphics/graph3d/load3d]
           - [0x68d40,  c,   graphics/motion/mdlwork]
           - [0x6a418,  c,   graphics/motion/mdlact]
-          - [0x6b350,  asm, graphics/motion/mime]
+          - [0x6b350,  c,   graphics/motion/mime]
           - [0x6ce58,  c,   graphics/motion/accessory]
           - [0x70b70,  asm, graphics/motion/motion]
           - [0x73c80,  asm, graphics/motion/anicode]
@@ -453,7 +453,7 @@ segments:
           - { start: 0x25d534, type:  lit4,   vram: 0x35c534, name: graphics/graph3d/gra3d        }
           - { start: 0x25d5a4, type: .lit4,   vram: 0x35c5a4, name: graphics/graph3d/leditor      }
           - { start: 0x25d5cc, type: .lit4,   vram: 0x35c5cc, name: graphics/motion/mdlact        }
-          - { start: 0x25d618, type:  lit4,   vram: 0x35c618, name: graphics/motion/mime          }
+          - { start: 0x25d618, type: .lit4,   vram: 0x35c618, name: graphics/motion/mime          }
           - { start: 0x25d620, type: .lit4,   vram: 0x35c620, name: graphics/motion/accessory     }
           - { start: 0x25d684, type:  lit4,   vram: 0x35c684, name: graphics/motion/motion        }
           - { start: 0x25d698, type:  lit4,   vram: 0x35c698, name: graphics/motion/anicode       }
@@ -535,7 +535,7 @@ segments:
           - { start: 0x25e820, type: .sdata,  vram: 0x35d820, name: graphics/graph3d/load3d       }
           - { start: 0x25e838, type: .sdata,  vram: 0x35d838, name: graphics/motion/mdlwork       }
           - { start: 0x25e848, type: .sdata,  vram: 0x35d848, name: graphics/motion/mdlact        }
-          - { start: 0x25e854, type:  sdata,  vram: 0x35d854, name: graphics/motion/mime          }
+          - { start: 0x25e854, type: .sdata,  vram: 0x35d854, name: graphics/motion/mime          }
           - { start: 0x25e858, type: .sdata,  vram: 0x35d858, name: graphics/motion/accessory     }
           - { start: 0x25e878, type:  sdata,  vram: 0x35d878, name: graphics/motion/motion        }
           - { start: 0x25e8c8, type: .sdata,  vram: 0x35d8c8, name: graphics/graph3d/object       }

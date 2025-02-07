@@ -65,9 +65,9 @@ typedef struct {
 	u_char act_no;
 } PLYR_ACT_WRK;
 
-// extern MIME_CTRL mim_chodo[20];
-// extern u_char mim_chodo_se[20];
-// extern MIME_DAT mim_cdat[2][20];
+extern MIME_CTRL mim_chodo[20];
+extern u_char mim_chodo_se[20];
+extern MIME_DAT mim_cdat[2][20];
 extern ANI_CTRL ani_mdl[20];
 extern ANI_MDL_CTRL ani_mdl_ctrl[20];
 extern ENE_PKT_CTRL ene_pkt_ctrl[4];

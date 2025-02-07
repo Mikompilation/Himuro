@@ -10,7 +10,7 @@
 
 u_int* mimInitMimeCtrl(MIME_CTRL *m_ctrl, MIME_DAT *mdat, u_int *mim_p, u_int *mdl_p, u_int *tmp_p);
 void mimInitAcsCtrl(ANI_CTRL *ani_ctrl, u_short mdl_no);
-void mimInitLoop();
+void mimInitLoop(ANI_CTRL *ani_ctrl);
 void mimRequest(MIME_CTRL *m_ctrl, u_char rev);
 void mimRequestLastFrame(MIME_CTRL *m_ctrl, u_char rev);
 void mimMepatiReq(u_char mode, u_char rev);
@@ -23,11 +23,11 @@ void mimCalcVertex(MIME_CTRL *m_ctrl, WMIM_CTRL *wmim, u_char clear_vtx_flg);
 void mimSetMimeCtrl(MIME_CTRL *m_ctrl, MIME_DAT *mdat, u_int furn_id, u_int parts_id);
 u_int* mimSetMimeDat(MIME_DAT *mdat, u_int *mim_p, u_int *tmp_buf, u_int *mdl_p);
 void mimSetOriVertex(MIME_DAT *mdat);
-void mimSetVertex();
+void mimSetVertex(ANI_CTRL *ani_ctrl);
 void mimClearToScene();
-void mimClearAllVertex();
+void mimClearAllVertex(ANI_CTRL *ani_ctrl);
 u_char mimAddFrame(MIME_CTRL *m_ctrl, u_int *dat);
-void SceneMimSetVertex(u_int frame);
+void SceneMimSetVertex(ANI_CTRL *ani_ctrl, u_int frame);
 void mimChodoInitWork();
 void mimChodoSetWork(u_int furn_id, u_char room_no);
 void mimChodoReleaseWork(u_int furn_id, u_char room_no);
@@ -46,7 +46,7 @@ float mimGetWavdata(u_int *mim_top, u_int key_no, u_int frame);
 sceVu0FVECTOR* mimGetKeymdlTop(u_int *mim_top, u_int key_no);
 void mimAddressMapping(u_int *top_addr);
 void mimPlyrMepatiCtrl();
-void mimInitWeight();
-void mimWeightCtrl(u_int weight_id, float scale);
+void mimInitWeight(ANI_CTRL *ani_ctrl);
+void mimWeightCtrl(ANI_CTRL *ani_ctrl, u_int weight_id, float scale);
 
 #endif // GRAPHICS_MOTION_MIME_H

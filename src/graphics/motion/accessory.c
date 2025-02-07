@@ -18,6 +18,7 @@
 #include "graphics/graph3d/sglib.h"
 #include "graphics/graph3d/gra3d.h"
 #include "graphics/graph3d/sgsu.h"
+#include "graphics/graph3d/libsg.h"
 #include "graphics/motion/mdlact.h"
 #include "graphics/motion/mdlwork.h"
 #include "graphics/motion/motion.h"
