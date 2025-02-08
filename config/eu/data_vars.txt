@@ -32,6 +32,12 @@ gus_wrk                        = 0x27b9d0; // type:LEAVES_TABLE
 hole_wrk                       = 0x27d180; // type:LEAVES_TABLE
 line_wrk                       = 0x27e930; // type:LEAVES_TABLE numel:4
 
+// graphics/graph2d/effect_obj.c
+alpha                          = 0x351660; // type:u_char numel:289
+alpha1                         = 0x351660; // type:u_char numel:289
+alpha2                         = 0x351788; // type:u_char numel:289
+efrenz                         = 0x3518e8; // type:EFRENZ numel:9
+
 // graphics/graph2d/effect_rdr.c
 sunshine                       = 0x29b8e0; // type:SUNSHINE numel:7 nosize static
 ef_pazzene_p                   = 0x29bb10; // type:sceVu0FVECTOR static

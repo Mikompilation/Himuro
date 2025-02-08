@@ -22,6 +22,6 @@ int CheckBoundingBox(u_int *prim);
 int CheckBoundingBoxEdge(u_int *prim);
 void SgSetFog(float min, float max, float near, float far, int r, int g, int b);
 void SgSetWScissorBox(float ax, float ay, float az, float bx, float by, float bz);
-void _SetMulMatrixBB(float *m0[4], float *m1[4]);
+void _SetMulMatrixBB(sceVu0FMATRIX m0, sceVu0FMATRIX m1, sceVu0FMATRIX lw);
 
 #endif // GRAPHICS_GRAPH3D_SGCAM_H

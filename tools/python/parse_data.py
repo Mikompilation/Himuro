@@ -615,6 +615,20 @@ class DEBUG_MENU(CStructure):
 
 
 ###########################################################################
+# typedef struct { // 0x10
+# 	/* 0x0 */ u_int type;
+# 	/* 0x4 */ u_char rgba[4];
+# 	/* 0x8 */ float lscl;
+# 	/* 0xc */ float tscl;
+# } EFRENZ;
+class EFRENZ(CStructure):
+    type: c_uint32
+    rgba: c_uint8 * 4
+    lscl: c_float
+    tscl: c_float
+
+
+###########################################################################
 # typedef struct { // 0x50
 # 	/* 0x00 */ sceVu0FVECTOR bpos;
 # 	/* 0x10 */ sceVu0FVECTOR brot;
