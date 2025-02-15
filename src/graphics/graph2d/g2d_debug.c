@@ -138,7 +138,7 @@ static DEBUG_MENU *dbgmenu_tbl[] = {
 };
 
 static int *dbgmenu_inttbl[] = {
-    &dbg_wrk,
+    &dbg_wrk.mode_on,
     &dbg_wrk.lgt_spot,
     &dbg_wrk.cam_mode,
     &dbg_wrk.eff_z_dep,
@@ -673,7 +673,7 @@ void gra2dDrawDbgMenu()
             }
             else if (now_tree == 44)
             {
-                MakeFogData(dbgmenu_tbl, nlp->pos);
+                MakeFogData((DEBUG_SUB_MENU **)dbgmenu_tbl, nlp->pos);
             }
             else if (now_tree == 45)
             {

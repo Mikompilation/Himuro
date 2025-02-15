@@ -38,6 +38,8 @@ static int room_req_id;
 static ROOM_LOAD_BLOCK backup_block;
 static int room_load_id[32];
 
+static int LoadFDCheck(u_short id, char flg);
+
 u_int* RoomMdlLoadReq(u_int *addr, u_char blk_no, u_char msn_no, u_char room_no, u_char sereq_type)
 {
     ROOM_LOAD_BLOCK *rlb;

@@ -7,7 +7,7 @@
 #include "ingame/menu/item.h"
 #include "ingame/menu/ig_camra.h"
 #include "ingame/menu/ig_menu.h"
-// #include "ingame/menu/ig_album.h"
+// #include "ingame/menu/ig_album.h" // PutDate needs to be implicitly declared
 #include "ingame/menu/ig_file.h"
 #include "graphics/graph2d/message.h"
 #include "graphics/graph2d/compress.h"

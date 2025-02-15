@@ -3,11 +3,12 @@
 #include "enums.h"
 #include "se_door.h"
 
-#include "ingame/map/doortype.h"
+#include "main/glob.h"
 #include "os/eeiop/eese.h"
+#include "os/eeiop/sd_room.h"
+#include "ingame/map/doortype.h"
 #include "ingame/map/door_ctl.h"
 // #include "ingame/map/map_ctrl.h"
-#include "main/glob.h"
 
 static void SDoorNoUse(u_char room_id0, u_char room_id1);
 static void SDoorSetLoadTbl(u_int *ld_tbl, u_char room_id);

@@ -578,11 +578,11 @@ void SgdAddTexOffset(void *sgd_top, int offset)
     u_int *p;
     u_int *nextprim;
     u_int *pk;
-    HeaderSection* hs; // not from debugging symbols
+    HeaderSection* hs;
 
     hs = sgd_top;
 
-    pk = &hs->primitives;
+    pk = (u_int *)&hs->primitives;
 
     for (i = 0; i < hs->blocks; i++)
     {
