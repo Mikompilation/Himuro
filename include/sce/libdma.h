@@ -48,11 +48,30 @@ typedef struct {
     volatile void        *sadr;  u_int   p8[3];
 } sceDmaChan;
 
+#define settag(t,i,a,q) (t)->id=(i),(t)->next=(sceDmaTag *)(a),(t)->qwc=(u_short)(q)
+
+inline static void *sceDmaAddRef(sceDmaTag **tag, int qwc, void *addr)
+{
+    settag(*tag,0x30,addr,qwc);
+    (*tag)++;
+    return(addr);
+}
+
+inline static void *sceDmaAddEnd(sceDmaTag **tag, int qwc, void *addr)
+{
+    void *ret;
+    settag(*tag,0x70,addr,qwc);
+    ret = *tag+1;
+    (*tag) += qwc+1;
+    return(ret);
+}
+
 int sceDmaReset(int mode);
 sceDmaEnv *sceDmaGetEnv(sceDmaEnv *env);
 int sceDmaPutEnv(sceDmaEnv *env);
 sceDmaChan *sceDmaGetChan(int id);
 void sceDmaSend(sceDmaChan *d, void *tag);
 int sceDmaSync(sceDmaChan *d, int mode, int timeout);
+
 
 #endif // SCE_LIBDMA_H
