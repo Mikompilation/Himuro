@@ -125,7 +125,7 @@ extern Q_WORDDATA *pbuf;
 // extern u_int draw_pri[4096][2];
 extern Q_WORDDATA *mpbuf;
 // extern Q_WORDDATA mpbufw[2][8192];
-// extern int draw_mpri[1024][2];
+extern int draw_mpri[1024][2];
 
 void printClut(void *pClut, int ClutColors);
 void ResetClutAlpha(void *pClut, int ClutColors);

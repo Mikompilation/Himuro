@@ -15,7 +15,7 @@ typedef struct {
 	sceVu0FVECTOR pos;
 } RGOST_DSP_WRK;
 
-// extern RGOST_DSP_WRK rg_dsp_wrk[3];
+extern RGOST_DSP_WRK rg_dsp_wrk[3];
 // extern RGOST_WRK rg_wrk[200];
 
 void RareGhostInit();

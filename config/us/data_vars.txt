@@ -113,6 +113,50 @@ dbg_menu_param_item            = 0x2a9758; // type:DEBUG_MENU
 // graphics/graph2d/number.c
 number_tex                     = 0x2ab388; // type:SPRT_DAT numel:4 numel:10 nosize
 
+// graphics/graph2d/rare_ene.c
+rare_ene00101                  = 0x2f5890; // type:SPRT_DAT numel:4 static nosize
+rare_ene00102                  = 0x2f5910; // type:SPRT_DAT numel:4 static nosize
+rare_ene001                    = 0x2f5990; // type:RARE_ENE_1DAT numel:2 static nosize
+rare_ene                       = 0x2f59a0; // type:RARE_ENE_DAT numel:11 nosize static
+rare_textbl                    = 0x2f5a50; // type:u_int numel:11 static nosize
+pazz_ene00101                  = 0x2f5a80; // type:SPRT_DAT numel:2 static nosize
+pazz_ene001                    = 0x2f5ac0; // type:RARE_ENE_1DAT numel:1 static nosize
+pazz_ene00201                  = 0x2f5ac8; // type:SPRT_DAT numel:2 static nosize
+pazz_ene002                    = 0x2f5b08; // type:RARE_ENE_1DAT numel:1 static nosize
+pazz_ene00301                  = 0x2f5b10; // type:SPRT_DAT numel:2 static nosize
+pazz_ene003                    = 0x2f5b50; // type:RARE_ENE_1DAT numel:1 static nosize
+pazz_ene00401                  = 0x2f5b58; // type:SPRT_DAT numel:2 static nosize
+pazz_ene004                    = 0x2f5b98; // type:RARE_ENE_1DAT numel:1 static nosize
+pazz_ene00501                  = 0x2f5ba0; // type:SPRT_DAT numel:2 static nosize
+pazz_ene005                    = 0x2f5be0; // type:RARE_ENE_1DAT numel:1 static nosize
+pazz_ene00601                  = 0x2f5be8; // type:SPRT_DAT numel:2 static nosize
+pazz_ene006                    = 0x2f5c28; // type:RARE_ENE_1DAT numel:1 static nosize
+pazz_ene00701                  = 0x2f5c30; // type:SPRT_DAT numel:2 static nosize
+pazz_ene007                    = 0x2f5c70; // type:RARE_ENE_1DAT numel:1 static nosize
+pazz_ene10301                  = 0x2f5c78; // type:SPRT_DAT numel:2 static nosize
+pazz_ene103                    = 0x2f5cb8; // type:RARE_ENE_1DAT numel:1 static nosize
+pazz_ene                       = 0x2f5cc0; // type:RARE_ENE_DAT numel:9 static nosize
+pazz_textbl                    = 0x2f5d50; // type:u_int numel:9 nosize
+0x2f5890                       = rare_ene00101;
+0x2f5910                       = rare_ene00102;
+0x2f5990                       = rare_ene001;
+0x2f5a80                       = pazz_ene00101;
+0x2f5ac0                       = pazz_ene001;
+0x2f5ac8                       = pazz_ene00201;
+0x2f5b08                       = pazz_ene002;
+0x2f5b10                       = pazz_ene00301;
+0x2f5b50                       = pazz_ene003;
+0x2f5b58                       = pazz_ene00401;
+0x2f5b98                       = pazz_ene004;
+0x2f5ba0                       = pazz_ene00501;
+0x2f5be0                       = pazz_ene005;
+0x2f5be8                       = pazz_ene00601;
+0x2f5c28                       = pazz_ene006;
+0x2f5c30                       = pazz_ene00701;
+0x2f5c70                       = pazz_ene007;
+0x2f5c78                       = pazz_ene10301;
+0x2f5cb8                       = pazz_ene103;
+
 // graphics/graph3d/leditor.c
 room_name                      = 0x2f8f40; // type:c_str numel:42 nosize static
 

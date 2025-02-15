@@ -737,6 +737,33 @@ class PLYR_FURI_DAT(CStructure):
 
 
 ###########################################################################
+# typedef struct { // 0x8
+# 	/* 0x0 */ SPRT_DAT *spr;
+# 	/* 0x4 */ u_int num;
+# } RARE_ENE_1DAT;
+class RARE_ENE_1DAT(CStructure):
+    spr: c_addr_ptr
+    num: c_uint32
+
+
+# typedef struct { // 0x10
+# 	/* 0x0 */ RARE_ENE_1DAT *re1d;
+# 	/* 0x4 */ float sclw;
+# 	/* 0x8 */ float sclh;
+# 	/* 0xc */ u_short attr;
+# 	/* 0xe */ u_char attr_sub;
+# 	/* 0xf */ u_char pat;
+# } RARE_ENE_DAT;
+class RARE_ENE_DAT(CStructure):
+    re1d: c_addr_ptr
+    sclw: c_float
+    sclh: c_float
+    attr: c_uint16
+    attr_sub: c_uint8
+    pat: c_uint8
+
+
+###########################################################################
 # typedef struct { // 0x6
 # 	/* 0x0 */ u_char destination_id;
 # 	/* 0x1 */ u_char message_id;
@@ -844,7 +871,7 @@ class DataVar(pydantic.BaseModel):
                 assert len(var_data) == 1 and var_data[0].__class__ is sceVu0FVECTOR
                 var_str = sceVu0FVECTOR_to_str(var_data[0])
             stream.write(f" = {var_str};")
-        elif self.type == c_str:
+        elif self.type == c_str:  # pyright: ignore
             assert numel > 1, "we only handle string arrays here, simple strings should be embedded in the source"
             var_data = (self.type * numel).from_buffer_copy(self._elf.read(numel * c_sizeof(self.type)))  # pyright: ignore
             stream = io.StringIO()
