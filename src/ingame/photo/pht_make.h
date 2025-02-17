@@ -2,6 +2,7 @@
 #define INGAME_PHOTO_PHT_MAKE_H
 
 #include "typedefs.h"
+#include "graphics/graph2d/sprt.h"
 
 extern SPRT_DAT hintdat[];
 // extern SPRT_DAT hintreadat[0];

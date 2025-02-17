@@ -1,5 +1,13 @@
 #include "common.h"
 
+#ifdef MATCHING_DECOMP
+#define INCLUDING_FROM_CAMERA_C
+#include "mdlwork.h"
+#undef INCLUDING_FROM_CAMERA_C
+#else
+#include "camera.h"
+#endif
+
 INCLUDE_ASM(const s32, "ingame/camera/camera", CameraMain);
 
 INCLUDE_ASM(const s32, "ingame/camera/camera", KonwakuCamCtrl);

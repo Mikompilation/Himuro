@@ -14,7 +14,7 @@ from ctypes import c_uint16, c_int16, c_uint64, c_uint32, c_int32, c_uint8, c_fl
 from typing import Protocol, BinaryIO, Type, Iterable, cast
 from pathlib import Path
 
-from cstruct import CStructure, ctypes_types, CTypeType, c_addr_ptr, c_str
+from cstruct import CStructure, ctypes_types, CTypeType, c_addr_ptr, c_str, print_carr
 
 
 def vram2offset(vram: int):
@@ -764,6 +764,114 @@ class RARE_ENE_DAT(CStructure):
 
 
 ###########################################################################
+# typedef struct { // 0x40
+# 	/* 0x00 */ u_int attr1;
+# 	/* 0x04 */ u_short dst_gthr;
+# 	/* 0x06 */ u_char way_gthr;
+# 	/* 0x07 */ u_char atk_ptn;
+# 	/* 0x08 */ u_char wspd;
+# 	/* 0x09 */ u_char rspd;
+# 	/* 0x0a */ u_short hp;
+# 	/* 0x0c */ u_short atk_rng;
+# 	/* 0x0e */ u_short hit_rng;
+# 	/* 0x10 */ u_short chance_rng;
+# 	/* 0x12 */ short int hit_adjx;
+# 	/* 0x14 */ u_short atk_p;
+# 	/* 0x16 */ u_short atk_h;
+# 	/* 0x18 */ u_char atk;
+# 	/* 0x19 */ u_char atk_tm;
+# 	/* 0x1a */ u_short mdl_no;
+# 	/* 0x1c */ u_short anm_no;
+# 	/* 0x20 */ u_int se_no;
+# 	/* 0x24 */ u_int adpcm_no;
+# 	/* 0x28 */ int dead_adpcm;
+# 	/* 0x2c */ u_short point_base;
+# 	/* 0x2e */ u_char hint_pic;
+# 	/* 0x2f */ u_char aura_alp;
+# 	/* 0x30 */ u_char area[6];
+# 	/* 0x36 */ u_short dir;
+# 	/* 0x38 */ u_short px;
+# 	/* 0x3a */ short int py;
+# 	/* 0x3c */ u_short pz;
+# } ENE_DAT;
+class ENE_DAT(CStructure):
+    attr1: c_uint32
+    dst_gthr: c_uint16
+    way_gthr: c_uint8
+    atk_ptn: c_uint8
+    wspd: c_uint8
+    rspd: c_uint8
+    hp: c_uint16
+    atk_rng: c_uint16
+    hit_rng: c_uint16
+    chance_rng: c_uint16
+    hit_adjx: c_int16
+    atk_p: c_uint16
+    atk_h: c_uint16
+    atk: c_uint8
+    atk_tm: c_uint8
+    mdl_no: c_uint16
+    anm_no: c_uint16
+    se_no: c_uint32
+    adpcm_no: c_uint32
+    dead_adpcm: c_int32
+    point_base: c_uint16
+    hint_pic: c_uint8
+    aura_alp: c_uint8
+    area: c_uint8 * 6
+    dir: c_uint16
+    px: c_uint16
+    py: c_int16
+    pz: c_uint16
+
+
+# typedef struct { // 0x20
+# 	/* 0x00 */ u_char dat_no;
+# 	/* 0x01 */ u_char soul_no;
+# 	/* 0x02 */ u_short dir;
+# 	/* 0x04 */ u_short px;
+# 	/* 0x06 */ short int py;
+# 	/* 0x08 */ u_short pz;
+# 	/* 0x0a */ u_short adpcm_tm;
+# 	/* 0x0c */ int adpcm_no;
+# 	/* 0x10 */ u_short rng;
+# 	/* 0x12 */ u_short mdl_no;
+# 	/* 0x14 */ u_short anm_no;
+# 	/* 0x16 */ u_short point_base;
+# 	/* 0x18 */ u_int se_no;
+# 	/* 0x1c */ int se_foot;
+# } AENE_INFO_DAT;
+class AENE_INFO_DAT(CStructure):
+    dat_no: c_uint8
+    soul_no: c_uint8
+    dir: c_uint16
+    px: c_uint16
+    py: c_int16
+    pz: c_uint16
+    adpcm_tm: c_uint16
+    adpcm_no: c_int32
+    rng: c_uint16
+    mdl_no: c_uint16
+    anm_no: c_uint16
+    point_base: c_uint16
+    se_no: c_uint32
+    se_foot: c_int32
+
+
+# typedef struct { // 0x8
+# 	/* 0x0 */ u_short dmg;
+# 	/* 0x2 */ u_short hit_rng;
+# 	/* 0x4 */ u_short mdl_no;
+# 	/* 0x6 */ u_short cond;
+# } FLY_DATA;
+class FLY_DATA(CStructure):
+    dmg: c_uint16
+    hit_rng: c_uint16
+    mdl_no: c_uint16
+    cond: c_uint16
+
+
+###########################################################################
 # typedef struct { // 0x6
 # 	/* 0x0 */ u_char destination_id;
 # 	/* 0x1 */ u_char message_id;
@@ -814,11 +922,21 @@ class DataVar(pydantic.BaseModel):
     nosize: bool = False
     static: bool = False
 
+    num_ptr: int = 0
+
+    @pydantic.model_validator(mode="after")
+    def store_num_ptr(self):
+        # transfer class attribute to instance
+        if DataVar.num_ptr > 0:
+            self.num_ptr = 1  # DataVar._num_ptr
+        return self
+
     @pydantic.field_validator("type", mode="before")
     @classmethod
     def type_from_str(cls, v: str | Type[CStructure] | CTypeType) -> Type[CStructure] | CTypeType | sceVu0FVECTOR:  # pyright: ignore
         if not isinstance(v, str):
             return v
+        cls.num_ptr = v.count("*")  # temporary store num_ptr in class attribute
         v = v.rstrip("*")  # remove pointer(s)
         if v in ctypes_types:
             return ctypes_types[v]
@@ -836,9 +954,36 @@ class DataVar(pydantic.BaseModel):
 
         if isinstance(self.numel, list):
             numel = math.prod(self.numel)
+            ndims = len(self.numel)
         else:
             numel = max(1, self.numel)
-        if issubclass(self.type, CStructure):  # pyright: ignore
+            ndims = 1
+        if self.num_ptr > 0:
+            var_data = (c_addr_ptr * numel).from_buffer_copy(self._elf.read(numel * c_sizeof(c_addr_ptr)))
+            if issubclass(self.type, CStructure):  # pyright: ignore
+                type_str = self.type.__name__ + ("*" * self.num_ptr)
+            elif self.type == sceVu0FVECTOR:  # pyright: ignore
+                type_str = "sceVu0FVECTOR"
+            else:
+                type_str = next(
+                    k
+                    for k, v in ctypes_types.items()
+                    if getattr(v, "_type_") == getattr(self.type, "_type_")  # pyright: ignore
+                )
+            stream = io.StringIO()
+            if self.static:
+                stream.write("static ")
+            stream.write(f"{type_str} {self.name}")
+            if numel > 1:
+                numel = f"{self.numel}" if not self.nosize else ""
+                var_str = f"{{ {', '.join(str(var) for var in cast(Iterable[c_addr_ptr], var_data))}, }}"  # pyright: ignore
+                stream.write(f"[{numel}]")
+            else:
+                # should have been parsed as c_float_Array_4_Array_1
+                assert len(var_data) == 1 and var_data[0].__class__ is c_addr_ptr
+                var_str = str(var_data[0])
+            stream.write(f" = {var_str};")
+        elif issubclass(self.type, CStructure):  # pyright: ignore
             data = self._elf.read(numel * self.type.sizeof())
 
             return self.type.dumps(
@@ -883,16 +1028,33 @@ class DataVar(pydantic.BaseModel):
                 stream.write(f"{var.to_str(self._elf)},")
             stream.write("};")
         else:
-            var_data = (self.type * numel).from_buffer_copy(self._elf.read(numel * c_sizeof(self.type)))  # pyright: ignore
+            typ = self.type  # pyright: ignore
+            if ndims == 1:
+                typ *= numel  # pyright: ignore
+            elif isinstance(self.numel, list):
+                for n in reversed(self.numel):
+                    typ *= n  # pyright: ignore
+            var_data = (typ).from_buffer_copy(self._elf.read(numel * c_sizeof(self.type)))  # pyright: ignore
             type_str = next(k for k, v in ctypes_types.items() if getattr(v, "_type_") == getattr(self.type, "_type_"))  # pyright: ignore
             stream = io.StringIO()
             if self.static:
                 stream.write("static ")
             stream.write(f"{type_str} {self.name}")
-            if numel > 1:
+            if ndims == 1:
                 numel = f"{self.numel}" if not self.nosize else ""
                 var_str = f"{{ {', '.join(f'{var}' for var in cast(Iterable[CTypeType], var_data))} }}"
                 stream.write(f"[{numel}]")
+            elif ndims > 1:
+                assert isinstance(self.numel, list)
+                numel = ""
+                for n, num in enumerate(self.numel):
+                    numel += "[]" if n == 0 and self.nosize else f"[{num}]"
+                stream.write(numel)
+                tmpbuf = io.StringIO()
+                tmpbuf.write("{")
+                print_carr(var_data, tmpbuf)  # pyright: ignore
+                tmpbuf.write("}")
+                var_str = tmpbuf.getvalue()
             else:
                 var_str = f"{var_data.value}"  # pyright: ignore
             stream.write(f" = {var_str};")

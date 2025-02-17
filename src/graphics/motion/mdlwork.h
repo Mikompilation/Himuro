@@ -48,7 +48,16 @@ u_int* GetOkuraBuffer(u_char work_id);
 void ReqMsnInitPlyr(u_char msn_no);
 char MsnInitPlyr();
 void motInitMsn();
-// void motInitAniMdlBuf(); // needs to be commented out for InGameInit ingame/ingame.c to compile correctly
+
+#ifdef MATCHING_DECOMP
+#ifdef INCLUDING_FROM_MDLWORK_C
+// fix for undeclared motInitAniMdlBuf in header
+void motInitAniMdlBuf();
+#endif
+#else
+void motInitAniMdlBuf();
+#endif
+
 void motInitAniMdlBufSub(ANI_MDL_CTRL *am_ctrl);
 u_char motSetAniMdlBuf(u_int anm_no, u_int *anm_p);
 void motReleaseOneAniMdlBuf(u_int anm_no, u_int *anm_p);

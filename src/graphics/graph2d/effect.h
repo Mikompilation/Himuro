@@ -112,7 +112,18 @@ extern int set_buffer[2];
 void InitEffects();
 void InitEffectsEF();
 void EffectEndSet();
+
+#ifdef MATCHING_DECOMP
+#ifdef INCLUDING_FROM_EFFECT_C
+// fix for undeclared SetEffects in header
 void* SetEffects(int id, int fl, ...);
+#else
+#define SetEffects(args...) (void *)SetEffects(args)
+#endif
+#else
+void* SetEffects(int id, int fl, ...);
+#endif
+
 void ResetEffects(void *p);
 int SearchEmptyEffectBuf();
 void EffectZSort();

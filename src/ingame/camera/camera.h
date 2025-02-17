@@ -232,7 +232,7 @@ typedef struct
 // extern u_short dc3290[0];
 // extern u_short *dc_no_tbl3[0];
 // extern u_short drm_cam_no[12];
-// extern u_char DBG_cam_id_move_chk;
+extern u_char DBG_cam_id_move_chk;
 // extern u_char cd_edit_end;
 // extern int msn_no;
 // extern int renewal_data_chk;
@@ -277,7 +277,16 @@ u_char SetMapCamDat3(MAP_CAM_DAT *mcd, u_char id);
 u_char SetMapCamDat4(MAP_CAM_DAT *mcd, u_char id);
 u_char SetMapCamDat5(MAP_CAM_DAT *mcd);
 void SaveCamDat(u_char kind, u_char mn);
+
+#ifdef MATCHING_DECOMP
+#ifdef INCLUDING_FROM_CAMERA_C
+// fix for undeclared ReqFinderInOverRap in header
 void ReqFinderInOverRap(u_short time);
+#endif
+#else
+void ReqFinderInOverRap(u_short time);
+#endif
+
 void FinderInOverRapCtrl();
 void PlyrDmgCameraCtrl();
 void ReqDramaCamera(u_char req, u_short no, u_short time);

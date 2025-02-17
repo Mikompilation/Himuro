@@ -178,6 +178,40 @@ ofs                            = 0x3026d0; // type:sceVu0FVECTOR static
 rot                            = 0x3026e0; // type:sceVu0FVECTOR static numel:13
 trans                          = 0x3027b0; // type:sceVu0FVECTOR static numel:13
 
+// ingame/enemy/ene_ctl.c
+jene_dat0                      = 0x325d70; // type:ENE_DAT numel:1 nosize
+aene_info_dat0                 = 0x325db0; // type:AENE_INFO_DAT numel:3 nosize
+fly_dat                        = 0x325e10; // type:FLY_DATA numel:7 nosize
+jene_dat1                      = 0x325e48; // type:ENE_DAT numel:13 nosize
+fene_dat1                      = 0x326188; // type:ENE_DAT numel:8 nosize
+aene_info_dat1                 = 0x326388; // type:AENE_INFO_DAT numel:34 nosize
+jene_dat2                      = 0x3267c8; // type:ENE_DAT numel:21 nosize
+fene_dat2                      = 0x326d08; // type:ENE_DAT numel:9 nosize
+aene_info_dat2                 = 0x326f48; // type:AENE_INFO_DAT numel:17 nosize
+jene_dat3                      = 0x327168; // type:ENE_DAT numel:9 nosize
+fene_dat3                      = 0x3273a8; // type:ENE_DAT numel:20 nosize
+aene_info_dat3                 = 0x3278a8; // type:AENE_INFO_DAT numel:2 nosize
+jene_dat4                      = 0x3278e8; // type:ENE_DAT numel:9 nosize
+fene_dat4                      = 0x327b28; // type:ENE_DAT numel:16 nosize
+aene_info_dat4                 = 0x327f28; // type:AENE_INFO_DAT numel:1 nosize
+jene_dat                       = 0x327f48; // type:ENE_DAT* numel:5 nosize
+fene_dat                       = 0x327f60; // type:ENE_DAT* numel:5 nosize
+aene_info_dat                  = 0x327f78; // type:AENE_INFO_DAT* numel:5 nosize
+0x326188                       = fene_dat1;
+0x326d08                       = fene_dat2;
+0x3273a8                       = fene_dat3;
+0x327b28                       = fene_dat4;
+0x325d70                       = jene_dat0;
+0x325db0                       = aene_info_dat0;
+0x325e48                       = jene_dat1;
+0x326388                       = aene_info_dat1;
+0x3267c8                       = jene_dat2;
+0x326f48                       = aene_info_dat2;
+0x327168                       = jene_dat3;
+0x3278a8                       = aene_info_dat3;
+0x3278e8                       = jene_dat4;
+0x327f28                       = aene_info_dat4;
+
 // ingame/event/wan_dat.c
 soul_des100                    = 0x34bb60; // type:sceVu0FVECTOR numel:2 nosize
 soul_des101                    = 0x34bb80; // type:sceVu0FVECTOR numel:5 nosize

@@ -1,7 +1,14 @@
 #include "common.h"
 #include "typedefs.h"
 #include "enums.h"
+
+#ifdef MATCHING_DECOMP
+#define INCLUDING_FROM_MDLWORK_C
 #include "mdlwork.h"
+#undef INCLUDING_FROM_MDLWORK_C
+#else
+#include "mdlwork.h"
+#endif
 
 #include "sce/misc/diei.h"
 

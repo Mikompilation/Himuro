@@ -1,7 +1,10 @@
 #include "common.h"
 #include "typedefs.h"
 #include "enums.h"
+
+#define INCLUDING_FROM_EFFECT_C
 #include "effect.h"
+#undef INCLUDING_FROM_EFFECT_C
 
 #include "gcc/stdarg.h"
 
