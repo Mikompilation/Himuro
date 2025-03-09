@@ -13,7 +13,8 @@ typedef unsigned char u_char;
 typedef unsigned int u_int;
 typedef unsigned int u_long128 __attribute__ ((mode (TI)));
 
-typedef int qword[4] 	__attribute__ ((aligned(16)));
+typedef long int dword[2] __attribute__ ((aligned(16)));;
+typedef int qword[4] __attribute__ ((aligned(16)));
 typedef int sceVu0IVECTOR[4] __attribute__((aligned (16)));
 typedef float sceVu0FVECTOR[4] __attribute__((aligned (16)));
 typedef float sceVu0FMATRIX[4][4] __attribute__((aligned (16)));

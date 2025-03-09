@@ -40,7 +40,7 @@ extern PHEAD *lphead;
 // extern u_int nextprim;
 // extern u_int *vuvnprim;
 extern int blocksm;
-// extern int write_coord;
+extern int write_coord;
 
 void _AddColor(float *v);
 void SgSuDebugOn();
@@ -64,7 +64,7 @@ void AppendVUProgTag(u_int *prog);
 void LoadSgProg(int load_prog);
 void SetUpSortUnit();
 void SgSortUnit(void *sgd_top, int pnum);
-void SgSortUnitKind(void *sgd_top, int num);
+// void SgSortUnitKind(void *sgd_top, int num);
 void _SetLWMatrix0();
 void _SetLWMatrix1();
 void _SetRotTransPersMatrix();

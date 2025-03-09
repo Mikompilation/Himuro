@@ -6,7 +6,7 @@
 #include "ingame/camera/camera.h"
 
 // extern sceVu0FVECTOR clip_volume;
-// extern SgCAMERA *nowcamera;
+extern SgCAMERA *nowcamera;
 
 void SetViewScreenClipMatrix(SgCAMERA *camera, float scrz);
 void SgSetRefCamera(SgCAMERA *camera);
@@ -14,8 +14,8 @@ void SetViewScreenClipMatrixOrtho(SgCAMERA *camera, float scrz);
 void SgSetRefCameraOrtho(SgCAMERA *camera);
 void SetClipValue(float minx, float maxx, float miny, float maxy);
 void printClipValue();
-int BoundClip(float *ed, float *v);
-int BoundClipQ(float *v0, float *v1);
+int BoundClip(sceVu0FVECTOR, sceVu0FVECTOR);
+int BoundClipQ(sceVu0FVECTOR, sceVu0FVECTOR, sceVu0FVECTOR);
 void printBoundingBox(u_int *prim);
 int ClipCheck(sceVu0FVECTOR *vec);
 int CheckBoundingBox(u_int *prim);

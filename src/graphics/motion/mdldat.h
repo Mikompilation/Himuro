@@ -234,7 +234,7 @@ typedef struct {
 // extern ANI_CODE m018anm014[0];
 // extern ANI_CODE m018anm015[0];
 // extern ANI_CODE m018anm016[0];
-// extern ANI_CODE m019anm000[0];
+extern ANI_CODE m019anm000[];
 // extern ANI_CODE m019anm001[0];
 // extern ANI_CODE m019anm002[0];
 // extern ANI_CODE m019anm006[0];

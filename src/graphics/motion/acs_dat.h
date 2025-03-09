@@ -148,7 +148,7 @@ extern ROPE_DAT *rope_tbl[];
 // extern CLOTH cloth_nawa0;
 // extern CLOTH cloth_nawa1;
 // extern CLOTH cloth_furisode;
-// extern COLLISION_DAT m000_collision[0];
+extern COLLISION_DAT m000_collision[];
 // extern sceVu0FVECTOR m006_rist_vtx0[0];
 // extern sceVu0FVECTOR m006_rist_vtx1[0];
 // extern CLOTH_DAT m006_cloth[0];

@@ -3132,3 +3132,6 @@ stf                                      = 0x00409c30;
 
 /* labels found by spimdisasm that are not symbols */
 D_00350000                               = 0x00350000;
+
+/* vudata */
+dma                                      = 0x0024a340;

@@ -3001,3 +3001,6 @@ end_cam_pos                              = 0x00402e70;
 cam_move_speed                           = 0x00402e80;
 cam_ref_adjust_val                       = 0x00402e90;
 stf                                      = 0x00402ea0;
+
+/* vutext */
+dma                                      = 0x002465b0;

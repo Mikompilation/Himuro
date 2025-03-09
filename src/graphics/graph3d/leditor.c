@@ -12,6 +12,9 @@
 #include "graphics/graph3d/sglight.h"
 
 #include "data/room_name.h" // static char *room_name[];
+static u_int *ldata_top;
+static u_int *pdata_top;
+static u_int *sdata_top;
 
 static sceVu0FVECTOR le_ambient;
 static SgLIGHT le_lights[3];

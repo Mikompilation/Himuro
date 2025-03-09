@@ -26,9 +26,9 @@ typedef struct
 
 #include "ingame/camera/camera.h"
 
-// extern sceVu0FMATRIX mir_mtx;
-// extern sceVu0FVECTOR mir_norm;
-// extern sceVu0FVECTOR mir_center;
+extern sceVu0FMATRIX mir_mtx;
+extern sceVu0FVECTOR mir_norm;
+extern sceVu0FVECTOR mir_center;
 // extern int mirror_points;
 // extern sceVu0FVECTOR mirror_lpos[5];
 // extern sceVu0FVECTOR mirror_cval[5];
@@ -43,7 +43,7 @@ void MirrorPrim(u_int *prim);
 int PreMirrorPrim(SgCAMERA *camera, u_int *prim);
 void MirrorBufferFlush(int tlen);
 void CalcMirrorMatrix(SgCAMERA *camera);
-void MirrorDraw(SgCAMERA *camera, void *sgd_top, void (*render_func)(/* parameters unknown */));
+// void MirrorDraw(SgCAMERA *camera, void *sgd_top, void (*render_func)(/* parameters unknown */));
 void MirrorRender(SgCAMERA *camera, void (*render_func)(/* parameters unknown */));
 
 #endif // GRAPHICS_GRAPH3D_MIRROR_H

@@ -157,6 +157,14 @@ pazz_textbl                    = 0x2fb990; // type:u_int numel:9 nosize
 0x2fb8b8                       = pazz_ene10301;
 0x2fb8f8                       = pazz_ene103;
 
+// graphics/graph2d/gra3d.c
+fog_param                      = 0x2fb9e0; // type:sceVu0FVECTOR numel:64
+fog_rgb                        = 0x2fbde0; // type:sceVu0IVECTOR numel:64
+fog_param_finder               = 0x2fc1e0; // type:sceVu0FVECTOR numel:64
+fog_rgb_finder                 = 0x2fc5e0; // type:sceVu0IVECTOR numel:64
+girlbox                        = 0x2fcd50; // type:sceVu0FVECTOR numel:8 nosize static
+enebox                         = 0x2fcdd0; // type:sceVu0FVECTOR numel:8 nosize static
+
 // graphics/graph3d/leditor.c
 room_name                      = 0x2feb80; // type:c_str numel:42 nosize static
 

@@ -282,6 +282,8 @@
     ((u_long)(fge) << 5) | ((u_long)(abe) << 6)  | ((u_long)(aa1) << 7) | \
     ((u_long)(fst) << 8) | ((u_long)(ctxt) << 9) | ((u_long)(fix) << 10))
 
+#define SCE_GS_SET_DTHE(dthe) ((u_long)(dthe))
+
 typedef struct {
     unsigned long CLAMP:1;
     unsigned long pad01:63;

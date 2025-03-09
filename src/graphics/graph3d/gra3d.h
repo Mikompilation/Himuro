@@ -10,57 +10,41 @@
 #include "graphics/graph3d/light_dat.h"
 #include "graphics/graph3d/sg_dat.h"
 #include "graphics/graph3d/sglight.h"
-
-typedef struct {
-	void *shadow_model;
-	int smodel_num;
-	void **search_model;
-	int search_num;
-	void *source_model;
-	sceVu0FVECTOR direction;
-	sceVu0FVECTOR *bbox;
-	SgCAMERA *camera;
-	sceVu0IVECTOR color;
-	u_long shadow_tex0;
-} ShadowHandle;
-
-// #include "ingame/map/furn_ctl.h"
-// #include "graphics/graph3d/sglight.h"
-// #include "graphics/motion/accessory.h"
+#include "graphics/graph3d/shadow.h"
 
 extern u_int fly_display[3];
 extern sceVu0FVECTOR fog_param[64];
 extern sceVu0IVECTOR fog_rgb[64];
 extern sceVu0FVECTOR fog_param_finder[64];
 extern sceVu0IVECTOR fog_rgb_finder[64];
-// extern int disp_frame_counter;
-// extern u_char mimchodo_num[0];
-// extern u_int *pmanmodel[70];
-// extern u_int *pmanmpk[70];
-// extern u_int *pmanpk2[70];
-// extern u_int *pgirlbase;
-// extern u_int *pgirlshadow;
-// extern u_int *pgirlacs[2];
-// extern sceVu0FMATRIX runit_mtx;
-// extern LIGHT_PACK girls_light;
-// extern LIGHT_PACK enemy_light;
-// extern u_int *ssearch_models[15];
-// extern u_int search_num;
-// extern u_int *ssearch_models2[15];
-// extern u_int search_num2;
-// extern sceVu0FVECTOR room_ambient_light;
-// extern SgLIGHT room_pararell_light[12];
-// extern SgLIGHT room_point_light[16];
-// extern SgLIGHT room_spot_light[16];
+extern int disp_frame_counter;
+extern u_char mimchodo_num[];
+extern u_int *pmanmodel[70];
+extern u_int *pmanmpk[70];
+extern u_int *pmanpk2[70];
+extern u_int *pgirlbase;
+extern u_int *pgirlshadow;
+extern u_int *pgirlacs[]; // [2] wrong declaration
+extern sceVu0FMATRIX runit_mtx;
+extern LIGHT_PACK girls_light;
+extern LIGHT_PACK enemy_light;
+extern u_int *ssearch_models[15];
+extern u_int search_num;
+extern u_int *ssearch_models2[15];
+extern u_int search_num2;
+extern sceVu0FVECTOR room_ambient_light;
+extern SgLIGHT room_pararell_light[12];
+extern SgLIGHT room_point_light[16];
+extern SgLIGHT room_spot_light[16];
 
 u_int* LoadDataFromDVD(u_char *fname);
 u_int* LoadDataFromDVD2(u_char *fname, u_int *addr);
 void LoadPackedTextureFromMemory(u_int *pointer);
 void LoadPackedTexture(u_char *fname);
-void CalcRoomCoord(void *sgd_top, float *pos);
-void SetUpRoomCoordinate(int disp_room, float *pos);
+void CalcRoomCoord(void *sgd_top, sceVu0FVECTOR pos);
+void SetUpRoomCoordinate(int disp_room, sceVu0FVECTOR pos);
 void ChoudoPreRender(FURN_WRK *furn);
-void ChoudoPreRenderDual();
+void ChoudoPreRenderDual(FURN_WRK *furn);
 void SetPreRender(void *buf, void *light_buf);
 void ScenePrerender();
 void RequestBlackWhiteMode();
@@ -86,13 +70,13 @@ void InitRequestSpirit();
 void RequestFly(int no, int swch);
 void InitRequestFly();
 void SetSgSpotLight(SPOT_WRK *spot, SgLIGHT *plight);
-void SetMyLight(LIGHT_PACK *light_pack, float *eyevec);
-void TransMyLight(LIGHT_PACK *dest_pack, float *pos);
+void SetMyLight(LIGHT_PACK *light_pack, sceVu0FVECTOR eyevec);
+void TransMyLight(LIGHT_PACK *dest_pack, LIGHT_PACK *light_pack, sceVu0FVECTOR pos);
 void CalcReflectLight();
-void AppendReflectLight();
-void DeleteReflectLight();
-void SetMyLightObj(LIGHT_PACK *trans_pack, float *cam_zd, float *pos);
-void SetMyLightRoom(float *eyevec);
+void AppendReflectLight(LIGHT_PACK *light_pack);
+void DeleteReflectLight(LIGHT_PACK *light_pack);
+void SetMyLightObj(LIGHT_PACK *trans_pack, LIGHT_PACK *light_pack, sceVu0FVECTOR cam_zd, sceVu0FVECTOR pos);
+void SetMyLightRoom(LIGHT_PACK *light_pack, sceVu0FVECTOR eyevec);
 void SceneSortUnit();
 void Kagu027Control(void *sgd_top);
 void MakeDebugValue();
@@ -108,7 +92,7 @@ void ReSetWScissorBox();
 void InitFogSelection();
 void FogSelection(int disp_room);
 void gra3dDraw();
-int CheckModelBoundingBox(float *lwmtx[4], sceVu0FVECTOR *bbox);
+int CheckModelBoundingBox(sceVu0FMATRIX lwmtx, sceVu0FVECTOR *bbox);
 void CalcGirlCoord();
 void DrawGirl(int in_mirror);
 int DrawEnemy(int no);

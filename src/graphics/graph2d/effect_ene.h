@@ -76,7 +76,7 @@ typedef struct {
 // extern CAMSLOW_STR camslow[3];
 // extern int camstop_miss;
 // extern CAMSTOP_STR camstop[3];
-// extern sceVu0FVECTOR sword_line[2];
+extern sceVu0FVECTOR sword_line[2];
 // extern EDMG_TEX_WRK edmg_tex_wrk[10];
 // extern TAIL_DMG2_DAT enedmg2_tail[44];
 

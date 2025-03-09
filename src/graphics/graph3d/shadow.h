@@ -11,6 +11,21 @@ typedef struct {
     int e;
 } BoundLine;
 
+typedef struct {
+	void *shadow_model;
+	int smodel_num;
+	void **search_model;
+	int search_num;
+	void *source_model;
+	sceVu0FVECTOR direction;
+	sceVu0FVECTOR *bbox;
+	SgCAMERA *camera;
+	sceVu0IVECTOR color;
+	u_long shadow_tex0;
+} ShadowHandle;
+
+typedef void (*EnvFuncCallback)();
+
 // extern SgCAMERA scamera;
 
 void ShadowDbgOn();
@@ -48,6 +63,6 @@ void GetRotMatrixZAxis(float *rmat[4], float *vec);
 void CalcShadowMatrix(float *center, float ax, float ay);
 void CalcShadowHeight(sceVu0FVECTOR *bbox);
 void SetShadowCamera(float *center, sceVu0FVECTOR *bbox, SgCOORDUNIT *cp);
-void DrawShadow(void (*env_func)(/* parameters unknown */));
+void DrawShadow(ShadowHandle *shandle, EnvFuncCallback env_func);
 
 #endif // GRAPHICS_GRAPH3D_SHADOW_H

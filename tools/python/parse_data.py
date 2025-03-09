@@ -917,7 +917,7 @@ class DataVar(pydantic.BaseModel):
 
     address: int
     name: str
-    type: Type[CStructure] | CTypeType | type[sceVu0FVECTOR] | type[c_str]
+    type: Type[CStructure] | CTypeType | type[sceVu0FVECTOR] | type[sceVu0IVECTOR] | type[c_str]
     numel: int | list[int] = 0
     nosize: bool = False
     static: bool = False
@@ -933,7 +933,9 @@ class DataVar(pydantic.BaseModel):
 
     @pydantic.field_validator("type", mode="before")
     @classmethod
-    def type_from_str(cls, v: str | Type[CStructure] | CTypeType) -> Type[CStructure] | CTypeType | sceVu0FVECTOR:  # pyright: ignore
+    def type_from_str(  # pyright: ignore
+        cls, v: str | Type[CStructure] | CTypeType
+    ) -> Type[CStructure] | CTypeType | sceVu0FVECTOR | sceVu0IVECTOR:
         if not isinstance(v, str):
             return v
         cls.num_ptr = v.count("*")  # temporary store num_ptr in class attribute
@@ -942,6 +944,8 @@ class DataVar(pydantic.BaseModel):
             return ctypes_types[v]
         if v == "sceVu0FVECTOR":
             return sceVu0FVECTOR
+        if v == "sceVu0IVECTOR":
+            return sceVu0IVECTOR
         if v == "c_str":
             return c_str
         class_type = globals()[v]
@@ -964,6 +968,8 @@ class DataVar(pydantic.BaseModel):
                 type_str = self.type.__name__ + ("*" * self.num_ptr)
             elif self.type == sceVu0FVECTOR:  # pyright: ignore
                 type_str = "sceVu0FVECTOR"
+            elif self.type == sceVu0IVECTOR:  # pyright: ignore
+                type_str = "sceVu0IVECTOR"
             else:
                 type_str = next(
                     k
@@ -1015,6 +1021,28 @@ class DataVar(pydantic.BaseModel):
                 # should have been parsed as c_float_Array_4_Array_1
                 assert len(var_data) == 1 and var_data[0].__class__ is sceVu0FVECTOR
                 var_str = sceVu0FVECTOR_to_str(var_data[0])
+            stream.write(f" = {var_str};")
+        elif self.type == sceVu0IVECTOR:  # pyright: ignore[reportUnknownMemberType]
+            var_data = (sceVu0IVECTOR * numel).from_buffer_copy(self._elf.read(numel * c_sizeof(sceVu0IVECTOR)))
+            type_str = "sceVu0IVECTOR"
+            stream = io.StringIO()
+            if self.static:
+                stream.write("static ")
+            stream.write(f"{type_str} {self.name}")
+
+            def sceVu0IVECTOR_to_str(_v: sceVu0IVECTOR):  # pyright: ignore
+                return f"{{ {', '.join(f'{int32}' for int32 in cast(Iterable[c_int32], _v))} }}"
+
+            if numel > 1:
+                numel = f"{self.numel}" if not self.nosize else ""
+                var_str = (
+                    f"{{ {', '.join(sceVu0IVECTOR_to_str(var) for var in cast(Iterable[sceVu0IVECTOR], var_data))}, }}"  # pyright: ignore
+                )
+                stream.write(f"[{numel}]")
+            else:
+                # should have been parsed as c_int_Array_4_Array_1
+                assert len(var_data) == 1 and var_data[0].__class__ is sceVu0IVECTOR
+                var_str = sceVu0IVECTOR_to_str(var_data[0])
             stream.write(f" = {var_str};")
         elif self.type == c_str:  # pyright: ignore
             assert numel > 1, "we only handle string arrays here, simple strings should be embedded in the source"

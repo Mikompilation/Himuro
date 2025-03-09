@@ -31,8 +31,8 @@ extern ROOM_LOAD_BLOCK room_load_block[2];
 // extern int r022_light_on;
 extern RMDL_ADDR room_addr_tbl[64];
 extern u_int *furn_addr_tbl[500];
-// extern u_int *door_addr_tbl[128];
-// extern u_int *item_addr_tbl[48];
+extern u_int *door_addr_tbl[128];
+extern u_int *item_addr_tbl[48];
 
 u_int* RoomMdlLoadReq(u_int *addr, u_char blk_no, u_char msn_no, u_char room_no, u_char sereq_type);
 int RoomMdlLoadWait();
