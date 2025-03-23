@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import os
+import re
 import sys
 import yaml
 import copy
@@ -52,6 +53,12 @@ LANGUAGES: dict[str, str] = {
     "SLES_508.21": "eu",
 }
 
+# list of object file names (e.g., "tim2_new.c.o"), that have asm that needs
+# to be patched. the respective c files (e.g. "tim2_new.c") will be compiled
+# in two steps: c -> asm, then asm -> obj. in between, the intermediate
+# asm will be passed to `tools/python/fix_asm_matching.py` for patching.
+ASM_PATCH_LIST: list[str] = []
+
 
 def make_compiler_cmd(config_dir: Path, src_path: Path, language: str):
     rel_root = Path(os.path.relpath(ROOT, config_dir))
@@ -90,10 +97,12 @@ def clean(config_dir: Path, config: dict[str, Any]):
     asm_path = Path(config["options"]["asm_path"])
     asset_path = Path(config["options"]["asset_path"])
     build_path = Path(config["options"]["build_path"])
+    cc_str_path = Path("cc-src")
 
     relative_asm_path = (config_dir / asm_path).resolve().relative_to(ROOT)
     relative_asset_path = (config_dir / asset_path).resolve().relative_to(ROOT)
     relative_build_path = (config_dir / build_path).resolve().relative_to(ROOT)
+    relative_cc_str_path = (config_dir / cc_str_path).resolve().relative_to(ROOT)
 
     for file in (
         ".splache",
@@ -108,6 +117,7 @@ def clean(config_dir: Path, config: dict[str, Any]):
     shutil.rmtree(relative_asm_path, ignore_errors=True)
     shutil.rmtree(relative_asset_path, ignore_errors=True)
     shutil.rmtree(relative_build_path, ignore_errors=True)
+    shutil.rmtree(relative_cc_str_path, ignore_errors=True)
 
 
 def write_permuter_settings(config_dir: Path, src_path: Path, language: str):
@@ -191,6 +201,19 @@ def build_stuff(
     )
 
     ninja.rule(
+        "cc-s",
+        description="compile c source to object through assembly",
+        command=(
+            f"s_in=$$(echo $in.S | sed 's,^[^/]*/[^/]*/,cc-src/,') && "  # .............. 1) remove ../../ from path + prefix with cc-src/ + suffix with .S and store it into s_in var: ../../src/file.c -> s_in=cc-src/src/file.c.S
+            f'mkdir -p $$(dirname "$$s_in") && '  # ..................................... 2) create directory from s_in var: s_in=cc-src/src/path/to/file.c.S -> mkdir -p cc-src/src/path/to/
+            f"{game_compile_cmd.replace(' -c ', ' -S ')} $in -o $$s_in && "  # .......... 3) replace -c with -S in gcc command to generate intermediate assembly file instead of object
+            f"python3 {ROOT}/tools/python/fix_asm_matching.py {language} $$s_in && "  # . 4) fix assembly file using known patterns with tools/python/fix_asm_matching.py
+            f"{game_compile_cmd} $$s_in -o $out && "  # ................................. 5) compile assembly file into object
+            f"{cross}strip $out -N dummy-symbol-name"  # ................................ 6) strip 'dummy-symbol-name' from object
+        ),
+    )
+
+    ninja.rule(
         "cc",
         description="cc $in",
         command=f"{game_compile_cmd} $in -o $out && {cross}strip $out -N dummy-symbol-name",
@@ -242,6 +265,10 @@ def build_stuff(
             entry.src_paths = [Path("../..") / Path(f"{src_path}") for src_path in entry.src_paths]
             if any(str(src_path).startswith("src/lib/") for src_path in entry.src_paths):
                 build(entry.object_path, entry.src_paths, "libcc")
+
+            elif entry.object_path.name in ASM_PATCH_LIST:
+                build(entry.object_path, entry.src_paths, "cc-s")
+
             else:
                 build(entry.object_path, entry.src_paths, "cc")
 
@@ -343,16 +370,63 @@ def make_asm(config_path: Path, config: dict[str, Any]):
                 new_segments.append(segment)
         config["segments"] = new_segments
 
+        def rename_locals(base_path: Path):
+            for asm_file in base_path.rglob("*.s"):
+                data = asm_file.read_text()
+                data = re.sub(r"__local_\d+", "", data)
+                asm_file.write_text(data)
+
         with open(yaml_path, "w") as yaml_file:
             yaml.dump(config, yaml_file, default_flow_style=False)
 
         with suppress_stdout_stderr():
             split.main([str(yaml_path)], modes=["all"], verbose=False)
 
+        # remove '__local_#' from asm
+        rename_locals(asm_path)
+
         dst_path.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copytree(asm_path, dst_path)
+        shutil.copytree(asm_path, dst_path, dirs_exist_ok=True)
 
         print(f"expected asm extracted to '{dst_path}'")
+
+        # make expected objs
+
+        for subseg in new_segments[1]["subsegments"]:
+            if isinstance(subseg, list) and subseg[1] == "c":
+                subseg[1] = "asm"
+                subseg[2] += ".c"
+
+        with open(yaml_path, "w") as yaml_file:
+            yaml.dump(config, yaml_file, default_flow_style=False)
+
+        shutil.rmtree(tmp_path / "asm")
+        (tmp_path / ".splache").unlink()
+
+        with suppress_stdout_stderr():
+            split.main([str(yaml_path)], modes=["all"], verbose=False)
+
+        # remove '__local_#' from asm
+        rename_locals(asm_path)
+
+        dst_path = dst_path.parent / "obj"
+        tmp_obj_path = tmp_path / "obj"
+
+        for asm_file in (tmp_path / "asm").rglob("*.c.s"):
+            obj_file_rel = Path(*asm_file.relative_to(tmp_path).parts[1:])
+            obj_file = tmp_obj_path / obj_file_rel.with_suffix(".o")
+            obj_file.parent.mkdir(parents=True, exist_ok=True)
+            subprocess.run(
+                f"cpp -I../../../src -I../../../include -Iinclude -isystem include/sdk/ee -isystem include/gcc -Wa,-I../../../include -Wa,-I../../..  '{asm_file}' -o  - | "
+                f"iconv -f=UTF-8 -t=EUC-JP '{asm_file}' | "
+                f"mips-linux-gnu-as -no-pad-sections -EL -march=5900 -mabi=eabi -I../../../include -o {obj_file} {asm_file}",
+                shell=True,
+                cwd=tmp_path,
+            )
+
+        shutil.copytree(tmp_obj_path, dst_path, dirs_exist_ok=True)
+
+        print(f"expected obj built to '{dst_path}'")
 
 
 def main():
