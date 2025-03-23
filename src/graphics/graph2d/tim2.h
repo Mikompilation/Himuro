@@ -89,6 +89,14 @@ typedef short unsigned int TIM2_UINT16;
 typedef long unsigned int TIM2_UINT64;
 
 typedef struct {
+	TIM2_UCHAR8 FileId[4];
+	TIM2_UCHAR8 FormatVersion;
+	TIM2_UCHAR8 FormatId;
+	TIM2_UINT16 Pictures;
+	TIM2_UCHAR8 pad[8];
+} TIM2_FILEHEADER;
+
+typedef struct {
 	TIM2_UINT32 TotalSize;
 	TIM2_UINT32 ClutSize;
 	TIM2_UINT32 ImageSize;
@@ -117,14 +125,14 @@ typedef struct {
 
 extern u_char g_bInterlace;
 extern int ndpkt;
-// extern int ndpri;
+extern int ndpri;
 extern int nmdpkt;
 extern int nmdpri;
-// extern int mes_swap;
+extern int mes_swap;
 extern Q_WORDDATA *pbuf;
-// extern u_int draw_pri[4096][2];
+extern u_int draw_pri[4096][2];
 extern Q_WORDDATA *mpbuf;
-// extern Q_WORDDATA mpbufw[2][8192];
+extern Q_WORDDATA mpbufw[2][8192];
 extern int draw_mpri[1024][2];
 
 void printClut(void *pClut, int ClutColors);

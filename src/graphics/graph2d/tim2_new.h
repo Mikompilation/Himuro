@@ -9,7 +9,7 @@
 u_int* MakeTim2Direct2(u_int *pkt_addr, u_int *tim2_addr, int tbp);
 u_int* MakeClutDirect2(u_int *pkt_addr, u_int *tim2_addr, int cbp);
 u_int* MakeTim2ClutDirect2(u_int *pkt_addr, u_int *tim2, int tbp, int cbp);
-Q_WORDDATA* SetImageTransParam2(int tbp, int tbw, int psm, u_short w, u_short h);
+Q_WORDDATA* SetImageTransParam2(Q_WORDDATA *qw, int tbp, int tbw, int psm, u_short w, u_short h);
 u_int* ChainPK2Direct(u_int *pkt_addr, u_int *tm2_addr);
 void MakeFontTexSendPacket();
 void CallFontTexSendPacket();
