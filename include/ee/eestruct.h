@@ -284,6 +284,12 @@
 
 #define SCE_GS_SET_DTHE(dthe) ((u_long)(dthe))
 
+#define SCE_GS_SET_TEXA(ta0, aem, ta1) \
+    ((u_long)(ta0) | ((u_long)(aem) << 15) | ((u_long)(ta1) << 32))
+
+#define SCE_GS_SET_TEXCLUT(cbw, cou, cov) \
+    ((u_long)(cbw) | ((u_long)(cou) << 6) | ((u_long)(cov) << 12))
+
 typedef struct {
     unsigned long CLAMP:1;
     unsigned long pad01:63;

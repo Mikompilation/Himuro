@@ -5,6 +5,15 @@
 
 #include "sce/libgraph.h"
 
+enum TIM2_gattr_type {
+	TIM2_NONE = 0,
+	TIM2_RGB16 = 1,
+	TIM2_RGB24 = 2,
+	TIM2_RGB32 = 3,
+	TIM2_IDTEX4 = 4,
+	TIM2_IDTEX8 = 5
+};
+
 typedef struct {
 	u_int att;
 	float crx;
@@ -96,6 +105,13 @@ typedef struct {
 	TIM2_UCHAR8 pad[8];
 } TIM2_FILEHEADER;
 
+typedef struct { // 0x10
+	/* 0x0 */ TIM2_UCHAR8 ExHeaderId[4];
+	/* 0x4 */ TIM2_UINT32 UserSpaceSize;
+	/* 0x8 */ TIM2_UINT32 UserDataSize;
+	/* 0xc */ TIM2_UINT32 Reserved;
+} TIM2_EXHEADER;
+
 typedef struct {
 	TIM2_UINT32 TotalSize;
 	TIM2_UINT32 ClutSize;
@@ -171,8 +187,8 @@ void DmaSync_Vif1();
 void DrawOne2D_P2(Q_WORDDATA *packet_buf);
 void DrawAll2D_P2();
 void* DrawAllMes_P2(u_int ret_addr);
-void DrawOne2D();
-void DrawOne2D2a();
+void DrawOne2D(Q_WORDDATA *packet_buf);
+void DrawOne2D2a(Q_WORDDATA *packet_buf);
 void DrawOne2D2b();
 void DrawAll2D();
 void DrawAllMes();
@@ -190,9 +206,9 @@ void _ftoi0(int *out, float *in);
 void _ftoi4(int *out, float *in);
 void DispSprD(DISP_SPRT *s);
 void CopySqrDToSqr(DISP_SQAR *s, SQAR_DAT *d);
-void CopyGSqDToSqr(GSQR_DAT *d);
-void CopySq4DToSqr(SQR4_DAT *d);
-void CopyGS4DToSqr(GSQ4_DAT *d);
+void CopyGSqDToSqr(DISP_SQAR *s, GSQR_DAT *d);
+void CopySq4DToSqr(DISP_SQAR *s, SQR4_DAT *d);
+void CopyGS4DToSqr(DISP_SQAR *s, GSQ4_DAT *d);
 void DispSqrD(DISP_SQAR *s);
 
 #endif // GRAPHICS_GRAPH2D_TIM2_H
