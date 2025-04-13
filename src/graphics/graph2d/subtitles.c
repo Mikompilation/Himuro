@@ -20,16 +20,6 @@ typedef struct {
 } SUBTITLES;
 
 typedef struct {
-	u_int type;
-	u_int no;
-	u_int cnt;
-	u_char alp;
-	u_char flg;
-	u_char run;
-	u_char dummy;
-} SUBTITLES_SYS;
-
-typedef struct {
 	int pos_x;
 	int pos_y;
 	int path;

@@ -7,6 +7,18 @@
 
 #include "graphics/graph2d/tim2.h"
 
+typedef struct {
+	u_int type;
+	u_int no;
+	u_int cnt;
+	u_char alp;
+	u_char flg;
+	u_char run;
+	u_char dummy;
+} SUBTITLES_SYS;
+
+extern SUBTITLES_SYS subtitles_sys;
+
 void ContSubtitlesTime(int path, u_int frame);
 void DispNowFrame(int path, u_int frame);
 int GetIndexNums(int *tbl, int no);

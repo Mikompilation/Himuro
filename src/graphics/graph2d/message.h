@@ -32,20 +32,62 @@ typedef struct {
 	int pri;
 } STR_DAT;
 
+typedef struct { // 0x58
+	/* 0x00 */ int pri;
+	/* 0x04 */ int bx;
+	/* 0x08 */ int by;
+	/* 0x0c */ u_char r;
+	/* 0x0d */ u_char g;
+	/* 0x0e */ u_char b;
+	/* 0x0f */ u_char alp;
+	/* 0x10 */ u_char *str;
+	/* 0x14 */ u_char *stp;
+	/* 0x18 */ int sta;
+	/* 0x1c */ int flg;
+	/* 0x20 */ int pass;
+	/* 0x24 */ int csr;
+	/* 0x28 */ int selnum;
+	/* 0x2c */ int seltype;
+	/* 0x30 */ int decide;
+	/* 0x34 */ int mes_is_end;
+	/* 0x38 */ int cnt;
+	/* 0x3c */ int retst;
+	/* 0x40 */ int disptype;
+	/* 0x44 */ int fntmcnt;
+	/* 0x48 */ int fntcnt;
+	/* 0x4c */ int fntwait;
+	/* 0x50 */ u_char usrgb[4];
+	/* 0x54 */ u_char vib;
+#ifdef BUILD_EU_VERSION
+	/* 0x55 */ u_char bx_pass;
+	/* 0x56 */ u_char bx_pass_old;
+	/* 0x57 */ u_char bx_pass_st;
+#endif
+} MES_DAT;
+
+typedef struct { // 0x30c
+	/* 0x000 */ u_short dummy;
+	/* 0x002 */ u_char pass;
+	/* 0x003 */ u_char pass_flg;
+	/* 0x004 */ u_char *old_adr;
+	/* 0x008 */ int cnt;
+	/* 0x00c */ u_char mes_alps[16][48];
+} MESV22;
+
 #include "outgame/mode_slct.h"
 
-// extern u_char ascii_font_tbl[0];
-// extern u_char ascii_font_tbl2[0];
-// extern int wbyte_font_tbl0[0];
-// extern int wbyte_font_tbl1[0];
-// extern int wbyte_font_tbl2[0];
-// extern int wbyte_font_tbl3[0];
-// extern int wbyte_font_tbl4[0];
-// extern int wbyte_font_tbl5[0];
-// extern SPRT_DAT fntdat[0];
-// extern SPRT_DAT mesbox[0];
-// extern SPRT_DAT btntex[0];
-// extern u_char *save_mes_addr;
+extern u_char ascii_font_tbl[];
+extern u_char ascii_font_tbl2[];
+extern int wbyte_font_tbl0[];
+extern int wbyte_font_tbl1[];
+extern int wbyte_font_tbl2[];
+extern int wbyte_font_tbl3[];
+extern int wbyte_font_tbl4[];
+extern int wbyte_font_tbl5[];
+extern SPRT_DAT fntdat[];
+extern SPRT_DAT mesbox[];
+extern SPRT_DAT btntex[];
+extern u_char *save_mes_addr;
 
 void InitMessage();
 void InitMessageEF();

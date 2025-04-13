@@ -110,6 +110,25 @@ dbg_menu_param                 = 0x2ad438; // type:DEBUG_MENU
 dbg_menu_ccustom               = 0x2ad4d0; // type:DEBUG_MENU
 dbg_menu_param_item            = 0x2ad568; // type:DEBUG_MENU
 
+// graphics/graph2d/message.c
+ascii_font_tbl                 = 0x2af458; // type:u_char numel:223 nosize
+ascii_font_tbl2                = 0x2af538; // type:u_char numel:223 nosize
+wbyte_font_tbl0                = 0x2af618; // type:int numel:8 nosize
+wbyte_font_tbl1                = 0x2af638; // type:int numel:10 nosize
+wbyte_font_tbl2                = 0x2af660; // type:int numel:26 nosize
+wbyte_font_tbl3                = 0x2af6c8; // type:int numel:26 nosize
+wbyte_font_tbl4                = 0x2af730; // type:int numel:83 nosize
+wbyte_font_tbl5                = 0x2af880; // type:int numel:85 nosize
+font_w_b0                      = 0x2af9d8; // type:int numel:210 static nosize
+font_w_b0_e                    = 0x2afd20; // type:int numel:210 static nosize
+font_w_b1                      = 0x2b0068; // type:int numel:210 static nosize
+font_w_b2                      = 0x2b03b0; // type:int numel:210 static nosize
+font_w_b3                      = 0x2b06f8; // type:int numel:210 static nosize
+font_w_b4                      = 0x2b0a40; // type:int numel:210 static nosize
+fntdat                         = 0x2b0d88; // type:SPRT_DAT numel:6 nosize
+mesbox                         = 0x2b0e48; // type:SPRT_DAT numel:8 nosize
+btntex                         = 0x2b0f48; // type:SPRT_DAT numel:4 nosize
+
 // graphics/graph2d/number.c
 number_tex                     = 0x2b0fd0; // type:SPRT_DAT numel:4 numel:10 nosize
 

@@ -94,7 +94,7 @@ typedef union {
 	MC_ALBUM_HEADER album;
 } MC_HEADER;
 
-// extern MC_CTRL mc_ctrl;
+extern MC_CTRL mc_ctrl;
 // extern MC_HEADER mc_header;
 // extern MC_HEADER mc_header_buf[16];
 // extern u_int mc_game_size;
