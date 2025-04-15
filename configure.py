@@ -15,12 +15,14 @@ import argparse
 import tempfile
 import subprocess
 import ninja_syntax
-import splat.scripts.split as split
 
 from typing import Any, Union, Protocol, cast
 from pathlib import Path
-from splat.segtypes.linker_entry import LinkerEntry
 from contextlib import contextmanager
+
+from splat.scripts import split
+from splat.util.conf import load as splat_load_yaml
+from splat.segtypes.linker_entry import LinkerEntry
 
 from tools.python.fix_gp import fix_gp
 from tools.python.fix_assets import fix_assets
@@ -376,11 +378,11 @@ def make_asm(config_path: Path, config: dict[str, Any]):
                 data = re.sub(r"__local_\d+", "", data)
                 asm_file.write_text(data)
 
-        with open(yaml_path, "w") as yaml_file:
+        with yaml_path.open(mode="w") as yaml_file:
             yaml.dump(config, yaml_file, default_flow_style=False)
 
         with suppress_stdout_stderr():
-            split.main([str(yaml_path)], modes=["all"], verbose=False)
+            split.main([yaml_path], modes=["all"], verbose=False)
 
         # remove '__local_#' from asm
         rename_locals(asm_path)
@@ -397,14 +399,14 @@ def make_asm(config_path: Path, config: dict[str, Any]):
                 subseg[1] = "asm"
                 subseg[2] += ".c"
 
-        with open(yaml_path, "w") as yaml_file:
+        with yaml_path.open(mode="w") as yaml_file:
             yaml.dump(config, yaml_file, default_flow_style=False)
 
         shutil.rmtree(tmp_path / "asm")
         (tmp_path / ".splache").unlink()
 
         with suppress_stdout_stderr():
-            split.main([str(yaml_path)], modes=["all"], verbose=False)
+            split.main([yaml_path], modes=["all"], verbose=False)
 
         # remove '__local_#' from asm
         rename_locals(asm_path)
@@ -431,13 +433,14 @@ def make_asm(config_path: Path, config: dict[str, Any]):
 
 def main():
     class ArgsProtocol(Protocol):
-        YAML_FILE: str
+        YAML_FILE: Path
         clean: bool
         make_asm: bool
 
     parser = argparse.ArgumentParser(description="Configure the project")
     parser.add_argument(
         "YAML_FILE",
+        type=Path,
         help="yaml file to configure the project",
     )
     parser.add_argument(
@@ -469,7 +472,7 @@ def main():
         print("ERROR: this script must be run from it's directory!")
         exit(1)
 
-    config = splat.scripts.split.initialize_config(
+    config = splat_load_yaml(
         [args.YAML_FILE],
         modes=["all"],
         verbose=False,
