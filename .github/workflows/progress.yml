@@ -1,0 +1,24 @@
+name: Upload Objdiff Progress Report Artifacts
+
+on:
+  push:
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+  
+    strategy:
+      matrix:
+        version:
+          -  { game_id: "SLUS_203.88", language: "us" }
+          -  { game_id: "SLES_508.21", language: "eu" }
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.version.game_id }}_report
+          path: ./config/${{ matrix.version.language }}/report.json
