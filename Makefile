@@ -4,8 +4,8 @@ MAKEFLAGS += --no-print-directory
 NUMPROC ?= $(shell nproc)
 
 .PHONY: help \
-		.us-build-only .us-check-files-on-error us-configure us-build us-extract-data us-make-asm us-map-mismatch us-clean \
-		.eu-build-only .eu-check-files-on-error eu-configure eu-build eu-extract-data eu-make-asm eu-map-mismatch eu-clean
+		.us-build-only .us-check-files-on-error us-configure us-build us-extract-data us-make-asm us-map-mismatch us-report clean \
+		.eu-build-only .eu-check-files-on-error eu-configure eu-build eu-extract-data eu-make-asm eu-map-mismatch eu-report clean
 
 .DEFAULT_GOAL := help
 
@@ -78,7 +78,13 @@ us-make-asm:  ## Create expected asm folder in US config directory
 us-map-mismatch:  ## Check for mismatches in US mapfile
 	@python3 tools/python/map_mismatch.py --language us
 
-us-clean:  ## Clean artifact in EU config directory
+us-report:  ## Create progress report in US config directory
+	@(stat config/us/expected/obj/ >/dev/null 2>&1 || (echo "Target objects do not exist, please run \`make us-make-asm\`"; false));
+	@(stat config/us/build/src/ >/dev/null 2>&1 || (echo "Base objects do not exist, please run \`make us-build\`"; false));
+	@tools/objdiff/objdiff-cli report generate -p config/us/ -o config/us/report.json -f json
+	@python3 -c "import json;from pathlib import Path;report=json.loads(Path('config/us/report.json').read_text());print(f\"Progress: {report['measures']['fuzzy_match_percent']:.2f}%\")"
+
+us-clean:  ## Clean artifact in US config directory
 	@cd config/us; \
 	ninja -t clean;
 
@@ -106,6 +112,12 @@ eu-make-asm:  ## Create expected asm folder in EU config directory
 
 eu-map-mismatch:  ## Check for mismatches in EU mapfile
 	@python3 tools/python/map_mismatch.py --language eu
+
+eu-report:  ## Create progress report in EU config directory
+	@(stat config/eu/expected/obj/ >/dev/null 2>&1 || (echo "Target objects do not exist, please run \`make eu-make-asm\`"; false));
+	@(stat config/eu/build/src/ >/dev/null 2>&1 || (echo "Base objects do not exist, please run \`make eu-build\`"; false));
+	@tools/objdiff/objdiff-cli report generate -p config/eu/ -o config/eu/report.json -f json
+	@python3 -c "import json;from pathlib import Path;report=json.loads(Path('config/eu/report.json').read_text());print(f\"Progress: {report['measures']['fuzzy_match_percent']:.2f}%\")"
 
 eu-clean:  ## Clean artifact in US config directory
 	@cd config/eu; \

@@ -7,6 +7,7 @@ from __future__ import annotations
 import os
 import re
 import sys
+import json
 import yaml
 import copy
 import splat
@@ -16,7 +17,7 @@ import tempfile
 import subprocess
 import ninja_syntax
 
-from typing import Any, Union, Protocol, cast
+from typing import Any, Union, Protocol, Literal, cast
 from pathlib import Path
 from contextlib import contextmanager
 
@@ -24,7 +25,7 @@ from splat.scripts import split
 from splat.util.conf import load as splat_load_yaml
 from splat.segtypes.linker_entry import LinkerEntry
 
-from tools.python.fix_gp import fix_gp
+# from tools.python.fix_gp import fix_gp
 from tools.python.fix_assets import fix_assets
 from tools.python.fix_linkerscript import fix_linkerscript
 
@@ -399,6 +400,8 @@ def make_asm(config_path: Path, config: dict[str, Any]):
                 subseg[1] = "asm"
                 subseg[2] += ".c"
 
+        config["options"]["asm_jtbl_label_macro"] = "llabel"
+
         with yaml_path.open(mode="w") as yaml_file:
             yaml.dump(config, yaml_file, default_flow_style=False)
 
@@ -428,7 +431,103 @@ def make_asm(config_path: Path, config: dict[str, Any]):
 
         shutil.copytree(tmp_obj_path, dst_path, dirs_exist_ok=True)
 
+        # create a dummy (empty) object to allow objdiff to diff tus that have not yet been decompiled
+        compiler_path = ROOT / "tools" / "cc" / COMPILER / "bin" / "ee-gcc"
+        dummy_c_path = tmp_path / "dummy.c"
+        dummy_o_path = dst_path / "dummy.c.o"
+
+        # create the empty source (touch)
+        dummy_c_path.open(mode="a").close()
+
+        # compile
+        subprocess.run([compiler_path, "-c", dummy_c_path, "-o", dummy_o_path])
+
         print(f"expected obj built to '{dst_path}'")
+
+
+def generate_objdiff_configuration(config_path: Path, config: dict[str, Any]):
+    """
+    Generate `objdiff.json` configuration from splat YAML config.
+
+    Parse splat YAML config to get a list of the TUs that need to
+    be diffed and create appropriate `units` for objdiff to process.
+
+    Target objects need to be extracted separately (see the
+    `make <lang>-make-asm` command) in order for objdiff to find the
+    target files.
+    """
+    segments: list[Any] = config["segments"]
+
+    tu_to_diff: list[tuple[Literal["asm", "c"], str]] = []
+
+    for segment in segments:
+        if not (isinstance(segment, dict) and segment["name"] == "main"):
+            # we are looking for the main segment
+            continue
+
+        subsegments = cast(list[Any], segment["subsegments"])
+
+        for subsegment in subsegments:
+            if isinstance(subsegment, list):
+                _, subs_type, subs_name = cast(tuple[int, str, str], subsegment)
+
+            elif isinstance(subsegment, dict):
+                subs_type = cast(int, subsegment["type"])
+                subs_name = cast(str, subsegment["name"])
+
+            else:
+                raise RuntimeError("invalid subsegment type")
+
+            if subs_type in ("asm", "c"):
+                if subs_name in ("crt0", "main/glob"):
+                    # -> skip 'crt0' as it's not part of the game files
+                    # -> skip 'main/glob' as it doesn't have a .text section
+                    continue
+
+                tu_to_diff.append((subs_type, subs_name))
+
+    units: list[dict[str, Any]] = []
+
+    for tu_type, tu_name in tu_to_diff:
+        target_path = Path("expected", "obj", tu_name).with_suffix(".c.o")
+
+        # since we only compile fully decompiled TUs, the
+        # "c" type implies that the TU is complete
+        is_complete = tu_type == "c"
+
+        if is_complete:
+            # compose the build path as "build/src/path/of/tu.c.o"
+            base_path = Path("build", "src", tu_name).with_suffix(".c.o")
+        else:
+            # use dummy object for incomplete (not yet decompiled) TUs:
+            # expected/obj/dummy.c.o
+            base_path = Path("expected", "obj", "dummy").with_suffix(".c.o")
+
+        units.append(
+            {
+                "name": tu_name,
+                "target_path": str(target_path),
+                "base_path": str(base_path),
+                "metadata": {"complete": is_complete},
+            }
+        )
+
+    objdiff_json: dict[str, Any] = {
+        "$schema": "https://raw.githubusercontent.com/encounter/objdiff/main/config.schema.json",
+        "custom_make": "true",
+        "custom_args": [],
+        "build_target": False,
+        "build_base": False,
+        "watch_patterns": [],
+        "units": units,
+    }
+
+    objdiff_path = config_path / "objdiff.json"
+
+    with objdiff_path.open(mode="w") as fw:
+        json.dump(objdiff_json, fw, indent=2)
+
+    print(f"Wrote objdiff configuration ({len(units)} units) to {objdiff_path}")
 
 
 def main():
@@ -520,21 +619,23 @@ def main():
 
     write_permuter_settings(config_dir, src_path, language)
 
-    # replace gp_rel assembler macro with explicit offset as the gcc used
-    # to compile the code does not support it
-    gp_value = split.config["options"]["gp_value"]
-    symbol_addrs_path = Path(split.config["options"]["symbol_addrs_path"])
-    asm_rel_path = (config_dir / asm_path).resolve().relative_to(ROOT)
-    symbol_addrs_rel_path = (config_dir / symbol_addrs_path).resolve().relative_to(ROOT)
-    assert asm_rel_path.is_dir(), f"{asm_rel_path} not found or not a directory"
-    assert symbol_addrs_rel_path.is_file(), f"{symbol_addrs_rel_path} not found"
-    fix_gp(asm_rel_path, gp_value, symbol_addrs_rel_path)
+    # # replace gp_rel assembler macro with explicit offset as the gcc used
+    # # to compile the code does not support it
+    # gp_value = split.config["options"]["gp_value"]
+    # symbol_addrs_path = Path(split.config["options"]["symbol_addrs_path"])
+    # asm_rel_path = (config_dir / asm_path).resolve().relative_to(ROOT)
+    # symbol_addrs_rel_path = (config_dir / symbol_addrs_path).resolve().relative_to(ROOT)
+    # assert asm_rel_path.is_dir(), f"{asm_rel_path} not found or not a directory"
+    # assert symbol_addrs_rel_path.is_file(), f"{symbol_addrs_rel_path} not found"
+    # fix_gp(asm_rel_path, gp_value, symbol_addrs_rel_path)
 
     # fix linkerscript by applying explicit alignments as
     # specified in the config yaml
     linkerscript_path = (config_dir / f"{basename}.ld").resolve().relative_to(ROOT)
     assert linkerscript_path.is_file(), f"{linkerscript_path} not found"
     fix_linkerscript(split.config, linkerscript_path)
+
+    generate_objdiff_configuration(config_dir, split.config)
 
 
 if __name__ == "__main__":

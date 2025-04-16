@@ -14,6 +14,7 @@ config/**/expected/
 config/**/include/
 config/**/cc-src/
 config/**/tmp_*/
+config/**/objdiff.json
 # ignore elf files, such as config/us/SLUS_203.88
 config/**/[A-Z][A-Z][A-Z][A-Z]_[0-9][0-9][0-9].[0-9][0-9]
 .idea/
