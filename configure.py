@@ -508,7 +508,7 @@ def generate_objdiff_configuration(config_path: Path, config: dict[str, Any]):
                 "name": tu_name,
                 "target_path": str(target_path),
                 "base_path": str(base_path),
-                "metadata": {"complete": is_complete},
+                # "metadata": {"complete": is_complete},
             }
         )
 
