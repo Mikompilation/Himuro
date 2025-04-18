@@ -6,7 +6,7 @@ import ctypes
 import numpy as np
 import numpy.typing as npt
 from collections.abc import Sized, Sequence
-from typing import Type, TypeVar, Any, cast, TextIO, BinaryIO
+from typing import Type, TypeVar, Any, cast, TextIO, BinaryIO, Optional
 from ctypes import LittleEndianStructure, Union, Array, c_uint32
 
 _G = TypeVar("_G")
@@ -120,15 +120,18 @@ class LittleEndianStructureFieldsFromTypeHints(type(LittleEndianStructure)):  # 
         namespace: dict[str, Any],
         /,
         *,
-        align: int = 0,
-        pack: int = 0,
+        align: Optional[int] = None,
+        pack: Optional[int] = None,
     ) -> LittleEndianStructureFieldsFromTypeHints:
         annotations = namespace.get("__annotations__", {})
         if "__elf__" in annotations:
             annotations.pop("__elf__")
-        namespace["_align_"] = align
-        namespace["_pack_"] = pack
-        namespace["_fields_"] = list(annotations.items())
+        if align is not None:
+            namespace["_align_"] = align
+        if pack is not None:
+            namespace["_pack_"] = pack
+        if fields := list(annotations.items()):
+            namespace["_fields_"] = fields
         return type(LittleEndianStructure).__new__(cls, name, bases, namespace)  # pyright: ignore
 
 
@@ -248,13 +251,16 @@ class UnionFieldsFromTypeHints(type(Union)):  # pyright: ignore
         namespace: dict[str, Any],
         /,
         *,
-        align: int = 0,
-        pack: int = 0,
+        align: Optional[int] = None,
+        pack: Optional[int] = None,
     ) -> UnionFieldsFromTypeHints:
         annotations = namespace.get("__annotations__", {})
-        namespace["_align_"] = align
-        namespace["_pack_"] = pack
-        namespace["_fields_"] = list(annotations.items())
+        if align is not None:
+            namespace["_align_"] = align
+        if pack is not None:
+            namespace["_pack_"] = pack
+        if fields := list(annotations.items()):
+            namespace["_fields_"] = fields
         return type(Union).__new__(cls, name, bases, namespace)  # pyright: ignore
 
 
