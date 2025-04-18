@@ -17,7 +17,7 @@ def fix_unit(unit: dict[str, Any]):
 
     if 0 < text_section_fuzzy_match_percent < 100:
         # fix text section fuzzy match percent
-        text_section["fuzzy_match_percent"] = 100
+        text_section["fuzzy_match_percent"] = 100.0
 
     text_fuzzy_match_percent: float = unit["measures"]["fuzzy_match_percent"]
 
@@ -37,12 +37,12 @@ def fix_unit(unit: dict[str, Any]):
         function_size: int = int(function["size"])
         function_fuzzy_match_percent: float = function["fuzzy_match_percent"]
 
-        if function_fuzzy_match_percent == 100:
+        if function_fuzzy_match_percent == 100.0:
             computed_matched_code += function_size
             computed_matched_functions += 1
 
         # fix function fuzzy match percent
-        function["fuzzy_match_percent"] = 100
+        function["fuzzy_match_percent"] = 100.0
 
         computed_total_code += function_size
 
@@ -51,11 +51,11 @@ def fix_unit(unit: dict[str, Any]):
     assert matched_functions == computed_matched_functions
 
     # fix unit measures
-    unit["measures"]["fuzzy_match_percent"] = 100
+    unit["measures"]["fuzzy_match_percent"] = 100.0
     unit["measures"]["matched_code"] = unit["measures"]["total_code"]
-    unit["measures"]["matched_code_percent"] = 100
+    unit["measures"]["matched_code_percent"] = 100.0
     unit["measures"]["matched_functions"] = unit["measures"]["total_functions"]
-    unit["measures"]["matched_functions_percent"] = 100
+    unit["measures"]["matched_functions_percent"] = 100.0
 
 
 def fix_report(report_path: Path):
