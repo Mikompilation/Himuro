@@ -72,14 +72,14 @@ def fix_report(report_path: Path):
     total_code: int = int(report["measures"]["total_code"])
     total_functions: int = report["measures"]["total_functions"]
 
-    for n, unit in enumerate(units):
+    for unit in units:
         # name: str = unit["name"]
         unit_total_code: int = int(unit["measures"]["total_code"])
         unit_total_functions: int = unit["measures"]["total_functions"]
         fuzzy_match_percent: float | None = unit["measures"].get("fuzzy_match_percent")
 
         if fuzzy_match_percent and 0 < fuzzy_match_percent < 100:
-            unit[n] = fix_unit(unit)
+            fix_unit(unit)
 
         if fuzzy_match_percent and fuzzy_match_percent > 0:
             computed_matched_code += unit_total_code
