@@ -63,6 +63,22 @@ LANGUAGES: dict[str, str] = {
 ASM_PATCH_LIST: list[str] = []
 
 
+def get_compiler_command(command: str):
+    compiler_dir = Path("tools") / "cc" / COMPILER
+    ee_dir = compiler_dir / "lib" / "gcc-lib" / "ee"
+    ee_compiler_dirname = next(os.walk(ee_dir))[1][0]
+
+    commands = {
+        "ee-gcc": compiler_dir / "bin" / "ee-gcc",
+        "cc1": compiler_dir / "lib" / "gcc-lib" / "ee" / ee_compiler_dirname / "cc1",
+        "cc1plus": compiler_dir / "lib" / "gcc-lib" / "ee" / ee_compiler_dirname / "cc1plus",
+        "cpp": compiler_dir / "lib" / "gcc-lib" / "ee" / ee_compiler_dirname / "cpp",
+        "as": compiler_dir / "ee" / "bin" / "as",
+    }
+
+    return commands[command]
+
+
 def make_compiler_cmd(config_dir: Path, src_path: Path, language: str):
     rel_root = Path(os.path.relpath(ROOT, config_dir))
     tools_dir = rel_root / "tools"
@@ -194,13 +210,15 @@ def build_stuff(
         "-EL -T undefined_syms.txt -T undefined_syms_auto.txt -T undefined_funcs_auto.txt -Map $mapfile -T $in -o $out"
     )
 
+    cpp = Path("..", "..", get_compiler_command("cpp"))
+
     ninja.rule(
         "as",
         description="as $in",
         # NOTE: Japanese strings are EUC-JP encoded!!
         #       We need to convert them from (-f) UTF-8 to (-t) EUC-JP while compiling,
         #       otherwise Japanese strings will be compiled wrong!
-        command=f"cpp {common_includes} $in -o  - | iconv -f=UTF-8 -t=EUC-JP $in | {cross}as -no-pad-sections -EL -march=5900 -mabi=eabi -I{src_path.parent / 'include'} -o $out",
+        command=f"{cpp} {common_includes} $in -o  - | iconv -f=UTF-8 -t=EUC-JP $in | {cross}as -no-pad-sections -EL -march=5900 -mabi=eabi -I{src_path.parent / 'include'} -o $out",
     )
 
     ninja.rule(
@@ -416,15 +434,19 @@ def make_asm(config_path: Path, config: dict[str, Any]):
 
         dst_path = dst_path.parent / "obj"
         tmp_obj_path = tmp_path / "obj"
+        tmp_asm_dir = tmp_path / "asm"
 
-        for asm_file in (tmp_path / "asm").rglob("*.c.s"):
-            obj_file_rel = Path(*asm_file.relative_to(tmp_path).parts[1:])
-            obj_file = tmp_obj_path / obj_file_rel.with_suffix(".o")
+        cpp = Path("..", "..", "..", get_compiler_command("cpp"))
+
+        for asm_file in tmp_asm_dir.rglob("*.c.s"):
+            asm_file_rel = asm_file.relative_to(tmp_path)
+            obj_file_rel = Path("obj") / asm_file.relative_to(tmp_asm_dir).with_suffix(".o")
+            obj_file = tmp_obj_path / obj_file_rel.relative_to("obj")
             obj_file.parent.mkdir(parents=True, exist_ok=True)
             subprocess.run(
-                f"cpp -I../../../src -I../../../include -Iinclude -isystem include/sdk/ee -isystem include/gcc -Wa,-I../../../include -Wa,-I../../..  '{asm_file}' -o  - | "
-                f"iconv -f=UTF-8 -t=EUC-JP '{asm_file}' | "
-                f"mips-linux-gnu-as -no-pad-sections -EL -march=5900 -mabi=eabi -I../../../include -o {obj_file} {asm_file}",
+                f"{cpp} -I../../../src -I../../../include -Iinclude -isystem include/sdk/ee -isystem include/gcc -Wa,-I../../../include -Wa,-I../../..  '{asm_file_rel}' -o  - | "
+                f"iconv -f=UTF-8 -t=EUC-JP '{asm_file_rel}' | "
+                f"mips-linux-gnu-as -no-pad-sections -EL -march=5900 -mabi=eabi -I../../../include -o {obj_file_rel} {asm_file_rel}",
                 shell=True,
                 cwd=tmp_path,
             )
@@ -432,7 +454,7 @@ def make_asm(config_path: Path, config: dict[str, Any]):
         shutil.copytree(tmp_obj_path, dst_path, dirs_exist_ok=True)
 
         # create a dummy (empty) object to allow objdiff to diff tus that have not yet been decompiled
-        compiler_path = ROOT / "tools" / "cc" / COMPILER / "bin" / "ee-gcc"
+        compiler_path = ROOT / get_compiler_command("ee-gcc")
         dummy_c_path = tmp_path / "dummy.c"
         dummy_o_path = dst_path / "dummy.c.o"
 
