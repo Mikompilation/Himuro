@@ -539,11 +539,9 @@ def generate_objdiff_configuration(config_path: Path, config: dict[str, Any], la
         "eu": "Project Zero",
     }
 
-    categories = {
-        "progress_categories": [
-            {"id": language, "name": category_name[language]},
-        ]
-    }
+    progress_categories = [
+        {"id": language, "name": category_name[language]},
+    ]
 
     objdiff_json: dict[str, Any] = {
         "$schema": "https://raw.githubusercontent.com/encounter/objdiff/main/config.schema.json",
@@ -553,7 +551,7 @@ def generate_objdiff_configuration(config_path: Path, config: dict[str, Any], la
         "build_base": False,
         "watch_patterns": [],
         "units": units,
-        "categories": categories,
+        "progress_categories": progress_categories,
     }
 
     objdiff_path = config_path / "objdiff.json"
