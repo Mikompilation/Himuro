@@ -5,8 +5,8 @@ Himuro is a project that aims to have a matching source decompilation of the PS2
 ## Progress
 | Name | Region | Game ID     | Progress (powered by [decomp.dev](https://decomp.dev/))
 |----------------|--------|-------------|--------------------------------
-| Fatal Frame    | US     | SLUS_203.88 | [![](https://decomp.dev/Mikompilation/Himuro/SLUS_203.88.svg?mode=shield&measure=code&category=all)](https://decomp.dev/Mikompilation/Himuro/SLUS_203.88)
-| Project Zero   | EU     | SLES_508.21 |[![](https://decomp.dev/Mikompilation/Himuro/SLES_508.21.svg?mode=shield&measure=code&category=all)](https://decomp.dev/Mikompilation/Himuro/SLES_508.21)
+| Fatal Frame    | US     | SLUS_203.88 | [![](https://decomp.dev/Mikompilation/Himuro/SLUS_203.88.svg?mode=shield&category=us&measure=code)](https://decomp.dev/Mikompilation/Himuro/SLUS_203.88)
+| Project Zero   | EU     | SLES_508.21 |[![](https://decomp.dev/Mikompilation/Himuro/SLES_508.21.svg?mode=shield&category=eu&measure=code)](https://decomp.dev/Mikompilation/Himuro/SLES_508.21)
 
 ## Disclaimer
 No game assets are hosted on this repository. You must provide them yourself, copying them from a legal copy.
