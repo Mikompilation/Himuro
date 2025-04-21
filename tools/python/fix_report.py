@@ -98,6 +98,17 @@ def fix_report(report_path: Path):
     report["measures"]["matched_functions"] = computed_matched_functions
     report["measures"]["matched_functions_percent"] = 100.0 * computed_matched_functions / computed_total_functions
 
+    categories = report["categories"]
+    assert len(categories) == 1
+    assert categories[0]["measures"]["total_code"] == report["measures"]["total_code"]
+    assert categories[0]["measures"]["total_units"] == report["measures"]["total_units"]
+
+    categories[0]["measures"]["fuzzy_match_percent"] = report["measures"]["fuzzy_match_percent"]
+    categories[0]["measures"]["matched_code"] = report["measures"]["matched_code"]
+    categories[0]["measures"]["matched_code_percent"] = report["measures"]["matched_code_percent"]
+    categories[0]["measures"]["matched_functions"] = report["measures"]["matched_functions"]
+    categories[0]["measures"]["matched_functions_percent"] = report["measures"]["matched_functions_percent"]
+
     # /path/to/report.json -> /path/to/report_fixed.json
     # fixed_report_path = report_path.with_name(f"{report_path.stem}_fixed{report_path.suffix}")
     # fixed_report_path.write_text(json.dumps(report))

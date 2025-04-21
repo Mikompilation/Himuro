@@ -467,7 +467,7 @@ def make_asm(config_path: Path, config: dict[str, Any]):
         print(f"expected obj built to '{dst_path}'")
 
 
-def generate_objdiff_configuration(config_path: Path, config: dict[str, Any]):
+def generate_objdiff_configuration(config_path: Path, config: dict[str, Any], language: str):
     """
     Generate `objdiff.json` configuration from splat YAML config.
 
@@ -530,9 +530,20 @@ def generate_objdiff_configuration(config_path: Path, config: dict[str, Any]):
                 "name": tu_name,
                 "target_path": str(target_path),
                 "base_path": str(base_path),
-                # "metadata": {"complete": is_complete},
+                "metadata": {"progress_categories": [language]},
             }
         )
+
+    category_name = {
+        "us": "Fatal Frame",
+        "eu": "Project Zero",
+    }
+
+    categories = {
+        "progress_categories": [
+            {"id": language, "name": category_name[language]},
+        ]
+    }
 
     objdiff_json: dict[str, Any] = {
         "$schema": "https://raw.githubusercontent.com/encounter/objdiff/main/config.schema.json",
@@ -542,6 +553,7 @@ def generate_objdiff_configuration(config_path: Path, config: dict[str, Any]):
         "build_base": False,
         "watch_patterns": [],
         "units": units,
+        "categories": categories,
     }
 
     objdiff_path = config_path / "objdiff.json"
@@ -657,7 +669,7 @@ def main():
     assert linkerscript_path.is_file(), f"{linkerscript_path} not found"
     fix_linkerscript(split.config, linkerscript_path)
 
-    generate_objdiff_configuration(config_dir, split.config)
+    generate_objdiff_configuration(config_dir, split.config, language)
 
 
 if __name__ == "__main__":
