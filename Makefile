@@ -67,7 +67,7 @@ us-configure: ## Configure US project (needs SLUS_203.88)
 	ls -l config/us/build/SLUS_203.88 config/us/SLUS_203.88
 
 us-build: ## Build US project
-	@$(MAKE) .us-build-only || $(MAKE) .us-check-files-on-error
+	@$(MAKE) .us-build-only; status=$$?; [ $$status -eq 0 ] || { $(MAKE) .us-check-files-on-error; }; exit $$status
 
 us-extract-data:  ## Extract variables from .data in US config directory
 	@python3 tools/python/parse_data.py us
@@ -103,7 +103,7 @@ eu-configure: ## Configure EU project (needs SLES_508.21)
 	ls -l config/eu/build/SLES_508.21 config/eu/SLES_508.21
 
 eu-build: ## Build EU project
-	@$(MAKE) .eu-build-only || $(MAKE) .eu-check-files-on-error
+	@$(MAKE) .eu-build-only; status=$$?; [ $$status -eq 0 ] || { $(MAKE) .eu-check-files-on-error; }; exit $$status
 
 eu-extract-data:  ## Extract initialized variables from .data in EU config directory
 	@python3 tools/python/parse_data.py eu
