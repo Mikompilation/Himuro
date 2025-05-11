@@ -77,4 +77,18 @@ static inline void Vu0AddVector(sceVu0FVECTOR v, sceVu0FVECTOR v0, sceVu0FVECTOR
         ": : "r"(v), "r"(v0), "r"(v1));
 }
 
+static inline float vu0Rand()
+{
+    float r;
+    
+    __asm__ volatile(
+        "vrnext.x $vf12x,R\n"
+        "vsubw.x $vf12x,$vf12x,$vf0w\n"
+        "qmfc2   %0,$vf12\n"
+        :"=r"(r)
+    );
+
+    return r;
+}
+
 #endif //  GRAPHICS_GRAPH3D_LIBSG_H

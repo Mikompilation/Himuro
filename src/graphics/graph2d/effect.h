@@ -75,20 +75,6 @@ typedef struct {
 	MONO_STR mn;
 } SBTSET;
 
-static inline float vu0Rand()
-{
-    float r;
-    
-    __asm__ volatile(
-        "vrnext.x $vf12x,R\n"
-        "vsubw.x $vf12x,$vf12x,$vf0w\n"
-        "qmfc2   %0,$vf12\n"
-        :"=r"(r)
-    );
-
-    return r;
-}
-
 extern SPRT_DAT effdat[]; // [60] = {...}
 extern SPRT_DAT camdat[]; // [14] = {...}
 extern int change_efbank; // = 0

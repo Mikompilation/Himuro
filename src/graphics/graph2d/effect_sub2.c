@@ -29,6 +29,7 @@
 #include "graphics/graph2d/effect_scr.h"
 #include "graphics/graph2d/effect_obj.h"
 #include "graphics/graph3d/sglib.h"
+#include "graphics/graph3d/libsg.h"
 
 typedef struct { // 0x8
 	/* 0x0 */ void *start_point;
