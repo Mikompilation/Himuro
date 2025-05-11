@@ -3,11 +3,6 @@
 
 #include "typedefs.h"
 
-typedef union {
-	int ui32;
-	float fl32;
-} U32DATA;
-
 typedef struct {
 	sceVu0FVECTOR opos[24];
 	int tbl[24];

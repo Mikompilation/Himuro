@@ -19,4 +19,9 @@ typedef int sceVu0IVECTOR[4] __attribute__((aligned (16)));
 typedef float sceVu0FVECTOR[4] __attribute__((aligned (16)));
 typedef float sceVu0FMATRIX[4][4] __attribute__((aligned (16)));
 
+typedef union {
+	int ui32;
+	float fl32;
+} U32DATA;
+
 #endif /* TYPEDEFS_H */
