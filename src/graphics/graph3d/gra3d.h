@@ -65,7 +65,7 @@ u_int SGDLoadInit(u_int *addr, int size);
 void gra3dInit();
 void Init3D();
 void SetDefaultLightPower(float pow);
-void RequestSpirit(int no, int swch);
+// void RequestSpirit(int no, int swch);
 void InitRequestSpirit();
 void RequestFly(int no, int swch);
 void InitRequestFly();

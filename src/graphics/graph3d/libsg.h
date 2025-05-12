@@ -91,4 +91,18 @@ static inline float vu0Rand()
     return r;
 }
 
+static inline void Vu0CopyMatrix(sceVu0FMATRIX m0, sceVu0FMATRIX m1)
+{
+  __asm__ volatile (
+        "lqc2 vf12, 0x00(%1)\n"
+        "lqc2 vf13, 0x10(%1)\n"
+        "lqc2 vf14, 0x20(%1)\n"
+        "lqc2 vf15, 0x30(%1)\n"
+        "sqc2 vf12, 0x00(%0)\n"
+        "sqc2 vf13, 0x10(%0)\n"
+        "sqc2 vf14, 0x20(%0)\n"
+        "sqc2 vf15, 0x30(%0)\n"
+        : : "r" (&m0[0][0]), "r" (&m1[0][0]));
+}
+
 #endif //  GRAPHICS_GRAPH3D_LIBSG_H

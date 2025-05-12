@@ -50,6 +50,12 @@ ef_smoke_pos22                 = 0x297d60; // type:sceVu0FVECTOR static
 ef_smoke_pos23                 = 0x297d70; // type:sceVu0FVECTOR static
 ef_smoke_pos24                 = 0x297d80; // type:sceVu0FVECTOR static
 
+// graphics/graph2d/effect_ene.c
+enedmg_fileno_tbl              = 0x2981f0; // type:int numel:69 numel:2 static nosize
+enedmg_texno_tbl               = 0x298418; // type:SPRT_DAT numel:2 static nosize
+eto_light                      = 0x298460; // type:sceVu0FVECTOR numel:5 static
+eto_rgb                        = 0x2984b0; // type:u_char numel:5 numel:3 static
+
 // graphics/graph2d/g2d_debug.c
 dbg_menu_t                     = 0x2a7580; // type:DEBUG_MENU
 dbg_menu_lt                    = 0x2a7618; // type:DEBUG_MENU
