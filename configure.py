@@ -60,7 +60,9 @@ LANGUAGES: dict[str, str] = {
 # to be patched. the respective c files (e.g. "tim2_new.c") will be compiled
 # in two steps: c -> asm, then asm -> obj. in between, the intermediate
 # asm will be passed to `tools/python/fix_asm_matching.py` for patching.
-ASM_PATCH_LIST: list[str] = []
+ASM_PATCH_LIST: list[str] = [
+    "effect_oth.c.o",
+]
 
 
 def get_compiler_command(command: str):

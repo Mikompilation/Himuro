@@ -276,7 +276,6 @@
     ((u_long)(r)        | ((u_long)(g) << 8) | ((u_long)(b) << 16) | \
     ((u_long)(a) << 24) | ((u_long)(q) << 32))
 
-
 #define SCE_GS_SET_PRIM(prim, iip, tme, fge, abe, aa1, fst, ctxt, fix) \
     ((u_long)(prim)      | ((u_long)(iip) << 3)  | ((u_long)(tme) << 4) | \
     ((u_long)(fge) << 5) | ((u_long)(abe) << 6)  | ((u_long)(aa1) << 7) | \
@@ -289,6 +288,11 @@
 
 #define SCE_GS_SET_TEXCLUT(cbw, cou, cov) \
     ((u_long)(cbw) | ((u_long)(cou) << 6) | ((u_long)(cov) << 12))
+
+#define SCE_GS_SET_FOG(f) ((u_long)(f) << 56)
+
+#define SCE_GS_SET_FOGCOL(fcr, fcg, fcb) \
+    ((u_long)(fcr) | ((u_long)(fcg) << 8) | ((u_long)(fcb) << 16))
 
 typedef struct {
     unsigned long CLAMP:1;

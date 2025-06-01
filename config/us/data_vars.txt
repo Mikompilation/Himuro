@@ -38,6 +38,11 @@ alpha1                         = 0x34b350; // type:u_char numel:289
 alpha2                         = 0x34b478; // type:u_char numel:289
 efrenz                         = 0x34b5d8; // type:EFRENZ numel:9
 
+// graphics/graph2d/effect_oth.c
+canal_bpos                     = 0x297450; // type:sceVu0FVECTOR numel:3
+canal_size                     = 0x297480; // type:float numel:3 numel:2
+eneface                        = 0x2974d0; // type:SPRT_DAT numel:2 nosize static
+
 // graphics/graph2d/effect_rdr.c
 sunshine                       = 0x297ad0; // type:SUNSHINE numel:7 nosize static
 ef_pazzene_p                   = 0x297d00; // type:sceVu0FVECTOR static
