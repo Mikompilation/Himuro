@@ -211,7 +211,7 @@ extern u_int scene_bg_color;
 // extern int handler_error;
 // extern int isStrFileInit;
 // extern VoBuf voBuf;
-// extern MOVIE_WRK movie_wrk;
+extern MOVIE_WRK movie_wrk;
 // extern int thread_id;
 // extern u_int controller_val;
 // extern int videoDecTh;

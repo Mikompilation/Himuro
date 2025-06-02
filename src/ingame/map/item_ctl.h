@@ -22,7 +22,7 @@ typedef struct {
 // extern MAP_FILE_DAT map_file_dat2[50];
 // extern MAP_FILE_DAT map_file_dat3[50];
 // extern MAP_FILE_DAT *map_file_dat[4];
-// extern u_short item_ap[300][2];
+extern u_short item_ap[300][2];
 
 void MapItemInit();
 void MissionStartMapItemInit(int msn_no);

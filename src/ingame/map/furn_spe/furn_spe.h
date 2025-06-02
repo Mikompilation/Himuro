@@ -55,8 +55,8 @@ void FActWrkMain();
 int SearchRegisterFW2FAW(u_short fw_id, u_short fact_no);
 void ExchangeFAWFWID(int fw_id1, int fw_id2);
 void FSpeFinishFlgOff(u_short furn_id);
-void FurnActOffEve(u_short furn_id);
-void FurnActOnEve(u_short furn_id);
+// void FurnActOffEve(u_short furn_id); `EventMain` in ev_main.c needs them to implicitly declared
+// void FurnActOnEve(u_short furn_id); `EventMain` in ev_main.c needs them to implicitly declared
 int SearchFActWrkIDFromFurnID(u_short furn_id);
 void AddRotVector(float *rot, float *rot1);
 void FActCheckExec();

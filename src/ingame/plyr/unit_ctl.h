@@ -13,6 +13,6 @@ u_char HitChkSegment2AllChk(sceVu0FVECTOR f, sceVu0FVECTOR t, float deg);
 u_char OutSightChk(sceVu0FVECTOR tp, sceVu0FVECTOR vp, float rot, float sight, float dist);
 int RotRngChk(sceVu0FVECTOR vp, sceVu0FVECTOR tp, float rot, float rng);
 int GetPointHeightChk(sceVu0FVECTOR tv);
-void ReqEneStop(u_char req, u_char except);
+// void ReqEneStop(u_char req, u_char except);
 
 #endif // INGAME_PLYR_UNIT_CTL_H

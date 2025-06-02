@@ -167,7 +167,7 @@ int MissionDataLoadReq(MSN_LOAD_DAT *dat);
 void MissionDataLoadAfterInit(MSN_LOAD_DAT *dat);
 void DataLoadWrkInit();
 void SetDataLoadWrk(MSN_LOAD_DAT *dat);
-void DelDataLoadWrk(u_short file_no);
+// void DelDataLoadWrk(u_short file_no);
 u_int GetLoadDataAddr(u_short file_no);
 void SortLoadDataAddr();
 void MissionTitleDisp(int msn_no);

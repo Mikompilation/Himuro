@@ -28,7 +28,7 @@ typedef struct {
 } ROOM_LOAD_BLOCK;
 
 extern ROOM_LOAD_BLOCK room_load_block[2];
-// extern int r022_light_on;
+extern int r022_light_on;
 extern RMDL_ADDR room_addr_tbl[64];
 extern u_int *furn_addr_tbl[500];
 extern u_int *door_addr_tbl[128];

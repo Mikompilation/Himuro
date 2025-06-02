@@ -12,7 +12,7 @@ typedef struct {
 } FIND_WRK;
 
 // extern u_char find_stts[250];
-// extern FIND_WRK find_wrk;
+extern FIND_WRK find_wrk;
 
 void InitFindStatus();
 void FindMapInit();

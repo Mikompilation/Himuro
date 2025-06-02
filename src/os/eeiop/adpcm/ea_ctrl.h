@@ -58,7 +58,7 @@ extern ADPCM_MAP adpcm_map;
 
 void AdpcmMapCtrlInit();
 void AdpcmMapUse();
-void AdpcmMapNoUse();
+// void AdpcmMapNoUse();
 void AdpcmMapCtrl();
 void AdpcmShiftMovie();
 void AdpcmReturnFromMovie();
