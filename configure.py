@@ -455,17 +455,6 @@ def make_asm(config_path: Path, config: dict[str, Any]):
 
         shutil.copytree(tmp_obj_path, dst_path, dirs_exist_ok=True)
 
-        # create a dummy (empty) object to allow objdiff to diff tus that have not yet been decompiled
-        compiler_path = ROOT / get_compiler_command("ee-gcc")
-        dummy_c_path = tmp_path / "dummy.c"
-        dummy_o_path = dst_path / "dummy.c.o"
-
-        # create the empty source (touch)
-        dummy_c_path.open(mode="a").close()
-
-        # compile
-        subprocess.run([compiler_path, "-c", dummy_c_path, "-o", dummy_o_path])
-
         print(f"expected obj built to '{dst_path}'")
 
 
@@ -523,18 +512,24 @@ def generate_objdiff_configuration(config_path: Path, config: dict[str, Any], la
             # compose the build path as "build/src/path/of/tu.c.o"
             base_path = Path("build", "src", tu_name).with_suffix(".c.o")
         else:
-            # use dummy object for incomplete (not yet decompiled) TUs:
-            # expected/obj/dummy.c.o
-            base_path = Path("expected", "obj", "dummy").with_suffix(".c.o")
+            # leave unset if the TU is not yet decompiled
+            base_path = None
 
-        units.append(
-            {
-                "name": tu_name,
-                "target_path": str(target_path),
-                "base_path": str(base_path),
-                "metadata": {"progress_categories": [language]},
-            }
-        )
+        unit: dict[str, Any] = {
+            "name": tu_name,
+            "target_path": str(target_path),
+            "base_path": str(base_path) if base_path else None,
+            "metadata": {"progress_categories": [language]},
+        }
+
+        if not base_path:
+            # remove base_path for not yet decompiled TUs
+            # (adding first and then removing if base_path is none allows
+            # for key ordering to be preserved, otherwise adding it later
+            # would put it after metadata)
+            del unit["base_path"]
+
+        units.append(unit)
 
     category_name = {
         "us": "Fatal Frame",
