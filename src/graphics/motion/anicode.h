@@ -8,7 +8,7 @@
 
 void motAniCodeClearBuf(ANI_CTRL *ani_ctrl);
 void motAniCodeSetBuf(ANI_CODE code);
-u_char motAniCodeRead();
+u_char motAniCodeRead(ANI_CTRL *ani_ctrl);
 void motAniCodeExec(ANI_CODE code, int *args);
 void motAniTimerCodeExec();
 int motAniCodeIsEnd(ANI_CODE code);

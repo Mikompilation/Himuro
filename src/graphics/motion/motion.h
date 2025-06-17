@@ -84,7 +84,7 @@ extern u_char mim_nigiri_l_id;
 extern u_char mim_nigiri_r_id;
 extern QUAKE_CTRL quake;
 extern PLYR_ACT_WRK plyr_act_wrk;
-// extern float now_frot_x;
+extern float now_frot_x;
 
 void motInitPlayerAnm(char mdl_no);
 void motInitEnemyAnm(u_int *anm_p, u_int mdl_no, u_int anm_no);
@@ -122,7 +122,7 @@ void motInitInterpAnime(ANI_CTRL *ani_ctrl, int flame);
 static void motSetInterpMatrix(ANI_CTRL *ani_ctrl, sceVu0FMATRIX *start, sceVu0FMATRIX *end);
 static void motInterpAnm(ANI_CTRL *ani_ctrl, sceVu0FMATRIX *start, sceVu0FMATRIX *end);
 void motInterpMatrix(sceVu0FMATRIX interp, sceVu0FMATRIX m0, sceVu0FMATRIX m1, float rate);
-void motMatrix2Quaternion(sceVu0FMATRIX q, sceVu0FVECTOR m);
+void motMatrix2Quaternion(sceVu0FVECTOR q, sceVu0FMATRIX m);
 void motQuaternion2Matrix(sceVu0FMATRIX m, sceVu0FVECTOR q);
 void motQuaternionSlerp(sceVu0FVECTOR q, sceVu0FVECTOR q1, sceVu0FVECTOR q2, float rate);
 void LocalRotMatrixX(sceVu0FMATRIX m0, sceVu0FMATRIX m1, float rx);
