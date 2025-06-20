@@ -117,6 +117,8 @@ segments:
           - [0x6b7c8,  c,   graphics/motion/accessory]
           - [0x6f4e0,  c,   graphics/motion/motion]
           - [0x72508,  asm, graphics/motion/anicode]
+          - [0x72dc0,  c,   graphics/motion/mim_dat]
+          - [0x72dc0,  c,   graphics/motion/acs_dat]
           - [0x72dc0,  c,   graphics/graph3d/object]
           - [0x72df8,  c,   graphics/graph3d/sce_pp3]
           - [0x73050,  asm, graphics/graph3d/sgsgd]
@@ -532,7 +534,7 @@ segments:
           - { start: 0x257bcc, type: .sdata,  vram: 0x356bcc, name: graphics/motion/mime          }
           - { start: 0x257bd0, type: .sdata,  vram: 0x356bd0, name: graphics/motion/accessory     }
           - { start: 0x257bf0, type: .sdata,  vram: 0x356bf0, name: graphics/motion/motion        }
-          - { start: 0x257c10, type:  sdata,  vram: 0x356c10, name: graphics/motion/mdldat        }
+          - { start: 0x257c10, type:  sdata,  vram: 0x356c10, name: graphics/motion/acs_dat       }
           - { start: 0x257c40, type: .sdata,  vram: 0x356c40, name: graphics/graph3d/object       }
           - { start: 0x257c54, type: .sdata,  vram: 0x356c54, name: graphics/graph3d/sce_pp3      }
           - { start: 0x257c64, type:  sdata,  vram: 0x356c64, name: graphics/graph3d/sgsgd        }
