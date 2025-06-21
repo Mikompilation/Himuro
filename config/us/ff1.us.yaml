@@ -245,7 +245,7 @@ segments:
           - { start: 0x1fd8e8, type: .data,   vram: 0x2fc8e8, name: graphics/motion/mdlact        }
           - { start: 0x1fda80, type: .data,   vram: 0x2fca80, name: graphics/motion/accessory     }
           - { start: 0x2013f0, type: .data,   vram: 0x3003f0, name: graphics/motion/motion        }
-          - { start: 0x2034c0, type:  data,   vram: 0x3024c0, name: graphics/motion/mim_dat       }
+          - { start: 0x2034c0, type: .data,   vram: 0x3024c0, name: graphics/motion/mim_dat       }
           - { start: 0x203640, type:  data,   vram: 0x302640, name: graphics/motion/acs_dat       }
           - { start: 0x204810, type:  data,   vram: 0x303810, name: graphics/graph3d/sglib        }
           - { start: 0x204d00, type:  data,   vram: 0x303d00, name: graphics/graph3d/sgsu         }
