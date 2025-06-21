@@ -885,6 +885,115 @@ class WANDER_SOUL_DAT(CStructure):
     adpcm_id: c_uint16
 
 
+###########################################################################
+# typedef struct {
+# 	float center[3];
+# 	float r;
+# } SPHERE;
+class SPHERE(CStructure):
+    center: c_float * 3
+    r: c_float
+
+
+# typedef struct {
+# 	float p0[3];
+# 	float p1[3];
+# 	float r;
+# 	u_int axis;
+# } TUBE;
+class TUBE(CStructure):
+    p0: c_float * 3
+    p1: c_float * 3
+    r: c_float
+    axis: c_uint32
+
+
+# typedef struct {
+# 	u_char *name;
+# 	float mass;
+# 	float Ks;
+# 	float dec;
+# 	sceVu0FVECTOR pos;
+# 	sceVu0FVECTOR gravity;
+# } WMIM;
+class WMIM(CStructure):
+    name: c_addr_ptr
+    mass: c_float
+    Ks: c_float
+    dec: c_float
+    pos: sceVu0FVECTOR
+    gravity: sceVu0FVECTOR
+
+
+# typedef struct {
+# 	WMIM *dat;
+# 	u_char bone_id;
+# } WMIM_DAT;
+class WMIM_DAT(CStructure):
+    dat: c_addr_ptr
+    bone_id: c_uint8
+
+
+# typedef struct {
+# 	float *vtx;
+# 	float gravity;
+# 	float Kd;
+# 	float Ke;
+# 	u_int fixed_num;
+# } ROPE_DAT;
+class ROPE_DAT(CStructure):
+    vtx: c_addr_ptr
+    gravity: c_float
+    Kd: c_float
+    Ke: c_float
+    fixed_num: c_uint32
+
+
+# typedef struct {
+# 	float gravity;
+# 	float Kd;
+# 	float Ke;
+# 	u_char w;
+# 	u_char h;
+# 	u_char type;
+# } CLOTH;
+class CLOTH(CStructure):
+    gravity: c_float
+    Kd: c_float
+    Ke: c_float
+    w: c_uint8
+    h: c_uint8
+    type: c_uint8
+
+
+# typedef struct {
+# 	void *dat;
+# 	u_char type;
+# 	u_char bone_id;
+# } COLLISION_DAT;
+class COLLISION_DAT(CStructure):
+    dat: c_addr_ptr
+    type: c_uint8
+    bone_id: c_uint8
+
+
+# typedef struct {
+# 	CLOTH *dat;
+# 	sceVu0FVECTOR *rist_vtx;
+# 	u_char bone_id;
+# 	u_char bone_id2;
+# 	u_char sgd_id;
+# 	u_char flg;
+# } CLOTH_DAT;
+class CLOTH_DAT(CStructure):
+    dat: c_addr_ptr
+    rist_vtx: c_addr_ptr
+    bone_id: c_uint8
+    bone_id2: c_uint8
+    sgd_id: c_uint8
+    flg: c_uint8
+
+
 elf_names: dict[str, str] = {
     "us": "SLUS_203.88",
     "eu": "SLES_508.21",
@@ -1147,6 +1256,9 @@ def parse_data(lang: str):
     if not data_vars:
         return
 
+    if len(set(data_var.name for data_var in data_vars)) != len(data_vars):
+        raise RuntimeError("duplicate names in data_vars.txt")
+
     elf_path = Path("config") / lang / elf_names[lang]
 
     include_path = Path("config") / lang / "include" / "data"
@@ -1161,7 +1273,7 @@ def parse_data(lang: str):
         for data_var in tqdm.tqdm(data_vars, desc="Extracting data"):
             header_path = include_path / f"{data_var.name}.h"
 
-            with open(header_path, mode="w") as fw:
+            with header_path.open(mode="w") as fw:
                 data_var._elf = vram_elf  # pyright: ignore[reportPrivateUsage]
 
                 fw.write(data_var.data_var_dumps(addr_vals))

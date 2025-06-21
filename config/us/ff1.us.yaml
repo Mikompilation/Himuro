@@ -246,7 +246,7 @@ segments:
           - { start: 0x1fda80, type: .data,   vram: 0x2fca80, name: graphics/motion/accessory     }
           - { start: 0x2013f0, type: .data,   vram: 0x3003f0, name: graphics/motion/motion        }
           - { start: 0x2034c0, type: .data,   vram: 0x3024c0, name: graphics/motion/mim_dat       }
-          - { start: 0x203640, type:  data,   vram: 0x302640, name: graphics/motion/acs_dat       }
+          - { start: 0x203640, type: .data,   vram: 0x302640, name: graphics/motion/acs_dat       }
           - { start: 0x204810, type:  data,   vram: 0x303810, name: graphics/graph3d/sglib        }
           - { start: 0x204d00, type:  data,   vram: 0x303d00, name: graphics/graph3d/sgsu         }
           - { start: 0x204d10, type:  data,   vram: 0x303d10, name: graphics/graph3d/sgdma        }
@@ -534,7 +534,7 @@ segments:
           - { start: 0x257bcc, type: .sdata,  vram: 0x356bcc, name: graphics/motion/mime          }
           - { start: 0x257bd0, type: .sdata,  vram: 0x356bd0, name: graphics/motion/accessory     }
           - { start: 0x257bf0, type: .sdata,  vram: 0x356bf0, name: graphics/motion/motion        }
-          - { start: 0x257c10, type:  sdata,  vram: 0x356c10, name: graphics/motion/acs_dat       }
+          - { start: 0x257c10, type: .sdata,  vram: 0x356c10, name: graphics/motion/acs_dat       }
           - { start: 0x257c40, type: .sdata,  vram: 0x356c40, name: graphics/graph3d/object       }
           - { start: 0x257c54, type: .sdata,  vram: 0x356c54, name: graphics/graph3d/sce_pp3      }
           - { start: 0x257c64, type:  sdata,  vram: 0x356c64, name: graphics/graph3d/sgsgd        }
