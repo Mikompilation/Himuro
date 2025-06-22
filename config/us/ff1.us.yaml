@@ -116,7 +116,7 @@ segments:
           - [0x69cc0,  c,   graphics/motion/mime]
           - [0x6b7c8,  c,   graphics/motion/accessory]
           - [0x6f4e0,  c,   graphics/motion/motion]
-          - [0x72508,  asm, graphics/motion/anicode]
+          - [0x72508,  c,   graphics/motion/anicode]
           - [0x72dc0,  c,   graphics/motion/mim_dat]
           - [0x72dc0,  c,   graphics/motion/acs_dat]
           - [0x72dc0,  c,   graphics/graph3d/object]
@@ -365,7 +365,7 @@ segments:
           - { start: 0x24e3e0, type: .rodata, vram: 0x34d3e0, name: graphics/motion/mdlwork       }
           - { start: 0x24e440, type: .rodata, vram: 0x34d440, name: graphics/motion/accessory     }
           - { start: 0x24e480, type: .rodata, vram: 0x34d480, name: graphics/motion/motion        }
-          - { start: 0x24e6e0, type:  rodata, vram: 0x34d6e0, name: graphics/motion/anicode       }
+          - { start: 0x24e6e0, type: .rodata, vram: 0x34d6e0, name: graphics/motion/anicode       }
           - { start: 0x24e718, type: .rodata, vram: 0x34d718, name: graphics/graph3d/sce_pp3      }
           - { start: 0x24e730, type:  rodata, vram: 0x34d730, name: graphics/graph3d/sgsgd        }
           - { start: 0x24e780, type:  rodata, vram: 0x34d780, name: graphics/graph3d/sglib        }
@@ -455,7 +455,7 @@ segments:
           - { start: 0x256990, type: .lit4,   vram: 0x355990, name: graphics/motion/mime          }
           - { start: 0x256998, type: .lit4,   vram: 0x355998, name: graphics/motion/accessory     }
           - { start: 0x2569fc, type: .lit4,   vram: 0x3559fc, name: graphics/motion/motion        }
-          - { start: 0x256a10, type:  lit4,   vram: 0x355a10, name: graphics/motion/anicode       }
+          - { start: 0x256a10, type: .lit4,   vram: 0x355a10, name: graphics/motion/anicode       }
           - { start: 0x256a14, type:  lit4,   vram: 0x355a14, name: graphics/graph3d/sglib        }
           - { start: 0x256a9c, type:  lit4,   vram: 0x355a9c, name: graphics/graph3d/sglight      }
           - { start: 0x256aa0, type:  lit4,   vram: 0x355aa0, name: graphics/graph3d/shadow       }

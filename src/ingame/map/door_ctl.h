@@ -89,7 +89,7 @@ typedef struct {
 } NON_CLOSE_DOOR_WRK;
 
 extern AREA_READ_WRK area_read_wrk;
-// extern DOOR_OPEN_CTRL door_open_ctrl;
+extern DOOR_OPEN_CTRL door_open_ctrl;
 extern DOOR_WRK door_wrk[20];
 // extern AUTO_CLOSE_DOOR_WRK ac_door_wrk[10];
 // extern NON_CLOSE_DOOR_WRK nc_door_wrk[50];
