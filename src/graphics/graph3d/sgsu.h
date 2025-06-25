@@ -19,22 +19,6 @@ typedef struct {
 	long unsigned int CLD : 3;
 } sceGsTex0;
 
-typedef struct {
-	u_int HeaderSections;
-	u_int UniqHeaderSize;
-	sceVu0FVECTOR *pUniqVertex;
-	sceVu0FVECTOR *pUniqNormal;
-	u_int *pUniqList;
-	u_int CommonHeaderSize;
-	sceVu0FVECTOR *pCommonVertex;
-	sceVu0FVECTOR *pCommonNormal;
-	u_int *pCommonList;
-	u_int WeightedHeaderSize;
-	sceVu0FVECTOR *pWeightedVertex;
-	sceVu0FVECTOR *pWeightedNormal;
-	u_int *pWeightedList;
-} PHEAD;
-
 extern SgCOORDUNIT *lcp;
 extern PHEAD *lphead;
 // extern u_int nextprim;

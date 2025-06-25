@@ -140,9 +140,9 @@ typedef struct {
 // extern SgLIGHT *SgSpotLight;
 // extern int model_buffer_size;
 // extern int model_tag_size;
-// extern sceVu0FVECTOR *vertex_buffer;
-// extern sceVu0FVECTOR *normal_buffer;
-// extern int vnbuf_size;
+extern sceVu0FVECTOR *vertex_buffer;
+extern sceVu0FVECTOR *normal_buffer;
+extern int vnbuf_size;
 // extern sceVu0FVECTOR vf12reg[2];
 // extern int loadtri2_flg;
 extern int loadbw_flg;
