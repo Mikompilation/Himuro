@@ -21,8 +21,8 @@
 #define DMAret              (6<<28)
 #define DMAend              (7<<28)
 
-#define    SCE_GS_FALSE         (0)
-#define    SCE_GS_TRUE          (1)
+#define SCE_GS_FALSE            (0)
+#define SCE_GS_TRUE             (1)
 
 #define SCE_GS_REPEAT           (0)
 #define SCE_GS_CLAMP            (1)
@@ -398,5 +398,16 @@ typedef struct {
     unsigned long K:12;
     unsigned long pad44:20;
 } sceGsTex1;
+
+#define SCE_DMA_VIF0        0
+#define SCE_DMA_VIF1        1
+#define SCE_DMA_GIF         2
+#define SCE_DMA_fromIPU     3
+#define SCE_DMA_toIPU       4
+#define SCE_DMA_SIF0        5
+#define SCE_DMA_SIF1        6
+#define SCE_DMA_SIF2        7
+#define SCE_DMA_fromSPR     8
+#define SCE_DMA_toSPR       9
 
 #endif // EE_EESTRUCT_H
