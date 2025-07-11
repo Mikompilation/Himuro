@@ -2,27 +2,15 @@
 #define GRAPHICS_GRAPH3D_SGSU_H
 
 #include "typedefs.h"
-#include "graphics/graph3d/sg_dat.h"
 
-typedef struct {
-	long unsigned int TBP0 : 14;
-	long unsigned int TBW : 6;
-	long unsigned int PSM : 6;
-	long unsigned int TW : 4;
-	long unsigned int TH : 4;
-	long unsigned int TCC : 1;
-	long unsigned int TFX : 2;
-	long unsigned int CBP : 14;
-	long unsigned int CPSM : 4;
-	long unsigned int CSM : 1;
-	long unsigned int CSA : 5;
-	long unsigned int CLD : 3;
-} sceGsTex0;
+#include "ee/eestruct.h"
+
+#include "graphics/graph3d/sg_dat.h"
 
 extern SgCOORDUNIT *lcp;
 extern PHEAD *lphead;
-// extern u_int nextprim;
-// extern u_int *vuvnprim;
+extern u_int nextprim;
+extern u_int *vuvnprim;
 extern int blocksm;
 extern int write_coord;
 
@@ -49,10 +37,10 @@ void LoadSgProg(int load_prog);
 void SetUpSortUnit();
 void SgSortUnit(void *sgd_top, int pnum);
 // void SgSortUnitKind(void *sgd_top, int num);
-void _SetLWMatrix0();
-void _SetLWMatrix1();
-void _SetRotTransPersMatrix();
-void _CalcVertex(float *dp, float *n);
+void _SetLWMatrix0(sceVu0FMATRIX m0);
+void _SetLWMatrix1(sceVu0FMATRIX m0);
+void _SetRotTransPersMatrix(sceVu0FMATRIX m0);
+void _CalcVertex(float *dp, float *v, float *n);
 void _vfito0(int *v0);
 
 #endif // GRAPHICS_GRAPH3D_SGSU_H

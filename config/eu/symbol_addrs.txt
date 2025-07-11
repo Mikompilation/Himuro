@@ -1,5 +1,29 @@
 // ############################################################################
 //
+// VUTEXT SYMBOLS
+//
+// ############################################################################
+DRAWTYPE2                                = 0x00000590;
+DIVPS_PROLOGUE                           = 0x00000b20;
+DRAWTYPE2W                               = 0x00000c78;
+DIVP0_PROLOGUE_and_DIVP2_PROLOGUE        = 0x00000f50;
+DRAWTYPE0                                = 0x000012e0;
+MULTI_PROLOGUE                           = 0x00001940;
+DPS_PROLOGUE                             = 0x00001a60;
+DP0_PROLOGUE                             = 0x00001ba0;
+DP2_PROLOGUE                             = 0x00002100;
+SHADOWDRAWTYPE2                          = 0x000023b8;
+SHADOWDRAWTYPE0                          = 0x00002540;
+MULTIP_PROLOGUE                          = 0x00003178;
+// SgSourceChainTag(s)
+SgSu_dma_start                           = 0x0024a340;
+SgSuP0_dma_start                         = 0x0024be60;
+SgSuP2_dma_start                         = 0x0024e450;
+SgSu_dma_starts                          = 0x002517c0;
+
+
+// ############################################################################
+//
 // SYMBOLS
 //
 // ############################################################################

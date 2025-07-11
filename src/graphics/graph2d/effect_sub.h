@@ -3,7 +3,7 @@
 
 #include "typedefs.h"
 
-#include "graphics/graph3d/sgsu.h"
+#include "ee/eestruct.h"
 
 typedef struct {
 	u_char num;

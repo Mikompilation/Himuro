@@ -386,6 +386,21 @@ typedef struct {
 } sceGsXyz;
 
 typedef struct {
+	long unsigned int TBP0 : 14;
+	long unsigned int TBW : 6;
+	long unsigned int PSM : 6;
+	long unsigned int TW : 4;
+	long unsigned int TH : 4;
+	long unsigned int TCC : 1;
+	long unsigned int TFX : 2;
+	long unsigned int CBP : 14;
+	long unsigned int CPSM : 4;
+	long unsigned int CSM : 1;
+	long unsigned int CSA : 5;
+	long unsigned int CLD : 3;
+} sceGsTex0;
+
+typedef struct {
     unsigned long LCM:1;
     unsigned long pad01:1;
     unsigned long MXL:3;

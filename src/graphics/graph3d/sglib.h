@@ -75,7 +75,7 @@ typedef struct {
 	unsigned int ADDR : 31;
 	unsigned int SPR : 1;
 	u_int pad[2];
-} SgSourceChainTag;
+} SgSourceChainTag __attribute__((aligned(16)));
 
 typedef struct {
 	int num;

@@ -89,4 +89,11 @@ typedef struct {
 	u_int **primitives;
 } HeaderSection;
 
+typedef struct {
+    short int vnum;
+    short int nnum;
+    char vif_size;
+    char vtype;
+} VUVN_PRIM;
+
 #endif // GRAPHICS_GRAPH3D_SG_DAT_H

@@ -2,15 +2,9 @@
 #include "typedefs.h"
 #include "sgsgd.h"
 
+#include "graphics/graph3d/sg_dat.h"
 #include "graphics/graph3d/sgdma.h"
 #include "graphics/graph3d/sglib.h"
-
-typedef struct {
-    short int vnum;
-    short int nnum;
-    char vif_size;
-    char vtype;
-} VUVN_PRIM;
 
 static int post_process = 0;
 static int PresetChk;

@@ -4334,4 +4334,11 @@ enum {
 	M001_MIM_NUM = 2
 };
 
+enum VUPROG_SG {
+    VUPROG_SG = 0,
+    VUPROG_SG_PRESET0 = 1,
+    VUPROG_SG_PRESET2 = 2,
+    VUPROG_SG_SHADOW = 3
+};
+
 #endif // ENUMS_H
