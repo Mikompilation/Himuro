@@ -270,14 +270,14 @@ u_int* SetVUVNData(u_int *prim)
     vh = (VUVN_PRIM *)&prim[2];
     vp = (sceVu0FVECTOR *)getObjWrk();
 
-    asm__libsg_h_line_494(vp, (float *)&prim[4], (float *)&prim[8]);
+    asm__libsg_h_line_73(vp, (float *)&prim[4], (float *)&prim[8]);
 
     vp += 2;
     prim += 12;
 
     for (i = 0; i < vh->vnum; i++, vp += 2, prim += 2)
     {
-        asm__libsg_h_line_494(vp, (float *)prim[0], (float *)prim[1]);
+        asm__libsg_h_line_73(vp, (float *)prim[0], (float *)prim[1]);
     }
 
     return (u_int *)vp;
@@ -294,7 +294,7 @@ u_int* SetVUVNDataPost(u_int *prim)
     vh = (VUVN_PRIM *)&prim[2];
     vp = (sceVu0FVECTOR *)getObjWrk();
 
-    asm__libsg_h_line_494(vp, (float *)&prim[4], (float *)&prim[8]);
+    asm__libsg_h_line_73(vp, (float *)&prim[4], (float *)&prim[8]);
 
     vp += 2;
     prim += 12;
@@ -306,7 +306,7 @@ u_int* SetVUVNDataPost(u_int *prim)
         {
             for (i = 0; i < vh->vnum; i++, vp += 2, prim += 2)
             {
-                asm__libsg_h_line_494(vp, (float *)prim[0], (float *)prim[1]);
+                asm__libsg_h_line_73(vp, (float *)prim[0], (float *)prim[1]);
             }
         }
         else
@@ -327,7 +327,7 @@ u_int* SetVUVNDataPost(u_int *prim)
         {
             for (i = 0; i < vh->vnum; i++, vp += 2, prim += 2)
             {
-                asm__libsg_h_line_494(vp, (float *)prim[0], (float *)prim[1]);
+                asm__libsg_h_line_73(vp, (float *)prim[0], (float *)prim[1]);
             }
         }
         else
@@ -345,7 +345,7 @@ u_int* SetVUVNDataPost(u_int *prim)
     default:
         for (i = 0; i < vh->vnum; i++, vp += 2, prim += 2)
         {
-            asm__libsg_h_line_494(vp, (float *)prim[0], (float *)prim[1]);
+            asm__libsg_h_line_73(vp, (float *)prim[0], (float *)prim[1]);
         }
     }
 
@@ -510,7 +510,7 @@ void SetCoordData(u_int *prim)
     {
         llp = &lcp[j];
 
-        asm__libsg_h_line_413(llp->workm, llp->lwmtx);
+        asm__libsg_h_line_412(llp->workm, llp->lwmtx);
 
         abs = SgCalcLen(llp->workm[0][0], llp->workm[1][0], llp->workm[2][0]);
         abs += SgCalcLen(llp->workm[0][1], llp->workm[1][1], llp->workm[2][1]);
@@ -752,8 +752,8 @@ void SetUpSortUnit()
     datap[30] = 0x412;
     datap[31] = 0;
 
-    asm__libsg_h_line_413(*(sceVu0FMATRIX *)&datap[32], SgWSMtx);
-    asm__libsg_h_line_413(*(sceVu0FMATRIX *)&datap[48], SgCMtx);
+    asm__libsg_h_line_412(*(sceVu0FMATRIX *)&datap[32], SgWSMtx);
+    asm__libsg_h_line_412(*(sceVu0FMATRIX *)&datap[48], SgCMtx);
 
     Vu0CopyVector(*(sceVu0FVECTOR *)&SCRATCHPAD[4], vf12reg[0]);
     Vu0CopyVector(*(sceVu0FVECTOR *)&SCRATCHPAD[8], vf12reg[1]);

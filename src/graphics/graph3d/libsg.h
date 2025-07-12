@@ -3,6 +3,8 @@
 
 #include "typedefs.h"
 
+#include "graphics/graph3d/sglib.h"
+
 static inline void Vu0CopyVector(sceVu0FVECTOR v0, sceVu0FVECTOR v1)
 {
     __asm__ __volatile__("\n\
@@ -125,6 +127,17 @@ static inline void load_matrix_1(sceVu0FMATRIX m0)
         lqc2 $vf10,0x20(%0) \n\
         lqc2 $vf11,0x30(%0) \n\
     ": :"r"(m0));
+}
+
+// Line 73
+static inline void asm__libsg_h_line_73(sceVu0FVECTOR *vb, float *s0, float *s1)
+{
+    __asm__ __volatile__("\n\
+        lq $6,0x0(%1)\n\
+        lq $7,0x0(%2)\n\
+        sq $6,0x0(%0)\n\
+        sq $7,0x10(%0)\n\
+        ": :"r" (vb), "r" (s0), "r" (s1) : "$6", "$7");
 }
 
 static inline void asm__libsg_h_line_233(sceVu0FVECTOR *dp, float *m, float *n)
@@ -269,7 +282,6 @@ static inline void calc_skinned_position(sceVu0FVECTOR dp, sceVu0FVECTOR v)
 // Line 314
 static inline void calc_skinned_normal(sceVu0FVECTOR dp, sceVu0FVECTOR v)
 {
-
     /*
     vec0 = {0, 0, 0, 1};
     vec12 = arg1[0];
@@ -362,7 +374,8 @@ static inline void calc_skinned_normal(sceVu0FVECTOR dp, sceVu0FVECTOR v)
     ": :"r"(dp), "r"(v));
 }
 
-static inline void asm__libsg_h_line_413(sceVu0FMATRIX m0, sceVu0FMATRIX m1)
+// Line 412
+static inline void asm__libsg_h_line_412(sceVu0FMATRIX m0, sceVu0FMATRIX m1)
 {
     __asm__ volatile ("\n\
         lqc2    $vf12,0(%1)\n\
@@ -378,14 +391,9 @@ static inline void asm__libsg_h_line_413(sceVu0FMATRIX m0, sceVu0FMATRIX m1)
 }
 
 // Line 494
-static inline void asm__libsg_h_line_494(sceVu0FVECTOR *vb, float *s0, float *s1)
+static inline qword* getObjWrk()
 {
-    __asm__ __volatile__("\n\
-        lq $6,0x0(%1)\n\
-        lq $7,0x0(%2)\n\
-        sq $6,0x0(%0)\n\
-        sq $7,0x10(%0)\n\
-        ": :"r" (vb), "r" (s0), "r" (s1) : "$6", "$7");
+    return (qword *)&objwork[sbuffer_p];
 }
 
 #endif //  GRAPHICS_GRAPH3D_LIBSG_H

@@ -165,11 +165,6 @@ extern sceVu0FVECTOR wscissor_upper;
 extern sceVu0FVECTOR wscissor_lower;
 extern u_int *pGroupPacket;
 
-static inline qword* getObjWrk()
-{
-    return (qword *)&objwork[sbuffer_p];
-}
-
 void _GetNormalVectorFromVector(sceVu0FVECTOR norm, sceVu0FVECTOR p0, sceVu0FVECTOR p1);
 void WaitVU1();
 float _TransPPower(float scale);
