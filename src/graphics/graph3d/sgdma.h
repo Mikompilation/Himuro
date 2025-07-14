@@ -3,7 +3,7 @@
 
 #include "typedefs.h"
 
-#include "ingame/map/furn_spe/furn_spe.h"
+#include "ingame/map/furn_dat.h"
 
 void SetBlackWhiteCLUT();
 void ClearBlackWhiteCLUT();

@@ -2,6 +2,8 @@
 #include "typedefs.h"
 #include "sgsgd.h"
 
+#include "sce/libgraph.h"
+
 #include "graphics/graph3d/sg_dat.h"
 #include "graphics/graph3d/sgdma.h"
 #include "graphics/graph3d/sglib.h"

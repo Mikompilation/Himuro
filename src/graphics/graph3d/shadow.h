@@ -3,9 +3,6 @@
 
 #include "typedefs.h"
 
-#include "graphics/graph3d/sg_dat.h"
-#include "graphics/graph3d/gra3d.h"
-
 typedef struct {
     int s;
     int e;
@@ -25,6 +22,9 @@ typedef struct {
 } ShadowHandle;
 
 typedef void (*EnvFuncCallback)();
+
+#include "graphics/graph3d/sg_dat.h"
+#include "graphics/graph3d/gra3d.h"
 
 // extern SgCAMERA scamera;
 

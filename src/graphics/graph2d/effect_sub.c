@@ -9,6 +9,8 @@
 #include "sce/libvu0.h"
 
 // #include "os/pad.h"
+#include "os/system.h"
+#include "main/glob.h"
 #include "ingame/ig_init.h"
 #include "common/ul_math.h"
 #include "graphics/graph2d/sprt.h"
