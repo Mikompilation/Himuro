@@ -27,7 +27,7 @@ typedef struct {
 	int ene_mdl_no;
 } SCN_TEST_WRK;
 
-// extern SCN_TEST_WRK scn_test_wrk;
+extern SCN_TEST_WRK scn_test_wrk;
 
 void SceneTestCtrl();
 int SceneTestInit();
