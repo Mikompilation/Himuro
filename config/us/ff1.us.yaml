@@ -188,7 +188,7 @@ segments:
           - [0x101af0, asm, ingame/photo/pht_make]
           - [0x1059a8, asm, ingame/plyr/plyr_ctl]
           - [0x10e5b0, asm, ingame/plyr/unit_ctl]
-          - [0x10ed38, asm, edit/test_2d]
+          - [0x10ed38, c,   edit/test_2d]
           - [0x10ef08, asm, outgame/scn_test]
           - [0x113ca8, asm, outgame/title]
           - [0x116dd0, asm, graphics/graph2d/takep_pe]
@@ -300,7 +300,7 @@ segments:
           - { start: 0x240ab0, type:  data,   vram: 0x33fab0, name: ingame/photo/photo            }
           - { start: 0x240bd8, type:  data,   vram: 0x33fbd8, name: ingame/photo/pht_make         }
           - { start: 0x242058, type:  data,   vram: 0x341058, name: ingame/plyr/plyr_ctl          }
-          - { start: 0x242128, type:  data,   vram: 0x341128, name: edit/test_2d                  }
+          - { start: 0x242128, type: .data,   vram: 0x341128, name: edit/test_2d                  }
           - { start: 0x242370, type:  data,   vram: 0x341370, name: outgame/scn_test              }
           - { start: 0x243c90, type:  data,   vram: 0x342c90, name: outgame/title                 }
           - { start: 0x244080, type:  data,   vram: 0x343080, name: graphics/graph2d/takep_pe     }

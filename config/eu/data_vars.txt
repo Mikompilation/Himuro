@@ -434,6 +434,10 @@ aene_info_dat                  = 0x327f78; // type:AENE_INFO_DAT* numel:5 nosize
 0x3278e8                       = jene_dat4;
 0x327f28                       = aene_info_dat4;
 
+// edit/test_2d.c
+test_tex0                      = 0x347300; // type:SPRT_DAT numel:5 nosize
+test_tex1                      = 0x3473a0; // type:SPRT_DAT numel:13 nosize
+
 // ingame/event/wan_dat.c
 soul_des100                    = 0x34bb60; // type:sceVu0FVECTOR numel:2 nosize
 soul_des101                    = 0x34bb80; // type:sceVu0FVECTOR numel:5 nosize

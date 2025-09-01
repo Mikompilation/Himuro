@@ -28,7 +28,6 @@ typedef struct {
 } TREMBLE_H_WRK;
 
 #include "ingame/map/furn_dat.h"
-#include "graphics/graph2d/effect_rdr.h"
 #include "ingame/enemy/move_ctl.h"
 
 // extern sceVu0FVECTOR special_furn_pos[0];

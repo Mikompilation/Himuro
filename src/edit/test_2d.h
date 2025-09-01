@@ -3,8 +3,8 @@
 
 #include "typedefs.h"
 
-// extern SPRT_DAT test_tex0[0];
-// extern SPRT_DAT test_tex1[0];
+// extern SPRT_DAT test_tex0[];
+// extern SPRT_DAT test_tex1[];
 
 void LayoutTestInit();
 void LayoutTestMain();
