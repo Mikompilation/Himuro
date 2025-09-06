@@ -35,7 +35,17 @@ def fix_unit(unit: dict[str, Any]):
 
     for function in functions:
         function_size: int = int(function["size"])
-        function_fuzzy_match_percent: float = function["fuzzy_match_percent"]
+        try:
+            function_fuzzy_match_percent: float = function["fuzzy_match_percent"]
+        except KeyError:
+            # fix known function duplicates
+            if function["name"] == "Tim2CalcBufWidth__2":
+                function["fuzzy_match_percent"] = 100.0
+                function_fuzzy_match_percent = 100.0
+                matched_code += function_size
+                matched_functions += 1
+            else:
+                raise
 
         if function_fuzzy_match_percent == 100.0:
             computed_matched_code += function_size

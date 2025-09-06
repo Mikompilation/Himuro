@@ -294,6 +294,18 @@
 #define SCE_GS_SET_FOGCOL(fcr, fcg, fcb) \
     ((u_long)(fcr) | ((u_long)(fcg) << 8) | ((u_long)(fcb) << 16))
 
+#define V4_32	0x6c
+
+#define SCE_VIF1_SET_STCYCL(wl, cl, irq) \
+    ((u_int)(cl) | ((u_int)(wl) << 8)  | \
+    ((u_int)0x01 << 24) | ((u_int)(irq) << 31))
+
+#define SCE_VIF1_SET_NOP(irq) ((u_int)(irq) << 31)
+
+#define SCE_VIF1_SET_UNPACK(vuaddr, num, cmd, irq) \
+    ((u_int)(vuaddr) | ((u_int)(num) << 16) | \
+    ((u_int)(0x60 | (cmd)) << 24) | ((u_int)(irq) << 31))
+
 typedef struct {
     unsigned long CLAMP:1;
     unsigned long pad01:63;

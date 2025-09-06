@@ -4,6 +4,11 @@
 #include "typedefs.h"
 
 typedef struct {
+	int num;
+	int lnum[3];
+} MatCache;
+
+typedef struct {
 	u_int HeaderSections;
 	u_int UniqHeaderSize;
 	sceVu0FVECTOR *pUniqVertex;
@@ -76,6 +81,21 @@ typedef struct {
 	u_int Miptbp1[4];
 	u_int Miptbp2[4];
 } SgMaterial;
+
+typedef struct { // 0x90
+	/* 0x00 */ u_int primtype;
+	/* 0x04 */ char name[12];
+	/* 0x10 */ sceVu0FVECTOR Ambient;
+	/* 0x20 */ sceVu0FVECTOR Diffuse;
+	/* 0x30 */ sceVu0FVECTOR Specular;
+	/* 0x40 */ sceVu0FVECTOR Emission;
+	/* 0x50 */ int cache_on;
+	/* 0x54 */ u_int tagd_addr;
+	/* 0x58 */ int qwc;
+	/* 0x5c */ MatCache Parallel;
+	/* 0x6c */ MatCache Point;
+	/* 0x7c */ MatCache Spot;
+} SgMaterialC;
 
 typedef struct {
 	u_int VersionID;

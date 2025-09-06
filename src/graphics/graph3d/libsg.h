@@ -396,6 +396,24 @@ static inline void Vu0ApplyVectorInline(sceVu0FVECTOR v0, sceVu0FVECTOR v1)
     );
 }
 
+// Line 463
+static inline float inline_asm__libsg_g_line_463(float *v0, float*v1)
+{
+    float ret;
+
+    asm volatile("                        \n\
+        lqc2        $vf12, 0(%1)          \n\
+        lqc2        $vf13, 0(%2)          \n\
+        vmul.xyz    $vf12, $vf12, $vf13   \n\
+        vaddy.x     $vf12, $vf12, $vf12y  \n\
+        vaddz.x     $vf12, $vf12, $vf12z  \n\
+        qmfc2       %0,    $vf12          \n\
+        ":"=r"(ret):"r"(v0),"r"(v1)
+    );
+
+    return ret;
+}
+
 // Line 478
 static inline void Vu0MulVectorX(sceVu0FVECTOR v0, sceVu0FVECTOR v1, float sc)
 {

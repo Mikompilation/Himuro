@@ -78,11 +78,6 @@ typedef struct {
 } SgSourceChainTag __attribute__((aligned(16)));
 
 typedef struct {
-	int num;
-	int lnum[3];
-} MatCache;
-
-typedef struct {
 	int cache_on;
 	int edge_check;
 	int cn0;
