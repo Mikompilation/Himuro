@@ -3,6 +3,12 @@
 
 #include "typedefs.h"
 
+typedef struct {
+	short int GroupNo;
+	short int Num;
+	short int Lists[1];
+} ModelGroup;
+
 extern u_int *save_tri2_pointer;
 extern u_int *save_bw_pointer;
 

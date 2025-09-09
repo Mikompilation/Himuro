@@ -1,6 +1,11 @@
 #ifndef EE_EEREGS_H
 #define EE_EEREGS_H
 
+#define VU0_MICRO_ADDR ((u_int)(0x11000000))
+#define VU0_MEM_ADDR   ((u_int)(0x11004000))
+#define VU1_MICRO_ADDR ((u_int)(0x11008000))
+#define VU1_MEM_ADDR   ((u_int)(0x1100c000))
+
 typedef struct {
     unsigned EN1:1;
     unsigned EN2:1;

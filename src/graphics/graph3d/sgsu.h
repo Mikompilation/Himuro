@@ -33,7 +33,7 @@ void SgSortUnitPrim(u_int *prim);
 void SgSortUnitPrimPost(u_int *prim);
 void SgSortPreProcess(u_int *prim);
 void AppendVUProgTag(u_int *prog);
-void LoadSgProg(int load_prog);
+// void LoadSgProg(int load_prog);
 void SetUpSortUnit();
 void SgSortUnit(void *sgd_top, int pnum);
 // void SgSortUnitKind(void *sgd_top, int num);
