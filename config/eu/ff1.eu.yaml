@@ -128,7 +128,7 @@ segments:
           - [0x776d8,  c,   graphics/graph3d/sgdma]
           - [0x78218,  c,   graphics/graph3d/sglight]
           - [0x7b3c0,  c,   graphics/graph3d/sgsup]
-          - [0x7c140,  asm, graphics/graph3d/sgcam]
+          - [0x7c140,  c,   graphics/graph3d/sgcam]
           - [0x7d1e0,  asm, graphics/graph3d/shadow]
           - [0x7fc50,  asm, graphics/graph3d/mirror]
           - [0x81440,  asm, graphics/mov/movie]
@@ -253,7 +253,7 @@ segments:
           - { start: 0x20a940, type: .data,   vram: 0x309940, name: graphics/graph3d/sgsu         }
           - { start: 0x20a950, type: .data,   vram: 0x309950, name: graphics/graph3d/sgdma        }
           - { start: 0x20a960, type: .data,   vram: 0x309960, name: graphics/graph3d/sgsup        }
-          - { start: 0x20a980, type:  data,   vram: 0x309980, name: graphics/graph3d/sgcam        }
+          - { start: 0x20a980, type: .data,   vram: 0x309980, name: graphics/graph3d/sgcam        }
           - { start: 0x20a9a0, type:  data,   vram: 0x3099a0, name: graphics/graph3d/shadow       }
           - { start: 0x20b120, type:  data,   vram: 0x30a120, name: graphics/graph3d/mirror       }
           - { start: 0x20b280, type:  data,   vram: 0x30a280, name: graphics/mov/movie            }
@@ -376,7 +376,7 @@ segments:
           - { start: 0x254cc0, type: .rodata, vram: 0x353cc0, name: graphics/graph3d/sgdma        }
           - { start: 0x254d90, type: .rodata, vram: 0x353d90, name: graphics/graph3d/sglight      }
           - { start: 0x254f00, type: .rodata, vram: 0x353f00, name: graphics/graph3d/sgsup        }
-          - { start: 0x2550c8, type:  rodata, vram: 0x3540c8, name: graphics/graph3d/sgcam        }
+          - { start: 0x2550c8, type: .rodata, vram: 0x3540c8, name: graphics/graph3d/sgcam        }
           - { start: 0x255100, type:  rodata, vram: 0x354100, name: graphics/graph3d/mirror       }
           - { start: 0x255130, type:  rodata, vram: 0x354130, name: graphics/mov/movie            }
           - { start: 0x255d00, type:  rodata, vram: 0x354d00, name: graphics/scene/fod            }
@@ -549,7 +549,7 @@ segments:
           - { start: 0x25e9d8, type: .sdata,  vram: 0x35d9d8, name: graphics/graph3d/sgdma        }
           - { start: 0x25e9e8, type: .sdata,  vram: 0x35d9e8, name: graphics/graph3d/sglight      }
           - { start: 0x25ea38, type: .sdata,  vram: 0x35da38, name: graphics/graph3d/sgsup        }
-          - { start: 0x25ea58, type:  sdata,  vram: 0x35da58, name: graphics/graph3d/sgcam        }
+          - { start: 0x25ea58, type: .sdata,  vram: 0x35da58, name: graphics/graph3d/sgcam        }
           - { start: 0x25ea68, type:  sdata,  vram: 0x35da68, name: graphics/graph3d/shadow       }
           - { start: 0x25ea8c, type:  sdata,  vram: 0x35da8c, name: graphics/graph3d/mirror       }
           - { start: 0x25ea90, type:  sdata,  vram: 0x35da90, name: graphics/mov/movie            }

@@ -13,6 +13,7 @@ float sceVu0InnerProduct(sceVu0FVECTOR v0, sceVu0FVECTOR v1);
 void sceVu0OuterProduct(sceVu0FVECTOR v0, sceVu0FVECTOR v1, sceVu0FVECTOR v2);
 void sceVu0UnitMatrix(sceVu0FMATRIX m);
 void sceVu0TransposeMatrix(sceVu0FMATRIX m0, sceVu0FMATRIX m1);
+void sceVu0CameraMatrix(sceVu0FMATRIX m, sceVu0FVECTOR p, sceVu0FVECTOR zd, sceVu0FVECTOR yd);
 void sceVu0MulMatrix(sceVu0FMATRIX m0, sceVu0FMATRIX m1, sceVu0FMATRIX m2);
 void sceVu0InversMatrix(sceVu0FMATRIX m0, sceVu0FMATRIX m1);
 void sceVu0CopyMatrix(sceVu0FMATRIX m0, sceVu0FMATRIX m1);

@@ -5,7 +5,7 @@
 
 #include "ingame/camera/camera.h"
 
-// extern sceVu0FVECTOR clip_volume;
+extern sceVu0FVECTOR clip_volume;
 extern SgCAMERA *nowcamera;
 
 void SetViewScreenClipMatrix(SgCAMERA *camera, float scrz);
