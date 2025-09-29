@@ -3,6 +3,8 @@
 
 #include "typedefs.h"
 
+#include "ingame/camera/camera.h"
+
 typedef struct {
     int s;
     int e;
@@ -26,7 +28,7 @@ typedef void (*EnvFuncCallback)();
 #include "graphics/graph3d/sg_dat.h"
 #include "graphics/graph3d/gra3d.h"
 
-// extern SgCAMERA scamera;
+extern SgCAMERA scamera;
 
 void ShadowDbgOn();
 void ShadowDbgOff();
@@ -38,7 +40,7 @@ void SetShadowAssignGroup(int gnum);
 void TransShadowClut();
 void GetShadowTexture();
 void DispShadowSprite();
-void GetInverseMatrix(float *inv[4], float *org[4]);
+void GetInverseMatrix(sceVu0FMATRIX inv, sceVu0FMATRIX org);
 void SetVU1HeaderShadow();
 void CalcVertexBufferShadow(u_int *prim);
 u_int* SetVUVNDataShadowModel(u_int *prim);
@@ -48,9 +50,9 @@ void SetUpShadowModel();
 void DrawShadowModel(void *sgd_top, int pnum);
 void ShadowMeshDataVU(u_int *prim);
 int ClipCheckShadow(sceVu0FVECTOR *vec, float *cul);
-int ShadowBoundClip(float *v1);
+int ShadowBoundClip(float *v0, float *v1);
 int AppendShadowClipCheck(sceVu0FVECTOR *sts, BoundLine *bl);
-int CheckBoundingBoxShadowTrace(float *lwmtx[4], sceVu0FVECTOR *tmpv, float *dir);
+int CheckBoundingBoxShadowTrace(sceVu0FMATRIX lwmtx, sceVu0FVECTOR *tmpv, float *dir);
 int CheckBoundingBoxShadow(u_int *prim);
 void AssignShadowPrim(u_int *prim);
 void AssignShadowPreProcess(u_int *prim);
@@ -58,9 +60,9 @@ void AssignShadow(void *sgd_top, int except_num);
 void SetUpShadow(ShadowHandle *shandle);
 void ClearShadowFrame();
 void SetShadowEnvironment();
-void GetRotMatrixYZPlain(float *rmat[4], float *vec);
-void GetRotMatrixZAxis(float *rmat[4], float *vec);
-void CalcShadowMatrix(float *center, float ax, float ay);
+void GetRotMatrixYZPlain(sceVu0FMATRIX rmat, sceVu0FVECTOR vec);
+void GetRotMatrixZAxis(sceVu0FMATRIX rmat, sceVu0FVECTOR vec);
+void CalcShadowMatrix(ShadowHandle *shandle, sceVu0FVECTOR center, float ax, float ay);
 void CalcShadowHeight(sceVu0FVECTOR *bbox);
 void SetShadowCamera(float *center, sceVu0FVECTOR *bbox, SgCOORDUNIT *cp);
 void DrawShadow(ShadowHandle *shandle, EnvFuncCallback env_func);

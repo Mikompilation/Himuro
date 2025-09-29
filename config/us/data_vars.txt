@@ -399,6 +399,10 @@ m059_cloth                     = 0x3037e0; // type:CLOTH_DAT numel:4 nosize
 0x356c30                       = "lhand";
 0x356c38                       = "rhand";
 
+// graphics/graph3d/shadow.c
+scamera                        = 0x303d60; // type:SgCAMERA
+shadow_pal                     = 0x303f90; // type:qword numel:71 static
+
 // ingame/enemy/ene_ctl.c
 jene_dat0                      = 0x320060; // type:ENE_DAT numel:1 nosize
 aene_info_dat0                 = 0x3200a0; // type:AENE_INFO_DAT numel:3 nosize

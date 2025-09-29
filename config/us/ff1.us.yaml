@@ -128,7 +128,7 @@ segments:
           - [0x76aa0,  c,   graphics/graph3d/sglight]
           - [0x79c48,  c,   graphics/graph3d/sgsup]
           - [0x7a9c8,  c,   graphics/graph3d/sgcam]
-          - [0x7ba68,  asm, graphics/graph3d/shadow]
+          - [0x7ba68,  c,   graphics/graph3d/shadow]
           - [0x7e4d8,  asm, graphics/graph3d/mirror]
           - [0x7fcc8,  asm, graphics/mov/movie]
           - [0x83f30,  asm, graphics/scene/fod]
@@ -252,7 +252,7 @@ segments:
           - { start: 0x204d10, type: .data,   vram: 0x303d10, name: graphics/graph3d/sgdma        }
           - { start: 0x204d20, type: .data,   vram: 0x303d20, name: graphics/graph3d/sgsup        }
           - { start: 0x204d40, type: .data,   vram: 0x303d40, name: graphics/graph3d/sgcam        }
-          - { start: 0x204d60, type:  data,   vram: 0x303d60, name: graphics/graph3d/shadow       }
+          - { start: 0x204d60, type: .data,   vram: 0x303d60, name: graphics/graph3d/shadow       }
           - { start: 0x2054e0, type:  data,   vram: 0x3044e0, name: graphics/graph3d/mirror       }
           - { start: 0x205640, type:  data,   vram: 0x304640, name: graphics/mov/movie            }
           - { start: 0x205aa0, type:  data,   vram: 0x304aa0, name: graphics/scene/fod            }
@@ -458,7 +458,7 @@ segments:
           - { start: 0x256a10, type: .lit4,   vram: 0x355a10, name: graphics/motion/anicode       }
           - { start: 0x256a14, type: .lit4,   vram: 0x355a14, name: graphics/graph3d/sglib        }
           - { start: 0x256a9c, type: .lit4,   vram: 0x355a9c, name: graphics/graph3d/sglight      }
-          - { start: 0x256aa0, type:  lit4,   vram: 0x355aa0, name: graphics/graph3d/shadow       }
+          - { start: 0x256aa0, type: .lit4,   vram: 0x355aa0, name: graphics/graph3d/shadow       }
           - { start: 0x256ab0, type:  lit4,   vram: 0x355ab0, name: graphics/graph3d/mirror       }
           - { start: 0x256ac0, type:  lit4,   vram: 0x355ac0, name: graphics/scene/fod            }
           - { start: 0x256b08, type:  lit4,   vram: 0x355b08, name: graphics/scene/scene          }
@@ -544,7 +544,7 @@ segments:
           - { start: 0x257d60, type: .sdata,  vram: 0x356d60, name: graphics/graph3d/sglight      }
           - { start: 0x257db0, type: .sdata,  vram: 0x356db0, name: graphics/graph3d/sgsup        }
           - { start: 0x257dd0, type: .sdata,  vram: 0x356dd0, name: graphics/graph3d/sgcam        }
-          - { start: 0x257de0, type:  sdata,  vram: 0x356de0, name: graphics/graph3d/shadow       }
+          - { start: 0x257de0, type: .sdata,  vram: 0x356de0, name: graphics/graph3d/shadow       }
           - { start: 0x257e04, type:  sdata,  vram: 0x356e04, name: graphics/graph3d/mirror       }
           - { start: 0x257e08, type:  sdata,  vram: 0x356e08, name: graphics/mov/movie            }
           - { start: 0x257eb0, type:  sdata,  vram: 0x356eb0, name: graphics/scene/scene          }
@@ -621,7 +621,7 @@ segments:
           - { start: 0x258880, type: .sbss,   vram: 0x3579d8, name: graphics/graph3d/sgdma        }
           - { start: 0x258880, type: .sbss,   vram: 0x3579e0, name: graphics/graph3d/sglight      }
           - { start: 0x258880, type: .sbss,   vram: 0x3579e4, name: graphics/graph3d/sgsup        }
-          - { start: 0x258880, type:  sbss,   vram: 0x3579ec, name: graphics/graph3d/shadow       }
+          - { start: 0x258880, type: .sbss,   vram: 0x3579ec, name: graphics/graph3d/shadow       }
           - { start: 0x258880, type:  sbss,   vram: 0x3579f4, name: graphics/graph3d/mirror       }
           - { start: 0x258880, type:  sbss,   vram: 0x357a0c, name: graphics/mov/movie            }
           - { start: 0x258880, type:  sbss,   vram: 0x357a18, name: graphics/scene/scene          }
@@ -688,7 +688,7 @@ segments:
           - { start: 0x25888c, type: .bss,    vram: 0x3fb620, name: graphics/graph3d/sgsu         }
           - { start: 0x25888c, type: .bss,    vram: 0x3fb720, name: graphics/graph3d/sglight      }
           - { start: 0x25888c, type: .bss,    vram: 0x3fb7b0, name: graphics/graph3d/sgsup        }
-          - { start: 0x25888c, type:  bss,    vram: 0x3fb8a0, name: graphics/graph3d/shadow       }
+          - { start: 0x25888c, type: .bss,    vram: 0x3fb8a0, name: graphics/graph3d/shadow       }
           - { start: 0x25888c, type:  bss,    vram: 0x3fba80, name: graphics/mov/movie            }
           - { start: 0x25888c, type:  bss,    vram: 0x4002c0, name: graphics/scene/fod            }
           - { start: 0x25888c, type:  bss,    vram: 0x4007e0, name: graphics/scene/scene          }

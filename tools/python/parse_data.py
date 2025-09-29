@@ -23,6 +23,9 @@ def vram2offset(vram: int):
 
 sceVu0FVECTOR = c_float * 4
 sceVu0IVECTOR = c_int32 * 4
+sceVu0FMATRIX = sceVu0FVECTOR * 4
+
+qword = c_int32 * 4
 
 # CTypeTypeEX = CTypeType | type[sceVu0FVECTOR] | type[sceVu0IVECTOR]
 
@@ -994,6 +997,56 @@ class CLOTH_DAT(CStructure):
     flg: c_uint8
 
 
+###########################################################################
+# typedef struct {
+# 	sceVu0FVECTOR p;
+# 	sceVu0FVECTOR i;
+# 	float roll;
+# 	float fov;
+# 	float nearz;
+# 	float farz;
+# 	float ax;
+# 	float ay;
+# 	float cx;
+# 	float cy;
+# 	float zmin;
+# 	float zmax;
+# 	float pad[2];
+# 	sceVu0FMATRIX vs;
+# 	sceVu0FMATRIX vc;
+# 	sceVu0FMATRIX vcv;
+# 	sceVu0FMATRIX wv;
+# 	sceVu0FMATRIX ws;
+# 	sceVu0FMATRIX wc;
+# 	sceVu0FMATRIX wcv;
+# 	sceVu0FVECTOR zd;
+# 	sceVu0FVECTOR yd;
+# } SgCAMERA;
+class SgCAMERA(CStructure):
+    p: sceVu0FVECTOR
+    i: sceVu0FVECTOR
+    roll: c_float
+    fov: c_float
+    nearz: c_float
+    farz: c_float
+    ax: c_float
+    ay: c_float
+    cx: c_float
+    cy: c_float
+    zmin: c_float
+    zmax: c_float
+    pad: c_float * 2
+    vs: sceVu0FMATRIX
+    vc: sceVu0FMATRIX
+    vcv: sceVu0FMATRIX
+    wv: sceVu0FMATRIX
+    ws: sceVu0FMATRIX
+    wc: sceVu0FMATRIX
+    wcv: sceVu0FMATRIX
+    zd: sceVu0FVECTOR
+    yd: sceVu0FVECTOR
+
+
 elf_names: dict[str, str] = {
     "us": "SLUS_203.88",
     "eu": "SLES_508.21",
@@ -1026,7 +1079,7 @@ class DataVar(pydantic.BaseModel):
 
     address: int
     name: str
-    type: Type[CStructure] | CTypeType | type[sceVu0FVECTOR] | type[sceVu0IVECTOR] | type[c_str]
+    type: Type[CStructure] | CTypeType | type[sceVu0FVECTOR] | type[sceVu0IVECTOR] | type[qword] | type[c_str]
     numel: int | list[int] = 0
     nosize: bool = False
     static: bool = False
@@ -1044,7 +1097,7 @@ class DataVar(pydantic.BaseModel):
     @classmethod
     def type_from_str(  # pyright: ignore
         cls, v: str | Type[CStructure] | CTypeType
-    ) -> Type[CStructure] | CTypeType | sceVu0FVECTOR | sceVu0IVECTOR:
+    ) -> Type[CStructure] | CTypeType | sceVu0FVECTOR | sceVu0IVECTOR | qword:
         if not isinstance(v, str):
             return v
         cls.num_ptr = v.count("*")  # temporary store num_ptr in class attribute
@@ -1055,6 +1108,8 @@ class DataVar(pydantic.BaseModel):
             return sceVu0FVECTOR
         if v == "sceVu0IVECTOR":
             return sceVu0IVECTOR
+        if v == "qword":
+            return qword
         if v == "c_str":
             return c_str
         class_type = globals()[v]

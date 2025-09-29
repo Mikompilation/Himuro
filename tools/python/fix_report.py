@@ -33,13 +33,23 @@ def fix_unit(unit: dict[str, Any]):
     computed_matched_code: int = 0
     computed_matched_functions: int = 0
 
+    duplicate_functions = (
+        "Tim2CalcBufWidth__2",
+        "_ftoi0__2",
+        "ItemGetMain__2",
+        "setD3_CHCR__2",
+        "setD4_CHCR__2",
+        "setD4_CHCR__3",
+        "_fpadd_parts__2",
+    )
+
     for function in functions:
         function_size: int = int(function["size"])
         try:
             function_fuzzy_match_percent: float = function["fuzzy_match_percent"]
         except KeyError:
             # fix known function duplicates
-            if function["name"] == "Tim2CalcBufWidth__2":
+            if function["name"] in duplicate_functions:
                 function["fuzzy_match_percent"] = 100.0
                 function_fuzzy_match_percent = 100.0
                 matched_code += function_size
