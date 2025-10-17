@@ -89,7 +89,7 @@ typedef struct {
 // extern SCN_VIB_DATA scn_vib_5020[0];
 // extern SCN_VIB_DATA scn_vib_dmy[0];
 // extern SCN_VIB_DATA *scn_vib_tbl[0];
-// extern u_char scene_movie_no[0];
+extern u_char scene_movie_no[];
 
 
 #endif // GRAPHICS_SCENE_SCENE_DAT_H

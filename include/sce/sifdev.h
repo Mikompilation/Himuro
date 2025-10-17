@@ -22,8 +22,11 @@ int sceRead(int fd, void *buf, int nbyte);
 int sceWrite(int fd, const void *buf, int nbyte);
 int sceLseek(int fd, int offset, int where);
 
-int sceSifInitIopHeap();
 int sceFsReset();
+
+int sceSifInitIopHeap();
+int sceSifFreeIopHeap(void *);
+void *sceSifAllocIopHeap(unsigned int);
 int sceSifRebootIop(const char *img);
 int sceSifSyncIop();
 int sceSifLoadModule(const char *filename, int args, const char *argp);

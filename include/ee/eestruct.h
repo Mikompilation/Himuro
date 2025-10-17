@@ -306,6 +306,11 @@
     ((u_int)(vuaddr) | ((u_int)(num) << 16) | \
     ((u_int)(0x60 | (cmd)) << 24) | ((u_int)(irq) << 31))
 
+#define SCE_GS_SET_XYZ3 SCE_GS_SET_XYZ
+#define SCE_GS_SET_XYZ2 SCE_GS_SET_XYZ
+#define SCE_GS_SET_XYZ(x, y, z) \
+    ((u_long)(x) | ((u_long)(y) << 16) | ((u_long)(z) << 32))
+
 typedef struct {
     unsigned long CLAMP:1;
     unsigned long pad01:63;

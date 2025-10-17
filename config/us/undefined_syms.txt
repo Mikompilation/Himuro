@@ -1902,6 +1902,7 @@ mc_lightcol                              = 0x00352b10;
 mc_ambient                               = 0x00352b40;
 mc_iconFile                              = 0x00352b60;
 mc_iconFileAlbum                         = 0x00352b70;
+_ctype_                                  = 0x00354b40;
 sm_csr_info                              = 0x00356300;
 cmn_tex_load                             = 0x00356304;
 title_bgm_no                             = 0x00356308;

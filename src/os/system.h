@@ -25,7 +25,7 @@ void InitOptionWrk();
 void InitGraphics();
 int userGsSwapDBuff(sceGsDBuff *db, int id);
 int vblankHandler(int val);
-void vfunc();
+// void vfunc();
 void SetSysBackColor(u_char r, u_char g, u_char b);
 
 #endif // OS_SYSTEM_H

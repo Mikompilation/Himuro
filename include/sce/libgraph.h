@@ -4,6 +4,15 @@
 #include "ee/eestruct.h"
 #include "ee/eeregs.h"
 
+#define SCE_GS_NOINTERLACE 0
+#define SCE_GS_INTERLACE   1
+
+#define	SCE_GS_FIELD  0
+#define	SCE_GS_FRAME  1
+
+#define SCE_GS_NTSC 2
+#define SCE_GS_PAL  3
+
 typedef struct {
     long unsigned int NLOOP : 15;
     long unsigned int EOP : 1;
@@ -154,6 +163,15 @@ typedef struct {
     sceGsClear clear1;
 } sceGsDBuff;
 
+typedef struct { // 0x10
+	/* 0x0 */ short int sceGsInterMode;
+	/* 0x2 */ short int sceGsOutMode;
+	/* 0x4 */ short int sceGsFFMode;
+	/* 0x6 */ short int sceGsVersion;
+	/* 0x8 */ int (*sceGsVSCfunc)(int);
+	/* 0xc */ int sceGsVSCid;
+} sceGsGParam __attribute__((aligned(16)));
+
 void sceGsSetDefDBuff(sceGsDBuff *dp, short psm, short w, short h, short ztest, short zpsm,  short clear);
 void sceGsResetPath();
 void sceGsResetGraph(short mode, short inter, short omode, short ffmode);
@@ -167,5 +185,7 @@ int sceGsExecStoreImage(sceGsStoreImage *sp, u_long128 *dstaddr);
 int sceGsSyncPath(int mode, u_short timeout);
 int sceGsSetDefLoadImage(sceGsLoadImage *lp, short dbp, short dbw, short dpsm, short x, short y, short w, short h);
 int sceGsExecLoadImage(sceGsLoadImage *lp, u_long128 *srcaddr);
+int sceGsSetDefDrawEnv(sceGsDrawEnv1 *draw, short psm, short w, short h, short ztest, short zpsm);
+sceGsGParam *sceGsGetGParam();
 
 #endif // SCE_LIBGRAPH_H

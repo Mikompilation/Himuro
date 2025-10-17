@@ -208,9 +208,7 @@ def build_stuff(
     # Rules
     cross = "mips-linux-gnu-"
 
-    ld_args = (
-        "-EL -T undefined_syms.txt -T undefined_syms_auto.txt -T undefined_funcs_auto.txt -Map $mapfile -T $in -o $out"
-    )
+    ld_args = "--no-warn-rwx-segments -EL -T undefined_syms.txt -T undefined_syms_auto.txt -T undefined_funcs_auto.txt -Map $mapfile -T $in -o $out"
 
     cpp = Path("..", "..", get_compiler_command("cpp"))
 

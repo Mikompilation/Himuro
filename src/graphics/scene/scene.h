@@ -96,8 +96,8 @@ typedef struct {
 
 // extern SCENE_CTRL scene_ctrl[2];
 // extern SCENE_FILE scene_file;
-// extern int scn_vib_time0;
-// extern int scn_vib_time1;
+extern int scn_vib_time0;
+extern int scn_vib_time1;
 // extern int scn_load_buf_id;
 // extern int scn_now_play_id;
 
