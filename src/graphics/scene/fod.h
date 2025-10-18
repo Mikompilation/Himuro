@@ -3,7 +3,17 @@
 
 #include "typedefs.h"
 
+#include "ingame/camera/camera.h"
 #include "graphics/graph3d/sglight.h"
+
+typedef struct {
+	sceVu0FVECTOR p;
+	sceVu0FVECTOR i;
+	float roll;
+	float fov;
+	float near;
+	float far;
+} FOD_FIRST_CAM;
 
 typedef struct {
 	u_int frame;
@@ -264,28 +274,33 @@ typedef struct {
 	u_int now_reso;
 	u_char resolution;
 	u_char end_flg;
+#ifdef BUILD_EU_VERSION
+	u_char check_cnt;
+	u_char pad;
+#else
 	u_char pad[2];
+#endif
 } FOD_CTRL;
 
 // extern sceVu0FMATRIX fod_cmn_mtx;
 // extern FOD_EFF_PARAM eff_param;
 
 void FodInit(FOD_CTRL *fc, u_int *tcp, u_int *tlp, u_int *tep);
-int FodNextFrame();
-void FodSetFrame(u_int frame);
+int FodNextFrame(FOD_CTRL *fc);
+void FodSetFrame(FOD_CTRL *fc, u_int frame);
 void FodGetLightNum(FOD_LIGHT *fl);
-void FodGetLightSerial();
-u_int* FodGetFirstLight();
-void FodSetMyLight(char *pfx, float *eye);
+void FodGetLightSerial(FOD_LIGHT *fl);
+u_int* FodGetFirstLight(FOD_LIGHT *fl);
+void FodSetMyLight(FOD_LIGHT *fl, char *pfx, float *eye);
 void FodSetSpotLights(SgLIGHT *sl, u_int num);
-void FodGetToSgLight();
-void FodGetHandSpotPos(float *p, float *i);
-void FodGetDropSpotPos(char *pfx, float *lp, float *li);
-int FodGetLightType(int id);
-void FodGetFirstCam(SgCAMERA *cam);
-void FodGetCamData(SgCAMERA *cam);
+void FodGetToSgLight(FOD_CTRL *fc);
+void FodGetHandSpotPos(FOD_LIGHT *fl, float *p, float *i);
+void FodGetDropSpotPos(FOD_LIGHT *fl, char *pfx, float *lp, float *li);
+int FodGetLightType(FOD_LIGHT *fl, int id);
+void FodGetFirstCam(SgCAMERA *cam, FOD_CTRL *fc);
+void FodGetCamData(SgCAMERA *cam, FOD_CTRL *fc);
 u_int* FodGetFixEffect(u_int *tep);
-void FodSetEffect();
+void FodSetEffect(FOD_CTRL *fc);
 void FodSetEffectParam(FOD_EFF_DATA *fed);
 
 #endif // GRAPHICS_SCENE_FOD_H
