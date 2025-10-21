@@ -141,7 +141,7 @@ segments:
           - [0x93bb0,  asm, ingame/enemy/move_ctl]
           - [0x9b430,  c,   ingame/entry/entry]
           - [0x9b618,  asm, ingame/plyr/time_ctl]
-          - [0x9b9c8,  asm, ingame/entry/ap_bgost]
+          - [0x9b9c8,  c,   ingame/entry/ap_bgost]
           - [0x9bce0,  asm, ingame/entry/ap_dgost]
           - [0x9c1f0,  asm, ingame/entry/ap_fgost]
           - [0x9ce98,  asm, ingame/entry/ap_ggost]
@@ -265,7 +265,7 @@ segments:
           - { start: 0x226d70, type: .data,   vram: 0x325d70, name: ingame/enemy/ene_ctl          }
           - { start: 0x229260, type:  data,   vram: 0x328260, name: ingame/enemy/move_ctl         }
           - { start: 0x229488, type: .data,   vram: 0x328488, name: ingame/entry/entry            }
-          - { start: 0x2294e8, type:  data,   vram: 0x3284e8, name: ingame/entry/ap_bgost         }
+          - { start: 0x2294e8, type: .data,   vram: 0x3284e8, name: ingame/entry/ap_bgost         }
           - { start: 0x2294f8, type:  data,   vram: 0x3284f8, name: ingame/entry/ap_dgost         }
           - { start: 0x229520, type:  data,   vram: 0x328520, name: ingame/entry/ap_fgost         }
           - { start: 0x229550, type:  data,   vram: 0x328550, name: ingame/entry/ap_ggost         }
@@ -385,7 +385,7 @@ segments:
           - { start: 0x255e80, type:  rodata, vram: 0x354e80, name: ingame/camera/camera          }
           - { start: 0x2560d0, type: .rodata, vram: 0x3550d0, name: ingame/enemy/ene_ctl          }
           - { start: 0x256180, type:  rodata, vram: 0x355180, name: ingame/enemy/move_ctl         }
-          - { start: 0x2561a0, type:  rodata, vram: 0x3551a0, name: ingame/entry/ap_bgost         }
+          - { start: 0x2561a0, type: .rodata, vram: 0x3551a0, name: ingame/entry/ap_bgost         }
           - { start: 0x2561c0, type:  rodata, vram: 0x3551c0, name: ingame/entry/ap_dgost         }
           - { start: 0x2561e0, type:  rodata, vram: 0x3551e0, name: ingame/entry/ap_fgost         }
           - { start: 0x256210, type:  rodata, vram: 0x355210, name: ingame/entry/ap_ggost         }

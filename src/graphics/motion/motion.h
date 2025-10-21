@@ -87,10 +87,10 @@ extern PLYR_ACT_WRK plyr_act_wrk;
 extern float now_frot_x;
 
 void motInitPlayerAnm(char mdl_no);
-void motInitEnemyAnm(u_int *anm_p, u_int mdl_no, u_int anm_no);
+// void motInitEnemyAnm(u_int *anm_p, u_int mdl_no, u_int anm_no);
 void motInitOneEnemyAnm(u_int *anm_p, u_int mdl_no, u_int anm_no);
 void motInitMultiEnemyAnm(u_int *anm_p, u_int mdl_no, u_int anm_no, u_int num);
-void motInitEnemyMdl(u_int *mdl_p, u_int mdl_no);
+// void motInitEnemyMdl(u_int *mdl_p, u_int mdl_no);
 void motInitOneEnemyMdl(u_int *mdl_p, u_int mdl_no);
 void motInitMultiEnemyMdl(u_int *mdl_addr, u_int mdl_no);
 void motInitFlyMdl(u_int *mdl_p, u_int mdl_no);

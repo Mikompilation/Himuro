@@ -4489,4 +4489,13 @@ typedef enum {
     FOD_EFF_PDF_TYPE3 = 2
 } FOD_EFFECT_ID;
 
+typedef enum {
+    BGLOAD_MODE_REQ = 0,
+    BGLOAD_MODE_START = 1,
+    BGLOAD_MODE_MDL = 2,
+    BGLOAD_MODE_MOT = 3,
+    BGLOAD_MODE_SE = 4,
+    BGLOAD_MODE_END = 5
+} BGLOAD_MODE;
+
 #endif // ENUMS_H
