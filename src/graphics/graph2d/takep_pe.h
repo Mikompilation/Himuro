@@ -12,29 +12,26 @@ typedef enum
     ST_FINISH_PE = 4
 } ST_PEOBJ;
 
-struct PARTICLE_EFF_OBJ
-{ // 0x90
-    /* 0x00 */ void *nextpe;
-    /* 0x04 */ void *underpe;
-    /* 0x08 */ ST_PEOBJ state;
-    /* 0x10 */ sceVu0IVECTOR scrvec;
-    /* 0x20 */ sceVu0FVECTOR pos;
-    /* 0x30 */ sceVu0FVECTOR c2ov_step;
-    /* 0x40 */ sceVu0FVECTOR c2ov_move;
-    /* 0x50 */ sceVu0FVECTOR c2sv_unit;
-    /* 0x60 */ float c2slen;
-    /* 0x64 */ float c2olen;
-    /* 0x68 */ float steplen;
-    /* 0x6c */ int pe_width;
-    /* 0x70 */ int m_time;
-    /* 0x74 */ int time;
-    /* 0x78 */ float nowz;
-    /* 0x7c */ float ka;
-    /* 0x80 */ float kb;
-    /* 0x84 */ int alphabl;
-};
-
-#include "graphics/graph2d/tim2.h"
+typedef struct {
+    void *nextpe;
+    void *underpe;
+    ST_PEOBJ state;
+    sceVu0IVECTOR scrvec;
+    sceVu0FVECTOR pos;
+    sceVu0FVECTOR c2ov_step;
+    sceVu0FVECTOR c2ov_move;
+    sceVu0FVECTOR c2sv_unit;
+    float c2slen;
+    float c2olen;
+    float steplen;
+    int pe_width;
+    int m_time;
+    int time;
+    float nowz;
+    float ka;
+    float kb;
+    int alphabl;
+} PARTICLE_EFF_OBJ;
 
 // extern sceVu0IVECTOR particle_eff_col;
 // extern u_char eye_light_flg;
@@ -42,20 +39,20 @@ struct PARTICLE_EFF_OBJ
 // extern sceVu0FVECTOR r_eye_pos;
 // extern PARTICLE_EFF_OBJ dummy_pe_obj;
 
-void GetBetweenABVecUnitLen(float *out_a2bv, float *out_unit_a2bv, float *out_len, float *in_av, float *in_bv);
+void GetBetweenABVecUnitLen(sceVu0FVECTOR out_a2bv, sceVu0FVECTOR out_unit_a2bv, float *out_len, sceVu0FVECTOR in_av, sceVu0FVECTOR in_bv);
 void SetPrePEImage(PARTICLE_EFF_OBJ *obj);
-int InitPrePEImage(int pe_num);
-int SetPEObjPos();
+int InitPrePEImage(PARTICLE_EFF_OBJ *obj, int pe_num);
+int SetPEObjPos(PARTICLE_EFF_OBJ *obj);
 void MakeRandomVec(float *output, int m);
-void InitPEObj(float *ov, float *sv, float *tempgv);
-void SetPEObjSprSize();
-void SetPEObjAlphaBl();
-int CtrlPEObj();
-void SortRegisterPEObj();
+void InitPEObj(PARTICLE_EFF_OBJ *obj, sceVu0FVECTOR ov, sceVu0FVECTOR sv, sceVu0FVECTOR tempgv);
+void SetPEObjSprSize(PARTICLE_EFF_OBJ *obj);
+void SetPEObjAlphaBl(PARTICLE_EFF_OBJ *obj);
+int CtrlPEObj(PARTICLE_EFF_OBJ *obj);
+void SortRegisterPEObj(PARTICLE_EFF_OBJ *obj);
 Q_WORDDATA* ParticleEffectInTakingPicture(Q_WORDDATA *qd, u_int b_num);
-Q_WORDDATA* SetPESpritePacket(Q_WORDDATA *qd, int *col, int *centervec, int pe_width, int albl);
+Q_WORDDATA* SetPESpritePacket(Q_WORDDATA *qd, sceVu0IVECTOR col, sceVu0IVECTOR centervec, int pe_width, int albl);
 void SetCenterGravOfFVECTOR(float *input, sceVu0FVECTOR *vec, u_int num);
-void GetA2BLoadVector(float *out_v, float *fr_v, float *to_v, float rate);
+void GetA2BLoadVector(sceVu0FVECTOR out_v, sceVu0FVECTOR fr_v, sceVu0FVECTOR to_v, float rate);
 void CallParticleEffect(u_char ene_id);
 void StopParticleEffect();
 void SetParticleEffect();

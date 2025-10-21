@@ -24,4 +24,15 @@ typedef union {
 	float fl32;
 } U32DATA;
 
+typedef union {
+	u_long128 ul128;
+	u_long ul64[2];
+	u_int ui32[4];
+	float fl32[4];
+	u_short us16[8];
+	u_char uc8[16];
+	sceVu0FVECTOR fv;
+	sceVu0IVECTOR iv;
+} Q_WORDDATA;
+
 #endif /* TYPEDEFS_H */

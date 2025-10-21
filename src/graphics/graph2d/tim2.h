@@ -81,17 +81,6 @@ typedef struct {
 	u_char alpha;
 } GSQ4_DAT;
 
-typedef union {
-	u_long128 ul128;
-	u_long ul64[2];
-	u_int ui32[4];
-	float fl32[4];
-	u_short us16[8];
-	u_char uc8[16];
-	sceVu0FVECTOR fv;
-	sceVu0IVECTOR iv;
-} Q_WORDDATA;
-
 typedef unsigned char TIM2_UCHAR8;
 typedef u_int TIM2_UINT32;
 typedef short unsigned int TIM2_UINT16;
