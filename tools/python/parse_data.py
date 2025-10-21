@@ -1047,6 +1047,20 @@ class SgCAMERA(CStructure):
     yd: sceVu0FVECTOR
 
 
+###########################################################################
+# typedef struct {
+# 	u_short file_no;
+# 	u_char file_type;
+# 	u_char tmp_no;
+# 	u_int addr;
+# } MSN_LOAD_DAT;
+class MSN_LOAD_DAT(CStructure):
+    file_no: c_uint16
+    file_type: c_uint8
+    tmp_no: c_uint8
+    addr: c_uint32
+
+
 elf_names: dict[str, str] = {
     "us": "SLUS_203.88",
     "eu": "SLES_508.21",

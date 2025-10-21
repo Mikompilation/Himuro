@@ -3,7 +3,12 @@
 
 #include "typedefs.h"
 
-// extern u_char dgst_room[0];
+typedef struct {
+    u_char mode;
+    u_char load_mode;
+} DGST_WRK;
+
+// extern u_char dgst_room[];
 // extern MSN_LOAD_DAT dgst_load[3];
 // extern DGST_WRK dgst_wrk;
 

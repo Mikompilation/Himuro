@@ -438,6 +438,9 @@ aene_info_dat                  = 0x327f78; // type:AENE_INFO_DAT* numel:5 nosize
 0x3278e8                       = jene_dat4;
 0x327f28                       = aene_info_dat4;
 
+// ingame/entry/ap_dgost.c
+dgst_load                      = 0x328508; // type:MSN_LOAD_DAT numel:3
+
 // edit/test_2d.c
 test_tex0                      = 0x347300; // type:SPRT_DAT numel:5 nosize
 test_tex1                      = 0x3473a0; // type:SPRT_DAT numel:13 nosize
