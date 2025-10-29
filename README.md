@@ -1,4 +1,4 @@
-# Himuro
+# Himuro/ひむろ
 ## What is Himuro?
 Himuro is a project that aims to have a matching source decompilation of the PS2 game Fatal Frame 1; Project Zero; <ruby>零<rt>ぜろ</rt></ruby>. Once we have a matching decompiled rom we want to port the game to modern hardware.
 
