@@ -282,8 +282,8 @@ typedef struct {
 #endif
 } FOD_CTRL;
 
-// extern sceVu0FMATRIX fod_cmn_mtx;
-// extern FOD_EFF_PARAM eff_param;
+extern sceVu0FMATRIX fod_cmn_mtx;
+extern FOD_EFF_PARAM eff_param;
 
 void FodInit(FOD_CTRL *fc, u_int *tcp, u_int *tlp, u_int *tep);
 int FodNextFrame(FOD_CTRL *fc);

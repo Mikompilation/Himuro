@@ -3,6 +3,45 @@
 
 #include "typedefs.h"
 
+#include "graphics/motion/ani_dat.h"
+
+typedef struct {
+	u_int type;
+	float sclx;
+	float scly;
+	u_int alpha;
+	float rate;
+	float trate;
+} SCN_ENE_EF_PDF;
+
+typedef struct {
+	u_short scene_no;
+	u_short mdl_no;
+	float aura_size;
+	float aura_rate;
+	u_int aura_rgba;
+	SCN_ENE_EF_PDF pdf1;
+	SCN_ENE_EF_PDF pdf2;
+	float pdf_dist;
+	float aura_pos_ajst;
+	int mdl_alpha;
+} SCN_ENE_EFCT;
+
+typedef struct {
+	ANI_CTRL mdl_anm;
+	SCN_ENE_EFCT *ene_efct;
+	void *efct_addr[4];
+	char prefix[4];
+	u_int mdl_no;
+	u_int mdl_alpha;
+	u_int scn_mdl_no;
+	u_int *mdl_addr;
+	u_int *mot_addr;
+	u_int *mim_addr;
+	u_int *mim_buf_addr;
+	u_int disp_flg;
+} SCN_ANM_MDL;
+
 typedef struct {
 	u_short start;
 	u_short end;
@@ -15,8 +54,8 @@ typedef struct {
 	int val;
 } SCN_VIB_TYPE;
 
-// extern SCN_ENE_EFCT scn_ene_efct[0];
-// extern SCN_VIB_TYPE scn_vib_type[0];
+extern SCN_ENE_EFCT scn_ene_efct[];
+extern SCN_VIB_TYPE scn_vib_type[];
 // extern SCN_VIB_DATA scn_vib_0020[0];
 // extern SCN_VIB_DATA scn_vib_0022[0];
 // extern SCN_VIB_DATA scn_vib_0030[0];
@@ -88,7 +127,7 @@ typedef struct {
 // extern SCN_VIB_DATA scn_vib_5010[0];
 // extern SCN_VIB_DATA scn_vib_5020[0];
 // extern SCN_VIB_DATA scn_vib_dmy[0];
-// extern SCN_VIB_DATA *scn_vib_tbl[0];
+extern SCN_VIB_DATA *scn_vib_tbl[];
 extern u_char scene_movie_no[];
 
 

@@ -403,6 +403,11 @@ m059_cloth                     = 0x3037e0; // type:CLOTH_DAT numel:4 nosize
 scamera                        = 0x303d60; // type:SgCAMERA
 shadow_pal                     = 0x303f90; // type:qword numel:71 static
 
+// graphics/scene/scene.c
+m000_bbox                      = 0x30d930; // type:sceVu0FVECTOR numel:8 static nosize
+m030_bbox                      = 0x30d9b0; // type:sceVu0FVECTOR numel:8 static nosize
+m060_bbox                      = 0x30da30; // type:sceVu0FVECTOR numel:8 static nosize
+
 // ingame/enemy/ene_ctl.c
 jene_dat0                      = 0x320060; // type:ENE_DAT numel:1 nosize
 aene_info_dat0                 = 0x3200a0; // type:AENE_INFO_DAT numel:3 nosize
