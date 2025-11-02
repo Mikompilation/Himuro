@@ -490,11 +490,18 @@ def generate_objdiff_configuration(config_path: Path, config: dict[str, Any], la
                 raise RuntimeError("invalid subsegment type")
 
             if subs_type in ("asm", "c"):
-                if subs_name in ("crt0", "main/glob", "graphics/motion/mim_dat", "graphics/motion/acs_dat"):
+                if subs_name in (
+                    "crt0",
+                    "main/glob",
+                    "graphics/motion/mim_dat",
+                    "graphics/motion/acs_dat",
+                    "graphics/scene/scene_dat",
+                ):
                     # -> skip 'crt0' as it's not part of the game files
                     # -> skip 'main/glob' as it doesn't have a .text section
                     # -> skip 'graphics/motion/mim_dat' as it doesn't have a .text section
                     # -> skip 'graphics/motion/acs_dat' as it doesn't have a .text section
+                    # -> skip 'graphics/scene/scene_dat' as it doesn't have a .text section
                     continue
 
                 tu_to_diff.append((subs_type, subs_name))

@@ -1061,6 +1061,71 @@ class MSN_LOAD_DAT(CStructure):
     addr: c_uint32
 
 
+###########################################################################
+# typedef struct {
+# 	u_short start;
+# 	u_short end;
+# 	u_short type;
+# } SCN_VIB_DATA;
+class SCN_VIB_DATA(CStructure):
+    start: c_uint16
+    end: c_uint16
+    type: c_uint16
+
+
+# typedef struct {
+# 	int time0;
+# 	int time1;
+# 	int val;
+# } SCN_VIB_TYPE;
+class SCN_VIB_TYPE(CStructure):
+    time0: c_int32
+    time1: c_int32
+    val: c_int32
+
+
+# typedef struct {
+# 	u_int type;
+# 	float sclx;
+# 	float scly;
+# 	u_int alpha;
+# 	float rate;
+# 	float trate;
+# } SCN_ENE_EF_PDF;
+class SCN_ENE_EF_PDF(CStructure):
+    type: c_uint32
+    sclx: c_float
+    scly: c_float
+    alpha: c_uint32
+    rate: c_float
+    trate: c_float
+
+
+# typedef struct {
+# 	u_short scene_no;
+# 	u_short mdl_no;
+# 	float aura_size;
+# 	float aura_rate;
+# 	u_int aura_rgba;
+# 	SCN_ENE_EF_PDF pdf1;
+# 	SCN_ENE_EF_PDF pdf2;
+# 	float pdf_dist;
+# 	float aura_pos_ajst;
+# 	int mdl_alpha;
+# } SCN_ENE_EFCT;
+class SCN_ENE_EFCT(CStructure):
+    scene_no: c_int16
+    mdl_no: c_int16
+    aura_size: c_float
+    aura_rate: c_float
+    aura_rgba: c_uint32
+    pdf1: SCN_ENE_EF_PDF
+    pdf2: SCN_ENE_EF_PDF
+    pdf_dist: c_float
+    aura_pos_ajst: c_float
+    mdl_alpha: c_int32
+
+
 elf_names: dict[str, str] = {
     "us": "SLUS_203.88",
     "eu": "SLES_508.21",
