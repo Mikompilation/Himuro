@@ -12,7 +12,7 @@ typedef struct {
 // extern MSN_LOAD_DAT dgst_load[3];
 // extern DGST_WRK dgst_wrk;
 
-void DeadGhostAppearReq();
+// void DeadGhostAppearReq();
 void DeadGhostAppearMain();
 int DeadGhostAppearJudge();
 void DeadGhostLoadReq();

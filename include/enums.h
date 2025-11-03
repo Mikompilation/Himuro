@@ -4752,4 +4752,25 @@ enum {
     REIKON000 = 25
 };
 
+typedef enum {
+	FG_LOAD_MODE_READY = 0,
+	FG_LOAD_MDL_LOAD = 1,
+	FG_LOAD_MDL_WAIT = 2,
+	FG_LOAD_MOT_LOAD = 3,
+	FG_LOAD_MOT_WAIT = 4,
+	FG_LOAD_SE_LOAD = 5,
+	FG_LOAD_SE_WAIT = 6,
+	FG_LOAD_SE_TRANS = 7,
+	FG_LOAD_MODE_END = 8
+} FG_LOAD;
+
+enum {
+	FG_NO_REQ = 0,
+	FG_COUNT = 1,
+	FG_WAIT = 2,
+	FG_ENTRY = 3,
+	FG_BATTLE = 4,
+	FG_DEAD = 5
+};
+
 #endif // ENUMS_H
