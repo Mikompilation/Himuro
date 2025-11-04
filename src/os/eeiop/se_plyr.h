@@ -10,9 +10,9 @@ typedef struct {
 
 extern SE_FOOT_RAND_ITA rand_ita_tbl[];
 
-int SeReqFootStep(float *pos);
-u_char IsKarehaZone();
-u_char IsTakenohaZone();
+int SeReqFootStep(sceVu0FVECTOR pos);
+u_char IsKarehaZone(sceVu0FVECTOR pos);
+u_char IsTakenohaZone(sceVu0FVECTOR pos);
 u_char IsHokoriZone();
 
 #endif // OS_EEIOP_SE_PLYR_H

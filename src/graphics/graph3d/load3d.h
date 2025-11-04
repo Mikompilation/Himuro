@@ -44,7 +44,7 @@ void SetPreRenderR022(int flg);
 void LoadItemModel(u_int *tmpp);
 void ItemLoadAfterInit(int item_no, int addr);
 int InitializeRoomUnder(RMDL_ADDR *room_tbl);
-int LoadInitFurnModel();
-int LoadInitDoorModel();
+int LoadInitFurnModel(ROOM_LOAD_BLOCK *rlb);
+int LoadInitDoorModel(ROOM_LOAD_BLOCK *rlb);
 
 #endif // GRAPHICS_GRAPH3D_LOAD3D_H

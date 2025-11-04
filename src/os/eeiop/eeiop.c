@@ -15,7 +15,7 @@ static int EiInitRpc();
 static int EiInitIopDev();
 static void InitIopCmd(IOP_COMMAND *cmdp);
 static void SetIopCmd(IOP_COMMAND *cmdp);
-static void TidyUpIopCmd();
+static void TidyUpIopCmd(IOP_COMMAND *cmdp);
 static int EiSendCmd();
 
 void EiInit()
@@ -124,7 +124,7 @@ static void SetIopCmd(IOP_COMMAND *cmdp)
     }
 }
 
-static void TidyUpIopCmd()
+static void TidyUpIopCmd(IOP_COMMAND *cmdp)
 {
     return;
 }

@@ -13,7 +13,7 @@
 
 #define DVD_DATA_ADDR ((u_char *)0x7f8000)
 
-int SeReqFootStep(float *pos)
+int SeReqFootStep(sceVu0FVECTOR pos)
 {
     u_int *addr;
     int i;
@@ -138,7 +138,7 @@ int SeReqFootStep(float *pos)
     return SeStartPut(se_no, pos, 0, rd0, rd1, 0xff);
 }
 
-u_char IsKarehaZone(float *pos)
+u_char IsKarehaZone(sceVu0FVECTOR pos)
 {
     u_int *addr;
     int i;
@@ -171,7 +171,7 @@ u_char IsKarehaZone(float *pos)
     return foot_se_index[call_no] == SAF016_OCHIBA_BD;
 }
 
-u_char IsTakenohaZone(float *pos)
+u_char IsTakenohaZone(sceVu0FVECTOR pos)
 {
     u_int *addr;
     int i;
