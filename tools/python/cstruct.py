@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import io
+import sys
 import math
 import ctypes
 import numpy as np
@@ -112,6 +113,23 @@ def format_array(lst: Sequence[_G], dims: Sequence[int], file: TextIO):
             file.write(f"{x}{sep}")
 
 
+def resolve_annotations(namespace: dict[str, Any], annotations: dict[str, Any]):
+    module = sys.modules.get(namespace.get("__module__", ""))
+    globals_ = vars(module) if module else {}
+    resolved: dict[str, Any] = {}
+
+    for k, v in annotations.items():
+        if isinstance(v, str):
+            try:
+                resolved[k] = eval(v, globals_, namespace)
+            except Exception:
+                resolved[k] = v  # keep as string if can't resolve
+        else:
+            resolved[k] = v
+
+    return resolved
+
+
 class LittleEndianStructureFieldsFromTypeHints(type(LittleEndianStructure)):  # pyright: ignore
     def __new__(
         cls: Type[type],
@@ -124,12 +142,14 @@ class LittleEndianStructureFieldsFromTypeHints(type(LittleEndianStructure)):  # 
         pack: Optional[int] = None,
     ) -> LittleEndianStructureFieldsFromTypeHints:
         annotations = namespace.get("__annotations__", {})
+        annotations = resolve_annotations(namespace, annotations)
         if "__elf__" in annotations:
             annotations.pop("__elf__")
         if align is not None:
             namespace["_align_"] = align
         if pack is not None:
             namespace["_pack_"] = pack
+            namespace["_layout_"] = "ms"
         if fields := list(annotations.items()):
             namespace["_fields_"] = fields
         return type(LittleEndianStructure).__new__(cls, name, bases, namespace)  # pyright: ignore
