@@ -39,16 +39,22 @@ typedef struct {
 	float fov[2];
 } MAP_CAM_DAT;
 
-typedef struct
-{ // 0xc
-    /* 0x0 */ u_short no;
-    /* 0x2 */ u_short no_old;
-    /* 0x4 */ u_char kind;
-    /* 0x5 */ u_char type;
-    /* 0x6 */ u_char change;
-    /* 0x7 */ u_char pad;
-    /* 0x8 */ MAP_CAM_DAT *mcd;
+typedef struct {
+    u_short no;
+    u_short no_old;
+    u_char kind;
+    u_char type;
+    u_char change;
+    u_char pad;
+    MAP_CAM_DAT *mcd;
 } MAP_CAM_INFO;
+
+typedef struct {
+	sceVu0FVECTOR i;
+	sceVu0FVECTOR p;
+	sceVu0FVECTOR rot_y;
+	sceVu0FVECTOR rot_x;
+} CAM_ID_MOVE;
 
 // extern u_int ncam_000[0];
 // extern u_int ncam_001[0];
@@ -233,36 +239,36 @@ typedef struct
 // extern u_short *dc_no_tbl3[0];
 // extern u_short drm_cam_no[12];
 extern u_char DBG_cam_id_move_chk;
-// extern u_char cd_edit_end;
-// extern int msn_no;
-// extern int renewal_data_chk;
-// extern int renewal_data_chk_cnt;
-// extern u_short cdcopy[2];
-// extern u_char cam_info_disp;
-// extern sceVu0FVECTOR adj_cam_pos;
-// extern u_short fior_tm;
-// extern CAM_ID_MOVE cam_id_move;
-// extern int cam_kind;
-// extern int cam_type;
-// extern int cd_step;
-// extern int cam_id;
-// extern short int plyr_adj[4];
+extern u_char cd_edit_end;
+extern int msn_no;
+extern int renewal_data_chk;
+extern int renewal_data_chk_cnt;
+extern u_short cdcopy[2];
+extern u_char cam_info_disp;
+extern sceVu0FVECTOR adj_cam_pos;
+extern u_short fior_tm;
+extern CAM_ID_MOVE cam_id_move;
+extern int cam_kind;
+extern int cam_type;
+extern int cd_step;
+extern int cam_id;
+extern short int plyr_adj[4];
 
 void CameraMain();
 void KonwakuCamCtrl();
 void FinderInCameraCtrl();
 void NormalCameraCtrl();
 int GetCameraInfo(MAP_CAM_INFO *mci);
-void GetCameraData(u_char kind);
-void SetCamPos0(SgCAMERA *tc);
-void SetCamPos1(SgCAMERA *tc);
-void SetCamPos2(SgCAMERA *tc);
-void SetCamPos3(SgCAMERA *tc);
-void SetCamPos4(SgCAMERA *tc);
-void SetCamPos5(SgCAMERA *tc);
+void GetCameraData(u_char kind, MAP_CAM_INFO *mci);
+void SetCamPos0(SgCAMERA *tc, MAP_CAM_INFO *mci);
+void SetCamPos1(SgCAMERA *tc, MAP_CAM_INFO *mci);
+void SetCamPos2(SgCAMERA *tc, MAP_CAM_INFO *mci);
+void SetCamPos3(SgCAMERA *tc, MAP_CAM_INFO *mci);
+void SetCamPos4(SgCAMERA *tc, MAP_CAM_INFO *mci);
+void SetCamPos5(SgCAMERA *tc, MAP_CAM_INFO *mci);
 float GetMCLocalPosPer(u_short cn, u_char kind, u_char id);
-void CompleCameraPos(SgCAMERA *tc, SgCAMERA *oc);
-u_char CompleReqChk();
+void CompleCameraPos(SgCAMERA *tc, SgCAMERA *oc, MAP_CAM_INFO *mci);
+u_char CompleReqChk(MAP_CAM_INFO *mci);
 void FinderModeCameraCtrl();
 void PlyrCamCondChk();
 void PconMahiCameraCtrl();

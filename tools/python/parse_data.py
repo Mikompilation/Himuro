@@ -1219,7 +1219,7 @@ class DataVar(pydantic.BaseModel):
                     k
                     for k, v in ctypes_types.items()
                     if getattr(v, "_type_") == getattr(self.type, "_type_")  # pyright: ignore
-                )
+                ) + ("*" * self.num_ptr)
             stream = io.StringIO()
             if self.static:
                 stream.write("static ")
@@ -1372,6 +1372,13 @@ def parse_data_vars(data_vars_txt: Path, strict: bool = True):
                     try:
                         data_var = DataVar(address=address, name=name, **attrs)  # pyright: ignore[reportArgumentType]
                         data_vars.append(data_var)
+                        if address not in addr_vals:
+                            if (
+                                isinstance(data_var.numel, list) or data_var.numel > 0 or data_var.type == sceVu0FVECTOR  # type: ignore
+                            ):
+                                addr_vals[address] = name
+                            else:
+                                addr_vals[address] = f"&{name}"
                         valid = True
                     except pydantic.ValidationError as ve:
                         print(f"syntax error at line {n}")

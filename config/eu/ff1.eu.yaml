@@ -137,7 +137,7 @@ segments:
           - [0x8a4e0,  c,   graphics/scene/scene_dat]
           - [0x8a4e0,  c,   ingame/ingame]
           - [0x8b280,  c,   ingame/ig_init]
-          - [0x8b7e8,  asm, ingame/camera/camera]
+          - [0x8b7e8,  c,   ingame/camera/camera]
           - [0x90328,  c,   ingame/enemy/ene_ctl]
           - [0x93bb0,  asm, ingame/enemy/move_ctl]
           - [0x9b430,  c,   ingame/entry/entry]
@@ -262,7 +262,7 @@ segments:
           - { start: 0x20b8d0, type: .data,   vram: 0x30a8d0, name: graphics/scene/scene          }
           - { start: 0x2147c0, type: .data,   vram: 0x3137c0, name: graphics/scene/scene_dat      }
           - { start: 0x215780, type:  data,   vram: 0x314780, name: ingame/ig_glob                }
-          - { start: 0x2213d0, type:  data,   vram: 0x3203d0, name: ingame/camera/camera          }
+          - { start: 0x2213d0, type: .data,   vram: 0x3203d0, name: ingame/camera/camera          }
           - { start: 0x226d70, type: .data,   vram: 0x325d70, name: ingame/enemy/ene_ctl          }
           - { start: 0x229260, type:  data,   vram: 0x328260, name: ingame/enemy/move_ctl         }
           - { start: 0x229488, type: .data,   vram: 0x328488, name: ingame/entry/entry            }
@@ -383,7 +383,7 @@ segments:
           - { start: 0x255d00, type: .rodata, vram: 0x354d00, name: graphics/scene/fod            }
           - { start: 0x255dc0, type: .rodata, vram: 0x354dc0, name: ingame/ingame                 }
           - { start: 0x255e50, type: .rodata, vram: 0x354e50, name: ingame/ig_init                }
-          - { start: 0x255e80, type:  rodata, vram: 0x354e80, name: ingame/camera/camera          }
+          - { start: 0x255e80, type: .rodata, vram: 0x354e80, name: ingame/camera/camera          }
           - { start: 0x2560d0, type: .rodata, vram: 0x3550d0, name: ingame/enemy/ene_ctl          }
           - { start: 0x256180, type:  rodata, vram: 0x355180, name: ingame/enemy/move_ctl         }
           - { start: 0x2561a0, type: .rodata, vram: 0x3551a0, name: ingame/entry/ap_bgost         }
@@ -468,7 +468,7 @@ segments:
           - { start: 0x25d790, type: .lit4,   vram: 0x35c790, name: graphics/scene/scene          }
           - { start: 0x25d7ac, type: .lit4,   vram: 0x35c7ac, name: ingame/ingame                 }
           - { start: 0x25d7b0, type: .lit4,   vram: 0x35c7b0, name: ingame/ig_init                }
-          - { start: 0x25d7c4, type:  lit4,   vram: 0x35c7c4, name: ingame/camera/camera          }
+          - { start: 0x25d7c4, type: .lit4,   vram: 0x35c7c4, name: ingame/camera/camera          }
           - { start: 0x25d890, type: .lit4,   vram: 0x35c890, name: ingame/enemy/ene_ctl          }
           - { start: 0x25d8c4, type:  lit4,   vram: 0x35c8c4, name: ingame/enemy/move_ctl         }
           - { start: 0x25d978, type: .lit4,   vram: 0x35c978, name: ingame/entry/ap_dgost         }
@@ -559,7 +559,7 @@ segments:
           - { start: 0x25eb78, type: .sdata,  vram: 0x35db78, name: ingame/ingame                 }
           - { start: 0x25eb80, type: .sdata,  vram: 0x35db80, name: ingame/ig_init                }
           - { start: 0x25eb88, type:  sdata,  vram: 0x35db88, name: ingame/ig_glob                }
-          - { start: 0x25eb98, type:  sdata,  vram: 0x35db98, name: ingame/camera/camera          }
+          - { start: 0x25eb98, type: .sdata,  vram: 0x35db98, name: ingame/camera/camera          }
           - { start: 0x25ebf0, type: .sdata,  vram: 0x35dbf0, name: ingame/enemy/ene_ctl          }
           - { start: 0x25ec30, type:  sdata,  vram: 0x35dc30, name: ingame/entry/move_ctl         }
           - { start: 0x25ec48, type: .sdata,  vram: 0x35dc48, name: ingame/entry/ap_dgost         }
@@ -634,7 +634,7 @@ segments:
           - { start: 0x25f500, type: .sbss,   vram: 0x35e66c, name: graphics/graph3d/mirror       }
           - { start: 0x25f500, type: .sbss,   vram: 0x35e684, name: graphics/mov/movie            }
           - { start: 0x25f500, type: .sbss,   vram: 0x35e690, name: graphics/scene/scene          }
-          - { start: 0x25f500, type:  sbss,   vram: 0x35e6a0, name: ingame/camera/camera          }
+          - { start: 0x25f500, type: .sbss,   vram: 0x35e6a0, name: ingame/camera/camera          }
           - { start: 0x25f500, type: .sbss,   vram: 0x35e6b8, name: ingame/enemy/ene_ctl          }
           - { start: 0x25f500, type:  sbss,   vram: 0x35e6d0, name: ingame/enemy/move_ctl         }
           - { start: 0x25f500, type:  sbss,   vram: 0x35e700, name: ingame/entry/ap_sgost         }
@@ -702,7 +702,7 @@ segments:
           - { start: 0x25f514, type: .bss,    vram: 0x402800, name: graphics/mov/movie            }
           - { start: 0x25f514, type: .bss,    vram: 0x407040, name: graphics/scene/fod            }
           - { start: 0x25f514, type: .bss,    vram: 0x407560, name: graphics/scene/scene          }
-          - { start: 0x25f514, type:  bss,    vram: 0x4089c0, name: ingame/camera/camera          }
+          - { start: 0x25f514, type: .bss,    vram: 0x4089c0, name: ingame/camera/camera          }
           - { start: 0x25f514, type: .bss,    vram: 0x408ca0, name: ingame/enemy/ene_ctl          }
           - { start: 0x25f514, type:  bss,    vram: 0x408d50, name: ingame/enemy/move_ctl         }
           - { start: 0x25f514, type:  bss,    vram: 0x408eb0, name: ingame/info/inf_disp          }
