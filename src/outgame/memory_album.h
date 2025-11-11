@@ -50,8 +50,8 @@ typedef struct {
 	PICTURE_WRK pic[24];
 } MC_ALBUM_SAVE;
 
-// extern MC_ALBUM_SAVE mc_album_save;
-// extern MC_ALBUM_SAVE album_save_dat[2];
+extern MC_ALBUM_SAVE mc_album_save;
+extern MC_ALBUM_SAVE album_save_dat[2];
 // extern char is_newdata_albmside;
 
 void MemAlbmInit(u_char h_type, u_char src_pht_max, u_char cpy_pht_max, u_char src_cl_type, u_char cpy_cl_type, u_char src_slot, u_char cpy_slot, u_char src_file, u_char cpy_file);

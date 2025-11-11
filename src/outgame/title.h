@@ -3,6 +3,8 @@
 
 #include "typedefs.h"
 
+#include "graphics/graph2d/sprt.h"
+
 typedef struct {
 	int load_id;
 	u_char mode;
@@ -12,10 +14,40 @@ typedef struct {
 	u_char load_side;
 } TITLE_WRK;
 
-#include "outgame/mode_slct.h"
+typedef struct {
+	float cnt;
+	float alp;
+	float spd;
+	u_char alpmx;
+	u_char colmx;
+	u_short type;
+} OUT_DITHER_STR;
 
-// extern SPRT_DAT title_sprt[11];
-// extern SPRT_DAT font_sprt[20];
+typedef struct {
+	u_short timer;
+	u_char mode;
+#ifdef BUILD_EU_VERSION
+	u_char no_disp;
+#endif
+} TTL_DSP_WRK;
+
+#ifdef BUILD_EU_VERSION
+typedef struct {
+	int logo_flow;
+	int lang_sel_flow;
+	int cnt;
+	u_char alp;
+	u_char dummy;
+	u_short load_id;
+} TITLE_SYS;
+#endif
+
+extern SPRT_DAT title_sprt[11];
+#ifdef BUILD_EU_VERSION
+extern SPRT_DAT font_sprt[23];
+#else
+extern SPRT_DAT font_sprt[20];
+#endif;
 extern int opening_movie_type;
 extern TITLE_WRK title_wrk;
 

@@ -87,7 +87,10 @@ us-report:  ## Create progress report in US config directory
 
 us-clean:  ## Clean artifact in US config directory
 	@cd config/us; \
-	ninja -t clean;
+	ninja -t clean
+
+us-reset:  ## Resets the US config directory to its original state
+	@python3 configure.py config/us/ff1.us.yaml --reset
 
 ##
 ## EU Commands:
@@ -123,7 +126,10 @@ eu-report:  ## Create progress report in EU config directory
 
 eu-clean:  ## Clean artifact in US config directory
 	@cd config/eu; \
-	ninja -t clean;
+	ninja -t clean
+
+eu-reset:  ## Resets the EU config directory to its original state
+	@python3 configure.py config/eu/ff1.eu.yaml --reset
 
 # Include custom makefile for user-defined commands
 -include Makefile.custom

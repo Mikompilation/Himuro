@@ -102,7 +102,7 @@ extern MC_CTRL mc_ctrl;
 extern u_char mc_start_flg;
 extern u_char mc_msn_flg;
 // extern u_char mc_newalbum_flg;
-// extern u_int mc_album_type;
+extern u_int mc_album_type;
 extern u_int mc_photo_num;
 
 #ifdef BUILD_EU_VERSION

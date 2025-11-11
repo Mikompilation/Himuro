@@ -710,6 +710,10 @@ dgst_load                      = 0x3227f8; // type:MSN_LOAD_DAT numel:3
 test_tex0                      = 0x341128; // type:SPRT_DAT numel:5 nosize
 test_tex1                      = 0x3411c8; // type:SPRT_DAT numel:13 nosize
 
+// outgame/title.c
+title_sprt                     = 0x342c90; // type:SPRT_DAT numel:11
+font_sprt                      = 0x342df0; // type:SPRT_DAT numel:20
+
 // ingame/event/wan_dat.c
 soul_des100                    = 0x345820; // type:sceVu0FVECTOR numel:2 nosize
 soul_des101                    = 0x345840; // type:sceVu0FVECTOR numel:5 nosize

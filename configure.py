@@ -64,6 +64,10 @@ ASM_PATCH_LIST: list[str] = [
     "effect_oth.c.o",
 ]
 
+EUC_JP_LIST = [
+    "title.c.o",
+]
+
 
 def get_compiler_command(command: str):
     compiler_dir = Path("tools") / "cc" / COMPILER
@@ -241,6 +245,18 @@ def build_stuff(
     )
 
     ninja.rule(
+        "cc-eucjp",
+        description="convert source to EUC-JP encoding and compile same as 'cc'",
+        command=(
+            f"eucjp_in=$$(echo $in.eucjp.c | sed 's,^[^/]*/[^/]*/,cc-src/,') && "  # . 1) remove ../../ from path + prefix with cc-src/ + suffix with .eucjp.c and store it into eucjp_in var: ../../src/file.c -> eucjp_in=cc-src/src/file.c.eucjp.c
+            f'mkdir -p $$(dirname "$$eucjp_in") && '  # .............................. 2) create directory from eucjp_in var: s_in=cc-src/src/path/to/file.c.eucjp.c -> mkdir -p cc-src/src/path/to/
+            f"iconv -o $$eucjp_in -f=UTF-8 -t=EUC-JP $in && "  # ..................... 3) convert source file to EUC-JP (save converted source to cc-src/src/file.c.eucjp.c)
+            f'{game_compile_cmd} -I$$(dirname "$in") $$eucjp_in -o $out && '  # ...... 4) compile converted source file into object (also add original source directory as include path to allow relative imports)
+            f"{cross}strip $out -N dummy-symbol-name"  # ............................. 5) strip 'dummy-symbol-name' from object
+        ),
+    )
+
+    ninja.rule(
         "libcc",
         description="cc $in",
         command=f"{lib_compile_cmd} $in -o $out && {cross}strip $out -N dummy-symbol-name",
@@ -289,6 +305,9 @@ def build_stuff(
 
             elif entry.object_path.name in ASM_PATCH_LIST:
                 build(entry.object_path, entry.src_paths, "cc-s")
+
+            elif entry.object_path.name in EUC_JP_LIST:
+                build(entry.object_path, entry.src_paths, "cc-eucjp")
 
             else:
                 build(entry.object_path, entry.src_paths, "cc")
@@ -570,6 +589,7 @@ def main():
     class ArgsProtocol(Protocol):
         YAML_FILE: Path
         clean: bool
+        reset: bool
         make_asm: bool
 
     parser = argparse.ArgumentParser(description="Configure the project")
@@ -587,6 +607,12 @@ def main():
     parser.add_argument(
         "--make-asm",
         help="Extract assembly for each function into 'expected/asm/' subfolder",
+        action="store_true",
+    )
+    parser.add_argument(
+        "-r",
+        "--reset",
+        help="Reset config dir to original state",
         action="store_true",
     )
     args = cast(ArgsProtocol, parser.parse_args())
@@ -623,6 +649,10 @@ def main():
         exit(1)
 
     language = LANGUAGES[basename]
+
+    if args.reset:
+        clean(config_dir, config)
+        return
 
     if args.make_asm:
         make_asm(config_dir, config)
