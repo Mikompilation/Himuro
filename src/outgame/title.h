@@ -47,7 +47,7 @@ extern SPRT_DAT title_sprt[11];
 extern SPRT_DAT font_sprt[23];
 #else
 extern SPRT_DAT font_sprt[20];
-#endif;
+#endif
 extern int opening_movie_type;
 extern TITLE_WRK title_wrk;
 

@@ -4,4 +4,4 @@
 int EIntr();
 int DIntr();
 
-#endif SCE_MISC_DIEI_H
+#endif // SCE_MISC_DIEI_H
