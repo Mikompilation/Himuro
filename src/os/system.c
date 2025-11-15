@@ -26,7 +26,7 @@
 int odev = 0;
 int stop_put_draw_env = 0;
 static int fr = 0;
-sceGsDBuff g_db = {4};
+sceGsDBuff g_db = {0};
 static int down_fr;
 
 static void InitIop();
