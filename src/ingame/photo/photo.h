@@ -2,18 +2,8 @@
 #define INGAME_PHOTO_PHOTO_H
 
 #include "typedefs.h"
+#include "photo_types.h"
 
-typedef struct {
-	int score;
-	int point;
-	float ratio;
-	u_short no;
-	u_short type;
-	u_short dmg;
-	u_short wrk_no;
-} SUBJECT_WRK;
-
-#include "ingame/photo/photo.h"
 #include "ingame/menu/ig_rank.h"
 
 long int PhotoScoreCount();

@@ -4,6 +4,7 @@
 
 #include "ee/eestruct.h"
 #include "sce/libvu0.h"
+#include "sce/libgraph.h"
 
 #include "graphics/graph3d/libsg.h"
 #include "graphics/graph3d/sgdma.h"
@@ -11,7 +12,6 @@
 #include "graphics/graph3d/sgsu.h"
 // #include "graphics/graph3d/sgsu.h" // LoadSgProg, _SetLWMatrix0, _SetLWMatrix1 should be undeclared
 #include "graphics/graph3d/sgcam.h"
-
 #include "graphics/graph3d/sglib.h"
 
 #define SCRATCHPAD ((u_char *)0x70000000)

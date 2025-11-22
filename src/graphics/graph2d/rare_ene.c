@@ -12,6 +12,7 @@
 #include "graphics/graph2d/effect_sub.h"
 #include "graphics/graph2d/effect.h"
 #include "graphics/graph3d/sglib.h"
+#include "graphics/graph3d/libsg.h"
 
 typedef struct {
     SPRT_DAT *spr;

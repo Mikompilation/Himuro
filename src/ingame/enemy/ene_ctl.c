@@ -14,6 +14,7 @@
 #include "os/eeiop/adpcm/ea_ghost.h"
 #include "os/eeiop/adpcm/ea_autog.h"
 #include "ingame/entry/entry.h"
+#include "ingame/ig_glob.h"
 #include "ingame/entry/ap_bgost.h"
 #include "ingame/entry/ap_dgost.h"
 #include "ingame/entry/ap_fgost.h"

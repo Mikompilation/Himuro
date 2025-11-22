@@ -1,5 +1,5 @@
-#ifndef GRAPHICS_GRAPH3D_LIGHT_DAT_H
-#define GRAPHICS_GRAPH3D_LIGHT_DAT_H
+#ifndef GRAPHICS_GRAPH3D_LIGHT_TYPES_H
+#define GRAPHICS_GRAPH3D_LIGHT_TYPES_H
 
 #include "common.h"
 #include "typedefs.h"
@@ -68,4 +68,4 @@ typedef struct {
 	SPOT_WRK spot[3];
 } LIGHT_PACK;
 
-#endif // GRAPHICS_GRAPH3D_LIGHT_DAT_H
+#endif // GRAPHICS_GRAPH3D_LIGHT_TYPES_H

@@ -16,6 +16,7 @@
 #include "graphics/graph2d/tim2.h"
 #include "graphics/graph2d/tim2_new.h"
 #include "graphics/graph3d/sglib.h"
+#include "graphics/graph3d/libsg.h"
 #include "graphics/graph2d/effect.h"
 #include "graphics/graph2d/effect_sub.h"
 #include "graphics/graph2d/effect_obj.h"

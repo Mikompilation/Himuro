@@ -3,9 +3,8 @@
 
 #include "typedefs.h"
 
-#include "graphics/graph3d/gra3d.h"
-#include "graphics/graph3d/light_dat.h"
-#include "ingame/map/furn_dat.h"
+#include "graphics/graph3d/light_types.h"
+#include "ingame/map/furn_types.h"
 
 extern int furn_disp_flg;
 

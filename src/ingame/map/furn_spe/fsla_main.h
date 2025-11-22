@@ -2,7 +2,7 @@
 #define INGAME_MAP_FURN_SPE_FSLA_MAIN_H
 
 #include "typedefs.h"
-#include "graphics/graph3d/light_dat.h"
+#include "graphics/graph3d/light_types.h"
 
 // extern u_char able_to_light_tbl[0];
 // extern POINT_LIGHT_WRK point_light_wrk[8];

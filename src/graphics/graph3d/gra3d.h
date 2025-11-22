@@ -7,7 +7,7 @@
 #include "ingame/map/furn_spe/furn_spe.h"
 #include "ingame/map/furn_spe/fsla_main.h"
 #include "graphics/graph3d/load3d.h"
-#include "graphics/graph3d/light_dat.h"
+#include "graphics/graph3d/light_types.h"
 #include "graphics/graph3d/sg_dat.h"
 #include "graphics/graph3d/sglight.h"
 #include "graphics/graph3d/shadow.h"

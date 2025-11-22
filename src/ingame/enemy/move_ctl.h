@@ -2,8 +2,10 @@
 #define INGAME_ENEMY_MOVE_CTL_H
 
 #include "typedefs.h"
+#include "move_types.h"
 
-#include "main/glob.h"
+#include "main/glob_types.h"
+#include "ingame/enemy/move_types.h"
 
 void InitMoveBox(MOVE_BOX *mb);
 void MoveCtrl(MOVE_BOX *mb);

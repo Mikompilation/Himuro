@@ -5,6 +5,7 @@
 
 #include "main/glob.h"
 #include "ingame/camera/camera.h"
+#include "ingame/ig_glob.h"
 #include "ingame/event/ev_load.h"
 #include "ingame/map/map_area.h"
 #include "ingame/entry/entry.h"

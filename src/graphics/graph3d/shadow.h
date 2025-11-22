@@ -3,7 +3,8 @@
 
 #include "typedefs.h"
 
-#include "ingame/camera/camera.h"
+#include "ingame/camera/camera_types.h"
+#include "graphics/graph3d/sg_dat.h"
 
 typedef struct {
     int s;
@@ -24,9 +25,6 @@ typedef struct {
 } ShadowHandle;
 
 typedef void (*EnvFuncCallback)();
-
-#include "graphics/graph3d/sg_dat.h"
-#include "graphics/graph3d/gra3d.h"
 
 extern SgCAMERA scamera;
 

@@ -5,6 +5,7 @@
 
 #include "main/glob.h" // *
 #include "mc/mc_main.h"
+#include "ingame/ig_glob.h" //
 #include "ingame/map/furn_ctl.h" //
 #include "ingame/entry/entry.h"
 #include "ingame/event/ev_main.h"

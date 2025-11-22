@@ -37,8 +37,7 @@ typedef struct {
 	int dummy;
 } FIREFLY;
 
-typedef struct
-{ // 0x20
+typedef struct {
     sceVu0FVECTOR pos;
     int flow;
     float rot;
@@ -46,7 +45,7 @@ typedef struct
     int dummy;
 } NEW_ITEM;
 
-typedef struct { // 0x30
+typedef struct {
 	u_int u1;
 	u_int u2;
 	u_int v1;
@@ -60,7 +59,7 @@ typedef struct { // 0x30
 	u_int dummy[2];
 } HAZE_WORK;
 
-typedef struct { // 0x30
+typedef struct {
 	sceVu0FVECTOR oposp;
 	sceVu0FVECTOR oposc;
 	float scr;
@@ -69,7 +68,7 @@ typedef struct { // 0x30
 	float dummy;
 } HAZE_NUMS;
 
-typedef struct { // 0x20
+typedef struct {
 	sceVu0IVECTOR iv;
 	u_int tx;
 	u_int ty;
@@ -78,7 +77,7 @@ typedef struct { // 0x20
 	u_short cl;
 } TEX_WORK;
 
-typedef struct { // 0x10
+typedef struct {
 	float v;
 	float oy;
 	float t;
@@ -86,7 +85,7 @@ typedef struct { // 0x10
 	short int mode;
 } RIPPLE2_M;
 
-typedef struct { // 0x1140
+typedef struct {
 	RIPPLE2_M rip2m[275];
 	float texsc;
 	float time;
@@ -94,7 +93,7 @@ typedef struct { // 0x1140
 	int dummy;
 } RIPPLE2;
 
-typedef struct { // 0x30
+typedef struct {
 	/* 0x00 */ sceVu0FVECTOR pos;
 	/* 0x10 */ sceVu0FVECTOR rot;
 	/* 0x20 */ float scl;
@@ -106,7 +105,7 @@ typedef struct { // 0x30
 	/* 0x2f */ u_char alp;
 } RIPPLE_SUB;
 
-typedef struct { // 0x40e0
+typedef struct {
 	sceVu0FVECTOR bpos;
 	sceVu0FVECTOR vt[275];
 	sceVu0IVECTOR vtiw[275];
@@ -124,7 +123,7 @@ typedef struct { // 0x40e0
 	sceVu0FMATRIX slm;
 } RIP_WORK1;
 
-typedef struct { // 0x50
+typedef struct {
 	int fl;
 	u_char r;
 	u_char g;
@@ -138,14 +137,14 @@ typedef struct { // 0x50
 	sceVu0FVECTOR ang;
 } EFF_LEAF_ONE;
 
-typedef struct { // 0x520
+typedef struct {
 	int flag;
 	int type;
 	sceVu0FVECTOR bpos;
 	EFF_LEAF_ONE lo[16];
 } EFF_LEAF;
 
-typedef struct { // 0x80
+typedef struct {
 	float alp;
 	float cnt;
 	sceVu0IVECTOR ivec[4];
@@ -171,7 +170,7 @@ typedef struct { // 0x300
 	sceVu0FMATRIX slm;
 } RIP_WORK2;
 
-typedef struct { // 0x170
+typedef struct {
 	sceVu0FVECTOR fpos[8];
 	sceVu0IVECTOR ipos[8];
 	u_char clip[8];

@@ -2,6 +2,7 @@
 #define GRAPHICS_MOTION_ACCESSORY_H
 
 #include "typedefs.h"
+#include "ingame/camera/camera_types.h"
 
 #include "graphics/graph3d/sg_dat.h"
 #include "graphics/motion/acs_dat.h"
