@@ -22,12 +22,15 @@
 #include "ingame/entry/ap_sgost.h"
 #include "ingame/plyr/unit_ctl.h"
 #include "ingame/plyr/plyr_ctl.h"
-#include "ingame/camera/camera.h"
 #include "graphics/graph2d/effect.h"
 #include "graphics/graph2d/message.h"
 #include "graphics/graph2d/effect_sub.h"
 #include "ingame/map/map_htck.h"
 #include "ingame/map/map_ctrl.h"
+
+#define INCLUDING_FROM_ENE_CTL_C
+#include "ingame/camera/camera.h"
+#undef INCLUDING_FROM_ENE_CTL_C
 
 #include "data/jene_dat0.h"      // ENE_DAT jene_dat0[];
 #include "data/aene_info_dat0.h" // AENE_INFO_DAT aene_info_dat0[];

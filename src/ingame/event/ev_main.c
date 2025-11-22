@@ -33,7 +33,6 @@
 #include "ingame/menu/ig_menu.h"
 #include "ingame/menu/sp_menu.h"
 #include "ingame/plyr/plyr_ctl.h"
-#include "ingame/plyr/unit_ctl.h" // `ReqEneStop` needs to be implicitly declared
 #include "outgame/mode_slct.h"
 #include "graphics/mov/movie.h"
 #include "graphics/scene/scene.h"
@@ -44,6 +43,10 @@
 #include "graphics/graph2d/effect_sub2.h"
 #include "graphics/graph3d/gra3d.h"
 #include "graphics/graph3d/load3d.h"
+
+#define INCLUDING_FROM_EV_MAIN_C
+#include "ingame/plyr/unit_ctl.h" // `ReqEneStop` needs to be implicitly declared
+#undef INCLUDING_FROM_EV_MAIN_C
 
 u_char event_stts[250] = {0};
 EVENT_WRK ev_wrk = {0};

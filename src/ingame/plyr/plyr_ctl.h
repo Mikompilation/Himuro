@@ -6,7 +6,7 @@
 // extern float photo_rng_tbl[0];
 // extern u_short photo_frame_tbl[0][2];
 // extern float circle_radius_tbl[0];
-// extern u_char charge_max_tbl[0];
+extern u_char charge_max_tbl[];
 // extern u_char ini_charge_tbl[0];
 extern u_short photo_dmg_tbl[];
 // extern float photo_dist_ratio[0];

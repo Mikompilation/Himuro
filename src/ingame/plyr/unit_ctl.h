@@ -13,6 +13,10 @@ u_char HitChkSegment2AllChk(sceVu0FVECTOR f, sceVu0FVECTOR t, float deg);
 u_char OutSightChk(sceVu0FVECTOR tp, sceVu0FVECTOR vp, float rot, float sight, float dist);
 int RotRngChk(sceVu0FVECTOR vp, sceVu0FVECTOR tp, float rot, float rng);
 int GetPointHeightChk(sceVu0FVECTOR tv);
-// void ReqEneStop(u_char req, u_char except);
+
+// fix for `ReqEneStop` needing to be undeclared in `ev_main.c`
+#ifndef INCLUDING_FROM_EV_MAIN_C
+void ReqEneStop(u_char req, u_char except);
+#endif
 
 #endif // INGAME_PLYR_UNIT_CTL_H

@@ -232,12 +232,8 @@ u_char SetMapCamDat4(MAP_CAM_DAT *mcd, u_char id);
 u_char SetMapCamDat5(MAP_CAM_DAT *mcd);
 void SaveCamDat(u_char kind, u_char mn);
 
-#ifdef MATCHING_DECOMP
-#ifdef INCLUDING_FROM_CAMERA_C
-// fix for undeclared ReqFinderInOverRap in header
-void ReqFinderInOverRap(u_short time);
-#endif
-#else
+// fix for `ReqFinderInOverRap` needing to be undeclared in `ene_ctl.h`
+#ifndef INCLUDING_FROM_ENE_CTL_C
 void ReqFinderInOverRap(u_short time);
 #endif
 

@@ -1,10 +1,7 @@
 #include "common.h"
 #include "typedefs.h"
 #include "enums.h"
-
-#define INCLUDING_FROM_CAMERA_C
 #include "camera.h"
-#undef INCLUDING_FROM_CAMERA_C
 
 #include "sce/sifdev.h"
 #include "sce/libvu0.h"

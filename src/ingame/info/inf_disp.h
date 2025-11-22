@@ -8,7 +8,7 @@
 // extern float NC_ADJ;
 // extern SPRT_DAT raze_sprt;
 // extern INFO_WRK info_wrk;
-// extern char point_get_end;
+extern char point_get_end;
 
 void InformationDispInit();
 void InformationDispMain();

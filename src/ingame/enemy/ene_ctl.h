@@ -8,7 +8,7 @@
 
 // extern ENE_DAT jene_dat0[0];
 // extern AENE_INFO_DAT aene_info_dat0[0];
-// extern FLY_DATA fly_dat[0];
+extern FLY_DATA fly_dat[];
 // extern ENE_DAT jene_dat1[0];
 // extern ENE_DAT fene_dat1[0];
 // extern AENE_INFO_DAT aene_info_dat1[0];
@@ -27,10 +27,9 @@ extern ENE_DAT *fene_dat[];
 // extern u_char req_dmg_ef[3];
 // extern int ene_dead_load;
 // extern int ene_dead_mode;
-// extern int erootd0[20][3];
-// extern int erootd1[20][3];
-// extern int erootd2[20][3];
-// extern u_char er_max_tbl[3];
+extern int erootd0[20][3];
+extern int erootd1[20][3];
+extern int erootd2[20][3];
 
 void EneCtrlMain();
 void EneEntryChk(u_char no);
