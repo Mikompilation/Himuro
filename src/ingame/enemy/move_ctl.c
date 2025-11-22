@@ -60,8 +60,8 @@ void (*BCommJmpTbl[])(ENE_WRK *ew) = {
       ((u_short)(*((u_char *)(int)(addr) + 0))) )
 
 // produce an address by combining base segment (e.g., 0x7E0000) + 16-bit offset
-#define SEGMENT_ADDR(base, offset16) \
-    ((u_long)((base) | ((offset16) & 0xFFFF)))
+#define SEGMENT_ADDR(base, offset) \
+    ((u_long)((base) | (offset)))
 
 // add an index where each entry is 2 bytes (16-bit)
 #define INDEX16(base, no) \
@@ -1780,10 +1780,12 @@ void EJob028(MOVE_BOX *mb)
 
         fmb->comm_add_top = COMM_ADD_TOP_ADDRESS;
         
+        // addr = ((u_short *)COMM_ADD_TOP_ADDRESS)[3] + COMM_ADD_TOP_ADDRESS;
         addr = INDEX16(COMM_ADD_TOP_ADDRESS, 3);
         adj = READ_LE16(addr);
         addr = SEGMENT_ADDR(COMM_ADD_TOP_ADDRESS, adj);
 
+        // fmb->comm_add.wrk = ((u_short *)addr)[no] + COMM_ADD_TOP_ADDRESS;
         addr = INDEX16(addr, no);
         adj = READ_LE16(addr);
         fmb->comm_add.wrk = SEGMENT_ADDR(COMM_ADD_TOP_ADDRESS, adj);
