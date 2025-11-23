@@ -152,7 +152,7 @@ segments:
           - [0x9f920,  asm, ingame/entry/ap_zgost]
           - [0xa0210,  c,   ingame/event/ev_main]
           - [0xa24c8,  asm, ingame/event/ev_spcl]
-          - [0xb4520,  asm, ingame/event/ev_load]
+          - [0xb4520,  c,   ingame/event/ev_load]
           - [0xb5940,  asm, ingame/event/mv_cmnd]
           - [0xb5aa0,  asm, ingame/info/inf_disp]
           - [0xbd250,  asm, ingame/map/map_ctrl]
@@ -278,7 +278,7 @@ segments:
           - { start: 0x22cf30, type:  data,   vram: 0x32bf30, name: ingame/entry/rgst_dat         }
           - { start: 0x22d138, type: .data,   vram: 0x32c138, name: ingame/event/ev_main          }
           - { start: 0x22d268, type:  data,   vram: 0x32c268, name: ingame/event/ev_spcl          }
-          - { start: 0x22f280, type:  data,   vram: 0x32e280, name: ingame/event/ev_load          }
+          - { start: 0x22f280, type: .data,   vram: 0x32e280, name: ingame/event/ev_load          }
           - { start: 0x2305a0, type:  data,   vram: 0x32f5a0, name: ingame/info/inf_disp          }
           - { start: 0x238e38, type:  data,   vram: 0x337e38, name: ingame/map/map_ctrl           }
           - { start: 0x238e70, type:  data,   vram: 0x337e70, name: ingame/map/map_area           }
@@ -394,7 +394,7 @@ segments:
           - { start: 0x256310, type:  rodata, vram: 0x355310, name: ingame/entry/ap_zgost         }
           - { start: 0x256340, type: .rodata, vram: 0x355340, name: ingame/event/ev_main          }
           - { start: 0x256760, type:  rodata, vram: 0x355760, name: ingame/event/ev_spcl          }
-          - { start: 0x256ee0, type:  rodata, vram: 0x355ee0, name: ingame/event/ev_load          }
+          - { start: 0x256ee0, type: .rodata, vram: 0x355ee0, name: ingame/event/ev_load          }
           - { start: 0x256f50, type:  rodata, vram: 0x355f50, name: ingame/event/mv_cmnd          }
           - { start: 0x256f80, type:  rodata, vram: 0x355f80, name: ingame/info/inf_disp          }
           - { start: 0x257080, type:  rodata, vram: 0x356080, name: ingame/map/map_ctrl           }
@@ -569,7 +569,7 @@ segments:
           - { start: 0x25ec70, type:  sdata,  vram: 0x35dc70, name: ingame/entry/ap_sgost         }
           - { start: 0x25ec80, type: .sdata,  vram: 0x35dc80, name: ingame/event/ev_main          }
           - { start: 0x25eca0, type:  sdata,  vram: 0x35dca0, name: ingame/event/ev_spcl          }
-          - { start: 0x25ed30, type:  sdata,  vram: 0x35dd30, name: ingame/event/ev_load          }
+          - { start: 0x25ed30, type: .sdata,  vram: 0x35dd30, name: ingame/event/ev_load          }
           - { start: 0x25ed40, type:  sdata,  vram: 0x35dd40, name: ingame/event/mv_cmnd          }
           - { start: 0x25ed58, type:  sdata,  vram: 0x35dd58, name: ingame/info/inf_disp          }
           - { start: 0x25ed6c, type:  sdata,  vram: 0x35dd6c, name: ingame/map/map_ctrl           }

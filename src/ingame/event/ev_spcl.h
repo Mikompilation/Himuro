@@ -109,8 +109,8 @@
 void SpecialEventInit(u_char spev_no);
 void SpecialEventMain();
 int GetSpecialEventMessageAddr(short int msg_no);
-void SimpleDispSprt(SPRT_SDAT *ssd, u_int addr, int sp_no, SPRT_SROT *srot, SPRT_SSCL *sscl, u_char alp_rate);
-void SimpleDispAlphaSprt(u_int addr, int sp_no, u_char alp_rate, u_char alp_type);
+// void SimpleDispSprt(SPRT_SDAT *ssd, u_int addr, int sp_no, SPRT_SROT *srot, SPRT_SSCL *sscl, u_char alp_rate);
+void SimpleDispAlphaSprt(SPRT_SDAT *ssd, u_int addr, int sp_no, u_char alp_rate, u_char alp_type);
 void SimpleDispSprtRGB(u_int addr, int sp_no, u_char alp_rate, u_char rr, u_char gg, int bb);
 void SimpleDispSprtLNR(u_int addr, int sp_no, u_char alp_rate, int lnr);
 void SimpleDispSprtDatCopy(SPRT_SDAT *org, SPRT_SDAT *cpy);

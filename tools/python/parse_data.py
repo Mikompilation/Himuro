@@ -1153,6 +1153,18 @@ class MANMDL_DAT(CStructure):
     collision: c_addr_ptr
 
 
+###########################################################################
+# typedef struct {
+# 	u_char scn_no;
+# 	MSN_LOAD_DAT *load_dat;
+# 	u_short *del_dat;
+# } SCN_LOAD_DAT;
+class SCN_LOAD_DAT(CStructure):
+    scn_no: c_uint8
+    load_dat: c_addr_ptr
+    del_dat: c_addr_ptr
+
+
 elf_names: dict[str, str] = {
     "us": "SLUS_203.88",
     "eu": "SLES_508.21",

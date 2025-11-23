@@ -10,6 +10,26 @@ typedef struct {
 	u_int addr;
 } MSN_LOAD_DAT;
 
+typedef struct {
+	u_char scn_no;
+	MSN_LOAD_DAT *load_dat;
+	u_short *del_dat;
+} SCN_LOAD_DAT;
+
+typedef struct {
+	u_char mode;
+	u_char count;
+	int load_id;
+} EVENT_LOAD_WRK;
+
+typedef struct {
+	u_char mode;
+	u_char load_mode;
+	u_char load_count;
+	u_char time;
+	int load_id;
+} MSN_TITLE_WRK;
+
 // extern MSN_LOAD_DAT msn0_title_load_dat[0];
 // extern MSN_LOAD_DAT scn0022_load[0];
 // extern u_short scn0022_del_dat[0];
