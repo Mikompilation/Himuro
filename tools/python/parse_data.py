@@ -28,6 +28,12 @@ sceVu0FMATRIX = sceVu0FVECTOR * 4
 
 qword = c_int32 * 4
 
+
+class ANI_CODE(c_uint16):
+    def __str__(self):
+        return f"{self.value}"
+
+
 # CTypeTypeEX = CTypeType | type[sceVu0FVECTOR] | type[sceVu0IVECTOR]
 
 
@@ -1127,6 +1133,26 @@ class SCN_ENE_EFCT(CStructure):
     mdl_alpha: c_int32
 
 
+###########################################################################
+# typedef struct {
+# 	float scale;
+# 	u_char neck_id;
+# 	u_char waist_id;
+# 	u_char leg_id;
+# 	WMIM_DAT *wdat;
+# 	CLOTH_DAT *cdat;
+# 	COLLISION_DAT *collision;
+# } MANMDL_DAT;
+class MANMDL_DAT(CStructure):
+    scale: c_float
+    neck_id: c_uint8
+    waist_id: c_uint8
+    leg_id: c_uint8
+    wdat: c_addr_ptr
+    cdat: c_addr_ptr
+    collision: c_addr_ptr
+
+
 elf_names: dict[str, str] = {
     "us": "SLUS_203.88",
     "eu": "SLES_508.21",
@@ -1170,14 +1196,14 @@ class DataVar(pydantic.BaseModel):
     def store_num_ptr(self):
         # transfer class attribute to instance
         if DataVar.num_ptr > 0:
-            self.num_ptr = 1  # DataVar._num_ptr
+            self.num_ptr = DataVar.num_ptr
         return self
 
     @pydantic.field_validator("type", mode="before")
     @classmethod
     def type_from_str(  # pyright: ignore
         cls, v: str | Type[CStructure] | CTypeType
-    ) -> Type[CStructure] | CTypeType | sceVu0FVECTOR | sceVu0IVECTOR | qword:
+    ) -> Type[CStructure] | CTypeType | sceVu0FVECTOR | sceVu0IVECTOR | qword | ANI_CODE:
         if not isinstance(v, str):
             return v
         cls.num_ptr = v.count("*")  # temporary store num_ptr in class attribute
@@ -1190,6 +1216,8 @@ class DataVar(pydantic.BaseModel):
             return sceVu0IVECTOR
         if v == "qword":
             return qword
+        if v == "ANI_CODE":
+            return ANI_CODE
         if v == "c_str":
             return c_str
         class_type = globals()[v]
@@ -1208,7 +1236,9 @@ class DataVar(pydantic.BaseModel):
             ndims = 1
         if self.num_ptr > 0:
             var_data = (c_addr_ptr * numel).from_buffer_copy(self._elf.read(numel * c_sizeof(c_addr_ptr)))
-            if issubclass(self.type, CStructure):  # pyright: ignore
+            if self.type == ANI_CODE:  # pyright: ignore
+                type_str = "ANI_CODE" + ("*" * self.num_ptr)
+            elif issubclass(self.type, CStructure):  # pyright: ignore
                 type_str = self.type.__name__ + ("*" * self.num_ptr)
             elif self.type == sceVu0FVECTOR:  # pyright: ignore
                 type_str = "sceVu0FVECTOR"
@@ -1307,7 +1337,14 @@ class DataVar(pydantic.BaseModel):
                 for n in reversed(self.numel):
                     typ *= n  # pyright: ignore
             var_data = (typ).from_buffer_copy(self._elf.read(numel * c_sizeof(self.type)))  # pyright: ignore
-            type_str = next(k for k, v in ctypes_types.items() if getattr(v, "_type_") == getattr(self.type, "_type_"))  # pyright: ignore
+            if self.type.__name__ == "ANI_CODE":  # pyright: ignore
+                type_str = "ANI_CODE"
+            else:
+                type_str = next(
+                    k
+                    for k, v in ctypes_types.items()
+                    if getattr(v, "_type_") == getattr(self.type, "_type_")  # pyright: ignore
+                )
             stream = io.StringIO()
             if self.static:
                 stream.write("static ")
