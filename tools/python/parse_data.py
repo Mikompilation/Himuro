@@ -1165,6 +1165,20 @@ class SCN_LOAD_DAT(CStructure):
     del_dat: c_addr_ptr
 
 
+###########################################################################
+# typedef struct {
+# 	u_short score;
+# 	u_char efct_no;
+# 	u_char room;
+# 	short pos[3];
+# } PGOST_DAT;
+class PGOST_DAT(CStructure):
+    score: c_uint16
+    efct_no: c_uint8
+    room: c_uint8
+    pos: c_int16 * 3
+
+
 elf_names: dict[str, str] = {
     "us": "SLUS_203.88",
     "eu": "SLES_508.21",

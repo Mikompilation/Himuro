@@ -7,7 +7,7 @@ typedef struct {
 	u_short score;
 	u_char efct_no;
 	u_char room;
-	short int pos[3];
+	short pos[3];
 } PGOST_DAT;
 
 typedef struct {
