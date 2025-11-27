@@ -146,7 +146,7 @@ segments:
           - [0x9a4e8,  c,   ingame/entry/ap_fgost]
           - [0x9b190,  c,   ingame/entry/ap_ggost]
           - [0x9b880,  c,   ingame/entry/ap_pgost]
-          - [0x9be50,  asm, ingame/entry/ap_rgost]
+          - [0x9be50,  c,   ingame/entry/ap_rgost]
           - [0x9cd50,  asm, ingame/entry/ap_sgost]
           - [0x9dc18,  asm, ingame/entry/ap_zgost]
           - [0x9e508,  c,   ingame/event/ev_main]
@@ -269,7 +269,7 @@ segments:
           - { start: 0x223810, type: .data,   vram: 0x322810, name: ingame/entry/ap_fgost         }
           - { start: 0x223840, type: .data,   vram: 0x322840, name: ingame/entry/ap_ggost         }
           - { start: 0x223898, type: .data,   vram: 0x322898, name: ingame/entry/ap_pgost         }
-          - { start: 0x2238e0, type:  data,   vram: 0x3228e0, name: ingame/entry/ap_rgost         }
+          - { start: 0x2238e0, type: .data,   vram: 0x3228e0, name: ingame/entry/ap_rgost         }
           - { start: 0x223c60, type:  data,   vram: 0x322c60, name: ingame/entry/ap_sgost         }
           - { start: 0x223f30, type:  data,   vram: 0x322f30, name: ingame/entry/ap_zgost         }
           - { start: 0x223f60, type:  data,   vram: 0x322f60, name: ingame/entry/fgst_dat         }

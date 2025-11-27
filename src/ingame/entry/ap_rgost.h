@@ -15,6 +15,12 @@ typedef struct {
 	sceVu0FVECTOR pos;
 } RGOST_DSP_WRK;
 
+typedef struct {
+	u_char stts;
+	u_char ap_num;
+	u_short ap_cnt;
+} RGOST_WRK;
+
 extern RGOST_DSP_WRK rg_dsp_wrk[3];
 // extern RGOST_WRK rg_wrk[200];
 
