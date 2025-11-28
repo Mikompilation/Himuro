@@ -1179,6 +1179,36 @@ class PGOST_DAT(CStructure):
     pos: c_int16 * 3
 
 
+###########################################################################
+# typedef struct {
+#     u_short st_x0;
+#     short st_y0;
+#     u_short st_z0;
+#     u_short st_x1;
+#     short st_y1;
+#     u_short st_z1;
+#     u_short ed_x0;
+#     short ed_y0;
+#     u_short ed_z0;
+#     u_short ed_x1;
+#     short ed_y1;
+#     u_short ed_z1;
+# } SGEF_DAT;
+class SGEF_DAT(CStructure):
+    st_x0: c_uint16
+    st_y0: c_int16
+    st_z0: c_uint16
+    st_x1: c_uint16
+    st_y1: c_int16
+    st_z1: c_uint16
+    ed_x0: c_uint16
+    ed_y0: c_int16
+    ed_z0: c_uint16
+    ed_x1: c_uint16
+    ed_y1: c_int16
+    ed_z1: c_uint16
+
+
 elf_names: dict[str, str] = {
     "us": "SLUS_203.88",
     "eu": "SLES_508.21",

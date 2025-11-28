@@ -708,6 +708,10 @@ dgst_load                      = 0x3227f8; // type:MSN_LOAD_DAT numel:3
 // ingame/entry/ap_pgost.c
 pg_dat                         = 0x322898; // type:PGOST_DAT numel:7 nosize
 
+// ingame/entry/ap_sgost.c
+sgef_dat                       = 0x322c60; // type:SGEF_DAT numel:6 nosize
+sgef_adpcm_dat                 = 0x322cf0; // type:u_short numel:6 nosize
+
 // ingame/event/ev_load.c
 msn0_title_load_dat            = 0x328530; // type:MSN_LOAD_DAT numel:22 nosize
 scn0022_load                   = 0x3285e0; // type:MSN_LOAD_DAT numel:2  nosize
