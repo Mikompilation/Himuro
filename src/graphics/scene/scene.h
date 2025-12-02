@@ -59,7 +59,7 @@ typedef struct {
 	u_int *item_mot_addr;
 } SCENE_FILE;
 
-// extern SCENE_CTRL scene_ctrl[2];
+extern SCENE_CTRL scene_ctrl[2];
 // extern SCENE_FILE scene_file;
 extern int scn_vib_time0;
 extern int scn_vib_time1;

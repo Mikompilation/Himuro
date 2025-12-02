@@ -15,6 +15,6 @@ extern G2D_LOAD_FLG g2d_load_flg;
 
 void gra2dInitBG();
 void gra2dInitST();
-void gra2dDraw(int fl);
+// void gra2dDraw(int fl);
 
 #endif // GRAPHICS_GRAPH2D_G2D_MAIN_H

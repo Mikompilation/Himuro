@@ -5,6 +5,15 @@
 
 #include "graphics/graph3d/sglight.h"
 #include "graphics/scene/scene.h"
+#include "graphics/scene/fod.h"
+
+typedef struct { // 0x20
+	/* 0x00 */ FOD_EFF_DATA eff_data;
+	/* 0x10 */ u_int eff_flg;
+	/* 0x14 */ int eff_no;
+	/* 0x18 */ int param_num;
+	/* 0x1c */ char *eff_name;
+} SCN_EFF_CTRL;
 
 typedef struct {
 	SgLIGHT light_tmp[36];
@@ -41,9 +50,9 @@ void SceneTestMenu();
 void SceneTestMainMenu();
 void SceneTestLightSelect();
 void SceneTestLightData();
-void ScnDispPrintVector(char *ttl, float *v, float x, float y);
+void ScnDispPrintVector(char *ttl, sceVu0FVECTOR v, float x, float y);
 void SceneTestAmbient();
-void RotVectorY(float *normal, float *vector, float delta);
+void RotVectorY(sceVu0FVECTOR normal, sceVu0FVECTOR vector, float delta);
 void SceneTestPadCamera();
 void SceneTestCameraMode();
 void SceneTestFogData();

@@ -185,7 +185,7 @@ void LoadSprFileToMainD(int no, int addr);
 void SetSprFile(u_int addr);
 void SetSprFile2(u_int addr, u_int offset);
 void SetSprFile3(u_int addr, u_int offset);
-void SetETIM2File(int addr);
+// void SetETIM2File(int addr);
 void SetFTIM2File(int addr);
 void LoadTIM2File();
 void SetScissor(int pri, int x, int y, int w, int h);
