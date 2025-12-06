@@ -4,7 +4,7 @@
 #include "typedefs.h"
 #include "ig_types.h"
 
-// extern SAVE_RANK save_rank;
+extern SAVE_RANK save_rank;
 
 void NewgameMenuRankInit();
 void LoadgameMenuRankInit();

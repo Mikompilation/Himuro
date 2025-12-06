@@ -11,7 +11,7 @@ typedef struct {
 	u_short pos_req[10];
 } FIND_WRK;
 
-// extern u_char find_stts[250];
+extern u_char find_stts[250];
 extern FIND_WRK find_wrk;
 
 void InitFindStatus();

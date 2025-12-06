@@ -4,7 +4,7 @@
 #include "typedefs.h"
 
 // extern u_char floor_exist[5][4];
-// extern u_char room_pass[42];
+extern u_char room_pass[42];
 // extern u_char gtmp_cam_type;
 // extern u_char gtmp_room;
 // extern u_short gtmp_cam_no;

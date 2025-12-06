@@ -70,7 +70,7 @@ typedef struct {
 
 #include "ingame/enemy/move_ctl.h"
 
-// extern WANDER_SOUL_WRK wander_soul_wrk[1];
+extern WANDER_SOUL_WRK wander_soul_wrk[1];
 
 sceVu0FVECTOR* SetFirstDestination(sceVu0FVECTOR *destination, float *pos);
 float GetDist3(float *v1, float *v2);

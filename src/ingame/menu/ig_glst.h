@@ -10,7 +10,7 @@ typedef struct {
 
 #include "ingame/menu/ig_rank.h"
 
-// extern GLIST_INDEX glist_index[108];
+extern GLIST_INDEX glist_index[108];
 // extern GLIST_PHOTO glist_photo;
 
 void NewgameMenuGlstInit();
