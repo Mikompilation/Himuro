@@ -195,7 +195,7 @@ segments:
           - [0x116dd0, c,   graphics/graph2d/takep_pe]
           - [0x117b58, c,   mc/mc]
           - [0x117b58, c,   mc/mc_main]
-          - [0x119b60, asm, mc/mc_acs]
+          - [0x119b60, c,   mc/mc_acs]
           - [0x11a4b8, asm, mc/mc_album]
           - [0x11b000, asm, mc/mc_exec]
           - [0x11c3d0, asm, mc/mc_start]
@@ -308,7 +308,7 @@ segments:
           - { start: 0x244080, type: .data,   vram: 0x343080, name: graphics/graph2d/takep_pe     }
           - { start: 0x244140, type: .data,   vram: 0x343140, name: mc/mc                         }
           - { start: 0x244280, type: .data,   vram: 0x343280, name: mc/mc_main                    }
-          - { start: 0x244f60, type:  data,   vram: 0x343f60, name: mc/mc_acs                     }
+          - { start: 0x244f60, type: .data,   vram: 0x343f60, name: mc/mc_acs                     }
           - { start: 0x244f88, type:  data,   vram: 0x343f88, name: mc/mc_start                   }
           - { start: 0x244fa8, type:  data,   vram: 0x343fa8, name: mc/mc_icon                    }
           - { start: 0x244fc0, type:  data,   vram: 0x343fc0, name: outgame/btl_mode/btl_menu     }
@@ -420,7 +420,7 @@ segments:
           - { start: 0x2532b0, type: .rodata, vram: 0x3522b0, name: outgame/title                 }
           - { start: 0x253530, type: .rodata, vram: 0x352530, name: graphics/graph2d/takep_pe     }
           - { start: 0x253550, type: .rodata, vram: 0x352550, name: mc/mc_main                    }
-          - { start: 0x2537c0, type:  rodata, vram: 0x3527c0, name: mc/mc_acs                     }
+          - { start: 0x2537c0, type: .rodata, vram: 0x3527c0, name: mc/mc_acs                     }
           - { start: 0x253800, type:  rodata, vram: 0x352800, name: mc/mc_album                   }
           - { start: 0x253960, type:  rodata, vram: 0x352960, name: mc/mc_exec                    }
           - { start: 0x253a48, type:  rodata, vram: 0x352a48, name: mc/mc_disp                    }

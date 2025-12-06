@@ -42,5 +42,16 @@ typedef struct
 } sceMcTblGetDir __attribute__((aligned (64)));
 
 int sceMcInit();
+int sceMcSync(int mode, int *cmd, int *result);
+int sceMcDelete(int	port, int slot, const char *name);
+int sceMcFormat(int port, int slot);
+int sceMcMkdir(int port, int slot, const char *name);
+int sceMcGetInfo(int port, int slot, int *type, int *free, int *format);
+int sceMcWrite(int fd, const void *buffer, int size);
+int sceMcRead(int fd, void *buffer, int size);
+int sceMcClose(int fd);
+int sceMcOpen(int port, int slot, const char *name, int mode);
+int sceMcGetDir(int port, int slot, const char *name, unsigned mode, int maxent, sceMcTblGetDir *table);
+int sceMcGetInfo(int port, int slot, int *type, int *free, int *format);
 
 #endif // SCE_LIBMC_H
