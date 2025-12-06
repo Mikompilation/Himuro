@@ -6,7 +6,7 @@
 // extern char (*mc_acs[0])(/* parameters unknown */);
 
 char mcAcsMain();
-void mcAcsReq(int func_no);
+// void mcAcsReq(int func_no);
 void mcAcsEnd();
 char mcSlotCheck();
 char mcFileCheck();

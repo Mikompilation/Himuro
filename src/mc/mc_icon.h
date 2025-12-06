@@ -10,7 +10,7 @@
 // extern float mc_lightcol[3][4];
 // extern float mc_ambient[4];
 // extern u_char *mc_iconName[0];
-// extern int mc_iconFile[0];
-// extern int mc_iconFileAlbum[0];
+extern int mc_iconFile[];
+extern int mc_iconFileAlbum[];
 
 #endif // MC_MC_ICON_H

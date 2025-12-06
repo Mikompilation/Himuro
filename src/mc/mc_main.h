@@ -67,6 +67,9 @@ typedef struct {
 	int sel_file;
 	u_int dir_size;
 	u_int *work_addr;
+#ifdef BUILD_EU_VERSION
+	int cnt;
+#endif
 } MC_CTRL;
 
 typedef struct {
@@ -77,7 +80,12 @@ typedef struct {
 	u_int minute;
 	u_int sec;
 	u_int frame;
+#ifdef BUILD_EU_VERSION
+	u_char msn_flg;
+	u_char language;
+#else
 	u_short msn_flg;
+#endif
 	u_char clear_flg;
 	u_char difficult;
 } MC_GAME_HEADER;
@@ -97,11 +105,11 @@ typedef union {
 extern MC_CTRL mc_ctrl;
 // extern MC_HEADER mc_header;
 // extern MC_HEADER mc_header_buf[16];
-// extern u_int mc_game_size;
+extern u_int mc_game_size;
 // extern u_int mc_album_size;
 extern u_char mc_start_flg;
 extern u_char mc_msn_flg;
-// extern u_char mc_newalbum_flg;
+extern u_char mc_newalbum_flg;
 extern u_int mc_album_type;
 extern u_int mc_photo_num;
 
