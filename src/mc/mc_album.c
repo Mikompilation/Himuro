@@ -8,6 +8,7 @@
 #include "ingame/menu/ig_menu.h"
 #include "outgame/memory_album.h"
 #include "mc/mc_acs.h"
+#include "mc/mc_code.h"
 #include "mc/mc_disp.h"
 #include "mc/mc_exec.h"
 #include "mc/mc_main.h"
@@ -391,11 +392,8 @@ char mcCtrlCheckAlbum(void)
     break;
     case 2:
         mc_ctrl.sub_step = 3;
-#ifdef BUILD_EU_VERSION
-        sprintf(mc_ctrl.rw.path, "%s%s", "/", "BESLES-50821albm");
-#else
-        sprintf(mc_ctrl.rw.path, "%s%s", "/", "BASLUS-20388albm");
-#endif
+
+        sprintf(mc_ctrl.rw.path, "%s%s", "/", KEYCODE PRODUCT_CODE "albm");
         sprintf(mc_ctrl.rw.name, "%s*", mc_ctrl.rw.path);
 
         mcAcsReq(1);
@@ -409,7 +407,11 @@ char mcCtrlCheckAlbum(void)
 
                 if (mc_ctrl.album.file_num == 0)
                 {
-                    if (mc_ctrl.mode == 1 || mc_ctrl.mode == 3 || mc_ctrl.mode == 4 || mc_ctrl.mode == 5 || mc_ctrl.mode == 6)
+                    if (
+                        mc_ctrl.mode == MC_MODE_GAMELOAD ||
+                        mc_ctrl.mode == MC_MODE_ALBUMLOAD_GAME1 || mc_ctrl.mode == MC_MODE_ALBUMLOAD_GAME2 ||
+                        mc_ctrl.mode == MC_MODE_ALBUMLOAD_TITLE1 || mc_ctrl.mode == MC_MODE_ALBUMLOAD_TITLE2
+                    )
                     {
                         mc_ctrl.acs.sta = 4;
 

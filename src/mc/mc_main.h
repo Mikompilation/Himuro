@@ -106,7 +106,7 @@ extern MC_CTRL mc_ctrl;
 extern MC_HEADER mc_header;
 extern MC_HEADER mc_header_buf[16];
 extern u_int mc_game_size;
-// extern u_int mc_album_size;
+extern u_int mc_album_size;
 extern u_char mc_start_flg;
 extern u_char mc_msn_flg;
 extern u_char mc_newalbum_flg;
