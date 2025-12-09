@@ -289,6 +289,7 @@ char mcCheckFileList()
     // finally: add the size the dir itself takes by computing the number of clusters
     //          needed to memorize the files. since each cluster can hold 2 files,
     //          we need to divide the number by 2 and add 1 if the numer is odd.
+    //          (thanks to @Mc-muffin)
     mc_ctrl.dir_size += mc_ctrl.dir.file_num / 2 + mc_ctrl.dir.file_num % 2;
 
     if (mc_ctrl.mode == MC_INIT || mc_ctrl.mode == MC_CHECK || mc_ctrl.mode == MC_SEL_LOAD)
