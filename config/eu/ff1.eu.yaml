@@ -199,7 +199,7 @@ segments:
           - [0x11d210, c,   mc/mc_acs]
           - [0x11db68, c,   mc/mc_album]
           - [0x11e770, c,   mc/mc_exec]
-          - [0x11fb48, asm, mc/mc_start]
+          - [0x11fb48, c,   mc/mc_start]
           - [0x1203a8, asm, mc/mc_disp]
           - [0x1204b8, asm, mc/mc_at]
           - [0x120c70, c,   outgame/outgame]
@@ -311,7 +311,7 @@ segments:
           - { start: 0x24a480, type: .data,   vram: 0x349480, name: mc/mc                         }
           - { start: 0x24a5c0, type: .data,   vram: 0x3495c0, name: mc/mc_main                    }
           - { start: 0x24b2a0, type: .data,   vram: 0x34a2a0, name: mc/mc_acs                     }
-          - { start: 0x24b2c8, type:  data,   vram: 0x34a2c8, name: mc/mc_start                   }
+          - { start: 0x24b2c8, type: .data,   vram: 0x34a2c8, name: mc/mc_start                   }
           - { start: 0x24b2e8, type:  data,   vram: 0x34a2e8, name: mc/mc_icon                    }
           - { start: 0x24b300, type:  data,   vram: 0x34a300, name: outgame/btl_mode/btl_menu     }
           - { start: 0x24b9b0, type:  data,   vram: 0x34a9b0, name: outgame/btl_mode/btl_mode     }
@@ -426,7 +426,7 @@ segments:
           - { start: 0x25a3d0, type: .rodata, vram: 0x3593d0, name: mc/mc_acs                     }
           - { start: 0x25a410, type: .rodata, vram: 0x359410, name: mc/mc_album                   }
           - { start: 0x25a570, type: .rodata, vram: 0x359570, name: mc/mc_exec                    }
-          - { start: 0x25a660, type:  rodata, vram: 0x359660, name: mc/mc_start                   }
+          - { start: 0x25a660, type: .rodata, vram: 0x359660, name: mc/mc_start                   }
           - { start: 0x25a680, type:  rodata, vram: 0x359680, name: mc/mc_disp                    }
           - { start: 0x25a920, type:  rodata, vram: 0x359920, name: mc/mc_at                      }
           - { start: 0x25aa70, type: .rodata, vram: 0x359a70, name: outgame/outgame               }
@@ -506,7 +506,7 @@ segments:
           - { start: 0x25df00, type: .lit4,   vram: 0x35cf00, name: outgame/title                 }
           - { start: 0x25df0c, type: .lit4,   vram: 0x35cf0c, name: graphics/graph2d/takep_pe     }
           - { start: 0x25df14, type: .lit4,   vram: 0x35cf14, name: mc/mc_main                    }
-          - { start: 0x25df18, type:  lit4,   vram: 0x35cf18, name: mc/mc_start                   }
+          - { start: 0x25df18, type: .lit4,   vram: 0x35cf18, name: mc/mc_start                   }
           - { start: 0x25df1c, type:  lit4,   vram: 0x35cf1c, name: ingame/event/wan_soul         }
           - { start: 0x25df54, type:  lit4,   vram: 0x35cf54, name: outgame/sound_test            }
           # ######################## SDATA   (vram: 0x35cf80) #####################################
@@ -600,7 +600,7 @@ segments:
           - { start: 0x25f368, type: .sdata,  vram: 0x35e368, name: mc/mc_main                    }
           - { start: 0x25f390, type: .sdata,  vram: 0x35e390, name: mc/mc_album                   }
           - { start: 0x25f3a8, type: .sdata,  vram: 0x35e3a8, name: mc/mc_exec                    }
-          - { start: 0x25f3e0, type:  sdata,  vram: 0x35e3e0, name: mc/mc_start                   }
+          - { start: 0x25f3e0, type: .sdata,  vram: 0x35e3e0, name: mc/mc_start                   }
           - { start: 0x25f3f0, type: .sdata,  vram: 0x35e3f0, name: outgame/outgame               }
           - { start: 0x25f420, type:  sdata,  vram: 0x35e420, name: outgame/btl_mode/btl_menu     }
           - { start: 0x25f480, type:  sdata,  vram: 0x35e480, name: outgame/btl_mode/btl_mode     }
@@ -666,7 +666,7 @@ segments:
           - { start: 0x25f500, type: .sbss,   vram: 0x35e864, name: graphics/graph2d/takep_pe     }
           - { start: 0x25f500, type: .sbss,   vram: 0x35e870, name: mc/mc_main                    }
           - { start: 0x25f500, type: .sbss,   vram: 0x35e880, name: mc/mc_album                   }
-          - { start: 0x25f500, type:  sbss,   vram: 0x35e888, name: mc/mc_start                   }
+          - { start: 0x25f500, type: .sbss,   vram: 0x35e888, name: mc/mc_start                   }
           - { start: 0x25f500, type:  sbss,   vram: 0x35e890, name: mc/mc_at                      }
           - { start: 0x25f500, type: .sbss,   vram: 0x35e8a4, name: outgame/outgame               }
           - { start: 0x25f500, type:  sbss,   vram: 0x35e8a8, name: ingame/event/wan_soul         }

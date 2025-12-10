@@ -3,7 +3,14 @@
 
 #include "typedefs.h"
 
-// extern MC_START_CHECK mc_start_check[0];
+typedef struct {
+    int type;
+    int free;
+    int format;
+    int dir;
+} MC_START_CHECK;
+
+extern MC_START_CHECK mc_start_check[];
 
 char mcStartCheckMain();
 void mcStartCheckSet();
