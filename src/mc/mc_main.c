@@ -220,7 +220,7 @@ char mcSaveMain()
             mcSetStep(MC_SEL_SLOT, MC_MSG_SEL_SLOT);
         break;
         case 2:
-            mcSetMessage(6);
+            mcSetMessage(MC_MSG_ERR_NOCARD);
         break;
         case 3:
             mcSetStep(MC_CHECK, MC_MSG_CHECK);

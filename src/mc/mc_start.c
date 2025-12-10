@@ -205,7 +205,7 @@ char mcStartCheckYesno(int def_pos)
         {
             if (mc_ctrl.acs.card_sta < -10 && backup[mc_ctrl.port ^ 1] < -10)
             {
-                mcSetMessage(28);
+                mcSetMessage(MC_MSG_SEL_START2);
             }
             else if (backup[mc_ctrl.port] != mc_ctrl.acs.card_sta)
             {
