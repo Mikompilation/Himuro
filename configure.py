@@ -516,6 +516,7 @@ def generate_objdiff_configuration(config_path: Path, config: dict[str, Any], la
                     "graphics/motion/acs_dat",
                     "graphics/scene/scene_dat",
                     "mc/mc",
+                    "mc/mc_icon",
                 ):
                     # -> skip 'crt0' as it's not part of the game files
                     # -> skip 'main/glob' as it doesn't have a .text section
@@ -523,6 +524,7 @@ def generate_objdiff_configuration(config_path: Path, config: dict[str, Any], la
                     # -> skip 'graphics/motion/acs_dat' as it doesn't have a .text section
                     # -> skip 'graphics/scene/scene_dat' as it doesn't have a .text section
                     # -> skip 'mc/mc' as it doesn't have a .text section
+                    # -> skip 'mc/mc_icon' as it doesn't have a .text section
                     continue
 
                 tu_to_diff.append((subs_type, subs_name))
