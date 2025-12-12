@@ -201,7 +201,7 @@ segments:
           - [0x11c3d0, c,   mc/mc_start]
         # - [0x11c998, asm, mc/mc_icon]
           - [0x11c998, c,   mc/mc_disp]
-          - [0x11caa8, asm, mc/mc_at]
+          - [0x11caa8, c,   mc/mc_at]
           - [0x11d260, c,   outgame/outgame]
           - [0x11d988, asm, outgame/btl_mode/btl_menu]
           - [0x11ed08, asm, outgame/btl_mode/btl_mode]
@@ -426,7 +426,7 @@ segments:
           - { start: 0x253960, type: .rodata, vram: 0x352960, name: mc/mc_exec                    }
           - { start: 0x253a48, type:  rodata, vram: 0x352a48, name: mc/mc_icon                    }
           - { start: 0x253b80, type: .rodata, vram: 0x352b80, name: mc/mc_disp                    }
-          - { start: 0x253cb0, type:  rodata, vram: 0x352cb0, name: mc/mc_at                      }
+          - { start: 0x253cb0, type: .rodata, vram: 0x352cb0, name: mc/mc_at                      }
           - { start: 0x253e00, type: .rodata, vram: 0x352e00, name: outgame/outgame               }
           - { start: 0x253f28, type:  rodata, vram: 0x352f28, name: outgame/btl_mode/btl_menu     }
           - { start: 0x253f50, type:  rodata, vram: 0x352f50, name: outgame/btl_mode/btl_mode     }
@@ -662,7 +662,7 @@ segments:
           - { start: 0x258880, type: .sbss,   vram: 0x357bf8, name: mc/mc_main                    }
           - { start: 0x258880, type: .sbss,   vram: 0x357c08, name: mc/mc_album                   }
           - { start: 0x258880, type: .sbss,   vram: 0x357c10, name: mc/mc_start                   }
-          - { start: 0x258880, type:  sbss,   vram: 0x357c18, name: mc/mc_at                      }
+          - { start: 0x258880, type: .sbss,   vram: 0x357c18, name: mc/mc_at                      }
           - { start: 0x258880, type: .sbss,   vram: 0x357c2c, name: outgame/outgame               }
           - { start: 0x258880, type:  sbss,   vram: 0x357c30, name: ingame/event/wan_soul         }
           - { start: 0x258880, type:  sbss,   vram: 0x357c58, name: outgame/sound_test            }
