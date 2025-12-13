@@ -5027,4 +5027,19 @@ typedef enum {
 	MC_MODE_NUM = 8
 } MC_MODE;
 
+typedef enum {
+    ZH_NO_REQ = 0,
+    ZH_READY = 1,
+    ZH_READY2 = 2,
+    ZH_START = 3,
+    ZH_NOW = 4,
+    ZH_OUT_REQ = 5,
+    ZH_OUT = 6,
+    ZH_OUT_WAIT = 7,
+    ZH_OUT_LOAD0 = 8,
+    ZH_OUT_LOAD1 = 9,
+    ZH_RETURN = 10,
+    ZH_END = 11
+} ZH_MODE;
+
 #endif // ENUMS_H
