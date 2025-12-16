@@ -3,6 +3,25 @@
 
 #include "typedefs.h"
 
+#include "main/glob_types.h"
+#include "ingame/enemy/move_types.h"
+#include "ingame/map/furn_types.h"
+#include "ingame/photo/photo_types.h"
+
+typedef struct {
+    u_char mode;
+    u_char time;
+    u_char req_no;
+} PWARP_WRK;
+
+typedef struct {
+    u_char room;
+    u_char floor;
+    u_short pos_x;
+    short int pos_y;
+    u_short pos_z;
+} PWARP_DAT;
+
 // extern float photo_rng_tbl[0];
 // extern u_short photo_frame_tbl[0][2];
 // extern float circle_radius_tbl[0];
@@ -33,7 +52,7 @@ void PlyrFinderModeChk();
 void FinderInSet();
 void FinderEndSet();
 void ClrEneSta();
-void PlyrHeightCtrl(float *tv);
+void PlyrHeightCtrl(sceVu0FVECTOR tv);
 void PlyrNormalCtrl();
 void PlyrSpotMoveCtrl();
 void PlyrFinderCtrl();
@@ -59,42 +78,42 @@ void PSAchk4(u_char id);
 void PSAchk5();
 void PlyrPhotoChk();
 void EneFrameHitChk();
-void PlyrChargeCtrl(u_char req);
+void PlyrChargeCtrl(u_char req, ENE_WRK *ew);
 void PhotoFlyChk();
 int FrameInsideChk(float *tv, float *tx, float *ty);
-int FrameInsideChkFurn(float *degree, u_int fsta);
+int FrameInsideChkFurn(FURN_WRK *fw, float *degree, u_int fsta);
 int FrameInsideChkRare(int wrk_no, float *degree);
 u_short PhotoDmgChk();
-u_short PhotoDmgChkSub();
+u_short PhotoDmgChkSub(ENE_WRK *ew);
 void PhotoPointSet();
 void PhotoPointChkEne();
 void PhotoPointChkFurn();
 void PhotoPointChkRare();
-void PhotoPointCulcEne();
-void PhotoPointCulcFurn(float dist, float degree, u_int stts);
-void PhotoPointCulcRare(u_char wrk_no, float dist, float degree);
+void PhotoPointCulcEne(ENE_WRK *ew, PHOTO_WRK *pw);
+void PhotoPointCulcFurn(FURN_WRK *fw, PHOTO_WRK *pw, float dist, float degree, u_int stts);
+void PhotoPointCulcRare(u_char wrk_no, PHOTO_WRK *pw, float dist, float degree);
 void PlyrMpRecoverChk(u_int recov);
 void PlyrFModeMoveCtrl();
 void PlyrActionChk();
 void PlyrNModeMoveCtrl();
-void PlyrHitTurnChk(float *tv);
-u_char PlyrSpecialMoveChk2(float *mv);
-void PlyrSpecialMoveChk(float *mv);
-void PlyrPosSet(float *tv);
-void PlyrKonwakuMove(float *tv);
-void PlyrMovePad(float *tv);
-void GetMoveSpeed(float *tv);
-void PlyrMovePadV(float *tv);
-void CngPlyrRotRapid(float rot0);
-void PlyrMovePadFind(float *tv);
+void PlyrHitTurnChk(MOVE_BOX *mb, sceVu0FVECTOR tv);
+u_char PlyrSpecialMoveChk2(sceVu0FVECTOR mv);
+void PlyrSpecialMoveChk(sceVu0FVECTOR mv);
+void PlyrPosSet(MOVE_BOX *mb, sceVu0FVECTOR tv);
+void PlyrKonwakuMove(MOVE_BOX *mb, sceVu0FVECTOR tv);
+void PlyrMovePad(MOVE_BOX *mb, sceVu0FVECTOR tv);
+void GetMoveSpeed(sceVu0FVECTOR tv);
+void PlyrMovePadV(MOVE_BOX *mb, sceVu0FVECTOR tv);
+void CngPlyrRotRapid(MOVE_BOX *mb, float rot0);
+void PlyrMovePadFind(MOVE_BOX *mb, sceVu0FVECTOR tv);
 float GetMovePad(u_char id);
 int MovePadEnableChk(u_char *dir_save);
 void PadInfoTmpSave(u_char *dir_save, u_char dir_now, float *rot_save, float rot_now);
 u_char PlyrMoveStaChk(float pad_chk);
 u_int PlyrLeverInputChk();
-u_char PlyrMoveHitChk(float *tv, u_char id);
+u_char PlyrMoveHitChk(MOVE_BOX *mb, sceVu0FVECTOR tv, u_char id);
 void InitPhotoWrk();
-void InitSubjectWrk();
+void InitSubjectWrk(SUBJECT_WRK *sw);
 void PlyrBattleChk();
 void PlyrLightSet();
 void PlyrMessageDisp();
@@ -102,18 +121,18 @@ int ReqPlyrSpeAnime(u_char anime_no, u_char frame);
 void PlyrSpeAnimeCtrl();
 void PlyrDWalkTmCtrl();
 float GetEnePowerDegree();
-float CulcEP(float *v0, float *v1);
-float CulcEP2(float *v0, float *v1);
+float CulcEP(sceVu0FVECTOR v0, sceVu0FVECTOR v1);
+float CulcEP2(sceVu0FVECTOR v0, sceVu0FVECTOR v1);
 int ChkPhotoAble();
 int SearchRareEne();
 int SearchFurnHint();
-int GetFurnHintPos(float *tv, u_int *fsta);
+int GetFurnHintPos(FURN_WRK *fw, sceVu0FVECTOR tv, u_int *fsta);
 float GetPlyrSpd();
-int PlyrNeckDirectionChk(float *p);
-u_char NeckTargetEneChk(float *p);
-u_char NeckTargetItemChk(float *p);
-u_char NeckTargetDoorChk(float *p);
-u_char PlyrNoticeObjectChk(float *ov, float *dist);
+int PlyrNeckDirectionChk(sceVu0FVECTOR p);
+u_char NeckTargetEneChk(sceVu0FVECTOR p);
+u_char NeckTargetItemChk(sceVu0FVECTOR p);
+u_char NeckTargetDoorChk(sceVu0FVECTOR p);
+u_char PlyrNoticeObjectChk(sceVu0FVECTOR ov, float *dist);
 void ReqPlayerStop(u_char frame);
 void PlayerWarpReq(u_char dat_no);
 int PlayerWarpCtrl();

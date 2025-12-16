@@ -24,7 +24,7 @@ extern FLY_DATA fly_dat[];
 extern ENE_DAT *jene_dat[];
 extern ENE_DAT *fene_dat[];
 // extern AENE_INFO_DAT *aene_info_dat[0];
-// extern u_char req_dmg_ef[3];
+extern u_char req_dmg_ef[3];
 extern int ene_dead_load;
 // extern int ene_dead_mode;
 extern int erootd0[20][3];

@@ -53,7 +53,7 @@ extern RGOST_AP_DAT rg_ap_dat[];
 extern RGOST_DAT rg_dat[];
 // extern sceVu0FVECTOR rg_center00[0];
 // extern sceVu0FVECTOR rg_center01[0];
-// extern sceVu0FVECTOR *rgc_dat[0];
+extern sceVu0FVECTOR *rgc_dat[];
 extern RG_DISP_DAT rg_start_dat[];
 extern RG_DISP_DAT rg_inter_dat[];
 extern RG_DISP_DAT rg_end_dat[];

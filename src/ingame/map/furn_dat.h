@@ -110,7 +110,7 @@ extern FURN_DAT furn_dat[];
 // extern sceVu0FVECTOR furn_photo_center100[0];
 // extern sceVu0FVECTOR furn_photo_center101[0];
 // extern sceVu0FVECTOR furn_photo_center102[0];
-// extern sceVu0FVECTOR *fpc_dat[0];
+extern sceVu0FVECTOR *fpc_dat[];
 // extern u_char fpc_rot_dat[0][8];
 
 FURN_DAT* GetFurnDatP(u_short furn_id);
