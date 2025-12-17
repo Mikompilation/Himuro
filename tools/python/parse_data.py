@@ -1209,6 +1209,24 @@ class SGEF_DAT(CStructure):
     ed_z1: c_uint16
 
 
+###########################################################################
+# typedef struct {
+# 	u_char room_no;
+# 	u_char ene_type;
+# 	u_char pos_num;
+# 	u_short cmr_no;
+# 	u_short rot[3];
+# 	int pos[3][3];
+# } FGST_AP_DAT;
+class FGST_AP_DAT(CStructure):
+    room_no: c_uint8
+    ene_type: c_uint8
+    pos_num: c_uint8
+    cmr_no: c_uint16
+    rot: c_uint16 * 3
+    pos: c_int32 * 3 * 3
+
+
 elf_names: dict[str, str] = {
     "us": "SLUS_203.88",
     "eu": "SLES_508.21",

@@ -703,6 +703,14 @@ aene_info_dat                  = 0x327f78; // type:AENE_INFO_DAT* numel:5 nosize
 0x3278e8                       = jene_dat4;
 0x327f28                       = aene_info_dat4;
 
+// ingame/entry/fgst_dat.c
+fgst_ap_no                     = 0x328c70; // type:u_char numel:5 numel:20
+fg_ap_dat1                     = 0x328cd8; // type:FGST_AP_DAT numel:53 nosize
+fg_ap_dat2                     = 0x3296c8; // type:FGST_AP_DAT numel:66 nosize
+fg_ap_dat3                     = 0x32a328; // type:FGST_AP_DAT numel:74 nosize
+fg_ap_dat4                     = 0x32b108; // type:FGST_AP_DAT numel:75 nosize
+fg_ap_dat                      = 0x32bf18; // type:FGST_AP_DAT* numel:5 nosize
+
 // ingame/entry/ap_dgost.c
 dgst_load                      = 0x328508; // type:MSN_LOAD_DAT numel:3
 
