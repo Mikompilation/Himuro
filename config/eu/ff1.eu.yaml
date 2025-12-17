@@ -137,6 +137,7 @@ segments:
           - [0x8a4e0,  c,   graphics/scene/scene_dat]
           - [0x8a4e0,  c,   ingame/ingame]
           - [0x8b280,  c,   ingame/ig_init]
+          - [0x8b7e8,  c,   ingame/ig_glob]
           - [0x8b7e8,  c,   ingame/camera/camera]
           - [0x90328,  c,   ingame/enemy/ene_ctl]
           - [0x93bb0,  c,   ingame/enemy/move_ctl]
@@ -265,7 +266,7 @@ segments:
           - { start: 0x20b7b0, type: .data,   vram: 0x30a7b0, name: graphics/scene/fod            }
           - { start: 0x20b8d0, type: .data,   vram: 0x30a8d0, name: graphics/scene/scene          }
           - { start: 0x2147c0, type: .data,   vram: 0x3137c0, name: graphics/scene/scene_dat      }
-          - { start: 0x215780, type:  data,   vram: 0x314780, name: ingame/ig_glob                }
+          - { start: 0x215780, type: .data,   vram: 0x314780, name: ingame/ig_glob                }
           - { start: 0x2213d0, type: .data,   vram: 0x3203d0, name: ingame/camera/camera          }
           - { start: 0x226d70, type: .data,   vram: 0x325d70, name: ingame/enemy/ene_ctl          }
           - { start: 0x229260, type: .data,   vram: 0x328260, name: ingame/enemy/move_ctl         }
@@ -564,7 +565,7 @@ segments:
           - { start: 0x25eb38, type: .sdata,  vram: 0x35db38, name: graphics/scene/scene          }
           - { start: 0x25eb78, type: .sdata,  vram: 0x35db78, name: ingame/ingame                 }
           - { start: 0x25eb80, type: .sdata,  vram: 0x35db80, name: ingame/ig_init                }
-          - { start: 0x25eb88, type:  sdata,  vram: 0x35db88, name: ingame/ig_glob                }
+          - { start: 0x25eb88, type: .sdata,  vram: 0x35db88, name: ingame/ig_glob                }
           - { start: 0x25eb98, type: .sdata,  vram: 0x35db98, name: ingame/camera/camera          }
           - { start: 0x25ebf0, type: .sdata,  vram: 0x35dbf0, name: ingame/enemy/ene_ctl          }
           - { start: 0x25ec30, type: .sdata,  vram: 0x35dc30, name: ingame/enemy/move_ctl         }

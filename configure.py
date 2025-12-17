@@ -515,6 +515,7 @@ def generate_objdiff_configuration(config_path: Path, config: dict[str, Any], la
                     "graphics/motion/mim_dat",
                     "graphics/motion/acs_dat",
                     "graphics/scene/scene_dat",
+                    "ingame/ig_glob",
                     "mc/mc",
                     "mc/mc_icon",
                     "ingame/entry/fgst_dat",
