@@ -710,6 +710,43 @@ fg_ap_dat3                     = 0x324618; // type:FGST_AP_DAT numel:74 nosize
 fg_ap_dat4                     = 0x3253f8; // type:FGST_AP_DAT numel:75 nosize
 fg_ap_dat                      = 0x326208; // type:FGST_AP_DAT* numel:5 nosize
 
+// ingame/entry/rgst_dat.c
+rg_ap_dat                      = 0x326220; // type:RGOST_AP_DAT numel:5 nosize
+rg_dat                         = 0x326280; // type:RGOST_DAT numel:4 nosize
+rg_center00                    = 0x3262c0; // type:sceVu0FVECTOR numel:1 nosize
+rg_center01                    = 0x3262d0; // type:sceVu0FVECTOR numel:2 nosize
+rgc_dat                        = 0x3262f0; // type:sceVu0FVECTOR* numel:2 nosize
+rg_start_dat                   = 0x3262f8; // type:RG_DISP_DAT numel:2 nosize
+rg_inter_dat                   = 0x326308; // type:RG_DISP_DAT numel:2 nosize
+rg_end_dat                     = 0x326318; // type:RG_DISP_DAT numel:1 nosize
+rg_alp_start00                 = 0x326320; // type:RG_ALP_DAT numel:2 nosize
+rg_alp_start01                 = 0x326328; // type:RG_ALP_DAT numel:6 nosize
+rg_alp_start                   = 0x326340; // type:RG_ALP_DAT* numel:2 nosize
+rg_alp_inter00                 = 0x326348; // type:RG_ALP_DAT numel:1 nosize
+rg_alp_inter01                 = 0x326350; // type:RG_ALP_DAT numel:4 nosize
+rg_alp_inter                   = 0x326360; // type:RG_ALP_DAT* numel:2 nosize
+rg_alp_end00                   = 0x326368; // type:RG_ALP_DAT numel:1 nosize
+rg_alp_end01                   = 0x326370; // type:RG_ALP_DAT numel:1 nosize
+rg_alp_end                     = 0x326378; // type:RG_ALP_DAT* numel:2 nosize
+rg_ani_start00                 = 0x326380; // type:RG_ANI_DAT numel:3 nosize
+rg_ani_start01                 = 0x326388; // type:RG_ANI_DAT numel:3 nosize
+rg_ani_start                   = 0x326390; // type:RG_ANI_DAT* numel:2 nosize
+rg_ani_inter00                 = 0x326398; // type:RG_ANI_DAT numel:3 nosize
+rg_ani_inter01                 = 0x3263a0; // type:RG_ANI_DAT numel:3 nosize
+rg_ani_inter                   = 0x3263a8; // type:RG_ANI_DAT* numel:2 nosize
+rg_ani_end00                   = 0x3263b0; // type:RG_ANI_DAT numel:3 nosize
+rg_ani_end01                   = 0x3263b8; // type:RG_ANI_DAT numel:3 nosize
+rg_ani_end                     = 0x3263c0; // type:RG_ANI_DAT* numel:2 nosize
+rg_rate_start00                = 0x3263c8; // type:RG_RATE_DAT numel:1 nosize
+rg_rate_start01                = 0x3263d0; // type:RG_RATE_DAT numel:4 nosize
+rg_rate_start                  = 0x3263e0; // type:RG_RATE_DAT* numel:2 nosize
+rg_rate_inter00                = 0x3263e8; // type:RG_RATE_DAT numel:1 nosize
+rg_rate_inter01                = 0x3263f0; // type:RG_RATE_DAT numel:4 nosize
+rg_rate_inter                  = 0x326400; // type:RG_RATE_DAT* numel:2 nosize
+rg_rate_end00                  = 0x326408; // type:RG_RATE_DAT numel:1 nosize
+rg_rate_end01                  = 0x326410; // type:RG_RATE_DAT numel:4 nosize
+rg_rate_end                    = 0x326420; // type:RG_RATE_DAT* numel:2 nosize
+
 // ingame/entry/ap_dgost.c
 dgst_load                      = 0x3227f8; // type:MSN_LOAD_DAT numel:3
 

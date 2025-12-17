@@ -1227,6 +1227,92 @@ class FGST_AP_DAT(CStructure):
     pos: c_int32 * 3 * 3
 
 
+# typedef struct {
+# 	u_char room;
+# 	u_char ap_step0;
+# 	u_char ap_step1[4];
+# 	u_char ap_step2[6];
+# 	u_short ap_near;
+# 	u_short ap_far;
+# 	u_short ap_stts;
+# } RGOST_AP_DAT;
+class RGOST_AP_DAT(CStructure):
+    room: c_uint8
+    ap_step0: c_uint8
+    ap_step1: c_uint8 * 4
+    ap_step2: c_uint8 * 6
+    ap_near: c_uint16
+    ap_far: c_uint16
+    ap_stts: c_uint16
+
+
+# typedef struct {
+# 	u_short score;
+# 	u_char center_no;
+# 	u_char center_num;
+# 	u_char start;
+# 	u_char inter;
+# 	u_char end;
+# 	u_char dummy;
+# 	short int pos[3];
+# } RGOST_DAT;
+class RGOST_DAT(CStructure):
+    score: c_uint16
+    center_no: c_uint8
+    center_num: c_uint8
+    start: c_uint8
+    inter: c_uint8
+    end: c_uint8
+    dummy: c_uint8
+    pos: c_int16 * 3
+
+
+# typedef struct {
+# 	u_short flame;
+# 	u_char alp_no;
+# 	u_char ani_no;
+# 	u_char efct_no;
+# 	u_char rate_no;
+# } RG_DISP_DAT;
+class RG_DISP_DAT(CStructure):
+    flame: c_uint16
+    alp_no: c_uint8
+    ani_no: c_uint8
+    efct_no: c_uint8
+    rate_no: c_uint8
+
+
+# typedef struct {
+# 	u_short flame;
+# 	u_char alp;
+# 	u_char stts;
+# } RG_ALP_DAT;
+class RG_ALP_DAT(CStructure):
+    flame: c_uint16
+    alp: c_uint8
+    stts: c_uint8
+
+
+# typedef struct {
+# 	u_char flame;
+# 	u_char tim_no;
+# } RG_ANI_DAT;
+class RG_ANI_DAT(CStructure):
+    flame: c_uint8
+    tim_no: c_uint8
+
+
+# typedef struct {
+# 	u_short flame;
+# 	u_char rate;
+# 	u_char stts;
+# } RG_RATE_DAT;
+class RG_RATE_DAT(CStructure):
+    flame: c_uint16
+    rate: c_uint8
+    stts: c_uint8
+
+
 elf_names: dict[str, str] = {
     "us": "SLUS_203.88",
     "eu": "SLES_508.21",
@@ -1315,9 +1401,9 @@ class DataVar(pydantic.BaseModel):
             elif issubclass(self.type, CStructure):  # pyright: ignore
                 type_str = self.type.__name__ + ("*" * self.num_ptr)
             elif self.type == sceVu0FVECTOR:  # pyright: ignore
-                type_str = "sceVu0FVECTOR"
+                type_str = "sceVu0FVECTOR" + ("*" * self.num_ptr)
             elif self.type == sceVu0IVECTOR:  # pyright: ignore
-                type_str = "sceVu0IVECTOR"
+                type_str = "sceVu0IVECTOR" + ("*" * self.num_ptr)
             else:
                 type_str = next(
                     k
