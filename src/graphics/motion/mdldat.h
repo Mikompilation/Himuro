@@ -4,6 +4,7 @@
 #include "typedefs.h"
 
 #include "graphics/motion/acs_dat.h"
+#include "graphics/motion/ani_dat.h"
 
 typedef struct {
 	float scale;

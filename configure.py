@@ -512,6 +512,7 @@ def generate_objdiff_configuration(config_path: Path, config: dict[str, Any], la
                 if subs_name in (
                     "crt0",
                     "main/glob",
+                    "graphics/motion/mdldat",
                     "graphics/motion/mim_dat",
                     "graphics/motion/acs_dat",
                     "graphics/scene/scene_dat",

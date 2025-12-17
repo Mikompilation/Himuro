@@ -112,6 +112,7 @@ segments:
           - [0x62210,  c,   graphics/graph3d/gra3d]
           - [0x668c8,  c,   graphics/graph3d/leditor]
           - [0x67c08,  c,   graphics/graph3d/load3d]
+          - [0x68d40,  c,   graphics/motion/mdldat]
           - [0x68d40,  c,   graphics/motion/mdlwork]
           - [0x6a418,  c,   graphics/motion/mdlact]
           - [0x6b350,  c,   graphics/motion/mime]
@@ -248,7 +249,7 @@ segments:
           - { start: 0x1fc9c0, type: .data,   vram: 0x2fb9c0, name: graphics/graph3d/gra3d        }
           - { start: 0x1ffb80, type: .data,   vram: 0x2feb80, name: graphics/graph3d/leditor      }
           - { start: 0x1ffc48, type: .data,   vram: 0x2fec48, name: graphics/graph3d/load3d       }
-          - { start: 0x201120, type:  data,   vram: 0x300120, name: graphics/motion/mdldat        }
+          - { start: 0x201120, type: .data,   vram: 0x300120, name: graphics/motion/mdldat        }
           - { start: 0x2034e8, type: .data,   vram: 0x3024e8, name: graphics/motion/mdlwork       }
           - { start: 0x203528, type: .data,   vram: 0x302528, name: graphics/motion/mdlact        }
           - { start: 0x2036c0, type: .data,   vram: 0x3026c0, name: graphics/motion/accessory     }
