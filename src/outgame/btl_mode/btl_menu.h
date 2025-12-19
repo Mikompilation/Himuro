@@ -3,6 +3,16 @@
 
 #include "typedefs.h"
 
+typedef struct {
+    u_char *addr;
+    int size;
+} BTL_SAVE_STR;
+
+typedef struct {
+    sceVu0FVECTOR pos;
+    u_char floor;
+} FREE_DAT;
+
 // extern MSN_LOAD_DAT stage_load_dat0[0];
 // extern MSN_LOAD_DAT stage_load_dat1[0];
 // extern MSN_LOAD_DAT stage_load_dat2[0];

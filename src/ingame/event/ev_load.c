@@ -1,7 +1,9 @@
 #include "common.h"
 #include "typedefs.h"
 #include "enums.h"
+#define INCLUDING_FROM_EV_LOAD_C
 #include "ev_load.h"
+#undef INCLUDING_FROM_EV_LOAD_C
 
 #include "main/glob.h"
 #include "os/eeiop/adpcm/ea_cmd.h"

@@ -10,9 +10,9 @@ typedef struct {
     u_char load_no;
 } FG_LOAD_WRK;
 
-// extern int load_mdl_addr[0];
-// extern int load_mot_addr[0];
-// extern int load_se_addr[0];
+extern int load_mdl_addr[];
+extern int load_mot_addr[];
+extern int load_se_addr[];
 extern FG_LOAD_WRK fg_load_wrk;
 
 void FloatGhostAppearInit();

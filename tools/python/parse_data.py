@@ -1313,6 +1313,16 @@ class RG_RATE_DAT(CStructure):
     stts: c_uint8
 
 
+###########################################################################
+# typedef struct {
+#     sceVu0FVECTOR pos;
+#     u_char floor;
+# } FREE_DAT;
+class FREE_DAT(CStructure, align=16):
+    pos: sceVu0FVECTOR
+    floor: c_uint8
+
+
 elf_names: dict[str, str] = {
     "us": "SLUS_203.88",
     "eu": "SLES_508.21",

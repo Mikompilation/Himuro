@@ -2,33 +2,7 @@
 #define INGAME_EVENT_EV_LOAD_H
 
 #include "typedefs.h"
-
-typedef struct {
-	u_short file_no;
-	u_char file_type;
-	u_char tmp_no;
-	u_int addr;
-} MSN_LOAD_DAT;
-
-typedef struct {
-	u_char scn_no;
-	MSN_LOAD_DAT *load_dat;
-	u_short *del_dat;
-} SCN_LOAD_DAT;
-
-typedef struct {
-	u_char mode;
-	u_char count;
-	int load_id;
-} EVENT_LOAD_WRK;
-
-typedef struct {
-	u_char mode;
-	u_char load_mode;
-	u_char load_count;
-	u_char time;
-	int load_id;
-} MSN_TITLE_WRK;
+#include "ev_load_types.h"
 
 // extern MSN_LOAD_DAT msn0_title_load_dat[0];
 // extern MSN_LOAD_DAT scn0022_load[0];
@@ -186,7 +160,9 @@ int MissionTitleLoad(int msn_no);
 int MissionDataLoadReq(MSN_LOAD_DAT *dat);
 void MissionDataLoadAfterInit(MSN_LOAD_DAT *dat);
 void DataLoadWrkInit();
+#ifdef INCLUDING_FROM_EV_LOAD_C
 void SetDataLoadWrk(MSN_LOAD_DAT *dat);
+#endif
 // void DelDataLoadWrk(u_short file_no);
 u_int GetLoadDataAddr(u_short file_no);
 void SortLoadDataAddr();

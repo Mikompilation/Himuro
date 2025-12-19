@@ -1406,6 +1406,14 @@ test_tex1                      = 0x3411c8; // type:SPRT_DAT numel:13 nosize
 title_sprt                     = 0x342c90; // type:SPRT_DAT numel:11
 font_sprt                      = 0x342df0; // type:SPRT_DAT numel:20
 
+// outgame/btl_mode/btl_menu.c
+stage_load_dat0                = 0x343fc0; // type:MSN_LOAD_DAT numel:7 nosize
+stage_load_dat1                = 0x343ff8; // type:MSN_LOAD_DAT numel:7 nosize
+stage_load_dat2                = 0x344030; // type:MSN_LOAD_DAT numel:7 nosize
+stage_load_dat3                = 0x344068; // type:MSN_LOAD_DAT numel:7 nosize
+stage_load_dat4                = 0x3440a0; // type:MSN_LOAD_DAT numel:7 nosize
+free_dat                       = 0x3440f0; // type:FREE_DAT numel:39 nosize
+
 // ingame/event/wan_dat.c
 soul_des100                    = 0x345820; // type:sceVu0FVECTOR numel:2 nosize
 soul_des101                    = 0x345840; // type:sceVu0FVECTOR numel:5 nosize
