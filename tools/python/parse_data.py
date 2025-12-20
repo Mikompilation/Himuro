@@ -1323,6 +1323,36 @@ class FREE_DAT(CStructure, align=16):
     floor: c_uint8
 
 
+###########################################################################
+# typedef struct {
+#     u_short attr_no;
+#     u_short dist_n;
+#     u_short dist_f;
+#     u_short score;
+#     u_short fact_no;
+#     u_char fp_num;
+#     u_char fp_no;
+#     u_char fp_rot;
+#     u_char fp_mak;
+#     u_char acs_flg;
+#     u_char ef_type;
+#     u_char ef_no;
+# } FURN_DAT;
+class FURN_DAT(CStructure):
+    attr_no: c_uint16
+    dist_n: c_uint16
+    dist_f: c_uint16
+    score: c_uint16
+    fact_no: c_uint16
+    fp_num: c_uint8
+    fp_no: c_uint8
+    fp_rot: c_uint8
+    fp_mak: c_uint8
+    acs_flg: c_uint8
+    ef_type: c_uint8
+    ef_no: c_uint8
+
+
 elf_names: dict[str, str] = {
     "us": "SLUS_203.88",
     "eu": "SLES_508.21",
