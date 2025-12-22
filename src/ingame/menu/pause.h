@@ -15,7 +15,7 @@ typedef struct {
 	u_short timer;
 } PAUSE_WRK;
 
-// extern PAD_CTRL pad_ctrl;
+extern PAD_CTRL pad_ctrl;
 // extern PAUSE_WRK pause_wrk;
 // extern char in_pause;
 

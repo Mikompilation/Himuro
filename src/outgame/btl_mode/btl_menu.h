@@ -32,7 +32,7 @@ int StageTitleInit();
 int StageTitleLoad();
 void StageGhostLoadReq();
 void StageGhostLoadAfter();
-void SaveStoryWrk();
+// void SaveStoryWrk();
 void LoadStoryWrk();
 
 #endif // OUTGAME_BTL_MODE_BTL_MENU_H
