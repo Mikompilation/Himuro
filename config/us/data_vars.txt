@@ -1522,6 +1522,9 @@ stage_load_dat3                = 0x344068; // type:MSN_LOAD_DAT numel:7 nosize
 stage_load_dat4                = 0x3440a0; // type:MSN_LOAD_DAT numel:7 nosize
 free_dat                       = 0x3440f0; // type:FREE_DAT numel:39 nosize
 
+// outgame/btl_mode/btl_dat.c
+stage_dat                      = 0x344850; // type:STAGE_DAT numel:20 nosize
+
 // ingame/event/wan_dat.c
 soul_des100                    = 0x345820; // type:sceVu0FVECTOR numel:2 nosize
 soul_des101                    = 0x345840; // type:sceVu0FVECTOR numel:5 nosize

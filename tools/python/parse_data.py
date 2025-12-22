@@ -1353,6 +1353,47 @@ class FURN_DAT(CStructure):
     ef_no: c_uint8
 
 
+###########################################################################
+# typedef struct {
+# 	u_short time;
+# 	u_short score;
+# 	u_short rank[5];
+# 	u_char clear;
+# 	u_char film[2];
+# 	u_char reiseki;
+# 	u_char map_no;
+# 	u_char room;
+# 	u_char floor;
+# 	u_char ene_no[3];
+# 	u_char ene_ap[3];
+# 	u_char rgst_no[5];
+# 	u_short fly_mdl_no;
+# 	short int prot;
+# 	sceVu0FVECTOR ppos;
+# 	sceVu0FVECTOR epos[3];
+# 	sceVu0FVECTOR rgpos[5];
+# } STAGE_DAT;
+class STAGE_DAT(CStructure):
+    time: c_uint16
+    score: c_uint16
+    rank: c_uint16 * 5
+    clear: c_uint8
+    film: c_uint8 * 2
+    reiseki: c_uint8
+    map_no: c_uint8
+    room: c_uint8
+    floor: c_uint8
+    ene_no: c_uint8 * 3
+    ene_ap: c_uint8 * 3
+    rgst_no: c_uint8 * 5
+    fly_mdl_no: c_uint16
+    prot: c_int16
+    _pad_0: c_uint8 * 12
+    ppos: sceVu0FVECTOR
+    epos: sceVu0FVECTOR * 3
+    rgpos: sceVu0FVECTOR * 5
+
+
 elf_names: dict[str, str] = {
     "us": "SLUS_203.88",
     "eu": "SLES_508.21",

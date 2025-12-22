@@ -231,6 +231,8 @@ class CStructure(LittleEndianStructure, metaclass=LittleEndianStructureFieldsFro
         stream = io.StringIO()
         stream.write("    {\n")
         for f, *_ in self._fields_:  # pyright: ignore
+            if f.startswith("_pad_"):
+                continue
             v = getattr(self, f)  # pyright: ignore
             if f in ("_in", "_pass"):
                 f = f[1:]  # pyright: ignore

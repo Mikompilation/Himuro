@@ -209,6 +209,7 @@ segments:
           - [0x11d260, c,   outgame/outgame]
           - [0x11d988, c,   outgame/btl_mode/btl_menu]
           - [0x11ed08, c,   outgame/btl_mode/btl_mode]
+          - [0x11f5d0, c,   outgame/btl_mode/btl_dat]
           - [0x11f5d0, c,   ingame/event/wan_soul]
           - [0x121030, c,   ingame/event/wan_dat]
           - [0x121098, asm, outgame/sound_test]
@@ -318,7 +319,7 @@ segments:
           - { start: 0x244fa8, type: .data,   vram: 0x343fa8, name: mc/mc_icon                    }
           - { start: 0x244fc0, type: .data,   vram: 0x343fc0, name: outgame/btl_mode/btl_menu     }
           - { start: 0x245670, type: .data,   vram: 0x344670, name: outgame/btl_mode/btl_mode     }
-          - { start: 0x245850, type:  data,   vram: 0x344850, name: outgame/btl_mode/btl_dat      }
+          - { start: 0x245850, type: .data,   vram: 0x344850, name: outgame/btl_mode/btl_dat      }
           - { start: 0x246750, type: .data,   vram: 0x345750, name: ingame/event/wan_soul         }
           - { start: 0x246820, type: .data,   vram: 0x345820, name: ingame/event/wan_dat          }
           - { start: 0x246de8, type:  data,   vram: 0x345de8, name: outgame/sound_test            }
