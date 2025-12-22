@@ -3,6 +3,8 @@
 
 #include "typedefs.h"
 
+#include "ingame/enemy/move_types.h"
+
 typedef enum
 {
     ST_WANSO_VACANT = 0,
@@ -68,47 +70,45 @@ typedef struct {
 	float scale2;
 } SOUL_EFF_PARAM;
 
-#include "ingame/enemy/move_ctl.h"
-
 extern WANDER_SOUL_WRK wander_soul_wrk[1];
 
-sceVu0FVECTOR* SetFirstDestination(sceVu0FVECTOR *destination, float *pos);
-float GetDist3(float *v1, float *v2);
-float GetDistPlyr(float *plyr, float *soul);
-void* SetEffectsWithScale(float *pos, SOUL_EFF_PARAM *param, float scale, float rgb);
+sceVu0FVECTOR* SetFirstDestination(sceVu0FVECTOR *destination, sceVu0FVECTOR pos);
+float GetDist3(sceVu0FVECTOR v1, sceVu0FVECTOR v2);
+float GetDistPlyr(sceVu0FVECTOR plyr, sceVu0FVECTOR soul);
+void* SetEffectsWithScale(sceVu0FVECTOR pos, SOUL_EFF_PARAM *param, float scale, float rgb);
 int GetUsableWanSoWrkID();
 void SetNewSpeed(WANDER_SOUL_WRK *wswrk);
 void NewMissionInitWanderSoul();
 void ReviveWanderSoul();
-void BSplinePos(float *pos, float *mat_point_array[4], float t1);
-void ClearWanderSoulOne();
-void CallWanderSoul(u_char data_id, float *pos);
-void RegisterWansoEffect();
-void WansoLateInit();
+void BSplinePos(sceVu0FVECTOR pos, sceVu0FMATRIX mat_point_array, float t1);
+void ClearWanderSoulOne(WANDER_SOUL_WRK *wswrk);
+void CallWanderSoul(u_char data_id, sceVu0FVECTOR pos);
+void RegisterWansoEffect(WANDER_SOUL_WRK *wswrk);
+void WansoLateInit(WANDER_SOUL_WRK *wswrk);
 void ReleaseWanderSoul(u_char data_id);
 int WanSoNearJudge(float dist, float distv);
-int WanSoTouchJudge(float *soul_pos, MOVE_BOX *mbp);
-void SoulFloating(float *pos, float *rgb);
-void SetSoulNewMove();
-void Change2WanSoExtinct();
-void FinishWanSoWrk();
+int WanSoTouchJudge(sceVu0FVECTOR soul_pos, MOVE_BOX *mbp);
+void SoulFloating(sceVu0FVECTOR pos, float *rgb);
+void SetSoulNewMove(WANDER_SOUL_WRK *wswrk);
+void Change2WanSoExtinct(WANDER_SOUL_WRK *wswrk);
+void FinishWanSoWrk(WANDER_SOUL_WRK *wswrk);
 void ComeOnSignal(float *scale, float *rgb, u_short time);
 float StopAbleDist(float speed, float accel, u_short *count);
-float GetRot(float *a, float *b);
+float GetRot(sceVu0FVECTOR a, sceVu0FVECTOR b);
 int RotCheck2(float rot1, float rot2, u_short range);
-void GetBSplinePos(float *pos, float t1);
-int SetMoveDirect(float s2p_len);
-void AddVec2MatD(float *mat[4], float *vec);
-void Change2WanSoFloat();
-float GetKnotDist(float *mat[4]);
-void SetWansoSpeed(float dist);
-void WansoPreTell();
-u_char WansoAlphaCtrl(float dist);
-void WansoExtinctCtrl();
-void OneSoulCtrl(float *srate, float *arate);
+void GetBSplinePos(sceVu0FVECTOR pos, sceVu0FMATRIX mat_point_array, float t1);
+int SetMoveDirect(WANDER_SOUL_WRK *wswrk, float s2p_len);
+void AddVec2MatD(sceVu0FMATRIX mat, sceVu0FVECTOR vec);
+void Change2WanSoFloat(WANDER_SOUL_WRK *wswrk);
+float GetKnotDist(sceVu0FMATRIX mat);
+void SetWansoSpeed(WANDER_SOUL_WRK *wswrk, float dist);
+void WansoPreTell(WANDER_SOUL_WRK *wswrk);
+u_char WansoAlphaCtrl(WANDER_SOUL_WRK *wswrk, float dist);
+void WansoExtinctCtrl(WANDER_SOUL_WRK *wswrk);
+void OneSoulCtrl(WANDER_SOUL_WRK *wswrk, float *srate, float *arate);
 void WanderSoulCtrl();
-u_char CallSoulTellingCamera(float *soul_pos, float *relative_camera_pos, float *relative_interest, float *relative_soul_pos);
-void CallSoulTellingCameraIn(float *soul_pos, float *mic_eye_pos, int time);
+u_char CallSoulTellingCamera(sceVu0FVECTOR soul_pos, sceVu0FVECTOR relative_camera_pos, sceVu0FVECTOR relative_interest, sceVu0FVECTOR relative_soul_pos);
+void CallSoulTellingCameraIn(sceVu0FVECTOR soul_pos, sceVu0FVECTOR mic_eye_pos, int time);
 int SoulTellingCameraInCtrl();
 
 #endif // INGAME_EVENT_WAN_SOUL_H
