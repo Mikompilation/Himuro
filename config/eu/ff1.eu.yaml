@@ -213,7 +213,7 @@ segments:
           - [0x123020, c,   outgame/btl_mode/btl_dat]
           - [0x123020, c,   ingame/event/wan_soul]
           - [0x124a80, c,   ingame/event/wan_dat]
-          - [0x124ae8, asm, outgame/sound_test]
+          - [0x124ae8, c,   outgame/sound_test]
           - [0x126010, textbin, text_rest]
           - [0x14b340, textbin, vutext]
           # ######################## DATA    (vram: 0x253f00) #####################################
@@ -324,7 +324,7 @@ segments:
           - { start: 0x24bb90, type: .data,   vram: 0x34ab90, name: outgame/btl_mode/btl_dat      }
           - { start: 0x24ca90, type: .data,   vram: 0x34ba90, name: ingame/event/wan_soul         }
           - { start: 0x24cb60, type: .data,   vram: 0x34bb60, name: ingame/event/wan_dat          }
-          - { start: 0x24d128, type:  data,   vram: 0x34c128, name: outgame/sound_test            }
+          - { start: 0x24d128, type: .data,   vram: 0x34c128, name: outgame/sound_test            }
           - { start: 0x24d1c0, type:  data,   vram: 0x34c1c0, name: data_rest                     }
           # ######################## VUDATA  (vram: 0x34f948) #####################################
           - { start: 0x250948, type: databin, vram: 0x34f948, name: vudata                        }
@@ -440,7 +440,7 @@ segments:
           - { start: 0x25ab98, type: .rodata, vram: 0x359b98, name: outgame/btl_mode/btl_menu     }
           - { start: 0x25abc0, type: .rodata, vram: 0x359bc0, name: outgame/btl_mode/btl_mode     }
           - { start: 0x25abf0, type: .rodata, vram: 0x359bf0, name: ingame/event/wan_soul         }
-          - { start: 0x25ac80, type:  rodata, vram: 0x359c80, name: outgame/sound_test            }
+          - { start: 0x25ac80, type: .rodata, vram: 0x359c80, name: outgame/sound_test            }
           - { start: 0x25acb8, type:  rodata, vram: 0x359cb8, name: rodata_rest                   }
           # ######################## LIT4    (vram: 0x35bd00) #####################################
           - { start: 0x25cd00, type: .lit4,   vram: 0x35bd00, name: outgame/mode_slct             }
@@ -515,7 +515,7 @@ segments:
           - { start: 0x25df14, type: .lit4,   vram: 0x35cf14, name: mc/mc_main                    }
           - { start: 0x25df18, type: .lit4,   vram: 0x35cf18, name: mc/mc_start                   }
           - { start: 0x25df1c, type: .lit4,   vram: 0x35cf1c, name: ingame/event/wan_soul         }
-          - { start: 0x25df54, type:  lit4,   vram: 0x35cf54, name: outgame/sound_test            }
+          - { start: 0x25df54, type: .lit4,   vram: 0x35cf54, name: outgame/sound_test            }
           # ######################## SDATA   (vram: 0x35cf80) #####################################
           - { start: 0x25df80, type: .sdata,  vram: 0x35cf80, name: outgame/mode_slct             }
           - { start: 0x25df9a, type: .sdata,  vram: 0x35cf9a, name: outgame/memory_album          }
@@ -612,7 +612,8 @@ segments:
           - { start: 0x25f420, type: .sdata,  vram: 0x35e420, name: outgame/btl_mode/btl_menu     }
           - { start: 0x25f480, type: .sdata,  vram: 0x35e480, name: outgame/btl_mode/btl_mode     }
           - { start: 0x25f4ac, type: .sdata,  vram: 0x35e4ac, name: ingame/event/wan_soul         }
-          - { start: 0x25f4c8, type:  sdata,  vram: 0x35e4c8, name: outgame/sound_test            }
+          - { start: 0x25f4c8, type: .sdata,  vram: 0x35e4c8, name: outgame/sound_test            }
+          - { start: 0x25f4cc, type:  sdata,  vram: 0x35e4cc, name: sdata_rest                    }
           # ######################## SBSS    (vram: 0x35e500) #####################################
           - { start: 0x25f500, type: .sbss,   vram: 0x35e500, name: outgame/mode_slct             }
           - { start: 0x25f500, type: .sbss,   vram: 0x35e508, name: outgame/memory_album          }
@@ -677,7 +678,7 @@ segments:
           - { start: 0x25f500, type: .sbss,   vram: 0x35e890, name: mc/mc_at                      }
           - { start: 0x25f500, type: .sbss,   vram: 0x35e8a4, name: outgame/outgame               }
           - { start: 0x25f500, type: .sbss,   vram: 0x35e8a8, name: ingame/event/wan_soul         }
-          - { start: 0x25f500, type:  sbss,   vram: 0x35e8d0, name: outgame/sound_test            }
+          - { start: 0x25f500, type: .sbss,   vram: 0x35e8d0, name: outgame/sound_test            }
           - { start: 0x25f500, type:  sbss,   vram: 0x35e8d7, name: sbss_rest                     }
           # ######################## BSS     (vram: 0x35e900) #####################################
           - { start: 0x25f514, type:  bss,    vram: 0x35e900, name: bss_pre                       }
@@ -732,7 +733,7 @@ segments:
           - { start: 0x25f514, type:  bss,    vram: 0x409ad8, name: ingame/map/door_conte         }
           - { start: 0x25f514, type: .bss,    vram: 0x409b00, name: outgame/title                 }
           - { start: 0x25f514, type: .bss,    vram: 0x409be0, name: ingame/event/wan_soul         }
-          - { start: 0x25f514, type:  bss,    vram: 0x409c30, name: outgame/sound_test            }
+          - { start: 0x25f514, type: .bss,    vram: 0x409c30, name: outgame/sound_test            }
           - { start: 0x25f514, type:  bss,    vram: 0x409c80, name: bss_rest                      }
           # ######################## VUBSS   (vram: 0x4115b0) #####################################
           - { start: 0x25f514, type:  bss,    vram: 0x4115b0, name: vubss_1                       }
