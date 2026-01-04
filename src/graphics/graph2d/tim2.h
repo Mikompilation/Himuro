@@ -5,6 +5,8 @@
 
 #include "sce/libgraph.h"
 
+#include "graphics/graph2d/sprt.h"
+
 enum TIM2_gattr_type {
 	TIM2_NONE = 0,
 	TIM2_RGB16 = 1,
@@ -13,73 +15,6 @@ enum TIM2_gattr_type {
 	TIM2_IDTEX4 = 4,
 	TIM2_IDTEX8 = 5
 };
-
-typedef struct {
-	u_int att;
-	float crx;
-	float cry;
-	float csx;
-	float csy;
-	int x[4];
-	int y[4];
-	u_int z;
-	float scw;
-	float sch;
-	float rot;
-	u_long texa;
-	u_long alphar;
-	u_long zbuf;
-	u_long test;
-	u_int pri;
-	u_char r[4];
-	u_char g[4];
-	u_char b[4];
-	u_char alpha;
-} DISP_SQAR;
-
-typedef struct {
-	u_int w;
-	u_int h;
-	int x;
-	int y;
-	u_int pri;
-	u_char r;
-	u_char g;
-	u_char b;
-	u_char alpha;
-} SQAR_DAT;
-
-typedef struct {
-	u_int w;
-	u_int h;
-	int x;
-	int y;
-	u_int pri;
-	u_char r[4];
-	u_char g[4];
-	u_char b[4];
-	u_char alpha;
-} GSQR_DAT;
-
-typedef struct {
-	int x[4];
-	int y[4];
-	u_int pri;
-	u_char r;
-	u_char g;
-	u_char b;
-	u_char alpha;
-} SQR4_DAT;
-
-typedef struct {
-	int x[4];
-	int y[4];
-	u_int pri;
-	u_char r[4];
-	u_char g[4];
-	u_char b[4];
-	u_char alpha;
-} GSQ4_DAT;
 
 typedef unsigned char TIM2_UCHAR8;
 typedef u_int TIM2_UINT32;

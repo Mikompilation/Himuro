@@ -5,6 +5,87 @@
 
 #include "graphics/graph2d/sprt.h"
 
+typedef struct {
+    u_char no;
+    u_char ret;
+    u_char mode;
+    u_char time;
+    u_char count;
+    u_char csr[3];
+} SPECIAL_EVENT_WRK;
+
+typedef struct {
+    u_char pzl_no;
+    u_char mode;
+    u_char menu_mode;
+    u_char menu_csr[2];
+    u_char time;
+    u_char count;
+    u_char empty;
+    u_char slct_no;
+    u_char bak_no[10];
+    u_char stone[5];
+    u_char line[5][5];
+} STAR_PZL_WRK;
+
+typedef struct {
+    u_char move_num;
+    u_char empty_no;
+    u_char start[5];
+    u_char line[10];
+} STAR_PZL_DAT;
+
+typedef struct {
+    u_char door_no;
+    u_char mode;
+    u_char time;
+    u_char count;
+    u_char slct_no;
+    u_char push;
+    u_char btn[10];
+    u_char push_no[5];
+} DIAL_KEY_WRK;
+
+typedef struct {
+    u_char dial_num;
+    u_char lock_door;
+    u_char dial_no[5];
+} DIAL_KEY_DAT;
+
+typedef struct {
+    u_char answer;
+    u_char order[9];
+    u_char unfade_doll[3];
+    u_char pad;
+} EV_DOLL_DAT;
+
+typedef struct {
+    short int use_flg;
+    short int set_place;
+} EV_BTZ_DAT;
+
+typedef struct {
+    short int t_counter;
+    short int bld_apr[10];
+    short int bld_end[10];
+    short int pad;
+} EV_BLD_DAT;
+
+typedef struct {
+    short int cdl_flg[3][6];
+    short int flame_alpha[6];
+    short int flame_shape[6];
+    short int stflame_alpha[6];
+    short int stflame_shape[6];
+    short int flame_time[6];
+    short int stflame_time[6];
+} EV_CDL_DAT;
+
+typedef struct {
+    u_char answer;
+    u_char ansflg;
+} ZUSHI_WRK;
+
 // extern void (*SpecialEventInitTbl[0])(/* parameters unknown */);
 // extern void (*SpecialEventMainTbl[0])(/* parameters unknown */);
 // extern SPRT_SDAT spev00_sp_bak[0];
@@ -102,7 +183,7 @@
 // extern short int kana_door;
 // extern short int tano_door;
 // extern ZUSHI_WRK zushi_dat[4];
-// extern SPECIAL_EVENT_WRK spev_wrk;
+extern SPECIAL_EVENT_WRK spev_wrk;
 // extern STAR_PZL_WRK star_pzl_wrk;
 // extern DIAL_KEY_WRK dkey_wrk;
 
@@ -111,8 +192,8 @@ void SpecialEventMain();
 int GetSpecialEventMessageAddr(short int msg_no);
 // void SimpleDispSprt(SPRT_SDAT *ssd, u_int addr, int sp_no, SPRT_SROT *srot, SPRT_SSCL *sscl, u_char alp_rate);
 void SimpleDispAlphaSprt(SPRT_SDAT *ssd, u_int addr, int sp_no, u_char alp_rate, u_char alp_type);
-void SimpleDispSprtRGB(u_int addr, int sp_no, u_char alp_rate, u_char rr, u_char gg, int bb);
-void SimpleDispSprtLNR(u_int addr, int sp_no, u_char alp_rate, int lnr);
+void SimpleDispSprtRGB(SPRT_SDAT *ssd, u_int addr, int sp_no, SPRT_SROT *srot, SPRT_SSCL *sscl, u_char alp_rate, u_char rr, u_char gg, u_char bb);
+void SimpleDispSprtLNR(SPRT_SDAT *ssd, u_int addr, int sp_no, SPRT_SROT *srot, SPRT_SSCL *sscl, u_char alp_rate, int lnr);
 void SimpleDispSprtDatCopy(SPRT_SDAT *org, SPRT_SDAT *cpy);
 void TestPk2Data(long int sendtexaddr);
 int ButtonMarkNext(int x_off, int y_off, int se_flg);

@@ -1394,6 +1394,205 @@ class STAGE_DAT(CStructure):
     rgpos: sceVu0FVECTOR * 5
 
 
+###########################################################################
+# typedef struct {
+# 	u_char *str;
+# 	int pos_x;
+# 	int pos_y;
+# 	int type;
+# 	u_int r;
+# 	u_int g;
+# 	u_int b;
+# 	int alpha;
+# 	int pri;
+# } STR_DAT;
+class STR_DAT(CStructure):
+    str: c_str
+    pos_x: c_int32
+    pos_y: c_int32
+    type: c_int32
+    r: c_uint32
+    g: c_uint32
+    b: c_uint32
+    alpha: c_int32
+    pri: c_int32
+
+
+# typedef struct {
+# 	u_int w;
+# 	u_int h;
+# 	int x;
+# 	int y;
+# 	u_int pri;
+# 	u_char r;
+# 	u_char g;
+# 	u_char b;
+# 	u_char alpha;
+# } SQAR_DAT;
+class SQAR_DAT(CStructure):
+    w: c_uint32
+    h: c_uint32
+    x: c_int32
+    y: c_int32
+    pri: c_uint32
+    r: c_uint8
+    g: c_uint8
+    b: c_uint8
+    alpha: c_uint8
+
+
+# typedef struct {
+#     u_char move_num;
+#     u_char empty_no;
+#     u_char start[5];
+#     u_char line[10];
+# } STAR_PZL_DAT;
+class STAR_PZL_DAT(CStructure):
+    move_num: c_uint8
+    empty_no: c_uint8
+    start: c_uint8 * 5
+    line: c_uint8 * 10
+
+
+# typedef struct {
+#     u_char dial_num;
+#     u_char lock_door;
+#     u_char dial_no[5];
+# } DIAL_KEY_DAT;
+class DIAL_KEY_DAT(CStructure):
+    dial_num: c_uint8
+    lock_door: c_uint8
+    dial_no: c_uint8 * 5
+
+
+# typedef struct {
+#     u_char answer;
+#     u_char order[9];
+#     u_char unfade_doll[3];
+#     u_char pad;
+# } EV_DOLL_DAT;
+class EV_DOLL_DAT(CStructure):
+    answer: c_uint8
+    order: c_uint8 * 9
+    unfade_doll: c_uint8 * 3
+    pad: c_uint8
+
+
+# typedef struct {
+#     short int use_flg;
+#     short int set_place;
+# } EV_BTZ_DAT;
+class EV_BTZ_DAT(CStructure):
+    use_flg: c_int16
+    set_place: c_int16
+
+
+# typedef struct {
+#     short int t_counter;
+#     short int bld_apr[10];
+#     short int bld_end[10];
+#     short int pad;
+# } EV_BLD_DAT;
+class EV_BLD_DAT(CStructure):
+    t_counter: c_int16
+    bld_apr: c_int16 * 10
+    bld_end: c_int16 * 10
+    pad: c_int16
+
+
+# typedef struct {
+#     short int cdl_flg[3][6];
+#     short int flame_alpha[6];
+#     short int flame_shape[6];
+#     short int stflame_alpha[6];
+#     short int stflame_shape[6];
+#     short int flame_time[6];
+#     short int stflame_time[6];
+# } EV_CDL_DAT;
+class EV_CDL_DAT(CStructure):
+    cdl_flg: c_int16 * 6 * 3
+    flame_alpha: c_int16 * 6
+    flame_shape: c_int16 * 6
+    stflame_alpha: c_int16 * 6
+    stflame_shape: c_int16 * 6
+    flame_time: c_int16 * 6
+    stflame_time: c_int16 * 6
+
+
+# typedef struct {
+#     u_char answer;
+#     u_char ansflg;
+# } ZUSHI_WRK;
+class ZUSHI_WRK(CStructure):
+    answer: c_uint8
+    ansflg: c_uint8
+
+
+# typedef struct {
+#     u_char no;
+#     u_char ret;
+#     u_char mode;
+#     u_char time;
+#     u_char count;
+#     u_char csr[3];
+# } SPECIAL_EVENT_WRK;
+class SPECIAL_EVENT_WRK(CStructure):
+    no: c_uint8
+    ret: c_uint8
+    mode: c_uint8
+    time: c_uint8
+    count: c_uint8
+    csr: c_uint8 * 3
+
+
+# typedef struct {
+#     u_char pzl_no;
+#     u_char mode;
+#     u_char menu_mode;
+#     u_char menu_csr[2];
+#     u_char time;
+#     u_char count;
+#     u_char empty;
+#     u_char slct_no;
+#     u_char bak_no[10];
+#     u_char stone[5];
+#     u_char line[5][5];
+# } STAR_PZL_WRK;
+class STAR_PZL_WRK(CStructure):
+    pzl_no: c_uint8
+    mode: c_uint8
+    menu_mode: c_uint8
+    menu_csr: c_uint8 * 2
+    time: c_uint8
+    count: c_uint8
+    empty: c_uint8
+    slct_no: c_uint8
+    bak_no: c_uint8 * 10
+    stone: c_uint8 * 5
+    line: c_uint8 * 5 * 5
+
+
+# typedef struct {
+#     u_char door_no;
+#     u_char mode;
+#     u_char time;
+#     u_char count;
+#     u_char slct_no;
+#     u_char push;
+#     u_char btn[10];
+#     u_char push_no[5];
+# } DIAL_KEY_WRK;
+class DIAL_KEY_WRK(CStructure):
+    door_no: c_uint8
+    mode: c_uint8
+    time: c_uint8
+    count: c_uint8
+    slct_no: c_uint8
+    push: c_uint8
+    btn: c_uint8 * 10
+    push_no: c_uint8 * 5
+
+
 elf_names: dict[str, str] = {
     "us": "SLUS_203.88",
     "eu": "SLES_508.21",
