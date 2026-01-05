@@ -3,6 +3,11 @@
 
 #include "typedefs.h"
 
+typedef struct {
+    short int msg_no;
+    short int msg_wait;
+} MOVIE_CMD_WRK;
+
 // extern MOVIE_CMD_WRK mvcmd_wrk;
 
 void EventMovieCommandInit();
