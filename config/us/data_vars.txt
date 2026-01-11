@@ -1496,6 +1496,11 @@ stg_title_sp_bak               = 0x329660; // type:SPRT_SDAT numel:11 nosize
 stg_title_sp_flr               = 0x329700; // type:SPRT_SDAT numel:1  nosize
 stg_title_sp_ttl               = 0x329710; // type:SPRT_SDAT numel:2  nosize
 
+// ingame/info/inf_disp.c
+spr_dat                        = 0x329870; // type:SPRT_DAT numel:1026 nosize
+flip_table                     = 0x3318b0; // type:u_short numel:1026 nosize
+raze_sprt                      = 0x3320b8; // type:SPRT_DAT
+
 // ingame/map/furn_dat.c
 furn_dat                       = 0x337730; // type:FURN_DAT numel:409 nosize
 furn_attr_dat                  = 0x3393f8; // type:u_int numel:34 numel:5 nosize

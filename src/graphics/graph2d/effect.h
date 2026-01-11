@@ -3,7 +3,7 @@
 
 #include "typedefs.h"
 
-#include "graphics/graph2d/tim2.h"
+#include "graphics/graph2d/sprt.h"
 
 typedef struct {
 	Q_WORDDATA dat;

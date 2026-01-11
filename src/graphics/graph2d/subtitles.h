@@ -5,8 +5,6 @@
 
 #include "typedefs.h"
 
-#include "graphics/graph2d/tim2.h"
-
 typedef struct {
 	u_int type;
 	u_int no;

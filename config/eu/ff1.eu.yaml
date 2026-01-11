@@ -158,7 +158,7 @@ segments:
           - [0xa24c8,  c,   ingame/event/ev_spcl]
           - [0xb4520,  c,   ingame/event/ev_load]
           - [0xb5940,  c,   ingame/event/mv_cmnd]
-          - [0xb5aa0,  asm, ingame/info/inf_disp]
+          - [0xb5aa0,  c,   ingame/info/inf_disp]
           - [0xbd250,  asm, ingame/map/map_ctrl]
           - [0xc0be8,  asm, ingame/map/map_area]
           - [0xc1530,  asm, ingame/map/door_ctl]
@@ -286,7 +286,7 @@ segments:
           - { start: 0x22d138, type: .data,   vram: 0x32c138, name: ingame/event/ev_main          }
           - { start: 0x22d268, type: .data,   vram: 0x32c268, name: ingame/event/ev_spcl          }
           - { start: 0x22f280, type: .data,   vram: 0x32e280, name: ingame/event/ev_load          }
-          - { start: 0x2305a0, type:  data,   vram: 0x32f5a0, name: ingame/info/inf_disp          }
+          - { start: 0x2305a0, type: .data,   vram: 0x32f5a0, name: ingame/info/inf_disp          }
           - { start: 0x238e38, type:  data,   vram: 0x337e38, name: ingame/map/map_ctrl           }
           - { start: 0x238e70, type:  data,   vram: 0x337e70, name: ingame/map/map_area           }
           - { start: 0x239400, type:  data,   vram: 0x338400, name: ingame/map/door_ctl           }
@@ -403,8 +403,8 @@ segments:
           - { start: 0x256760, type: .rodata, vram: 0x355760, name: ingame/event/ev_spcl          }
           - { start: 0x256ee0, type: .rodata, vram: 0x355ee0, name: ingame/event/ev_load          }
           - { start: 0x256f50, type: .rodata, vram: 0x355f50, name: ingame/event/mv_cmnd          }
-          - { start: 0x256f80, type:  rodata, vram: 0x355f80, name: ingame/info/inf_disp          }
-          - { start: 0x257080, type:  rodata, vram: 0x356080, name: ingame/map/map_ctrl           }
+          - { start: 0x256f80, type: .rodata, vram: 0x355f80, name: ingame/info/inf_disp          }
+          - { start: 0x257068, type:  rodata, vram: 0x356068, name: ingame/map/map_ctrl           }
           - { start: 0x2570c0, type:  rodata, vram: 0x3560c0, name: ingame/map/map_area           }
           - { start: 0x2570f0, type:  rodata, vram: 0x3560f0, name: ingame/map/door_ctl           }
           - { start: 0x257250, type:  rodata, vram: 0x356250, name: ingame/map/doortype           }
@@ -485,7 +485,7 @@ segments:
           - { start: 0x25d980, type: .lit4,   vram: 0x35c980, name: ingame/entry/ap_zgost         }
           - { start: 0x25d984, type: .lit4,   vram: 0x35c984, name: ingame/event/ev_main          }
           - { start: 0x25d990, type: .lit4,   vram: 0x35c990, name: ingame/event/ev_spcl          }
-          - { start: 0x25d9b8, type:  lit4,   vram: 0x35c9b8, name: ingame/info/inf_disp          }
+          - { start: 0x25d9b8, type: .lit4,   vram: 0x35c9b8, name: ingame/info/inf_disp          }
           - { start: 0x25da08, type:  lit4,   vram: 0x35ca08, name: ingame/map/map_ctrl           }
           - { start: 0x25da18, type:  lit4,   vram: 0x35ca18, name: ingame/map/door_ctl           }
           - { start: 0x25daac, type:  lit4,   vram: 0x35caac, name: ingame/map/rotd_ctl           }
@@ -581,8 +581,8 @@ segments:
           - { start: 0x25eca0, type: .sdata,  vram: 0x35dca0, name: ingame/event/ev_spcl          }
           - { start: 0x25ed30, type: .sdata,  vram: 0x35dd30, name: ingame/event/ev_load          }
           - { start: 0x25ed40, type: .sdata,  vram: 0x35dd40, name: ingame/event/mv_cmnd          }
-          - { start: 0x25ed48, type:  sdata,  vram: 0x35dd48, name: ingame/info/inf_disp          }
-          - { start: 0x25ed6c, type:  sdata,  vram: 0x35dd6c, name: ingame/map/map_ctrl           }
+          - { start: 0x25ed48, type: .sdata,  vram: 0x35dd48, name: ingame/info/inf_disp          }
+          - { start: 0x25ed68, type:  sdata,  vram: 0x35dd68, name: ingame/map/map_ctrl           }
           - { start: 0x25ed74, type:  sdata,  vram: 0x35dd74, name: ingame/map/map_area           }
           - { start: 0x25ed78, type:  sdata,  vram: 0x35dd78, name: ingame/map/door_ctl           }
           - { start: 0x25ed7c, type:  sdata,  vram: 0x35dd7c, name: ingame/map/furn_ctl           }
@@ -651,7 +651,7 @@ segments:
           - { start: 0x25f500, type: .sbss,   vram: 0x35e6d0, name: ingame/enemy/move_ctl         }
           - { start: 0x25f500, type: .sbss,   vram: 0x35e700, name: ingame/entry/ap_sgost         }
           - { start: 0x25f500, type: .sbss,   vram: 0x35e708, name: ingame/event/ev_spcl          }
-          - { start: 0x25f500, type:  sbss,   vram: 0x35e720, name: ingame/info/inf_disp          }
+          - { start: 0x25f500, type: .sbss,   vram: 0x35e720, name: ingame/info/inf_disp          }
           - { start: 0x25f500, type:  sbss,   vram: 0x35e73c, name: ingame/map/door_ctl           }
           - { start: 0x25f500, type:  sbss,   vram: 0x35e748, name: ingame/menu/item              }
           - { start: 0x25f500, type: .sbss,   vram: 0x35e768, name: ingame/menu/gameover          }
@@ -717,7 +717,7 @@ segments:
           - { start: 0x25f514, type: .bss,    vram: 0x4089c0, name: ingame/camera/camera          }
           - { start: 0x25f514, type: .bss,    vram: 0x408ca0, name: ingame/enemy/ene_ctl          }
           - { start: 0x25f514, type: .bss,    vram: 0x408d50, name: ingame/enemy/move_ctl         }
-          - { start: 0x25f514, type:  bss,    vram: 0x408eb0, name: ingame/info/inf_disp          }
+          - { start: 0x25f514, type: .bss,    vram: 0x408eb0, name: ingame/info/inf_disp          }
           - { start: 0x25f514, type:  bss,    vram: 0x4094c0, name: ingame/map/door_ctl           }
           - { start: 0x25f514, type:  bss,    vram: 0x4094f0, name: ingame/map/furn_eff           }
           - { start: 0x25f514, type:  bss,    vram: 0x409590, name: ingame/map/furn_spe/adj_valg  }

@@ -2,7 +2,6 @@
 #define GRAPHICS_GRAPH2D_TIM2_NEW_H
 
 #include "typedefs.h"
-#include "graphics/graph2d/tim2.h"
 
 // extern u_int *tm2_end_pkt;
 
