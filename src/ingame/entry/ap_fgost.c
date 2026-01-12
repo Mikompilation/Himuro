@@ -252,7 +252,7 @@ void FloatGhostAppearPosSet(u_char dat_no, float *set_pos, float *set_rot)
             pos[1] = fg_ap_dat[ingame_wrk.msn_no][dat_no].pos[i][1];
             pos[2] = fg_ap_dat[ingame_wrk.msn_no][dat_no].pos[i][2];
 
-            sceVu0AddVector(&pos, room_wrk.pos, &pos);
+            sceVu0AddVector(pos, room_wrk.pos[0], pos);
 
             dist = GetDistV2(pos, plyr_wrk.move_box.pos);
 
