@@ -185,7 +185,7 @@
 // extern u_short dc3280[0];
 // extern u_short dc3290[0];
 // extern u_short *dc_no_tbl3[0];
-// extern u_short drm_cam_no[12];
+extern u_short drm_cam_no[12];
 extern u_char DBG_cam_id_move_chk;
 extern u_char cd_edit_end;
 extern int msn_no;

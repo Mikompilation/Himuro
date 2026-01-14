@@ -3,6 +3,14 @@
 
 #include "typedefs.h"
 
+typedef struct {
+    u_short camera_no;
+    u_char room_id;
+    u_char pad;
+    u_short door_id[2];
+    u_char sq_num;
+} CAMERA4_DATA_POP;
+
 // extern u_char floor_exist[5][4];
 extern u_char room_pass[42];
 // extern u_char gtmp_cam_type;
@@ -36,13 +44,13 @@ u_char PosInAreaJudge0(u_char room, u_short pos_x, u_short pos_y);
 u_char PosInAreaJudge1(u_char map, u_char room, u_char data, u_short pos_x, u_short pos_y);
 u_char MapHitCheck(u_short pos_x, u_short pos_y, u_char room_id);
 u_char MapHitCheckAll(u_short pos_x, u_short pos_y, u_char room_id);
-void PlyrHitRot(float *pos, float *dst, float *go_rot, float *no_rot, u_char div, u_char room_id);
-u_char PlyrMapHitCheck(float *dst, float *pos, u_char div, u_char room_id);
-int PlyrMapHitMoveOfs(float *dst, float *pos, u_char room, u_char flr_room);
-u_char GetPointMoveMotion(float *p, u_char no);
+void PlyrHitRot(sceVu0FVECTOR pos, sceVu0FVECTOR dst, float *go_rot, float *no_rot, u_char div, u_char room_id);
+u_char PlyrMapHitCheck(sceVu0FVECTOR dst, sceVu0FVECTOR pos, u_char div, u_char room_id);
+int PlyrMapHitMoveOfs(sceVu0FVECTOR dst, sceVu0FVECTOR pos, u_char room, u_char flr_room);
+u_char GetPointMoveMotion(sceVu0FVECTOR p, u_char no);
 u_char MapCameraCdivideAB(u_short data_no, u_short *xmin, u_short *xmax, u_short *ymin, u_short *ymax, u_char cam_type);
 void NakasuHazeSet();
 void DebugMemoryCheck(u_char *addr, int size);
-int GetRoomPos(u_char room_no, float *room_pos);
+int GetRoomPos(u_char room_no, sceVu0FVECTOR room_pos);
 
 #endif // INGAME_MAP_MAP_CTRL_H
