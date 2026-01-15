@@ -1501,6 +1501,44 @@ spr_dat                        = 0x329870; // type:SPRT_DAT numel:1026 nosize
 flip_table                     = 0x3318b0; // type:u_short numel:1026 nosize
 raze_sprt                      = 0x3320b8; // type:SPRT_DAT
 
+// ingame/map/doortype.c
+door_type_dat                  = 0x333b40; // type:DOOR_TYPE_DAT numel:102 nosize
+dopen_tbl_dplrn                = 0x3341a0; // type:float numel:53 nosize
+dopen_tbl_dplrc                = 0x334278; // type:float numel:51 nosize
+dopen_tbl_dplrl                = 0x334348; // type:float numel:52 nosize
+dopen_tbl_dpsrc                = 0x334418; // type:float numel:53 nosize
+dopen_tbl_dplln                = 0x3344f0; // type:float numel:54 nosize
+dopen_tbl_dpllc                = 0x3345c8; // type:float numel:56 nosize
+dopen_tbl_dplll                = 0x3346a8; // type:float numel:54 nosize
+dopen_tbl_dpslc                = 0x334780; // type:float numel:62 nosize
+dopen_tbl_dpln_dbl0            = 0x334878; // type:float numel:47 nosize
+dopen_tbl_dpln_dbl1            = 0x334938; // type:float numel:47 nosize
+dopen_tbl_dplc_dbl0            = 0x3349f8; // type:float numel:54 nosize
+dopen_tbl_dplc_dbl1            = 0x334ad0; // type:float numel:54 nosize
+dopen_tbl_dpsc_dbl0            = 0x334ba8; // type:float numel:47 nosize
+dopen_tbl_dpsc_dbl1            = 0x334c68; // type:float numel:47 nosize
+dopen_tbl_frc                  = 0x334d28; // type:float numel:45 nosize
+dopen_tbl_frr                  = 0x334de0; // type:float numel:44 nosize
+dopen_tbl_flc                  = 0x334e90; // type:float numel:37 nosize
+dopen_tbl_flr                  = 0x334f28; // type:float numel:41 nosize
+dopen_tbl_f_dbl0               = 0x334fd0; // type:float numel:37 nosize
+dopen_tbl_f_dbl1               = 0x335068; // type:float numel:37 nosize
+dclose68_tbl                   = 0x335100; // type:float numel:140 nosize
+dclose69_tbl                   = 0x335330; // type:float numel:140 nosize
+dclose70_tbl                   = 0x335560; // type:float numel:140 nosize
+dclose71_tbl                   = 0x335790; // type:float numel:140 nosize
+dclose72r_tbl                  = 0x3359c0; // type:float numel:119 nosize
+dclose72l_tbl                  = 0x335ba0; // type:float numel:119 nosize
+dclose73r_tbl                  = 0x335d80; // type:float numel:140 nosize
+dclose73l_tbl                  = 0x335fb0; // type:float numel:140 nosize
+dclose74r_tbl                  = 0x3361e0; // type:float numel:140 nosize
+dclose74l_tbl                  = 0x336410; // type:float numel:140 nosize
+dopen_tbl_drot                 = 0x336640; // type:float numel:68 nosize
+dopen_tbl_dpsk                 = 0x336750; // type:float numel:97 nosize
+dopen_tbl_dplk                 = 0x3368d8; // type:float numel:69 nosize
+door_mtn_dat                   = 0x336a78; // type:DOOR_MTN_DAT numel:19 nosize
+door_move_dat                  = 0x336ba8; // type:DOOR_MOVE_DAT numel:20 nosize
+
 // ingame/map/furn_dat.c
 furn_dat                       = 0x337730; // type:FURN_DAT numel:409 nosize
 furn_attr_dat                  = 0x3393f8; // type:u_int numel:34 numel:5 nosize

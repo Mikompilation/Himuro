@@ -1593,6 +1593,62 @@ class DIAL_KEY_WRK(CStructure):
     push_no: c_uint8 * 5
 
 
+###########################################################################
+# typedef struct {
+# 	u_short attribute;
+# 	short int open_wait;
+# 	short int close_wait;
+# 	short int move_max;
+# 	int se_file;
+# 	u_char room_id;
+# 	u_short dbl_did;
+# } DOOR_TYPE_DAT;
+class DOOR_TYPE_DAT(CStructure):
+    attribute: c_uint16
+    open_wait: c_int16
+    close_wait: c_int16
+    move_max: c_int16
+    se_file: c_int32
+    room_id: c_uint8
+    dbl_did: c_uint16
+
+
+# typedef struct {
+# 	float sx;
+# 	float sy;
+# 	u_char dmd_no1;
+# 	u_char dmd_no2;
+# 	u_char anm_no;
+# 	u_char anm_last_no;
+# 	u_char c_dmd_no1;
+# 	u_char c_dmd_no2;
+# 	u_char c_anm_no;
+# } DOOR_MTN_DAT;
+class DOOR_MTN_DAT(CStructure):
+    sx: c_float
+    sy: c_float
+    dmd_no1: c_uint8
+    dmd_no2: c_uint8
+    anm_no: c_uint8
+    anm_last_no: c_uint8
+    c_dmd_no1: c_uint8
+    c_dmd_no2: c_uint8
+    c_anm_no: c_uint8
+
+
+# typedef struct {
+# 	u_short st_tbl_pos;
+# 	u_short start_cnt;
+# 	u_short end_cnt;
+# 	u_short sel_cnt;
+# } DOOR_MOVE_DAT;
+class DOOR_MOVE_DAT(CStructure):
+    st_tbl_pos: c_uint16
+    start_cnt: c_uint16
+    end_cnt: c_uint16
+    sel_cnt: c_uint16
+
+
 elf_names: dict[str, str] = {
     "us": "SLUS_203.88",
     "eu": "SLES_508.21",

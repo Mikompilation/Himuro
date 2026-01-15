@@ -32,10 +32,10 @@ typedef struct {
 	u_short sel_cnt;
 } DOOR_MOVE_DAT;
 
-// extern DOOR_TYPE_DAT door_type_dat[0];
-// extern float *dtbl_tbl[0];
-// extern DOOR_MTN_DAT door_mtn_dat[0];
-// extern DOOR_MOVE_DAT door_move_dat[0];
+// extern DOOR_TYPE_DAT door_type_dat[];
+// extern float *dtbl_tbl[];
+// extern DOOR_MTN_DAT door_mtn_dat[];
+// extern DOOR_MOVE_DAT door_move_dat[];
 
 DOOR_MTN_DAT* GetDoorMtnDat(u_char dtype);
 DOOR_TYPE_DAT* GetDoorTypeDatP(int no);
