@@ -3806,7 +3806,7 @@ void PlyrMovePad(MOVE_BOX *mb, sceVu0FVECTOR tv)
     }
 }
 
-void GetMoveSpeed(float *tv)
+void GetMoveSpeed(sceVu0FVECTOR tv)
 {
     tv[0] = 0.0f;
     tv[1] = 0.0f;

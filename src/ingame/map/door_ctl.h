@@ -136,7 +136,7 @@ int DoorKeyUnlock(u_short door_id);
 // int DoorSttsChange(u_short door_id, u_char stts); // `EventMain` in ev_main.c needs them to implicitly declared
 u_char DoorHitCheck(u_char *dx_max, u_char *dz_max, float *dst, float *ppos, u_char div);
 u_char DoorHitCheck2(u_short pos_x, u_short pos_y, u_char room_id);
-u_char DoorCoverCheck(u_short pos_x, short int pos_y, u_short pos_z, u_char room_id);
+// u_char DoorCoverCheck(u_short pos_x, short int pos_y, u_short pos_z, u_char room_id);
 void DoorDataRenewNow();
 void DoorFreeFurnWrk(u_char room_id);
 void DoorJoint2Next();
