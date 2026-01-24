@@ -88,6 +88,31 @@ typedef struct {
 	u_char opnmtn_flg;
 } NON_CLOSE_DOOR_WRK;
 
+typedef struct {
+	int dwrk_no;
+	u_char type;
+	u_char sq_no[2];
+} DOJ_SQUARE;
+
+typedef struct {
+	DOJ_SQUARE dojs[2];
+	int dwno_base;
+	u_char mtn_no;
+	u_char exc_flg;
+	u_char dbl_flg;
+	u_char dor_flg;
+} DOJ_SQUARE_MTN;
+
+typedef struct {
+	float rot;
+	u_short pos_x;
+	short int pos_y;
+	u_short pos_z;
+	short int pad_s;
+	u_short type;
+	u_short mdl_no;
+} DOOR_DATA_POP;
+
 extern AREA_READ_WRK area_read_wrk;
 extern DOOR_OPEN_CTRL door_open_ctrl;
 extern DOOR_WRK door_wrk[20];
@@ -133,6 +158,10 @@ int DoorKeyLock(u_short door_id);
 int DoorKeyLockOnly(u_short door_id);
 int DoorKeyUnlock(u_short door_id);
 // int DoorKeyUnlockOnly(u_short door_id); // `EventMain` in ev_main.c needs them to implicitly declared
+#ifdef INCLUDING_FROM_DOOR_CTL_C
+int DoorSttsChange(u_short door_id, u_char stts); // `EventMain` in ev_main.c needs them to implicitly declared
+#else
+#endif
 // int DoorSttsChange(u_short door_id, u_char stts); // `EventMain` in ev_main.c needs them to implicitly declared
 u_char DoorHitCheck(u_char *dx_max, u_char *dz_max, float *dst, float *ppos, u_char div);
 u_char DoorHitCheck2(u_short pos_x, u_short pos_y, u_char room_id);
@@ -147,8 +176,8 @@ u_char ChkNextRoomIsInsite();
 u_char* GetDoorRoomNumP();
 u_char* GetDoorRoomNumPFloor(u_char floor);
 u_char* GetDoorRoomConectDataP(u_char room_id);
-int ChkDoorIsInsite(float *dpos, float dpre_rot, u_short door_id);
-int ChkDoorIsInsite2(float *dpos, float dpre_rot, u_short door_id);
+int ChkDoorIsInsite(sceVu0FVECTOR dpos, float dpre_rot, u_short door_id);
+int ChkDoorIsInsite2(sceVu0FVECTOR dpos, float dpre_rot, u_short door_id);
 int TmpMapHit(u_short door_id);
 int GetDoorSttsForMap(DOOR_STTS_MAP *dsmp, u_short door_id, u_char floor);
 u_short DoorChangeModel(u_short door_id, u_short model_no);

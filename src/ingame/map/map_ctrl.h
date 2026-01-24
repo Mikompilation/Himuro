@@ -11,7 +11,7 @@ typedef struct {
     u_char sq_num;
 } CAMERA4_DATA_POP;
 
-// extern u_char floor_exist[5][4];
+extern const u_char floor_exist[5][4];
 extern u_char room_pass[42];
 // extern u_char gtmp_cam_type;
 // extern u_char gtmp_room;
