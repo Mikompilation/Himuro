@@ -164,7 +164,7 @@ segments:
           - [0xc1530,  c,   ingame/map/door_ctl]
           - [0xc8f20,  c,   ingame/map/doortype]
           - [0xc9048,  c,   ingame/map/rotd_ctl]
-          - [0xc95b0,  asm, ingame/map/find_ctl]
+          - [0xc95b0,  c,   ingame/map/find_ctl]
           - [0xc9968,  asm, ingame/map/furn_ctl]
           - [0xcb3e8,  c,   ingame/map/furn_dat]
           - [0xcb408,  asm, ingame/map/furn_eff]
@@ -291,7 +291,7 @@ segments:
           - { start: 0x238e70, type: .data,   vram: 0x337e70, name: ingame/map/map_area           }
           - { start: 0x239400, type: .data,   vram: 0x338400, name: ingame/map/door_ctl           }
           - { start: 0x23a890, type: .data,   vram: 0x339890, name: ingame/map/doortype           }
-          - { start: 0x23d998, type:  data,   vram: 0x33c998, name: ingame/map/find_ctl           }
+          - { start: 0x23d998, type: .data,   vram: 0x33c998, name: ingame/map/find_ctl           }
           - { start: 0x23dab8, type:  data,   vram: 0x33cab8, name: ingame/map/find_dat           }
           - { start: 0x23e480, type: .data,   vram: 0x33d480, name: ingame/map/furn_dat           }
           - { start: 0x240c60, type:  data,   vram: 0x33fc60, name: ingame/map/furn_eff           }
@@ -489,7 +489,7 @@ segments:
           - { start: 0x25da08, type: .lit4,   vram: 0x35ca08, name: ingame/map/map_ctrl           }
           - { start: 0x25da18, type: .lit4,   vram: 0x35ca18, name: ingame/map/door_ctl           }
           - { start: 0x25daac, type: .lit4,   vram: 0x35caac, name: ingame/map/rotd_ctl           }
-          - { start: 0x25dab8, type:  lit4,   vram: 0x35cab8, name: ingame/map/find_ctl           }
+          - { start: 0x25dab8, type: .lit4,   vram: 0x35cab8, name: ingame/map/find_ctl           }
           - { start: 0x25dac0, type:  lit4,   vram: 0x35cac0, name: ingame/map/furn_ctl           }
           - { start: 0x25dac4, type:  lit4,   vram: 0x35cac4, name: ingame/map/furn_eff           }
           - { start: 0x25dac8, type:  lit4,   vram: 0x35cac8, name: ingame/map/item_ctl           }

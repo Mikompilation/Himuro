@@ -12,6 +12,6 @@ typedef struct {
 	u_short msg_no;
 } FIND_DAT;
 
-// extern FIND_DAT find_dat[0];
+extern FIND_DAT find_dat[];
 
 #endif // INGAME_MAP_FIND_DAT_H
