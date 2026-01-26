@@ -1649,6 +1649,24 @@ class DOOR_MOVE_DAT(CStructure):
     sel_cnt: c_uint16
 
 
+###########################################################################
+# typedef struct {
+# 	u_char type;
+# 	u_char dummy;
+# 	u_short after;
+# 	u_short pos_x;
+# 	u_short pos_y;
+# 	u_short msg_no;
+# } FIND_DAT;
+class FIND_DAT(CStructure):
+    type: c_uint8
+    dummy: c_uint8
+    after: c_uint16
+    pos_x: c_uint16
+    pos_y: c_uint16
+    msg_no: c_uint16
+
+
 elf_names: dict[str, str] = {
     "us": "SLUS_203.88",
     "eu": "SLES_508.21",

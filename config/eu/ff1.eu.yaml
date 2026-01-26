@@ -165,6 +165,7 @@ segments:
           - [0xc8f20,  c,   ingame/map/doortype]
           - [0xc9048,  c,   ingame/map/rotd_ctl]
           - [0xc95b0,  c,   ingame/map/find_ctl]
+          - [0xc9968,  c,   ingame/map/find_dat]
           - [0xc9968,  asm, ingame/map/furn_ctl]
           - [0xcb3e8,  c,   ingame/map/furn_dat]
           - [0xcb408,  asm, ingame/map/furn_eff]
@@ -292,7 +293,7 @@ segments:
           - { start: 0x239400, type: .data,   vram: 0x338400, name: ingame/map/door_ctl           }
           - { start: 0x23a890, type: .data,   vram: 0x339890, name: ingame/map/doortype           }
           - { start: 0x23d998, type: .data,   vram: 0x33c998, name: ingame/map/find_ctl           }
-          - { start: 0x23dab8, type:  data,   vram: 0x33cab8, name: ingame/map/find_dat           }
+          - { start: 0x23dab8, type: .data,   vram: 0x33cab8, name: ingame/map/find_dat           }
           - { start: 0x23e480, type: .data,   vram: 0x33d480, name: ingame/map/furn_dat           }
           - { start: 0x240c60, type:  data,   vram: 0x33fc60, name: ingame/map/furn_eff           }
           - { start: 0x240e80, type:  data,   vram: 0x33fe80, name: ingame/map/item_ctl           }
