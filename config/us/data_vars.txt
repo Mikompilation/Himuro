@@ -1650,6 +1650,11 @@ furn_photo_center101           = 0x339d40; // type:sceVu0FVECTOR numel:1 nosize
 furn_photo_center102           = 0x339d50; // type:sceVu0FVECTOR numel:1 nosize
 fpc_rot_dat                    = 0x339f00; // type:u_char numel:2 numel:8 nosize
 
+// ingame/map/furn_eff.c
+fefct_fire                     = 0x339f10; // type:FURN_EFCT_FIRE numel:13 nosize
+fefct_sunshine                 = 0x33a080; // type:FURN_EFCT_SUNSHINE numel:3 nosize
+fefct_deform                   = 0x33a120; // type:FURN_EFCT_DEFORM numel:5 nosize
+
 // edit/test_2d.c
 test_tex0                      = 0x341128; // type:SPRT_DAT numel:5 nosize
 test_tex1                      = 0x3411c8; // type:SPRT_DAT numel:13 nosize

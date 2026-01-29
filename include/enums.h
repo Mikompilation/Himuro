@@ -5469,4 +5469,12 @@ typedef enum {
 	DOOR_STTS_NUM = 10
 } DOOR_STTS;
 
+typedef enum {
+	FEFCT_FIRE0 = 0,
+	FEFCT_KASA0 = 1,
+	FEFCT_SUNSHINE0 = 2,
+	FEFCT_DEFORM0 = 3,
+	FEFCT_MAX = 4
+} FURN_EFCT_TYPE;
+
 #endif // ENUMS_H

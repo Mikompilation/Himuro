@@ -1667,6 +1667,78 @@ class FIND_DAT(CStructure):
     msg_no: c_uint16
 
 
+###########################################################################
+# typedef struct {
+# 	float pos_x;
+# 	float pos_y;
+# 	float pos_z;
+# 	float fscl;
+# 	float kscl;
+# 	u_char fr;
+# 	u_char fg;
+# 	u_char fb;
+# 	u_char kr;
+# 	u_char kg;
+# 	u_char kb;
+# } FURN_EFCT_FIRE;
+class FURN_EFCT_FIRE(CStructure):
+    pos_x: c_float
+    pos_y: c_float
+    pos_z: c_float
+    fscl: c_float
+    kscl: c_float
+    fr: c_uint8
+    fg: c_uint8
+    fb: c_uint8
+    kr: c_uint8
+    kg: c_uint8
+    kb: c_uint8
+
+
+# typedef struct {
+# 	float pos_x;
+# 	float pos_y;
+# 	float pos_z;
+# 	float lpos_x;
+# 	float lpos_y;
+# 	float lpos_z;
+# 	float rot_x;
+# 	float rot_y;
+# 	float rot_z;
+# 	float w;
+# 	float h;
+# 	int power;
+# 	u_char r;
+# 	u_char g;
+# 	u_char b;
+# } FURN_EFCT_SUNSHINE;
+class FURN_EFCT_SUNSHINE(CStructure):
+    pos_x: c_float
+    pos_y: c_float
+    pos_z: c_float
+    lpos_x: c_float
+    lpos_y: c_float
+    lpos_z: c_float
+    rot_x: c_float
+    rot_y: c_float
+    rot_z: c_float
+    w: c_float
+    h: c_float
+    power: c_int32
+    r: c_uint8
+    g: c_uint8
+    b: c_uint8
+
+
+# typedef struct {
+# 	u_char sclw;
+# 	u_char sclh;
+# } FURN_EFCT_DEFORM;
+class FURN_EFCT_DEFORM(CStructure):
+    sclw: c_uint8
+    sclh: c_uint8
+
+
 elf_names: dict[str, str] = {
     "us": "SLUS_203.88",
     "eu": "SLES_508.21",

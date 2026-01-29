@@ -3,6 +3,8 @@
 
 #include "typedefs.h"
 
+#include "ingame/map/furn_types.h"
+
 typedef struct {
 	float pos_x;
 	float pos_y;
@@ -40,14 +42,12 @@ typedef struct {
 	u_char sclh;
 } FURN_EFCT_DEFORM;
 
-#include "ingame/map/furn_ctl.h"
-
-// extern FURN_EFCT_FIRE fefct_fire[0];
-// extern FURN_EFCT_SUNSHINE fefct_sunshine[0];
-// extern FURN_EFCT_DEFORM fefct_deform[0];
+// extern FURN_EFCT_FIRE fefct_fire[];
+// extern FURN_EFCT_SUNSHINE fefct_sunshine[];
+// extern FURN_EFCT_DEFORM fefct_deform[];
 
 void FurnEfctSet(FURN_WRK *fwp);
-void FurnEfctFree();
+void FurnEfctFree(FURN_WRK *fwp);
 void FurnHintDeformCtrl();
 
 #endif // INGAME_MAP_FURN_EFF_H
