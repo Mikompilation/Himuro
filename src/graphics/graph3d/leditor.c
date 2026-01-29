@@ -10,6 +10,7 @@
 #include "graphics/graph3d/sgsgd.h"
 #include "graphics/graph3d/load3d.h"
 #include "graphics/graph3d/sglight.h"
+#include "graphics/graph3d/libsg.h"
 
 #include "data/room_name.h" // static char *room_name[];
 static u_int *ldata_top;

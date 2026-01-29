@@ -6,6 +6,45 @@
 #include "graphics/graph3d/light_types.h"
 #include "ingame/map/furn_types.h"
 
+typedef struct {
+    u_int ck_item;
+    u_int ck_rate;
+    float distn;
+    float distf;
+    float rot_range;
+    float vlow;
+    float vhigh;
+    u_int delay;
+    u_int stat;
+    u_short obj;
+} FACT_CHK_DAT;
+
+typedef struct {
+    u_short type;
+    u_short no;
+} FACT_EXEC_DAT;
+
+typedef struct {
+    FACT_CHK_DAT *chk[2];
+    FACT_EXEC_DAT *exec[2];
+    float dist_tgt;
+    float fade_rate;
+    float fade;
+    u_int glb_cnt;
+    u_int dly_cnt;
+    u_int exe_cnt;
+    u_int attr;
+    int fw_no;
+    int exec_rate;
+    int hndl;
+    u_short furn_id;
+    u_char stts;
+    u_char exec_mode[2];
+    u_char exec_flg;
+    u_char eve_flg;
+    u_char room_id;
+} F_ACT_WRK;
+
 extern int furn_disp_flg;
 
 void FurnCtrlMain();
@@ -39,7 +78,7 @@ void InitFurnAttrFlg();
 void SetFurnAttrEve(u_short id, u_short flg, int on_flg);
 u_int GetFurnAttrF(FURN_WRK *fwp, u_char msn_no);
 u_int GetFurnAttr(u_short id, u_char msn_no);
-u_char FurnHitCheck(u_char *dx_max, u_char *dz_max, float *pos, float *dst, u_char div, u_char room);
+u_char FurnHitCheck(u_char *dx_max, u_char *dz_max, sceVu0FVECTOR pos, sceVu0FVECTOR dst, u_char div, u_char room);
 u_char FurnHitCheck2(u_short pos_x, u_short pos_y, u_char room_id);
 
 #endif // INGAME_MAP_FURN_CTL_H

@@ -178,7 +178,7 @@ void LoadPackedTexture(u_char *fname)
     free(pointer);
 }
 
-void CalcRoomCoord(void *sgd_top, float *pos)
+void CalcRoomCoord(void *sgd_top, sceVu0FVECTOR pos)
 {
     SgCOORDUNIT *cp;
     float *v0;
@@ -198,7 +198,7 @@ void CalcRoomCoord(void *sgd_top, float *pos)
     CalcCoordinate(cp, hs->blocks - 1);
 }
 
-void SetUpRoomCoordinate(int disp_room, float *pos)
+void SetUpRoomCoordinate(int disp_room, sceVu0FVECTOR pos)
 {
     if (area_read_wrk.stat != 0 || disp_room == 0xff)
     {
@@ -1038,7 +1038,7 @@ void SetSgSpotLight(SPOT_WRK *spot, SgLIGHT *plight)
     spot->power = plight->power;
 }
 
-void SetMyLight(LIGHT_PACK *light_pack, float *eyevec)
+void SetMyLight(LIGHT_PACK *light_pack, sceVu0FVECTOR eyevec)
 {
     int i;
     int num;
@@ -1324,7 +1324,7 @@ void DeleteReflectLight(LIGHT_PACK *light_pack)
         light_pack->spot_num--;
     }
 }
-void SetMyLightObj(LIGHT_PACK *trans_pack, LIGHT_PACK *light_pack, float *cam_zd, float *pos)
+void SetMyLightObj(LIGHT_PACK *trans_pack, LIGHT_PACK *light_pack, sceVu0FVECTOR cam_zd, sceVu0FVECTOR pos)
 {
     int old_parallel_num;
     int old_spot_num;
@@ -1352,7 +1352,7 @@ void SetMyLightObj(LIGHT_PACK *trans_pack, LIGHT_PACK *light_pack, float *cam_zd
     light_pack->point_num = old_point_num;
 }
 
-void SetMyLightRoom(LIGHT_PACK *light_pack, float *eyevec)
+void SetMyLightRoom(LIGHT_PACK *light_pack, sceVu0FVECTOR eyevec)
 {
     int old_spot_num;
 

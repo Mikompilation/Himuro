@@ -166,7 +166,7 @@ segments:
           - [0xc9048,  c,   ingame/map/rotd_ctl]
           - [0xc95b0,  c,   ingame/map/find_ctl]
           - [0xc9968,  c,   ingame/map/find_dat]
-          - [0xc9968,  asm, ingame/map/furn_ctl]
+          - [0xc9968,  c,   ingame/map/furn_ctl]
           - [0xcb3e8,  c,   ingame/map/furn_dat]
           - [0xcb408,  asm, ingame/map/furn_eff]
           - [0xcb998,  asm, ingame/map/item_ctl]
@@ -409,7 +409,7 @@ segments:
           - { start: 0x2570c0, type: .rodata, vram: 0x3560c0, name: ingame/map/map_area           }
           - { start: 0x2570f0, type: .rodata, vram: 0x3560f0, name: ingame/map/door_ctl           }
           - { start: 0x257250, type: .rodata, vram: 0x356250, name: ingame/map/doortype           }
-          - { start: 0x2572a0, type:  rodata, vram: 0x3562a0, name: ingame/map/furn_ctl           }
+          - { start: 0x2572a0, type: .rodata, vram: 0x3562a0, name: ingame/map/furn_ctl           }
           - { start: 0x2572e0, type:  rodata, vram: 0x3562e0, name: ingame/map/furn_spe/furn_spe  }
           - { start: 0x2576d0, type:  rodata, vram: 0x3566d0, name: ingame/menu/item              }
           - { start: 0x257810, type:  rodata, vram: 0x356810, name: ingame/menu/ig_album          }
@@ -491,7 +491,7 @@ segments:
           - { start: 0x25da18, type: .lit4,   vram: 0x35ca18, name: ingame/map/door_ctl           }
           - { start: 0x25daac, type: .lit4,   vram: 0x35caac, name: ingame/map/rotd_ctl           }
           - { start: 0x25dab8, type: .lit4,   vram: 0x35cab8, name: ingame/map/find_ctl           }
-          - { start: 0x25dac0, type:  lit4,   vram: 0x35cac0, name: ingame/map/furn_ctl           }
+          - { start: 0x25dac0, type: .lit4,   vram: 0x35cac0, name: ingame/map/furn_ctl           }
           - { start: 0x25dac4, type:  lit4,   vram: 0x35cac4, name: ingame/map/furn_eff           }
           - { start: 0x25dac8, type:  lit4,   vram: 0x35cac8, name: ingame/map/item_ctl           }
           - { start: 0x25db00, type:  lit4,   vram: 0x35cb00, name: ingame/map/furn_spe/furn_spe  }
@@ -586,7 +586,7 @@ segments:
           - { start: 0x25ed68, type: .sdata,  vram: 0x35dd68, name: ingame/map/map_ctrl           }
           - { start: 0x25ed74, type: .sdata,  vram: 0x35dd74, name: ingame/map/map_area           }
           - { start: 0x25ed78, type: .sdata,  vram: 0x35dd78, name: ingame/map/door_ctl           }
-          - { start: 0x25ed7c, type:  sdata,  vram: 0x35dd7c, name: ingame/map/furn_ctl           }
+          - { start: 0x25ed7c, type: .sdata,  vram: 0x35dd7c, name: ingame/map/furn_ctl           }
           - { start: 0x25ed80, type:  sdata,  vram: 0x35dd80, name: ingame/map/furn_eff           }
           - { start: 0x25ed98, type:  sdata,  vram: 0x35dd98, name: ingame/map/furn_spe/furn_spe  }
           - { start: 0x25edc8, type:  sdata,  vram: 0x35ddc8, name: ingame/menu/pause             }

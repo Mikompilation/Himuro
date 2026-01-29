@@ -16,6 +16,7 @@
 #include "graphics/graph3d/sglib.h"
 #include "graphics/graph3d/sgsgd.h"
 #include "graphics/graph3d/gra3d.h"
+#include "graphics/graph3d/libsg.h"
 
 typedef struct {
     u_char file_id[4];
