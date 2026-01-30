@@ -1657,6 +1657,13 @@ fefct_fire                     = 0x33fc60; // type:FURN_EFCT_FIRE numel:13 nosiz
 fefct_sunshine                 = 0x33fdd0; // type:FURN_EFCT_SUNSHINE numel:3 nosize
 fefct_deform                   = 0x33fe70; // type:FURN_EFCT_DEFORM numel:5 nosize
 
+// ingame/map/item_ctl.c
+map_item_dat                   = 0x33fe80; // type:MAP_ITEM_DAT numel:162
+map_file_dat0                  = 0x340768; // type:MAP_FILE_DAT numel:50
+map_file_dat1                  = 0x340a28; // type:MAP_FILE_DAT numel:50
+map_file_dat2                  = 0x340ce8; // type:MAP_FILE_DAT numel:50
+map_file_dat3                  = 0x340fa8; // type:MAP_FILE_DAT numel:50
+
 // edit/test_2d.c
 test_tex0                      = 0x347300; // type:SPRT_DAT numel:5 nosize
 test_tex1                      = 0x3473a0; // type:SPRT_DAT numel:13 nosize

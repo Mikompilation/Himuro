@@ -1739,6 +1739,51 @@ class FURN_EFCT_DEFORM(CStructure):
     sclh: c_uint8
 
 
+###########################################################################
+# typedef struct {
+# 	u_char item_no;
+# 	u_char stts;
+# 	u_char room;
+# 	u_char msn_no;
+# 	short int pos_x;
+# 	short int pos_y;
+# 	short int pos_z;
+# 	u_short get_msg[2];
+# } MAP_ITEM_DAT;
+class MAP_ITEM_DAT(CStructure):
+    item_no: c_uint8
+    stts: c_uint8
+    room: c_uint8
+    msn_no: c_uint8
+    pos_x: c_int16
+    pos_y: c_int16
+    pos_z: c_int16
+    get_msg: c_uint16 * 2
+
+
+# typedef struct {
+# 	u_char stts;
+# 	u_char room;
+# 	short int pos_x;
+# 	short int pos_y;
+# 	short int pos_z;
+# 	u_char get_msg[2];
+# 	u_char dsp_pct;
+# 	u_char msn_no;
+# 	u_char map_dsp;
+# } MAP_FILE_DAT;
+class MAP_FILE_DAT(CStructure):
+    stts: c_uint8
+    room: c_uint8
+    pos_x: c_int16
+    pos_y: c_int16
+    pos_z: c_int16
+    get_msg: c_uint8 * 2
+    dsp_pct: c_uint8
+    msn_no: c_uint8
+    map_dsp: c_uint8
+
+
 elf_names: dict[str, str] = {
     "us": "SLUS_203.88",
     "eu": "SLES_508.21",

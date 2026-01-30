@@ -4,6 +4,17 @@
 #include "typedefs.h"
 
 typedef struct {
+	u_char item_no;
+	u_char stts;
+	u_char room;
+	u_char msn_no;
+	short int pos_x;
+	short int pos_y;
+	short int pos_z;
+	u_short get_msg[2];
+} MAP_ITEM_DAT;
+
+typedef struct {
 	u_char stts;
 	u_char room;
 	short int pos_x;
@@ -16,7 +27,7 @@ typedef struct {
 } MAP_FILE_DAT;
 
 // extern MAP_ITEM_DAT map_item_dat[162];
-// extern u_char map_item_ap_type[0][2];
+// extern u_char map_item_ap_type[][2];
 // extern MAP_FILE_DAT map_file_dat0[50];
 // extern MAP_FILE_DAT map_file_dat1[50];
 // extern MAP_FILE_DAT map_file_dat2[50];

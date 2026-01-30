@@ -169,7 +169,7 @@ segments:
           - [0xc9968,  c,   ingame/map/furn_ctl]
           - [0xcb3e8,  c,   ingame/map/furn_dat]
           - [0xcb408,  c,   ingame/map/furn_eff]
-          - [0xcb998,  asm, ingame/map/item_ctl]
+          - [0xcb998,  c,   ingame/map/item_ctl]
           - [0xcc4f8,  c,   ingame/map/map_htck]
           - [0xcd1a8,  asm, ingame/map/furn_spe/furn_spe]
           - [0xd0d50,  asm, ingame/map/furn_spe/fsla_main]
@@ -296,7 +296,7 @@ segments:
           - { start: 0x23dab8, type: .data,   vram: 0x33cab8, name: ingame/map/find_dat           }
           - { start: 0x23e480, type: .data,   vram: 0x33d480, name: ingame/map/furn_dat           }
           - { start: 0x240c60, type: .data,   vram: 0x33fc60, name: ingame/map/furn_eff           }
-          - { start: 0x240e80, type:  data,   vram: 0x33fe80, name: ingame/map/item_ctl           }
+          - { start: 0x240e80, type: .data,   vram: 0x33fe80, name: ingame/map/item_ctl           }
           - { start: 0x242730, type:  data,   vram: 0x341730, name: ingame/map/furn_spe/furn_spe  }
           - { start: 0x243b60, type:  data,   vram: 0x342b60, name: ingame/map/furn_spe/fsla_main }
           - { start: 0x243df0, type:  data,   vram: 0x342df0, name: ingame/map/furn_spe/fsla_dat  }
@@ -493,7 +493,8 @@ segments:
           - { start: 0x25dab8, type: .lit4,   vram: 0x35cab8, name: ingame/map/find_ctl           }
           - { start: 0x25dac0, type: .lit4,   vram: 0x35cac0, name: ingame/map/furn_ctl           }
           - { start: 0x25dac4, type: .lit4,   vram: 0x35cac4, name: ingame/map/furn_eff           }
-          - { start: 0x25dac8, type:  lit4,   vram: 0x35cac8, name: ingame/map/item_ctl           }
+          - { start: 0x25dac8, type: .lit4,   vram: 0x35cac8, name: ingame/map/item_ctl           }
+          - { start: 0x25dad0, type:  lit4,   vram: 0x35cad0, name: unk_lit4                      }
           - { start: 0x25db00, type:  lit4,   vram: 0x35cb00, name: ingame/map/furn_spe/furn_spe  }
           - { start: 0x25db1c, type:  lit4,   vram: 0x35cb1c, name: ingame/map/furn_spe/fsla_main }
           - { start: 0x25db24, type:  lit4,   vram: 0x35cb24, name: ingame/menu/item              }
