@@ -489,8 +489,7 @@ segments:
           - { start: 0x256e44, type: .lit4,   vram: 0x355e44, name: ingame/map/furn_ctl           }
           - { start: 0x256e48, type: .lit4,   vram: 0x355e48, name: ingame/map/furn_eff           }
           - { start: 0x256e4c, type: .lit4,   vram: 0x355e4c, name: ingame/map/item_ctl           }
-          - { start: 0x256e54, type:  lit4,   vram: 0x355e54, name: unk_lit4                      }
-          - { start: 0x256e84, type:  lit4,   vram: 0x355e84, name: ingame/map/furn_spe/furn_spe  }
+          - { start: 0x256e54, type:  lit4,   vram: 0x355e54, name: ingame/map/furn_spe/furn_spe  }
           - { start: 0x256ea0, type:  lit4,   vram: 0x355ea0, name: ingame/map/furn_spe/fsla_main }
           - { start: 0x256ea8, type:  lit4,   vram: 0x355ea8, name: ingame/menu/item              }
           - { start: 0x256ed4, type:  lit4,   vram: 0x355ed4, name: ingame/menu/pause             }
