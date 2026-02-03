@@ -4,9 +4,9 @@
 #include "typedefs.h"
 #include "graphics/graph3d/light_types.h"
 
-// extern u_char able_to_light_tbl[0];
-// extern POINT_LIGHT_WRK point_light_wrk[8];
-// extern FSPE_LIGHT_WRK fspe_light_wrk[7];
+// extern u_char able_to_light_tbl[];
+extern POINT_LIGHT_WRK point_light_wrk[8];
+extern FSPE_LIGHT_WRK fspe_light_wrk[7];
 
 FSPE_LIGHT_ANM* SetRandLightAnimEach(FSPE_LIGHT_ANM **ap);
 void SetRandLightAnim(FSPE_LIGHT_WRK *lw);

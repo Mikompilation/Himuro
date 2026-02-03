@@ -42,7 +42,7 @@ typedef struct {
 	u_char sclh;
 } FURN_EFCT_DEFORM;
 
-// extern FURN_EFCT_FIRE fefct_fire[];
+extern FURN_EFCT_FIRE fefct_fire[];
 // extern FURN_EFCT_SUNSHINE fefct_sunshine[];
 // extern FURN_EFCT_DEFORM fefct_deform[];
 

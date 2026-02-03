@@ -26,7 +26,7 @@ typedef struct {
 	u_char map_dsp;
 } MAP_FILE_DAT;
 
-// extern MAP_ITEM_DAT map_item_dat[162];
+extern MAP_ITEM_DAT map_item_dat[162];
 // extern u_char map_item_ap_type[][2];
 // extern MAP_FILE_DAT map_file_dat0[50];
 // extern MAP_FILE_DAT map_file_dat1[50];
