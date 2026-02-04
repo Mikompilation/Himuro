@@ -3,10 +3,7 @@
 
 #include "typedefs.h"
 
-typedef struct {
-	u_short time;
-	float magnif;
-} FSPE_LIGHT_ANM;
+#include "graphics/graph3d/light_types.h"
 
 // extern FSPE_LIGHT_ANM fspe_lightanm_fadein1[0];
 // extern FSPE_LIGHT_ANM fspe_lightanm_fadein2[0];
@@ -25,7 +22,7 @@ typedef struct {
 // extern FSPE_LIGHT_ANM *fspe_la_inp2[0];
 // extern FSPE_LIGHT_ANM *fspe_la_outp1[0];
 // extern FSPE_LIGHT_ANM *fspe_la_outp2[0];
-// extern FSPE_LIGHT_ANM **fspe_la_array[0];
+extern FSPE_LIGHT_ANM **fspe_la_array[];
 
 
 #endif // INGAME_MAP_FURN_SPE_FSLA_DAT_H
