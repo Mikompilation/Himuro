@@ -1664,6 +1664,18 @@ map_file_dat1                  = 0x340a28; // type:MAP_FILE_DAT numel:50
 map_file_dat2                  = 0x340ce8; // type:MAP_FILE_DAT numel:50
 map_file_dat3                  = 0x340fa8; // type:MAP_FILE_DAT numel:50
 
+// ingame/map/furn_spe/fsla_dat.c
+fspe_lightanm_fadein1          = 0x342df0; // type:FSPE_LIGHT_ANM numel:5 nosize
+fspe_lightanm_fadein2          = 0x342e18; // type:FSPE_LIGHT_ANM numel:5 nosize
+fspe_lightanm_normal1          = 0x342e40; // type:FSPE_LIGHT_ANM numel:8 nosize
+fspe_lightanm_normal2          = 0x342e80; // type:FSPE_LIGHT_ANM numel:5 nosize
+fspe_lightanm_normal3          = 0x342ea8; // type:FSPE_LIGHT_ANM numel:8 nosize
+fspe_lightanm_normal4          = 0x342ee8; // type:FSPE_LIGHT_ANM numel:5 nosize
+fspe_lightanm_strong1          = 0x342f10; // type:FSPE_LIGHT_ANM numel:5 nosize
+fspe_lightanm_strong2          = 0x342f38; // type:FSPE_LIGHT_ANM numel:5 nosize
+fspe_lightanm_fadeout1         = 0x342f60; // type:FSPE_LIGHT_ANM numel:5 nosize
+fspe_lightanm_fadeout2         = 0x342f88; // type:FSPE_LIGHT_ANM numel:6 nosize
+
 // edit/test_2d.c
 test_tex0                      = 0x347300; // type:SPRT_DAT numel:5 nosize
 test_tex1                      = 0x3473a0; // type:SPRT_DAT numel:13 nosize

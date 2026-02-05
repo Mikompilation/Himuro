@@ -173,6 +173,7 @@ segments:
           - [0xcc4f8,  c,   ingame/map/map_htck]
           - [0xcd1a8,  c,   ingame/map/furn_spe/furn_spe]
           - [0xd0d50,  c,   ingame/map/furn_spe/fsla_main]
+          - [0xd1538,  c,   ingame/map/furn_spe/fsla_dat]
           - [0xd1538,  c,   ingame/map/furn_spe/fspe_acs]
           - [0xd15d8,  c,   ingame/map/furn_spe/adj_valg]
           - [0xd18f0,  asm, ingame/menu/item]
@@ -299,7 +300,7 @@ segments:
           - { start: 0x240e80, type: .data,   vram: 0x33fe80, name: ingame/map/item_ctl           }
           - { start: 0x242730, type: .data,   vram: 0x341730, name: ingame/map/furn_spe/furn_spe  }
           - { start: 0x243b60, type: .data,   vram: 0x342b60, name: ingame/map/furn_spe/fsla_main }
-          - { start: 0x243df0, type:  data,   vram: 0x342df0, name: ingame/map/furn_spe/fsla_dat  }
+          - { start: 0x243df0, type: .data,   vram: 0x342df0, name: ingame/map/furn_spe/fsla_dat  }
           - { start: 0x244028, type:  data,   vram: 0x343028, name: ingame/menu/item              }
           - { start: 0x2445c0, type:  data,   vram: 0x3435c0, name: ingame/menu/ig_camra          }
           - { start: 0x244618, type:  data,   vram: 0x343618, name: ingame/menu/ig_menu           }

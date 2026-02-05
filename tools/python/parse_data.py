@@ -1784,6 +1784,16 @@ class MAP_FILE_DAT(CStructure):
     map_dsp: c_uint8
 
 
+###########################################################################
+# typedef struct {
+#     u_short time;
+#     float magnif;
+# } FSPE_LIGHT_ANM;
+class FSPE_LIGHT_ANM(CStructure):
+    time: c_uint16
+    magnif: c_float
+
+
 elf_names: dict[str, str] = {
     "us": "SLUS_203.88",
     "eu": "SLES_508.21",

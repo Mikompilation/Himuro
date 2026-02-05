@@ -523,6 +523,7 @@ def generate_objdiff_configuration(config_path: Path, config: dict[str, Any], la
                     "ingame/entry/rgst_dat",
                     "outgame/btl_mode/btl_dat",
                     "ingame/map/find_dat",
+                    "ingame/map/furn_spe/fsla_dat",
                 ):
                     # skip it as it's either not part of the game files or a data only TU
                     continue
