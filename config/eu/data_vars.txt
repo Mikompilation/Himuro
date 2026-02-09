@@ -1676,6 +1676,9 @@ fspe_lightanm_strong2          = 0x342f38; // type:FSPE_LIGHT_ANM numel:5 nosize
 fspe_lightanm_fadeout1         = 0x342f60; // type:FSPE_LIGHT_ANM numel:5 nosize
 fspe_lightanm_fadeout2         = 0x342f88; // type:FSPE_LIGHT_ANM numel:6 nosize
 
+// ingame/menu/item.c
+item_use_dat                   = 0x343028; // type:ITEM_USE_DAT numel:70
+
 // edit/test_2d.c
 test_tex0                      = 0x347300; // type:SPRT_DAT numel:5 nosize
 test_tex1                      = 0x3473a0; // type:SPRT_DAT numel:13 nosize

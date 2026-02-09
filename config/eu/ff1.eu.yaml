@@ -176,7 +176,7 @@ segments:
           - [0xd1538,  c,   ingame/map/furn_spe/fsla_dat]
           - [0xd1538,  c,   ingame/map/furn_spe/fspe_acs]
           - [0xd15d8,  c,   ingame/map/furn_spe/adj_valg]
-          - [0xd18f0,  asm, ingame/menu/item]
+          - [0xd18f0,  c,   ingame/menu/item]
           - [0xd7308,  c,   ingame/menu/gameover]
           - [0xd7950,  asm, ingame/menu/pause]
           - [0xd82f0,  asm, ingame/menu/ig_album]
@@ -301,7 +301,7 @@ segments:
           - { start: 0x242730, type: .data,   vram: 0x341730, name: ingame/map/furn_spe/furn_spe  }
           - { start: 0x243b60, type: .data,   vram: 0x342b60, name: ingame/map/furn_spe/fsla_main }
           - { start: 0x243df0, type: .data,   vram: 0x342df0, name: ingame/map/furn_spe/fsla_dat  }
-          - { start: 0x244028, type:  data,   vram: 0x343028, name: ingame/menu/item              }
+          - { start: 0x244028, type: .data,   vram: 0x343028, name: ingame/menu/item              }
           - { start: 0x2445c0, type:  data,   vram: 0x3435c0, name: ingame/menu/ig_camra          }
           - { start: 0x244618, type:  data,   vram: 0x343618, name: ingame/menu/ig_menu           }
           - { start: 0x2446a0, type:  data,   vram: 0x3436a0, name: ingame/menu/item_get          }
@@ -412,7 +412,7 @@ segments:
           - { start: 0x257250, type: .rodata, vram: 0x356250, name: ingame/map/doortype           }
           - { start: 0x2572a0, type: .rodata, vram: 0x3562a0, name: ingame/map/furn_ctl           }
           - { start: 0x2572e0, type: .rodata, vram: 0x3562e0, name: ingame/map/furn_spe/furn_spe  }
-          - { start: 0x2576d0, type:  rodata, vram: 0x3566d0, name: ingame/menu/item              }
+          - { start: 0x2576d0, type: .rodata, vram: 0x3566d0, name: ingame/menu/item              }
           - { start: 0x257810, type:  rodata, vram: 0x356810, name: ingame/menu/ig_album          }
           - { start: 0x257850, type:  rodata, vram: 0x356850, name: ingame/menu/ig_camra          }
           - { start: 0x2578c0, type:  rodata, vram: 0x3568c0, name: ingame/menu/ig_menu           }
@@ -497,7 +497,7 @@ segments:
           - { start: 0x25dac8, type: .lit4,   vram: 0x35cac8, name: ingame/map/item_ctl           }
           - { start: 0x25dad0, type: .lit4,   vram: 0x35cad0, name: ingame/map/furn_spe/furn_spe  }
           - { start: 0x25db1c, type: .lit4,   vram: 0x35cb1c, name: ingame/map/furn_spe/fsla_main }
-          - { start: 0x25db24, type:  lit4,   vram: 0x35cb24, name: ingame/menu/item              }
+          - { start: 0x25db24, type: .lit4,   vram: 0x35cb24, name: ingame/menu/item              }
           - { start: 0x25db50, type:  lit4,   vram: 0x35cb50, name: ingame/menu/pause             }
           - { start: 0x25db54, type:  lit4,   vram: 0x35cb54, name: ingame/menu/ig_album          }
           - { start: 0x25db80, type:  lit4,   vram: 0x35cb80, name: ingame/menu/ig_camra          }
@@ -655,7 +655,7 @@ segments:
           - { start: 0x25f500, type: .sbss,   vram: 0x35e708, name: ingame/event/ev_spcl          }
           - { start: 0x25f500, type: .sbss,   vram: 0x35e720, name: ingame/info/inf_disp          }
           - { start: 0x25f500, type: .sbss,   vram: 0x35e73c, name: ingame/map/door_ctl           }
-          - { start: 0x25f500, type:  sbss,   vram: 0x35e748, name: ingame/menu/item              }
+          - { start: 0x25f500, type: .sbss,   vram: 0x35e748, name: ingame/menu/item              }
           - { start: 0x25f500, type: .sbss,   vram: 0x35e768, name: ingame/menu/gameover          }
           - { start: 0x25f500, type:  sbss,   vram: 0x35e770, name: ingame/menu/pause             }
           - { start: 0x25f500, type:  sbss,   vram: 0x35e77a, name: ingame/menu/ig_camra          }
@@ -723,7 +723,7 @@ segments:
           - { start: 0x25f514, type: .bss,    vram: 0x4094c0, name: ingame/map/door_ctl           }
           - { start: 0x25f514, type: .bss,    vram: 0x4094f0, name: ingame/map/furn_eff           }
           - { start: 0x25f514, type: .bss,    vram: 0x409590, name: ingame/map/furn_spe/adj_valg  }
-          - { start: 0x25f514, type:  bss,    vram: 0x409860, name: ingame/menu/item              }
+          - { start: 0x25f514, type: .bss,    vram: 0x409860, name: ingame/menu/item              }
           - { start: 0x25f514, type: .bss,    vram: 0x409890, name: ingame/menu/gameover          }
           - { start: 0x25f514, type:  bss,    vram: 0x4098a0, name: ingame/menu/ig_album          }
           - { start: 0x25f514, type:  bss,    vram: 0x4098c0, name: ingame/menu/ig_camra          }

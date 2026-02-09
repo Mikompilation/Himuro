@@ -1794,6 +1794,18 @@ class FSPE_LIGHT_ANM(CStructure):
     magnif: c_float
 
 
+###########################################################################
+# typedef struct {
+# 	u_char type;
+# 	u_char value0;
+# 	short int value1;
+# } ITEM_USE_DAT;
+class ITEM_USE_DAT(CStructure):
+    type: c_uint8
+    value0: c_uint8
+    value1: c_int16
+
+
 elf_names: dict[str, str] = {
     "us": "SLUS_203.88",
     "eu": "SLES_508.21",

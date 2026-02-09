@@ -3,6 +3,8 @@
 
 #include "typedefs.h"
 
+#include "graphics/graph2d/sprt.h"
+
 typedef struct {
     float frot_x;
     u_short plyr_hp;
@@ -150,8 +152,8 @@ typedef struct {
     u_char mov_y;
 } JET_SET;
 
-// extern SPRT_DAT spr_dat[];
-// extern short unsigned int flip_table[];
+extern SPRT_DAT spr_dat[];
+extern short unsigned int flip_table[];
 // extern float NC_ADJ;
 // extern SPRT_DAT raze_sprt;
 // extern INFO_WRK info_wrk;

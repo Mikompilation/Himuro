@@ -3,6 +3,8 @@
 
 #include "typedefs.h"
 
+#include "ingame/menu/ig_camra.h"
+
 typedef struct {
 	float io_x[7];
 	float io_y[7];
@@ -18,6 +20,11 @@ typedef struct {
 	u_char map_flg;
 	u_char pad_lock;
 } FOR_YW2D;
+
+typedef struct {
+	u_char knd_char;
+	short int char_no;
+} YWDBG;
 
 typedef struct {
 	u_char mode;
@@ -38,7 +45,41 @@ typedef struct {
 	u_char value0;
 	short int value1;
 } ITEM_USE_DAT;
-// 
+
+typedef struct {
+	u_char open_page;
+	u_char knd_bak;
+	u_char no_bak;
+} MSG_DSP;
+
+typedef struct {
+	u_long tex_now;
+	u_long tex_bak;
+	int load_id;
+	short int gage_hp;
+	u_char alp_now;
+	u_char itm_lst_strt;
+	u_char flm_alp[5];
+	u_char hp_max_chk;
+	u_char flm_dff_chk;
+	u_char itm_eve_chk;
+	u_char itm_csr_now;
+	u_char itm_loading;
+	u_char itm_can_dsp;
+	u_char itm_dsp_flg;
+	u_char i_mode;
+	u_char msg_end;
+	u_char btn_flsh_cnt;
+	u_char set_sub_tmp;
+	u_char set_sub_flr;
+	u_char set_sub_bak;
+	u_char set_spe_tmp;
+	u_char set_spe_flr;
+	u_char set_spe_bak;
+	u_char cam_flr_tmr;
+	u_char tape_flsh;
+} ITM_EFF_WRK;
+
 extern ITEM_USE_DAT item_use_dat[70];
 extern short int item_sort[70];
 extern short int file2item[0];
@@ -47,8 +88,6 @@ extern char pht_waku_put[0];
 extern FOR_YW2D yw2d;
 extern INGAME_MENU_WRK ig_menu_wrk;
 extern MENU_ITEM_WRK menu_item_wrk[200];
-
-#include "ingame/menu/ig_camra.h"
 
 void NewgameItemInit();
 void NewgameItemInit2();
@@ -78,7 +117,7 @@ int ChkChrNumUS(u_char msg_knd, u_char msg_no);
 char ChkPageYW(u_char msg_knd, u_char msg_no);
 void PutPageYW(u_char msg_knd, u_char msg_no, u_char open_page, short int pos_x, short int pos_y, int rgb, u_char alpha, int pri);
 void PutPage2YW(u_char msg_knd, u_char msg_no, u_char open_page, short int pos_x, short int pos_y, int rgb, u_char alpha, int pri);
-void PutNumberYW(u_char font, int num, short int pos_x, short int pos_y, float sx, float sy, int rgb, short int alpha, int pri, int digit, int mode);
+void PutNumberYW(u_char font, int num, short int pos_x, short int pos_y, float sx, float sy, int rgb, short int alpha, int pri, int digit, u_char mode);
 void PolySquareYW(float pos_x, float pos_y, u_short bar_l, u_short bar_h, int rgb, float alp, float scl_x, float scl_y, int pri, u_char blnd, u_char sw_z, short int rz);
 void YesNoCrslOKR(int pri, float pos_x, float pos_y, int rgb, float alp, float scl);
 void XYAdefaultYW(u_char no);
