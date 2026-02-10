@@ -190,7 +190,7 @@ segments:
           - [0xf67b8,  asm, ingame/menu/ig_map]
           - [0xf9bb8,  asm, ingame/menu/ig_option]
           - [0xfca68,  asm, ingame/menu/sp_menu]
-          - [0x102fe8, asm, ingame/map/door_conte]
+          - [0x102fe8, c,   ingame/map/door_conte]
           - [0x1033c8, asm, ingame/photo/photo]
           - [0x103e48, asm, ingame/photo/pht_main]
           - [0x104680, asm, ingame/photo/pht_make]
@@ -423,7 +423,7 @@ segments:
           - { start: 0x258760, type:  rodata, vram: 0x357760, name: ingame/menu/ig_map            }
           - { start: 0x258810, type:  rodata, vram: 0x357810, name: ingame/menu/ig_option         }
           - { start: 0x258cd0, type:  rodata, vram: 0x357cd0, name: ingame/menu/sp_menu           }
-          - { start: 0x258f10, type:  rodata, vram: 0x357f10, name: ingame/map/door_conte         }
+          - { start: 0x258f10, type: .rodata, vram: 0x357f10, name: ingame/map/door_conte         }
           - { start: 0x258f30, type:  rodata, vram: 0x357f30, name: ingame/photo/pht_main         }
           - { start: 0x258f60, type:  rodata, vram: 0x357f60, name: ingame/photo/pht_make         }
           - { start: 0x259130, type: .rodata, vram: 0x358130, name: ingame/plyr/plyr_ctl          }
@@ -598,7 +598,7 @@ segments:
           - { start: 0x25ee30, type:  sdata,  vram: 0x35de30, name: ingame/menu/ig_file           }
           - { start: 0x25ee50, type:  sdata,  vram: 0x35de50, name: ingame/menu/ig_map            }
           - { start: 0x25ee70, type:  sdata,  vram: 0x35de70, name: ingame/menu/sp_menu           }
-          - { start: 0x25ee80, type:  sdata,  vram: 0x35de80, name: ingame/map/door_conte         }
+          - { start: 0x25ee80, type: .sdata,  vram: 0x35de80, name: ingame/map/door_conte         }
           - { start: 0x25ee88, type:  sdata,  vram: 0x35de88, name: ingame/photo/pht_main         }
           - { start: 0x25eea8, type:  sdata,  vram: 0x35dea8, name: ingame/photo/pht_make         }
           - { start: 0x25eee8, type: .sdata,  vram: 0x35dee8, name: ingame/plyr/plyr_ctl          }
@@ -732,7 +732,7 @@ segments:
           - { start: 0x25f514, type:  bss,    vram: 0x409a20, name: ingame/menu/ig_glst           }
           - { start: 0x25f514, type:  bss,    vram: 0x409a30, name: ingame/menu/ig_map            }
           - { start: 0x25f514, type:  bss,    vram: 0x409a48, name: ingame/menu/sp_menu           }
-          - { start: 0x25f514, type:  bss,    vram: 0x409ad8, name: ingame/map/door_conte         }
+          - { start: 0x25f514, type: .bss,    vram: 0x409ad8, name: ingame/map/door_conte         }
           - { start: 0x25f514, type: .bss,    vram: 0x409b00, name: outgame/title                 }
           - { start: 0x25f514, type: .bss,    vram: 0x409be0, name: ingame/event/wan_soul         }
           - { start: 0x25f514, type: .bss,    vram: 0x409c30, name: outgame/sound_test            }

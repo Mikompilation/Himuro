@@ -34,7 +34,7 @@ typedef struct {
 
 // extern DOOR_TYPE_DAT door_type_dat[];
 extern float *dtbl_tbl[];
-// extern DOOR_MTN_DAT door_mtn_dat[];
+extern DOOR_MTN_DAT door_mtn_dat[];
 // extern DOOR_MOVE_DAT door_move_dat[];
 
 DOOR_MTN_DAT* GetDoorMtnDat(u_char dtype);
