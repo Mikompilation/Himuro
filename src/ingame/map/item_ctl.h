@@ -32,13 +32,16 @@ extern MAP_ITEM_DAT map_item_dat[162];
 // extern MAP_FILE_DAT map_file_dat1[50];
 // extern MAP_FILE_DAT map_file_dat2[50];
 // extern MAP_FILE_DAT map_file_dat3[50];
-// extern MAP_FILE_DAT *map_file_dat[4];
+extern MAP_FILE_DAT *map_file_dat[4];
 extern u_short item_ap[300][2];
 
 void MapItemInit();
 void MissionStartMapItemInit(int msn_no);
 void FileDateInit();
+#ifndef INCLUDING_FROM_ITEM_GET
+// fix for static redefinition of ItemGetMain in item_get.c
 int ItemGetMain();
+#endif
 void ItemCtrl();
 void ItemDispCtrl();
 void SetItemDispData(u_char id);

@@ -3,6 +3,50 @@
 
 #include "typedefs.h"
 
+typedef struct {
+    u_char msg_type_bak;
+    u_char msg_no_bak;
+    u_char str;
+    u_char msg;
+    u_char scn;
+    u_char chr;
+    u_char ply;
+    u_char nam;
+    u_char tim;
+    u_char bak;
+    u_char msg_end;
+} FILE_GET_FADE;
+
+typedef struct {
+    u_long tex_addr;
+    float scl;
+    u_char alp;
+} FILE2D;
+
+typedef struct {
+    int item_no;
+    int adpcm_no;
+} TAPE_DAT;
+
+typedef struct {
+    u_char type;
+    u_char no;
+    u_char msg0;
+    u_char msg1;
+    u_char flg;
+    u_char itm_num;
+} FILE_GET_CTRL;
+
+typedef struct {
+    u_short cnt;
+    u_char stp;
+    u_char dsp;
+    u_char csr[1];
+    u_char stts;
+    u_char page_all;
+    u_char open_page;
+} FILE_GET_DSP;
+
 // extern TAPE_DAT tape_dat[];
 extern int play_tape_timer;
 extern char tape_play;
