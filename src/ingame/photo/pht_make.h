@@ -5,17 +5,17 @@
 #include "graphics/graph2d/sprt.h"
 
 extern SPRT_DAT hintdat[];
-// extern SPRT_DAT hintreadat[0];
-// extern int pazene_load_tbl[0];
+// extern SPRT_DAT hintreadat[];
+extern int pazene_load_tbl[];
 // extern int frm_type;
 // extern int ers_type;
-// extern int hint_2d;
-// extern int hint_rea;
-// extern int hint_3d;
-// extern int hint_2d_num;
-// extern int hint_3d_num;
+extern int hint_2d;
+extern int hint_rea;
+extern int hint_3d;
+extern int hint_2d_num;
+extern int hint_3d_num;
 // extern int pic_save_flag;
-// extern int pht_finder_off;
+extern int pht_finder_off;
 
 void InitPhotoMake();
 void CopyScreenToBuffer(int addr, int szfl, int mx, int my, int mw, int mh);

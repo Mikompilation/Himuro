@@ -191,7 +191,7 @@ segments:
           - [0xfa1c8,  asm, ingame/menu/sp_menu]
           - [0x100458, c,   ingame/map/door_conte]
           - [0x100838, asm, ingame/photo/photo]
-          - [0x1012b8, asm, ingame/photo/pht_main]
+          - [0x1012b8, c,   ingame/photo/pht_main]
           - [0x101af0, asm, ingame/photo/pht_make]
           - [0x1059a8, c,   ingame/plyr/plyr_ctl]
           - [0x10e5b0, c,   ingame/plyr/unit_ctl]
@@ -421,7 +421,7 @@ segments:
           - { start: 0x251ce0, type:  rodata, vram: 0x350ce0, name: ingame/menu/ig_option         }
           - { start: 0x2521a0, type:  rodata, vram: 0x3511a0, name: ingame/menu/sp_menu           }
           - { start: 0x2523d0, type: .rodata, vram: 0x3513d0, name: ingame/map/door_conte         }
-          - { start: 0x2523f0, type:  rodata, vram: 0x3513f0, name: ingame/photo/pht_main         }
+          - { start: 0x2523f0, type: .rodata, vram: 0x3513f0, name: ingame/photo/pht_main         }
           - { start: 0x252420, type:  rodata, vram: 0x351420, name: ingame/photo/pht_make         }
           - { start: 0x2525f0, type: .rodata, vram: 0x3515f0, name: ingame/plyr/plyr_ctl          }
           - { start: 0x252800, type: .rodata, vram: 0x351800, name: outgame/scn_test              }
@@ -592,7 +592,7 @@ segments:
           - { start: 0x2581c8, type:  sdata,  vram: 0x3571c8, name: ingame/menu/ig_map            }
           - { start: 0x2581e8, type:  sdata,  vram: 0x3571e8, name: ingame/menu/sp_menu           }
           - { start: 0x2581f8, type: .sdata,  vram: 0x3571f8, name: ingame/map/door_conte         }
-          - { start: 0x258200, type:  sdata,  vram: 0x357200, name: ingame/photo/pht_main         }
+          - { start: 0x258200, type: .sdata,  vram: 0x357200, name: ingame/photo/pht_main         }
           - { start: 0x258220, type:  sdata,  vram: 0x357220, name: ingame/photo/pht_make         }
           - { start: 0x258260, type: .sdata,  vram: 0x357260, name: ingame/plyr/plyr_ctl          }
           - { start: 0x258310, type: .sdata,  vram: 0x357310, name: outgame/scn_test              }
@@ -661,7 +661,7 @@ segments:
           - { start: 0x258880, type:  sbss,   vram: 0x357b78, name: ingame/menu/ig_map            }
           - { start: 0x258880, type:  sbss,   vram: 0x357b80, name: ingame/menu/ig_option         }
           - { start: 0x258880, type:  sbss,   vram: 0x357b90, name: ingame/menu/sp_menu           }
-          - { start: 0x258880, type:  sbss,   vram: 0x357bb0, name: ingame/photo/pht_main         }
+          - { start: 0x258880, type: .sbss,   vram: 0x357bb0, name: ingame/photo/pht_main         }
           - { start: 0x258880, type:  sbss,   vram: 0x357bb8, name: ingame/photo/pht_make         }
           - { start: 0x258880, type: .sbss,   vram: 0x357bba, name: ingame/plyr/plyr_ctl          }
           - { start: 0x258880, type: .sbss,   vram: 0x357bc0, name: outgame/scn_test              }

@@ -4,7 +4,7 @@
 #include "typedefs.h"
 
 // extern int after_timer;
-// extern int pazene_load_buf[2];
+extern int pazene_load_buf[2];
 
 void PhotoCtrlInit();
 void PhotoCtrl();
