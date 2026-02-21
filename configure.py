@@ -62,6 +62,11 @@ LANGUAGES: dict[str, str] = {
 # asm will be passed to `tools/python/fix_asm_matching.py` for patching.
 ASM_PATCH_LIST: list[str] = [
     "effect_oth.c.o",
+    "photo.c.o",
+]
+
+BIN_PATH_LIST: list[str] = [
+    "photo.c.o",
 ]
 
 EUC_JP_LIST = [
@@ -277,7 +282,7 @@ def build_stuff(
     ninja.rule(
         "elf",
         description="elf $out",
-        command=f"{cross}objcopy $in $out -O binary",
+        command=f"{cross}objcopy $in $out -O binary && python3 {ROOT}/tools/python/fix_bin_matching.py {language} $out",
     )
 
     for entry in linker_entries:
