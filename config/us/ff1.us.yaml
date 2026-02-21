@@ -181,7 +181,7 @@ segments:
           - [0xd5a10,  asm, ingame/menu/ig_album]
           - [0xdd1e8,  asm, ingame/menu/ig_camra]
           - [0xe0cd0,  asm, ingame/menu/ig_menu]
-          - [0xe5538,  asm, ingame/menu/ig_spd_menu]
+          - [0xe5538,  c,   ingame/menu/ig_spd_menu]
           - [0xe5de0,  c,   ingame/menu/item_get]
           - [0xe78b8,  asm, ingame/menu/ig_file]
           - [0xee668,  asm, ingame/menu/ig_rank]
@@ -586,7 +586,7 @@ segments:
           - { start: 0x258140, type:  sdata,  vram: 0x357140, name: ingame/menu/pause             }
           - { start: 0x258168, type:  sdata,  vram: 0x357168, name: ingame/menu/ig_camra          }
           - { start: 0x258180, type:  sdata,  vram: 0x357180, name: ingame/menu/ig_menu           }
-          - { start: 0x258198, type:  sdata,  vram: 0x357198, name: ingame/menu/ig_spd_menu       }
+          - { start: 0x258198, type: .sdata,  vram: 0x357198, name: ingame/menu/ig_spd_menu       }
           - { start: 0x25819c, type: .sdata,  vram: 0x35719c, name: ingame/menu/item_get          }
           - { start: 0x2581a8, type:  sdata,  vram: 0x3571a8, name: ingame/menu/ig_file           }
           - { start: 0x2581c8, type:  sdata,  vram: 0x3571c8, name: ingame/menu/ig_map            }
@@ -653,7 +653,7 @@ segments:
           - { start: 0x258880, type:  sbss,   vram: 0x357af8, name: ingame/menu/pause             }
           - { start: 0x258880, type:  sbss,   vram: 0x357b02, name: ingame/menu/ig_camra          }
           - { start: 0x258880, type:  sbss,   vram: 0x357b08, name: ingame/menu/ig_menu           }
-          - { start: 0x258880, type:  sbss,   vram: 0x357b28, name: ingame/menu/ig_spd_menu       }
+          - { start: 0x258880, type: .sbss,   vram: 0x357b28, name: ingame/menu/ig_spd_menu       }
           - { start: 0x258880, type: .sbss,   vram: 0x357b38, name: ingame/menu/item_get          }
           - { start: 0x258880, type:  sbss,   vram: 0x357b50, name: ingame/menu/ig_file           }
           - { start: 0x258880, type:  sbss,   vram: 0x357b60, name: ingame/menu/ig_rank           }

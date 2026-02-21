@@ -16,7 +16,7 @@ typedef struct {
 } PAUSE_WRK;
 
 extern PAD_CTRL pad_ctrl;
-// extern PAUSE_WRK pause_wrk;
+extern PAUSE_WRK pause_wrk;
 // extern char in_pause;
 
 void PauseInit();
