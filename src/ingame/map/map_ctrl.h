@@ -34,7 +34,7 @@ void CameraNoRenewEach(u_char cam_type);
 void DbgGetDrmCamNo();
 u_short CameraGetDoorCameraNo(u_short door_id0, u_short door_id1);
 u_char GetRoomIdFromRoomNo(u_char map, u_char room_no);
-u_char GetRoomIdFromRoomNoFloor(u_char map, u_char room_no, u_char floor);
+// u_char GetRoomIdFromRoomNoFloor(u_char map, u_char room_no, u_char floor);
 u_char GetDataRoom(u_char map, u_char room_id);
 int GetPointRoomNo(u_short pos_x, u_short pos_z);
 int GetPointRoomNoFloor(u_short pos_x, u_short pos_z, u_char floor);

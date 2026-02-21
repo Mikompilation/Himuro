@@ -4,5 +4,15 @@
             [262, "slt $22,$22,$2",   "slt $2,$22,$3"  ],
             [263, "bne $22,$0,$L435", "bne $2,$0,$L435"]
         ]
+    },
+    "photo.c.S": {
+        "PhotoScoreCount": [
+            [146, "lui $4,%hi(ingame_wrk) # high",     "lui $2,%hi(ingame_wrk) # high"    ],
+            [147, "lbu $3,%lo(ingame_wrk)($4)",        "lbu $3,%lo(ingame_wrk)($2)"       ],
+            [150, "addiu $5,$4,%lo(ingame_wrk) # low", "addiu $5,$2,%lo(ingame_wrk) # low"]
+        ],
+        "GetRecordSubject": [
+            [83, "sltu $2,$4,16", "slt $2,$4,16"]
+        ]
     }
 }

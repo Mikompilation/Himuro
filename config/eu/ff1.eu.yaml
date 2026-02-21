@@ -191,7 +191,7 @@ segments:
           - [0xf9bb8,  asm, ingame/menu/ig_option]
           - [0xfca68,  asm, ingame/menu/sp_menu]
           - [0x102fe8, c,   ingame/map/door_conte]
-          - [0x1033c8, asm, ingame/photo/photo]
+          - [0x1033c8, c,   ingame/photo/photo]
           - [0x103e48, c,   ingame/photo/pht_main]
           - [0x104680, asm, ingame/photo/pht_make]
           - [0x108538, c,   ingame/plyr/plyr_ctl]
@@ -309,7 +309,7 @@ segments:
           - { start: 0x246448, type:  data,   vram: 0x345448, name: ingame/menu/ig_rank           }
           - { start: 0x246568, type:  data,   vram: 0x345568, name: ingame/menu/ig_glst           }
           - { start: 0x2469b8, type:  data,   vram: 0x3459b8, name: ingame/menu/ig_map            }
-          - { start: 0x246c88, type:  data,   vram: 0x345c88, name: ingame/photo/photo            }
+          - { start: 0x246c88, type: .data,   vram: 0x345c88, name: ingame/photo/photo            }
           - { start: 0x246db0, type:  data,   vram: 0x345db0, name: ingame/photo/pht_make         }
           - { start: 0x248230, type: .data,   vram: 0x347230, name: ingame/plyr/plyr_ctl          }
           - { start: 0x248300, type: .data,   vram: 0x347300, name: edit/test_2d                  }
