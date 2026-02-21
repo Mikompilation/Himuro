@@ -189,7 +189,7 @@ segments:
           - [0xf43b0,  asm, ingame/menu/ig_glst]
           - [0xf67b8,  asm, ingame/menu/ig_map]
           - [0xf9bb8,  asm, ingame/menu/ig_option]
-          - [0xfca68,  asm, ingame/menu/sp_menu]
+          - [0xfca68,  c,   ingame/menu/sp_menu]
           - [0x102fe8, c,   ingame/map/door_conte]
           - [0x1033c8, c,   ingame/photo/photo]
           - [0x103e48, c,   ingame/photo/pht_main]
@@ -422,7 +422,7 @@ segments:
           - { start: 0x2586b0, type:  rodata, vram: 0x3576b0, name: ingame/menu/ig_glst           }
           - { start: 0x258760, type:  rodata, vram: 0x357760, name: ingame/menu/ig_map            }
           - { start: 0x258810, type:  rodata, vram: 0x357810, name: ingame/menu/ig_option         }
-          - { start: 0x258cd0, type:  rodata, vram: 0x357cd0, name: ingame/menu/sp_menu           }
+          - { start: 0x258cd0, type: .rodata, vram: 0x357cd0, name: ingame/menu/sp_menu           }
           - { start: 0x258f10, type: .rodata, vram: 0x357f10, name: ingame/map/door_conte         }
           - { start: 0x258f30, type: .rodata, vram: 0x357f30, name: ingame/photo/pht_main         }
           - { start: 0x258f60, type:  rodata, vram: 0x357f60, name: ingame/photo/pht_make         }
@@ -507,7 +507,7 @@ segments:
           - { start: 0x25dbd0, type:  lit4,   vram: 0x35cbd0, name: ingame/menu/ig_glst           }
           - { start: 0x25dbe4, type:  lit4,   vram: 0x35cbe4, name: ingame/menu/ig_map            }
           - { start: 0x25dc14, type:  lit4,   vram: 0x35cc14, name: ingame/menu/ig_option         }
-          - { start: 0x25dc40, type:  lit4,   vram: 0x35cc40, name: ingame/menu/sp_menu           }
+          - { start: 0x25dc40, type: .lit4,   vram: 0x35cc40, name: ingame/menu/sp_menu           }
           - { start: 0x25dc90, type:  lit4,   vram: 0x35cc90, name: ingame/photo/pht_make         }
           - { start: 0x25dca0, type: .lit4,   vram: 0x35cca0, name: ingame/plyr/plyr_ctl          }
           - { start: 0x25de84, type: .lit4,   vram: 0x35ce84, name: ingame/plyr/unit_ctl          }
@@ -597,7 +597,7 @@ segments:
           - { start: 0x25ee24, type: .sdata,  vram: 0x35de24, name: ingame/menu/item_get          }
           - { start: 0x25ee30, type:  sdata,  vram: 0x35de30, name: ingame/menu/ig_file           }
           - { start: 0x25ee50, type:  sdata,  vram: 0x35de50, name: ingame/menu/ig_map            }
-          - { start: 0x25ee70, type:  sdata,  vram: 0x35de70, name: ingame/menu/sp_menu           }
+          - { start: 0x25ee60, type: .sdata,  vram: 0x35de60, name: ingame/menu/sp_menu           }
           - { start: 0x25ee80, type: .sdata,  vram: 0x35de80, name: ingame/map/door_conte         }
           - { start: 0x25ee88, type: .sdata,  vram: 0x35de88, name: ingame/photo/pht_main         }
           - { start: 0x25eea8, type:  sdata,  vram: 0x35dea8, name: ingame/photo/pht_make         }
@@ -667,7 +667,7 @@ segments:
           - { start: 0x25f500, type:  sbss,   vram: 0x35e7e8, name: ingame/menu/ig_glst           }
           - { start: 0x25f500, type:  sbss,   vram: 0x35e7f0, name: ingame/menu/ig_map            }
           - { start: 0x25f500, type:  sbss,   vram: 0x35e7f8, name: ingame/menu/ig_option         }
-          - { start: 0x25f500, type:  sbss,   vram: 0x35e808, name: ingame/menu/sp_menu           }
+          - { start: 0x25f500, type: .sbss,   vram: 0x35e808, name: ingame/menu/sp_menu           }
           - { start: 0x25f500, type: .sbss,   vram: 0x35e828, name: ingame/photo/pht_main         }
           - { start: 0x25f500, type:  sbss,   vram: 0x35e830, name: ingame/photo/pht_make         }
           - { start: 0x25f500, type: .sbss,   vram: 0x35e832, name: ingame/plyr/plyr_ctl          }
@@ -731,7 +731,7 @@ segments:
           - { start: 0x25f514, type:  bss,    vram: 0x409900, name: ingame/menu/ig_file           }
           - { start: 0x25f514, type:  bss,    vram: 0x409a20, name: ingame/menu/ig_glst           }
           - { start: 0x25f514, type:  bss,    vram: 0x409a30, name: ingame/menu/ig_map            }
-          - { start: 0x25f514, type:  bss,    vram: 0x409a48, name: ingame/menu/sp_menu           }
+          - { start: 0x25f514, type: .bss,    vram: 0x409a48, name: ingame/menu/sp_menu           }
           - { start: 0x25f514, type: .bss,    vram: 0x409ad8, name: ingame/map/door_conte         }
           - { start: 0x25f514, type: .bss,    vram: 0x409b00, name: outgame/title                 }
           - { start: 0x25f514, type: .bss,    vram: 0x409be0, name: ingame/event/wan_soul         }

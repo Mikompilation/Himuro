@@ -55,7 +55,10 @@ extern MC_ALBUM_SAVE album_save_dat[2];
 extern char is_newdata_albmside;
 
 void MemAlbmInit(u_char h_type, u_char src_pht_max, u_char cpy_pht_max, u_char src_cl_type, u_char cpy_cl_type, u_char src_slot, u_char cpy_slot, u_char src_file, u_char cpy_file);
+#ifndef INCLUDING_FROM_SP_MENU_C
+// fix for undeclared MemAlbmInit2 in ingame/menu/sp_menu.c
 void MemAlbmInit2(u_char side, u_char pht_max, u_char cl_type, u_char slot, u_char file);
+#endif
 void MemAlbmInit3();
 void NewAlbumInit(u_char side);
 char SweetMemories(u_char mode, u_char alp);
