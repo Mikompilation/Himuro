@@ -4,6 +4,12 @@
 #include "typedefs.h"
 
 typedef struct {
+	u_char alp;
+	u_char msg_alp;
+	u_char yn_mode;
+} PAUSE_DSP;
+
+typedef struct {
 	u_char lock;
 	u_char no_pause;
 } PAD_CTRL;

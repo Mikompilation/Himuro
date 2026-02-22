@@ -5556,4 +5556,10 @@ typedef enum {
 	ALBM_MODE_OUT = 7
 } ALBUM_MODE;
 
+typedef enum {
+	PAUSE_MODE_NO_REQ = 0,
+	PAUSE_MODE_MENU = 1,
+	PAUSE_MODE_MENU_OUT = 2
+} PAUSE_MODE;
+
 #endif // ENUMS_H

@@ -10,7 +10,7 @@ typedef struct {
 	u_char lod_ret;
 } SPD_MNU;
 
-// extern SPD_MNU spd_mnu;
+extern SPD_MNU spd_mnu;
 
 void SpdMenuInit();
 char SpdMenuCtrl();
