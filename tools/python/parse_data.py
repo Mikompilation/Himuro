@@ -34,6 +34,16 @@ class ANI_CODE(c_uint16):
         return f"{self.value}"
 
 
+class GS_REG(c_uint64):
+    def __str__(self):
+        return f"0x{self.value:x}"
+
+
+class HEX_ADDR(c_uint32):
+    def __str__(self):
+        return f"0x{self.value:x}"
+
+
 # CTypeTypeEX = CTypeType | type[sceVu0FVECTOR] | type[sceVu0IVECTOR]
 
 
@@ -49,7 +59,7 @@ class ANI_CODE(c_uint16):
 #     u_char alpha;
 # };
 class SPRT_DAT(CStructure):
-    tex0: c_uint64
+    tex0: GS_REG
     u: c_uint16
     v: c_uint16
     w: c_uint16
@@ -1065,7 +1075,7 @@ class MSN_LOAD_DAT(CStructure):
     file_no: c_uint16
     file_type: c_uint8
     tmp_no: c_uint8
-    addr: c_uint32
+    addr: HEX_ADDR
 
 
 ###########################################################################
@@ -1856,7 +1866,7 @@ class DataVar(pydantic.BaseModel):
     @classmethod
     def type_from_str(  # pyright: ignore
         cls, v: str | Type[CStructure] | CTypeType
-    ) -> Type[CStructure] | CTypeType | sceVu0FVECTOR | sceVu0IVECTOR | qword | ANI_CODE:
+    ) -> Type[CStructure] | CTypeType | sceVu0FVECTOR | sceVu0IVECTOR | qword | ANI_CODE | GS_REG | HEX_ADDR:
         if not isinstance(v, str):
             return v
         cls.num_ptr = v.count("*")  # temporary store num_ptr in class attribute
@@ -1871,6 +1881,10 @@ class DataVar(pydantic.BaseModel):
             return qword
         if v == "ANI_CODE":
             return ANI_CODE
+        if v == "GS_REG":
+            return GS_REG
+        if v == "HEX_ADDR":
+            return HEX_ADDR
         if v == "c_str":
             return c_str
         class_type = globals()[v]
@@ -1891,6 +1905,10 @@ class DataVar(pydantic.BaseModel):
             var_data = (c_addr_ptr * numel).from_buffer_copy(self._elf.read(numel * c_sizeof(c_addr_ptr)))
             if self.type == ANI_CODE:  # pyright: ignore
                 type_str = "ANI_CODE" + ("*" * self.num_ptr)
+            if self.type == GS_REG:  # pyright: ignore
+                type_str = "u_long" + ("*" * self.num_ptr)
+            if self.type == HEX_ADDR:  # pyright: ignore
+                type_str = "u_int" + ("*" * self.num_ptr)
             elif issubclass(self.type, CStructure):  # pyright: ignore
                 type_str = self.type.__name__ + ("*" * self.num_ptr)
             elif self.type == sceVu0FVECTOR:  # pyright: ignore
@@ -1992,6 +2010,10 @@ class DataVar(pydantic.BaseModel):
             var_data = (typ).from_buffer_copy(self._elf.read(numel * c_sizeof(self.type)))  # pyright: ignore
             if self.type.__name__ == "ANI_CODE":  # pyright: ignore
                 type_str = "ANI_CODE"
+            elif self.type.__name__ == "GS_REG":  # pyright: ignore
+                type_str = "u_long"
+            elif self.type.__name__ == "HEX_ADDR":  # pyright: ignore
+                type_str = "u_int"
             else:
                 type_str = next(
                     k

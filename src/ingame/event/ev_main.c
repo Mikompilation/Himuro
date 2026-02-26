@@ -27,7 +27,6 @@
 #include "ingame/map/furn_ctl.h"
 #include "ingame/map/item_ctl.h"
 #include "ingame/map/rotd_ctl.h"
-#include "ingame/map/furn_spe/furn_spe.h" // `FurnActOffEve` ans `FurnActOnEve` need to be implicitly declared
 #include "ingame/menu/item.h"
 #include "ingame/menu/item_get.h"
 #include "ingame/menu/ig_menu.h"
@@ -45,6 +44,7 @@
 #include "graphics/graph3d/load3d.h"
 
 #define INCLUDING_FROM_EV_MAIN_C
+#include "ingame/map/furn_spe/furn_spe.h" // `FurnActOffEve` ans `FurnActOnEve` need to be implicitly declared
 #include "ingame/plyr/unit_ctl.h" // `ReqEneStop` needs to be implicitly declared
 #undef INCLUDING_FROM_EV_MAIN_C
 

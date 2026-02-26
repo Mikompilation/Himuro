@@ -1679,6 +1679,12 @@ fspe_lightanm_fadeout2         = 0x342f88; // type:FSPE_LIGHT_ANM numel:6 nosize
 // ingame/menu/item.c
 item_use_dat                   = 0x343028; // type:ITEM_USE_DAT numel:70
 
+// ingame/photo/pht_make.c
+hintdat                        = 0x345db0; // type:SPRT_DAT numel:97 nosize
+hintreadat                     = 0x3469d0; // type:SPRT_DAT numel:51 nosize
+pazene_load_tbl                = 0x347030; // type:int numel:48 nosize
+phtdat                         = 0x3470f0; // type:SPRT_DAT numel:10 static
+
 // edit/test_2d.c
 test_tex0                      = 0x347300; // type:SPRT_DAT numel:5 nosize
 test_tex1                      = 0x3473a0; // type:SPRT_DAT numel:13 nosize

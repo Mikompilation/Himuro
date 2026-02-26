@@ -75,7 +75,10 @@ void FurnPicDispOn();
 void FurnPicDispOff();
 void ClearFurnAttrFlg();
 void InitFurnAttrFlg();
+#ifndef INCLUDING_FROM_PHT_MAKE_C
+// fix for `SetFurnAttrEve` needing to be undeclared in `pht_make.c`
 void SetFurnAttrEve(u_short id, u_short flg, int on_flg);
+#endif
 u_int GetFurnAttrF(FURN_WRK *fwp, u_char msn_no);
 u_int GetFurnAttr(u_short id, u_char msn_no);
 u_char FurnHitCheck(u_char *dx_max, u_char *dz_max, sceVu0FVECTOR pos, sceVu0FVECTOR dst, u_char div, u_char room);
