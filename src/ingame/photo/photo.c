@@ -347,11 +347,7 @@ void GetRecordSubject(PICTURE_WRK *pic)
         sort[i][2] = photo_wrk.rare[i-9].no;
     }
 
-#ifdef MATCHING_DECOMP
-    for (i = 12; i < 16U; i++)
-#else
-    for (i = 12; i < 16; i++)
-#endif
+    for (; i < 16; i++)
     {
         sort[i][0] = photo_wrk.spcl_pht_score[i-12];
         sort[i][1] = 6;
