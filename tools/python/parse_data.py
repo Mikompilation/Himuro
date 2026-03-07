@@ -1816,6 +1816,177 @@ class ITEM_USE_DAT(CStructure):
     value1: c_int16
 
 
+###########################################################################
+# typedef struct {
+#     short int disp_pos;
+#     short int attribute;
+#     SPRT_DAT *ssd_p[4];
+#     short int flp_num[4];
+#     short int dat_idx[2];
+#     short int pad;
+# } RELATION_COM;
+class RELATION_COM(CStructure):
+    disp_pos: c_int16
+    attribute: c_int16
+    ssd_p: c_addr_ptr * 4
+    flp_num: c_int16 * 4
+    dat_idx: c_int16 * 2
+    pad: c_int16
+
+
+# typedef struct {
+# 	RELATION_PRT *left_prt;
+# 	RELATION_PRT *right_prt;
+# 	SPRT_DAT *ssd_p;
+# 	short int st_index[4];
+# 	short int start_no;
+# 	short int end_no;
+# 	short int attribute;
+# 	int csr_y;
+# 	short int wk_scl[8][2];
+# 	short int wk_pos[2][4];
+# 	short int mission_no;
+# } RELATION_PRT;
+class RELATION_PRT(CStructure):
+    left_prt: c_addr_ptr
+    right_prt: c_addr_ptr
+    ssd_p: c_addr_ptr
+    st_index: c_int16 * 4
+    start_no: c_int16
+    end_no: c_int16
+    attribute: c_int16
+    csr_y: c_int32
+    wk_scl: c_int16 * 2 * 8
+    wk_pos: c_int16 * 4 * 2
+    mission_no: c_int16
+
+
+###########################################################################
+# typedef struct {
+#     ATION_DAT *up_p;
+#     ATION_DAT *down_p;
+#     ATION_DAT *left_p;
+#     ATION_DAT *right_p;
+#     ATION_PRT *parent_p;
+#     ATION_NAME_PLATE *plate_p;
+#     T_DAT *ssd_p;
+#     T_DAT *fnt_p;
+#     T_DAT *fla_p;
+#     short int dat_idx;
+#     short int attribute;
+#     short int msg_idx;
+#     short int tm2_id;
+#     short int dsp_pos;
+#     short int pad;
+# } RELATION_DAT;
+class RELATION_DAT(CStructure):
+    up_p: c_addr_ptr
+    down_p: c_addr_ptr
+    left_p: c_addr_ptr
+    right_p: c_addr_ptr
+    parent_p: c_addr_ptr
+    plate_p: c_addr_ptr
+    ssd_p: c_addr_ptr
+    fnt_p: c_addr_ptr
+    fla_p: c_addr_ptr
+    dat_idx: c_int16
+    attribute: c_int16
+    msg_idx: c_int16
+    tm2_id: c_int16
+    dsp_pos: c_int16
+    pad: c_int16
+
+
+# typedef struct {
+#     short int x;
+#     short int y;
+#     short int u;
+#     short int v;
+#     short int exp_u;
+#     short int exp_v;
+#     short int n_rabel;
+#     short int tbl_no;
+#     short int pad;
+# } RELATION_NAME_PLATE;
+class RELATION_NAME_PLATE(CStructure):
+    x: c_int16
+    y: c_int16
+    u: c_int16
+    v: c_int16
+    exp_u: c_int16
+    exp_v: c_int16
+    n_rabel: c_int16
+    tbl_no: c_int16
+    pad: c_int16
+
+
+# typedef struct {
+#     short int com_idx;
+#     short int attribute;
+#     short int x1;
+#     short int y1;
+#     short int len;
+#     short int pad;
+# } RELATION_YAJI;
+class RELATION_YAJI(CStructure):
+    com_idx: c_int16
+    attribute: c_int16
+    x1: c_int16
+    y1: c_int16
+    len: c_int16
+    pad: c_int16
+
+
+# typedef struct {
+#     short int x;
+#     short int y;
+#     short int no;
+#     short int pnl;
+# } CAPTION_LIST;
+class CAPTION_LIST(CStructure):
+    x: c_int16
+    y: c_int16
+    no: c_int16
+    pnl: c_int16
+
+
+# typedef struct {
+#     short int x;
+#     short int y;
+#     u_char mark;
+#     u_char str;
+# } CAPTION_DATA_SUB;
+class CAPTION_DATA_SUB(CStructure):
+    x: c_int16
+    y: c_int16
+    mark: c_uint8
+    str: c_uint8
+
+
+# typedef struct {
+#     short int w;
+#     short int h;
+#     CAPTION_DATA_SUB cds[4];
+# } CAPTION_DATA;
+class CAPTION_DATA(CStructure):
+    w: c_int16
+    h: c_int16
+    cds: CAPTION_DATA_SUB * 4
+
+
+# typedef struct {
+#     short int px;
+#     short int py;
+#     short int sx;
+#     short int sy;
+# } DSP_PHT;
+class DSP_PHT(CStructure):
+    px: c_int16
+    py: c_int16
+    sx: c_int16
+    sy: c_int16
+
+
 elf_names: dict[str, str] = {
     "us": "SLUS_203.88",
     "eu": "SLES_508.21",
@@ -2120,12 +2291,20 @@ def parse_data(lang: str):
 
     c_addr_ptr.set_addresses(addr_vals)
 
+    extract_filter: list[str] = []
+    extract_filter_str = os.environ.get("EXTRACT_DATA_FILTER", "").strip()
+    if extract_filter_str:
+        extract_filter: list[str] = extract_filter_str.split(",")
+
     with open(elf_path, mode="rb") as elf:
         vram_elf = VRamElf(elf)
         CStructure.__elf__ = vram_elf
 
         for data_var in tqdm.tqdm(data_vars, desc="Extracting data"):
             header_path = include_path / f"{data_var.name}.h"
+
+            if extract_filter and data_var.name not in extract_filter:
+                continue
 
             with header_path.open(mode="w") as fw:
                 data_var._elf = vram_elf  # pyright: ignore[reportPrivateUsage]

@@ -112,6 +112,70 @@ typedef struct
     /* 0x6 */ short int pnl;
 } CAPTION_LIST;
 
+typedef struct { // 0x18
+	/* 0x00 */ u_long tx;
+	/* 0x08 */ int lod_id;
+	/* 0x0c */ short int lod_no;
+	/* 0x0e */ short int vrm_no;
+	/* 0x10 */ short int dsp_ok;
+} MEM_BOX;
+
+typedef struct { // 0x30
+	/* 0x00 */ u_long tex_now;
+	/* 0x08 */ u_long tex_bak;
+	/* 0x10 */ int load_id;
+	/* 0x14 */ u_char alp_now;
+	/* 0x15 */ u_char alp_bak;
+	/* 0x16 */ u_char f_mode;
+	/* 0x17 */ u_char mod;
+	/* 0x18 */ u_char knd;
+	/* 0x19 */ u_char dtl;
+	/* 0x1a */ u_char lst_top;
+	/* 0x1b */ u_char pic_alp[4];
+	/* 0x1f */ u_char page_all;
+	/* 0x20 */ u_char open_page;
+	/* 0x21 */ u_char poss_chk;
+	/* 0x22 */ u_char csr_bak;
+	/* 0x23 */ u_char csr_now;
+	/* 0x24 */ u_char loading;
+	/* 0x25 */ u_char can_dsp;
+	/* 0x26 */ u_char dsp_flg;
+	/* 0x27 */ u_char pht_alp;
+	/* 0x28 */ u_char pad_lock;
+} MENU_FILE;
+
+typedef struct { // 0x10
+	/* 0x0 */ u_long tex;
+	/* 0x8 */ u_char space;
+	/* 0x9 */ u_char rot;
+} PHOT_FILE;
+
+enum {
+	FILE_REL_START = 0,
+	FILE_REL_LOAD_WAIT = 1,
+	FILE_REL_TATEI = 2,
+	FILE_REL_MENU_LOAD_WAIT = 3,
+	FILE_REL_END = 4
+};
+
+typedef struct { // 0x8
+	/* 0x0 */ int load_id;
+	/* 0x4 */ char step;
+} FILE_REL;
+
+typedef struct { // 0x8
+	/* 0x0 */ short int px;
+	/* 0x2 */ short int py;
+	/* 0x4 */ short int sx;
+	/* 0x6 */ short int sy;
+} DSP_PHT;
+
+typedef struct { // 0x6
+	/* 0x0 */ short int pht_no;
+	/* 0x2 */ short int lod_rq;
+	/* 0x4 */ short int mem_no;
+} DSP_BOX;
+
 enum NAME_PLATE_RABEL {
 	SAKKA = 0,
 	SAKKA2 = 1,
@@ -194,14 +258,14 @@ enum REL_ALPB {
 	R_Z = 28
 };
 
-extern u_char file_kind[0];
-extern SPRT_DAT spr_dat_tmp[0];
-extern RELATION_COM rel_com[0];
-extern RELATION_PRT rel_prt[0];
-extern RELATION_DAT rel_dat[0];
-extern RELATION_YAJI rel_yaj[0];
-extern CAPTION_LIST caption_list[0];
-extern CAPTION_DATA caption_data[0];
+extern u_char file_kind[];
+extern SPRT_DAT spr_dat_tmp[];
+extern RELATION_COM rel_com[];
+extern RELATION_PRT rel_prt[];
+extern RELATION_DAT rel_dat[];
+extern RELATION_YAJI rel_yaj[];
+extern CAPTION_LIST caption_list[];
+extern CAPTION_DATA caption_data[];
 extern RELATION_CSR rel_csr;
 
 void NewgameMenuFileInit();
@@ -224,13 +288,13 @@ void MoveBeyondGroup();
 void RelMapScroolX(RELATION_DAT *r_dat);
 void RelMapScroolY(RELATION_PRT *r_prt);
 int ButtonManager();
-void RelationDispDat();
+void RelationDispDat(RELATION_DAT *r_dat);
 void RelDspYajirusi(RELATION_YAJI *r_yaj);
 void RelDspComment();
 void RelDspPrtFla(RELATION_PRT *r_prt);
 void RelDspPrt(RELATION_PRT *r_prt);
 void RelDspBackGrd();
-void RelationDispMsg();
+void RelationDispMsg(RELATION_DAT *r_dat);
 void SimpleDispSprtDS(SPRT_DAT *ssd, u_int addr, int sp_no, SPRT_SROT *srot, SPRT_SSCL *sscl, u_char alp_rate);
 void TestPk2DataSou(long int sendtexaddr);
 void DispCaption(int no, u_char alp);
