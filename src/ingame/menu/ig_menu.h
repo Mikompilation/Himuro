@@ -3,7 +3,41 @@
 
 #include "typedefs.h"
 
-#include "graphics/graph2d/message.h"
+#include "graphics/graph2d/str_types.h"
+#include "graphics/graph2d/sprt.h"
+
+typedef struct {
+    short int pos_x;
+    short int pos_y;
+    u_short siz_x;
+    u_short siz_y;
+    u_char win_no;
+} MSK_SIZ;
+
+typedef struct {
+    short int pos_x;
+    short int pos_y;
+    u_short siz_x;
+    u_short siz_y;
+    u_char u_hgh;
+    u_char d_hgh;
+    u_char l_wid;
+    u_char r_wid;
+    u_char pri;
+    u_char bak;
+} WIN_PTN;
+
+typedef struct {
+    short int pos_x;
+    short int pos_y;
+    u_short siz_x;
+    u_short siz_y;
+    u_char win_no;
+} PLS_LIN;
+
+typedef struct {
+    u_short on_cnt[4];
+} ANA_PAD;
 
 extern STR_DAT ig_menu_str;
 extern int get_time_once;

@@ -23,7 +23,7 @@ typedef struct {
 
 extern PAD_CTRL pad_ctrl;
 extern PAUSE_WRK pause_wrk;
-// extern char in_pause;
+extern char in_pause;
 
 void PauseInit();
 int PauseMain();

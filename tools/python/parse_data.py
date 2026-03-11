@@ -1987,6 +1987,62 @@ class DSP_PHT(CStructure):
     sy: c_int16
 
 
+###########################################################################
+# typedef struct {
+#     short int pos_x;
+#     short int pos_y;
+#     u_short siz_x;
+#     u_short siz_y;
+#     u_char win_no;
+# } MSK_SIZ;
+class MSK_SIZ(CStructure):
+    pos_x: c_int16
+    pos_y: c_int16
+    siz_x: c_uint16
+    siz_y: c_uint16
+    win_no: c_uint8
+
+
+# typedef struct {
+#     short int pos_x;
+#     short int pos_y;
+#     u_short siz_x;
+#     u_short siz_y;
+#     u_char u_hgh;
+#     u_char d_hgh;
+#     u_char l_wid;
+#     u_char r_wid;
+#     u_char pri;
+#     u_char bak;
+# } WIN_PTN;
+class WIN_PTN(CStructure):
+    pos_x: c_int16
+    pos_y: c_int16
+    siz_x: c_uint16
+    siz_y: c_uint16
+    u_hgh: c_uint8
+    d_hgh: c_uint8
+    l_wid: c_uint8
+    r_wid: c_uint8
+    pri: c_uint8
+    bak: c_uint8
+
+
+# typedef struct {
+#     short int pos_x;
+#     short int pos_y;
+#     u_short siz_x;
+#     u_short siz_y;
+#     u_char win_no;
+# } PLS_LIN;
+class PLS_LIN(CStructure):
+    pos_x: c_int16
+    pos_y: c_int16
+    siz_x: c_uint16
+    siz_y: c_uint16
+    win_no: c_uint8
+
+
 elf_names: dict[str, str] = {
     "us": "SLUS_203.88",
     "eu": "SLES_508.21",

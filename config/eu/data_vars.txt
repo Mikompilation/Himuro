@@ -1779,6 +1779,16 @@ caption_data                   = 0x3452b0; // type:CAPTION_DATA numel:13 nosize
 0x344d38                       = &rel_dat[27];
 0x344d68                       = &rel_dat[28];
 
+// ingame/menu/ig_menu.c
+ig_menu_str                    = 0x343618; // type:STR_DAT
+sozai                          = 0x343640; // type:SPRT_DAT
+mask_l                         = 0x343660; // type:SPRT_DAT
+mask_s                         = 0x343680; // type:SPRT_DAT
+win_ptn                        = 0x356988; // type:WIN_PTN numel:41
+msk_dat_top                    = 0x356bc8; // type:char numel:41
+msk_siz                        = 0x356bf8; // type:MSK_SIZ numel:55
+lin_dat_top                    = 0x356e20; // type:char numel:41
+lin_ptn                        = 0x356e50; // type:PLS_LIN numel:129
 
 // ingame/photo/pht_make.c
 hintdat                        = 0x345db0; // type:SPRT_DAT numel:97 nosize

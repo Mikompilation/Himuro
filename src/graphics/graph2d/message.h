@@ -3,34 +3,8 @@
 
 #include "typedefs.h"
 
-typedef struct {
-	u_char *str;
-	int pos_x;
-	int pos_y;
-	int type;
-	u_int r;
-	u_int g;
-	u_int b;
-	int alpha;
-	int pri;
-	int x_wide;
-	int y_wide;
-	int brnch_num;
-	int csr;
-	int st;
-} DISP_STR;
+#include "graphics/graph2d/str_types.h"
 
-typedef struct {
-	u_char *str;
-	int pos_x;
-	int pos_y;
-	int type;
-	u_int r;
-	u_int g;
-	u_int b;
-	int alpha;
-	int pri;
-} STR_DAT;
 
 typedef struct { // 0x58
 	/* 0x00 */ int pri;
