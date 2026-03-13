@@ -187,7 +187,7 @@ segments:
           - [0xee668,  asm, ingame/menu/ig_rank]
           - [0xf1970,  asm, ingame/menu/ig_glst]
           - [0xf3d78,  asm, ingame/menu/ig_map]
-          - [0xf7268,  asm, ingame/menu/ig_option]
+          - [0xf7268,  c,   ingame/menu/ig_option]
           - [0xfa1c8,  c,   ingame/menu/sp_menu]
           - [0x100458, c,   ingame/map/door_conte]
           - [0x100838, c,   ingame/photo/photo]
@@ -418,7 +418,7 @@ segments:
           - { start: 0x251b40, type:  rodata, vram: 0x350b40, name: ingame/menu/ig_rank           }
           - { start: 0x251b80, type:  rodata, vram: 0x350b80, name: ingame/menu/ig_glst           }
           - { start: 0x251c30, type:  rodata, vram: 0x350c30, name: ingame/menu/ig_map            }
-          - { start: 0x251ce0, type:  rodata, vram: 0x350ce0, name: ingame/menu/ig_option         }
+          - { start: 0x251ce0, type: .rodata, vram: 0x350ce0, name: ingame/menu/ig_option         }
           - { start: 0x2521a0, type: .rodata, vram: 0x3511a0, name: ingame/menu/sp_menu           }
           - { start: 0x2523d0, type: .rodata, vram: 0x3513d0, name: ingame/map/door_conte         }
           - { start: 0x2523f0, type: .rodata, vram: 0x3513f0, name: ingame/photo/pht_main         }
@@ -501,7 +501,7 @@ segments:
           - { start: 0x256f38, type:  lit4,   vram: 0x355f38, name: ingame/menu/ig_rank           }
           - { start: 0x256f54, type:  lit4,   vram: 0x355f54, name: ingame/menu/ig_glst           }
           - { start: 0x256f68, type:  lit4,   vram: 0x355f68, name: ingame/menu/ig_map            }
-          - { start: 0x256fa0, type:  lit4,   vram: 0x355fa0, name: ingame/menu/ig_option         }
+          - { start: 0x256fa0, type: .lit4,   vram: 0x355fa0, name: ingame/menu/ig_option         }
           - { start: 0x256fd4, type: .lit4,   vram: 0x355fd4, name: ingame/menu/sp_menu           }
           - { start: 0x257014, type: .lit4,   vram: 0x356014, name: ingame/photo/pht_make         }
           - { start: 0x257024, type: .lit4,   vram: 0x356024, name: ingame/plyr/plyr_ctl          }
@@ -659,7 +659,7 @@ segments:
           - { start: 0x258880, type:  sbss,   vram: 0x357b60, name: ingame/menu/ig_rank           }
           - { start: 0x258880, type:  sbss,   vram: 0x357b70, name: ingame/menu/ig_glst           }
           - { start: 0x258880, type:  sbss,   vram: 0x357b78, name: ingame/menu/ig_map            }
-          - { start: 0x258880, type:  sbss,   vram: 0x357b80, name: ingame/menu/ig_option         }
+          - { start: 0x258880, type: .sbss,   vram: 0x357b80, name: ingame/menu/ig_option         }
           - { start: 0x258880, type: .sbss,   vram: 0x357b90, name: ingame/menu/sp_menu           }
           - { start: 0x258880, type: .sbss,   vram: 0x357bb0, name: ingame/photo/pht_main         }
           - { start: 0x258880, type: .sbss,   vram: 0x357bb8, name: ingame/photo/pht_make         }
