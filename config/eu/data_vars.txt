@@ -1790,6 +1790,10 @@ msk_siz                        = 0x356bf8; // type:MSK_SIZ numel:55
 lin_dat_top                    = 0x356e20; // type:char numel:41
 lin_ptn                        = 0x356e50; // type:PLS_LIN numel:129
 
+// ingame/menu/ig_map.c
+map_door_pos                   = 0x3459e8; // type:MAP_DOOR_POS numel:77 nosize
+map_svp_pos                    = 0x345c50; // type:MAP_SVP_POS numel:7 nosize
+
 // ingame/photo/pht_make.c
 hintdat                        = 0x345db0; // type:SPRT_DAT numel:97 nosize
 hintreadat                     = 0x3469d0; // type:SPRT_DAT numel:51 nosize

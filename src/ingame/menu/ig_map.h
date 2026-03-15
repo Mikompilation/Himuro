@@ -19,11 +19,34 @@ typedef struct {
 	u_char room;
 } MAP_SVP_POS;
 
+typedef struct {
+	float alp;
+	short int mvx;
+	short int mvy;
+	u_char flr;
+	u_char scl_now;
+	u_char scl_mod;
+	u_char plyr_id;
+	u_char here_no;
+	u_char here_id;
+	u_char here_bak;
+	u_char line_alp;
+	u_char movable;
+	u_char visit_flr;
+} MAP_CTRL;
+
+typedef struct {
+	float x;
+	float y;
+	float a;
+	int rgb;
+} LINE_PRT;
+
 // extern u_char rm_in_flr0[8];
 // extern u_char rm_in_flr1[29];
 // extern u_char rm_in_flr2[12];
 // extern u_char rm_in_flr3[2];
-// extern MAP_DOOR_POS map_door_pos[0];
+// extern MAP_DOOR_POS map_door_pos[];
 extern MAP_SVP_POS map_svp_pos[];
 
 void NewgameMenuMapInit();

@@ -2043,6 +2043,37 @@ class PLS_LIN(CStructure):
     win_no: c_uint8
 
 
+###########################################################################
+# typedef struct {
+# 	short int px;
+# 	short int py;
+# 	u_char rt;
+# 	u_char flr;
+# 	u_char id;
+# } MAP_DOOR_POS;
+class MAP_DOOR_POS(CStructure):
+    px: c_int16
+    py: c_int16
+    rt: c_uint8
+    flr: c_uint8
+    id: c_uint8
+
+
+# typedef struct {
+# 	u_short px;
+# 	u_short py;
+# 	short int rt;
+# 	u_char flr;
+# 	u_char room;
+# } MAP_SVP_POS;
+class MAP_SVP_POS(CStructure):
+    px: c_uint16
+    py: c_uint16
+    rt: c_int16
+    flr: c_uint8
+    room: c_uint8
+
+
 elf_names: dict[str, str] = {
     "us": "SLUS_203.88",
     "eu": "SLES_508.21",
