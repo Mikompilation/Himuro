@@ -1578,7 +1578,7 @@ static u_char DspPhot2D(u_long tex, u_char rt, short int px, short int py, short
         return 2;
     }
 
-    CopySprDToSpr(&ds, &spr_dat[287]);
+    CopySprDToSpr(&ds, &spr_dat[ITM_CAM_FLR]);
 
     ds.tex0 = tex;
 
@@ -2711,11 +2711,7 @@ void RelDspBackGrd()
 
     alpha = 0x64;
 
-#ifdef BUILD_EU_VERSION
-    ssd = spr_dat[1020];
-#else
-    ssd = spr_dat[1019];
-#endif
+    ssd = spr_dat[REL_TITLE_00];
 
     ssd.y += rel_csr.offy;
 
@@ -2723,11 +2719,7 @@ void RelDspBackGrd()
 
     DispSprD(&ds);
 
-#ifdef BUILD_EU_VERSION
-    ssd = spr_dat[1021];
-#else
-    ssd = spr_dat[1020];
-#endif
+    ssd = spr_dat[REL_TITLE_01];
 
     ssd.y += rel_csr.offy;
 
@@ -2743,7 +2735,7 @@ void RelDspBackGrd()
     {
         for (j = 0; j < 6; j++)
         {
-            ssd = spr_dat[463];
+            ssd = spr_dat[MAP_SEAT_PAPER];
 
             ssd.x = ssd.w * j;
             ssd.y = ssd.h * i;
@@ -2817,20 +2809,9 @@ void RelDspBackGrd()
 
     SetSprFile(SPRT_ADDRESS_2);
 
-    DrawButtonTex(0x14000, 3, spr_dat[476].x - 45, spr_dat[476].y + rel_csr.offy + 69, 0x64);
+    DrawButtonTex(0x14000, 3, spr_dat[MAP_DIRECTION].x - 45, spr_dat[MAP_DIRECTION].y + rel_csr.offy + 69, 0x64);
 
-    ssd = spr_dat[476];
-
-    ssd.x += -45;
-    ssd.y += rel_csr.offy + 97;
-
-    ssd.pri = 0x14000;
-
-    CopySprDToSpr(&ds, &ssd);
-
-    DispSprD(&ds);
-
-    ssd = spr_dat[471];
+    ssd = spr_dat[MAP_DIRECTION];
 
     ssd.x += -45;
     ssd.y += rel_csr.offy + 97;
@@ -2841,9 +2822,20 @@ void RelDspBackGrd()
 
     DispSprD(&ds);
 
-    DrawButtonTex(0x14000, 1, spr_dat[476].x - 45, spr_dat[476].y + rel_csr.offy + 43, 0x64);
+    ssd = spr_dat[MAP_FNT_L1R1];
 
-    ssd = spr_dat[203];
+    ssd.x += -45;
+    ssd.y += rel_csr.offy + 97;
+
+    ssd.pri = 0x14000;
+
+    CopySprDToSpr(&ds, &ssd);
+
+    DispSprD(&ds);
+
+    DrawButtonTex(0x14000, 1, spr_dat[MAP_DIRECTION].x - 45, spr_dat[MAP_DIRECTION].y + rel_csr.offy + 43, 0x64);
+
+    ssd = spr_dat[MNU_GRB_CAP_EXIT];
 
     CopySprDToSpr(&ds, &ssd);
 
@@ -3012,11 +3004,7 @@ void TestPk2DataSou(long int sendtexaddr)
         ttest_count--;
     }
 
-#ifdef BUILD_EU_VERSION
-    ssd.tex0 = spr_dat[929].tex0;
-#else
-    ssd.tex0 = spr_dat[928].tex0;
-#endif
+    ssd.tex0 = spr_dat[REL_NAME_WAKU].tex0;
 
     ssd.u = 1;
     ssd.v = 1;

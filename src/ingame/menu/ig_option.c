@@ -829,7 +829,7 @@ static void DspBigFlame2(u_char alpha, u_char str_mode)
 
         pos_x = (menu_opt.snd_vol * 162) / 4095.0f;
 
-        CopySprDToSpr(&ds, &spr_dat[559]);
+        CopySprDToSpr(&ds, &spr_dat[MNU_OPT_VOLUME]);
 
         ds.w = pos_x + 1;
 
@@ -1031,17 +1031,57 @@ static void DspPadType(u_char alpha, u_char ttl)
     };
 #ifdef BUILD_EU_VERSION
     short int f_idx2[4][18] = {
-        { 595, 586, 587, 578, 587, 579, 588, 580, 595, 589, 593, 583, 590, 584, 589, 581, 594, 582 },
-        { 595, 586, 587, 585, 587, 585, 588, 580, 595, 589, 593, 583, 590, 584, 589, 581, 594, 582 },
-        { 595, 586, 587, 578, 587, 579, 588, 580, 595, 590, 584, 593, 583, 589, 589, 581, 594, 582 },
-        { 595, 586, 587, 585, 587, 585, 588, 580, 595, 590, 584, 593, 583, 589, 589, 581, 594, 582 }
+        {
+            MENU_OPT_KEY_RED_09, MENU_OPT_KEY_RED_00, MENU_OPT_KEY_RED_01, MENU_OPT_KEY_WHT_00, MENU_OPT_KEY_RED_01,
+            MENU_OPT_KEY_WHT_01, MENU_OPT_KEY_RED_02, MENU_OPT_KEY_WHT_02, MENU_OPT_KEY_RED_09, MENU_OPT_KEY_RED_03,
+            MENU_OPT_KEY_RED_07, MENU_OPT_KEY_WHT_05, MENU_OPT_KEY_RED_04, MENU_OPT_KEY_WHT_06, MENU_OPT_KEY_RED_03,
+            MENU_OPT_KEY_WHT_03, MENU_OPT_KEY_RED_08, MENU_OPT_KEY_WHT_04,
+        },
+        {
+            MENU_OPT_KEY_RED_09, MENU_OPT_KEY_RED_00, MENU_OPT_KEY_RED_01, MENU_OPT_KEY_WHT_07, MENU_OPT_KEY_RED_01,
+            MENU_OPT_KEY_WHT_07, MENU_OPT_KEY_RED_02, MENU_OPT_KEY_WHT_02, MENU_OPT_KEY_RED_09, MENU_OPT_KEY_RED_03,
+            MENU_OPT_KEY_RED_07, MENU_OPT_KEY_WHT_05, MENU_OPT_KEY_RED_04, MENU_OPT_KEY_WHT_06, MENU_OPT_KEY_RED_03,
+            MENU_OPT_KEY_WHT_03, MENU_OPT_KEY_RED_08, MENU_OPT_KEY_WHT_04,
+        },
+        {
+            MENU_OPT_KEY_RED_09, MENU_OPT_KEY_RED_00, MENU_OPT_KEY_RED_01, MENU_OPT_KEY_WHT_00, MENU_OPT_KEY_RED_01,
+            MENU_OPT_KEY_WHT_01, MENU_OPT_KEY_RED_02, MENU_OPT_KEY_WHT_02, MENU_OPT_KEY_RED_09, MENU_OPT_KEY_RED_04,
+            MENU_OPT_KEY_WHT_06, MENU_OPT_KEY_RED_07, MENU_OPT_KEY_WHT_05, MENU_OPT_KEY_RED_03, MENU_OPT_KEY_RED_03,
+            MENU_OPT_KEY_WHT_03, MENU_OPT_KEY_RED_08, MENU_OPT_KEY_WHT_04,
+        },
+        {
+            MENU_OPT_KEY_RED_09, MENU_OPT_KEY_RED_00, MENU_OPT_KEY_RED_01, MENU_OPT_KEY_WHT_07, MENU_OPT_KEY_RED_01,
+            MENU_OPT_KEY_WHT_07, MENU_OPT_KEY_RED_02, MENU_OPT_KEY_WHT_02, MENU_OPT_KEY_RED_09, MENU_OPT_KEY_RED_04,
+            MENU_OPT_KEY_WHT_06, MENU_OPT_KEY_RED_07, MENU_OPT_KEY_WHT_05, MENU_OPT_KEY_RED_03, MENU_OPT_KEY_RED_03,
+            MENU_OPT_KEY_WHT_03, MENU_OPT_KEY_RED_08, MENU_OPT_KEY_WHT_04,
+        }
     };
 #else
     short int f_idx2[4][18] = {
-        { 578, 586, 587, 578, 587, 579, 588, 580, 578, 589, 593, 583, 590, 584, 589, 581, 594, 582 },
-        { 578, 586, 587, 585, 587, 585, 588, 580, 578, 589, 593, 583, 590, 584, 589, 581, 594, 582 },
-        { 578, 586, 587, 578, 587, 579, 588, 580, 578, 590, 584, 593, 583, 589, 589, 581, 594, 582 },
-        { 578, 586, 587, 585, 587, 585, 588, 580, 578, 590, 584, 593, 583, 589, 589, 581, 594, 582 }
+        {
+            MENU_OPT_KEY_WHT_00, MENU_OPT_KEY_RED_00, MENU_OPT_KEY_RED_01, MENU_OPT_KEY_WHT_00, MENU_OPT_KEY_RED_01,
+            MENU_OPT_KEY_WHT_01, MENU_OPT_KEY_RED_02, MENU_OPT_KEY_WHT_02, MENU_OPT_KEY_WHT_00, MENU_OPT_KEY_RED_03,
+            MENU_OPT_KEY_RED_07, MENU_OPT_KEY_WHT_05, MENU_OPT_KEY_RED_04, MENU_OPT_KEY_WHT_06, MENU_OPT_KEY_RED_03,
+            MENU_OPT_KEY_WHT_03, MENU_OPT_KEY_RED_08, MENU_OPT_KEY_WHT_04,
+        },
+        {
+            MENU_OPT_KEY_WHT_00, MENU_OPT_KEY_RED_00, MENU_OPT_KEY_RED_01, MENU_OPT_KEY_WHT_07, MENU_OPT_KEY_RED_01,
+            MENU_OPT_KEY_WHT_07, MENU_OPT_KEY_RED_02, MENU_OPT_KEY_WHT_02, MENU_OPT_KEY_WHT_00, MENU_OPT_KEY_RED_03,
+            MENU_OPT_KEY_RED_07, MENU_OPT_KEY_WHT_05, MENU_OPT_KEY_RED_04, MENU_OPT_KEY_WHT_06, MENU_OPT_KEY_RED_03,
+            MENU_OPT_KEY_WHT_03, MENU_OPT_KEY_RED_08, MENU_OPT_KEY_WHT_04,
+        },
+        {
+            MENU_OPT_KEY_WHT_00, MENU_OPT_KEY_RED_00, MENU_OPT_KEY_RED_01, MENU_OPT_KEY_WHT_00, MENU_OPT_KEY_RED_01,
+            MENU_OPT_KEY_WHT_01, MENU_OPT_KEY_RED_02, MENU_OPT_KEY_WHT_02, MENU_OPT_KEY_WHT_00, MENU_OPT_KEY_RED_04,
+            MENU_OPT_KEY_WHT_06, MENU_OPT_KEY_RED_07, MENU_OPT_KEY_WHT_05, MENU_OPT_KEY_RED_03, MENU_OPT_KEY_RED_03,
+            MENU_OPT_KEY_WHT_03, MENU_OPT_KEY_RED_08, MENU_OPT_KEY_WHT_04,
+        },
+        {
+            MENU_OPT_KEY_WHT_00, MENU_OPT_KEY_RED_00, MENU_OPT_KEY_RED_01, MENU_OPT_KEY_WHT_07, MENU_OPT_KEY_RED_01,
+            MENU_OPT_KEY_WHT_07, MENU_OPT_KEY_RED_02, MENU_OPT_KEY_WHT_02, MENU_OPT_KEY_WHT_00, MENU_OPT_KEY_RED_04,
+            MENU_OPT_KEY_WHT_06, MENU_OPT_KEY_RED_07, MENU_OPT_KEY_WHT_05, MENU_OPT_KEY_RED_03, MENU_OPT_KEY_RED_03,
+            MENU_OPT_KEY_WHT_03, MENU_OPT_KEY_RED_08, MENU_OPT_KEY_WHT_04,
+        }
     };
 #endif
     short int f_col[4][18] = {
@@ -1163,22 +1203,14 @@ static void DspPadType(u_char alpha, u_char ttl)
 #endif
     }
 
-#ifdef BUILD_EU_VERSION
-    ssd = spr_dat[596];
-#else
-    ssd = spr_dat[595];
-#endif
+    ssd = spr_dat[MENU_OPT_KAKKO_L];
 
     ssd.alpha = alpha;
 
     CopySprDToSpr(&ds, &ssd);
     DispSprD(&ds);
 
-#ifdef BUILD_EU_VERSION
-    ssd = spr_dat[597];
-#else
-    ssd = spr_dat[596];
-#endif
+    ssd = spr_dat[MENU_OPT_KAKKO_R];
 
     ssd.alpha = alpha;
 
@@ -1188,23 +1220,14 @@ static void DspPadType(u_char alpha, u_char ttl)
 
     DispSprD(&ds);
 
-
-#ifdef BUILD_EU_VERSION
-    ssd = spr_dat[598];
-#else
-    ssd = spr_dat[597];
-#endif
+    ssd = spr_dat[MENU_OPT_MOVE_TYPE];
 
     ssd.alpha = alpha;
 
     CopySprDToSpr(&ds, &ssd);
     DispSprD(&ds);
 
-#ifdef BUILD_EU_VERSION
-    ssd = spr_dat[599 + typ + rev * 4];
-#else
-    ssd = spr_dat[598 + typ + rev * 4];
-#endif
+    ssd = spr_dat[MENU_OPT_TYPE_A + typ + rev * 4];
 
     ssd.alpha = alpha;
 
@@ -1230,21 +1253,21 @@ static void DspPadType(u_char alpha, u_char ttl)
         StepLinesSimpleDraw(pnt_stp5, 166, 166, 166, alpha);
     }
 
-    ssd = spr_dat[591];
+    ssd = spr_dat[MENU_OPT_KEY_RED_05];
 
     ssd.alpha = alpha;
 
     CopySprDToSpr(&ds, &ssd);
     DispSprD(&ds);
 
-    ssd = spr_dat[592];
+    ssd = spr_dat[MENU_OPT_KEY_RED_06];
 
     ssd.alpha = alpha;
 
     CopySprDToSpr(&ds, &ssd);
     DispSprD(&ds);
 
-    ssd = spr_dat[566];
+    ssd = spr_dat[MNU_OPT_SEL_TRI_L];
 
     ssd.x += 230;
     ssd.y += 90;
@@ -1254,7 +1277,7 @@ static void DspPadType(u_char alpha, u_char ttl)
     CopySprDToSpr(&ds, &ssd);
     DispSprD(&ds);
 
-    ssd = spr_dat[567];
+    ssd = spr_dat[MNU_OPT_SEL_TRI_R];
 
     ssd.x += 230;
     ssd.y += 90;
@@ -1266,7 +1289,7 @@ static void DspPadType(u_char alpha, u_char ttl)
 
     CmnWindow(40, 0, 0, alpha, 0x80);
 
-    ssd = spr_dat[587];
+    ssd = spr_dat[MENU_OPT_KEY_RED_01];
 
     CopySprDToSpr(&ds, &ssd);
 
@@ -1286,13 +1309,13 @@ static void DspPadType(u_char alpha, u_char ttl)
 
     DispSprD(&ds);
 
-    ssd = spr_dat[575];
+    ssd = spr_dat[MENU_OPT_KEY_KEY];
     ssd.alpha = alpha;
 
     CopySprDToSpr(&ds, &ssd);
     DispSprD(&ds);
 
-    ssd = rev ? spr_dat[577] : spr_dat[576];
+    ssd = rev ? spr_dat[MENU_OPT_KEY_REVERSE] : spr_dat[MENU_OPT_KEY_NORMAL];
     ssd.alpha = alpha;
 
     CopySprDToSpr(&ds, &ssd);

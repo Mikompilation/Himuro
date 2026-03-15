@@ -797,7 +797,7 @@ static void PointerEN(short int pos_x, short int pos_y, u_char red, u_char alp, 
 
     scl = size / 64.0f;
 
-    CopySprDToSpr(&ds, &spr_dat[96]);
+    CopySprDToSpr(&ds, &spr_dat[FND_CNT_CIR]);
 
     ds.x += pos_x;
     ds.y += pos_y;
@@ -907,7 +907,7 @@ static void NumDisp(u_char number, u_char no, short int pos_x, short int pos_y, 
     }
     else
     {
-        slot_mov = spr_dat[3].h * inf_dsp.flm_cng_tmr / 20.0f;
+        slot_mov = spr_dat[FND_CONT_NUM00].h * inf_dsp.flm_cng_tmr / 20.0f;
     }
 
     for (i = 0; i < 4; i++)

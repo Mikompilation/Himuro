@@ -1,7 +1,7 @@
 #ifndef ENUMS_H
 #define ENUMS_H
 
-enum SPRT_DAT {
+typedef enum {
     FND_FRAME_L = 0,
     FND_FRAME_R,
     FND_CONT_BASE,
@@ -1094,7 +1094,7 @@ enum SPRT_DAT {
     REL_FAM_NAME03 = 1025,
     REL_END = 1025,
 #endif
-};
+} SPR_DAT_IDX;
 
 enum CD_FILE_DAT {
     DUMMYDUMMY00_OBJ = 0,
