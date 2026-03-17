@@ -1791,6 +1791,9 @@ msk_siz                        = 0x3500c8; // type:MSK_SIZ numel:55
 lin_dat_top                    = 0x3502f0; // type:char numel:41
 lin_ptn                        = 0x350320; // type:PLS_LIN numel:129
 
+// ingame/menu/ig_glst.c
+glist_order                    = 0x33f390; // type:GLIST_ORDER numel:109 nosize static
+
 // ingame/menu/ig_map.c
 map_door_pos                   = 0x33f810; // type:MAP_DOOR_POS numel:77 nosize
 map_svp_pos                    = 0x33fa78; // type:MAP_SVP_POS numel:7 nosize

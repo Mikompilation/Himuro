@@ -2,7 +2,8 @@
 #define INGAME_MENU_IG_RANK_H
 
 #include "typedefs.h"
-#include "ig_types.h"
+
+#include "ingame/menu/ig_types.h"
 
 extern SAVE_RANK save_rank;
 

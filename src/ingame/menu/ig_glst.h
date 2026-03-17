@@ -3,12 +3,36 @@
 
 #include "typedefs.h"
 
+#include "ingame/menu/ig_types.h"
+
 typedef struct {
 	char disp_flg;
 	char new_flg;
 } GLIST_INDEX;
 
-#include "ingame/menu/ig_rank.h"
+typedef struct {
+	u_short lst_top;
+	u_short mode;
+	u_short dtl_alp;
+	u_short g_num;
+	u_short all_num;
+	u_short complete;
+	u_short cnt;
+	u_short flg;
+} MENU_GLST;
+
+typedef struct {
+	u_long tex;
+	int load_id;
+	char mode;
+} GLIST_PHOTO;
+
+typedef struct {
+	u_short mdl_no;
+	u_short knd;
+	u_short no;
+	u_short msn;
+} GLIST_ORDER;
 
 extern GLIST_INDEX glist_index[108];
 // extern GLIST_PHOTO glist_photo;

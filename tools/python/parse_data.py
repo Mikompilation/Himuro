@@ -2074,6 +2074,20 @@ class MAP_SVP_POS(CStructure):
     room: c_uint8
 
 
+###########################################################################
+# typedef struct {
+# 	u_short mdl_no;
+# 	u_short knd;
+# 	u_short no;
+# 	u_short msn;
+# } GLIST_ORDER;
+class GLIST_ORDER(CStructure):
+    mdl_no: c_uint16
+    knd: c_uint16
+    no: c_uint16
+    msn: c_uint16
+
+
 elf_names: dict[str, str] = {
     "us": "SLUS_203.88",
     "eu": "SLES_508.21",
