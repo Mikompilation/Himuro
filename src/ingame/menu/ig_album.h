@@ -17,7 +17,7 @@ u_char TimeIsMoney(u_char hexhex);
 u_char MoneyIsTime(u_char time);
 
 #ifdef MATCHING_DECOMP
-#ifdef INCLUDING_FROM_IG_ALBUM_C
+#if defined(INCLUDING_FROM_IG_ALBUM_C) || defined(INCLUDING_FROM_IG_RANK_C)
 // fix for undeclared PutDate in header
 void PutDate(PICTURE_WRK *pic_inf, short int pos_x, short int pos_y, short int alpha, int pri);
 #endif
