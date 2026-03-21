@@ -1,15 +1,25 @@
 {
     "effect_oth.c.S": {
         "ContHeatHaze": [
-            [262, "slt $22,$22,$2",   "slt $2,$22,$3"  ],
-            [263, "bne $22,$0,$L435", "bne $2,$0,$L435"]
+            [271, "slt $22,$22,$2",   "slt $2,$22,$3"  ],
+            [272, "bne $22,$0,$L435", "bne $2,$0,$L435"]
         ]
     },
     "photo.c.S": {
         "PhotoScoreCount": [
-            [146, "lui $4,%hi(ingame_wrk) # high",     "lui $2,%hi(ingame_wrk) # high"    ],
-            [147, "lbu $3,%lo(ingame_wrk)($4)",        "lbu $3,%lo(ingame_wrk)($2)"       ],
-            [150, "addiu $5,$4,%lo(ingame_wrk) # low", "addiu $5,$2,%lo(ingame_wrk) # low"]
+            [152, "lui $4,%hi(ingame_wrk) # high",     "lui $2,%hi(ingame_wrk) # high"    ],
+            [153, "lbu $3,%lo(ingame_wrk)($4)",        "lbu $3,%lo(ingame_wrk)($2)"       ],
+            [156, "addiu $5,$4,%lo(ingame_wrk) # low", "addiu $5,$2,%lo(ingame_wrk) # low"]
+        ]
+    },
+    "ig_camra.c.S": {
+        "CameraCustomSubAbility": [
+            [254, ".p2align 3", " .p2align 2"],
+            [380, ".p2align 3", " .p2align 2"]
+        ],
+        "CameraCustomSpecialAbility": [
+            [260, ".p2align 3", " .p2align 2"],
+            [386, ".p2align 3", " .p2align 2"]
         ]
     }
 }

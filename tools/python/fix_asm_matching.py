@@ -12,7 +12,7 @@ CONFIG_ROOT = Path(__file__).parent.parent.parent.resolve() / "config"
 # enumerate languages from config dir
 LANGUAGES = [Path(f.path).name for f in os.scandir(CONFIG_ROOT) if f.is_dir()]
 
-RE_INSTR = re.compile(r"^\t[^.]")
+RE_INSTR = re.compile(r"^\t(?:[^.]|\.p2align \d+)")
 
 
 class InstructionPatch(pydantic.RootModel[tuple[int, str, str]]):

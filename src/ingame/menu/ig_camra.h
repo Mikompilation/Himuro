@@ -9,10 +9,21 @@ typedef struct {
 	u_char alpha;
 } FLSH_CORE;
 
+typedef struct {
+	short int arw_cnt;
+	u_char sb_flsh[5];
+	u_char ex_flsh[5];
+	u_char pow_bak[3];
+	u_char pow_flr[3][4];
+	u_char film_or_perform;
+	u_char bonus_or_special;
+	u_char pfm_max[3];
+} CAM_DSP;
+
 // extern int camera_power_up_point[3][3];
 // extern int camera_sub_abi_point[5];
 // extern int camera_spe_abi_point[5];
-// extern CAMERA_MENU_WRK cmr_menu_wrk;
+extern CAMERA_MENU_WRK cmr_menu_wrk;
 // extern FLSH_CORE flsh;
 // extern FLSH_CORE flsh2;
 

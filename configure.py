@@ -63,6 +63,7 @@ LANGUAGES: dict[str, str] = {
 ASM_PATCH_LIST: list[str] = [
     "effect_oth.c.o",
     "photo.c.o",
+    "ig_camra.c.o",
 ]
 
 BIN_PATH_LIST: list[str] = [
