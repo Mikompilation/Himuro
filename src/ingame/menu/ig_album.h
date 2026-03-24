@@ -2,6 +2,16 @@
 #define INGAME_MENU_IG_ALBUM_H
 
 #include "typedefs.h"
+#include "ingame/menu/ig_types.h"
+
+typedef struct {
+    float lrg_io_alf;
+    u_short lrg_io_cnt;
+    u_short mmenu_tmr;
+    u_short smenu_tmr;
+    u_char menu_csr_bak;
+    u_char dsp_pct_bak;
+} ALBM_WRK;
 
 void NewgameMenuAlbumInit();
 void LoadgameMenuAlbumInit();
