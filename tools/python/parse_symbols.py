@@ -365,7 +365,7 @@ def main():
         help="folder where symbol_addrs.txt and undefined_syms.txt will be created "
         "(existing files will not be overwritten)",
     )
-    parser.add_argument("--range", action="append", dest="ranges", nargs="+", type=range_type)
+    parser.add_argument("--range", action="append", dest="ranges", default=[], nargs="+", type=range_type)
 
     args = parser.parse_args()
     args.ranges = list(itertools.chain(*args.ranges))

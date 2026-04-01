@@ -6,14 +6,16 @@ from pathlib import Path
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--language", required=True, choices=["us", "eu"])
+    parser.add_argument("--language", required=True, choices=["us", "eu", "jp"])
 
     args = parser.parse_args()
 
     if args.language == "us":
         map_path = Path("config/us/build/SLUS_203.88.map")
-    else:
+    elif args.language == "eu":
         map_path = Path("config/eu/build/SLES_508.21.map")
+    else:
+        map_path = Path("config/jp/build/SLPS_250.74.map")
 
     with open(map_path, mode="r") as fh:
         for n, line in enumerate(fh):
@@ -22,7 +24,7 @@ def main():
                 addr = match.group(1)
                 label = match.group(2)
                 if addr.upper() != label.upper():
-                    print(f"{map_path}:{n+1} {line}")
+                    print(f"{map_path}:{n + 1} {line}")
                     return
 
     print("no mismatches found")

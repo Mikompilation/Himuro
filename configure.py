@@ -54,6 +54,7 @@ COMPILER_FLAGS = "-DMATCHING_DECOMP -O2 -g2 -gstabs"  # -malign-functions=3
 LANGUAGES: dict[str, str] = {
     "SLUS_203.88": "us",
     "SLES_508.21": "eu",
+    "SLPS_250.74": "jp",
 }
 
 # list of object file names (e.g., "tim2_new.c.o"), that have asm that needs
@@ -98,9 +99,7 @@ def make_compiler_cmd(config_dir: Path, src_path: Path, language: str):
     game_cc_dir = f"{tools_dir}/cc/{COMPILER}/bin"
     lib_cc_dir = f"{tools_dir}/cc/{COMPILER}/bin"
 
-    language_define = ""
-    if language == "eu":
-        language_define = "-DBUILD_EU_VERSION"
+    language_define = f"-DBUILD_{language.upper()}_VERSION"
 
     compiler_includes = f"-I{src_path.parent / 'src'} -I{src_path.parent / 'include'} -Iinclude -isystem include/sdk/ee -isystem include/gcc"
     assembler_includes = f"-Wa,-I{src_path.parent / 'include'} -Wa,-I{src_path.parent}"
@@ -571,6 +570,7 @@ def generate_objdiff_configuration(config_path: Path, config: dict[str, Any], la
     category_name = {
         "us": "Fatal Frame",
         "eu": "Project Zero",
+        "jp": "Zero",
     }
 
     progress_categories = [

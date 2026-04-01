@@ -131,5 +131,44 @@ eu-clean:  ## Clean artifact in US config directory
 eu-reset:  ## Resets the EU config directory to its original state
 	@python3 configure.py config/eu/ff1.eu.yaml --reset
 
+##
+## JP Commands:
+jp-configure: ## Configure JP project (needs SLPS_250.74)
+	@python3 configure.py config/jp/ff1.jp.yaml -c
+
+.jp-build-only:
+	@cd config/jp; \
+	ninja -t clean; \
+	ninja -j$(NUMPROC)
+
+.jp-check-files-on-error:
+	ls -l config/jp/build/SLPS_250.74 config/jp/SLPS_250.74
+
+jp-build: ## Build EU project
+	@$(MAKE) .jp-build-only; status=$$?; [ $$status -eq 0 ] || { $(MAKE) .jp-check-files-on-error; }; exit $$status
+
+jp-extract-data:  ## Extract initialized variables from .data in EU config directory
+	@python3 tools/python/parse_data.py jp
+
+jp-make-asm:  ## Create expected asm folder in EU config directory
+	@python3 configure.py config/jp/ff1.jp.yaml --make-asm
+
+jp-map-mismatch:  ## Check for mismatches in EU mapfile
+	@python3 tools/python/map_mismatch.py --language jp
+
+jp-report:  ## Create progress report in EU config directory
+	@(stat config/jp/expected/obj/ >/dev/null 2>&1 || (echo "Target objects do not exist, please run \`make jp-make-asm\`"; false));
+	@(stat config/jp/build/src/ >/dev/null 2>&1 || (echo "Base objects do not exist, please run \`make jp-build\`"; false));
+	@tools/objdiff/objdiff-cli report generate -p config/jp/ -o config/jp/report.json -f json
+	@python3 tools/python/fix_report.py config/jp/report.json
+	@python3 -c "import json;from pathlib import Path;report=json.loads(Path('config/jp/report.json').read_text());print(f\"Progress: {report['measures']['fuzzy_match_percent']:.2f}%\")"
+
+jp-clean:  ## Clean artifact in US config directory
+	@cd config/jp; \
+	ninja -t clean
+
+jp-reset:  ## Resets the EU config directory to its original state
+	@python3 configure.py config/jp/ff1.jp.yaml --reset
+
 # Include custom makefile for user-defined commands
 -include Makefile.custom

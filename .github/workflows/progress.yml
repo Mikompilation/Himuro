@@ -12,6 +12,7 @@ jobs:
         version:
           -  { game_id: "SLUS_203.88", language: "us" }
           -  { game_id: "SLES_508.21", language: "eu" }
+          -  { game_id: "SLPS_250.74", language: "jp" }
 
     steps:
       - name: Checkout Repository
