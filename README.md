@@ -7,6 +7,7 @@ Himuro is a project that aims to have a matching source decompilation of the PS2
 |----------------|--------|-------------|--------------------------------
 | Fatal Frame    | US     | SLUS_203.88 | [![](https://decomp.dev/Mikompilation/Himuro/SLUS_203.88.svg?mode=shield&category=us&label=⠀  Code   ⠀&measure=matched_code_percent)](https://decomp.dev/Mikompilation/Himuro/SLUS_203.88)⠀ [![](https://decomp.dev/Mikompilation/Himuro/SLUS_203.88.svg?mode=shield&category=us&label=Functions&measure=matched_functions)](https://decomp.dev/Mikompilation/Himuro/SLUS_203.88)
 | Project Zero   | EU     | SLES_508.21 |[![](https://decomp.dev/Mikompilation/Himuro/SLES_508.21.svg?mode=shield&category=eu&label=⠀  Code   ⠀&measure=matched_code_percent)](https://decomp.dev/Mikompilation/Himuro/SLES_508.21)⠀ [![](https://decomp.dev/Mikompilation/Himuro/SLES_508.21.svg?mode=shield&category=eu&label=Functions&measure=matched_functions)](https://decomp.dev/Mikompilation/Himuro/SLES_508.21)
+| Zero           | JP     | SLPS_250.74 |[![](https://decomp.dev/Mikompilation/Himuro/SLPS_250.74.svg?mode=shield&category=jp&label=⠀  Code   ⠀&measure=matched_code_percent)](https://decomp.dev/Mikompilation/Himuro/SLPS_250.74)⠀ [![](https://decomp.dev/Mikompilation/Himuro/SLPS_250.74.svg?mode=shield&category=jp&label=Functions&measure=matched_functions)](https://decomp.dev/Mikompilation/Himuro/SLPS_250.74)
 
 ## Disclaimer
 No game assets are hosted on this repository. You must provide them yourself, copying them from a legal copy.
