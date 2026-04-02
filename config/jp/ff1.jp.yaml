@@ -601,7 +601,8 @@ segments:
           - { start: 0x257680, type:  sdata,  vram: 0x356680, name: mc/mc_main                    }
           - { start: 0x2576a8, type:  sdata,  vram: 0x3566a8, name: mc/mc_album                   }
           - { start: 0x2576c0, type:  sdata,  vram: 0x3566c0, name: mc/mc_exec                    }
-          # - { start: 0x2576f6, type:  sdata,  vram: 0x3566f6, name: mc/mc_start                   }
+          - { start: 0x2576f6, type:  sdata,  vram: 0x3566f6, name: mc/mc_start                   }
+          - { start: 0x2576f8, type:  sdata,  vram: 0x3566f8, name: mc/mc_disp                   }
           - { start: 0x257710, type:  sdata,  vram: 0x356710, name: outgame/outgame               }
           - { start: 0x257740, type:  sdata,  vram: 0x356740, name: outgame/btl_mode/btl_menu     }
           - { start: 0x2577a0, type:  sdata,  vram: 0x3567a0, name: outgame/btl_mode/btl_mode     }
