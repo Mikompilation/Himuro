@@ -47,4 +47,32 @@ typedef union {
 	long int wrk;
 } P_INT;
 
+#if defined(BUILD_JP_VERSION)
+#define LOAD_REQ_LANG LoadReq
+#elif defined(BUILD_US_VERSION)
+#define LOAD_REQ_LANG LoadReq
+#elif defined(BUILD_EU_VERSION)
+#define LOAD_REQ_LANG LoadReqLanguage
+#endif
+
+#define PAD_DPAD_UP     0
+#define PAD_DPAD_DOWN   1
+#define PAD_DPAD_LEFT   2
+#define PAD_DPAD_RIGHT  3
+
+#define PAD_TRIANGLE    4
+#define PAD_CROSS       5
+#define PAD_SQUARE      6
+#define PAD_CIRCLE      7
+
+#define PAD_L1          8
+#define PAD_L2          9
+#define PAD_R1          10
+#define PAD_R2          11
+
+#define PAD_START       12
+#define PAD_SELECT      13
+#define PAD_L3          14
+#define PAD_R3          15
+
 #endif /* TYPEDEFS_H */

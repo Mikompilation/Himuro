@@ -49,7 +49,7 @@ segments:
       subsegments:
           - [0x1000,   asm, crt0]
           - [0x10c8,   c,   main/main]
-          - [0x12e8,   asm, outgame/mode_slct]
+          - [0x12e8,   c,   outgame/mode_slct]
           - [0x4628,   asm, outgame/memory_album]
           - [0xae78,   asm, main/gamemain]
           # - [0xb1f0,   asm, main/glob]
@@ -218,7 +218,7 @@ segments:
           - [0x11f108, textbin, text_rest]
           - [0x146bd0, textbin, vutext]
           # ######################## DATA    (vram: 0x24f780) #####################################
-          - { start: 0x150780, type:  data,   vram: 0x24f780, name: outgame/mode_slct             }
+          - { start: 0x150780, type: .data,   vram: 0x24f780, name: outgame/mode_slct             }
           - { start: 0x151fe0, type:  data,   vram: 0x250fe0, name: outgame/memory_album          }
           - { start: 0x1527c0, type:  data,   vram: 0x2517c0, name: main/glob                     }
           - { start: 0x1663b0, type:  data,   vram: 0x2653b0, name: os/system                     }
@@ -329,7 +329,7 @@ segments:
           # ######################## VUDATA  (vram: 0x3484c8) #####################################
           - { start: 0x2494c8, type: databin, vram: 0x3484c8, name: vudata                        }
           # ######################## RODATA  (vram: 0x348500) #####################################
-          - { start: 0x249500, type:  rodata, vram: 0x348500, name: outgame/mode_slct             }
+          - { start: 0x249500, type: .rodata, vram: 0x348500, name: outgame/mode_slct             }
           - { start: 0x249640, type:  rodata, vram: 0x348640, name: outgame/memory_album          }
           - { start: 0x249710, type:  rodata, vram: 0x348710, name: main/gamemain                 }
           - { start: 0x249730, type:  rodata, vram: 0x348730, name: os/system                     }
@@ -441,7 +441,7 @@ segments:
           - { start: 0x252bc0, type:  rodata, vram: 0x351bc0, name: outgame/sound_test            }
           - { start: 0x252bf8, type:  rodata, vram: 0x351bf8, name: rodata_rest                   }
           # ######################## LIT4    (vram: 0x354100) #####################################
-          - { start: 0x255100, type:  lit4,   vram: 0x354100, name: outgame/mode_slct             }
+          - { start: 0x255100, type: .lit4,   vram: 0x354100, name: outgame/mode_slct             }
           - { start: 0x255108, type:  lit4,   vram: 0x354108, name: outgame/memory_album          }
           - { start: 0x255198, type:  lit4,   vram: 0x354198, name: os/pad                        }
           - { start: 0x2551a4, type:  lit4,   vram: 0x3541a4, name: os/eeiop/adpcm/ea_cmd         }
@@ -513,7 +513,7 @@ segments:
           - { start: 0x256278, type:  lit4,   vram: 0x355278, name: ingame/event/wan_soul         }
           - { start: 0x2562b0, type:  lit4,   vram: 0x3552b0, name: outgame/sound_test            }
           # ######################## SDATA   (vram: 0x355300) #####################################
-          - { start: 0x256300, type:  sdata,  vram: 0x355300, name: outgame/mode_slct             }
+          - { start: 0x256300, type: .sdata,  vram: 0x355300, name: outgame/mode_slct             }
           - { start: 0x256314, type:  sdata,  vram: 0x355314, name: main/gamemain                 }
           - { start: 0x256320, type:  sdata,  vram: 0x355320, name: main/glob                     }
           - { start: 0x256330, type:  sdata,  vram: 0x355330, name: os/system                     }
@@ -610,7 +610,7 @@ segments:
           - { start: 0x2577f8, type:  sdata,  vram: 0x3567f8, name: outgame/sound_test            }
           - { start: 0x2577fc, type:  sdata,  vram: 0x3567fc, name: sdata_rest                    }
           # ######################## SBSS    (vram: 0x357880) #####################################
-          - { start: 0x257800, type:  sbss,   vram: 0x356800, name: outgame/mode_slct             }
+          - { start: 0x257800, type: .sbss,   vram: 0x356800, name: outgame/mode_slct             }
           - { start: 0x257808, type:  sbss,   vram: 0x356808, name: outgame/memory_album          }
           - { start: 0x257814, type:  sbss,   vram: 0x356814, name: os/system                     }
           - { start: 0x257818, type:  sbss,   vram: 0x356818, name: os/eeiop/cdvd/eecdvd          }
@@ -677,7 +677,7 @@ segments:
           - { start: 0x257be7, type:  sbss,   vram: 0x356be7, name: sbss_rest                     }
           # ######################## BSS     (vram: 0x357c80) #####################################
           - { start: 0x257c00, type:  bss,    vram: 0x356c00, name: bss_pre                       }
-          - { start: 0x257d48, type:  bss,    vram: 0x356d48, name: outgame/mode_slct             }
+          - { start: 0x257d48, type: .bss,    vram: 0x356d48, name: outgame/mode_slct             }
           - { start: 0x257d68, type:  bss,    vram: 0x356d68, name: outgame/memory_album          }
           - { start: 0x257dc0, type:  bss,    vram: 0x356dc0, name: os/fileload                   }
           - { start: 0x257e28, type:  bss,    vram: 0x356e28, name: os/eeiop/cdvd/eecdvd          }

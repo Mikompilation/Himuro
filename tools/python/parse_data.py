@@ -2091,6 +2091,7 @@ class GLIST_ORDER(CStructure):
 elf_names: dict[str, str] = {
     "us": "SLUS_203.88",
     "eu": "SLES_508.21",
+    "jp": "SLPS_250.74",
 }
 
 
@@ -2423,6 +2424,7 @@ def main():
     class Language(str, enum.Enum):
         US = "us"
         EU = "eu"
+        JP = "jp"
 
     languages = [lang.value for lang in Language]
 

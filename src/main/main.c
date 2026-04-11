@@ -20,8 +20,8 @@
 int main()
 {
     InitSystem();
-#ifdef BUILD_JP_VERSION
-#else
+
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     do
     {
 #endif
@@ -38,8 +38,7 @@ int main()
             FlushModel(1);
             ClearTextureCache();
             SeCtrlMain();
-#ifdef BUILD_JP_VERSION
-#else
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         } while (!SoftResetChk());
 #endif
     } while (1);
@@ -48,30 +47,37 @@ int main()
 void InitGameFirst()
 {
     sys_wrk.reset = 0;
+
     gra3dInitFirst();
     gra2dInitBG();
+
     MovieInitWrk();
-#ifdef BUILD_JP_VERSION
+
+#if defined(BUILD_JP_VERSION)
     sys_wrk.game_mode = GAME_MODE_INIT;
+
     realtime_scene_flg = 0;
-#else
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     realtime_scene_flg = 0;
+
     sys_wrk.game_mode = GAME_MODE_INIT;
 #endif
-    outgame_wrk.mode = 0;
-    outgame_wrk.mode_next = 4;
+
+    outgame_wrk.mode = OUTGAME_MODE_INIT;
+    outgame_wrk.mode_next = OUTGAME_MODE_TITLE;
+
     ingame_wrk = (INGAME_WRK){0};
-#ifdef BUILD_JP_VERSION
-#else
+
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     sys_wrk.sreset_ng = 0;
 #endif
+
     opening_movie_type = 0;
 }
 
 void CallSoftReset()
 {
-#ifdef BUILD_JP_VERSION
-#else
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     int lcount;
 
     lcount = 0;
@@ -80,11 +86,12 @@ void CallSoftReset()
     SeStopAll();
     InitSe();
     SetIopCmdSm(1, 0, 0, 0);
-#ifdef BUILD_JP_VERSION
+
+#if defined(BUILD_JP_VERSION)
     EAdpcmCmdInit(1);
 
     sys_wrk.reset = 0;
-#else
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     EAdpcmCmdStop(0, 0, 0);
 
     sys_wrk.reset = 0;
@@ -119,13 +126,14 @@ void CallSoftReset()
 int SoftResetChk()
 {
     if (
-        *key_now[8] && *key_now[9] && *key_now[10] &&
-        *key_now[11] && *key_now[12] && *key_now[13]
+        *key_now[PAD_L1] && *key_now[PAD_L2] &&
+        *key_now[PAD_R1] && *key_now[PAD_R2] &&
+        *key_now[PAD_START] && *key_now[PAD_SELECT]
     )
     {
-#ifdef BUILD_JP_VERSION
+#if defined(BUILD_JP_VERSION)
         sys_wrk.sreset_count++;
-#else
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         sys_wrk.sreset_count = 0;
 #endif
     }
@@ -147,7 +155,9 @@ int SoftResetChk()
     if (sys_wrk.reset == 1)
     {
         sys_wrk.sreset_count = 0;
+
         CallSoftReset();
+
         return 1;
     }
 

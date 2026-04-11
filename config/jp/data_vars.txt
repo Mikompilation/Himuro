@@ -1,0 +1,7 @@
+// outgame/mode_slct.c
+msl_bg_btl                     = 0x24f780; // type:SPRT_DAT numel:11
+msl_bg_fsm                     = 0x24f8e0; // type:SPRT_DAT numel:11
+msl_bg_opt                     = 0x24fa40; // type:SPRT_DAT numel:11
+msl_bg_snd                     = 0x24fba0; // type:SPRT_DAT numel:11
+msl_bg_sty                     = 0x24fd00; // type:SPRT_DAT numel:11
+msel_sprt                      = 0x24fe60; // type:SPRT_DAT numel:140
