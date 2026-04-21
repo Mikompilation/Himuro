@@ -118,7 +118,15 @@ char ChkPageYW(u_char msg_knd, u_char msg_no);
 void PutPageYW(u_char msg_knd, u_char msg_no, u_char open_page, short int pos_x, short int pos_y, int rgb, u_char alpha, int pri);
 void PutPage2YW(u_char msg_knd, u_char msg_no, u_char open_page, short int pos_x, short int pos_y, int rgb, u_char alpha, int pri);
 void PutNumberYW(u_char font, int num, short int pos_x, short int pos_y, float sx, float sy, int rgb, short int alpha, int pri, int digit, u_char mode);
+#if defined(BUILD_JP_VERSION)
+void PolySquareYW(float pos_x, float pos_y, u_short bar_l, u_short bar_h, int rgb, float alp, float scl_x, float scl_y, int pri, u_char blnd, u_char sw_z);
+#define VER_POLY_SQUARE_YW(pos_x, pos_y, bar_l, bar_h, rgb, alp, scl_x, scl_y, pri, blnd, sw_z) \
+	PolySquareYW(pos_x, pos_y, bar_l, bar_h, rgb, alp, scl_x, scl_y, pri, blnd, sw_z)
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 void PolySquareYW(float pos_x, float pos_y, u_short bar_l, u_short bar_h, int rgb, float alp, float scl_x, float scl_y, int pri, u_char blnd, u_char sw_z, short int rz);
+#define VER_POLY_SQUARE_YW(pos_x, pos_y, bar_l, bar_h, rgb, alp, scl_x, scl_y, pri, blnd, sw_z) \
+	PolySquareYW(pos_x, pos_y, bar_l, bar_h, rgb, alp, scl_x, scl_y, pri, blnd, sw_z, 0)
+#endif
 void YesNoCrslOKR(int pri, float pos_x, float pos_y, int rgb, float alp, float scl);
 void XYAdefaultYW(u_char no);
 void BgFusumaYW(int rgb, float pos_x, float alpha, int pri);

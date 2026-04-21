@@ -48,25 +48,25 @@ typedef union {
 } P_INT;
 
 #if defined(BUILD_JP_VERSION)
-#define LOAD_REQ_LANG LoadReq
+    #define VER_LOAD_REQ_LANG LoadReq
 #elif defined(BUILD_US_VERSION)
-#define LOAD_REQ_LANG LoadReq
+    #define VER_LOAD_REQ_LANG LoadReq
 #elif defined(BUILD_EU_VERSION)
-#define LOAD_REQ_LANG LoadReqLanguage
+    #define VER_LOAD_REQ_LANG LoadReqLanguage
 #endif
 
-#define PAD_DPAD_UP     0
-#define PAD_DPAD_DOWN   1
-#define PAD_DPAD_LEFT   2
-#define PAD_DPAD_RIGHT  3
+#define PAD_DPAD_UP      0
+#define PAD_DPAD_DOWN    1
+#define PAD_DPAD_LEFT    2
+#define PAD_DPAD_RIGHT   3
 
-#define PAD_TRIANGLE    4
-#define PAD_CROSS       5
-#define PAD_SQUARE      6
-#define PAD_CIRCLE      7
+#define PAD_TRIANGLE     4
+#define PAD_CROSS        5
+#define PAD_SQUARE       6
+#define PAD_CIRCLE       7
 
-#define PAD_L1          8
-#define PAD_L2          9
+#define PAD_L1           8
+#define PAD_L2           9
 #define PAD_R1          10
 #define PAD_R2          11
 
@@ -74,5 +74,25 @@ typedef union {
 #define PAD_SELECT      13
 #define PAD_L3          14
 #define PAD_R3          15
+
+#define PAD_LANA_UP      0
+#define PAD_LANA_RIGHT   1
+#define PAD_LANA_DOWN    2
+#define PAD_LANA_LEFT    3
+
+#define PAD_BTN_PRESSED(pad) (*key_now[(pad)] == 1)
+#define PAD_LANA_PRESSED(dir) (Ana2PadDirCnt((dir)) == 1)
+
+#define PAD_REPEAT_DELAY   25
+#define PAD_REPEAT_RATE     5
+
+#define PAD_REPEAT(cnt) \
+    (((cnt) == 1) || ((cnt) > PAD_REPEAT_DELAY && ((cnt) % PAD_REPEAT_RATE) == 1))
+
+#define PAD_BTN_REPEAT(pad) \
+    PAD_REPEAT(*key_now[(pad)])
+
+#define PAD_LANA_REPEAT(dir) \
+    PAD_REPEAT(Ana2PadDirCnt((dir)))
 
 #endif /* TYPEDEFS_H */

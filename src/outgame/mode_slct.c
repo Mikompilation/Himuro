@@ -54,11 +54,22 @@ int title_bgm_no = -1;
 static DSP_M_SLCT_WRK dsp_ms;
 static int ms_load_id;
 
+#if defined(BUILD_JP_VERSION)
+#define PAD_ACTION_CONFIRM PAD_CIRCLE
+#define PAD_ACTION_EXIT PAD_CROSS
+#elif defined(BUILD_US_VERSION)
+#define PAD_ACTION_CONFIRM PAD_CROSS
+#define PAD_ACTION_EXIT PAD_TRIANGLE
+#elif defined(BUILD_EU_VERSION)
+#define PAD_ACTION_CONFIRM PAD_CROSS
+#define PAD_ACTION_EXIT PAD_TRIANGLE
+#endif
+
 #define PI 3.1415927f
 
 void ModeSlctInit(u_char top,u_char end)
 {
-    ms_load_id = LOAD_REQ_LANG(M_SLCT_CMN_PK2, LOAD_ADDRESS_10);
+    ms_load_id = VER_LOAD_REQ_LANG(M_SLCT_CMN_PK2, LOAD_ADDRESS_10);
 
     dsp_ms = (DSP_M_SLCT_WRK){0};
     dsp_ms.now_mode = top;
@@ -95,7 +106,7 @@ void ModeSlctCtrl(u_char mode)
     case MS_MODE_START:
         if (cmn_tex_load == 0)
         {
-            ms_load_id = LOAD_REQ_LANG(M_SLCT_CMN_PK2, LOAD_ADDRESS_10);
+            ms_load_id = VER_LOAD_REQ_LANG(M_SLCT_CMN_PK2, LOAD_ADDRESS_10);
         }
 
         adpcm_no = -1;
@@ -365,11 +376,7 @@ char ModeSlctPad(u_char mode)
     switch (mode)
     {
     case MS_MODE_SLCT:
-#if defined(BUILD_JP_VERSION)
-        if (*key_now[PAD_CROSS] == 1)
-#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
-        if (*key_now[PAD_TRIANGLE] == 1)
-#endif
+        if (*key_now[PAD_ACTION_EXIT] == 1)
         {
             SeStartFix(3, 0, 0x1000, 0x1000, 0);
 
@@ -377,11 +384,7 @@ char ModeSlctPad(u_char mode)
 
             rtrn = 1;
         }
-#if defined(BUILD_JP_VERSION)
-        else if (*key_now[PAD_CIRCLE] == 1)
-#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
-        else if (*key_now[PAD_CROSS] == 1)
-#endif
+        else if (*key_now[PAD_ACTION_CONFIRM] == 1)
         {
             SeStartFix(1, 0, 0x1000, 0x1000, 0);
 
@@ -434,11 +437,7 @@ char ModeSlctPad(u_char mode)
         }
     break;
     case MS_STORY_MODE:
-#if defined(BUILD_JP_VERSION)
-        if (*key_now[PAD_CROSS] == 1)
-#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
-        if (*key_now[PAD_TRIANGLE] == 1)
-#endif
+        if (*key_now[PAD_ACTION_EXIT] == 1)
         {
             SeStartFix(3, 0, 0x1000, 0x1000, 0);
 
@@ -465,11 +464,7 @@ char ModeSlctPad(u_char mode)
             cribo.costume = dsp_ms.sm_slct[2];
 #endif
         }
-#if defined(BUILD_JP_VERSION)
-        else if (*key_now[PAD_CIRCLE] == 1)
-#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
-        else if (*key_now[PAD_CROSS] == 1)
-#endif
+        else if (*key_now[PAD_ACTION_CONFIRM] == 1)
         {
             SeStartFix(1, 0, 0x1000, 0x1000, 0);
 
@@ -671,11 +666,7 @@ char ModeSlctPad(u_char mode)
         }
     break;
     case MS_BATTLE_MODE:
-#if defined(BUILD_JP_VERSION)
-        if (*key_now[PAD_CROSS] == 1)
-#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
-        if (*key_now[PAD_TRIANGLE] == 1)
-#endif
+        if (*key_now[PAD_ACTION_EXIT] == 1)
         {
             SeStartFix(3, 0, 0x1000, 0x1000, 0);
 
@@ -690,11 +681,7 @@ char ModeSlctPad(u_char mode)
                 dsp_ms.side = 0;
             }
         }
-#if defined(BUILD_JP_VERSION)
-        else if (*key_now[PAD_CIRCLE] == 1)
-#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
-        else if (*key_now[PAD_CROSS] == 1)
-#endif
+        else if (*key_now[PAD_ACTION_CONFIRM] == 1)
         {
             SeStartFix(1, 0, 0x1000, 0x1000, 0);
             switch (dsp_ms.csr[1])
@@ -899,11 +886,7 @@ char ModeSlctPad(u_char mode)
     case MS_MISSION_SELECT:
         level = CheckClearStage();
 
-#if defined(BUILD_JP_VERSION)
-        if (*key_now[PAD_CROSS] == 1)
-#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
-        if (*key_now[PAD_TRIANGLE] == 1)
-#endif
+        if (*key_now[PAD_ACTION_EXIT] == 1)
         {
             SeStartFix(3, 0, 0x1000, 0x1000, 0);
 
@@ -913,11 +896,7 @@ char ModeSlctPad(u_char mode)
 
             rtrn = 1;
         }
-#if defined(BUILD_JP_VERSION)
-        else if (*key_now[PAD_CIRCLE] == 1)
-#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
-        else if (*key_now[PAD_CROSS] == 1)
-#endif
+        else if (*key_now[PAD_ACTION_CONFIRM] == 1)
         {
             SeStartFix(1, 0, 0x1000, 0x1000, 0);
 
@@ -1951,12 +1930,12 @@ void MsLoadCtrl(u_char mode)
     {
     case MS_MODE_SLCT:
         ms_load_id = LoadReq(EFF001_PK2, LOAD_ADDRESS_41);
-        ms_load_id = LOAD_REQ_LANG(M_SLCT_FSM_PK2, LOAD_ADDRESS_11);
+        ms_load_id = VER_LOAD_REQ_LANG(M_SLCT_FSM_PK2, LOAD_ADDRESS_11);
     break;
     case MS_STORY_MODE:
         ingame_wrk.game = 0;
 
-        ms_load_id = LOAD_REQ_LANG(M_SLCT_STY_PK2, LOAD_ADDRESS_11);
+        ms_load_id = VER_LOAD_REQ_LANG(M_SLCT_STY_PK2, LOAD_ADDRESS_11);
 
         if (ingame_wrk.difficult != 0)
         {
@@ -1966,40 +1945,40 @@ void MsLoadCtrl(u_char mode)
     case MS_BATTLE_MODE:
         ingame_wrk.game = 1;
 
-        ms_load_id = LOAD_REQ_LANG(M_SLCT_BTL_PK2, LOAD_ADDRESS_11);
-        ms_load_id = LOAD_REQ_LANG(M_SLCT_BTL_CHR_PK2, LOAD_ADDRESS_13);
+        ms_load_id = VER_LOAD_REQ_LANG(M_SLCT_BTL_PK2, LOAD_ADDRESS_11);
+        ms_load_id = VER_LOAD_REQ_LANG(M_SLCT_BTL_CHR_PK2, LOAD_ADDRESS_13);
     break;
     case MS_OPTION:
-        ms_load_id = LOAD_REQ_LANG(M_SLCT_OPT_PK2, LOAD_ADDRESS_11);
-        ms_load_id = LOAD_REQ_LANG(PL_OPTI_PK2, LOAD_ADDRESS_16);
-        ms_load_id = LOAD_REQ_LANG(PL_STTS_PK2, LOAD_ADDRESS_26);
+        ms_load_id = VER_LOAD_REQ_LANG(M_SLCT_OPT_PK2, LOAD_ADDRESS_11);
+        ms_load_id = VER_LOAD_REQ_LANG(PL_OPTI_PK2, LOAD_ADDRESS_16);
+        ms_load_id = VER_LOAD_REQ_LANG(PL_STTS_PK2, LOAD_ADDRESS_26);
     break;
     case MS_SOUND_TEST:
-        ms_load_id = LOAD_REQ_LANG(M_SLCT_SND_PK2, LOAD_ADDRESS_11);
+        ms_load_id = VER_LOAD_REQ_LANG(M_SLCT_SND_PK2, LOAD_ADDRESS_11);
     break;
     case MS_MISSION_SELECT:
         if (cmn_tex_load == 0)
         {
-            ms_load_id = LOAD_REQ_LANG(M_SLCT_BTL_PK2, LOAD_ADDRESS_11);
+            ms_load_id = VER_LOAD_REQ_LANG(M_SLCT_BTL_PK2, LOAD_ADDRESS_11);
         }
 
-        ms_load_id = LOAD_REQ_LANG(M_SLCT_BTL_MSN_PK2, LOAD_ADDRESS_15);
+        ms_load_id = VER_LOAD_REQ_LANG(M_SLCT_BTL_MSN_PK2, LOAD_ADDRESS_15);
     break;
     case MS_CAMERA:
         CameraCustomInit();
         OutGameInitCamera();
 
         ms_load_id = LoadReq(PL_BGBG_PK2, LOAD_ADDRESS_27);
-        ms_load_id = LOAD_REQ_LANG(PL_MTOP_PK2, LOAD_ADDRESS_28);
-        ms_load_id = LOAD_REQ_LANG(PL_STTS_PK2, LOAD_ADDRESS_26);
-        ms_load_id = LOAD_REQ_LANG(PL_CAME_PK2, LOAD_ADDRESS_41);
+        ms_load_id = VER_LOAD_REQ_LANG(PL_MTOP_PK2, LOAD_ADDRESS_28);
+        ms_load_id = VER_LOAD_REQ_LANG(PL_STTS_PK2, LOAD_ADDRESS_26);
+        ms_load_id = VER_LOAD_REQ_LANG(PL_CAME_PK2, LOAD_ADDRESS_41);
     break;
 #if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     case MS_PHOT:
         ms_load_id = LoadReq(PL_BGBG_PK2, LOAD_ADDRESS_27);
-        ms_load_id = LOAD_REQ_LANG(PL_MTOP_PK2, LOAD_ADDRESS_28);
-        ms_load_id = LOAD_REQ_LANG(PL_STTS_PK2, LOAD_ADDRESS_26);
-        ms_load_id = LOAD_REQ_LANG(PL_PHOT_PK2, LOAD_ADDRESS_31);
+        ms_load_id = VER_LOAD_REQ_LANG(PL_MTOP_PK2, LOAD_ADDRESS_28);
+        ms_load_id = VER_LOAD_REQ_LANG(PL_STTS_PK2, LOAD_ADDRESS_26);
+        ms_load_id = VER_LOAD_REQ_LANG(PL_PHOT_PK2, LOAD_ADDRESS_31);
 
         StartAlbumModeInit();
         OutGameInitPhoto();

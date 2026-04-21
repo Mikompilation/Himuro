@@ -5,44 +5,45 @@
 
 #include "ingame/menu/ig_rank.h"
 
-typedef struct
-{ // 0x44
-    /* 0x00 */ u_int src_addr;
-    /* 0x04 */ u_int cpy_addr;
-    /* 0x08 */ u_short key_nashi_nori_take;
-    /* 0x0a */ u_char is_title;
-    /* 0x0b */ u_char side;
-    /* 0x0c */ u_char side_chng;
-    /* 0x0d */ u_char mode;
-    /* 0x0e */ u_char mode_chng;
-    /* 0x0f */ u_char pht_max[2];
-    /* 0x11 */ u_char cl_type[2];
-    /* 0x13 */ u_char slot[2];
-    /* 0x15 */ u_char file[2];
-    /* 0x17 */ u_char csr[5];
-    /* 0x1c */ u_char csr_tim;
-    /* 0x1d */ u_char buf[9];
-    /* 0x26 */ u_char buf_sid[9];
-    /* 0x2f */ u_char buf_set;
-    /* 0x30 */ u_char mem;
-    /* 0x31 */ u_char csr_mode;
-    /* 0x32 */ u_char exit_realy;
-    /* 0x33 */ u_char pst_mode;
-    /* 0x34 */ u_char menu_alp;
-    /* 0x35 */ u_char yes_no;
-    /* 0x36 */ u_char pst_yes_no;
-    /* 0x37 */ u_char rtrn_bak;
-    /* 0x38 */ u_char io_mode;
-    /* 0x39 */ u_char all_alp;
-    /* 0x3a */ u_char inf_alp;
-    /* 0x3b */ u_char dat_alp;
-    /* 0x3c */ u_char pop_ud;
-    /* 0x3d */ u_char buf_exp_flg;
-    /* 0x3e */ u_char flsh_tmr;
-    /* 0x3f */ u_char side_chng_wait;
-    /* 0x40 */ u_char side_chng_mode;
-    /* 0x41 */ u_char copy_wait;
-    /* 0x42 */ u_char paste_wait;
+typedef struct {
+    u_int src_addr;
+    u_int cpy_addr;
+    u_short key_nashi_nori_take;
+    u_char is_title;
+    u_char side;
+    u_char side_chng;
+    u_char mode;
+    u_char mode_chng;
+    u_char pht_max[2];
+    u_char cl_type[2];
+    u_char slot[2];
+    u_char file[2];
+    u_char csr[5];
+    u_char csr_tim;
+    u_char buf[9];
+    u_char buf_sid[9];
+    u_char buf_set;
+    u_char mem;
+    u_char csr_mode;
+    u_char exit_realy;
+    u_char pst_mode;
+    u_char menu_alp;
+    u_char yes_no;
+    u_char pst_yes_no;
+    u_char rtrn_bak;
+    u_char io_mode;
+    u_char all_alp;
+    u_char inf_alp;
+    u_char dat_alp;
+    u_char pop_ud;
+    u_char buf_exp_flg;
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+    u_char flsh_tmr;
+    u_char side_chng_wait;
+    u_char side_chng_mode;
+    u_char copy_wait;
+    u_char paste_wait;
+#endif
 } DSP_MEM_ALBM;
 
 
