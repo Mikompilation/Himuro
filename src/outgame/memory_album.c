@@ -331,18 +331,18 @@ char SweetMemories(u_char mode, u_char alp)
     {
         switch (dm_albm.csr[dm_albm.side] & 0x7)
         {
-            case 0:
-            case 1:
-            case 2:
-            case 3:
-                ComWin(1, dm_albm.csr[3], dm_albm.menu_alp);
-            break;
-            case 4:
-            case 5:
-            case 6:
-            case 7:
-                ComWin(0, dm_albm.csr[3], dm_albm.menu_alp);
-            break;
+        case 0:
+        case 1:
+        case 2:
+        case 3:
+            ComWin(1, dm_albm.csr[3], dm_albm.menu_alp);
+        break;
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+            ComWin(0, dm_albm.csr[3], dm_albm.menu_alp);
+        break;
         }
     }
 
@@ -1956,7 +1956,9 @@ char PasteCtrl()
                 Paste();
 
                 dm_albm.pst_yes_no = 0;
-            } else {
+            }
+            else
+            {
                 SeStartFix(1, 0, 0x1000, 0x1000, 0);
 
                 dm_albm.pst_yes_no = 0;
@@ -2187,54 +2189,48 @@ void BuffPadMnu()
     {
         switch(dm_albm.csr[3])
         {
-            case 0:
-            {
-                SeStartFix(1, 0, 0x1000, 0x1000, 0);
+        case 0:
+            SeStartFix(1, 0, 0x1000, 0x1000, 0);
 
-                dm_albm.buf_exp_flg = 1;
-                dm_albm.mode = 1;
-                dm_albm.csr_mode = 2;
-                dm_albm.mode_chng = 20;
+            dm_albm.buf_exp_flg = 1;
+            dm_albm.mode = 1;
+            dm_albm.csr_mode = 2;
+            dm_albm.mode_chng = 20;
+        break;
+        case 1:
+            SeStartFix(1, 0, 0x1000, 0x1000, 0);
+
+            dm_albm.buf_set = 1;
+            dm_albm.csr_mode = 0;
+            dm_albm.csr[dm_albm.side] = GetAlbumCurPos(dm_albm.side);
+        break;
+        case 2:
+            SeStartFix(1, 0, 0x1000, 0x1000, 0);
+
+            dm_albm.buf[8] = 0xff;
+            dm_albm.buf_sid[8] = 0xff;
+            
+            for (i = dm_albm.csr[2]; i < dm_albm.mem; i++)
+            {
+                dm_albm.buf[i] = dm_albm.buf[i+1];
+                dm_albm.buf_sid[i] = dm_albm.buf_sid[i+1];
             }
-            break;
-            case 1:
+            
+            dm_albm.buf_set = 0;
+            dm_albm.mem--;
+            
+            if (dm_albm.mem == 0)
             {
-                SeStartFix(1, 0, 0x1000, 0x1000, 0);
-
-                dm_albm.buf_set = 1;
                 dm_albm.csr_mode = 0;
-                dm_albm.csr[dm_albm.side] = GetAlbumCurPos(dm_albm.side);
             }
-            break;
-            case 2:
+            else
             {
-                SeStartFix(1, 0, 0x1000, 0x1000, 0);
+                dm_albm.csr_mode = 2;
+            }
 
-                dm_albm.buf[8] = 0xff;
-                dm_albm.buf_sid[8] = 0xff;
-                
-                for (i = dm_albm.csr[2]; i < dm_albm.mem; i++)
-                {
-                    dm_albm.buf[i] = dm_albm.buf[i+1];
-                    dm_albm.buf_sid[i] = dm_albm.buf_sid[i+1];
-                }
-                
-                dm_albm.buf_set = 0;
-                dm_albm.mem--;
-                
-                if (dm_albm.mem == 0)
-                {
-                    dm_albm.csr_mode = 0;
-                }
-                else
-                {
-                    dm_albm.csr_mode = 2;
-                }
-
-                if (dm_albm.csr[2] > dm_albm.mem - 1 && dm_albm.csr[2] != 0)
-                {
-                    dm_albm.csr[2]--;
-                }
+            if (dm_albm.csr[2] > dm_albm.mem - 1 && dm_albm.csr[2] != 0)
+            {
+                dm_albm.csr[2]--;
             }
         break;
         }
@@ -2374,14 +2370,8 @@ void DelPyon(u_char file, u_char csr)
 
 void DspOgAlbumTop1(u_char alp, u_char alp0, u_char alp1)
 {
-    short int px[8] = {
-        0x39, 0xb0, 0x162, 0x1d9,
-        0x39, 0xb0, 0x162, 0x1d9,
-    };
-    short int py[8] = {
-        0x64,  0x85, 0x64,  0x85,
-        0xe5, 0x106, 0xe5, 0x106,
-    };
+    short int px[8] = {  57, 176, 354, 473,  57, 176, 354, 473 };
+    short int py[8] = { 100, 133, 100, 133, 229, 262, 229, 262 };
 
     switch (dm_albm.is_title)
     {
@@ -2567,7 +2557,8 @@ void InfoWin(u_char mode, u_char side, u_char alp)
     float flsh1;
 #endif
 
-    if (dm_albm.inf_alp + 8 < alp) {
+    if (dm_albm.inf_alp + 8 < alp)
+    {
         dm_albm.inf_alp += 8;
     }
     else
@@ -2949,7 +2940,6 @@ void ComWin(u_char mode, u_char csr, u_char alp)
     switch (mode)
     {
     case 0:
-    {
         VER_POLY_SQUARE_YW(30.0f, 66.0f, 104, 181, 0, (int)(alp / 3), 1.0f, 1.0f, 0x4000, 0, 0);
 
         CmnWindow(27, 0, 0, alp, 0x80);
@@ -2970,10 +2960,8 @@ void ComWin(u_char mode, u_char csr, u_char alp)
         }
 
         CmnCursol(37, (u_short)csr * 30 + 67, 90, 30, 64.0f, alp_csr, 0x1000);
-    }
     break;
     case 1:
-    {
         VER_POLY_SQUARE_YW(505.0f, 66.0f, 104, 181, 0, (int)(alp / 3), 1.0f, 1.0f, 0x4000, 0, 0);
 
         CmnWindow(27, 475, 0, alp, 0x80);
@@ -2994,7 +2982,6 @@ void ComWin(u_char mode, u_char csr, u_char alp)
         }
 
         CmnCursol(512, csr * 30 + 67, 90, 30, 64.0f, alp_csr, 0x1000);
-    }
     break;
     }
 
@@ -3014,7 +3001,6 @@ void BufWin(u_char type, u_char alp)
     switch (type)
     {
     case 0:
-    {
         DrawSPhotoFromSmallPhotoArea(0, 0, 0, 0, 0, 0);
 
         PutSpriteYW(OA_TP_FNT_BFFR, OA_TP_FNT_BFFR, 0.0f, 0.0f, 0.0f, 0x808080, alp, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
@@ -3075,7 +3061,6 @@ void BufWin(u_char type, u_char alp)
 
             tmp++;
         }
-    }
     break;
     case 1:
         DrawMessageBox(0x19000, 24.0f, 377.0f, 592.0f, 48.0f, alp);
@@ -3089,7 +3074,7 @@ void DtlWin(u_char mode, u_char type, u_char alp)
 
     switch (mode)
     {
-    case 0: {
+    case 0:
         target = album_save_dat[dm_albm.side].pic[dm_albm.csr[dm_albm.side]].adr_no;
 
         if (dm_albm.side == 0)
@@ -3154,7 +3139,6 @@ void DtlWin(u_char mode, u_char type, u_char alp)
             }
             break;
         }
-    }
     break;
     case 1:
         CmnWindow(6, 0, 0, alp, 0x80);
@@ -3206,7 +3190,6 @@ void TruthPhoto(u_char mode, short int px, short int py, u_char alp)
     switch (mode)
     {
     case 0:
-    {
         tmp_pic = album_save_dat[dm_albm.side].pic[dm_albm.csr[dm_albm.side]];
 
         for (obj_num = 0, i = 0; i < 3; i++)
@@ -3255,10 +3238,8 @@ void TruthPhoto(u_char mode, short int px, short int py, u_char alp)
 
         PutStringYW(30, tmp_pic.room, px + 385, py + 369, 0x808080, str_alp, 0x1000, 0);
         PutNumberYW(0, tmp_pic.score, px + 421, py + 397, 1.0f, 1.0f, 0x808080, str_alp, 0x1000, 7, 0);
-    }
     break;
     case 1:
-    {
         if (dm_albm.csr_mode == 2)
         {
             tmp_pic = album_save_dat[dm_albm.buf_sid[dm_albm.csr[2]]].pic[dm_albm.buf[dm_albm.csr[2]]];
@@ -3314,7 +3295,6 @@ void TruthPhoto(u_char mode, short int px, short int py, u_char alp)
 
         PutStringYW(30, tmp_pic.room, px + 399, py + 369, 0x808080, str_alp, 0x1000, 0);
         PutNumberYW(0, tmp_pic.score, px + 435, py + 396, 1.0f, 1.0f, 0x808080, str_alp, 0x1000, 7, 0);
-    }
     break;
     }
 }
@@ -3378,68 +3358,68 @@ char InKeyTamusi()
 
     hit = 0;
 
-    if (*key_now[PAD_DPAD_UP] != 0 || Ana2PadDirCnt(PAD_LANA_UP))
+    if (PAD_BTN_HELD(PAD_DPAD_UP) || PAD_LANA_HELD(PAD_LANA_UP))
     {
         hit++;
     }
 
-    if (*key_now[PAD_DPAD_DOWN] != 0 || Ana2PadDirCnt(PAD_LANA_DOWN))
+    if (PAD_BTN_HELD(PAD_DPAD_DOWN) || PAD_LANA_HELD(PAD_LANA_DOWN))
     {
         hit++;
     }
 
-    if (*key_now[PAD_DPAD_LEFT] != 0 || Ana2PadDirCnt(PAD_LANA_LEFT))
+    if (PAD_BTN_HELD(PAD_DPAD_LEFT) || PAD_LANA_HELD(PAD_LANA_LEFT))
     {
         hit++;
     }
 
-    if (*key_now[PAD_DPAD_RIGHT] != 0 || Ana2PadDirCnt(PAD_LANA_RIGHT))
+    if (PAD_BTN_HELD(PAD_DPAD_RIGHT) || PAD_LANA_HELD(PAD_LANA_RIGHT))
     {
         hit++;
     }
 
-    if (*key_now[PAD_SQUARE] != 0)
+    if (PAD_BTN_HELD(PAD_SQUARE))
     {
         hit++;
     }
 
-    if (*key_now[PAD_ACTION_MOVE] != 0)
+    if (PAD_BTN_HELD(PAD_ACTION_MOVE))
     {
         hit++;
     }
 
-    if (*key_now[PAD_ACTION_EXIT] != 0)
+    if (PAD_BTN_HELD(PAD_ACTION_EXIT))
     {
         hit++;
     }
 
-    if (*key_now[PAD_R1] != 0)
+    if (PAD_BTN_HELD(PAD_R1))
     {
         hit++;
     }
 
-    if (*key_now[PAD_R2] != 0)
+    if (PAD_BTN_HELD(PAD_R2))
     {
         hit++;
     }
 
-    if (*key_now[PAD_L1] != 0)
+    if (PAD_BTN_HELD(PAD_L1))
     {
         hit++;
     }
 
-    if (*key_now[PAD_L2] != 0)
+    if (PAD_BTN_HELD(PAD_L2))
     {
         hit++;
     }
 
-    if (*key_now[PAD_SELECT] != 0)
+    if (PAD_BTN_HELD(PAD_SELECT))
     {
         hit++;
     }
 
 #if defined(BUILD_JP_VERSION)
-    if (*key_now[PAD_START] != 0)
+    if (PAD_BTN_HELD(PAD_START))
     {
         hit++;
     }

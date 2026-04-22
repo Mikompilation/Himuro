@@ -376,7 +376,7 @@ char ModeSlctPad(u_char mode)
     switch (mode)
     {
     case MS_MODE_SLCT:
-        if (*key_now[PAD_ACTION_EXIT] == 1)
+        if (PAD_BTN_PRESSED(PAD_ACTION_EXIT))
         {
             SeStartFix(3, 0, 0x1000, 0x1000, 0);
 
@@ -384,7 +384,7 @@ char ModeSlctPad(u_char mode)
 
             rtrn = 1;
         }
-        else if (*key_now[PAD_ACTION_CONFIRM] == 1)
+        else if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
             SeStartFix(1, 0, 0x1000, 0x1000, 0);
 
@@ -398,12 +398,7 @@ char ModeSlctPad(u_char mode)
         }
         else
         {
-            if (
-                *key_now[PAD_DPAD_UP] == 1 ||
-                (*key_now[PAD_DPAD_UP] > 25 && (*key_now[PAD_DPAD_UP] % 5) == 1) ||
-                Ana2PadDirCnt(0) == 1 ||
-                (Ana2PadDirCnt(0) > 25 && (Ana2PadDirCnt(0) % 5) == 1)
-            )
+            if (PAD_BTN_REPEAT(PAD_DPAD_UP) || PAD_LANA_REPEAT(PAD_LANA_UP))
             {
                 SeStartFix(0, 0, 0x1000, 0x1000, 0);
 
@@ -416,16 +411,11 @@ char ModeSlctPad(u_char mode)
                     dsp_ms.csr[0] = 4;
                 }
             }
-            else if (
-                *key_now[PAD_DPAD_DOWN] == 1 ||
-                (*key_now[PAD_DPAD_DOWN] > 25 && (*key_now[PAD_DPAD_DOWN] % 5) == 1) ||
-                Ana2PadDirCnt(2) == 1 ||
-                (Ana2PadDirCnt(2) > 25 && Ana2PadDirCnt(2) % 5 == 1)
-            )
+            else if (PAD_BTN_REPEAT(PAD_DPAD_DOWN) || PAD_LANA_REPEAT(PAD_LANA_DOWN))
             {
                 SeStartFix(0, 0, 0x1000, 0x1000, 0);
 
-                if (dsp_ms.csr[0] <= 3)
+                if (dsp_ms.csr[0] < 4)
                 {
                     dsp_ms.csr[0]++;
                 }
@@ -437,7 +427,7 @@ char ModeSlctPad(u_char mode)
         }
     break;
     case MS_STORY_MODE:
-        if (*key_now[PAD_ACTION_EXIT] == 1)
+        if (PAD_BTN_PRESSED(PAD_ACTION_EXIT))
         {
             SeStartFix(3, 0, 0x1000, 0x1000, 0);
 
@@ -464,7 +454,7 @@ char ModeSlctPad(u_char mode)
             cribo.costume = dsp_ms.sm_slct[2];
 #endif
         }
-        else if (*key_now[PAD_ACTION_CONFIRM] == 1)
+        else if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
             SeStartFix(1, 0, 0x1000, 0x1000, 0);
 
@@ -547,12 +537,7 @@ char ModeSlctPad(u_char mode)
             switch (dsp_ms.side)
             {
             case 0:
-                if (
-                    *key_now[PAD_DPAD_UP] == 1 ||
-                    (*key_now[PAD_DPAD_UP] > 25 && (*key_now[PAD_DPAD_UP] % 5) == 1) ||
-                    Ana2PadDirCnt(0) == 1 ||
-                    (Ana2PadDirCnt(0) > 25 && (Ana2PadDirCnt(0) % 5) == 1)
-                )
+                if (PAD_BTN_REPEAT(PAD_DPAD_UP) || PAD_LANA_REPEAT(PAD_LANA_UP))
                 {
                     SeStartFix(0, 0, 0x1000, 0x1000, 0);
 
@@ -569,12 +554,7 @@ char ModeSlctPad(u_char mode)
                         dsp_ms.csr[1] = 4;
                     }
                 }
-                else if (
-                    *key_now[PAD_DPAD_DOWN] == 1 ||
-                    (*key_now[PAD_DPAD_DOWN] > 25 && (*key_now[PAD_DPAD_DOWN] % 5) == 1) ||
-                    Ana2PadDirCnt(2) == 1 ||
-                    (Ana2PadDirCnt(2) > 25 && (Ana2PadDirCnt(2) % 5) == 1)
-                )
+                else if (PAD_BTN_REPEAT(PAD_DPAD_DOWN) || PAD_LANA_REPEAT(PAD_LANA_DOWN))
                 {
                     SeStartFix(0, 0, 0x1000, 0x1000, 0);
 
@@ -593,12 +573,7 @@ char ModeSlctPad(u_char mode)
                 }
             break;
             case 1:
-                if (
-                    *key_now[PAD_DPAD_LEFT] == 1 ||
-                     (*key_now[PAD_DPAD_LEFT] > 25 && (*key_now[PAD_DPAD_LEFT] % 5) == 1) ||
-                    Ana2PadDirCnt(3) == 1 ||
-                    (Ana2PadDirCnt(3) > 25 && (Ana2PadDirCnt(3) % 5) == 1)
-                )
+                if (PAD_BTN_REPEAT(PAD_DPAD_LEFT) || PAD_LANA_REPEAT(PAD_LANA_LEFT))
                 {
                     SeStartFix(0, 0, 0x1000, 0x1000, 0);
 
@@ -627,12 +602,7 @@ char ModeSlctPad(u_char mode)
                         }
                     }
                 }
-                else if (
-                    *key_now[PAD_DPAD_RIGHT] == 1 ||
-                    (*key_now[PAD_DPAD_RIGHT] > 25 && (*key_now[PAD_DPAD_RIGHT] % 5) == 1) ||
-                    Ana2PadDirCnt(1) == 1 ||
-                    (Ana2PadDirCnt(1) > 25 && (Ana2PadDirCnt(1) % 5) == 1)
-                )
+                else if (PAD_BTN_REPEAT(PAD_DPAD_RIGHT) || PAD_LANA_REPEAT(PAD_LANA_RIGHT))
                 {
                     SeStartFix(0, 0, 0x1000, 0x1000, 0);
 
@@ -666,7 +636,7 @@ char ModeSlctPad(u_char mode)
         }
     break;
     case MS_BATTLE_MODE:
-        if (*key_now[PAD_ACTION_EXIT] == 1)
+        if (PAD_BTN_PRESSED(PAD_ACTION_EXIT))
         {
             SeStartFix(3, 0, 0x1000, 0x1000, 0);
 
@@ -681,7 +651,7 @@ char ModeSlctPad(u_char mode)
                 dsp_ms.side = 0;
             }
         }
-        else if (*key_now[PAD_ACTION_CONFIRM] == 1)
+        else if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
             SeStartFix(1, 0, 0x1000, 0x1000, 0);
             switch (dsp_ms.csr[1])
@@ -742,12 +712,7 @@ char ModeSlctPad(u_char mode)
             switch (dsp_ms.side)
             {
             case 0:
-                if (
-                    *key_now[PAD_DPAD_UP] == 1 ||
-                     (*key_now[PAD_DPAD_UP] > 25 && (*key_now[PAD_DPAD_UP] % 5) == 1) ||
-                    Ana2PadDirCnt(0) == 1 ||
-                    (Ana2PadDirCnt(0) > 25 && (Ana2PadDirCnt(0) % 5) == 1)
-                )
+                if (PAD_BTN_REPEAT(PAD_DPAD_UP) || PAD_LANA_REPEAT(PAD_LANA_UP))
                 {
                     SeStartFix(0, 0, 0x1000, 0x1000, 0);
 
@@ -764,12 +729,7 @@ char ModeSlctPad(u_char mode)
 #endif
                     }
                 }
-                else if (
-                    *key_now[PAD_DPAD_DOWN] == 1 ||
-                    (*key_now[PAD_DPAD_DOWN] > 25 && (*key_now[PAD_DPAD_DOWN] % 5) == 1) ||
-                    Ana2PadDirCnt(2) == 1 ||
-                    (Ana2PadDirCnt(2) > 25 && (Ana2PadDirCnt(2) % 5) == 1)
-                )
+                else if (PAD_BTN_REPEAT(PAD_DPAD_DOWN) || PAD_LANA_REPEAT(PAD_LANA_DOWN))
                 {
                     SeStartFix(0, 0, 0x1000, 0x1000, 0);
 
@@ -788,12 +748,7 @@ char ModeSlctPad(u_char mode)
                 }
             break;
             case 1:
-                if (
-                    *key_now[PAD_DPAD_LEFT] == 1 ||
-                    (*key_now[PAD_DPAD_LEFT] > 25 && (*key_now[PAD_DPAD_LEFT] % 5) == 1) ||
-                    Ana2PadDirCnt(3) == 1 ||
-                    (Ana2PadDirCnt(3) > 25 && (Ana2PadDirCnt(3) % 5) == 1)
-                )
+                if (PAD_BTN_REPEAT(PAD_DPAD_LEFT) || PAD_LANA_REPEAT(PAD_LANA_LEFT))
                 {
                     SeStartFix(0, 0, 0x1000, 0x1000, 0);
 
@@ -823,12 +778,7 @@ char ModeSlctPad(u_char mode)
                     }
 
                 }
-                else if (
-                    *key_now[PAD_DPAD_RIGHT] == 1 ||
-                    (*key_now[PAD_DPAD_RIGHT] > 25 && (*key_now[PAD_DPAD_RIGHT] % 5) == 1) ||
-                    Ana2PadDirCnt(1) == 1 ||
-                    (Ana2PadDirCnt(1) > 25 && Ana2PadDirCnt(1) % 5 == 1)
-                )
+                else if (PAD_BTN_REPEAT(PAD_DPAD_RIGHT) || PAD_LANA_REPEAT(PAD_LANA_RIGHT))
                 {
                     SeStartFix(0, 0, 0x1000, 0x1000, 0);
 #if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
@@ -886,7 +836,7 @@ char ModeSlctPad(u_char mode)
     case MS_MISSION_SELECT:
         level = CheckClearStage();
 
-        if (*key_now[PAD_ACTION_EXIT] == 1)
+        if (PAD_BTN_PRESSED(PAD_ACTION_EXIT))
         {
             SeStartFix(3, 0, 0x1000, 0x1000, 0);
 
@@ -896,7 +846,7 @@ char ModeSlctPad(u_char mode)
 
             rtrn = 1;
         }
-        else if (*key_now[PAD_ACTION_CONFIRM] == 1)
+        else if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
             SeStartFix(1, 0, 0x1000, 0x1000, 0);
 
@@ -911,19 +861,19 @@ char ModeSlctPad(u_char mode)
 
             title_bgm_no = -1;
 
-            if (*key_now[PAD_R1] != 0)
+            if (PAD_BTN_HELD(PAD_R1))
             {
                 battle_scr_effct[btl_wrk.stage_no] = 6;
             }
-            else if (*key_now[PAD_R2] != 0)
+            else if (PAD_BTN_HELD(PAD_R2))
             {
                 battle_scr_effct[btl_wrk.stage_no] = 4;
             }
-            else if (*key_now[PAD_L1] != 0)
+            else if (PAD_BTN_HELD(PAD_L1))
             {
                 battle_scr_effct[btl_wrk.stage_no] = 2;
             }
-            else if (*key_now[PAD_L2] != 0)
+            else if (PAD_BTN_HELD(PAD_L2))
             {
                 battle_scr_effct[btl_wrk.stage_no] = 3;
             }
@@ -931,6 +881,7 @@ char ModeSlctPad(u_char mode)
             {
                 battle_scr_effct[btl_wrk.stage_no] = 1;
             }
+
             if (btl_wrk.stage_no == 19)
             {
                 battle_scr_effct[btl_wrk.stage_no] = 0;
@@ -938,12 +889,7 @@ char ModeSlctPad(u_char mode)
         }
         else
         {
-            if (
-                *key_now[PAD_DPAD_UP] == 1 ||
-                (*key_now[PAD_DPAD_UP] > 25 && (*key_now[PAD_DPAD_UP] % 5) == 1) ||
-                Ana2PadDirCnt(0) == 1 ||
-                (Ana2PadDirCnt(0) > 25 && (Ana2PadDirCnt(0) % 5) == 1)
-            )
+            if (PAD_BTN_REPEAT(PAD_DPAD_UP) || PAD_LANA_REPEAT(PAD_LANA_UP))
             {
                 if (btl_wrk.stage_no % 5 != 0)
                 {
@@ -962,12 +908,7 @@ char ModeSlctPad(u_char mode)
             }
             else
             {
-                if (
-                    *key_now[PAD_DPAD_DOWN] == 1 ||
-                    (*key_now[PAD_DPAD_DOWN] > 25 && (*key_now[PAD_DPAD_DOWN] % 5) == 1) ||
-                    Ana2PadDirCnt(2) == 1 ||
-                    (Ana2PadDirCnt(2) > 25 && (Ana2PadDirCnt(2) % 5) == 1)
-                )
+                if (PAD_BTN_REPEAT(PAD_DPAD_DOWN) || PAD_LANA_REPEAT(PAD_LANA_DOWN))
                 {
                     if ((btl_wrk.stage_no + 1) % 5 != 0)
                     {
@@ -986,12 +927,7 @@ char ModeSlctPad(u_char mode)
                 }
                 else
                 {
-                    if (
-                        *key_now[PAD_DPAD_LEFT] == 1 ||
-                        (*key_now[PAD_DPAD_LEFT] > 25 && (*key_now[PAD_DPAD_LEFT] % 5) == 1) ||
-                        Ana2PadDirCnt(3) == 1 ||
-                        (Ana2PadDirCnt(3) > 25 && (Ana2PadDirCnt(3) % 5) == 1)
-                    )
+                    if (PAD_BTN_REPEAT(PAD_DPAD_LEFT) || PAD_LANA_REPEAT(PAD_LANA_LEFT))
                     {
                         if (btl_wrk.stage_no >= 5)
                         {
@@ -1000,12 +936,7 @@ char ModeSlctPad(u_char mode)
                             btl_wrk.stage_no -= 5;
                         }
                     }
-                    else if (
-                        *key_now[PAD_DPAD_RIGHT] == 1 ||
-                        (*key_now[PAD_DPAD_RIGHT] > 25 && (*key_now[PAD_DPAD_RIGHT] % 5) == 1) ||
-                        Ana2PadDirCnt(1) == 1 ||
-                        (Ana2PadDirCnt(1) > 25 && (Ana2PadDirCnt(1) % 5) == 1)
-                    )
+                    else if (PAD_BTN_REPEAT(PAD_DPAD_RIGHT) || PAD_LANA_REPEAT(PAD_LANA_RIGHT))
                     {
                         if (btl_wrk.stage_no <= 14 && btl_wrk.stage_no / 5 < level)
                         {
@@ -1650,6 +1581,7 @@ void DspMissionSelect(u_char alp)
     if (csr_brink)
     {
         csr_alpha++;
+
         if (csr_alpha > 100)
         {
             csr_brink = 0;
@@ -1658,7 +1590,8 @@ void DspMissionSelect(u_char alp)
     else
     {
         csr_alpha--;
-        if (csr_alpha < 0x14)
+
+        if (csr_alpha < 20)
         {
             csr_brink = 1;
         }
@@ -1790,20 +1723,26 @@ void PutChrOne(u_short chr, short int px, short int py, u_char rgb, u_char alp, 
 void PutChrOneRGB(u_short chr, short int px, short int py, u_int rgb, u_char alp, u_char flp)
 {
     DISP_SPRT ds;
+    u_char r;
+    u_char g;
+    u_char b;
 
-    u_char r = rgb;
-    u_char g = rgb >> 8;
-    u_char b = rgb >> 16;
+    r = rgb >> 0;
+    g = rgb >> 8;
+    b = rgb >> 16;
 
     CopySprDToSpr(&ds, &msel_sprt[chr]);
 
     ds.x += px;
     ds.y += py;
+
     ds.alpha = alp;
+
     ds.r = r;
     ds.g = g;
     ds.b = b;
-    ds.tex1 = 0x161;
+
+    ds.tex1 = SCE_GS_SET_TEX1_1(1, 0, SCE_GS_LINEAR, SCE_GS_LINEAR_MIPMAP_LINEAR, 0, 0, 0);
 
     switch(flp)
     {

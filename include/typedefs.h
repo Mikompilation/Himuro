@@ -80,8 +80,6 @@ typedef union {
 #define PAD_LANA_DOWN    2
 #define PAD_LANA_LEFT    3
 
-#define PAD_BTN_PRESSED(pad) (*key_now[(pad)] == 1)
-#define PAD_LANA_PRESSED(dir) (Ana2PadDirCnt((dir)) == 1)
 
 #define PAD_REPEAT_DELAY   25
 #define PAD_REPEAT_RATE     5
@@ -89,10 +87,13 @@ typedef union {
 #define PAD_REPEAT(cnt) \
     (((cnt) == 1) || ((cnt) > PAD_REPEAT_DELAY && ((cnt) % PAD_REPEAT_RATE) == 1))
 
-#define PAD_BTN_REPEAT(pad) \
-    PAD_REPEAT(*key_now[(pad)])
+#define PAD_BTN_PRESSED(pad)  (*key_now[(pad)] == 1)
+#define PAD_BTN_REPEAT(pad)   PAD_REPEAT(*key_now[(pad)])
+#define PAD_BTN_HELD(pad)     (*key_now[(pad)] != 0)
 
-#define PAD_LANA_REPEAT(dir) \
-    PAD_REPEAT(Ana2PadDirCnt((dir)))
+#define PAD_LANA_PRESSED(dir) (Ana2PadDirCnt((dir)) == 1)
+#define PAD_LANA_REPEAT(dir)  PAD_REPEAT(Ana2PadDirCnt((dir)))
+#define PAD_LANA_HELD(dir)    (Ana2PadDirCnt((dir)) != 0)
+
 
 #endif /* TYPEDEFS_H */
