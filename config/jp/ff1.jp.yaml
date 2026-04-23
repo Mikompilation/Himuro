@@ -51,7 +51,7 @@ segments:
           - [0x10c8,   c,   main/main]
           - [0x12e8,   c,   outgame/mode_slct]
           - [0x4628,   c,   outgame/memory_album]
-          - [0xae78,   asm, main/gamemain]
+          - [0xae78,   c,   main/gamemain]
           # - [0xb1f0,   asm, main/glob]
           - [0xb1f0,   asm, os/system]
           - [0xb810,   asm, os/fileload]
@@ -331,7 +331,7 @@ segments:
           # ######################## RODATA  (vram: 0x348500) #####################################
           - { start: 0x249500, type: .rodata, vram: 0x348500, name: outgame/mode_slct             }
           - { start: 0x249640, type: .rodata, vram: 0x348640, name: outgame/memory_album          }
-          - { start: 0x249710, type:  rodata, vram: 0x348710, name: main/gamemain                 }
+          - { start: 0x249710, type: .rodata, vram: 0x348710, name: main/gamemain                 }
           - { start: 0x249730, type:  rodata, vram: 0x348730, name: os/system                     }
           - { start: 0x2497f0, type:  rodata, vram: 0x3487f0, name: os/backup                     }
           - { start: 0x249810, type:  rodata, vram: 0x348810, name: os/pad                        }
@@ -514,7 +514,7 @@ segments:
           - { start: 0x2562b0, type:  lit4,   vram: 0x3552b0, name: outgame/sound_test            }
           # ######################## SDATA   (vram: 0x355300) #####################################
           - { start: 0x256300, type: .sdata,  vram: 0x355300, name: outgame/mode_slct             }
-          - { start: 0x256314, type:  sdata,  vram: 0x355314, name: main/gamemain                 }
+          - { start: 0x256314, type: .sdata,  vram: 0x355314, name: main/gamemain                 }
           - { start: 0x256320, type:  sdata,  vram: 0x355320, name: main/glob                     }
           - { start: 0x256330, type:  sdata,  vram: 0x355330, name: os/system                     }
           - { start: 0x256348, type:  sdata,  vram: 0x355348, name: os/eeiop/adpcm/ea_ghost       }
