@@ -12,18 +12,28 @@ int FileLoadInit()
 {
     int i;
 
-    while (1) {
-		if (sceSifBindRpc(&flCd, 0x12358, 0) < 0) {
+    while (1)
+    {
+		if (sceSifBindRpc(&flCd, 0x12358, 0) < 0)
+        {
             // error ... loop forever!
-			while(1);
+			while (1) {}
 		}
+
 		i = 10000;
-		while( i-- ) {}
-		if(flCd.serve != 0) break;
+
+		while (i--) {}
+
+		if(flCd.serve != 0)
+        {
+            break;
+        }
 	}
     
     while (sceSifCheckStatRpc(&flCd.rpcd) != 0) {};
-    sceSifCallRpc(&flCd,0,0,sbuff,4,sbuff,0x40,NULL,NULL);
+
+    sceSifCallRpc(&flCd, 0, 0, sbuff, 4, sbuff, 0x40, NULL, NULL);
+
     return 1;
 }
 
@@ -31,7 +41,9 @@ void FileLoadNReq(int file_no, long int addr)
 {
     sbuff[1] = addr;
     sbuff[0] = file_no;
+
     while (sceSifCheckStatRpc(&flCd.rpcd) != 0) {};
+
     sceSifCallRpc(&flCd, 1, 0, sbuff, 0x80, sbuff, 0x40, NULL, NULL);
 }
 

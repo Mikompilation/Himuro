@@ -54,7 +54,7 @@ segments:
           - [0xae78,   c,   main/gamemain]
           - [0xb1f0,   c,   main/glob]
           - [0xb1f0,   c,   os/system]
-          - [0xb810,   asm, os/fileload]
+          - [0xb810,   c,   os/fileload]
           - [0xb978,   asm, os/key_cnf]
           - [0xbb30,   asm, os/backup]
           - [0xbdc8,   asm, os/pad]
@@ -679,7 +679,7 @@ segments:
           - { start: 0x257c00, type:  bss,    vram: 0x356c00, name: bss_pre                       }
           - { start: 0x257d48, type: .bss,    vram: 0x356d48, name: outgame/mode_slct             }
           - { start: 0x257d68, type: .bss,    vram: 0x356d68, name: outgame/memory_album          }
-          - { start: 0x257dc0, type:  bss,    vram: 0x356dc0, name: os/fileload                   }
+          - { start: 0x257dc0, type: .bss,    vram: 0x356dc0, name: os/fileload                   }
           - { start: 0x257e28, type:  bss,    vram: 0x356e28, name: os/eeiop/cdvd/eecdvd          }
           - { start: 0x257e50, type:  bss,    vram: 0x356e50, name: os/eeiop/eese                 }
           - { start: 0x258a50, type:  bss,    vram: 0x357a50, name: graphics/graph2d/compress     }
