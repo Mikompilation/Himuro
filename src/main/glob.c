@@ -1,7 +1,7 @@
 #include "glob.h"
 
-u_int realtime_scene_flg = 0; // sdata
-u_int scene_bg_load_flg = 0; // sdata
+u_int realtime_scene_flg = 0;
+u_int scene_bg_load_flg = 0;
 SYS_WRK sys_wrk = {0};
 TIME_WRK time_wrk = {0};
 OPTION_WRK opt_wrk = {0};
@@ -17,7 +17,7 @@ MAP_WRK map_wrk = {0};
 ROOM_WRK room_wrk = {0};
 u_char poss_item[200] = {0};
 u_char poss_file[4][50] = {0};
-u_char flm_exp_flg[5] = {0}; // sdata
+u_char flm_exp_flg[5] = {0};
 MAP_CAM_DAT map_cam_dat[500] = {0};
 MAP_CAM_DAT map_cam_dat2[500] = {0};
 MAP_CAM_DAT map_cam_dat3[300] = {0};
