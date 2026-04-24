@@ -55,7 +55,7 @@ segments:
           - [0xb1f0,   c,   main/glob]
           - [0xb1f0,   c,   os/system]
           - [0xb810,   c,   os/fileload]
-          - [0xb978,   asm, os/key_cnf]
+          - [0xb978,   c,   os/key_cnf]
           - [0xbb30,   asm, os/backup]
           - [0xbdc8,   asm, os/pad]
           - [0xc828,   asm, os/eeiop/eeiop]
@@ -222,7 +222,7 @@ segments:
           - { start: 0x151fe0, type: .data,   vram: 0x250fe0, name: outgame/memory_album          }
           - { start: 0x1527c0, type: .data,   vram: 0x2517c0, name: main/glob                     }
           - { start: 0x1663b0, type: .data,   vram: 0x2653b0, name: os/system                     }
-          - { start: 0x1665e0, type:  data,   vram: 0x2655e0, name: os/key_cnf                    }
+          - { start: 0x1665e0, type: .data,   vram: 0x2655e0, name: os/key_cnf                    }
           - { start: 0x166760, type:  data,   vram: 0x265760, name: os/pad                        }
           - { start: 0x166780, type:  data,   vram: 0x265780, name: os/eeiop/eeiop                }
           - { start: 0x166d40, type:  data,   vram: 0x265d40, name: os/eeiop/adpcm/ea_ctrl        }

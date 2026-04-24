@@ -23,10 +23,32 @@ u_short *default_key_bak[32] = {
     &pad[1].cnt_bak[8],  &pad[1].cnt_bak[9],  &pad[1].cnt_bak[10], &pad[1].cnt_bak[11],
     &pad[1].cnt_bak[12], &pad[1].cnt_bak[13], &pad[1].cnt_bak[14], &pad[1].cnt_bak[15],
 };
+
+#if defined(BUILD_JP_VERSION)
+u_char key_type[4][32] = {
+    {
+        0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15,
+        16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
+    },
+    {
+        0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15,
+        16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
+    },
+    {
+        0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15,
+        16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
+    },
+    {
+        0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15,
+        16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
+    },
+};
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 u_char key_type[32] = {
     0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15,
     16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
 };
+#endif
 
 void SetDefaultKeyType()
 {
@@ -40,7 +62,12 @@ void SetKeyType()
 
     for (i = 0; i < 16; i++)
     {
+#if defined(BUILD_JP_VERSION)
+        key_now[i] = default_key[key_type[opt_wrk.key_type][i]];
+        key_bak[i] = default_key_bak[key_type[opt_wrk.key_type][i]];
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         key_now[i] = default_key[key_type[i]];
         key_bak[i] = default_key_bak[key_type[i]];
+#endif
     }
 }
