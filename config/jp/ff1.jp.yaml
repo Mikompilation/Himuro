@@ -56,7 +56,7 @@ segments:
           - [0xb1f0,   c,   os/system]
           - [0xb810,   c,   os/fileload]
           - [0xb978,   c,   os/key_cnf]
-          - [0xbb30,   asm, os/backup]
+          - [0xbb30,   c,   os/backup]
           - [0xbdc8,   asm, os/pad]
           - [0xc828,   asm, os/eeiop/eeiop]
           - [0xcbe0,   asm, os/eeiop/cdvd/eecdvd]
@@ -333,7 +333,7 @@ segments:
           - { start: 0x249640, type: .rodata, vram: 0x348640, name: outgame/memory_album          }
           - { start: 0x249710, type: .rodata, vram: 0x348710, name: main/gamemain                 }
           - { start: 0x249730, type: .rodata, vram: 0x348730, name: os/system                     }
-          - { start: 0x2497f0, type:  rodata, vram: 0x3487f0, name: os/backup                     }
+          - { start: 0x2497f0, type: .rodata, vram: 0x3487f0, name: os/backup                     }
           - { start: 0x249810, type:  rodata, vram: 0x348810, name: os/pad                        }
           - { start: 0x249820, type:  rodata, vram: 0x348820, name: os/eeiop/eeiop                }
           - { start: 0x249850, type:  rodata, vram: 0x348850, name: os/eeiop/adpcm/ea_ctrl        }
