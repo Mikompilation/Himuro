@@ -11,28 +11,35 @@
 #include "graphics/graph3d/sglib.h"
 
 u_short sce_pad[16] = {
-    0x1000,  0x4000,  0x8000,  0x2000,
-    0x10,    0x40,    0x80,    0x20,
-    0x4,     0x1,     0x8,     0x2,
-    0x800,   0x100,   0x200,   0x400,
+    0x1000, 0x4000, 0x8000, 0x2000,
+      0x10,   0x40,   0x80,   0x20,
+       0x4,    0x1,    0x8,    0x2,
+     0x800,  0x100,  0x200,  0x400,
 };
 
 #define abs(x) ((x)<0 ? (-(x)) : (x))
 
+#define DUALSHOCK_CONTROLLER 4
+#define DUALSHOCK2_CONTROLLER 7
+
+#define PI 3.1415927f
+
 int InitPad()
 {
-	PAD_STRUCT *psp;
-	int i;
-	int j;
-	int loop;
-	int port_slot[2][2] = {
+    PAD_STRUCT *psp;
+    int i;
+    int j;
+    int loop;
+    int port_slot[2][2] = {
         {0, 0},
         {1, 0},
     };
-    
+
     scePadInit(0);
 
-    for (i = 0, psp = pad; i < 2; i++, psp++)
+    psp = pad;
+
+    for (i = 0; i < 2; i++)
     {
         psp->port = port_slot[i][0];
         psp->slot = port_slot[i][1];
@@ -43,13 +50,15 @@ int InitPad()
         psp->rpt_time = 0;
         psp->flags = 2;
         psp->step = 0;
-        
+
         for (loop = 0; loop < 6; loop++)
         {
             psp->pad_direct[loop] = 0;
         }
-        
+
         scePadPortOpen(psp->port, psp->slot, psp->pad_dma_buf);
+
+        psp++;
     }
 
     for (i = 0; i < 2; i++)
@@ -59,7 +68,8 @@ int InitPad()
             pad[i].cnt[j] = 0;
             pad[i].cnt_bak[j] = 0;
         }
-        
+
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         for (j = 0; j < 2; j++)
         {
             pad[i].an_cnt_bak[j] = 0;
@@ -69,13 +79,14 @@ int InitPad()
             pad[i].an_rot_bak[j] = 0.0f;
             pad[i].an_rot[j] = 0.0f;
         }
-        
+
         for (j = 0; j < 4; j++)
         {
             pad[i].analog[j] = 0x80;
         }
+#endif
     }
-    
+
     return 0;
 }
 
@@ -91,22 +102,27 @@ int PadSyncCallback()
     PAD_STRUCT *psp;
     char act_align[6];
 
-
     intr = EIntr();
-    
-    for(psp = pad, p_id = 0; p_id < 2; psp++, p_id++)
+
+    p_id = 0;
+    psp = pad;
+
+    while(p_id < 2)
     {
         state = scePadGetState(psp->port, psp->slot);
+
         if (state == scePadStateDiscon)
         {
+            psp->flags &= ~0x1;
             psp->step = 0;
-            psp->flags &= 0xfe;
+
             PadClearCount(p_id);
         }
         else
         {
-            psp->flags |= 1;
+            psp->flags |= 0x1;
         }
+
         if (state == scePadStateFindPad)
         {
             psp->step = 0;
@@ -119,42 +135,45 @@ int PadSyncCallback()
             {
                 break;
             }
-            
+
             id = scePadInfoMode(psp->port, psp->slot, InfoModeCurID, 0);
+
             if (id == 0)
             {
                 break;
             }
-            
+
             exid = scePadInfoMode(psp->port, psp->slot, InfoModeCurExID, 0);
+
             if (exid > 0)
             {
                 id = exid;
             }
-            
+
             psp->id = 0;
-            // 4: STANDARD CONTROLLER (Dualshock)
-            // 7: ANALOG CONTROLLER (Dualshock 2)
-            if (id != 4 && id != 7)
+
+            if (id != DUALSHOCK_CONTROLLER && id != DUALSHOCK2_CONTROLLER)
             {
                 psp->step = 99;
+
                 break;
             }
-            
+
             if (scePadInfoAct(psp->port, psp->slot, -1, 0) == 0)
             {
                 psp->step = 99;
+
                 break;
             }
-            
-            act_align[0] = 0; // offset 0 => motor0
-            act_align[1] = 1; // offset 1 => motor1
-            
+
+            act_align[0] = 0;
+            act_align[1] = 1;
+
             for (i = 2; i < 6; i++)
             {
                 act_align[i] = -1;
             }
-            
+
             for (i = 0; i < 6; i++)
             {
                 psp->pad_direct[i] = 0;
@@ -166,50 +185,50 @@ int PadSyncCallback()
             }
         break;
         case 1:
-            state = scePadGetState(psp->port, psp->slot);
-            // scePadStateExecCmd indicates a "verifying" state
-            if (state != scePadStateExecCmd)
+            if (scePadGetState(psp->port, psp->slot) == scePadStateExecCmd)
             {
-                // switch to analog mode
-                if (scePadSetMainMode(psp->port, psp->slot, 1, 3) != 1)
-                {
-                    psp->step = 0;
-                }
-                else
-                {
-                    psp->step = 2;
-                }
+                break;
+            }
+
+            if (scePadSetMainMode(psp->port, psp->slot, 1, 3) != 1)
+            {
+                psp->step = 0;
+            }
+            else
+            {
+                psp->step = 2;
             }
         break;
         case 2:
             switch (scePadGetReqState(psp->port, psp->slot))
             {
-            case scePadReqStateComplete:
-                psp->step = 3;
-            break;
             case scePadReqStateFailed:
                 psp->step = 0;
             break;
+            case scePadReqStateComplete:
+                psp->step = 3;
+            break;
             case scePadReqStateBusy:
-                // do nothing
+                 // do nothing ...
             break;
             }
         break;
         case 3:
             id = scePadInfoMode(psp->port, psp->slot, InfoModeCurID, 0);
+
             if (id == 0)
             {
                 break;
             }
-            
+
             exid = scePadInfoMode(psp->port, psp->slot, InfoModeCurExID, 0);
+
             if (exid > 0)
             {
                 id = exid;
             }
 
-            // ANALOG CONTROLLER (Dualshock 2)
-            if (id == 7)
+            if (id == DUALSHOCK2_CONTROLLER)
             {
                 psp->step = 10;
             }
@@ -219,28 +238,28 @@ int PadSyncCallback()
             }
         break;
         case 10:
-            // check if DualShock 2 supports pressure sensitive mode
-            if (scePadInfoPressMode(psp->port, psp->slot) == 1)
-            {
-                // enable DualShock2 pressure sensitive mode (function is asynchronous)
-                if (scePadEnterPressMode(psp->port, psp->slot) == 1)
-                {
-                    __asm__ volatile (""); // dirty hack
-                    psp->step = 11;
-                }
-            }
-            else
+            if (scePadInfoPressMode(psp->port, psp->slot) != 1)
             {
                 psp->step = 99;
+
+                break;
             }
+
+            if (scePadEnterPressMode(psp->port, psp->slot) != 1)
+            {
+                break;
+            }
+
+            psp->step = 11;
         break;
         case 11:
-            // check request status for Dualshock2 pressure sensitive mode
             wrk = scePadGetReqState(psp->port, psp->slot);
+
             if (wrk == scePadReqStateFailed)
             {
                 psp->step = 10;
             }
+
             if (wrk == scePadReqStateComplete)
             {
                 psp->step = 99;
@@ -250,16 +269,14 @@ int PadSyncCallback()
             if (state == scePadStateStable || state == scePadStateFindCTP1)
             {
                 PadReadFunc(psp, p_id);
+
                 if (psp->pad_direct[0] & 0x80)
                 {
                     psp->pad_direct[0] &= 1;
-                    
-                    // returns true or false to indicate the completion of the vibration operation
+
                     scePadSetActDirect(psp->port, psp->slot, psp->pad_direct);
-                    if (
-                        psp->pad_direct[0] == 0 &&
-                        psp->pad_direct[1] == 0
-                    )
+
+                    if (psp->pad_direct[0] == 0 && psp->pad_direct[1] == 0)
                     {
                         psp->pad_direct[0] = 0;
                         psp->pad_direct[1] = 0;
@@ -272,27 +289,31 @@ int PadSyncCallback()
             }
         break;
         }
+
+        psp++;
+        p_id++;
     }
-    
+
     if (!intr)
     {
         DIntr();
     }
-    
+
     return 0;
 }
 
 int PadReadFunc(PAD_STRUCT *psp, int p_id)
 {
-	char r_data[32];
-	int i;
-	int j;
-    
+    char r_data[32];
+    int i;
+    int j;
+
     psp->old = psp->now;
-    
+
     if (scePadRead(psp->port,psp->slot, (u_char *)r_data) == 0)
     {
         psp->now = 0;
+
         return 0;
     }
 
@@ -301,25 +322,28 @@ int PadReadFunc(PAD_STRUCT *psp, int p_id)
     if (r_data[0] != 0)
     {
         psp->now = 0;
+
         return 0;
     }
 
     if (psp->id != 0 && psp->id != r_data[1])
     {
         psp->step = 0;
+
         return 0;
     }
-    
+
     // logical reverse button info => 1: press down, 0: release
-    psp->now = 0xffff ^ ((r_data[2] << 8) | (u_char)r_data[3]);    
+    psp->now = 0xffff ^ ((r_data[2] << 8) | (u_char)r_data[3]);
     psp->one = psp->now & (psp->now ^ psp->old);
     psp->rpt = psp->one;
-    
+
     psp->id = r_data[1];
-    
+
     if (psp->now == psp->old)
     {
         psp->rpt_time++;
+
         if (psp->rpt_time > 9)
         {
             psp->rpt = psp->now;
@@ -330,11 +354,11 @@ int PadReadFunc(PAD_STRUCT *psp, int p_id)
     {
         psp->rpt_time = 0;
     }
-    
+
     for (i = 0; i < 16; i++)
     {
         pad[p_id].cnt_bak[i] = pad[p_id].cnt[i];
-        
+
         if ((sce_pad[i] & psp->now) != 0)
         {
             pad[p_id].cnt[i]++;
@@ -344,7 +368,7 @@ int PadReadFunc(PAD_STRUCT *psp, int p_id)
             pad[p_id].cnt[i] = 0;
         }
     }
-    
+
     if ((psp->id & 0xf0) == 0x70)
     {
         for (j = 0; j < 4; j++)
@@ -352,17 +376,17 @@ int PadReadFunc(PAD_STRUCT *psp, int p_id)
             psp->analog[j] = r_data[j + 4];
         }
     }
-    
+
     if (psp->id == 0x79)
     {
         for (j = 0; j< 12; j++)
         {
             psp->push[j] = r_data[j + 8];
         }
-        
+
         SetAnlgInfo(psp, p_id);
     }
-    
+
     return 0;
 }
 
@@ -373,14 +397,15 @@ void SetAnlgInfo(PAD_STRUCT *psp, int p_id)
     short int pad_y;
     u_char i;
     u_char dir_old;
-        
+
     for (i = 0; i < 2; i++)
     {
         dir_old = psp->an_dir[i];
+
         psp->an_cnt_bak[i] = psp->an_cnt[i];
         psp->an_dir_bak[i] = psp->an_dir[i];
         psp->an_rot_bak[i] = psp->an_rot[i];
-    
+
         if (i == 0)
         {
             pad_y = pad[p_id].analog[2] - 128;
@@ -394,17 +419,21 @@ void SetAnlgInfo(PAD_STRUCT *psp, int p_id)
 
         if (abs(pad_y) >= 60 || abs(pad_x) >= 60)
         {
+#if defined(BUILD_JP_VERSION)
+            rot = atan2f(pad_y, pad_x);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
             rot = SgAtan2f(pad_y, pad_x);
+#endif
 
-            psp->an_dir[i] = (int)((rot + 3.1415927f + 0.39269909f) / 0.78539819f) % 8 + 4;
-            
+            psp->an_dir[i] = (int)((rot + PI + 0.39269909f) / 0.78539819f) % 8 + 4;
+
             if (psp->an_dir[i] > 7)
             {
                 psp->an_dir[i] -= 8;
             }
-            
+
             psp->an_rot[i] = rot;
-            
+
             if (psp->an_dir[i] == dir_old)
             {
                 psp->an_cnt[i]++;
@@ -427,13 +456,13 @@ u_short VibrateRequest(u_short p_id, u_short act1, u_short act2)
     PAD_STRUCT *psp;
 
     psp = &pad[p_id];
-    
+
     if (opt_wrk.pad_move == 0)
     {
         psp->pad_direct[0] = act1 | 0x80;
         psp->pad_direct[1] = act2;
     }
-    
+
     return 0;
 }
 
@@ -447,7 +476,7 @@ u_short VibrateRequest1(u_short p_id, u_short act_1)
     {
         psp->pad_direct[0] = act_1 | 0x80;
     }
-    
+
     return 0;
 }
 
@@ -462,20 +491,21 @@ u_short VibrateRequest2(u_short p_id, u_short act_2)
         psp->pad_direct[1] = act_2;
         psp->pad_direct[0] = 0x80;
     }
-    
+
     return 0;
 }
 
 void PadClearCount(int p_id)
 {
     u_int i;
-    
+
     for (i = 0; i < 16; i++)
     {
         pad[p_id].cnt_bak[i] = 0;
         pad[p_id].cnt[i] = 0;
     }
-    
+
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     for (i = 0; i < 2; i++)
     {
         pad[p_id].an_cnt_bak[i] = 0;
@@ -485,9 +515,10 @@ void PadClearCount(int p_id)
         pad[p_id].an_rot_bak[i] = 0.0f;
         pad[p_id].an_rot[i] = 0.0f;
     }
-    
+
     for (i = 0; i < 4; i++)
     {
         pad[p_id].analog[i] = 0x80;
     }
+#endif
 }

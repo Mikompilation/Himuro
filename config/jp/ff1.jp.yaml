@@ -57,7 +57,7 @@ segments:
           - [0xb810,   c,   os/fileload]
           - [0xb978,   c,   os/key_cnf]
           - [0xbb30,   c,   os/backup]
-          - [0xbdc8,   asm, os/pad]
+          - [0xbdc8,   c,   os/pad]
           - [0xc828,   asm, os/eeiop/eeiop]
           - [0xcbe0,   asm, os/eeiop/cdvd/eecdvd]
           - [0xd0c8,   asm, os/eeiop/adpcm/ea_ctrl]
@@ -223,7 +223,7 @@ segments:
           - { start: 0x1527c0, type: .data,   vram: 0x2517c0, name: main/glob                     }
           - { start: 0x1663b0, type: .data,   vram: 0x2653b0, name: os/system                     }
           - { start: 0x1665e0, type: .data,   vram: 0x2655e0, name: os/key_cnf                    }
-          - { start: 0x166760, type:  data,   vram: 0x265760, name: os/pad                        }
+          - { start: 0x166760, type: .data,   vram: 0x265760, name: os/pad                        }
           - { start: 0x166780, type:  data,   vram: 0x265780, name: os/eeiop/eeiop                }
           - { start: 0x166d40, type:  data,   vram: 0x265d40, name: os/eeiop/adpcm/ea_ctrl        }
           - { start: 0x167180, type:  data,   vram: 0x266180, name: os/eeiop/adpcm/ea_dat         }
@@ -334,7 +334,7 @@ segments:
           - { start: 0x249710, type: .rodata, vram: 0x348710, name: main/gamemain                 }
           - { start: 0x249730, type: .rodata, vram: 0x348730, name: os/system                     }
           - { start: 0x2497f0, type: .rodata, vram: 0x3487f0, name: os/backup                     }
-          - { start: 0x249810, type:  rodata, vram: 0x348810, name: os/pad                        }
+          - { start: 0x249810, type: .rodata, vram: 0x348810, name: os/pad                        }
           - { start: 0x249820, type:  rodata, vram: 0x348820, name: os/eeiop/eeiop                }
           - { start: 0x249850, type:  rodata, vram: 0x348850, name: os/eeiop/adpcm/ea_ctrl        }
           - { start: 0x249890, type:  rodata, vram: 0x348890, name: os/eeiop/adpcm/ea_btlmode     }
@@ -443,7 +443,7 @@ segments:
           # ######################## LIT4    (vram: 0x354100) #####################################
           - { start: 0x255100, type: .lit4,   vram: 0x354100, name: outgame/mode_slct             }
           - { start: 0x255108, type: .lit4,   vram: 0x354108, name: outgame/memory_album          }
-          - { start: 0x255198, type:  lit4,   vram: 0x354198, name: os/pad                        }
+          - { start: 0x255198, type: .lit4,   vram: 0x354198, name: os/pad                        }
           - { start: 0x2551a4, type:  lit4,   vram: 0x3541a4, name: os/eeiop/adpcm/ea_cmd         }
           - { start: 0x2551bc, type:  lit4,   vram: 0x3541bc, name: os/eeiop/se_cmd               }
           - { start: 0x2551cc, type:  lit4,   vram: 0x3541cc, name: os/eeiop/se_plyr              }
