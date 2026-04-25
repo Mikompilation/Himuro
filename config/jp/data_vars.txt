@@ -5,3 +5,6 @@ msl_bg_opt                     = 0x24fa40; // type:SPRT_DAT numel:11
 msl_bg_snd                     = 0x24fba0; // type:SPRT_DAT numel:11
 msl_bg_sty                     = 0x24fd00; // type:SPRT_DAT numel:11
 msel_sprt                      = 0x24fe60; // type:SPRT_DAT numel:140
+
+// os/eeiop/adpcm/ea_dat.c
+adpcm_vol_tbl                  = 0x266180; // type:ADPCM_VOL numel:368

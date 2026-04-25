@@ -62,7 +62,7 @@ segments:
           - [0xcbe0,   c,   os/eeiop/cdvd/eecdvd]
           - [0xd0c8,   c,   os/eeiop/adpcm/ea_ctrl]
           - [0xdc88,   c,   os/eeiop/adpcm/ea_cmd]
-          - [0xe0c8,   asm, os/eeiop/adpcm/ea_dat]
+          - [0xe0c8,   c,   os/eeiop/adpcm/ea_dat]
           - [0xe118,   asm, os/eeiop/adpcm/ea_btlmode]
           - [0xe418,   asm, os/eeiop/adpcm/ea_gameover]
           - [0xe620,   asm, os/eeiop/adpcm/ea_scene]
@@ -226,7 +226,7 @@ segments:
           - { start: 0x166760, type: .data,   vram: 0x265760, name: os/pad                        }
           - { start: 0x166780, type: .data,   vram: 0x265780, name: os/eeiop/eeiop                }
           - { start: 0x166d40, type: .data,   vram: 0x265d40, name: os/eeiop/adpcm/ea_ctrl        }
-          - { start: 0x167180, type:  data,   vram: 0x266180, name: os/eeiop/adpcm/ea_dat         }
+          - { start: 0x167180, type: .data,   vram: 0x266180, name: os/eeiop/adpcm/ea_dat         }
           - { start: 0x167d00, type:  data,   vram: 0x266d00, name: os/eeiop/eese                 }
           - { start: 0x167d78, type:  data,   vram: 0x266d78, name: os/eeiop/se_data              }
           - { start: 0x167db0, type:  data,   vram: 0x266db0, name: os/eeiop/se_ev                }
