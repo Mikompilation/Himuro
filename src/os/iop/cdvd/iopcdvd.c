@@ -1,4 +1,5 @@
 #include "iopcdvd.h"
+#include "addresses.h"
 
 #include "adpcm/iopadpcm.h"
 #include "iopmain.h"
@@ -162,7 +163,7 @@ static void ICdvdInitOnce()
     }
 
     sdd.data = (u_int)load_buf_table[0];
-    sdd.addr = 0x12f0000;
+    sdd.addr = IMG_BIN_ADDRESS;
     sdd.size = cdlf.size;
     sdd.mode = 0;
     CpuSuspendIntr(&oldstat);
