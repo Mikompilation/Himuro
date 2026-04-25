@@ -5,8 +5,6 @@
 #include "os/eeiop/eese.h"
 #include "os/eeiop/cdvd/eecdvd.h"
 
-// int printf ( const char * format, ... );
-
 EI_SYS ei_sys = {0};
 IOP_COMMAND send_cmd[32] __attribute__((aligned(64))) = {0};
 IOP_STAT rcv_stat __attribute__((aligned(64))) = {0};
@@ -75,14 +73,19 @@ static int EiInitRpc()
 {
     int i;
     
-    while (1) {
+    while (1)
+    {
         if (sceSifBindRpc(&ei_sys.gcd, 0x19740512, 0) < 0)
         {
             printf("***** ERROR : sceSifBindRpc *****\n");
+
             while(1) {};
         }
+
         i = 10000;
-        while(i --) {};
+
+        while(i--) {};
+
         if (ei_sys.gcd.serve != NULL)
         {
             break;
@@ -119,7 +122,9 @@ static void SetIopCmd(IOP_COMMAND *cmdp)
     if (cmdp != NULL && ei_sys.cmd_num < 32)
     {
         TidyUpIopCmd(cmdp);
+
         send_cmd[ei_sys.cmd_num] = *cmdp;
+
         ei_sys.cmd_num++;
     }
 }
@@ -145,14 +150,14 @@ static int EiSendCmd()
         
         if (ei_sys.cmd_num != 0)
         {
-            ret = sceSifCallRpc(&ei_sys.gcd, 1, 1, send_cmd, ei_sys.cmd_num * 32, &rcv_stat, 0x180, NULL, NULL);
+            ret = sceSifCallRpc(&ei_sys.gcd, 1, 1, send_cmd, ei_sys.cmd_num * 32, &rcv_stat, sizeof(rcv_stat), NULL, NULL);
         }
         else
         {
-            ret = sceSifCallRpc(&ei_sys.gcd, 2, 1, NULL, 0, &rcv_stat, 0x180, NULL, NULL);
+            ret = sceSifCallRpc(&ei_sys.gcd, 2, 1, NULL, 0, &rcv_stat, sizeof(rcv_stat), NULL, NULL);
         }
         
-        return (ret < 0) ? -1 : 1;
+        return ret < 0 ? -1 : 1;
     }
     
     return 0;

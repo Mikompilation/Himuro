@@ -58,7 +58,7 @@ segments:
           - [0xb978,   c,   os/key_cnf]
           - [0xbb30,   c,   os/backup]
           - [0xbdc8,   c,   os/pad]
-          - [0xc828,   asm, os/eeiop/eeiop]
+          - [0xc828,   c,   os/eeiop/eeiop]
           - [0xcbe0,   asm, os/eeiop/cdvd/eecdvd]
           - [0xd0c8,   asm, os/eeiop/adpcm/ea_ctrl]
           - [0xdc88,   asm, os/eeiop/adpcm/ea_cmd]
@@ -224,7 +224,7 @@ segments:
           - { start: 0x1663b0, type: .data,   vram: 0x2653b0, name: os/system                     }
           - { start: 0x1665e0, type: .data,   vram: 0x2655e0, name: os/key_cnf                    }
           - { start: 0x166760, type: .data,   vram: 0x265760, name: os/pad                        }
-          - { start: 0x166780, type:  data,   vram: 0x265780, name: os/eeiop/eeiop                }
+          - { start: 0x166780, type: .data,   vram: 0x265780, name: os/eeiop/eeiop                }
           - { start: 0x166d40, type:  data,   vram: 0x265d40, name: os/eeiop/adpcm/ea_ctrl        }
           - { start: 0x167180, type:  data,   vram: 0x266180, name: os/eeiop/adpcm/ea_dat         }
           - { start: 0x167d00, type:  data,   vram: 0x266d00, name: os/eeiop/eese                 }
@@ -335,7 +335,7 @@ segments:
           - { start: 0x249730, type: .rodata, vram: 0x348730, name: os/system                     }
           - { start: 0x2497f0, type: .rodata, vram: 0x3487f0, name: os/backup                     }
           - { start: 0x249810, type: .rodata, vram: 0x348810, name: os/pad                        }
-          - { start: 0x249820, type:  rodata, vram: 0x348820, name: os/eeiop/eeiop                }
+          - { start: 0x249820, type: .rodata, vram: 0x348820, name: os/eeiop/eeiop                }
           - { start: 0x249850, type:  rodata, vram: 0x348850, name: os/eeiop/adpcm/ea_ctrl        }
           - { start: 0x249890, type:  rodata, vram: 0x348890, name: os/eeiop/adpcm/ea_btlmode     }
           - { start: 0x2498b0, type:  rodata, vram: 0x3488b0, name: os/eeiop/adpcm/ea_scene       }
