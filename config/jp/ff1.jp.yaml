@@ -61,7 +61,7 @@ segments:
           - [0xc828,   c,   os/eeiop/eeiop]
           - [0xcbe0,   c,   os/eeiop/cdvd/eecdvd]
           - [0xd0c8,   c,   os/eeiop/adpcm/ea_ctrl]
-          - [0xdc88,   asm, os/eeiop/adpcm/ea_cmd]
+          - [0xdc88,   c,   os/eeiop/adpcm/ea_cmd]
           - [0xe0c8,   asm, os/eeiop/adpcm/ea_dat]
           - [0xe118,   asm, os/eeiop/adpcm/ea_btlmode]
           - [0xe418,   asm, os/eeiop/adpcm/ea_gameover]
@@ -444,7 +444,7 @@ segments:
           - { start: 0x255100, type: .lit4,   vram: 0x354100, name: outgame/mode_slct             }
           - { start: 0x255108, type: .lit4,   vram: 0x354108, name: outgame/memory_album          }
           - { start: 0x255198, type: .lit4,   vram: 0x354198, name: os/pad                        }
-          - { start: 0x2551a4, type:  lit4,   vram: 0x3541a4, name: os/eeiop/adpcm/ea_cmd         }
+          - { start: 0x2551a4, type: .lit4,   vram: 0x3541a4, name: os/eeiop/adpcm/ea_cmd         }
           - { start: 0x2551bc, type:  lit4,   vram: 0x3541bc, name: os/eeiop/se_cmd               }
           - { start: 0x2551cc, type:  lit4,   vram: 0x3541cc, name: os/eeiop/se_plyr              }
           - { start: 0x2551d0, type:  lit4,   vram: 0x3541d0, name: graphics/graph2d/compress     }

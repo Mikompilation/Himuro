@@ -3,13 +3,16 @@
 #include "enums.h"
 #include "ea_cmd.h"
 
+// gcc/src/newlib/libm/math/sf_sin.c
+float sinf(float x);
+
 #include "graphics/graph3d/sglib.h"
 #include "os/eeiop/eeiop.h"
 #include "os/eeiop/cdvd/eecdvd.h"
 
 #define FLOAT_RES_X 640.0f
 #define US_MAX_PAN 0x4ff
-#define PI 3.141592741f
+#define PI 3.1415927f
 #define FLOAT_MAX_SOUND_DISTANCE 10000.0f
 #define FLOAT_MIN_PITCH_SOUND_DISTANCE 2000.0f
 
@@ -28,26 +31,27 @@ void EAdpcmCmdPlay(u_char channel, u_char loop, int file_no, int start_flm, u_sh
     IMG_ARRANGEMENT *iap;
     int flg;
 
-    flg = 0xc;
+    flg = 0x8 | 0x4;
+
     iap = GetImgArrangementP(file_no);
 
     if (loop)
     {
-        flg = 0xe;
+        flg = 0x8 | 0x4 | 0x2;
     }
 
-    if (channel) 
+    if (channel)
     {
-        flg |= 1;
+        flg |= 0x1;
     }
-    
+
     SetIopCmdLg(IC_ADPCM_PLAY, file_no, iap->start, iap->size, flg, CONCAT_USHORT(pan, vol), CONCAT_USHORT(pitch, fin_flm), start_flm);
 }
 
 void EAdpcmCmdPreload(u_char channel,int file_no,int start_flm,u_short fin_flm)
 {
     IMG_ARRANGEMENT *iap;
-    
+
     iap = GetImgArrangementP(file_no);
 
     SetIopCmdLg(IC_ADPCM_PRELOAD, file_no, iap->start, iap->size, 0, 0, 0, start_flm);
@@ -56,19 +60,19 @@ void EAdpcmCmdPreload(u_char channel,int file_no,int start_flm,u_short fin_flm)
 void EAdpcmCmdPreEndPlay(u_char channel, u_char loop, int file_no, u_short vol, u_short pan, u_short pitch, u_short fin_flm)
 {
     int flg;
-    
-    flg = 0xc;
+
+    flg = 0x8 | 0x4;
 
     if (loop)
     {
-        flg = 0xe;
+        flg = 0x8 | 0x4 | 0x2;
     }
 
-    if (channel) 
+    if (channel)
     {
-        flg |= 1;
+        flg |= 0x1;
     }
-    
+
     SetIopCmdLg(IC_ADPCM_LOADEND_PLAY, file_no, 0, 0, flg, CONCAT_USHORT(pan, vol), CONCAT_USHORT(pitch, fin_flm), 0);
 }
 
@@ -84,7 +88,6 @@ void EAdpcmCmdPause(u_char channel,int file_no,u_short fout_flm)
 
 void EAdpcmCmdRestart(u_char channel, int file_no, u_short fout_flm)
 {
-    // Channel gets optimized away, all instances that call it give the parameter '0'
     SetIopCmdLg(IC_ADPCM_RESTART, file_no, 0, 0, 0, 0, fout_flm, 0);
 }
 
@@ -114,59 +117,65 @@ int EAGetRetCount(void)
 }
 
 u_char IsAdpcmPlay(int file_no)
-{    
-    if (EAGetRetTune() == file_no && EAGetRetStat() > 5) 
+{
+    if (EAGetRetTune() == file_no && EAGetRetStat() > 5)
     {
         return 1;
     }
-    
+
     return 0;
 }
 
 u_short EAdpcmGetPan(float rot)
 {
-    float panf = (SgSinf(rot) * FLOAT_RES_X) + FLOAT_RES_X;
-   
-    if (US_MAX_PAN < (u_short)panf) 
+    float panf;
+
+#if defined(BUILD_JP_VERSION)
+    panf = (sinf(rot) * FLOAT_RES_X) + FLOAT_RES_X;
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+    panf = (SgSinf(rot) * FLOAT_RES_X) + FLOAT_RES_X;
+#endif
+
+    if (US_MAX_PAN < (u_short)panf)
     {
-      return US_MAX_PAN;
+        return US_MAX_PAN;
     }
-    
+
     return panf;
 }
 
 u_short EAdpcmGetVol(float dist, u_short vol)
 {
     float ratio_dist;
-  
-    if (dist < FLOAT_MAX_SOUND_DISTANCE) 
+
+    if (dist < FLOAT_MAX_SOUND_DISTANCE)
     {
-      ratio_dist = CALC_RATIO(FLOAT_MAX_SOUND_DISTANCE, dist);
-      ratio_dist *= ratio_dist;
+        ratio_dist = CALC_RATIO(FLOAT_MAX_SOUND_DISTANCE, dist);
+        ratio_dist *= ratio_dist;
     }
-    else 
+    else
     {
-      ratio_dist = 0.0;
+        ratio_dist = 0.0f;
     }
-    
+
     return vol * ratio_dist;
 }
 
 u_short EAdpcmGetPitch(float rot, float dist, u_short pitch)
 {
     float fpitch_rate;
-    
-    if (rot < 0.0f) 
+
+    if (rot < 0.0f)
     {
         rot = -rot;
     }
-    
+
     fpitch_rate = rot / PI * pitch * 0.5f;
+
     pitch += fpitch_rate;
-    
-    if (dist < FLOAT_MIN_PITCH_SOUND_DISTANCE) 
+
+    if (dist < FLOAT_MIN_PITCH_SOUND_DISTANCE)
     {
-        // 0.100000025f = 4000001/40000000
         return pitch + pitch * 0.100000025f * CALC_RATIO(FLOAT_MIN_PITCH_SOUND_DISTANCE, dist);
     }
     else if (FLOAT_MAX_SOUND_DISTANCE > dist)
