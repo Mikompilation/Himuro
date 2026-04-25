@@ -63,7 +63,7 @@ segments:
           - [0xd0c8,   c,   os/eeiop/adpcm/ea_ctrl]
           - [0xdc88,   c,   os/eeiop/adpcm/ea_cmd]
           - [0xe0c8,   c,   os/eeiop/adpcm/ea_dat]
-          - [0xe118,   asm, os/eeiop/adpcm/ea_btlmode]
+          - [0xe118,   c,   os/eeiop/adpcm/ea_btlmode]
           - [0xe418,   asm, os/eeiop/adpcm/ea_gameover]
           - [0xe620,   asm, os/eeiop/adpcm/ea_scene]
           - [0xe8d0,   asm, os/eeiop/adpcm/ea_magatoki]
@@ -337,7 +337,7 @@ segments:
           - { start: 0x249810, type: .rodata, vram: 0x348810, name: os/pad                        }
           - { start: 0x249820, type: .rodata, vram: 0x348820, name: os/eeiop/eeiop                }
           - { start: 0x249850, type: .rodata, vram: 0x348850, name: os/eeiop/adpcm/ea_ctrl        }
-          - { start: 0x249890, type:  rodata, vram: 0x348890, name: os/eeiop/adpcm/ea_btlmode     }
+          - { start: 0x249890, type: .rodata, vram: 0x348890, name: os/eeiop/adpcm/ea_btlmode     }
           - { start: 0x2498b0, type:  rodata, vram: 0x3488b0, name: os/eeiop/adpcm/ea_scene       }
           - { start: 0x2498d0, type:  rodata, vram: 0x3488d0, name: os/eeiop/adpcm/ea_magatoki    }
           - { start: 0x2498f0, type:  rodata, vram: 0x3488f0, name: os/eeiop/adpcm/ea_shinkan     }

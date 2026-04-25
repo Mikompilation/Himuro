@@ -9,16 +9,17 @@
 
 void EAdpcmBtlmodeMain()
 {
-    if (adpcm_map.mode != 0xf)
+    if (adpcm_map.mode != ADPCM_MODE_BTLMODE)
     {
-        adpcm_map.mode = 0xf;
+        adpcm_map.mode = ADPCM_MODE_BTLMODE;
         adpcm_map.btlmode.para.file_no = -1;
     }
-    
+
     switch(adpcm_map.btlmode.mode)
     {
     case BTL_MODE_READY:
         EAdpcmCmdStop(0, 0, adpcm_map.btlmode.para.fout_flm);
+
         adpcm_map.btlmode.mode = BTL_MODE_GAME;
     break;
     case BTL_MODE_GAME:
@@ -61,7 +62,9 @@ u_char IsEndAdpcmBtlmode()
 void AdpcmPreBtlmodePreload(int file_no)
 {
     adpcm_map.btlmode.para.file_no = file_no;
+
     EAdpcmCmdPreload(0, file_no, 0, 0);
+
     adpcm_map.btlmode.mode = BTL_MODE_FAILED;
 }
 
@@ -78,26 +81,30 @@ u_char IsPreLoadEndAdpcmBtlmode()
             return 1;
         }
     }
-    
+
     return 0;
 }
 
 void AdpcmBtlmodePreLoadEndPlay()
 {
     EAdpcmCmdPlay(0, 0, adpcm_map.btlmode.para.file_no, 0, GetAdpcmVol(adpcm_map.btlmode.para.file_no), 0x280, 0xfff, 0);
+
     adpcm_map.btlmode.mode = BTL_MODE_CLEAR;
 }
 
 void AdpcmBtlmodePlay(int file_no)
 {
     adpcm_map.btlmode.para.file_no = file_no;
+
     EAdpcmCmdPlay(0, 0, adpcm_map.btlmode.para.file_no, 0, GetAdpcmVol(file_no), 0x280, 0xfff, 0);
+
     adpcm_map.btlmode.mode = BTL_MODE_CLEAR;
 }
 
 void AdpcmBtlmodeEnd()
 {
-    EAdpcmCmdStop(0, 0, 0x1e);
+    EAdpcmCmdStop(0, 0, 30);
+
     adpcm_map.btlmode.use = 0;
     adpcm_map.hiso.use = 0;
     adpcm_map.autog.use = 0;
