@@ -8,26 +8,29 @@
 #include "os/eeiop/adpcm/ea_ctrl.h"
 
 void EAdpcmEventMain()
-{    
+{
     if (adpcm_map.mode != ADPCM_MODE_EVENT) {
         if (
             adpcm_map.mode == ADPCM_MODE_MAP ||
             adpcm_map.mode == ADPCM_MODE_FURN ||
             adpcm_map.mode == ADPCM_MODE_AUTOG ||
-            adpcm_map.mode == ADPCM_MODE_GHOST)
+            adpcm_map.mode == ADPCM_MODE_GHOST
+        )
         {
             adpcm_map.event.mode = AMEV_MODE_PRE_FADE_OUT;
         }
         else
         {
             adpcm_map.event.para.start_flm = 0;
-            EAdpcmCmdStop(0, 0, 0x14);
+
+            EAdpcmCmdStop(0, 0, 20);
+
             adpcm_map.event.mode = AMEV_MODE_REQ_PLAYING;
         }
-        
+
         adpcm_map.mode = ADPCM_MODE_EVENT;
     }
-    
+
     switch(adpcm_map.event.mode)
     {
     case AMEV_MODE_PRE_FADE_OUT:
@@ -35,7 +38,9 @@ void EAdpcmEventMain()
         {
             adpcm_map.event.para.start_flm--;
         }
-        EAdpcmCmdStop(0, 0, 0x50);
+
+        EAdpcmCmdStop(0, 0, 80);
+
         adpcm_map.event.mode = AMEV_MODE_REQ_WAIT_STOP;
     break;
     case AMEV_MODE_REQ_WAIT_STOP:
@@ -43,13 +48,17 @@ void EAdpcmEventMain()
         {
             adpcm_map.event.para.start_flm--;
         }
+
         if (EAGetRetStat() == 1 || EAGetRetStat() == 2)
         {
             if (adpcm_map.event.para.start_flm == 0) {
                 adpcm_map.m_flg = 2;
+
                 EAdpcmCmdPlay(0, 0, adpcm_map.event.para.file_no, 0, adpcm_map.event.para.vol, adpcm_map.event.para.pan, adpcm_map.event.para.pitch, adpcm_map.event.para.fin_flm);
+
                 adpcm_map.event.mode = AMEV_MODE_REQ_PLAY;
             }
+
             adpcm_map.mvol = 0xfff;
         }
     break;
@@ -58,6 +67,7 @@ void EAdpcmEventMain()
         {
             adpcm_map.event.mode = AMEV_MODE_REQ_PLAYING;
         }
+
         adpcm_map.mvol = 0xfff;
     break;
     case AMEV_MODE_REQ_PLAYING:
@@ -69,6 +79,7 @@ void EAdpcmEventMain()
             adpcm_map.event.para.start_flm = 0;
             adpcm_map.event.mode = AMEV_MODE_PRE_FADE_OUT;
         }
+
         adpcm_map.mvol = 0xfff;
     break;
     case AMEV_MODE_END:
@@ -81,7 +92,7 @@ void EAdpcmEventMain()
     }
 }
 
-void AdpcmPlayEvent(/* a0 4 */ int file_no, /* s1 17 */ u_short start_flm, /* s2 18 */ int fade_flm)
+void AdpcmPlayEvent(int file_no, u_short start_flm, int fade_flm)
 {
     switch(file_no) {
     case 0:
@@ -95,7 +106,8 @@ void AdpcmPlayEvent(/* a0 4 */ int file_no, /* s1 17 */ u_short start_flm, /* s2
     break;
     case 3:
         adpcm_map.event.para.file_no = AVMC003_MAHUYU0_STR;
-#ifdef BUILD_EU_VERSION
+
+#if defined(BUILD_EU_VERSION)
         InitSubtitlesSys();
         SetSubtitlesNCntOne(2, 0);
 #endif
@@ -126,7 +138,8 @@ void AdpcmPlayEvent(/* a0 4 */ int file_no, /* s1 17 */ u_short start_flm, /* s2
     break;
     case 25:
         adpcm_map.event.para.file_no = AVMC012_MAFUYU6_STR;
-#ifdef BUILD_EU_VERSION
+
+#if defined(BUILD_EU_VERSION)
         InitSubtitlesSys();
         SetSubtitlesNCntOne(2, 1);
 #endif
@@ -168,11 +181,10 @@ void AdpcmPlayEvent(/* a0 4 */ int file_no, /* s1 17 */ u_short start_flm, /* s2
         adpcm_map.event.para.file_no = AVMC032_SUSURI4_STR;
     break;
     default:
-    // case 12:
         adpcm_map.event.para.file_no = AVMC020_KOROSHITA_STR;
     break;
     }
-    
+
     adpcm_map.event.para.vol = GetAdpcmVol(adpcm_map.event.para.file_no);
     adpcm_map.event.para.fin_flm = fade_flm;
     adpcm_map.event.para.start_flm = start_flm;
@@ -183,11 +195,12 @@ void AdpcmPlayEvent(/* a0 4 */ int file_no, /* s1 17 */ u_short start_flm, /* s2
     adpcm_map.mode = ADPCM_MODE_EVENT;
 }
 
-void AdpcmStopEvent(/* a0 4 */ int fout_flm)
+void AdpcmStopEvent(int fout_flm)
 {
     if (adpcm_map.event.use != 0)
     {
         EAdpcmCmdStop(0, 0, fout_flm);
+
         adpcm_map.event.para.start_flm = 0;
         adpcm_map.event.mode = AMEV_MODE_REQ_PLAYING;
     }
