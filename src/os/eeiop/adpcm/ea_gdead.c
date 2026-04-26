@@ -15,7 +15,8 @@ void EAdpcmGdeadMain()
             adpcm_map.mode == ADPCM_MODE_MAP ||
             adpcm_map.mode == ADPCM_MODE_FURN ||
             adpcm_map.mode == ADPCM_MODE_AUTOG ||
-            adpcm_map.mode == ADPCM_MODE_GHOST)
+            adpcm_map.mode == ADPCM_MODE_GHOST
+        )
         {
             adpcm_map.gdead.mode = AMGD_MODE_PRE_FADE_OUT;
         }
@@ -23,20 +24,22 @@ void EAdpcmGdeadMain()
         {
             adpcm_map.gdead.mode = AMGD_MODE_REQ_WAIT_STOP;
         }
-        
+
         adpcm_map.mode = ADPCM_MODE_GDEAD;
     }
-    
+
     switch(adpcm_map.gdead.mode)
     {
     case AMGD_MODE_PRE_FADE_OUT:
-        EAdpcmCmdStop(0, 0, 0x50);
+        EAdpcmCmdStop(0, 0, 80);
+
         adpcm_map.gdead.mode = AMGD_MODE_REQ_WAIT_STOP;
     break;
     case AMGD_MODE_REQ_WAIT_STOP:
         if (EAGetRetStat() == 1 || EAGetRetStat() == 2)
         {
             EAdpcmCmdPlay(0, 0, adpcm_map.gdead.para.file_no, 0, adpcm_map.gdead.para.vol, adpcm_map.gdead.para.pan, adpcm_map.gdead.para.pitch, adpcm_map.gdead.para.fin_flm);
+
             adpcm_map.gdead.mode = AMGD_MODE_REQ_PLAY;
         }
     break;
@@ -74,7 +77,8 @@ void AdpcmPlayGhostDead(int file_no, u_short vol, int fade_flm)
     adpcm_map.gdead.use = 1;
     adpcm_map.gdead.mode = AMGD_MODE_PRE_FADE_OUT;
     adpcm_map.mode = ADPCM_MODE_GDEAD;
-#ifdef BUILD_EU_VERSION
+
+#if defined(BUILD_EU_VERSION)
     InitSubtitlesSys();
     SetSubtitlesNCntOne(4, file_no);
 #endif
@@ -85,6 +89,7 @@ void AdpcmStopGhostDead(int fout_flm)
     if (adpcm_map.gdead.use != 0)
     {
         EAdpcmCmdStop(0, 0, fout_flm);
+
         adpcm_map.gdead.mode = AMGD_MODE_REQ_PLAYING;
     }
 }
