@@ -23,26 +23,32 @@ void EAdpcmShinkanMain()
         else
         {
             adpcm_map.shinkan.para.start_flm = 0;
+
             EAdpcmCmdStop(0, 0, 20);
+
             adpcm_map.shinkan.mode = AMSH_MODE_REQ_PLAYING;
         }
-        
+
         adpcm_map.mode = ADPCM_MODE_SHINKAN;
     }
-    
+
     switch(adpcm_map.shinkan.mode)
     {
     case AMSH_MODE_PRE_FADE_OUT:
-        adpcm_map.shinkan = adpcm_map.shinkan; // hack to force adpcm_map in s0 (instruction c0)
+        adpcm_map.shinkan = adpcm_map.shinkan; // HACK: fixes register usage
+
         EAdpcmCmdStop(0, 0, 16);
+
         adpcm_map.shinkan.mode = AMSH_MODE_REQ_WAIT_STOP;
     break;
     case AMSH_MODE_REQ_WAIT_STOP:
         if (EAGetRetStat() != 1 && EAGetRetStat() != 2)
         {
-            return;
+            break;
         }
+
         EAdpcmCmdPlay(0, 0, adpcm_map.shinkan.para.file_no, 0, adpcm_map.shinkan.para.vol, adpcm_map.shinkan.para.pan, adpcm_map.shinkan.para.pitch, adpcm_map.shinkan.para.fin_flm);
+
         adpcm_map.bk_para = adpcm_map.shinkan.para;
         adpcm_map.shinkan.mode = AMSH_MODE_REQ_PLAY;
     break;
@@ -51,6 +57,7 @@ void EAdpcmShinkanMain()
         {
             adpcm_map.shinkan.mode = AMSH_MODE_REQ_PLAYING;
         }
+
         adpcm_map.bk_para = adpcm_map.shinkan.para;
     break;
     case AMSH_MODE_REQ_PLAYING:
@@ -58,15 +65,18 @@ void EAdpcmShinkanMain()
         {
             adpcm_map.shinkan.mode = AMSH_MODE_END;
         }
+
         adpcm_map.bk_para = adpcm_map.shinkan.para;
     break;
     case AMSH_MODE_REQ_STOP_REQ:
         if (EAGetRetStat() > 5)
         {
             EAdpcmCmdStop(0, 0, 30);
+
             adpcm_map.shinkan.mode = AMSH_MODE_REQ_STOP_WAIT;
             adpcm_map.shinkan.para.start_flm = 0;
         }
+
         adpcm_map.bk_para = adpcm_map.shinkan.para;
     break;
     case AMSH_MODE_REQ_STOP_WAIT:
@@ -78,6 +88,7 @@ void EAdpcmShinkanMain()
             adpcm_map.hiso.use = 0;
             adpcm_map.shinkan.use = 0;
         }
+
         adpcm_map.bk_para = adpcm_map.shinkan.para;
     break;
     case AMSH_MODE_END:
@@ -96,7 +107,8 @@ void AdpcmPlayShinkan(int file_no, int fade_flm)
     adpcm_map.shinkan.use = 1;
     adpcm_map.shinkan.mode = AMSH_MODE_PRE_FADE_OUT;
     adpcm_map.mode = ADPCM_MODE_SHINKAN;
-#ifdef BUILD_EU_VERSION
+
+#if defined(BUILD_EU_VERSION)
     InitSubtitlesSys();
     SetSubtitlesNCntOne(5, file_no);
 #endif
@@ -118,9 +130,9 @@ u_char IsEndAdpcmShinkan()
         adpcm_map.autog.use = 0;
         adpcm_map.hiso.use = 0;
         adpcm_map.shinkan.use = 0;
-        
+
         return 1;
     }
-    
+
     return 0;
 }
