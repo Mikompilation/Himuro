@@ -68,7 +68,7 @@ segments:
           - [0xe620,   c,   os/eeiop/adpcm/ea_scene]
           - [0xe8d0,   c,   os/eeiop/adpcm/ea_magatoki]
           - [0xec00,   c,   os/eeiop/adpcm/ea_shinkan]
-          - [0xef38,   asm, os/eeiop/adpcm/ea_puzzle]
+          - [0xef38,   c,   os/eeiop/adpcm/ea_puzzle]
           - [0xf238,   asm, os/eeiop/adpcm/ea_soul]
           - [0xf500,   asm, os/eeiop/adpcm/ea_tape]
           - [0xf6e8,   asm, os/eeiop/adpcm/ea_gdead]
@@ -341,7 +341,7 @@ segments:
           - { start: 0x2498b0, type: .rodata, vram: 0x3488b0, name: os/eeiop/adpcm/ea_scene       }
           - { start: 0x2498d0, type: .rodata, vram: 0x3488d0, name: os/eeiop/adpcm/ea_magatoki    }
           - { start: 0x2498f0, type: .rodata, vram: 0x3488f0, name: os/eeiop/adpcm/ea_shinkan     }
-          - { start: 0x249910, type:  rodata, vram: 0x348910, name: os/eeiop/adpcm/ea_puzzle      }
+          - { start: 0x249910, type: .rodata, vram: 0x348910, name: os/eeiop/adpcm/ea_puzzle      }
           - { start: 0x249930, type:  rodata, vram: 0x348930, name: os/eeiop/adpcm/ea_soul        }
           - { start: 0x249950, type:  rodata, vram: 0x348950, name: os/eeiop/adpcm/ea_gdead       }
           - { start: 0x249970, type:  rodata, vram: 0x348970, name: os/eeiop/adpcm/ea_event       }

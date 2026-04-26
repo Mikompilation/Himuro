@@ -14,11 +14,12 @@ void EAdpcmPuzzleMain()
         adpcm_map.mode = ADPCM_MODE_PUZZLE;
         adpcm_map.puzzle.para.file_no = -1;
     }
-    
+
     switch(adpcm_map.puzzle.mode)
     {
     case AMPZ_MODE_WAIT1:
         EAdpcmCmdStop(0, 0, adpcm_map.puzzle.para.fout_flm);
+
         adpcm_map.puzzle.mode = AMPZ_MODE_WAIT2;
     break;
     case AMPZ_MODE_WAIT2:
@@ -61,7 +62,9 @@ u_char IsEndAdpcmPuzzle()
 void AdpcmPreLoadPuzzle(int file_no)
 {
     adpcm_map.puzzle.para.file_no = file_no;
+
     EAdpcmCmdPreload(0, file_no, 0, 0);
+
     adpcm_map.puzzle.mode = AMPZ_MODE_WAIT3;
 }
 
@@ -78,26 +81,30 @@ u_char IsPreLoadEndAdpcmPuzzle()
             return 1;
         }
     }
-    
+
     return 0;
 }
 
 void AdpcmPuzzlePreLoadEndPlay()
 {
     EAdpcmCmdPlay(0, 0, adpcm_map.puzzle.para.file_no, 0, GetAdpcmVol(adpcm_map.puzzle.para.file_no), 0x280, 0xfff, 0);
+
     adpcm_map.puzzle.mode = AMPZ_MODE_PLAY;
 }
 
 void AdpcmPuzzlePlay(int file_no)
 {
     adpcm_map.puzzle.para.file_no = file_no;
+
     EAdpcmCmdPlay(0, 0, adpcm_map.puzzle.para.file_no, 0, GetAdpcmVol(file_no), 0x280, 0xfff, 0);
+
     adpcm_map.puzzle.mode = AMPZ_MODE_PLAY;
 }
 
 void AdpcmPuzzleEnd()
 {
-    EAdpcmCmdStop(0, 0, 0x1e);
+    EAdpcmCmdStop(0, 0, 30);
+
     adpcm_map.puzzle.use = 0;
     adpcm_map.autog.use = 0;
     adpcm_map.hiso.use = 0;
