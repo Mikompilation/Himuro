@@ -21,23 +21,25 @@ void EAdpcmSoulMain()
         {
             adpcm_map.soul.mode = AMSL_MODE_PRE_FADE_OUT;
         }
-        else if (adpcm_map.soul.mode >= AMSL_MODE_REQ_WAIT2)
+        else if (adpcm_map.soul.mode != AMSL_MODE_PRE_FADE_OUT && adpcm_map.soul.mode != AMSL_MODE_REQ_WAIT1)
         {
-            EAdpcmCmdStop(0, 0, 0x1e);
+            EAdpcmCmdStop(0, 0, 30);
+
             adpcm_map.soul.mode = AMSL_MODE_REQ_STOP;
         }
         else
         {
             adpcm_map.soul.mode = AMSL_MODE_PRE_FADE_OUT;
         }
-        
+
         adpcm_map.mode = ADPCM_MODE_SOUL;
     }
-    
+
     switch(adpcm_map.soul.mode)
     {
     case AMSL_MODE_PRE_FADE_OUT:
         EAdpcmCmdStop(0,0,adpcm_map.soul.para.fout_flm);
+
         adpcm_map.soul.count = 0;
         adpcm_map.soul.mode = AMSL_MODE_REQ_WAIT1;
     break;
@@ -49,7 +51,7 @@ void EAdpcmSoulMain()
         else
         {
             adpcm_map.soul.count++;
-            
+
             if (adpcm_map.soul.count == 200)
             {
                 EAdpcmCmdStop(0, 0, 0);
@@ -98,15 +100,18 @@ void AdpcmPlaySoul(/* v0 2 */ int file_no, /* a1 5 */ u_short vol, /* s1 17 */ i
     adpcm_map.soul.para.fin_flm = fade_flm;
     adpcm_map.soul.para.pan = 0x280;
     adpcm_map.soul.para.pitch = 0xfff;
+
     EAdpcmCmdPlay(0, 0, adpcm_map.soul.para.file_no, 0, adpcm_map.soul.para.vol, 0x280, 0xfff, adpcm_map.soul.para.fin_flm);
+
     adpcm_map.soul.mode = AMSL_MODE_REQ_PLAY;
 }
 
 void AdpcmStopSoul(/* a0 4 */ int fout_flm)
 {
-    if (adpcm_map.soul.use != 0x0)
+    if (adpcm_map.soul.use != 0)
     {
         EAdpcmCmdStop(0, 0, fout_flm);
+
         adpcm_map.soul.mode = AMSL_MODE_REQ_STOP;
     }
 }
