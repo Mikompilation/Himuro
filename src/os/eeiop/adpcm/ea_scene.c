@@ -7,18 +7,18 @@
 #include "os/eeiop/adpcm/ea_cmd.h"
 #include "os/eeiop/adpcm/ea_dat.h"
 
-// generates jump table in .rodata
 void EAdpcmSceneMain()
-{    
+{
     if (adpcm_map.mode != ADPCM_MODE_SCENE)
     {
         adpcm_map.mode = ADPCM_MODE_SCENE;
     }
-    
+
     switch(adpcm_map.scene.mode)
     {
     case EAS_MODE_WAIT1:
         EAdpcmCmdStop(0, 0, adpcm_map.scene.para.fout_flm);
+
         adpcm_map.scene.mode = EAS_MODE_WAIT2;
     break;
     case EAS_MODE_WAIT2:
@@ -66,7 +66,9 @@ void AdpcmScenePreLoadReq(/* a0 4 */ int scene_no)
 {
     adpcm_map.scene.para.file_no = SCENE0010_STR + scene_no;
     adpcm_map.scene.use = 1;
+
     EAdpcmCmdPreload(0, adpcm_map.scene.para.file_no, 0, 0);
+
     adpcm_map.scene.mode = EAS_MODE_WAIT3;
 }
 
@@ -84,21 +86,23 @@ int IsAdpcmScenePreLoadEnd()
             return 1;
         }
     }
+
     return 0;
 }
 
 void AdpcmScenePreLoadEndPlay(/* a0 4 */ int scene_no)
 {
     EAdpcmCmdPlay(0, 0, SCENE0010_STR + scene_no, 0, GetAdpcmVol(SCENE0010_STR + scene_no), 0x280, 0xfff, 0);
+
     adpcm_map.scene.mode = EAS_MODE_WAIT4;
 }
-
 
 void AdpcmSceneStop()
 {
     if (adpcm_map.scene.use != 0)
     {
         EAdpcmCmdStop(0, 0, 0);
+
         adpcm_map.scene.use = 0;
         adpcm_map.hiso.use = 0;
         adpcm_map.autog.use = 0;
@@ -106,4 +110,3 @@ void AdpcmSceneStop()
         adpcm_map.scene.mode = 0;
     }
 }
-
