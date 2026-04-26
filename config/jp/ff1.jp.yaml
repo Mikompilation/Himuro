@@ -70,7 +70,7 @@ segments:
           - [0xec00,   c,   os/eeiop/adpcm/ea_shinkan]
           - [0xef38,   c,   os/eeiop/adpcm/ea_puzzle]
           - [0xf238,   c,   os/eeiop/adpcm/ea_soul]
-          - [0xf500,   asm, os/eeiop/adpcm/ea_tape]
+          - [0xf500,   c,   os/eeiop/adpcm/ea_tape]
           - [0xf6e8,   asm, os/eeiop/adpcm/ea_gdead]
           - [0xf918,   asm, os/eeiop/adpcm/ea_event]
           - [0xfd38,   asm, os/eeiop/adpcm/ea_ghost]

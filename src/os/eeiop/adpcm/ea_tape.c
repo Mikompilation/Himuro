@@ -8,27 +8,41 @@
 #include "os/eeiop/adpcm/ea_ctrl.h"
 
 void EAdpcmTapeMain()
-{    
+{
     switch(adpcm_map.tape.mode)
     {
     case AMTP_MODE_PRE_FADE_OUT:
-        EAdpcmCmdStop(0, 0, 0x50);
+        EAdpcmCmdStop(0, 0, 80);
         adpcm_map.tape.mode = AMTP_MODE_REQ_WAIT_STOP;
     break;
     case AMTP_MODE_REQ_WAIT_STOP:
         if (EAGetRetStat() == 1 || EAGetRetStat() == 2)
         {
             adpcm_map.m_flg = 2;
+
             EAdpcmCmdPlay(0, 0, adpcm_map.tape.para.file_no, 0, adpcm_map.tape.para.vol, adpcm_map.tape.para.pan, adpcm_map.tape.para.pitch, adpcm_map.tape.para.fin_flm);
+
             adpcm_map.tape.mode = AMTP_MODE_REQ_PLAY;
             adpcm_map.mvol = 0xfff;
         }
     break;
     case AMTP_MODE_REQ_PLAY:
+#if defined(BUILD_JP_VERSION)
+        if (EAGetRetStat() == 2)
+        {
+            adpcm_map.tape.use = 0;
+            adpcm_map.gdead.use = 0;
+            adpcm_map.hiso.use = 0;
+            adpcm_map.autog.use = 0;
+            adpcm_map.event.use = 0;
+            adpcm_map.mvol = adpcm_map.tgt_vol;
+        }
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         if (EAGetRetStat() > 5)
         {
             adpcm_map.tape.mode = AMTP_MODE_REQ_PLAYING;
         }
+#endif
     break;
     case AMTP_MODE_REQ_STOP:
         if (EAGetRetStat() == 1 || EAGetRetStat() == 2)
@@ -41,6 +55,7 @@ void EAdpcmTapeMain()
             adpcm_map.mvol = adpcm_map.tgt_vol;
         }
     break;
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     case AMTP_MODE_REQ_PLAYING:
         if (EAGetRetStat() == 2)
         {
@@ -52,6 +67,7 @@ void EAdpcmTapeMain()
             adpcm_map.mvol = adpcm_map.tgt_vol;
         }
     break;
+#endif
     }
 }
 
@@ -72,6 +88,7 @@ void AdpcmStopTape(int fout_flm)
     if (adpcm_map.tape.use != 0)
     {
         EAdpcmCmdStop(0, 0, fout_flm);
+
         adpcm_map.tape.mode = AMTP_MODE_REQ_STOP;
     }
 }
