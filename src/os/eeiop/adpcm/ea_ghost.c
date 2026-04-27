@@ -125,11 +125,7 @@ static void EAdpcmGhostParaSet(ADPCM_TUNE_PARAM *atpp)
 
     if (atpp)
     {
-#if defined(BUILD_JP_VERSION)
-        rot_oc = atan2f(camera.i[0] - camera.p[0], camera.i[2] - camera.p[2]);
-#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
-        rot_oc = SgAtan2f(camera.i[0] - camera.p[0], camera.i[2] - camera.p[2]);
-#endif
+        rot_oc = VER_ATAN2F(camera.i[0] - camera.p[0], camera.i[2] - camera.p[2]);
 
         if (ene_wrk[atpp->ewrk_no].sta & 0x1)
         {
@@ -138,11 +134,7 @@ static void EAdpcmGhostParaSet(ADPCM_TUNE_PARAM *atpp)
             atpp->pos[2] = atpp->mpos[0][2];
         }
 
-#if defined(BUILD_JP_VERSION)
-        rot_cam = atan2f(atpp->pos[0] - camera.p[0], atpp->pos[2] - camera.p[2]);
-#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
-        rot_cam = SgAtan2f(atpp->pos[0] - camera.p[0], atpp->pos[2] - camera.p[2]);
-#endif
+        rot_cam = VER_ATAN2F(atpp->pos[0] - camera.p[0], atpp->pos[2] - camera.p[2]);
 
         rot_cam = SeCmdGetAngle(rot_cam, rot_oc);
         dist_obj = GetDist(GetDistV(atpp->pos, plyr_wrk.move_box.pos), atpp->pos[1] - plyr_wrk.move_box.pos[1]);

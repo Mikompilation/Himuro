@@ -419,11 +419,7 @@ void SetAnlgInfo(PAD_STRUCT *psp, int p_id)
 
         if (abs(pad_y) >= 60 || abs(pad_x) >= 60)
         {
-#if defined(BUILD_JP_VERSION)
-            rot = atan2f(pad_y, pad_x);
-#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
-            rot = SgAtan2f(pad_y, pad_x);
-#endif
+            rot = VER_ATAN2F(pad_y, pad_x);
 
             psp->an_dir[i] = (int)((rot + PI + 0.39269909f) / 0.78539819f) % 8 + 4;
 
