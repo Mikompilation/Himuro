@@ -75,7 +75,7 @@ segments:
           - [0xf918,   c,   os/eeiop/adpcm/ea_event]
           - [0xfd38,   c,   os/eeiop/adpcm/ea_ghost]
           - [0x101a0,  c,   os/eeiop/adpcm/ea_autog]
-          - [0x106f8,  asm, os/eeiop/adpcm/ea_hiso]
+          - [0x106f8,  c,   os/eeiop/adpcm/ea_hiso]
           - [0x10ab0,  asm, os/eeiop/adpcm/ea_furn]
           - [0x10f20,  asm, os/eeiop/adpcm/ea_map]
           - [0x11168,  asm, os/eeiop/eese]
@@ -347,7 +347,7 @@ segments:
           - { start: 0x249970, type: .rodata, vram: 0x348970, name: os/eeiop/adpcm/ea_event       }
           - { start: 0x249a00, type: .rodata, vram: 0x348a00, name: os/eeiop/adpcm/ea_ghost       }
           - { start: 0x249a20, type: .rodata, vram: 0x348a20, name: os/eeiop/adpcm/ea_autog       }
-          - { start: 0x249a40, type:  rodata, vram: 0x348a40, name: os/eeiop/adpcm/ea_hiso        }
+          - { start: 0x249a40, type: .rodata, vram: 0x348a40, name: os/eeiop/adpcm/ea_hiso        }
           - { start: 0x249aa0, type:  rodata, vram: 0x348aa0, name: os/eeiop/adpcm/ea_furn        }
           - { start: 0x249ae0, type:  rodata, vram: 0x348ae0, name: os/eeiop/eese                 }
           - { start: 0x249d30, type:  rodata, vram: 0x348d30, name: os/eeiop/se_cmd               }
