@@ -78,7 +78,7 @@ segments:
           - [0x106f8,  c,   os/eeiop/adpcm/ea_hiso]
           - [0x10ab0,  c,   os/eeiop/adpcm/ea_furn]
           - [0x10f20,  c,   os/eeiop/adpcm/ea_map]
-          - [0x11168,  asm, os/eeiop/eese]
+          - [0x11168,  c,   os/eeiop/eese]
           - [0x12de8,  asm, os/eeiop/se_cmd]
           - [0x13468,  asm, os/eeiop/se_data]
           - [0x13968,  asm, os/eeiop/se_ev]
@@ -227,7 +227,7 @@ segments:
           - { start: 0x166780, type: .data,   vram: 0x265780, name: os/eeiop/eeiop                }
           - { start: 0x166d40, type: .data,   vram: 0x265d40, name: os/eeiop/adpcm/ea_ctrl        }
           - { start: 0x167180, type: .data,   vram: 0x266180, name: os/eeiop/adpcm/ea_dat         }
-          - { start: 0x167d00, type:  data,   vram: 0x266d00, name: os/eeiop/eese                 }
+          - { start: 0x167d00, type: .data,   vram: 0x266d00, name: os/eeiop/eese                 }
           - { start: 0x167d78, type:  data,   vram: 0x266d78, name: os/eeiop/se_data              }
           - { start: 0x167db0, type:  data,   vram: 0x266db0, name: os/eeiop/se_ev                }
           - { start: 0x167e70, type:  data,   vram: 0x266e70, name: os/eeiop/se_trans             }
@@ -349,7 +349,7 @@ segments:
           - { start: 0x249a20, type: .rodata, vram: 0x348a20, name: os/eeiop/adpcm/ea_autog       }
           - { start: 0x249a40, type: .rodata, vram: 0x348a40, name: os/eeiop/adpcm/ea_hiso        }
           - { start: 0x249aa0, type: .rodata, vram: 0x348aa0, name: os/eeiop/adpcm/ea_furn        }
-          - { start: 0x249ae0, type:  rodata, vram: 0x348ae0, name: os/eeiop/eese                 }
+          - { start: 0x249ae0, type: .rodata, vram: 0x348ae0, name: os/eeiop/eese                 }
           - { start: 0x249d30, type:  rodata, vram: 0x348d30, name: os/eeiop/se_cmd               }
           - { start: 0x249d50, type:  rodata, vram: 0x348d50, name: os/eeiop/se_data              }
           - { start: 0x24a008, type:  rodata, vram: 0x349008, name: os/eeiop/se_ev                }
@@ -681,7 +681,7 @@ segments:
           - { start: 0x257d68, type: .bss,    vram: 0x356d68, name: outgame/memory_album          }
           - { start: 0x257dc0, type: .bss,    vram: 0x356dc0, name: os/fileload                   }
           - { start: 0x257e28, type: .bss,    vram: 0x356e28, name: os/eeiop/cdvd/eecdvd          }
-          - { start: 0x257e50, type:  bss,    vram: 0x356e50, name: os/eeiop/eese                 }
+          - { start: 0x257e50, type: .bss,    vram: 0x356e50, name: os/eeiop/eese                 }
           - { start: 0x258a50, type:  bss,    vram: 0x357a50, name: graphics/graph2d/compress     }
           - { start: 0x259960, type:  bss,    vram: 0x358960, name: graphics/graph2d/effect       }
           - { start: 0x259bb0, type:  bss,    vram: 0x358bb0, name: graphics/graph2d/effect_sub   }

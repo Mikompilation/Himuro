@@ -3,14 +3,14 @@
 #include "enums.h"
 #include "eese.h"
 
-#include "main/glob.h"
 #include "common/ul_math.h"
+#include "graphics/graph3d/sglib.h"
+#include "main/glob.h"
+#include "os/eeiop/cdvd/eecdvd.h"
 #include "os/eeiop/eeiop.h"
 #include "os/eeiop/se_cmd.h"
 #include "os/eeiop/se_data.h"
 #include "os/eeiop/se_trans.h"
-#include "os/eeiop/cdvd/eecdvd.h"
-#include "graphics/graph3d/sglib.h"
 
 typedef struct {
     sceVu0FVECTOR pos;
@@ -32,6 +32,7 @@ SE_MENU_FADE sm_fade = {0};
 #define DEFAULT_VOL_RATE 0x1000
 #define DEFAULT_PITCH 0x1000
 #define DEFAULT_PAN 0x280
+#define MAX_VOLUME 0x3fff
 
 static SE_WRK se_wrk[SE_WRK_SIZE];
 static SE_WRK se_wrk_bk[SE_WRK_SIZE];
@@ -92,38 +93,42 @@ void InitSeMenuFade(void)
 {
     sm_fade.mvol = 0xfff;
     sm_fade.tgt_vol = 0xfff;
-    sm_fade.deg = 0x80;    
+    sm_fade.deg = 0x80;
 }
 
-void UpdateSeMenuFade(void)
+void UpdateSeMenuFade()
 {
     if (sm_fade.mvol < sm_fade.tgt_vol) 
     {
         if (sm_fade.deg + sm_fade.mvol < sm_fade.tgt_vol) 
         {
             sm_fade.mvol += sm_fade.deg;
-            return;
         }
-        sm_fade.mvol = sm_fade.tgt_vol;
+        else
+        {
+            sm_fade.mvol = sm_fade.tgt_vol;
+        }
     }
     else if (sm_fade.mvol > sm_fade.tgt_vol)
     {
         if (sm_fade.tgt_vol > sm_fade.mvol - sm_fade.deg)
         {
             sm_fade.mvol = sm_fade.tgt_vol;
-            return;
         }
-        sm_fade.mvol -= sm_fade.deg;
+        else
+        {
+            sm_fade.mvol -= sm_fade.deg;
+        }
     }
 }
 
 void SetTargetVolSeMenuFade(int tgt_vol)
 {
-    if (tgt_vol < 0) 
+    if (tgt_vol < 0)
     {
         tgt_vol = 0;
     }
-    else if (tgt_vol > 0xfff) 
+    else if (tgt_vol > 0xfff)
     {
         tgt_vol = 0xfff;
     }
@@ -148,11 +153,11 @@ static void SeInitSeWrkSub(int pos)
 
 static void SeInitSeWrkP(SE_WRK *swp)
 {
-    if (swp) 
+    if (swp)
     {
         swp->mpos = 0x0;
         swp->spos[0] = swp->spos[1] = swp->spos[2] = 0.0f;
-        
+
         swp->status = 0;
         swp->atr = 0;
         swp->se_p = 0;
@@ -173,12 +178,12 @@ void SetReverbVolume(u_short vol)
 void SeStopAndBackup(void)
 {
     int i;
-    
+
     for (i = 0; i < SE_WRK_SIZE; i++)
     {
         SeInitSeWrkP(&se_wrk_bk[i]);
 
-        if (se_wrk[i].status != 0) 
+        if (se_wrk[i].status != 0)
         {
             if (
                 se_wrk[i].fade_mode != 2 &&
@@ -188,7 +193,7 @@ void SeStopAndBackup(void)
             {
                 se_wrk_bk[i] = se_wrk[i];
             }
-            
+
             SeFadeFlame(se_wrk[i].v_p, 10, 0);
         }
     }
@@ -219,9 +224,9 @@ void SeRevival(u_short fin_spd)
         switch (se_wrk_bk[i].atr & 7)
         {
         case 0:
-            tmp.pos[0] = 0.0;
-            tmp.pos[1] = 0.0;
-            tmp.pos[2] = 0.0;
+            tmp.pos[0] = 0.0f;
+            tmp.pos[1] = 0.0f;
+            tmp.pos[2] = 0.0f;
             tmp.se_no = se_wrk_bk[i].se_p;
             tmp.vpos = se_wrk_bk[i].v_p;
             tmp.fin_spd = fin_spd;
@@ -231,7 +236,6 @@ void SeRevival(u_short fin_spd)
             tmp.room_id = 0xff;
 
             SeStartVp(&tmp);
-            
         break;
         case 3:
             tmp.pos[0] = se_wrk_bk[i].spos[0];
@@ -256,12 +260,13 @@ void SeRevival(u_short fin_spd)
             tmp.mode = 2;
             tmp.pitch = se_wrk_bk[i].pitch;
             tmp.room_id = se_wrk_bk[i].room_id;
+
             SeStartVp(&tmp);
         break;
         case 4:
-            tmp.pos[0] = 0.0;
-            tmp.pos[1] = 0.0;
-            tmp.pos[2] = 0.0;
+            tmp.pos[0] = 0.0f;
+            tmp.pos[1] = 0.0f;
+            tmp.pos[2] = 0.0f;
             tmp.se_no = se_wrk_bk[i].se_p;
             tmp.vpos = se_wrk_bk[i].v_p;
             tmp.fin_spd = fin_spd;
@@ -269,6 +274,7 @@ void SeRevival(u_short fin_spd)
             tmp.mode = 5;
             tmp.pitch = se_wrk_bk[i].pitch;
             tmp.room_id = plyr_wrk.pr_info.room_no;
+
             SeStartVp(&tmp);
         break;
         }
@@ -284,22 +290,22 @@ int SeStartFix(int se_no, u_short fin_spd, u_short vol_max, u_short pitch, u_cha
     {
         return -1;
     }
-    
-    if (CheckSeUse(se_no) == 0) 
+
+    if (CheckSeUse(se_no) == 0)
     {
         return -1;
     }
-    
+
     vpos = SeGetFreeVoice(0, 1);
-    
+
     if (vpos == -1)
     {
         return -1;
     }
-    
-    tmp.pos[0] = 0.0;
-    tmp.pos[1] = 0.0;
-    tmp.pos[2] = 0.0;
+
+    tmp.pos[0] = 0.0f;
+    tmp.pos[1] = 0.0f;
+    tmp.pos[2] = 0.0f;
     tmp.se_no = se_no;
     tmp.fin_spd = fin_spd;
     tmp.vol_max = vol_max;
@@ -308,30 +314,26 @@ int SeStartFix(int se_no, u_short fin_spd, u_short vol_max, u_short pitch, u_cha
     tmp.room_id = 0xff;
     tmp.menu = menu;
     tmp.vpos = vpos;
-    
+
     SeStartVp(&tmp);
-    
+
     return vpos;
 }
 
 int SeStartFixFlame(int se_no, u_short flame, u_short vol_max, u_short pitch, u_char menu)
 {
     u_short fin_spd;
-    
-    if (flame != 0) 
+
+    if (flame != 0)
     {
         fin_spd = vol_max / flame;
-        if (flame != 0) 
-        {
-            // probably was some assert here
-        }
     }
-    else 
+    else
     {
         fin_spd = 0;
     }
-    
-    return SeStartFix(se_no, fin_spd, vol_max, pitch,menu);
+
+    return SeStartFix(se_no, fin_spd, vol_max, pitch, menu);
 }
 
 int SeStartFixV(int se_no, u_short fin_spd, u_short vol_max, u_short pitch, u_char voice_no)
@@ -343,15 +345,15 @@ int SeStartFixV(int se_no, u_short fin_spd, u_short vol_max, u_short pitch, u_ch
     {
         return -1;
     }
-    
-    if (CheckSeUse(se_no) == 0) 
+
+    if (CheckSeUse(se_no) == 0)
     {
         return -1;
     }
-    
-    tmp.pos[0] = 0.0;
-    tmp.pos[1] = 0.0;
-    tmp.pos[2] = 0.0;
+
+    tmp.pos[0] = 0.0f;
+    tmp.pos[1] = 0.0f;
+    tmp.pos[2] = 0.0f;
     tmp.se_no = se_no;
     tmp.vpos = voice_no;
     tmp.fin_spd = fin_spd;
@@ -360,9 +362,9 @@ int SeStartFixV(int se_no, u_short fin_spd, u_short vol_max, u_short pitch, u_ch
     tmp.pitch = pitch;
     tmp.room_id = 0xff;
     tmp.menu = 0;
-    
+
     SeStartVp(&tmp);
-    
+
     return vpos;
 }
 
@@ -375,50 +377,49 @@ int SeStartPos(int se_no, float *pos, u_short fin_spd, u_short vol_max, u_short 
     {
         return -1;
     }
-    
-    if (CheckSeUse(se_no) == 0) 
+
+    if (CheckSeUse(se_no) == 0)
     {
         return -1;
     }
 
     vpos = SeGetFreeVoice(0, 1);
-    
+
     if (vpos == -1)
     {
         return -1;
     }
-    
+
     tmp.pos[0] = pos[0];
     tmp.pos[1] = pos[1];
     tmp.pos[2] = pos[2];
     tmp.se_no = se_no;
     tmp.vpos = vpos;
     tmp.fin_spd = fin_spd;
-    
     tmp.vol_max = vol_max;
     tmp.mode = 2;
     tmp.pitch = pitch;
     tmp.room_id = room_id;
     tmp.menu = 0;
-    
+
     SeStartVp(&tmp);
-    
+
     return vpos;
 }
 
 int SeStartPosFlame(int se_no, float *pos, u_short flame, u_short vol_max, u_short pitch, u_char room_id)
 {
     u_short fin_spd;
-    
-    if (flame != 0) 
+
+    if (flame != 0)
     {
         fin_spd = vol_max / flame;
     }
-    else 
+    else
     {
         fin_spd = 0;
     }
-    
+
     return SeStartPos(se_no, pos, fin_spd, vol_max, pitch, room_id);
 }
 
@@ -431,50 +432,49 @@ int SeStartPut(int se_no, float *pos, u_short fin_spd, u_short vol_max, u_short 
     {
         return -1;
     }
-    
-    if (CheckSeUse(se_no) == 0) 
+
+    if (CheckSeUse(se_no) == 0)
     {
         return -1;
     }
 
     vpos = SeGetFreeVoice(0, 1);
-    
+
     if (vpos == -1)
     {
         return -1;
     }
-    
+
     tmp.pos[0] = pos[0];
     tmp.pos[1] = pos[1];
     tmp.pos[2] = pos[2];
     tmp.se_no = se_no;
     tmp.vpos = vpos;
     tmp.fin_spd = fin_spd;
-    
     tmp.vol_max = vol_max;
     tmp.mode = 4;
     tmp.pitch = pitch;
     tmp.room_id = room_id;
     tmp.menu = 0;
-    
+
     SeStartVp(&tmp);
-    
+
     return vpos;
 }
 
-int SeStartPutFlame(int se_no,float *pos,u_short flame,u_short vol_max,u_short pitch,u_char room_id)
+int SeStartPutFlame(int se_no, float *pos, u_short flame, u_short vol_max, u_short pitch, u_char room_id)
 {
     u_short fin_spd;
-    
-    if (flame != 0) 
+
+    if (flame != 0)
     {
         fin_spd = vol_max / flame;
     }
-    else 
+    else
     {
         fin_spd = 0;
     }
-    
+
     return SeStartPut(se_no, pos, fin_spd, vol_max, pitch, room_id);
 }
 
@@ -489,21 +489,22 @@ int SeStartGhost(int se_no, int ewrk_no, u_short fin_spd, u_short vol_max, u_sho
         return -1;
     }
 
-    if (CheckSeUse(gno * 0xb + se_no) == 0) 
+    if (CheckSeUse(gno * 0xb + se_no) == 0)
     {
         return -1;
     }
 
     ework = &ene_wrk[ewrk_no];
     vpos = SeGetFreeVoice(0, 1);
+
     if (vpos == -1)
     {
         return -1;
     }
-    
-    tmp.pos[0] = 0.0;
-    tmp.pos[1] = 0.0;
-    tmp.pos[2] = 0.0;
+
+    tmp.pos[0] = 0.0f;
+    tmp.pos[1] = 0.0f;
+    tmp.pos[2] = 0.0f;
     tmp.se_no = gno * 0xb + se_no;
     tmp.vpos = vpos;
     tmp.ewrk_no = ewrk_no;
@@ -513,25 +514,25 @@ int SeStartGhost(int se_no, int ewrk_no, u_short fin_spd, u_short vol_max, u_sho
     tmp.pitch = pitch;
     tmp.room_id = ework->room_no;
     tmp.menu = 0;
-    
+
     SeStartVp(&tmp);
-    
+
     return vpos;
 }
 
 int SeStartGhostFlame(int se_no, int ewrk_no, u_short flame, u_short vol_max, u_short pitch, u_char gno)
 {
     u_short fin_spd;
-    
-    if (flame != 0) 
+
+    if (flame != 0)
     {
         fin_spd = vol_max / flame;
     }
-    else 
+    else
     {
         fin_spd = 0;
     }
-    
+
     return SeStartGhost(se_no, ewrk_no, fin_spd, vol_max, pitch, gno);
 }
 
@@ -544,22 +545,22 @@ int SeStartPlyr(int se_no, u_short fin_spd, u_short vol_max, u_short pitch)
     {
         return -1;
     }
-    
-    if (CheckSeUse(se_no) == 0) 
+
+    if (CheckSeUse(se_no) == 0)
     {
         return -1;
     }
-    
+
     vpos = SeGetFreeVoice(0, 1);
-    
+
     if (vpos == -1)
     {
         return -1;
     }
-    
-    tmp.pos[0] = 0.0;
-    tmp.pos[1] = 0.0;
-    tmp.pos[2] = 0.0;
+
+    tmp.pos[0] = 0.0f;
+    tmp.pos[1] = 0.0f;
+    tmp.pos[2] = 0.0f;
     tmp.se_no = se_no;
     tmp.fin_spd = fin_spd;
     tmp.vol_max = vol_max;
@@ -568,62 +569,63 @@ int SeStartPlyr(int se_no, u_short fin_spd, u_short vol_max, u_short pitch)
     tmp.room_id = plyr_wrk.pr_info.room_no;
     tmp.vpos = vpos;
     tmp.menu = 0;
+
     SeStartVp(&tmp);
-    
+
     return vpos;
 }
 
 int SeStartPlyrFlame(int se_no, u_short flame, u_short vol_max, u_short pitch)
 {
     u_short fin_spd;
-    
-    if (flame != 0) 
+
+    if (flame != 0)
     {
         fin_spd = vol_max / flame;
     }
-    else 
+    else
     {
         fin_spd = 0;
     }
-    
-    return SeStartPlyr(se_no,fin_spd,vol_max,pitch);
+
+    return SeStartPlyr(se_no, fin_spd, vol_max, pitch);
 }
 
 static void SeStartVp(SE_REQ_TMP_STR *tmp_str)
 {
     SE_WRK *swp;
     float rot_oc;
-    
+
     swp = SeGetSeWrk(tmp_str->vpos);
-    
+
     SeInitSeWrkSub(tmp_str->vpos);
-    
+
     swp->se_p = *&tmp_str->se_no;
     swp->v_p = *&tmp_str->vpos;
     swp->fade_spd = tmp_str->fin_spd;
     swp->pitch = tmp_str->pitch;
     swp->room_id = tmp_str->room_id;
     swp->menu = tmp_str->menu;
-    
+
     if (swp->fade_spd == 0)
     {
-        swp->fade_mode = 0;
+        swp->fade_mode = SE_FADE_NONE;
         swp->fade_vol = tmp_str->vol_max;
         swp->fade_tgt = tmp_str->vol_max;
     }
     else
     {
-        swp->fade_mode = 1;
+        swp->fade_mode = SE_FADE_IN;
         swp->fade_vol = 0;
         swp->fade_tgt = tmp_str->vol_max;
     }
-    
+
     swp->vol_rate = (swp->fade_vol * 0x1000) / 0xfff;
-    
+
     switch(tmp_str->mode)
     {
     case 0:
-        // ...
+        // do nothing ...
     break;
     case 1:
         swp->status = 4;
@@ -634,15 +636,20 @@ static void SeStartVp(SE_REQ_TMP_STR *tmp_str)
         swp->spos[0] = tmp_str->pos[0];
         swp->spos[1] = tmp_str->pos[1];
         swp->spos[2] = tmp_str->pos[2];
+
         rot_oc = SeCmdGetAngle(
-            SgAtan2f(swp->spos[0] - camera.p[0], swp->spos[2] - camera.p[2]),
-            SgAtan2f(camera.i[0] - camera.p[0], camera.i[2] - camera.p[2]));
+            VER_ATAN2F(swp->spos[0] - camera.p[0], swp->spos[2] - camera.p[2]),
+            VER_ATAN2F(camera.i[0] - camera.p[0], camera.i[2] - camera.p[2])
+        );
+
         swp->pan = SeCmdGetPan(rot_oc);
-        swp->vol_rate = SeCmdGetVol(GetDist(GetDistV(swp->spos,camera.p), swp->spos[1] - camera.p[1]), swp->vol_rate);
+        swp->vol_rate = SeCmdGetVol(GetDist(GetDistV(swp->spos, camera.p), swp->spos[1] - camera.p[1]), swp->vol_rate);
+
         if (map_wrk.now_room != swp->room_id && swp->room_id != 0xff)
         {
             swp->vol_rate = swp->vol_rate >> 1;
         }
+
         swp->pitch = SeCmdGetPitch(rot_oc, swp->pitch);
     break;
     case 2:
@@ -651,15 +658,20 @@ static void SeStartVp(SE_REQ_TMP_STR *tmp_str)
         swp->spos[0] = tmp_str->pos[0];
         swp->spos[1] = tmp_str->pos[1];
         swp->spos[2] = tmp_str->pos[2];
+
         rot_oc = SeCmdGetAngle(
-            SgAtan2f(swp->spos[0] - camera.p[0], swp->spos[2] - camera.p[2]),
-            SgAtan2f(camera.i[0] - camera.p[0], camera.i[2] - camera.p[2]));
+            VER_ATAN2F(swp->spos[0] - camera.p[0], swp->spos[2] - camera.p[2]),
+            VER_ATAN2F(camera.i[0] - camera.p[0], camera.i[2] - camera.p[2])
+        );
+
         swp->pan = SeCmdGetPan(rot_oc);
-        swp->vol_rate = SeCmdGetVol(GetDist(GetDistV(swp->spos,camera.p), swp->spos[1] - camera.p[1]), swp->vol_rate);
+        swp->vol_rate = SeCmdGetVol(GetDist(GetDistV(swp->spos, camera.p), swp->spos[1] - camera.p[1]), swp->vol_rate);
+
         if (map_wrk.now_room != swp->room_id && swp->room_id != 0xff)
         {
-            swp->vol_rate = swp->vol_rate >> 1;
+            swp->vol_rate >>= 1;
         }
+
         swp->pitch = SeCmdGetPitch(rot_oc, swp->pitch);
     break;
     case 3:
@@ -670,15 +682,20 @@ static void SeStartVp(SE_REQ_TMP_STR *tmp_str)
         swp->spos[0] = ((MOVE_BOX *)swp->mpos)->pos[0];
         swp->spos[1] = ((MOVE_BOX *)swp->mpos)->pos[1];
         swp->spos[2] = ((MOVE_BOX *)swp->mpos)->pos[2];
+
         rot_oc = SeCmdGetAngle(
-            SgAtan2f(swp->spos[0] - camera.p[0], swp->spos[2] - camera.p[2]),
-            SgAtan2f(camera.i[0] - camera.p[0], camera.i[2] - camera.p[2]));
+            VER_ATAN2F(swp->spos[0] - camera.p[0], swp->spos[2] - camera.p[2]),
+            VER_ATAN2F(camera.i[0] - camera.p[0], camera.i[2] - camera.p[2])
+        );
+
         swp->pan = SeCmdGetPan(rot_oc);
         swp->vol_rate = SeCmdGetVol(GetDist(GetDistV(swp->spos, camera.p), swp->spos[1] - camera.p[1]), swp->vol_rate);
+
         if (map_wrk.now_room != swp->room_id && swp->room_id != 0xff)
         {
-            swp->vol_rate = swp->vol_rate >> 1;
+            swp->vol_rate >>= 1;
         }
+
         swp->pitch = SeCmdGetPitch(rot_oc, swp->pitch);
     break;
     case 5:
@@ -688,15 +705,20 @@ static void SeStartVp(SE_REQ_TMP_STR *tmp_str)
         swp->spos[0] = ((MOVE_BOX *)swp->mpos)->pos[0];
         swp->spos[1] = ((MOVE_BOX *)swp->mpos)->pos[1];
         swp->spos[2] = ((MOVE_BOX *)swp->mpos)->pos[2];
+
         rot_oc = SeCmdGetAngle(
-            SgAtan2f(swp->spos[0] - camera.p[0], swp->spos[2] - camera.p[2]),
-            SgAtan2f(camera.i[0] - camera.p[0], camera.i[2] - camera.p[2]));
+            VER_ATAN2F(swp->spos[0] - camera.p[0], swp->spos[2] - camera.p[2]),
+            VER_ATAN2F(camera.i[0] - camera.p[0], camera.i[2] - camera.p[2])
+        );
+
         swp->pan = SeCmdGetPan(rot_oc);
         swp->vol_rate = SeCmdGetVol(GetDist(GetDistV(swp->spos, camera.p), swp->spos[1] - camera.p[1]), swp->vol_rate);
+
         if (map_wrk.now_room != swp->room_id && swp->room_id != 0xff)
         {
-            swp->vol_rate = swp->vol_rate >> 1;
+            swp->vol_rate >>= 1;
         }
+
         swp->pitch = SeCmdGetPitch(rot_oc, swp->pitch);
     break;
     }
@@ -716,9 +738,9 @@ int SeStartPosSrundFlame(u_char room_id, float *pos, u_short flame, u_short vol_
     int i;
     int req_file_no;
     int req_se_no;
-    
+
     req_se_no = -1;
-    
+
     switch(room_id)
     {
     case 2:
@@ -781,21 +803,22 @@ int SeStartPosSrundFlame(u_char room_id, float *pos, u_short flame, u_short vol_
         req_file_no = SS000_BD;
     break;
     }
-    
+
     for (i = 0; i < 2; i++)
     {
         if (se_ctrl.srund_no[i] == req_file_no)
         {
-            req_se_no = i + 0x34;
+            req_se_no = i + 52;
+
             break;
         }
     }
-    
+
     if (req_se_no != -1)
     {
         return SeStartPosFlame(req_se_no, pos, flame, vol_max, pitch, room_id);
     }
-    
+
     return -1;
 }
 
@@ -804,9 +827,9 @@ int SeStartPosEventFlame(u_char room_id, u_char req_pos, float *pos, u_short fla
     int i;
     int req_file_no;
     int req_se_no;
-    
+
     req_se_no = -1;
-    
+
     switch(room_id)
     {
     case 1:
@@ -886,12 +909,13 @@ int SeStartPosEventFlame(u_char room_id, u_char req_pos, float *pos, u_short fla
         req_file_no = SE000_BD;
     break;
     }
-    
+
     for (i = 0; i < 2; i++)
     {
         if (se_ctrl.event_no[i] == req_file_no)
         {
-            req_se_no = i * 3 + 0x57 + req_pos;
+            req_se_no = i * 3 + 87 + req_pos;
+
             break;
         }
     }
@@ -900,7 +924,7 @@ int SeStartPosEventFlame(u_char room_id, u_char req_pos, float *pos, u_short fla
     {
         return SeStartPosFlame(req_se_no, pos, flame, vol_max, pitch, room_id);
     }
-    
+
     return -1;
 }
 
@@ -908,27 +932,29 @@ static int SeGetFreeVoice(int start_no, int get)
 {
     SE_VSTAT *svp;
     int i;
-    
+
     svp = &GetIopStatP()->sev_stat[start_no];
-    
-    if (svp == NULL || start_no >= SE_WRK_SIZE)
+
+    if (svp != NULL)
     {
-        return -1;
-    }
-    
-    for (i = start_no; i < SE_WRK_SIZE; i++, svp++)
-    {
-        if (svp->status == 0 && SeGetSeWrk(i)->status != 4)
+        for (i = start_no; i < 24; i++, svp++)
         {
-            if (get != 0)
+#if defined(BUILD_JP_VERSION)
+            if (svp->status == 0)
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+            if (svp->status == 0 && SeGetSeWrk(i)->status != 4)
+#endif
             {
-                svp->status = 3;
+                if (get != 0)
+                {
+                    svp->status = 3;
+                }
+
+                return i;
             }
-            
-            return i;
         }
     }
-    
+
     return -1;
 }
 
@@ -936,6 +962,7 @@ int SeStopAll()
 {
     SeInitSeWrk();
     SetIopCmdSm(8, 0, 0, 0);
+
     return 0;
 }
 
@@ -945,19 +972,19 @@ int SeStop(int voice_num)
     {
         SetIopCmdSm(4, voice_num, 0, 0);
     }
-    
+
     return 0;
 }
 
 void SeFadeOut(int voice_num, int fout_spd, int tgt_vol)
 {
     SE_WRK *swp;
-    
+
     swp = SeGetSeWrk(voice_num);
-    
+
     if (swp != NULL)
     {
-        swp->fade_mode = 2;
+        swp->fade_mode = SE_FADE_OUT;
         swp->fade_spd = fout_spd;
         swp->fade_tgt = tgt_vol;
     }
@@ -966,46 +993,47 @@ void SeFadeOut(int voice_num, int fout_spd, int tgt_vol)
 void SeFadeFlame(int voice_num, u_short flame, u_short tgt_vol)
 {
     SE_WRK *swp;
-    
+
     swp = SeGetSeWrk(voice_num);
-    
+
     if (swp == NULL)
     {
         return;
     }
-    
+
     if (flame == 0)
     {
         SeStop(voice_num);
+
         return;
     }
-    
+
     if (tgt_vol < swp->fade_vol)
     {
-        swp->fade_mode = 0x2;
+        swp->fade_mode = SE_FADE_OUT;
         swp->fade_spd = (swp->fade_vol - tgt_vol) / flame;
-        
+
         if (swp->fade_spd == 0)
         {
             swp->fade_spd = 1;
         }
-        
+
     }
     else if (tgt_vol == swp->fade_vol)
     {
-        swp->fade_mode = 0;
+        swp->fade_mode = SE_FADE_NONE;
     }
     else
     {
-        swp->fade_mode = 1;
+        swp->fade_mode = SE_FADE_IN;
         swp->fade_spd = (tgt_vol - swp->fade_vol) / flame;
-        
+
         if (swp->fade_spd == 0)
         {
             swp->fade_spd = 1;
         }
     }
-    
+
     swp->fade_tgt = tgt_vol;
 }
 
@@ -1013,9 +1041,9 @@ void SeFadeFlameAll(u_short flame, u_short tgt_vol)
 {
     SE_WRK *swp;
     int i;
-    
+
     swp = &se_wrk[0];
-    
+
     for (i = 0; i < SE_WRK_SIZE; i++, swp++)
     {
         if (swp->status != 0)
@@ -1030,10 +1058,10 @@ void SeWrkUpdate()
     IOP_STAT *isp;
     SE_WRK *swp;
     int i;
-    
+
     isp = GetIopStatP();
     swp = SeGetSeWrk(0);
-    
+
     for (i = 0; i < SE_WRK_SIZE; i++, swp++)
     {
         if (isp->sev_stat[i].status == 0)
@@ -1059,7 +1087,7 @@ u_char IsEndSe(int v_no)
     {
         return se_wrk[v_no].status == 0;
     }
-    
+
     return 1;
 }
 
@@ -1069,9 +1097,9 @@ u_char IsEndSeGhost(int v_no, u_char se_no, u_char gno)
     {
         return 1;
     }
-    
+
     se_no += gno * 11;
-    
+
     if (v_no >= 0 && v_no <= 0x17)
     {
         if (se_wrk[v_no].se_p != se_no)
@@ -1083,7 +1111,7 @@ u_char IsEndSeGhost(int v_no, u_char se_no, u_char gno)
             return se_wrk[v_no].status == 0;
         }
     }
-    
+
     return 1;
 }
 
@@ -1097,13 +1125,13 @@ void SeSetMVol(u_short vol)
     int iop_vol;
 
     iop_vol = vol;
-    
+
     if (vol > 0xfff)
     {
         iop_vol = 0xfff;
     }
-    
-    SetIopCmdSm(9, (iop_vol * 0x3fff) / 0xfff, 0, 0);
+
+    SetIopCmdSm(9, (iop_vol * MAX_VOLUME) / 0xfff, 0, 0);
 }
 
 void SeSetSteMono(u_char mono)
@@ -1123,7 +1151,7 @@ int SeFileLoadAndSet(u_int file_no, int type)
     int ret;
 
     ret = -1;
-    
+
     if (type >= 0 && type < 26)
     {
         switch(type)
@@ -1133,16 +1161,19 @@ int SeFileLoadAndSet(u_int file_no, int type)
         break;
         case 1:
             se_ctrl.btlhit_no = file_no;
+
             ret = LoadReqSe(file_no, type);
         break;
         case 2:
             se_ctrl.voice_no = file_no;
+
             ret = LoadReqSe(file_no, type);
         break;
         case 3:
         case 4:
         case 5:
             se_ctrl.door_no[type - 3] = file_no;
+
             ret = LoadReqSe(file_no, type);
         break;
         case 6:
@@ -1154,11 +1185,13 @@ int SeFileLoadAndSet(u_int file_no, int type)
         case 12:
         case 13:
             se_ctrl.foot_no[type - 6] = file_no;
+
             ret = LoadReqSe(file_no, type);
         break;
         case 14:
         case 15:
             se_ctrl.srund_no[type - 14] = file_no;
+
             ret = LoadReqSe(file_no, type);
         break;
         case 16:
@@ -1166,16 +1199,20 @@ int SeFileLoadAndSet(u_int file_no, int type)
         case 18:
             se_ctrl.ghost_no[type - 16] = file_no;
             se_ctrl.ghost_type[type - 16] = 0;
+
             ret = LoadReqSe(file_no, type);
+
             FloatGhostSENotEmpty();
-            return ret;
+        break;
         case 19:
         case 20:
             se_ctrl.event_no[type - 19] = file_no;
+
             ret = LoadReqSe(file_no, type);
         break;
         case 21:
             se_ctrl.wide_no = file_no;
+
             ret = LoadReqSe(file_no, type);
         break;
         case 22:
@@ -1183,29 +1220,33 @@ int SeFileLoadAndSet(u_int file_no, int type)
         case 24:
         case 25:
             se_ctrl.jidou_no[type - 22] = file_no;
+
             ret = LoadReqSe(file_no, type);
         break;
         }
-    } 
-    
+    }
+
     return ret;
 }
 
 int SeFileLoadAndSetFGhost(u_int file_no, int type)
 {
     int ret;
-    
+
     if (type < 19)
     {
         if (type > 15)
         {
             se_ctrl.ghost_no[type - 16] = file_no;
             se_ctrl.ghost_type[type - 16] = 1;
+
             ret = LoadReqSe(file_no, type);
+
             FloatGhostSENotEmpty();
+
             return ret;
         }
-    } 
+    }
 
     return SeFileLoadAndSet(file_no, type);
 }
@@ -1247,14 +1288,14 @@ int SeFileLoadAndSetWide(u_short lbl_no)
         file_no = ST001_MEN_KAKE_BD;
     break;
     }
-    
+
     return SeFileLoadAndSet(file_no, 21);
 }
 
 char SeGetGhostPos(u_int se_file_no, u_char type)
 {
     char i;
-    
+
     for (i = 0; i < 3; i++)
     {
         if (
@@ -1266,14 +1307,14 @@ char SeGetGhostPos(u_int se_file_no, u_char type)
             return i;
         }
     }
-    
+
     return -1;
 }
 
 char SeGetAutoGhostPos(u_int se_file_no)
 {
     char i;
-    
+
     for (i = 0; i < 4; i++)
     {
         if (
@@ -1284,7 +1325,7 @@ char SeGetAutoGhostPos(u_int se_file_no)
             return i;
         }
     }
-    
+
     return -1;
 }
 
@@ -1294,7 +1335,7 @@ SE_WRK *SeGetSeWrk(int no)
     {
         return &se_wrk[no];
     }
-    
+
     return NULL;
 }
 
@@ -1306,7 +1347,7 @@ int SeGetSvStat(int v_no)
 int SeStartCmn(int se_no, float *pos, float *mb, int fin_spd, u_short vol_max)
 {
     int vpos;
-    
+
     if (se_no == 0xff)
     {
         return -1;
@@ -1322,6 +1363,7 @@ int SeStartCmn(int se_no, float *pos, float *mb, int fin_spd, u_short vol_max)
         else
         {
             SeStartVpCmn(se_no, vpos, pos, mb, fin_spd, vol_max);
+
             return vpos;
         }
     }
@@ -1333,26 +1375,28 @@ void SeStartVpCmn(int se_no, int vpos, float *pos, float *mb, int fin_spd, u_sho
     int mode;
     float rot_oc;
 
-    mode = SeChkReqMode(pos,mb);
+    mode = SeChkReqMode(pos, mb);
     swp = SeGetSeWrk(vpos);
+
     SeInitSeWrkSub(vpos);
+
     swp->se_p = se_no;
     swp->v_p = vpos;
     swp->fade_spd = fin_spd;
-    
+
     if ((fin_spd & 0xffff) == 0)
     {
-        swp->fade_mode = 0;
+        swp->fade_mode = SE_FADE_NONE;
         swp->fade_vol = 0xfff;
     }
     else
     {
-        swp->fade_mode = 1;
+        swp->fade_mode = SE_FADE_IN;
         swp->fade_vol = 0;
     }
 
     swp->vol_rate = (swp->fade_vol << 0xc) / 0xfff;
-    
+
     switch(mode)
     {
     case 4:
@@ -1360,9 +1404,12 @@ void SeStartVpCmn(int se_no, int vpos, float *pos, float *mb, int fin_spd, u_sho
         swp->spos[0] = pos[0];
         swp->spos[1] = pos[1];
         swp->spos[2] = pos[2];
+
         rot_oc = SeCmdGetAngle(
-            SgAtan2f(swp->spos[0] - camera.p[0], swp->spos[2] - camera.p[2]),
-            SgAtan2f(camera.i[0] - camera.p[0], camera.i[2] - camera.p[2]));
+            VER_ATAN2F(swp->spos[0] - camera.p[0], swp->spos[2] - camera.p[2]),
+            VER_ATAN2F(camera.i[0] - camera.p[0], camera.i[2] - camera.p[2])
+        );
+
         swp->pan = SeCmdGetPan(rot_oc);
         swp->pitch = SeCmdGetPitch(rot_oc, swp->pitch);
     break;
@@ -1372,27 +1419,31 @@ void SeStartVpCmn(int se_no, int vpos, float *pos, float *mb, int fin_spd, u_sho
         swp->spos[0] = pos[0];
         swp->spos[1] = pos[1];
         swp->spos[2] = pos[2];
+
         rot_oc = SeCmdGetAngle(
-            SgAtan2f(swp->spos[0] - camera.p[0], swp->spos[2] - camera.p[2]),
-            SgAtan2f(camera.i[0] - camera.p[0], camera.i[2] - camera.p[2]));
+            VER_ATAN2F(swp->spos[0] - camera.p[0], swp->spos[2] - camera.p[2]),
+            VER_ATAN2F(camera.i[0] - camera.p[0], camera.i[2] - camera.p[2])
+        );
+
         swp->pan = SeCmdGetPan(rot_oc);
         swp->pitch = SeCmdGetPitch(rot_oc, swp->pitch);
     break;
     case 1:
     case 3:
     case 0:
-        break;
+        // do nothing ...
+    break;
     }
-    
+
     SetIopCmdLg(2, vpos, swp->se_p, swp->pitch, swp->pan, swp->vol_rate, 0, 0);
 }
 
 static int SeChkReqMode(float *pos, float *mb)
 {
     int mode;
-    
+
     mode = 2;
-    
+
     if (pos == NULL && mb == NULL)
     {
         mode = 1;
@@ -1401,7 +1452,7 @@ static int SeChkReqMode(float *pos, float *mb)
     {
         mode = 0;
     }
-    
+
     return mode;
 }
 
@@ -1412,5 +1463,5 @@ u_char SeGetFreeSv()
 
 int SeStartV(int se_no, u_char voice_no)
 {
-    // no return with int return value in function signature ...
+    // missing return ...
 }
