@@ -77,7 +77,7 @@ segments:
           - [0x101a0,  c,   os/eeiop/adpcm/ea_autog]
           - [0x106f8,  c,   os/eeiop/adpcm/ea_hiso]
           - [0x10ab0,  c,   os/eeiop/adpcm/ea_furn]
-          - [0x10f20,  asm, os/eeiop/adpcm/ea_map]
+          - [0x10f20,  c,   os/eeiop/adpcm/ea_map]
           - [0x11168,  asm, os/eeiop/eese]
           - [0x12de8,  asm, os/eeiop/se_cmd]
           - [0x13468,  asm, os/eeiop/se_data]
@@ -616,7 +616,7 @@ segments:
           - { start: 0x257818, type: .sbss,   vram: 0x356818, name: os/eeiop/cdvd/eecdvd          }
           - { start: 0x25781b, type: .sbss,   vram: 0x35681b, name: os/eeiop/adpcm/ea_ctrl        }
           - { start: 0x25781c, type: .sbss,   vram: 0x35681c, name: os/eeiop/adpcm/ea_ghost       }
-          - { start: 0x257820, type:  sbss,   vram: 0x356820, name: os/eeiop/adpcm/ea_map         }
+          - { start: 0x257820, type: .sbss,   vram: 0x356820, name: os/eeiop/adpcm/ea_map         }
           - { start: 0x257824, type:  sbss,   vram: 0x356824, name: graphics/graph2d/compress     }
           - { start: 0x257840, type:  sbss,   vram: 0x356840, name: graphics/graph2d/effect       }
           - { start: 0x257850, type:  sbss,   vram: 0x356850, name: graphics/graph2d/effect_sub   }
