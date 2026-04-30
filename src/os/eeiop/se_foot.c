@@ -48,7 +48,7 @@ static void SFootNoUse(u_char room_id0, u_char room_id1)
             }
 
 found:
-            if (!exist_flg)
+            if (exist_flg == 0)
             {
                 *sedp = 0xffffffff;
             }
@@ -85,7 +85,7 @@ static void SFootSetLoadTbl(u_int *ld_tbl, u_char room_id)
                 }
             }
 
-            if (!vflg)
+            if (vflg == 0)
             {
                 *ld_tbl++ = *ifp;
             }
