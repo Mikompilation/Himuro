@@ -19,38 +19,39 @@ static void SDoorNoUse(u_char room_id0, u_char room_id1)
     u_int *dp;
     u_int *sedp;
     int i;
-    int j; // looks like gcc optimized this out by using the stack address (sp) 
+    int j;
     int k;
     u_char room_id[2];
     u_char exist_flg;
-    
-    sedp = se_ctrl.door_no;
-    
+
     room_id[0] = room_id0;
     room_id[1] = room_id1;
-    
-    for (i = 0; i < 3; i++, sedp++)
+
+    for (i = 0, sedp = se_ctrl.door_no; i < 3; i++, sedp++)
     {
         if (*sedp != 0xffffffff)
         {
             exist_flg = 0;
-            
+
             for (j = 0; j < 2; j++)
             {
-                if (room_id[j] != 0xff)
+                if (room_id[j] == 0xff)
                 {
-                    for (k = 0, dp = GetSdrDoorSeTblP(room_id[j]); k < 3; k++, dp++)
+                    continue;
+                }
+
+                for (k = 0, dp = GetSdrDoorSeTblP(room_id[j]); k < 3; k++, dp++)
+                {
+                    if (*sedp == *dp)
                     {
-                        if (*sedp == *dp)
-                        {
-                            exist_flg = 1;
-                            goto found;
-                        }
+                        exist_flg = 1;
+
+                        goto found; // needed to break both loops
                     }
                 }
             }
-            
-            found:
+
+found:
             if (!exist_flg)
             {
                 *sedp = 0xffffffff;
@@ -74,7 +75,7 @@ static void SDoorSetLoadTbl(u_int *ld_tbl, u_char room_id)
     for (i = 0, idp = GetSdrDoorSeTblP(room_id); i < 3; i++, idp++)
     {
         vflg = 0;
-        
+
         if (*idp != 0xffffffff)
         {
             for (j = 0; j < 3; j++)
@@ -82,14 +83,14 @@ static void SDoorSetLoadTbl(u_int *ld_tbl, u_char room_id)
                 if (se_ctrl.door_no[j] == *idp)
                 {
                     vflg = 1;
+
                     break;
                 }
             }
-            
+
             if (!vflg)
             {
-                *ld_tbl = *idp;
-                ld_tbl++;
+                *ld_tbl++ = *idp;
             }
         }
     }
@@ -101,10 +102,10 @@ int SDoorLoadReqAndSetSub(int load_id, u_char room_from, u_char room_to)
     u_char empty_tbl[3];
     int i;
     int j;
-    
+
     SDoorNoUse(room_from, room_to);
     SDoorSetLoadTbl(load_file_tbl, room_to);
-    
+
     for (i = 0; i < 3; i++)
     {
         if (se_ctrl.door_no[i] != 0xffffffff)
@@ -116,7 +117,7 @@ int SDoorLoadReqAndSetSub(int load_id, u_char room_from, u_char room_to)
             empty_tbl[i] = 0;
         }
     }
-    
+
     for (i = 0; i < 3; i++)
     {
         if (load_file_tbl[i] != -1)
@@ -126,7 +127,9 @@ int SDoorLoadReqAndSetSub(int load_id, u_char room_from, u_char room_to)
                 if (empty_tbl[j] == 0)
                 {
                     load_id = SeFileLoadAndSet(load_file_tbl[i], j + 3);
+
                     empty_tbl[j] = 1;
+
                     break;
                 }
             }
@@ -144,20 +147,25 @@ int SDoorLoadReqAndSet(int load_id, u_short door_id)
     u_char room_from;
     u_char room_to;
     u_char dr_num;
-    
+
     room_from = GetRoomIdFromRoomNo(0, room_wrk.room_no);
     addr_uc = GetDoorRoomConectDataP(room_from);
 
     dr_num = addr_uc[0];
     room_to = 0xff;
-    
-    for (i = 0, addr_uc = &addr_uc[2]; i < dr_num; i++, addr_uc = &addr_uc[4])
+
+    addr_uc = &addr_uc[2];
+
+    for (i = 0; i < dr_num; i++)
     {
         if (*(u_short *)addr_uc == door_id)
         {
             room_to = addr_uc[2];
+
             break;
         }
+
+        addr_uc = &addr_uc[4];
     }
 
     if (room_to != 0xff)
@@ -185,17 +193,17 @@ static u_char SDoorGetSeNo(int file_no, u_char shut)
     {
         if (se_ctrl.door_no[i] == file_no)
         {
-            return (shut + 0x26) + (i * 2);
+            return (shut + 38) + i * 2;
         }
     }
-    
+
     return 0xff;
 }
 
 void SeDoorOpen(int dwrk_no)
 {
     u_char se_no;
-    
+
     se_no = SDoorGetSeNo(GetDoorTypeDatP(door_wrk[dwrk_no].type)->se_file, 0);
 
     if (se_no != 0xff)
@@ -207,7 +215,7 @@ void SeDoorOpen(int dwrk_no)
 void SeDoorClose(int dwrk_no)
 {
     u_char se_no;
-    
+
     se_no = SDoorGetSeNo(GetDoorTypeDatP(door_wrk[dwrk_no].type)->se_file, 1);
 
     if (se_no != 0xff)
