@@ -14,3 +14,12 @@ se_ste_tbl                     = 0x266d78; // type:SE_STE numel:14 nosize static
 
 // os/eeiop/se_trans.c
 fgf_tbl                        = 0x266e70; // type:FG_FILE_TBL numel:4 nosize
+
+// os/eeiop/sd_room.c
+adpcm_param_tbl                = 0x266ea0; // type:ADPCM_ROOM_PLAY numel:24 nosize
+foot_se_index                  = 0x266f60; // type:int numel:28 nosize
+rm_snd_info                    = 0x266fd0; // type:ROOM_SOUND_INFO numel:45 nosize static
+rm_door                        = 0x2671f0; // type:ROOM_DOOR_SE numel:43 nosize static
+rm_foot                        = 0x2673f8; // type:ROOM_FOOT_SE numel:42 nosize static
+rm_srund                       = 0x267740; // type:u_int numel:42 nosize static
+rm_event                       = 0x2677e8; // type:u_int numel:42 nosize static
