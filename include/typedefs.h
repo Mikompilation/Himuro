@@ -50,12 +50,15 @@ typedef union {
 #if defined(BUILD_JP_VERSION)
     #define VER_LOAD_REQ_LANG LoadReq
 	#define VER_ATAN2F atan2f
+	#define VER_SINF sinf
 #elif defined(BUILD_US_VERSION)
     #define VER_LOAD_REQ_LANG LoadReq
 	#define VER_ATAN2F SgAtan2f
+	#define VER_SINF SgSinf
 #elif defined(BUILD_EU_VERSION)
     #define VER_LOAD_REQ_LANG LoadReqLanguage
 	#define VER_ATAN2F SgAtan2f
+	#define VER_SINF SgSinf
 #endif
 
 #define PAD_DPAD_UP      0
