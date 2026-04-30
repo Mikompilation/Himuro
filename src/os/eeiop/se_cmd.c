@@ -57,7 +57,7 @@ void SeCtrlMain()
             }
             else if (swp->fade_mode == SE_FADE_IN)
             {
-                swp->fade_vol = swp->fade_vol + swp->fade_spd;
+                swp->fade_vol += swp->fade_spd;
 
                 if (swp->fade_tgt < swp->fade_vol)
                 {
@@ -69,7 +69,7 @@ void SeCtrlMain()
             }
             else if (swp->fade_mode == SE_FADE_OUT)
             {
-                if (swp->fade_spd > (swp->fade_vol - swp->fade_tgt))
+                if (swp->fade_spd > swp->fade_vol - swp->fade_tgt)
                 {
                     swp->fade_vol = swp->fade_tgt;
                     swp->fade_mode = SE_FADE_NONE;
@@ -119,7 +119,7 @@ void SeCtrlMain()
 
                 if (map_wrk.now_room != swp->room_id && swp->room_id != 0xff)
                 {
-                    swp->vol_rate = swp->vol_rate >> 1;
+                    swp->vol_rate >>= 1;
                 }
 
                 cmd_flg++;
@@ -142,7 +142,7 @@ void SeCtrlMain()
 
                 if (map_wrk.now_room != swp->room_id && swp->room_id != 0xff)
                 {
-                    swp->vol_rate = swp->vol_rate >> 1;
+                    swp->vol_rate >>= 1;
                 }
 
                 cmd_flg++;
