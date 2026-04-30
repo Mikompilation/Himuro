@@ -11,3 +11,6 @@ adpcm_vol_tbl                  = 0x266180; // type:ADPCM_VOL numel:368
 
 // os/eeiop/se_data.c
 se_ste_tbl                     = 0x266d78; // type:SE_STE numel:14 nosize static
+
+// os/eeiop/se_trans.c
+fgf_tbl                        = 0x266e70; // type:FG_FILE_TBL numel:4 nosize
