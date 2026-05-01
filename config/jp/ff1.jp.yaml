@@ -88,7 +88,7 @@ segments:
           - [0x14af0,  c,   os/eeiop/se_event]
           - [0x14e30,  c,   os/eeiop/se_srund]
           - [0x15170,  c,   os/eeiop/sd_room]
-          - [0x15360,  asm, os/eeiop/se_plyr]
+          - [0x15360,  c,   os/eeiop/se_plyr]
           - [0x15998,  asm, common/ul_math]
           - [0x15c90,  asm, common/utility]
           - [0x15cf0,  asm, graphics/graph2d/compress]
@@ -232,7 +232,7 @@ segments:
           - { start: 0x167db0, type: .data,   vram: 0x266db0, name: os/eeiop/se_ev                }
           - { start: 0x167e70, type: .data,   vram: 0x266e70, name: os/eeiop/se_trans             }
           - { start: 0x167ea0, type: .data,   vram: 0x266ea0, name: os/eeiop/sd_room              }
-          - { start: 0x168890, type:  data,   vram: 0x267890, name: os/eeiop/se_plyr              }
+          - { start: 0x168890, type: .data,   vram: 0x267890, name: os/eeiop/se_plyr              }
           - { start: 0x1688c8, type:  data,   vram: 0x2678c8, name: graphics/graph2d/compress     }
           - { start: 0x16c380, type:  data,   vram: 0x26b380, name: graphics/graph2d/effect       }
           - { start: 0x171360, type:  data,   vram: 0x270360, name: graphics/graph2d/effect_sub   }
@@ -353,7 +353,7 @@ segments:
           - { start: 0x249d30, type: .rodata, vram: 0x348d30, name: os/eeiop/se_cmd               }
           - { start: 0x249d50, type: .rodata, vram: 0x348d50, name: os/eeiop/se_data              }
           - { start: 0x24a008, type: .rodata, vram: 0x349008, name: os/eeiop/se_ev                }
-          - { start: 0x24a040, type:  rodata, vram: 0x349040, name: os/eeiop/se_plyr              }
+          - { start: 0x24a040, type: .rodata, vram: 0x349040, name: os/eeiop/se_plyr              }
           - { start: 0x24a050, type:  rodata, vram: 0x349050, name: graphics/graph2d/effect       }
           - { start: 0x24a2d0, type:  rodata, vram: 0x3492d0, name: graphics/graph2d/effect_sub   }
           - { start: 0x24a520, type:  rodata, vram: 0x349520, name: graphics/graph2d/effect_sub2  }
@@ -446,7 +446,7 @@ segments:
           - { start: 0x255198, type: .lit4,   vram: 0x354198, name: os/pad                        }
           - { start: 0x2551a4, type: .lit4,   vram: 0x3541a4, name: os/eeiop/adpcm/ea_cmd         }
           - { start: 0x2551bc, type: .lit4,   vram: 0x3541bc, name: os/eeiop/se_cmd               }
-          - { start: 0x2551cc, type:  lit4,   vram: 0x3541cc, name: os/eeiop/se_plyr              }
+          - { start: 0x2551cc, type: .lit4,   vram: 0x3541cc, name: os/eeiop/se_plyr              }
           - { start: 0x2551d0, type:  lit4,   vram: 0x3541d0, name: graphics/graph2d/compress     }
           - { start: 0x2551d4, type:  lit4,   vram: 0x3541d4, name: graphics/graph2d/effect       }
           - { start: 0x2551f0, type:  lit4,   vram: 0x3541f0, name: graphics/graph2d/effect_sub   }

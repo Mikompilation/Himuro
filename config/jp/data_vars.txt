@@ -23,3 +23,6 @@ rm_door                        = 0x2671f0; // type:ROOM_DOOR_SE numel:43 nosize 
 rm_foot                        = 0x2673f8; // type:ROOM_FOOT_SE numel:42 nosize static
 rm_srund                       = 0x267740; // type:u_int numel:42 nosize static
 rm_event                       = 0x2677e8; // type:u_int numel:42 nosize static
+
+// os/eeiop/se_plyr.c
+rand_ita_tbl                   = 0x267890; // type:SE_FOOT_RAND_ITA numel:11 nosize
