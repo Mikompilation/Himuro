@@ -89,7 +89,7 @@ segments:
           - [0x14e30,  c,   os/eeiop/se_srund]
           - [0x15170,  c,   os/eeiop/sd_room]
           - [0x15360,  c,   os/eeiop/se_plyr]
-          - [0x15998,  asm, common/ul_math]
+          - [0x15998,  c,   common/ul_math]
           - [0x15c90,  asm, common/utility]
           - [0x15cf0,  asm, graphics/graph2d/compress]
           - [0x17710,  asm, graphics/graph2d/effect]
