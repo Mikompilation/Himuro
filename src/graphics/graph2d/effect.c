@@ -351,7 +351,7 @@ void *SetEffects(int id, int fl, ...)
         ec->dat.fl32[2] = va_arg(ap, double);
         ec->dat.fl32[3] = va_arg(ap, double);
         ec->dat.uc8[3] = va_arg(ap, u_char);
-        ec->dat.uc8[4] = va_arg(ap, u_char);    
+        ec->dat.uc8[4] = va_arg(ap, u_char);
 
         if (fl & 0x4)
         {
@@ -478,7 +478,7 @@ void *SetEffects(int id, int fl, ...)
         ec->dat.uc8[1] = fl;
         ec->dat.uc8[2] = va_arg(ap, u_char);
         ec->dat.uc8[3] = va_arg(ap, u_char);
-        
+
         if (fl & 0x4)
         {
             ec->in = va_arg(ap, u_int);
@@ -569,7 +569,7 @@ void *SetEffects(int id, int fl, ...)
         ec->dat.uc8[5] = va_arg(ap, u_char);
         ec->dat.uc8[6] = va_arg(ap, u_char);
         ec->dat.uc8[7] = va_arg(ap, u_char);
-        ec->dat.fl32[3] = va_arg(ap, double);   
+        ec->dat.fl32[3] = va_arg(ap, double);
 
         if (ec->flow == 3)
         {
@@ -594,11 +594,11 @@ void *SetEffects(int id, int fl, ...)
         ec->dat.uc8[7] = va_arg(ap, u_char);
         ec->dat.fl32[3] = va_arg(ap, double);
         ec->fw[0] = va_arg(ap, double);
-        
+
         if (ec->flow == 3)
         {
             ec->cnt = 21.0f * VER_RAND();
-        } 
+        }
         else
         {
             ec->cnt = 0;
@@ -663,7 +663,7 @@ void *SetEffects(int id, int fl, ...)
         ec->pnt[4] = va_arg(ap, void *);
         ec->pnt[5] = NULL;
         ec->pnt[5] = va_arg(ap, void *);
-        
+
         if (fl & 0x4)
         {
             ec->flow = (ec->in == 0 ? (ec->keep == 0 ? ec->out != 0 ? 2 : 3 : 1) : 0);
@@ -1172,7 +1172,7 @@ void EffectControl(int no)
     int n;
 
     ecm = change_efbank != 0 ? efcnt: efcnt_cnt;
-    
+
     switch (no)
     {
     case 1:
@@ -1243,9 +1243,9 @@ void EffectControl(int no)
         {
             SetRenzFlare(&ecm[EF_RENZFLARE]);
         }
-        
+
         EffectZSort();
-        
+
         if (ecm[EF_SPIRIT].dat.uc8[0] == EF_SPIRIT)
         {
             SetSpirit(&ecm[EF_SPIRIT]);
@@ -1259,81 +1259,81 @@ void EffectControl(int no)
         {
             SetMAGATOKI(&ecm[EF_MAGATOKI]);
         }
-        
+
         if (ecm[EF_Z_DEP].dat.uc8[0] == EF_Z_DEP)
         {
             SetForcusDepth(&ecm[EF_Z_DEP]);
         }
-        
+
         if (ecm[EF_Z_DEP2].dat.uc8[0] == EF_Z_DEP2)
         {
             SetForcusDepth2(&ecm[EF_Z_DEP2]);
         }
-        
+
         if (ecm[EF_BLUR_N].dat.uc8[0] == EF_BLUR_N)
         {
             SetBlur(&ecm[EF_BLUR_N]);
         }
-        
+
         if (ecm[EF_BLUR_B].dat.uc8[0] == EF_BLUR_B)
         {
             SetBlur(&ecm[EF_BLUR_B]);
         }
-        
+
         if (ecm[EF_BLUR_W].dat.uc8[0] == EF_BLUR_W)
         {
             SetBlur(&ecm[EF_BLUR_W]);
         }
-        
+
         RunBlur(&ecm[EF_BLUR_N]);
-        
+
         if (ecm[EF_DEFORM].dat.uc8[0] == EF_DEFORM)
         {
             SetDeform(&ecm[EF_DEFORM]);
         }
-        
+
         if (ecm[EF_NCONTRAST].dat.uc8[0] == EF_NCONTRAST)
         {
             SetContrast2(&ecm[EF_NCONTRAST]);
         }
-        
+
         if (ecm[EF_NEGA].dat.uc8[0] == EF_NEGA)
         {
             SetNega(&ecm[EF_NEGA]);
         }
-        
+
         if (ecm[EF_NCONTRAST3].dat.uc8[0] == EF_NCONTRAST3)
         {
             SetContrast3(&ecm[EF_NCONTRAST3]);
         }
-        
+
         if (ecm[EF_FOCUS].dat.uc8[0] == EF_FOCUS)
         {
             SetFocus(&ecm[EF_FOCUS]);
         }
-        
+
         RunFocus(&ecm[EF_FOCUS]);
-        
+
         if (ecm[EF_DITHER].dat.uc8[0] == EF_DITHER)
         {
             SetDither3(&ecm[EF_DITHER]);
         }
-        
+
         if (ecm[EF_DITHER2].dat.uc8[0] == EF_DITHER2)
         {
             SetDither4(&ecm[EF_DITHER2]);
         }
-        
+
         if (ecm[EF_BLACKFILTER].dat.uc8[0] == EF_BLACKFILTER)
         {
             SetBlackFilter(&ecm[EF_BLACKFILTER]);
         }
-        
+
         if (ecm[EF_NCONTRAST2].dat.uc8[0] == EF_NCONTRAST2)
         {
             SetContrast2(&ecm[EF_NCONTRAST2]);
         }
-        
+
         tes_p11();
 
         SetRoomDirecPazzEne();
@@ -1359,17 +1359,17 @@ void EffectControl(int no)
     break;
     case 8:
         tes_p3();
-        
+
         if (ecm[EF_FADEFRAME].dat.uc8[0] == EF_FADEFRAME)
         {
             SetFadeFrame(&ecm[EF_FADEFRAME]);
         }
-        
+
         if (ecm[EF_OVERLAP].dat.uc8[0] == EF_OVERLAP)
         {
             SetOverRap(&ecm[EF_OVERLAP]);
         }
-        
+
         ScreenCtrl();
 
         CamSave();
@@ -1403,7 +1403,7 @@ void pblur()
     float l;
     float ll;
     static float d1 = 0.0f;
-    
+
     if (dbg_wrk.eff_prtblr_sw == 0)
     {
         return;
@@ -1429,8 +1429,8 @@ void pblur()
           .g_nTexSizeW = 640,
           .g_nTexSizeH = 224,
           .g_bMipmapLv = 0x0,
-          .g_GsMiptbp1 = 0,  
-          .g_GsMiptbp2 = 0, 
+          .g_GsMiptbp1 = 0,
+          .g_GsMiptbp2 = 0,
           .pos_x = -321.5f,
           .pos_y = -224.5f,
           .pos_z = 0,
@@ -1468,19 +1468,19 @@ void pblur()
     zz = (camera.p[2] - vpos[2]) * (camera.p[2] - vpos[2]);
 
     l = VER_SQRTF(xx + yy + zz);
-    
+
     if (l != fy)
     {
         ll = 1000.0f / l;
     }
-    
+
     ll = ll < 1.0f ? 1.0f : ll;
-    
+
     ss1 = VER_SINF((d1 + d1) / 180.0f * PI) * ll;
     ss2 = VER_SINF(((d1 * 3.0f) / 180.0f) * PI) * ll;
-    
+
     if (
-        (ss1 < 0.4f && ss1 > -0.4f) && 
+        (ss1 < 0.4f && ss1 > -0.4f) &&
         (ss2 < 0.4f && ss2 > -0.4f)
     )
     {
@@ -1490,12 +1490,12 @@ void pblur()
     {
         d1 += 0.2f;
     }
-    
+
     sd.pos_x = -320.5f + ss1;
     sd.pos_y = -224.5f + ss2;
     sd.pos_z = 0;
     sd.alpha = dbg_wrk.eff_prtblr_alp;
-    
+
     SetTexDirectS2(0, &sd, &de, 0);
     SetPanel(0xffff800, 0.0f, 0.0f, 640.0f, 448.0f, 0, 0, 0, 0x80);
 
@@ -1544,13 +1544,13 @@ void tes_p20()
             alp = dbg_wrk.eff_new_ene_ef_alp;
 
             Vu0CopyVector(fire_pos, plyr_wrk.move_box.pos);
-            
+
             fx = (fire_pos[0] - camera.p[0]);
             fy = (fire_pos[1] - camera.p[1]);
             fz = (fire_pos[2] - camera.p[2]);
 
             l = VER_SQRTF(fx * fx + fy * fy + fz * fz);
-            
+
             fire_pos[0] = camera.p[0] + ((fire_pos[0] - camera.p[0]) * (l - 200.0f)) / l;
             fire_pos[1] = camera.p[1] + ((fire_pos[1] - camera.p[1]) * (l - 200.0f)) / l;
             fire_pos[2] = camera.p[2] + ((fire_pos[2] - camera.p[2]) * (l - 200.0f)) / l;
@@ -1558,11 +1558,11 @@ void tes_p20()
             fire_pos[3] = 1.0f;
 
             Vu0CopyVector(fire_pos2, fire_pos);
-            
+
             fire_pos2[0] += off_x;
             fire_pos2[1] -= 700.0f;
             fire_pos2[2] += off_z;
-            
+
             ene_fire_work = GetEnePartAddr(ene_fire_work, 11, 160);
             ene_fire_work = ContHeatHaze(ene_fire_work, 11, fire_pos, fire_pos2, 0, 128.0f, 128.0f, 128.0f, alp, dbg_wrk.eff_new_ene_ef_sz * 100.0f, 1.0f);
         }
