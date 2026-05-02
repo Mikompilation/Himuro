@@ -96,15 +96,19 @@ int log_2(float num);
 void LocalCopyLtoB_Sub(int no, int type, int addr);
 void LocalCopyLtoB_Sub2(int no, int type, int addr);
 void LocalCopyBtoL_Sub(int no, int type, int addr);
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 int GetYOffset();
 float GetYOffsetf();
+#endif
 void LocalCopyLtoB2(int no, int addr);
 void LocalCopyLtoB(int no, int addr);
 void LocalCopyBtoL(int no, int addr);
 void LocalCopyLtoB_NB(int no, int addr);
 void LocalCopyBtoL_NB(int no, int addr);
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 void ClearLocalCopyLtoLCache();
 int LocalCopyLtoLDraw(int addr1, int addr2);
+#endif
 void LocalCopyLtoL(int addr1, int addr2);
 void LocalCopyZtoBZ();
 void LocalCopyBZtoZ();

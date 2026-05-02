@@ -1,34 +1,44 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "enums.h"
 #include "effect_sub.h"
+
+// gcc/src/newlib/libm/math/sf_sin.c
+float sinf(float x);
+
+// gcc/src/newlib/libm/math/wf_sqrt.c
+float sqrtf(float x);
+
+// gcc/src/newlib/libm/math/sf_atan.c
+float atanf(float x);
 
 #include "ee/kernel.h"
 #include "ee/eestruct.h"
 #include "sce/libgraph.h"
 #include "sce/libvu0.h"
 
-// #include "os/pad.h"
-#include "os/system.h"
-#include "main/glob.h"
-#include "ingame/ig_init.h"
 #include "common/ul_math.h"
-#include "graphics/graph2d/sprt.h"
-#include "graphics/graph2d/tim2.h"
 #include "graphics/graph2d/effect_oth.h"
+#include "graphics/graph2d/sprt.h"
 #include "graphics/graph2d/tim2_new.h"
+#include "graphics/graph2d/tim2.h"
+#include "graphics/graph3d/libsg.h"
 #include "graphics/graph3d/sgdma.h"
 #include "graphics/graph3d/sglib.h"
-#include "graphics/graph3d/libsg.h"
+#include "ingame/ig_init.h"
+#include "main/glob.h"
+// #include "os/pad.h"
+#include "os/system.h"
 
 typedef struct {
-	int screen_flag;
-	int time;
-	int cnt;
-	u_char col_r;
-	u_char col_g;
-	u_char col_b;
-	u_char now_alpha;
+    int screen_flag;
+    int time;
+    int cnt;
+    u_char col_r;
+    u_char col_g;
+    u_char col_b;
+    u_char now_alpha;
 } SCRCTRL;
 
 static SCRCTRL sc_col = {0};
@@ -44,11 +54,19 @@ static u_long128 *bufz;
 #define MIN(a,b) (((a)<(b))?(a):(b))
 #define MAX(a,b) (((a)>(b))?(a):(b))
 
+/*
+ * Wrap angle in radians to [-PI, PI].
+ * Assumes 'a' is not far outside the range (single-step correction).
+ */
+#define WRAP_PI(a) \
+    (((a) > PI) ? ((a) - (PI * 2)) : (((a) < -PI) ? ((a) + (PI * 2)) : (a)))
+
 void InitEffectSub()
 {
-    buf = (u_long128 *)0x01E90000;
-    buf2 = (u_long128 *)0x01F1C000;
+    buf = (u_long128 *)LOAD_ADDRESS_41;
+    buf2 = (u_long128 *)LOAD_ADDRESS_44;
     bufz = (u_long128 *)0x05000000;
+
     vib1_time = 0;
     vib2_time = 0;
     vib2_pow = 0;
@@ -70,33 +88,30 @@ int ScreenCtrl(void)
 
     if (sc_col.now_alpha !=  0)
     {
-        SetPanel2(0x10, 0.0, 0.0, 640.0, 448.0, 0, sc_col.col_r, sc_col.col_g, sc_col.col_g, sc_col.now_alpha);
+        SetPanel2(0x10, 0.0f, 0.0f, 640.0f, 448.0f, 0, sc_col.col_r, sc_col.col_g, sc_col.col_g, sc_col.now_alpha);
     }
-    
-    
+
+
     switch (sc_col.screen_flag)
     {
-        case 0:
-        break;
-        case 1:
-            sc_col.now_alpha = ((sc_col.time - sc_col.cnt) * 0x80) / sc_col.time;
-            sc_col.screen_flag = (sc_col.cnt++ >= sc_col.time) ? 0 : sc_col.screen_flag;
-     
-    
-            if (sc_col.now_alpha == 0) 
-            {
-                InitLoadStartLock();
-            }
-        break;
-        case 2:
-            sc_col.now_alpha = sc_col.cnt * 0x80 / sc_col.time;
+    case 0:
+        // do nothing ...
+    break;
+    case 1:
+        sc_col.now_alpha = ((sc_col.time - sc_col.cnt) * 0x80) / sc_col.time;
+        sc_col.screen_flag = (sc_col.cnt++ >= sc_col.time) ? 0 : sc_col.screen_flag;
 
-            sc_col.screen_flag = (sc_col.cnt++ >= sc_col.time) ? 0 : 2;
-
-        break;
+        if (sc_col.now_alpha == 0)
+        {
+            InitLoadStartLock();
+        }
+    break;
+    case 2:
+        sc_col.now_alpha = sc_col.cnt * 0x80 / sc_col.time;
+        sc_col.screen_flag = (sc_col.cnt++ >= sc_col.time) ? 0 : 2;
+    break;
     }
-    
-    
+
     return sc_col.screen_flag;
 }
 
@@ -114,7 +129,7 @@ void SetSquare(int pri, float x1, float y1, float x2, float y2, float x3, float 
     float div;
 
     div = g_bInterlace ? 2.0f : 1.0f;
-    mpri = pri > 0 ? pri : 4096;
+    mpri = pri > 0 ? pri : 0x1000;
 
     Reserve2DPacket(mpri);
 
@@ -130,67 +145,54 @@ void SetSquare(int pri, float x1, float y1, float x2, float y2, float x3, float 
 
     z = 0x0fffffff - mpri;
 
-    pbuf[ndpkt].ul128 = (u_long128)0; // clear tag
-    // Is there nothing in the SDK to make dma tags???
-    // this is DMA_ID_END + 10 quads worth of transfer data
-    pbuf[ndpkt].ui32[0] = DMAend | 10;
-    ndpkt++;
+    pbuf[ndpkt].ul128 = (u_long128)0;
+
+    pbuf[ndpkt++].ui32[0] = DMAend | 10;
 
     pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(3, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 1);
-    pbuf[ndpkt].ul64[1] = SCE_GIF_PACKED_AD;
-    ndpkt++;
+    pbuf[ndpkt++].ul64[1] = SCE_GIF_PACKED_AD;
 
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_ALPHA_1(SCE_GS_ALPHA_CS, SCE_GS_ALPHA_CD, SCE_GS_ALPHA_FIX, SCE_GS_ALPHA_CD, a);
-    pbuf[ndpkt].ul64[1] = SCE_GS_ALPHA_1;
-    ndpkt++;
+    pbuf[ndpkt++].ul64[1] = SCE_GS_ALPHA_1;
 
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_TEST_1(SCE_GS_TRUE, SCE_GS_ALPHA_GREATER, SCE_GS_FALSE, SCE_GS_AFAIL_KEEP, SCE_GS_FALSE, SCE_GS_FALSE, SCE_GS_TRUE, SCE_GS_DEPTH_GEQUAL);
-    pbuf[ndpkt].ul64[1] = SCE_GS_TEST_1;
-    ndpkt++;
+    pbuf[ndpkt++].ul64[1] = SCE_GS_TEST_1;
 
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_ZBUF_1(0x8c, SCE_GS_PSMCT24, 0);
-    pbuf[ndpkt].ul64[1] = SCE_GS_ZBUF_1;
-    ndpkt++;
+    pbuf[ndpkt++].ul64[1] = SCE_GS_ZBUF_1;
 
-    pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_TRUE, 68, SCE_GIF_PACKED, 5);
-    // Apparently there's no macro for this in the SDK?
-    pbuf[ndpkt].ul64[1] = 0 \
-        | SCE_GS_RGBAQ << (4 * 0) 
-        | SCE_GS_XYZF2 << (4 * 1) 
+    pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_TRUE, SCE_GS_SET_PRIM(SCE_GS_PRIM_TRISTRIP, 0, 0, 0, 1, 0, 0, 0, 0), SCE_GIF_PACKED, 5);
+    pbuf[ndpkt++].ul64[1] = 0 \
+        | SCE_GS_RGBAQ << (4 * 0)
+        | SCE_GS_XYZF2 << (4 * 1)
         | SCE_GS_XYZF2 << (4 * 2)
-        | SCE_GS_XYZF2 << (4 * 3) 
+        | SCE_GS_XYZF2 << (4 * 3)
         | SCE_GS_XYZF2 << (4 * 4);
-    ndpkt++;
 
     pbuf[ndpkt].ui32[0] = r;
     pbuf[ndpkt].ui32[1] = g;
     pbuf[ndpkt].ui32[2] = b;
-    pbuf[ndpkt].ui32[3] = 128;
-    ndpkt++;
+    pbuf[ndpkt++].ui32[3] = 0x80;
 
     pbuf[ndpkt].ui32[0] = x[0];
     pbuf[ndpkt].ui32[1] = y[0];
     pbuf[ndpkt].ui32[2] = z;
-    pbuf[ndpkt].ui32[3] = 0;
-    ndpkt++;
+    pbuf[ndpkt++].ui32[3] = 0;
 
     pbuf[ndpkt].ui32[0] = x[1];
     pbuf[ndpkt].ui32[1] = y[1];
     pbuf[ndpkt].ui32[2] = z;
-    pbuf[ndpkt].ui32[3] = 0;
-    ndpkt++;
+    pbuf[ndpkt++].ui32[3] = 0;
 
     pbuf[ndpkt].ui32[0] = x[2];
     pbuf[ndpkt].ui32[1] = y[2];
     pbuf[ndpkt].ui32[2] = z;
-    pbuf[ndpkt].ui32[3] = 0;
-    ndpkt++;
+    pbuf[ndpkt++].ui32[3] = 0;
 
     pbuf[ndpkt].ui32[0] = x[3];
     pbuf[ndpkt].ui32[1] = y[3];
     pbuf[ndpkt].ui32[2] = z;
-    pbuf[ndpkt].ui32[3] = 0;
-    ndpkt++;
+    pbuf[ndpkt++].ui32[3] = 0;
 }
 
 void SetSquare2s(int pri, float x1, float y1, float x4, float y4, u_char r1, u_char g1, u_char b1, u_char r2, u_char g2, u_char b2, u_char a)
@@ -200,99 +202,87 @@ void SetSquare2s(int pri, float x1, float y1, float x4, float y4, u_char r1, u_c
     int z;
     int mpri;
     float div;
-    
+
     div = g_bInterlace ? 2.0f : 1.0f;
-    mpri = pri > 0 ? pri : 4096;
-    
+    mpri = pri > 0 ? pri : 0x1000;
+
     Reserve2DPacket(mpri);
 
     x[0] = (x1 + 2048.0f) * 16.0f;
     x[1] = (x4 + 2048.0f) * 16.0f;
     x[2] = (x1 + 2048.0f) * 16.0f;
     x[3] = (x4 + 2048.0f) * 16.0f;
-    
+
     y[0] = (y1 / div + 2048.0f) * 16.0f;
     y[1] = (y1 / div + 2048.0f) * 16.0f;
     y[2] = (y4 / div + 2048.0f) * 16.0f;
     y[3] = (y4 / div + 2048.0f) * 16.0f;
-    
+
     z = 0x0fffffff - mpri;
-    
+
     pbuf[ndpkt].ul128 = (u_long128)0;
-    pbuf[ndpkt].ui32[0] = DMAend | 12;
-    ndpkt++;
-    
+
+    pbuf[ndpkt++].ui32[0] = DMAend | 12;
+
     pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(2, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 1);
-    pbuf[ndpkt].ul64[1] = SCE_GIF_PACKED_AD;
-    ndpkt++;
-    
+    pbuf[ndpkt++].ul64[1] = SCE_GIF_PACKED_AD;
+
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_ALPHA_1(SCE_GS_ALPHA_CS, SCE_GS_ALPHA_CD, SCE_GS_ALPHA_FIX, SCE_GS_ALPHA_CD, a);
-    pbuf[ndpkt].ul64[1] = SCE_GS_ALPHA_1;
-    ndpkt++;
-    
+    pbuf[ndpkt++].ul64[1] = SCE_GS_ALPHA_1;
+
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_ZBUF_1(0x8c, SCE_GS_PSMCT24, 1);
-    pbuf[ndpkt].ul64[1] = SCE_GS_ZBUF_1;
-    ndpkt++;
-    
-    pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_TRUE, 76, SCE_GIF_PACKED, 8);
-    pbuf[ndpkt].ul64[1] = 0 \
-        | SCE_GS_RGBAQ << (4 * 0) 
-        | SCE_GS_XYZF2 << (4 * 1) 
+    pbuf[ndpkt++].ul64[1] = SCE_GS_ZBUF_1;
+
+    pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_TRUE, SCE_GS_SET_PRIM(SCE_GS_PRIM_TRISTRIP, 1, 0, 0, 1, 0, 0, 0, 0), SCE_GIF_PACKED, 8);
+    pbuf[ndpkt++].ul64[1] = 0 \
+        | SCE_GS_RGBAQ << (4 * 0)
+        | SCE_GS_XYZF2 << (4 * 1)
         | SCE_GS_RGBAQ << (4 * 2)
-        | SCE_GS_XYZF2 << (4 * 3) 
+        | SCE_GS_XYZF2 << (4 * 3)
         | SCE_GS_RGBAQ << (4 * 4)
         | SCE_GS_XYZF2 << (4 * 5)
         | SCE_GS_RGBAQ << (4 * 6)
         | SCE_GS_XYZF2 << (4 * 7);
-    ndpkt++;
-    
+
     pbuf[ndpkt].ui32[0] = r1;
     pbuf[ndpkt].ui32[1] = g1;
     pbuf[ndpkt].ui32[2] = b1;
-    pbuf[ndpkt].ui32[3] = 128;    
-    ndpkt++;
-    
+    pbuf[ndpkt++].ui32[3] = 128;
+
     pbuf[ndpkt].ui32[0] = x[0];
     pbuf[ndpkt].ui32[1] = y[0];
     pbuf[ndpkt].ui32[2] = z;
-    pbuf[ndpkt].ui32[3] = 0;    
-    ndpkt++;
-    
+    pbuf[ndpkt++].ui32[3] = 0;
+
     pbuf[ndpkt].ui32[0] = r1;
     pbuf[ndpkt].ui32[1] = g1;
     pbuf[ndpkt].ui32[2] = b1;
-    pbuf[ndpkt].ui32[3] = 128;    
-    ndpkt++;
-    
+    pbuf[ndpkt++].ui32[3] = 128;
+
     pbuf[ndpkt].ui32[0] = x[1];
     pbuf[ndpkt].ui32[1] = y[1];
     pbuf[ndpkt].ui32[2] = z;
-    pbuf[ndpkt].ui32[3] = 0;
-    ndpkt++;
-    
+    pbuf[ndpkt++].ui32[3] = 0;
+
     pbuf[ndpkt].ui32[0] = r2;
     pbuf[ndpkt].ui32[1] = g2;
     pbuf[ndpkt].ui32[2] = b2;
-    pbuf[ndpkt].ui32[3] = 128;    
-    ndpkt++;
-    
+    pbuf[ndpkt++].ui32[3] = 128;
+
     pbuf[ndpkt].ui32[0] = x[2];
     pbuf[ndpkt].ui32[1] = y[2];
     pbuf[ndpkt].ui32[2] = z;
-    pbuf[ndpkt].ui32[3] = 0;
-    ndpkt++;
-    
+    pbuf[ndpkt++].ui32[3] = 0;
+
     pbuf[ndpkt].ui32[0] = r2;
     pbuf[ndpkt].ui32[1] = g2;
     pbuf[ndpkt].ui32[2] = b2;
-    pbuf[ndpkt].ui32[3] = 128;    
-    ndpkt++;
-    
+    pbuf[ndpkt++].ui32[3] = 128;
+
     pbuf[ndpkt].ui32[0] = x[3];
     pbuf[ndpkt].ui32[1] = y[3];
     pbuf[ndpkt].ui32[2] = z;
-    pbuf[ndpkt].ui32[3] = 0;
-    ndpkt++;
+    pbuf[ndpkt++].ui32[3] = 0;
 }
 
 void SetSquareZ(int pri, float x1, float y1, float x4, float y4, int z)
@@ -300,62 +290,53 @@ void SetSquareZ(int pri, float x1, float y1, float x4, float y4, int z)
     int x[4];
     int y[4];
     float div;
-    
+
     div = g_bInterlace ? 2.0f : 1.0f;
-    
+
     Reserve2DPacket(0);
 
     x[0] = (x1 + 2048.0f) * 16.0f;
     x[3] = (x4 + 2048.0f) * 16.0f;
-    
+
     y[0] = (y1 / div + 2048.0f) * 16.0f;
     y[3] = (y4 / div + 2048.0f) * 16.0f;
-    
+
     pbuf[ndpkt].ul128 = (u_long128)0;
-    pbuf[ndpkt].ui32[0] = DMAend | 8;
-    ndpkt++;
-    
+
+    pbuf[ndpkt++].ui32[0] = DMAend | 8;
+
     pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(3, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 1);
-    pbuf[ndpkt].ul64[1] = SCE_GIF_PACKED_AD;
-    ndpkt++;
-    
+    pbuf[ndpkt++].ul64[1] = SCE_GIF_PACKED_AD;
+
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_ALPHA_1(SCE_GS_ALPHA_CS, SCE_GS_ALPHA_CD, SCE_GS_ALPHA_FIX, SCE_GS_ALPHA_CD, pri);
-    pbuf[ndpkt].ul64[1] = SCE_GS_ALPHA_1;
-    ndpkt++;
-    
+    pbuf[ndpkt++].ul64[1] = SCE_GS_ALPHA_1;
+
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_ZBUF_1(0x8c, SCE_GS_PSMCT24, 1);
-    pbuf[ndpkt].ul64[1] = SCE_GS_ZBUF_1;
-    ndpkt++;
+    pbuf[ndpkt++].ul64[1] = SCE_GS_ZBUF_1;
 
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_TEST_1(SCE_GS_TRUE, SCE_GS_ALPHA_ALWAYS, SCE_GS_FALSE, SCE_GS_AFAIL_KEEP, SCE_GS_FALSE, SCE_GS_FALSE, SCE_GS_TRUE, SCE_GS_DEPTH_GEQUAL);
-    pbuf[ndpkt].ul64[1] = SCE_GS_TEST_1;
-    ndpkt++;
-    
-    pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_TRUE, 70, SCE_GIF_PACKED, 3);
-    // Apparently there's no macro for this in the SDK?
-    pbuf[ndpkt].ul64[1] = 0 \
-        | SCE_GS_RGBAQ << (4 * 0) 
-        | SCE_GS_XYZF2 << (4 * 1) 
+    pbuf[ndpkt++].ul64[1] = SCE_GS_TEST_1;
+
+    pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_TRUE, SCE_GS_SET_PRIM(SCE_GS_PRIM_SPRITE, 0, 0, 0, 1, 0, 0, 0, 0), SCE_GIF_PACKED, 3);
+    pbuf[ndpkt++].ul64[1] = 0 \
+        | SCE_GS_RGBAQ << (4 * 0)
+        | SCE_GS_XYZF2 << (4 * 1)
         | SCE_GS_XYZF2 << (4 * 2);
-    ndpkt++;
-    
-    pbuf[ndpkt].ui32[0] = 128;
-    pbuf[ndpkt].ui32[1] = 128;
-    pbuf[ndpkt].ui32[2] = 128;
-    pbuf[ndpkt].ui32[3] = 128;    
-    ndpkt++;
-    
+
+    pbuf[ndpkt].ui32[0] = 0x80;
+    pbuf[ndpkt].ui32[1] = 0x80;
+    pbuf[ndpkt].ui32[2] = 0x80;
+    pbuf[ndpkt++].ui32[3] = 0x80;
+
     pbuf[ndpkt].ui32[0] = x[0];
     pbuf[ndpkt].ui32[1] = y[0];
     pbuf[ndpkt].ui32[2] = z;
-    pbuf[ndpkt].ui32[3] = 0;    
-    ndpkt++;
-    
+    pbuf[ndpkt++].ui32[3] = 0;
+
     pbuf[ndpkt].ui32[0] = x[3];
     pbuf[ndpkt].ui32[1] = y[3];
     pbuf[ndpkt].ui32[2] = z;
-    pbuf[ndpkt].ui32[3] = 0;
-    ndpkt++;
+    pbuf[ndpkt++].ui32[3] = 0;
 }
 
 void SetPanel(u_int pri, float x1, float y1, float x2, float y2, u_char r, u_char g, u_char b, u_char a)
@@ -374,31 +355,31 @@ void SetPanel2(u_int pri, float x1, float y1, float x2, float y2, int z, u_char 
         .r = 0,
         .g = 0,
         .b = 0,
-        .alpha = 128,
+        .alpha = 0x80,
     };
     DISP_SQAR dq;
     int i;
-    
+
     CopySqrDToSqr(&dq, &sq);
 
     dq.pri = pri;
-    dq.z = 0xfffffff - pri;
+    dq.z = 0x0fffffff - pri;
     dq.zbuf = SCE_GS_SET_ZBUF_1(0x8c, SCE_GS_PSMCT24, z);
-    
+
     dq.x[2] = dq.x[0] = x1;
     dq.y[1] = dq.y[0] = y1;
     dq.x[3] = dq.x[1] = dq.x[0] + (int)(x2 - x1);
     dq.y[3] = dq.y[2] = dq.y[0] + (int)(y2 - y1);
-    
+
     for (i = 0; i < 4; i++)
     {
         dq.r[i] = r;
         dq.g[i] = g;
-        dq.b[i] = b; 
+        dq.b[i] = b;
     }
-    
+
     dq.alpha = a;
-    
+
     DispSqrD(&dq);
 }
 
@@ -421,8 +402,8 @@ void SetTriangle(int pri, float x1, float y1, float x2, float y2, float x3, floa
     float div;
 
     div = g_bInterlace ? 2.0f : 1.0f;
-    mpri = pri > 0 ? pri : 4096;
-    
+    mpri = pri > 0 ? pri : 0x1000;
+
     Reserve2DPacket(mpri);
 
     x[0] = (x1 + 2048.0f) * 16.0f;
@@ -432,67 +413,59 @@ void SetTriangle(int pri, float x1, float y1, float x2, float y2, float x3, floa
     y[0] = (y1 / div + 2048.0f) * 16.0f;
     y[1] = (y2 / div + 2048.0f) * 16.0f;
     y[2] = (y3 / div + 2048.0f) * 16.0f;
-    
+
     z = 0xfffffff - mpri;
 
     pbuf[ndpkt].ul128 = (u_long128)0;
-    pbuf[ndpkt].ui32[0] = DMAend | 8;
-    ndpkt++;
+
+    pbuf[ndpkt++].ui32[0] = DMAend | 8;
 
     pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(2, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 1);
-    pbuf[ndpkt].ul64[1] = SCE_GIF_PACKED_AD;
-    ndpkt++;
-    
+    pbuf[ndpkt++].ul64[1] = SCE_GIF_PACKED_AD;
+
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_ALPHA_1(SCE_GS_ALPHA_CS, SCE_GS_ALPHA_CD, SCE_GS_ALPHA_FIX, SCE_GS_ALPHA_CD, a);
-    pbuf[ndpkt].ul64[1] = SCE_GS_ALPHA_1;
-    ndpkt++;
+    pbuf[ndpkt++].ul64[1] = SCE_GS_ALPHA_1;
 
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_ZBUF_1(0x8c, SCE_GS_PSMCT24, 1);
-    pbuf[ndpkt].ul64[1] = SCE_GS_ZBUF_1;
-    ndpkt++;
+    pbuf[ndpkt++].ul64[1] = SCE_GS_ZBUF_1;
 
-    pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_TRUE, 68, SCE_GIF_PACKED, 4);
-    pbuf[ndpkt].ul64[1] = 0 \
-        | SCE_GS_RGBAQ << (4 * 0) 
-        | SCE_GS_XYZF2 << (4 * 1) 
+    pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_TRUE, SCE_GS_SET_PRIM(SCE_GS_PRIM_TRISTRIP, 0, 0, 0, 1, 0, 0, 0, 0), SCE_GIF_PACKED, 4);
+    pbuf[ndpkt++].ul64[1] = 0 \
+        | SCE_GS_RGBAQ << (4 * 0)
+        | SCE_GS_XYZF2 << (4 * 1)
         | SCE_GS_XYZF2 << (4 * 2)
         | SCE_GS_XYZF2 << (4 * 3);
-    ndpkt++;
 
     pbuf[ndpkt].ui32[0] = r;
     pbuf[ndpkt].ui32[1] = g;
     pbuf[ndpkt].ui32[2] = b;
-    pbuf[ndpkt].ui32[3] = 128;
-    ndpkt++;
+    pbuf[ndpkt++].ui32[3] = 0x80;
 
     pbuf[ndpkt].ui32[0] = x[0];
     pbuf[ndpkt].ui32[1] = y[0];
     pbuf[ndpkt].ui32[2] = z;
-    pbuf[ndpkt].ui32[3] = 0;
-    ndpkt++;
+    pbuf[ndpkt++].ui32[3] = 0;
 
     pbuf[ndpkt].ui32[0] = x[1];
     pbuf[ndpkt].ui32[1] = y[1];
     pbuf[ndpkt].ui32[2] = z;
-    pbuf[ndpkt].ui32[3] = 0;
-    ndpkt++;
+    pbuf[ndpkt++].ui32[3] = 0;
 
     pbuf[ndpkt].ui32[0] = x[2];
     pbuf[ndpkt].ui32[1] = y[2];
     pbuf[ndpkt].ui32[2] = z;
-    pbuf[ndpkt].ui32[3] = 0;
-    ndpkt++;
+    pbuf[ndpkt++].ui32[3] = 0;
 }
 
 void SetTriangleZ(int pri, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, u_char r, u_char g, u_char b, u_char a)
 {
-	int x[3];
-	int y[3];
-	float div;
+    int x[3];
+    int y[3];
+    float div;
 
     div = g_bInterlace ? 2.0f : 1.0f;
-    
-    Reserve2DPacket(pri > 0 ? pri : 4096);
+
+    Reserve2DPacket(pri > 0 ? pri : 0x1000);
 
     x[0] = (x1 + 2048.0f) * 16.0f;
     x[1] = (x2 + 2048.0f) * 16.0f;
@@ -501,73 +474,64 @@ void SetTriangleZ(int pri, float x1, float y1, float z1, float x2, float y2, flo
     y[0] = (y1 / div + 2048.0f) * 16.0f;
     y[1] = (y2 / div + 2048.0f) * 16.0f;
     y[2] = (y3 / div + 2048.0f) * 16.0f;
-    
+
     pbuf[ndpkt].ul128 = (u_long128)0;
-    pbuf[ndpkt].ui32[0] = DMAend | 9;
-    ndpkt++;
+
+    pbuf[ndpkt++].ui32[0] = DMAend | 9;
 
     pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(3, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 1);
-    pbuf[ndpkt].ul64[1] = SCE_GIF_PACKED_AD;
-    ndpkt++;
-    
+    pbuf[ndpkt++].ul64[1] = SCE_GIF_PACKED_AD;
+
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_ALPHA_1(SCE_GS_ALPHA_CS, SCE_GS_ALPHA_CD, SCE_GS_ALPHA_FIX, SCE_GS_ALPHA_CD, a);
-    pbuf[ndpkt].ul64[1] = SCE_GS_ALPHA_1;
-    ndpkt++;
-    
+    pbuf[ndpkt++].ul64[1] = SCE_GS_ALPHA_1;
+
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_TEST_1(SCE_GS_FALSE, SCE_GS_ALPHA_NEVER, SCE_GS_FALSE, SCE_GS_AFAIL_KEEP, SCE_GS_FALSE, SCE_GS_FALSE, SCE_GS_TRUE, SCE_GS_DEPTH_GEQUAL);
-    pbuf[ndpkt].ul64[1] = SCE_GS_TEST_1;
-    ndpkt++;
-    
+    pbuf[ndpkt++].ul64[1] = SCE_GS_TEST_1;
+
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_ZBUF_1(0x8c, SCE_GS_PSMCT24, 0);
-    pbuf[ndpkt].ul64[1] = SCE_GS_ZBUF_1;
-    ndpkt++;
-    
-    pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_TRUE, 68, SCE_GIF_PACKED, 4);
-    pbuf[ndpkt].ul64[1] = 0 \
-        | SCE_GS_RGBAQ << (4 * 0) 
-        | SCE_GS_XYZF2 << (4 * 1) 
+    pbuf[ndpkt++].ul64[1] = SCE_GS_ZBUF_1;
+
+    pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_TRUE, SCE_GS_SET_PRIM(SCE_GS_PRIM_TRISTRIP, 0, 0, 0, 1, 0, 0, 0, 0), SCE_GIF_PACKED, 4);
+    pbuf[ndpkt++].ul64[1] = 0 \
+        | SCE_GS_RGBAQ << (4 * 0)
+        | SCE_GS_XYZF2 << (4 * 1)
         | SCE_GS_XYZF2 << (4 * 2)
         | SCE_GS_XYZF2 << (4 * 3);
-    ndpkt++;
-    
+
     pbuf[ndpkt].ui32[0] = r;
     pbuf[ndpkt].ui32[1] = g;
     pbuf[ndpkt].ui32[2] = b;
-    pbuf[ndpkt].ui32[3] = 128;
-    ndpkt++;
-    
+    pbuf[ndpkt++].ui32[3] = 0x80;
+
     pbuf[ndpkt].ui32[0] = x[0];
     pbuf[ndpkt].ui32[1] = y[0];
     pbuf[ndpkt].ui32[2] = z1;
-    pbuf[ndpkt].ui32[3] = 0;
-    ndpkt++;
-    
+    pbuf[ndpkt++].ui32[3] = 0;
+
     pbuf[ndpkt].ui32[0] = x[1];
     pbuf[ndpkt].ui32[1] = y[1];
     pbuf[ndpkt].ui32[2] = z2;
-    pbuf[ndpkt].ui32[3] = 0;
-    ndpkt++;
-    
+    pbuf[ndpkt++].ui32[3] = 0;
+
     pbuf[ndpkt].ui32[0] = x[2];
     pbuf[ndpkt].ui32[1] = y[2];
     pbuf[ndpkt].ui32[2] = z3;
-    pbuf[ndpkt].ui32[3] = 0;
-    ndpkt++;
+    pbuf[ndpkt++].ui32[3] = 0;
 }
 
 void SetLine(int pri, float x1, float y1, float x2, float y2, u_char r, u_char g, u_char b, u_char a)
 {
-	int x[2];
-	int y[2];
-	int z;
-	int mpri;
-	float div;
-    
+    int x[2];
+    int y[2];
+    int z;
+    int mpri;
+    float div;
+
     div = g_bInterlace ? 2.0f : 1.0f;
-    mpri = pri > 0 ? pri : 4096;
-    
+    mpri = pri > 0 ? pri : 0x1000;
+
     Reserve2DPacket(mpri);
- 
+
     x[0] = (x1 + 2048.0f) * 16.0f;
     x[1] = (x2 + 2048.0f) * 16.0f;
 
@@ -575,61 +539,53 @@ void SetLine(int pri, float x1, float y1, float x2, float y2, u_char r, u_char g
     y[1] = (y2 / div + 2048.0f) * 16.0f;
 
     z = 0xfffffff - mpri;
-    
+
     pbuf[ndpkt].ul128 = (u_long128)0;
-    pbuf[ndpkt].ui32[0] = DMAend | 7;
-    ndpkt++;
-    
+    pbuf[ndpkt++].ui32[0] = DMAend | 7;
+
     pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(2, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 1);
-    pbuf[ndpkt].ul64[1] = SCE_GIF_PACKED_AD;
-    ndpkt++;
-    
+    pbuf[ndpkt++].ul64[1] = SCE_GIF_PACKED_AD;
+
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_ALPHA_1(SCE_GS_ALPHA_CS, SCE_GS_ALPHA_CD, SCE_GS_ALPHA_FIX, SCE_GS_ALPHA_CD, a);
-    pbuf[ndpkt].ul64[1] = SCE_GS_ALPHA_1;
-    ndpkt++;
-    
+    pbuf[ndpkt++].ul64[1] = SCE_GS_ALPHA_1;
+
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_ZBUF_1(0x8c, SCE_GS_PSMCT24, 1);
-    pbuf[ndpkt].ul64[1] = SCE_GS_ZBUF_1;
-    ndpkt++;
-    
-    pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_TRUE, 65, SCE_GIF_PACKED, 3);
-    pbuf[ndpkt].ul64[1] = 0 \
-        | SCE_GS_RGBAQ << (4 * 0) 
-        | SCE_GS_XYZF2 << (4 * 1) 
+    pbuf[ndpkt++].ul64[1] = SCE_GS_ZBUF_1;
+
+    pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_TRUE, SCE_GS_SET_PRIM(SCE_GS_PRIM_LINE, 0, 0, 0, 1, 0, 0, 0, 0), SCE_GIF_PACKED, 3);
+    pbuf[ndpkt++].ul64[1] = 0 \
+        | SCE_GS_RGBAQ << (4 * 0)
+        | SCE_GS_XYZF2 << (4 * 1)
         | SCE_GS_XYZF2 << (4 * 2);
-    ndpkt++;
-    
+
     pbuf[ndpkt].ui32[0] = r;
     pbuf[ndpkt].ui32[1] = g;
     pbuf[ndpkt].ui32[2] = b;
-    pbuf[ndpkt].ui32[3] = 128;
-    ndpkt++;
-    
+    pbuf[ndpkt++].ui32[3] = 0x80;
+
     pbuf[ndpkt].ui32[0] = x[0];
     pbuf[ndpkt].ui32[1] = y[0];
     pbuf[ndpkt].ui32[2] = z;
-    pbuf[ndpkt].ui32[3] = 0;
-    ndpkt++;
-    
+    pbuf[ndpkt++].ui32[3] = 0;
+
     pbuf[ndpkt].ui32[0] = x[1];
     pbuf[ndpkt].ui32[1] = y[1];
     pbuf[ndpkt].ui32[2] = z;
-    pbuf[ndpkt].ui32[3] = 0;
-    ndpkt++;
+    pbuf[ndpkt++].ui32[3] = 0;
 }
 
 void SetLine2(int pri, float x1, float y1, float x2, float y2, u_char r, u_char g, u_char b, u_char a)
-    {
-	u_char rr;
-	u_char gg;
-	u_char bb;
-	float d;
-	float dw;
+{
+    u_char rr;
+    u_char gg;
+    u_char bb;
+    float d;
+    float dw;
 
-    
-    dw = SgAtanf((x1 - x2) / (y1 - y2));
+    dw = VER_ATANF((x1 - x2) / (y1 - y2));
+
     d = (dw * 180.0f) / PI;
-    
+
     if (d > 45.0f || d < -45.0f)
     {
         rr = r * 0.5f;
@@ -642,9 +598,9 @@ void SetLine2(int pri, float x1, float y1, float x2, float y2, u_char r, u_char 
         {
             d = -d;
         }
-        
+
         dw = ((45.0f - d) * 0.5f) / 15.0f + 0.5f;
-        
+
         rr = r * dw;
         gg = g * dw;
         bb = b * dw;
@@ -655,23 +611,23 @@ void SetLine2(int pri, float x1, float y1, float x2, float y2, u_char r, u_char 
         gg = g;
         bb = b;
     }
-        
+
     SetLine(pri, x1, y1, x2, y2, rr, gg, bb, a);
 }
 
 void DrawPoint(float *mpos, int no)
 {
-	int n;
-	int clip;
-	sceVu0FMATRIX wlm;
-	sceVu0FMATRIX slm;
-	sceVu0FVECTOR fzero = { 0.0f, 0.0f, 0.0f, 1.0f };
-	sceVu0IVECTOR ivec;
+    int n;
+    int clip;
+    sceVu0FMATRIX wlm;
+    sceVu0FMATRIX slm;
+    sceVu0FVECTOR fzero = { 0.0f, 0.0f, 0.0f, 1.0f };
+    sceVu0IVECTOR ivec;
 
     sceVu0UnitMatrix(wlm);
-    
+
     wlm[0][0] = wlm[1][1] = wlm[2][2] = 25.0f;
-    
+
     sceVu0TransMatrix(wlm, wlm, mpos);
     sceVu0MulMatrix(slm, SgWSMtx, wlm);
     sceVu0RotTransPers(ivec, slm, fzero, 0);
@@ -682,13 +638,13 @@ void DrawPoint(float *mpos, int no)
     {
         clip++;
     }
-    
+
     if (ivec[1] < GS_Y_COORD(0) || ivec[1] > GS_Y_COORD(SCR_HEIGHT))
     {
         clip++;
     }
-    
-    if (ivec[2] < 0xff || ivec[2] > 0xffffff)
+
+    if (ivec[2] < 0xff || ivec[2] > 0x00ffffff)
     {
         clip++;
     }
@@ -698,59 +654,52 @@ void DrawPoint(float *mpos, int no)
         Reserve2DPacket(0x1000);
 
         n = ndpkt;
-        
+
         pbuf[ndpkt].ul128 = (u_long128)0;
-        pbuf[ndpkt].ui32[0] = DMAend | 0;
-        ndpkt++;
-        
+
+        pbuf[ndpkt++].ui32[0] = DMAend | 0;
+
         pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(3, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 1);
-        pbuf[ndpkt].ul64[1] = SCE_GIF_PACKED_AD;
-        ndpkt++;
-        
+        pbuf[ndpkt++].ul64[1] = SCE_GIF_PACKED_AD;
+
         pbuf[ndpkt].ul64[0] = SCE_GS_SET_ZBUF_1(0x8c, SCE_GS_PSMCT24, 1);
-        pbuf[ndpkt].ul64[1] = SCE_GS_ZBUF_1;
-        ndpkt++;
-        
+        pbuf[ndpkt++].ul64[1] = SCE_GS_ZBUF_1;
+
         pbuf[ndpkt].ul64[0] = SCE_GS_SET_TEST_1(SCE_GS_TRUE, SCE_GS_ALPHA_ALWAYS, SCE_GS_FALSE, SCE_GS_AFAIL_KEEP, SCE_GS_FALSE, SCE_GS_FALSE, SCE_GS_TRUE, SCE_GS_DEPTH_ALWAYS);
-        pbuf[ndpkt].ul64[1] = SCE_GS_TEST_1;
-        ndpkt++;
-        
+        pbuf[ndpkt++].ul64[1] = SCE_GS_TEST_1;
+
         pbuf[ndpkt].ul64[0] = SCE_GS_SET_ALPHA_1(SCE_GS_ALPHA_CS, SCE_GS_ALPHA_CD, SCE_GS_ALPHA_AS, SCE_GS_ALPHA_CD, 0);
-        pbuf[ndpkt].ul64[1] = SCE_GS_ALPHA_1;
-        ndpkt++;
-        
+        pbuf[ndpkt++].ul64[1] = SCE_GS_ALPHA_1;
+
         pbuf[ndpkt].ul64[0] = SCE_GS_SET_SCISSOR_2(32769, 0, 16384, 8288);
-        pbuf[ndpkt].ul64[1] = SCE_GS_SCISSOR_2;
-        ndpkt++;
-        
+        pbuf[ndpkt++].ul64[1] = SCE_GS_SCISSOR_2;
+
         pbuf[ndpkt].ui32[0] = 0xff;
         pbuf[ndpkt].ui32[1] = no * 0xff;
         pbuf[ndpkt].ui32[2] = no * 0xff;
-        pbuf[ndpkt].ui32[3] = 128;
-        ndpkt++;
-        
+        pbuf[ndpkt++].ui32[3] = 0x80;
+
         pbuf[ndpkt].iv[0] = ivec[0];
         pbuf[ndpkt].iv[1] = ivec[1];
         pbuf[ndpkt].iv[2] = ivec[2];
-        pbuf[ndpkt].iv[3] = 0;
-        ndpkt++;
-        
+        pbuf[ndpkt++].iv[3] = 0;
+
         pbuf[n].ui32[0] = ndpkt + DMAend - n - 1;
     }
 }
 
 void DrawPoint2(float *mpos, u_char r, u_char g, u_char b, u_char a) {
-	int n;
-	int clip;
-	sceVu0FMATRIX wlm;
-	sceVu0FMATRIX slm;
-	sceVu0FVECTOR fzero = { 0.0f, 0.0f, 0.0f, 1.0f };
-	sceVu0IVECTOR ivec;    
+    int n;
+    int clip;
+    sceVu0FMATRIX wlm;
+    sceVu0FMATRIX slm;
+    sceVu0FVECTOR fzero = { 0.0f, 0.0f, 0.0f, 1.0f };
+    sceVu0IVECTOR ivec;
 
     sceVu0UnitMatrix(wlm);
-    
+
     wlm[0][0] = wlm[1][1] = wlm[2][2] = 25.0f;
-    
+
     sceVu0TransMatrix(wlm, wlm, mpos);
     sceVu0MulMatrix(slm, SgWSMtx, wlm);
     sceVu0RotTransPers(ivec, slm, fzero, 0);
@@ -761,85 +710,76 @@ void DrawPoint2(float *mpos, u_char r, u_char g, u_char b, u_char a) {
     {
         clip++;
     }
-    
+
     if (ivec[1] < GS_Y_COORD(0) || ivec[1] > GS_Y_COORD(SCR_HEIGHT))
     {
         clip++;
     }
-    
-    if (ivec[2] < 0xff || ivec[2] > 0xffffff)
+
+    if (ivec[2] < 0xff || ivec[2] > 0x00ffffff)
     {
         clip++;
     }
-    
+
     if (clip == 0)
     {
         Reserve2DPacket(0x1000);
 
         n = ndpkt;
-        
+
         pbuf[ndpkt].ul128 = (u_long128)0;
-        pbuf[ndpkt].ui32[0] = DMAend | 0;
-        ndpkt++;
-        
+
+        pbuf[ndpkt++].ui32[0] = DMAend | 0;
+
         pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(3, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 1);
-        pbuf[ndpkt].ul64[1] = SCE_GIF_PACKED_AD;
-        ndpkt++;
-        
+        pbuf[ndpkt++].ul64[1] = SCE_GIF_PACKED_AD;
+
         pbuf[ndpkt].ul64[0] = SCE_GS_SET_ZBUF_1(0x8c, SCE_GS_PSMCT24, 1);
-        pbuf[ndpkt].ul64[1] = SCE_GS_ZBUF_1;
-        ndpkt++;
-        
+        pbuf[ndpkt++].ul64[1] = SCE_GS_ZBUF_1;
+
         pbuf[ndpkt].ul64[0] = SCE_GS_SET_TEST_1(SCE_GS_TRUE, SCE_GS_ALPHA_GREATER, SCE_GS_FALSE, SCE_GS_AFAIL_KEEP, SCE_GS_FALSE, SCE_GS_FALSE, SCE_GS_TRUE, SCE_GS_DEPTH_GEQUAL);
-        pbuf[ndpkt].ul64[1] = SCE_GS_TEST_1;
-        ndpkt++;
-        
+        pbuf[ndpkt++].ul64[1] = SCE_GS_TEST_1;
+
         pbuf[ndpkt].ul64[0] = SCE_GS_SET_ALPHA_1(SCE_GS_ALPHA_CS, SCE_GS_ALPHA_CD, SCE_GS_ALPHA_AS, SCE_GS_ALPHA_CD, 0);
-        pbuf[ndpkt].ul64[1] = SCE_GS_ALPHA_1;
-        ndpkt++;
-        
+        pbuf[ndpkt++].ul64[1] = SCE_GS_ALPHA_1;
+
         pbuf[ndpkt].ul64[0] = SCE_GS_SET_SCISSOR_2(32769, 0, 16384, 8224);
-        pbuf[ndpkt].ul64[1] = SCE_GS_SCISSOR_2;
-        ndpkt++;
-        
+        pbuf[ndpkt++].ul64[1] = SCE_GS_SCISSOR_2;
+
         pbuf[ndpkt].ui32[0] = r;
         pbuf[ndpkt].ui32[1] = g;
         pbuf[ndpkt].ui32[2] = b;
-        pbuf[ndpkt].ui32[3] = a;
-        ndpkt++;
-        
+        pbuf[ndpkt++].ui32[3] = a;
+
         pbuf[ndpkt].iv[0] = ivec[0];
         pbuf[ndpkt].iv[1] = ivec[1];
         pbuf[ndpkt].iv[2] = ivec[2];
-        pbuf[ndpkt].iv[3] = 0;
-        ndpkt++;
-        
+        pbuf[ndpkt++].iv[3] = 0;
+
         pbuf[n].ui32[0] = ndpkt + DMAend - n - 1;
     }
 }
 
 void DrawLine(float *mpos1, u_char r1, u_char g1, u_char b1, u_char a1, float *mpos2, u_char r2, u_char g2, u_char b2, u_char a2)
 {
-	// u_char b2;
-	// u_char a2;
-	int i;
-	int n;
-	int clip;
-	sceVu0FMATRIX wlm;
-	sceVu0FMATRIX slm;
-	sceVu0FVECTOR fzero = { 0.0f, 0.0f, 0.0f, 1.0f };
-	sceVu0IVECTOR ivec[2];
-    
+    int i;
+    int n;
+    int clip;
+    sceVu0FMATRIX wlm;
+    sceVu0FMATRIX slm;
+    sceVu0FVECTOR fzero = { 0.0f, 0.0f, 0.0f, 1.0f };
+    sceVu0IVECTOR ivec[2];
+
     sceVu0UnitMatrix(wlm);
-    
+
     wlm[0][0] = wlm[1][1] = wlm[2][2] = 25.0f;
-    
+
     sceVu0TransMatrix(wlm, wlm, mpos1);
     sceVu0MulMatrix(slm, SgWSMtx, wlm);
     sceVu0RotTransPers(ivec[0], slm, fzero, 0);
-    
+
     sceVu0UnitMatrix(wlm);
-    
+
     wlm[0][0] = wlm[1][1] = wlm[2][2] = 25.0f;
 
     sceVu0TransMatrix(wlm, wlm, mpos2);
@@ -867,86 +807,86 @@ void DrawLine(float *mpos1, u_char r1, u_char g1, u_char b1, u_char a1, float *m
             clip = clip | 4 << (i * 4); // 4,64
         }
     }
-    
+
     if (clip == 0)
     {
         Reserve2DPacket(0x1000);
 
         n = ndpkt;
-        
+
         pbuf[ndpkt].ul128 = (u_long128)0;
+
         pbuf[ndpkt++].ui32[0] = DMAend | 0;
-        
+
         pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(3, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 1);
         pbuf[ndpkt++].ul64[1] = SCE_GIF_PACKED_AD;
-        
+
         pbuf[ndpkt].ul64[0] = SCE_GS_SET_ZBUF_1(0x8c, SCE_GS_PSMCT24, 0);
         pbuf[ndpkt++].ul64[1] = SCE_GS_ZBUF_1;
-        
+
         pbuf[ndpkt].ul64[0] = SCE_GS_SET_TEST_1(SCE_GS_TRUE, SCE_GS_ALPHA_GREATER, SCE_GS_FALSE, SCE_GS_AFAIL_KEEP, SCE_GS_FALSE, SCE_GS_FALSE, SCE_GS_TRUE, SCE_GS_DEPTH_GEQUAL);
         pbuf[ndpkt++].ul64[1] = SCE_GS_TEST_1;
-        
+
         pbuf[ndpkt].ul64[0] = SCE_GS_SET_ALPHA_1(SCE_GS_ALPHA_CS, SCE_GS_ALPHA_CD, SCE_GS_ALPHA_AS, SCE_GS_ALPHA_CD, 0);
         pbuf[ndpkt++].ul64[1] = SCE_GS_ALPHA_1;
-        
-        pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_TRUE, 73, SCE_GIF_PACKED, 4);
+
+        pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_TRUE, SCE_GS_SET_PRIM(SCE_GS_PRIM_LINE, 1, 0, 0, 1, 0, 0, 0, 0), SCE_GIF_PACKED, 4);
         pbuf[ndpkt++].ul64[1] = 0 \
-            | SCE_GS_RGBAQ << (4 * 0) 
-            | SCE_GS_XYZF2 << (4 * 1) 
-            | SCE_GS_RGBAQ << (4 * 2) 
+            | SCE_GS_RGBAQ << (4 * 0)
+            | SCE_GS_XYZF2 << (4 * 1)
+            | SCE_GS_RGBAQ << (4 * 2)
             | SCE_GS_XYZF2 << (4 * 3);
-        
+
         pbuf[ndpkt].ui32[0] = r1;
         pbuf[ndpkt].ui32[1] = g1;
         pbuf[ndpkt].ui32[2] = b1;
         pbuf[ndpkt++].ui32[3] = a1;
-        
+
         pbuf[ndpkt].iv[0] = ivec[0][0];
         pbuf[ndpkt].iv[1] = ivec[0][1];
         pbuf[ndpkt].iv[2] = ivec[0][2];
         pbuf[ndpkt++].iv[3] = 0;
-        
+
         pbuf[ndpkt].ui32[0] = r2;
         pbuf[ndpkt].ui32[1] = g2;
         pbuf[ndpkt].ui32[2] = b2;
         pbuf[ndpkt++].ui32[3] = a2;
-        
+
         pbuf[ndpkt].iv[0] = ivec[1][0];
         pbuf[ndpkt].iv[1] = ivec[1][1];
         pbuf[ndpkt].iv[2] = ivec[1][2];
         pbuf[ndpkt++].iv[3] = 0;
-        
+
         pbuf[n].ui32[0] = ndpkt + DMAend - n - 1;
     }
 }
 
 void Set3DPosTexure(sceVu0FMATRIX wlm, DRAW_ENV *de, int texno, float w, float h, u_char r, u_char g, u_char b, u_char a)
 {
-	int i;
-	int bak;
-	float th;
-	float tw;
+    int i;
+    int bak;
+    float th;
+    float tw;
     u_int clpx2 = 0xc000;
-	u_int clpy2 = 0xc000;
-	u_int clpz2 = 0xffffff;
-	u_long tx0;
-	sceVu0FMATRIX slm;
-	sceVu0IVECTOR ivec[4];
-	sceVu0FVECTOR ppos[4] = {
-        { -1.0f, 1.0f, 0.0f, 1.0f },
-        { 1.0f, 1.0f, 0.0f, 1.0f },
+    u_int clpy2 = 0xc000;
+    u_int clpz2 = 0xffffff;
+    u_long tx0;
+    sceVu0FMATRIX slm;
+    sceVu0IVECTOR ivec[4];
+    sceVu0FVECTOR ppos[4] = {
+        { -1.0f, +1.0f, 0.0f, 1.0f },
+        { +1.0f, +1.0f, 0.0f, 1.0f },
         { -1.0f, -1.0f, 0.0f, 1.0f },
-        { 1.0f, -1.0f, 0.0f, 1.0f },
+        { +1.0f, -1.0f, 0.0f, 1.0f },
     };
-	float twoby[11] = {
-        1.0f, 2.0f, 4.0f, 8.0f, 16.0f,
+    float twoby[11] = {
+         1.0f,  2.0f,   4.0f,   8.0f,  16.0f,
         32.0f, 64.0f, 128.0f, 256.0f, 512.0f, 1024.f,
     };
-	float stq[2] = { 0.01f, 0.99f };
-	U32DATA ts[4];
-	U32DATA tt[4];
-	U32DATA tq[4];
-    
+    float stq[2] = { 0.01f, 0.99f };
+    U32DATA ts[4];
+    U32DATA tt[4];
+    U32DATA tq[4];
 
     for (i = 0; i < 4; i++)
     {
@@ -955,16 +895,16 @@ void Set3DPosTexure(sceVu0FMATRIX wlm, DRAW_ENV *de, int texno, float w, float h
         ppos[i][2] = 0.0f;
         ppos[i][3] = 1.0f;
     }
-    
+
     sceVu0MulMatrix(slm, SgWSMtx, wlm);
     sceVu0RotTransPersN(ivec , slm, ppos, 4, 1);
-    
+
     tx0 = effdat[texno + monochrome_mode].tex0;
     tw = effdat[texno + monochrome_mode].w;
     th = effdat[texno + monochrome_mode].h;
-    
+
     w = 0.0f;
-    
+
     for (i = 0; i < 4; i++)
     {
         if (ivec[i][0] >= 0 && ivec[i][0] < 0x4000)
@@ -984,7 +924,7 @@ void Set3DPosTexure(sceVu0FMATRIX wlm, DRAW_ENV *de, int texno, float w, float h
         {
             w = 1.0f;
         }
-        
+
         if (ivec[i][2] == 0)
         {
             w = 1.0f;
@@ -993,96 +933,97 @@ void Set3DPosTexure(sceVu0FMATRIX wlm, DRAW_ENV *de, int texno, float w, float h
         {
             w = 1.0f;
         }
-        
+
         tq[i].fl32 = 1.0f / ivec[i][3];
         ts[i].fl32 = (tw * stq[i % 2] * tq[i].fl32) / twoby[log_2(tw)];
         tt[i].fl32 = (th * stq[i / 2] * tq[i].fl32) / twoby[log_2(th)];
     }
-    
+
     if (w == 0.0f)
     {
         Reserve2DPacket(0x1000);
 
         bak = ndpkt;
-        
+
         pbuf[ndpkt++].ul128 = (u_long128)0;
-        
+
         pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(6, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 1);
         pbuf[ndpkt++].ul64[1] = SCE_GIF_PACKED_AD;
-        
+
         pbuf[ndpkt].ul64[0] = 0;
         pbuf[ndpkt++].ul64[1] = SCE_GS_TEXFLUSH;
-        
+
         pbuf[ndpkt].ul64[0] = tx0;
         pbuf[ndpkt++].ul64[1] = SCE_GS_TEX0_1;
-        
+
         pbuf[ndpkt].ul64[0] = de->tex1;
         pbuf[ndpkt++].ul64[1] = SCE_GS_TEX1_1;
-        
+
         pbuf[ndpkt].ul64[0] = de->zbuf;
         pbuf[ndpkt++].ul64[1] = SCE_GS_ZBUF_1;
-        
+
         pbuf[ndpkt].ul64[0] = de->alpha;
         pbuf[ndpkt++].ul64[1] = SCE_GS_ALPHA_1;
-        
+
         pbuf[ndpkt].ul64[0] = de->test;
         pbuf[ndpkt++].ul64[1] = SCE_GS_TEST_1;
-        
+
         pbuf[ndpkt].ul64[0] = de->prim;
-        // pbuf[ndpkt++].ul64[1] = 0x412;
         pbuf[ndpkt++].ul64[1] = 0 \
-            | SCE_GS_ST    << (4 * 0) 
-            | SCE_GS_RGBAQ << (4 * 1) 
+            | SCE_GS_ST    << (4 * 0)
+            | SCE_GS_RGBAQ << (4 * 1)
             | SCE_GS_XYZF2 << (4 * 2);
-        
+
         for (i = 0; i < 4; i++)
-        {            
+        {
             pbuf[ndpkt].ui32[0] = ts[i].ui32;
             pbuf[ndpkt].ui32[1] = tt[i].ui32;
             pbuf[ndpkt].ui32[2] = tq[i].ui32;
             pbuf[ndpkt++].ui32[3] = 0.0f;
-            
+
             pbuf[ndpkt].ui32[0] = r;
             pbuf[ndpkt].ui32[1] = g;
             pbuf[ndpkt].ui32[2] = b;
             pbuf[ndpkt++].ui32[3] = a;
-            
+
             pbuf[ndpkt].ui32[0] = ivec[i][0];
             pbuf[ndpkt].ui32[1] = ivec[i][1];
             pbuf[ndpkt].ui32[2] = ivec[i][2] * 16;
             pbuf[ndpkt++].ui32[3] = (i <= 1) ? 0x8000 : 0;
         }
-        
+
         pbuf[bak].ui32[0] = ndpkt + DMAend - bak - 1;
     }
 }
 
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 static int old_ltol_addr1 = -1;
 static int old_ltol_addr2 = -1;
+#endif
 int vib1_time = 0;
 int vib2_time = 0;
 int vib2_pow = 0;
 
 void _SetTexDirectS(int pri, SPRITE_DATA *sd, int atype) {
-	int xx[4];
-	int yy[4];
-	int mz;
-	u_int tw;
-	u_int th;
-	float div;
-	float mx;
-	float my;
-	float mscw;
-	float msch;
-	float mszw;
-	float mszh;
-	float px;
-	float py;
-	float pw;
-	float ph;
-	u_char malp;
-	sceGsTex0 Load;
-	sceGsTex0 Change;
+    int xx[4];
+    int yy[4];
+    int mz;
+    u_int tw;
+    u_int th;
+    float div;
+    float mx;
+    float my;
+    float mscw;
+    float msch;
+    float mszw;
+    float mszh;
+    float px;
+    float py;
+    float pw;
+    float ph;
+    u_char malp;
+    sceGsTex0 Load;
+    sceGsTex0 Change;
 
     malp = sd->alpha;
     mz = sd->pos_z;
@@ -1092,12 +1033,12 @@ void _SetTexDirectS(int pri, SPRITE_DATA *sd, int atype) {
 
     mszw = sd->size_w * mscw;
     mszh = sd->size_h * msch;
-    
+
     mx = sd->pos_x + (sd->size_w - mszw) * 0.5f;
     my = (sd->pos_y + (sd->size_h - mszh) * 0.5f);
-    
+
     div = g_bInterlace ? 2.0f : 1.0f;
-    
+
     tw = MIN(sd->g_nTexSizeW, 1023);
     th = MIN(sd->g_nTexSizeH, 1023);
 
@@ -1109,10 +1050,10 @@ void _SetTexDirectS(int pri, SPRITE_DATA *sd, int atype) {
 
     px = (mx + 2048.0f) * 16.0f;
     py = (my / div + 2048.0f) * 16.0f;
-    
+
     xx[0] = px;
     xx[3] = pw + px;
-    
+
     yy[0] = py;
     yy[3] = ph + py;
 
@@ -1122,29 +1063,30 @@ void _SetTexDirectS(int pri, SPRITE_DATA *sd, int atype) {
         Load.PSM = SCE_GS_PSMT8;
         Load.CSA = 0;
         Load.CLD = 1;
-        
+
         Change = sd->g_GsTex0;
         Change.CSA = 0;
         Change.CLD = 0;
     }
-    
+
     Reserve2DPacket(pri);
 
-    
+
     pbuf[ndpkt].ul128 = (u_long128)0;
+
     pbuf[ndpkt++].ui32[0] = DMAend | 15;
-    
+
     pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(8, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 1);
     pbuf[ndpkt++].ul64[1] = SCE_GIF_PACKED_AD;
-    
+
     pbuf[ndpkt].ul64[0] = 0;
     pbuf[ndpkt++].ul64[1] = SCE_GS_TEXFLUSH;
-    
+
     if (sd->g_GsTex0.PSM == SCE_GS_PSMT4)
     {
         pbuf[ndpkt].ul64[0] = *(u_long*)&Load;
         pbuf[ndpkt++].ul64[1] = SCE_GS_TEX0_1;
-        
+
         pbuf[ndpkt].ul64[0] = *(u_long*)&Change;
         pbuf[ndpkt++].ul64[1] = SCE_GS_TEX0_1;
     }
@@ -1152,11 +1094,11 @@ void _SetTexDirectS(int pri, SPRITE_DATA *sd, int atype) {
     {
         pbuf[ndpkt].ul64[0] = *(u_long*)&sd->g_GsTex0;
         pbuf[ndpkt++].ul64[1] = SCE_GS_TEX0_1;
-        
+
         pbuf[ndpkt].ul64[0] = 0;
         pbuf[ndpkt++].ul64[1] = SCE_GS_NOP;
     }
-    
+
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_TEX1(1, 0, SCE_GS_LINEAR, SCE_GS_LINEAR_MIPMAP_LINEAR, 0, 0, 0);
     pbuf[ndpkt++].ul64[1] = SCE_GS_TEX1_1;
 
@@ -1169,30 +1111,31 @@ void _SetTexDirectS(int pri, SPRITE_DATA *sd, int atype) {
         pbuf[ndpkt].ul64[0] = SCE_GS_SET_ALPHA_1(SCE_GS_ALPHA_CS, SCE_GS_ALPHA_CD, SCE_GS_ALPHA_AS, SCE_GS_ALPHA_CD, 128);
     }
     pbuf[ndpkt++].ul64[1] = SCE_GS_ALPHA_1;
-    
+
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_CLAMP(0, 0, 0, 0, 0, 0);
     pbuf[ndpkt++].ul64[1] = SCE_GS_CLAMP_1;
-    
+
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_ZBUF_1(0x8c, SCE_GS_PSMCT24, 1);
     pbuf[ndpkt++].ul64[1] = SCE_GS_ZBUF_1;
-    
+
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_TEST_1(SCE_GS_TRUE, SCE_GS_ALPHA_GREATER, SCE_GS_FALSE, SCE_GS_AFAIL_KEEP, SCE_GS_FALSE, SCE_GS_FALSE, SCE_GS_TRUE, SCE_GS_DEPTH_ALWAYS);
     pbuf[ndpkt++].ul64[1] = SCE_GS_TEST_1;
-    
+
     pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_TRUE, 342, SCE_GIF_PACKED, 5);
     pbuf[ndpkt++].ul64[1] = 0 \
-        | SCE_GS_RGBAQ << (4 * 0) 
-        | SCE_GS_UV    << (4 * 1) 
-        | SCE_GS_XYZF2 << (4 * 2) 
-        | SCE_GS_UV    << (4 * 3) 
+        | SCE_GS_RGBAQ << (4 * 0)
+        | SCE_GS_UV    << (4 * 1)
+        | SCE_GS_XYZF2 << (4 * 2)
+        | SCE_GS_UV    << (4 * 3)
         | SCE_GS_XYZF2 << (4 * 4);
-    
-    pbuf[ndpkt].ui32[0] = 128;
-    pbuf[ndpkt].ui32[1] = 128;
-    pbuf[ndpkt].ui32[2] = 128;
+
+    pbuf[ndpkt].ui32[0] = 0x80;
+    pbuf[ndpkt].ui32[1] = 0x80;
+    pbuf[ndpkt].ui32[2] = 0x80;
+
     if (atype != 0)
     {
-        pbuf[ndpkt++].ui32[3] = 128;
+        pbuf[ndpkt++].ui32[3] = 0x80;
     }
     else
     {
@@ -1203,17 +1146,17 @@ void _SetTexDirectS(int pri, SPRITE_DATA *sd, int atype) {
     pbuf[ndpkt].ui32[1] = 0;
     pbuf[ndpkt].ui32[2] = 0;
     pbuf[ndpkt++].ui32[3] = 0;
-    
+
     pbuf[ndpkt].ui32[0] = xx[0];
     pbuf[ndpkt].ui32[1] = yy[0];
     pbuf[ndpkt].ui32[2] = mz;
     pbuf[ndpkt++].ui32[3] = 0;
-    
+
     pbuf[ndpkt].ui32[0] = tw;
     pbuf[ndpkt].ui32[1] = th;
     pbuf[ndpkt].ui32[2] = 0;
     pbuf[ndpkt++].ui32[3] = 0;
-    
+
     pbuf[ndpkt].ui32[0] = xx[3];
     pbuf[ndpkt].ui32[1] = yy[3];
     pbuf[ndpkt].ui32[2] = mz;
@@ -1221,51 +1164,51 @@ void _SetTexDirectS(int pri, SPRITE_DATA *sd, int atype) {
 }
 
 void SetTexDirectS(int pri, SPRITE_DATA *sd, int atype) {
-	int xx[4];
-	int yy[4];
-	int mz;
-	u_int th;
-	float div;
-	int u[11];
-	int v;
-	int x[11];
-	int i;
-	int n;
-	int mtw;
-	float wx;
-	float mx;
-	float my;
-	float mscw;
-	float msch;
-	float mszw;
-	float mszh;
-	float px;
-	float py;
+    int xx[4];
+    int yy[4];
+    int mz;
+    u_int th;
+    float div;
+    int u[11];
+    int v;
+    int x[11];
+    int i;
+    int n;
+    int mtw;
+    float wx;
+    float mx;
+    float my;
+    float mscw;
+    float msch;
+    float mszw;
+    float mszh;
+    float px;
+    float py;
     // float pw;
-	float ph;
-	u_char malp;
-	sceGsTex0 Load;
-	sceGsTex0 Change;
-    
+    float ph;
+    u_char malp;
+    sceGsTex0 Load;
+    sceGsTex0 Change;
+
     u_long uVar6;
     sceGsTex0 sVar9;
     u_int uVar10;
     u_int uVar11;
     int iVar12;
     float fVar15;
-    
+
     malp = sd->alpha;
     mz = sd->pos_z;
 
     mscw = sd->scale_w;
     msch = sd->scale_h;
-    
+
     mszw = sd->size_w * mscw;
     mszh = sd->size_h * msch;
 
     mx = sd->pos_x + (sd->size_w - mszw) * 0.5f;
     my = (sd->pos_y + (sd->size_h - mszh) * 0.5f);
-    
+
     div = g_bInterlace ? 2.0f : 1.0f;
 
     mtw = MIN(sd->g_nTexSizeW, 1023);
@@ -1277,13 +1220,13 @@ void SetTexDirectS(int pri, SPRITE_DATA *sd, int atype) {
 
     px = mx + 2048.0f;
     py = (my / div + 2048.0f) * 16.0f;
-    
+
     yy[0] = py;
     yy[3] = py + ph;
 
     u[0] = 0;
     x[0] = px * 16.0f;
-    
+
     wx = 0.0f;
     n = 1;
     while (wx < mszw)
@@ -1296,41 +1239,41 @@ void SetTexDirectS(int pri, SPRITE_DATA *sd, int atype) {
         {
             wx = mszw;
         }
-        
+
         x[n] = (px + wx) * 16.0f;
         u[n] = ((wx * mtw) / mszw) * 16.0f;
 
         n++;
     }
-    
+
     if (sd->g_GsTex0.PSM == SCE_GS_PSMT4)
     {
         Load = sd->g_GsTex0;
         Load.PSM = SCE_GS_PSMT8;
         Load.CSA = 0;
         Load.CLD = 1;
-        
+
         Change = sd->g_GsTex0;
         Change.CSA = 0;
         Change.CLD = 0;
     }
-    
+
     Reserve2DPacket(pri);
-    
+
     pbuf[ndpkt].ul128 = (u_long128)0;
     pbuf[ndpkt++].ui32[0] = DMAend + 10 + n * 5;
-    
+
     pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(8, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 1);
     pbuf[ndpkt++].ul64[1] = SCE_GIF_PACKED_AD;
-    
+
     pbuf[ndpkt].ul64[0] = 0;
     pbuf[ndpkt++].ul64[1] = SCE_GS_TEXFLUSH;
-    
+
     if (sd->g_GsTex0.PSM == SCE_GS_PSMT4)
     {
         pbuf[ndpkt].ul64[0] = *(u_long*)&Load;
         pbuf[ndpkt++].ul64[1] = SCE_GS_TEX0_1;
-        
+
         pbuf[ndpkt].ul64[0] = *(u_long*)&Change;
         pbuf[ndpkt++].ul64[1] = SCE_GS_TEX0_1;
     }
@@ -1338,14 +1281,14 @@ void SetTexDirectS(int pri, SPRITE_DATA *sd, int atype) {
     {
         pbuf[ndpkt].ul64[0] = *(u_long*)&sd->g_GsTex0;
         pbuf[ndpkt++].ul64[1] = SCE_GS_TEX0_1;
-        
+
         pbuf[ndpkt].ul64[0] = 0;
         pbuf[ndpkt++].ul64[1] = SCE_GS_NOP;
     }
 
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_TEX1(1, 0, SCE_GS_LINEAR, SCE_GS_LINEAR_MIPMAP_LINEAR, 0, 0, 0);
     pbuf[ndpkt++].ul64[1] = SCE_GS_TEX1_1;
-    
+
     if (atype != 0)
     {
         pbuf[ndpkt].ul64[0] = SCE_GS_SET_ALPHA_1(SCE_GS_ALPHA_CS, SCE_GS_ALPHA_CD, SCE_GS_ALPHA_FIX, SCE_GS_ALPHA_CD, malp);
@@ -1355,53 +1298,53 @@ void SetTexDirectS(int pri, SPRITE_DATA *sd, int atype) {
         pbuf[ndpkt].ul64[0] = SCE_GS_SET_ALPHA_1(SCE_GS_ALPHA_CS, SCE_GS_ALPHA_CD, SCE_GS_ALPHA_AS, SCE_GS_ALPHA_CD, 128);
     }
     pbuf[ndpkt++].ul64[1] = SCE_GS_ALPHA_1;
-    
+
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_CLAMP(0, 0, 0, 0, 0, 0);
     pbuf[ndpkt++].ul64[1] = SCE_GS_CLAMP_1;
-    
+
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_ZBUF_1(0x8c, SCE_GS_PSMCT24, 1);
     pbuf[ndpkt++].ul64[1] = SCE_GS_ZBUF_1;
-    
+
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_TEST_1(SCE_GS_TRUE, SCE_GS_ALPHA_GREATER, SCE_GS_FALSE, SCE_GS_AFAIL_KEEP, SCE_GS_FALSE, SCE_GS_FALSE, SCE_GS_TRUE, SCE_GS_DEPTH_ALWAYS);
     pbuf[ndpkt++].ul64[1] = SCE_GS_TEST_1;
-    
-    pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(n, SCE_GS_TRUE, SCE_GS_TRUE, 340, SCE_GIF_PACKED, 5);
+
+    pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(n, SCE_GS_TRUE, SCE_GS_TRUE, SCE_GS_SET_PRIM(SCE_GS_PRIM_TRISTRIP, 0, 1, 0, 1, 0, 1, 0, 0), SCE_GIF_PACKED, 5);
     pbuf[ndpkt++].ul64[1] = 0 \
-        | SCE_GS_RGBAQ << (4 * 0) 
-        | SCE_GS_UV    << (4 * 1) 
-        | SCE_GS_XYZF2 << (4 * 2) 
-        | SCE_GS_UV    << (4 * 3) 
+        | SCE_GS_RGBAQ << (4 * 0)
+        | SCE_GS_UV    << (4 * 1)
+        | SCE_GS_XYZF2 << (4 * 2)
+        | SCE_GS_UV    << (4 * 3)
         | SCE_GS_XYZF2 << (4 * 4);
-    
+
     for (i = 0; i < n; i++)
     {
-        pbuf[ndpkt].ui32[0] = 128;
-        pbuf[ndpkt].ui32[1] = 128;
-        pbuf[ndpkt].ui32[2] = 128;
+        pbuf[ndpkt].ui32[0] = 0x80;
+        pbuf[ndpkt].ui32[1] = 0x80;
+        pbuf[ndpkt].ui32[2] = 0x80;
         if (atype != 0)
         {
-            pbuf[ndpkt++].ui32[3] = 128;
+            pbuf[ndpkt++].ui32[3] = 0x80;
         }
         else
         {
             pbuf[ndpkt++].ui32[3] = malp;
         }
-        
+
         pbuf[ndpkt].ui32[0] = u[i];
         pbuf[ndpkt].ui32[1] = 0;
         pbuf[ndpkt].ui32[2] = 0;
         pbuf[ndpkt++].ui32[3] = 0;
-        
+
         pbuf[ndpkt].ui32[0] = x[i];
         pbuf[ndpkt].ui32[1] = yy[0];
         pbuf[ndpkt].ui32[2] = mz;
         pbuf[ndpkt++].ui32[3] = (i > 0) ? 0 : 0x8000;
-        
+
         pbuf[ndpkt].ui32[0] = u[i];
         pbuf[ndpkt].ui32[1] = v;
         pbuf[ndpkt].ui32[2] = 0;
         pbuf[ndpkt++].ui32[3] = 0;
-        
+
         pbuf[ndpkt].ui32[0] = x[i];
         pbuf[ndpkt].ui32[1] = yy[3];
         pbuf[ndpkt].ui32[2] = mz;
@@ -1411,48 +1354,48 @@ void SetTexDirectS(int pri, SPRITE_DATA *sd, int atype) {
 
 void SetTexDirectS2(int pri, SPRITE_DATA *sd, DRAW_ENV *de, int type)
 {
-	int n;
-	int tw[2];
-	int th[2];
-	float mx;
-	float my;
-	u_int mz;
-	float mscw;
-	float msch;
-	float mszw;
-	float mszh;
-	int mclu;
-	int mclv;
-	u_int r;
-	u_int g;
-	u_int b;
-	u_int a;
-	u_long tex1;
-	u_long alpha;
-	u_long zbuf;
-	u_long test;
-	u_long clmp;
-	u_long prim;
-	sceGsTex0 Load;
-	sceGsTex0 Change;
-	float div;
-	float px;
-	float py;
-	float pw;
-	float ph;
-	float xx[2];
-	float yy[2];
-    
+    int n;
+    int tw[2];
+    int th[2];
+    float mx;
+    float my;
+    u_int mz;
+    float mscw;
+    float msch;
+    float mszw;
+    float mszh;
+    int mclu;
+    int mclv;
+    u_int r;
+    u_int g;
+    u_int b;
+    u_int a;
+    u_long tex1;
+    u_long alpha;
+    u_long zbuf;
+    u_long test;
+    u_long clmp;
+    u_long prim;
+    sceGsTex0 Load;
+    sceGsTex0 Change;
+    float div;
+    float px;
+    float py;
+    float pw;
+    float ph;
+    float xx[2];
+    float yy[2];
+
     div = g_bInterlace ? 2.0f : 1.0f;
 
     mz = sd->pos_z;
-    
+
     mscw = sd->scale_w;
     msch = sd->scale_h;
-    
+
     mszw = sd->size_w * mscw;
     mszh = sd->size_h * msch;
-    
+
     mx = sd->pos_x + (sd->size_w - mszw) * 0.5f;
     my = (sd->pos_y + (sd->size_h - mszh) * 0.5f);
 
@@ -1462,16 +1405,16 @@ void SetTexDirectS2(int pri, SPRITE_DATA *sd, DRAW_ENV *de, int type)
     g = sd->g;
     b = sd->b;
     a = sd->alpha;
-    
+
     tex1 = de->tex1;
     alpha = de->alpha;
     zbuf = de->zbuf;
     test = de->test;
     prim = de->prim;
     clmp = de->clamp;
-    
+
     n = type != 0 ? 0 : 8;
-    
+
     if (mclu == 0)
     {
         tw[0] = n;
@@ -1482,7 +1425,7 @@ void SetTexDirectS2(int pri, SPRITE_DATA *sd, DRAW_ENV *de, int type)
         tw[0] = mclu & 0xffff;
         tw[1] = (mclu >> 0x10) & 0xffff;
     }
-    
+
     if (mclv == 0)
     {
         th[0] = n;
@@ -1502,37 +1445,38 @@ void SetTexDirectS2(int pri, SPRITE_DATA *sd, DRAW_ENV *de, int type)
 
     xx[0] = px;
     xx[1] = pw + px;
-    
+
     yy[0] = py;
     yy[1] = ph + py;
-    
+
     if (sd->g_GsTex0.PSM == SCE_GS_PSMT4)
     {
         Load = sd->g_GsTex0;
         Load.PSM = SCE_GS_PSMT8;
         Load.CSA = 0;
         Load.CLD = 1;
-        
+
         Change = sd->g_GsTex0;
         Change.CSA = 0;
         Change.CLD = 0;
     }
     Reserve2DPacket(pri);
-    
+
     pbuf[ndpkt].ul128 = (u_long128)0;
+
     pbuf[ndpkt++].ui32[0] = DMAend | 15;
-    
+
     pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(8, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 1);
     pbuf[ndpkt++].ul64[1] = SCE_GIF_PACKED_AD;
-    
+
     pbuf[ndpkt].ul64[0] = 0;
     pbuf[ndpkt++].ul64[1] = SCE_GS_TEXFLUSH;
-    
+
     if (sd->g_GsTex0.PSM == SCE_GS_PSMT4)
     {
         pbuf[ndpkt].ul64[0] = *(u_long*)&Load;
         pbuf[ndpkt++].ul64[1] = SCE_GS_TEX0_1;
-        
+
         pbuf[ndpkt].ul64[0] = *(u_long*)&Change;
         pbuf[ndpkt++].ul64[1] = SCE_GS_TEX0_1;
     }
@@ -1540,54 +1484,54 @@ void SetTexDirectS2(int pri, SPRITE_DATA *sd, DRAW_ENV *de, int type)
     {
         pbuf[ndpkt].ul64[0] = *(u_long*)&sd->g_GsTex0;
         pbuf[ndpkt++].ul64[1] = SCE_GS_TEX0_1;
-        
+
         pbuf[ndpkt].ul64[0] = 0;
         pbuf[ndpkt++].ul64[1] = SCE_GS_NOP;
     }
-    
+
     pbuf[ndpkt].ul64[0] = tex1;
     pbuf[ndpkt++].ul64[1] = SCE_GS_TEX1_1;
-    
+
     pbuf[ndpkt].ul64[0] = alpha;
     pbuf[ndpkt++].ul64[1] = SCE_GS_ALPHA_1;
-    
+
     pbuf[ndpkt].ul64[0] = zbuf;
     pbuf[ndpkt++].ul64[1] = SCE_GS_ZBUF_1;
-    
+
     pbuf[ndpkt].ul64[0] = test;
     pbuf[ndpkt++].ul64[1] = SCE_GS_TEST_1;
-    
+
     pbuf[ndpkt].ul64[0] = clmp;
     pbuf[ndpkt++].ul64[1] = SCE_GS_CLAMP_1;
-    
+
     pbuf[ndpkt].ul64[0] = prim;
     pbuf[ndpkt++].ul64[1] = 0 \
-        | SCE_GS_RGBAQ << (4 * 0) 
-        | SCE_GS_UV    << (4 * 1) 
-        | SCE_GS_XYZF2 << (4 * 2) 
-        | SCE_GS_UV    << (4 * 3) 
+        | SCE_GS_RGBAQ << (4 * 0)
+        | SCE_GS_UV    << (4 * 1)
+        | SCE_GS_XYZF2 << (4 * 2)
+        | SCE_GS_UV    << (4 * 3)
         | SCE_GS_XYZF2 << (4 * 4);
-    
+
     pbuf[ndpkt].ui32[0] = r;
     pbuf[ndpkt].ui32[1] = g;
     pbuf[ndpkt].ui32[2] = b;
     pbuf[ndpkt++].ui32[3] = a;
-    
+
     pbuf[ndpkt].iv[0] = tw[0];
     pbuf[ndpkt].iv[1] = th[0];
     pbuf[ndpkt].iv[2] = 0;
     pbuf[ndpkt++].iv[3] = 0;
-    
+
     pbuf[ndpkt].ui32[0] = (int)xx[0];
     pbuf[ndpkt].ui32[1] = (int)yy[0];
     pbuf[ndpkt].ui32[2] = mz;
     pbuf[ndpkt++].ui32[3] = 0;
-    
+
     pbuf[ndpkt].iv[0] = tw[1];
     pbuf[ndpkt].iv[1] = th[1];
     pbuf[ndpkt].iv[2] = 0;
     pbuf[ndpkt++].iv[3] = 0;
-    
+
     pbuf[ndpkt].ui32[0] = (int)xx[1];
     pbuf[ndpkt].ui32[1] = (int)yy[1];
     pbuf[ndpkt].ui32[2] = mz;
@@ -1596,64 +1540,65 @@ void SetTexDirectS2(int pri, SPRITE_DATA *sd, DRAW_ENV *de, int type)
 
 void SetTexDirect2(int pri, SPRITE_DATA *sd, DRAW_ENV *de, sceVu0FVECTOR *v)
 {
-	int tw[2];
-	int th[2];
-	float mx;
-	float my;
-	int mz;
-	float mscw;
-	float msch;
-	float mszw;
-	float mszh;
-	int mclu;
-	int mclv;
-	u_int r;
-	u_int g;
-	u_int b;
-	u_int a;
-	u_long tex1;
-	u_long alpha;
-	u_long zbuf;
-	u_long test;
-	u_long clmp;
-	u_long prim;
-	sceGsTex0 Load;
-	sceGsTex0 Change;
-	float div;
-	float px;
-	float py;
-	float pw;
-	float ph;
-	float xx[2];
-	float yy[2];
-    
+    int tw[2];
+    int th[2];
+    float mx;
+    float my;
+    int mz;
+    float mscw;
+    float msch;
+    float mszw;
+    float mszh;
+    int mclu;
+    int mclv;
+    u_int r;
+    u_int g;
+    u_int b;
+    u_int a;
+    u_long tex1;
+    u_long alpha;
+    u_long zbuf;
+    u_long test;
+    u_long clmp;
+    u_long prim;
+    sceGsTex0 Load;
+    sceGsTex0 Change;
+    float div;
+    float px;
+    float py;
+    float pw;
+    float ph;
+    float xx[2];
+    float yy[2];
+
     div = g_bInterlace ? 2.0f : 1.0f;
 
     mz = sd->pos_z;
-    
+
     mscw = sd->scale_w;
     msch = sd->scale_h;
-    
+
     mszw = sd->size_w * mscw;
     mszh = sd->size_h * msch;
-    
+
     mx = sd->pos_x + (sd->size_w - mszw) * 0.5f;
     my = (sd->pos_y + (sd->size_h - mszh) * 0.5f);
 
     mclu = sd->clamp_u;
     mclv = sd->clamp_v;
+
     r = sd->r;
     g = sd->g;
     b = sd->b;
     a = sd->alpha;
-    
+
     tex1 = de->tex1;
     alpha = de->alpha;
     zbuf = de->zbuf;
     test = de->test;
     prim = de->prim;
     clmp = de->clamp;
-    
+
     if (mclu == 0)
     {
         tw[0] = 8;
@@ -1664,7 +1609,7 @@ void SetTexDirect2(int pri, SPRITE_DATA *sd, DRAW_ENV *de, sceVu0FVECTOR *v)
         tw[0] = mclu & 0xffff;
         tw[1] = (mclu >> 0x10) & 0xffff;
     }
-    
+
     if (mclv == 0)
     {
         th[0] = 8;
@@ -1684,38 +1629,38 @@ void SetTexDirect2(int pri, SPRITE_DATA *sd, DRAW_ENV *de, sceVu0FVECTOR *v)
 
     xx[0] = px;
     xx[1] = pw + px;
-    
+
     yy[0] = py;
     yy[1] = ph + py;
-    
+
     if (sd->g_GsTex0.PSM == SCE_GS_PSMT4)
     {
         Load = sd->g_GsTex0;
         Load.PSM = SCE_GS_PSMT8;
         Load.CSA = 0;
         Load.CLD = 1;
-        
+
         Change = sd->g_GsTex0;
         Change.CSA = 0;
         Change.CLD = 0;
     }
 
     Reserve2DPacket(pri);
-    
+
     pbuf[ndpkt].ul128 = (u_long128)0;
     pbuf[ndpkt++].ui32[0] = DMAend | 15;
-    
+
     pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(8, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 1);
     pbuf[ndpkt++].ul64[1] = SCE_GIF_PACKED_AD;
-    
+
     pbuf[ndpkt].ul64[0] = 0;
     pbuf[ndpkt++].ul64[1] = SCE_GS_TEXFLUSH;
-    
+
     if (sd->g_GsTex0.PSM == SCE_GS_PSMT4)
     {
         pbuf[ndpkt].ul64[0] = *(u_long*)&Load;
         pbuf[ndpkt++].ul64[1] = SCE_GS_TEX0_1;
-        
+
         pbuf[ndpkt].ul64[0] = *(u_long*)&Change;
         pbuf[ndpkt++].ul64[1] = SCE_GS_TEX0_1;
     }
@@ -1723,54 +1668,54 @@ void SetTexDirect2(int pri, SPRITE_DATA *sd, DRAW_ENV *de, sceVu0FVECTOR *v)
     {
         pbuf[ndpkt].ul64[0] = *(u_long*)&sd->g_GsTex0;
         pbuf[ndpkt++].ul64[1] = SCE_GS_TEX0_1;
-        
+
         pbuf[ndpkt].ul64[0] = 0;
         pbuf[ndpkt++].ul64[1] = SCE_GS_NOP;
     }
-    
+
     pbuf[ndpkt].ul64[0] = tex1;
     pbuf[ndpkt++].ul64[1] = SCE_GS_TEX1_1;
-    
+
     pbuf[ndpkt].ul64[0] = alpha;
     pbuf[ndpkt++].ul64[1] = SCE_GS_ALPHA_1;
-    
+
     pbuf[ndpkt].ul64[0] = zbuf;
     pbuf[ndpkt++].ul64[1] = SCE_GS_ZBUF_1;
-    
+
     pbuf[ndpkt].ul64[0] = test;
     pbuf[ndpkt++].ul64[1] = SCE_GS_TEST_1;
-    
+
     pbuf[ndpkt].ul64[0] = clmp;
     pbuf[ndpkt++].ul64[1] = SCE_GS_CLAMP_1;
-    
+
     pbuf[ndpkt].ul64[0] = prim;
     pbuf[ndpkt++].ul64[1] = 0 \
-        | SCE_GS_RGBAQ << (4 * 0) 
-        | SCE_GS_UV    << (4 * 1) 
-        | SCE_GS_XYZF2 << (4 * 2) 
-        | SCE_GS_UV    << (4 * 3) 
+        | SCE_GS_RGBAQ << (4 * 0)
+        | SCE_GS_UV    << (4 * 1)
+        | SCE_GS_XYZF2 << (4 * 2)
+        | SCE_GS_UV    << (4 * 3)
         | SCE_GS_XYZF2 << (4 * 4);
-    
+
     pbuf[ndpkt].ui32[0] = r;
     pbuf[ndpkt].ui32[1] = g;
     pbuf[ndpkt].ui32[2] = b;
     pbuf[ndpkt++].ui32[3] = a;
-    
+
     pbuf[ndpkt].iv[0] = tw[0];
     pbuf[ndpkt].iv[1] = th[0];
     pbuf[ndpkt].iv[2] = 0;
     pbuf[ndpkt++].iv[3] = 0;
-    
+
     pbuf[ndpkt].ui32[0] = (int)xx[0];
     pbuf[ndpkt].ui32[1] = (int)yy[0];
     pbuf[ndpkt].ui32[2] = mz;
     pbuf[ndpkt++].ui32[3] = 0;
-    
+
     pbuf[ndpkt].iv[0] = tw[1];
     pbuf[ndpkt].iv[1] = th[1];
     pbuf[ndpkt].iv[2] = 0;
     pbuf[ndpkt++].iv[3] = 0;
-    
+
     pbuf[ndpkt].ui32[0] = (int)xx[1];
     pbuf[ndpkt].ui32[1] = (int)yy[1];
     pbuf[ndpkt].ui32[2] = mz;
@@ -1779,53 +1724,53 @@ void SetTexDirect2(int pri, SPRITE_DATA *sd, DRAW_ENV *de, sceVu0FVECTOR *v)
 
 void SetTexDirect(SPRITE_DATA *sd, int atype)
 {
-	int i;
-	float xx[4];
-	float yy[4];
-	unsigned int tw;
-	unsigned int th;
-	float ss;
-	float cc;
-	float div;
-	int mz;
-	float mx;
-	float my;
-	float mscw;
-	float msch;
-	float mszw;
-	float mszh;
-	float mang;
-	unsigned int mrc;
-	unsigned char malp;
-	sceGsTex0 Load;
-	sceGsTex0 Change;
-	u_int r;
-	u_int g;
-	u_int b;
-	float px;
-	float py;
-	float pw;
-	float ph;
+    int i;
+    float xx[4];
+    float yy[4];
+    unsigned int tw;
+    unsigned int th;
+    float ss;
+    float cc;
+    float div;
+    int mz;
+    float mx;
+    float my;
+    float mscw;
+    float msch;
+    float mszw;
+    float mszh;
+    float mang;
+    unsigned int mrc;
+    unsigned char malp;
+    sceGsTex0 Load;
+    sceGsTex0 Change;
+    u_int r;
+    u_int g;
+    u_int b;
+    float px;
+    float py;
+    float pw;
+    float ph;
 
     malp = sd->alpha;
     mrc = sd->rot_center;
 
     mscw = sd->scale_w;
     msch = sd->scale_h;
-    
+
     mszw = sd->size_w * mscw;
     mszh = sd->size_h * msch;
-    
+
     mang = sd->angle;
-    
+
     mz = sd->pos_z;
     r = sd->r;
     g = sd->g;
     b = sd->b;
-    
+
     mx = sd->pos_x + (sd->size_w - mszw) * 0.5f;
     my = (sd->pos_y + (sd->size_h - mszh) * 0.5f);
-    
+
     div = g_bInterlace ? 2.0f : 1.0f;
 
     tw = MIN(sd->g_nTexSizeW, 1023);
@@ -1836,41 +1781,41 @@ void SetTexDirect(SPRITE_DATA *sd, int atype)
 
     ph = mszh * 16.0f;
     px = (mx + 2048.0f) * 16.0f;
-    
+
     pw = mszw * 16.0f;
     py = (my / div + 2048.0f) * 16.0f;
-    
+
     if (mang == 0.0f)
     {
         xx[0] = 0.0;
         yy[0] = 0.0;
-        
+
         xx[1] = 0.0;
         yy[1] = ph / div;
-        
+
         xx[2] = pw;
         yy[2] = 0.0;
-        
+
         xx[3] = pw;
         yy[3] = ph / div;
     }
     else
     {
-        ss = SgSinf((mang * PI) / 180.0f);
-        cc = SgCosf((mang * PI) / 180.0f);
-        
+        ss = VER_SINF((mang * PI) / 180.0f);
+        cc = VER_COSF((mang * PI) / 180.0f);
+
         switch(mrc)
         {
         case 0:
             xx[0] = 0.0f;
             yy[0] = 0.0f;
-            
+
             xx[1] = 0.0f;
             yy[1] = ph / div;
-            
+
             xx[2] = pw;
             yy[2] = 0.0f;
-            
+
             xx[3] = pw;
             yy[3] = ph / div;
         break;
@@ -1942,35 +1887,35 @@ void SetTexDirect(SPRITE_DATA *sd, int atype)
         xx[i] += px;
         yy[i] += py;
     }
-    
+
     if (sd->g_GsTex0.PSM == SCE_GS_PSMT4)
     {
         Load = sd->g_GsTex0;
         Load.PSM = SCE_GS_PSMT8;
         Load.CSA = 0;
         Load.CLD = 1;
-        
+
         Change = sd->g_GsTex0;
         Change.CSA = 0;
         Change.CLD = 0;
     }
-    
+
     Reserve2DPacket(0xffffffff);
 
     pbuf[ndpkt].ul128 = (u_long128)0;
     pbuf[ndpkt++].ui32[0] = DMAend | 19;
-    
+
     pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(8, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 1);
     pbuf[ndpkt++].ul64[1] = SCE_GIF_PACKED_AD;
-    
+
     pbuf[ndpkt].ul64[0] = 0;
     pbuf[ndpkt++].ul64[1] = SCE_GS_TEXFLUSH;
-    
+
     if (sd->g_GsTex0.PSM == SCE_GS_PSMT4)
     {
         pbuf[ndpkt].ul64[0] = *(u_long*)&Load;
         pbuf[ndpkt++].ul64[1] = SCE_GS_TEX0_1;
-        
+
         pbuf[ndpkt].ul64[0] = *(u_long*)&Change;
         pbuf[ndpkt++].ul64[1] = SCE_GS_TEX0_1;
     }
@@ -1978,7 +1923,7 @@ void SetTexDirect(SPRITE_DATA *sd, int atype)
     {
         pbuf[ndpkt].ul64[0] = *(u_long*)&sd->g_GsTex0;
         pbuf[ndpkt++].ul64[1] = SCE_GS_TEX0_1;
-        
+
         pbuf[ndpkt].ul64[0] = 0;
         pbuf[ndpkt++].ul64[1] = SCE_GS_NOP;
     }
@@ -1994,68 +1939,68 @@ void SetTexDirect(SPRITE_DATA *sd, int atype)
         pbuf[ndpkt].ul64[0] = SCE_GS_SET_ALPHA_1(SCE_GS_ALPHA_CS, SCE_GS_ALPHA_CD, SCE_GS_ALPHA_EQUAL, SCE_GS_ALPHA_CS, 0);
     }
     pbuf[ndpkt++].ul64[1] = SCE_GS_ALPHA_1;
-    
+
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_CLAMP(0, 0, 0, 0, 0, 0);
     pbuf[ndpkt++].ul64[1] = SCE_GS_CLAMP_1;
-    
+
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_ZBUF_1(0x8c, SCE_GS_PSMCT24, 1);
     pbuf[ndpkt++].ul64[1] = SCE_GS_ZBUF_1;
-    
+
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_TEST_1(SCE_GS_FALSE, SCE_GS_ALPHA_NEVER, SCE_GS_FALSE, SCE_GS_AFAIL_KEEP, SCE_GS_FALSE, SCE_GS_FALSE, SCE_GS_TRUE, SCE_GS_DEPTH_GEQUAL);
     pbuf[ndpkt++].ul64[1] = SCE_GS_TEST_1;
-    
-    pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_TRUE, 340, SCE_GIF_PACKED, 9);
+
+    pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_TRUE, SCE_GS_SET_PRIM(SCE_GS_PRIM_TRISTRIP, 0, 1, 0, 1, 0, 1, 0, 0), SCE_GIF_PACKED, 9);
     pbuf[ndpkt++].ul64[1] = 0 \
-        | SCE_GS_RGBAQ << (4 * 0) 
-        | SCE_GS_UV    << (4 * 1) 
-        | SCE_GS_XYZF2 << (4 * 2) 
-        | SCE_GS_UV    << (4 * 3) 
-        | SCE_GS_XYZF2 << (4 * 4) 
-        | SCE_GS_UV    << (4 * 5) 
-        | SCE_GS_XYZF2 << (4 * 6) 
-        | SCE_GS_UV    << (4 * 7) 
+        | SCE_GS_RGBAQ << (4 * 0)
+        | SCE_GS_UV    << (4 * 1)
+        | SCE_GS_XYZF2 << (4 * 2)
+        | SCE_GS_UV    << (4 * 3)
+        | SCE_GS_XYZF2 << (4 * 4)
+        | SCE_GS_UV    << (4 * 5)
+        | SCE_GS_XYZF2 << (4 * 6)
+        | SCE_GS_UV    << (4 * 7)
         | (u_long)SCE_GS_XYZF2 << (4 * 8);
-    
+
     pbuf[ndpkt].ui32[0] = r;
     pbuf[ndpkt].ui32[1] = g;
     pbuf[ndpkt].ui32[2] = b;
-    pbuf[ndpkt++].ui32[3] = 128;
-    
+    pbuf[ndpkt++].ui32[3] = 0x80;
+
     pbuf[ndpkt].ui32[0] = 8;
     pbuf[ndpkt].ui32[1] = 8;
     pbuf[ndpkt].ui32[2] = 0;
     pbuf[ndpkt++].ui32[3] = 0;
-    
+
     pbuf[ndpkt].ui32[0] = (int)xx[0];
     pbuf[ndpkt].ui32[1] = (int)yy[0];
     pbuf[ndpkt].ui32[2] = mz;
     pbuf[ndpkt++].ui32[3] = 0;
-    
+
     pbuf[ndpkt].ui32[0] = 8;
     pbuf[ndpkt].ui32[1] = th - 8;
     pbuf[ndpkt].ui32[2] = 0;
     pbuf[ndpkt++].ui32[3] = 0;
-    
+
     pbuf[ndpkt].ui32[0] = (int)xx[1];
     pbuf[ndpkt].ui32[1] = (int)yy[1];
     pbuf[ndpkt].ui32[2] = mz;
     pbuf[ndpkt++].ui32[3] = 0;
-    
+
     pbuf[ndpkt].ui32[0] = tw - 8;
     pbuf[ndpkt].ui32[1] = 8;
     pbuf[ndpkt].ui32[2] = 0;
     pbuf[ndpkt++].ui32[3] = 0;
-    
+
     pbuf[ndpkt].ui32[0] = (int)xx[2];
     pbuf[ndpkt].ui32[1] = (int)yy[2];
     pbuf[ndpkt].ui32[2] = mz;
     pbuf[ndpkt++].ui32[3] = 0;
-    
+
     pbuf[ndpkt].ui32[0] = tw - 8;
     pbuf[ndpkt].ui32[1] = th - 8;
     pbuf[ndpkt].ui32[2] = 0;
     pbuf[ndpkt++].ui32[3] = 0;
-    
+
     pbuf[ndpkt].ui32[0] = (int)xx[3];
     pbuf[ndpkt].ui32[1] = (int)yy[3];
     pbuf[ndpkt].ui32[2] = mz;
@@ -2095,50 +2040,49 @@ void SetScreenDSlide(int addr, int type, int alpha, float ang, float scl, int z)
         .clamp_v = 0,
         .rot_center = 0,
         .angle = 0.0f,
-        .r = 128,
-        .g = 128,
-        .b = 128,
-        .alpha = 128,
+        .r = 0x80,
+        .g = 0x80,
+        .b = 0x80,
+        .alpha = 0x80,
         .mask = 0,
     };
-    // FIXME
     DRAW_ENV de = {
-        .tex1 = 0x161,
-        .alpha = 0x8000000064,
-        .zbuf = 0x10100008c,
-        .test = 0x5000d,
-        .clamp = 0,
-        .prim = 0x50ab400000008001,
+        .tex1 = SCE_GS_SET_TEX1_1(1, 0, SCE_GS_LINEAR, SCE_GS_LINEAR_MIPMAP_LINEAR, 0, 0, 0),
+        .alpha = SCE_GS_SET_ALPHA_1(SCE_GS_ALPHA_CS, SCE_GS_ALPHA_CD, SCE_GS_ALPHA_FIX, SCE_GS_ALPHA_CD, 0x80),
+        .zbuf = SCE_GS_SET_ZBUF_1(0x8c, SCE_GS_PSMCT24, 1),
+        .test = SCE_GS_SET_TEST_1(1, SCE_GS_ALPHA_GREATER, 0, SCE_GS_AFAIL_KEEP, 0, 0, 1, SCE_GS_DEPTH_GEQUAL),
+        .clamp = SCE_GS_SET_CLAMP_1(SCE_GS_REPEAT, SCE_GS_REPEAT, 0, 0, 0, 0),
+        .prim = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_TRUE, SCE_GS_SET_PRIM(SCE_GS_PRIM_SPRITE, 0, 1, 0, 1, 0, 1, 0, 0), SCE_GIF_PACKED, 5),
     };
 
-    switch(type) 
+    switch(type)
     {
-        case 0:
-            sd.pos_x = -320.5f;
-            sd.pos_y = -224.5f;
-            break;
-        case 1:
-            sd.pos_x = -320.5f;
-            sd.pos_y = -224.0f;
-            break;
-        case 2:
-            sd.pos_x = -320.0f;
-            sd.pos_y = -224.0f;
-            break;
-        case 3:
-            sd.pos_x = -320.0f;
-            sd.pos_y = -223.5f;
-            break;
-        case 4:
-            sd.pos_x = -319.5f;
-            sd.pos_y = -223.5f;
-            break;
-        case 5:
-            sd.pos_x = -319.5f;
-            sd.pos_y = -223.0f;
-            break;
+    case 0:
+        sd.pos_x = -320.5f;
+        sd.pos_y = -224.5f;
+    break;
+    case 1:
+        sd.pos_x = -320.5f;
+        sd.pos_y = -224.0f;
+    break;
+    case 2:
+        sd.pos_x = -320.0f;
+        sd.pos_y = -224.0f;
+    break;
+    case 3:
+        sd.pos_x = -320.0f;
+        sd.pos_y = -223.5f;
+    break;
+    case 4:
+        sd.pos_x = -319.5f;
+        sd.pos_y = -223.5f;
+    break;
+    case 5:
+        sd.pos_x = -319.5f;
+        sd.pos_y = -223.0f;
+    break;
     }
-    
+
     sd.alpha = alpha;
     sd.angle = ang;
     sd.rot_center = 1;
@@ -2146,13 +2090,13 @@ void SetScreenDSlide(int addr, int type, int alpha, float ang, float scl, int z)
     sd.scale_w = scl;
     sd.scale_h = scl;
     sd.pos_z = z;
-    
+
     SetTexDirectS2(0, &sd, &de, 0);
 }
 
 void SetScreenZ(int addr)
 {
-	SPRITE_DATA sd = {
+    SPRITE_DATA sd = {
         .g_GsTex0 = {
               .TBP0 = 0,
               .TBW = 10,
@@ -2183,30 +2127,30 @@ void SetScreenZ(int addr)
         .clamp_v = 0,
         .rot_center = 0,
         .angle = 0.0,
-        .r = 255,
-        .g = 255,
-        .b = 255,
-        .alpha = 128,
+        .r = 0xff,
+        .g = 0xff,
+        .b = 0xff,
+        .alpha = 0x80,
         .mask = 0,
     };
-    
+
     sd.g_GsTex0.TBP0 = addr;
-    
-    sd.pos_z = 0xfffffef;
-    
+
+    sd.pos_z = 0x0fffffef;
+
     SetTexDirectS(16, &sd, 1);
 }
 
 void CaptureScreen(u_int addr)
 {
-    LocalCopyLtoB2(1, (sys_wrk.count & 1) * 224 * 10);
+    LocalCopyLtoB2(1, (sys_wrk.count & 1) * 0x8c0);
 }
 
 void DrawScreen(u_int pri, u_int addr, u_char r, u_char g, u_char b, u_char a)
 {
     DISP_SPRT ds;
-    
-    
+
+
     SPRT_DAT sd =
     {
         .tex0 = 0,
@@ -2221,13 +2165,13 @@ void DrawScreen(u_int pri, u_int addr, u_char r, u_char g, u_char b, u_char a)
     };
 
     LocalCopyBtoL(1, addr);
-    CopySprDToSpr(&ds, &sd); 
-    
-    ds.tex0 = SCE_GS_SET_TEX0(addr, 640 / 64, SCE_GS_PSMCT32, 10, 8, 0, SCE_GS_MODULATE, 0, 0, 0, 0, 1); // addr | 0x2000000228028000;
-    ds.tex1 = SCE_GS_SET_TEX1(1, 0, SCE_GS_NEAREST, SCE_GS_LINEAR_MIPMAP_LINEAR, 0, 0, 0); // 0x141;
-    ds.zbuf = SCE_GS_SET_ZBUF(0x8c, SCE_GS_PSMCT24, 0); // 0x100008c;
-    ds.test = SCE_GS_SET_TEST(SCE_GS_TRUE, SCE_GS_ALPHA_GREATER, SCE_GS_FALSE, SCE_GS_AFAIL_KEEP, SCE_GS_FALSE, SCE_GS_FALSE, SCE_GS_TRUE, SCE_GS_DEPTH_GEQUAL); // 0x5000d;
-    ds.alphar = SCE_GS_SET_ALPHA(SCE_GS_ALPHA_CS, SCE_GS_ALPHA_CD, SCE_GS_ALPHA_AS, SCE_GS_ALPHA_CD, 0); // 0x44;
+    CopySprDToSpr(&ds, &sd);
+
+    ds.tex0 = SCE_GS_SET_TEX0(addr, 640 / 64, SCE_GS_PSMCT32, 10, 8, 0, SCE_GS_MODULATE, 0, 0, 0, 0, 1);
+    ds.tex1 = SCE_GS_SET_TEX1(1, 0, SCE_GS_NEAREST, SCE_GS_LINEAR_MIPMAP_LINEAR, 0, 0, 0);
+    ds.zbuf = SCE_GS_SET_ZBUF(0x8c, SCE_GS_PSMCT24, 0);
+    ds.test = SCE_GS_SET_TEST(SCE_GS_TRUE, SCE_GS_ALPHA_GREATER, SCE_GS_FALSE, SCE_GS_AFAIL_KEEP, SCE_GS_FALSE, SCE_GS_FALSE, SCE_GS_TRUE, SCE_GS_DEPTH_GEQUAL);
+    ds.alphar = SCE_GS_SET_ALPHA(SCE_GS_ALPHA_CS, SCE_GS_ALPHA_CD, SCE_GS_ALPHA_AS, SCE_GS_ALPHA_CD, 0);
     ds.pri = pri;
     ds.texa = 0;
     ds.x = -0.5;
@@ -2241,16 +2185,16 @@ void DrawScreen(u_int pri, u_int addr, u_char r, u_char g, u_char b, u_char a)
     ds.g = g;
     ds.b = b;
     ds.alpha = a;
-    
+
     DispSprD(&ds);
 }
 
 void ClearFBuffer()
 {
-	int i;
-	int x[2];
-	int y[2];
-	int div;
+    int i;
+    int x[2];
+    int y[2];
+    int div;
 
     div = g_bInterlace ? 2 : 1;
 
@@ -2258,60 +2202,53 @@ void ClearFBuffer()
     x[1] = GS_X_COORD(64);
     y[0] = (2048 - SCR_HEIGHT / div) * 16;
     y[1] = (SCR_HEIGHT / div + 2048) * 16;
-    
+
     Reserve2DPacket(0x1000);
 
     pbuf[ndpkt].ul128 = (u_long128)0;
-    pbuf[ndpkt].ui32[0] = DMAend | 34;
-    ndpkt++;
-    
+
+    pbuf[ndpkt++].ui32[0] = DMAend | 34;
+
     pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(2, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 1);
-    pbuf[ndpkt].ul64[1] = SCE_GIF_PACKED_AD;
-    ndpkt++;
-    
+    pbuf[ndpkt++].ul64[1] = SCE_GIF_PACKED_AD;
+
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_TEST_1(SCE_GS_TRUE, SCE_GS_ALPHA_ALWAYS, SCE_GS_FALSE, SCE_GS_AFAIL_KEEP, SCE_GS_FALSE, SCE_GS_FALSE, SCE_GS_TRUE, SCE_GS_DEPTH_ALWAYS);
-    pbuf[ndpkt].ul64[1] = SCE_GS_TEST_1;
-    ndpkt++;
-    
+    pbuf[ndpkt++].ul64[1] = SCE_GS_TEST_1;
+
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_ZBUF_1(0x8c, SCE_GS_PSMCT24, 1);
-    pbuf[ndpkt].ul64[1] = SCE_GS_ZBUF_1;
-    ndpkt++;
-    
+    pbuf[ndpkt++].ul64[1] = SCE_GS_ZBUF_1;
+
     pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(10, SCE_GS_TRUE, SCE_GS_TRUE, 6, SCE_GIF_PACKED, 3);
-    pbuf[ndpkt].ul64[1] = 0 \
-        | SCE_GS_RGBAQ << (4 * 0) 
-        | SCE_GS_XYZF2 << (4 * 1) 
+    pbuf[ndpkt++].ul64[1] = 0 \
+        | SCE_GS_RGBAQ << (4 * 0)
+        | SCE_GS_XYZF2 << (4 * 1)
         | SCE_GS_XYZF2 << (4 * 2);
-    ndpkt++;
-    
+
     for (i = 0; i < 10; i++)
-    {        
+    {
         pbuf[ndpkt].ui32[0] = 0;
         pbuf[ndpkt].ui32[1] = 0;
         pbuf[ndpkt].ui32[2] = 0;
-        pbuf[ndpkt].ui32[3] = 0;
-        ndpkt++;
-        
+        pbuf[ndpkt++].ui32[3] = 0;
+
         pbuf[ndpkt].ui32[0] = x[0] + (i * 1024);
         pbuf[ndpkt].ui32[1] = y[0];
         pbuf[ndpkt].ui32[2] = 0;
-        pbuf[ndpkt].ui32[3] = 0;
-        ndpkt++;
-        
+        pbuf[ndpkt++].ui32[3] = 0;
+
         pbuf[ndpkt].ui32[0] = x[1] + (i * 1024);
         pbuf[ndpkt].ui32[1] = y[1];
         pbuf[ndpkt].ui32[2] = 0;
-        pbuf[ndpkt].ui32[3] = 0;
-        ndpkt++;
+        pbuf[ndpkt++].ui32[3] = 0;
     }
 }
 
 void ClearZBuffer()
 {
-	int i;
-	int x[2];
-	int y[2];
-	int div;
+    int i;
+    int x[2];
+    int y[2];
+    int div;
 
     div = g_bInterlace ? 2 : 1;
 
@@ -2319,51 +2256,44 @@ void ClearZBuffer()
     x[1] = GS_X_COORD(64);
     y[0] = (2048 - SCR_HEIGHT / div) * 16;
     y[1] = (SCR_HEIGHT / div + 2048) * 16;
-    
+
     Reserve2DPacket(0x1000);
 
     pbuf[ndpkt].ul128 = (u_long128)0;
-    pbuf[ndpkt].ui32[0] = DMAend | 34;
-    ndpkt++;
-    
+
+    pbuf[ndpkt++].ui32[0] = DMAend | 34;
+
     pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(2, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 1);
-    pbuf[ndpkt].ul64[1] = SCE_GIF_PACKED_AD;
-    ndpkt++;
-    
+    pbuf[ndpkt++].ul64[1] = SCE_GIF_PACKED_AD;
+
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_TEST_1(SCE_GS_TRUE, SCE_GS_ALPHA_NEVER, SCE_GS_FALSE, SCE_GS_AFAIL_ZB_ONLY, SCE_GS_FALSE, SCE_GS_FALSE, SCE_GS_TRUE, SCE_GS_DEPTH_ALWAYS);
-    pbuf[ndpkt].ul64[1] = SCE_GS_TEST_1;
-    ndpkt++;
-    
+    pbuf[ndpkt++].ul64[1] = SCE_GS_TEST_1;
+
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_ZBUF_1(0x8c, SCE_GS_PSMCT24, 0);
-    pbuf[ndpkt].ul64[1] = SCE_GS_ZBUF_1;
-    ndpkt++;
-    
+    pbuf[ndpkt++].ul64[1] = SCE_GS_ZBUF_1;
+
     pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(10, SCE_GS_TRUE, SCE_GS_TRUE, 6, SCE_GIF_PACKED, 3);
-    pbuf[ndpkt].ul64[1] = 0 \
-        | SCE_GS_RGBAQ << (4 * 0) 
-        | SCE_GS_XYZF2 << (4 * 1) 
+    pbuf[ndpkt++].ul64[1] = 0 \
+        | SCE_GS_RGBAQ << (4 * 0)
+        | SCE_GS_XYZF2 << (4 * 1)
         | SCE_GS_XYZF2 << (4 * 2);
-    ndpkt++;
-    
+
     for (i = 0; i < 10; i++)
-    {        
+    {
         pbuf[ndpkt].ui32[0] = 0;
         pbuf[ndpkt].ui32[1] = 0;
         pbuf[ndpkt].ui32[2] = 0;
-        pbuf[ndpkt].ui32[3] = 0;
-        ndpkt++;
-        
+        pbuf[ndpkt++].ui32[3] = 0;
+
         pbuf[ndpkt].ui32[0] = x[0] + (i * 1024);
         pbuf[ndpkt].ui32[1] = y[0];
         pbuf[ndpkt].ui32[2] = 0;
-        pbuf[ndpkt].ui32[3] = 0;
-        ndpkt++;
-        
+        pbuf[ndpkt++].ui32[3] = 0;
+
         pbuf[ndpkt].ui32[0] = x[1] + (i * 1024);
         pbuf[ndpkt].ui32[1] = y[1];
         pbuf[ndpkt].ui32[2] = 0;
-        pbuf[ndpkt].ui32[3] = 0;
-        ndpkt++;
+        pbuf[ndpkt++].ui32[3] = 0;
     }
 }
 
@@ -2381,54 +2311,60 @@ void* GetEmptyBuffer(int no)
 {
     switch (no)
     {
-        case 0:
+    case 0:
         return buf;
-        case 1:
+    break;
+    case 1:
         return buf2;
-        case 2:
+    break;
+    case 2:
         return bufz;
+    break;
     }
-    
+
     return buf;
 }
 
 void CheckPointDepth(PP_JUDGE *ppj)
 {
-	int i;
-	int xx[32];
-	int yy[32];
-	int clip[32];
-	sceVu0FMATRIX wlm;
-	sceVu0FMATRIX slm;
-	sceVu0IVECTOR ivec[32];
-	sceVu0FVECTOR bpos[32];
-	sceVu0FVECTOR fzero = { 0.0f, 0.0f, 0.0f, 1.0f };
-	sceVu0FVECTOR ofst_pos[5] = {
-        { 0.0f, -32.0f, 0.0f, 1.0f },
-        { 0.0f, -20.0f, 3.5f, 1.0f },
-        { 4.2f, -20.0f, 0.0f, 1.0f },
-        { 0.0f, -20.0f, -2.5f, 1.0f },
-        { -4.3f, -20.0f, 0.0f, 1.0f },
+    int i;
+    int xx[32];
+    int yy[32];
+    int clip[32];
+    sceVu0FMATRIX wlm;
+    sceVu0FMATRIX slm;
+    sceVu0IVECTOR ivec[32];
+    sceVu0FVECTOR bpos[32];
+    sceVu0FVECTOR fzero = { 0.0f, 0.0f, 0.0f, 1.0f };
+    sceVu0FVECTOR ofst_pos[5] = {
+        { +0.0f, -32.0f, +0.0f, 1.0f },
+        { +0.0f, -20.0f, +3.5f, 1.0f },
+        { +4.2f, -20.0f, +0.0f, 1.0f },
+        { +0.0f, -20.0f, -2.5f, 1.0f },
+        { -4.3f, -20.0f, +0.0f, 1.0f },
     };
-	float fr_f;
-	static sceGsStoreImage gs_simage1;
-	Q_WORDDATA q;
-	int n1;
-	int n2;
-	u_int ui;
-    
-    int n = ppj->num; // you sneaky bastard !!!!
-    
-    for (i = 0; i < n; i++)
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+    float fr_f;
+#endif
+    static sceGsStoreImage gs_simage1;
+    Q_WORDDATA q;
+    int n1;
+    int n2;
+    u_int ui;
+    int num;
+
+    num = ppj->num;
+
+    for (i = 0; i < num; i++)
     {
         sceVu0UnitMatrix(wlm);
-        
+
         wlm[0][0] = wlm[1][1] = wlm[2][2] = 25.0f;
-        
+
         sceVu0TransMatrix(wlm, wlm, ppj->p[i]);
         sceVu0MulMatrix(slm, SgWSMtx, wlm);
         sceVu0RotTransPers(ivec[i], slm, fzero, 0);
-        
+
         clip[i] = 0;
 
         if (ivec[i][0] < GS_X_COORD(0) || ivec[i][0] > GS_X_COORD(SCR_WIDTH))
@@ -2441,44 +2377,49 @@ void CheckPointDepth(PP_JUDGE *ppj)
             clip[i]++;
         }
 
-        if (ivec[i][2] < 0xff || ivec[i][2] > 0xffffff)
+        if (ivec[i][2] < 0xff || ivec[i][2] > 0x00ffffff)
         {
             clip[i]++;
         }
 
         xx[i] = (ivec[i][0] - GS_X_COORD(0) + 8) / 16;
+#if defined(BUILD_JP_VERSION)
+        yy[i] = (ivec[i][1] + (int)(((sys_wrk.count & 1) * 0.5f + -1935.5f) * 16.0f)) / 16;
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+        if (sys_wrk.count & 1)
+        {
+            fr_f = 0.5f;
+        }
+        else
+        {
+            fr_f = 0.0f;
+        }
 
-        fr_f = (sys_wrk.count & 1) ? 0.5f : 0.0f;
         yy[i] = (ivec[i][1] + (int)((fr_f * 0.5f + -1935.5f) * 16.0f)) / 16;
-        
+#endif
+
         if (clip[i] == 0)
         {
             n1 = xx[i] / 4;
             n2 = xx[i] % 4;
-            
-            sceGsSetDefStoreImage(
-                &gs_simage1,
-                (DISP_WIDTH * DISP_HEIGHT) / 64,
-                DISP_WIDTH / 64,
-                SCE_GS_PSMZ32,
-                n1 * 4,
-                yy[i],
-                4,
-                1);
+
+            sceGsSetDefStoreImage(&gs_simage1, (DISP_WIDTH * DISP_HEIGHT) / 64, DISP_WIDTH / 64, SCE_GS_PSMZ32, n1 * 4, yy[i], 4, 1);
             CheckDMATrans();
             sceGsSyncPath(0, 0);
+
             FlushCache(0);
+
             sceGsExecStoreImage(&gs_simage1, &q.ul128);
             sceGsSyncPath(0, 0);
 
-            ui = q.ui32[n2] & 0xffffff;
-            
+            ui = q.ui32[n2] & 0x00ffffff;
+
             if (ivec[i][2] >> 4 <= ui)
             {
                 clip[i]++;
             }
         }
-        
+
         ppj->result[i] = clip[i] == 0;
     }
 }
@@ -2490,173 +2431,169 @@ void GetCamI2DPos(sceVu0FVECTOR pos, float *tx, float *ty)
     sceVu0FVECTOR vt = {0.0f, 0.0f, 0.0f, 1.0f};
     sceVu0FVECTOR vtw;
     float pl;
-  
+
     pl = 0.0f;
-    
+
     sceVu0UnitMatrix(wlm);
-    
+
     wlm[0][0] = wlm[1][1] = wlm[2][2] = 25.0f;
-    
+
     sceVu0TransMatrix(wlm, wlm, pos);
     sceVu0MulMatrix(slm, SgWSMtx, wlm);
     sceVu0ApplyMatrix(vtw, slm, vt);
     sceVu0ScaleVector(vtw, vtw, 1.0f / vtw[3]); // W can be zero ... OOPS!
-    
+
     *tx = (vtw[0] - 2048.0f) + 320.0f;
     *ty = (vtw[1] - 2048.0f) + 112.0f + pl;
 }
 
 void Get2PosRot(sceVu0FVECTOR v1, sceVu0FVECTOR v2, float *x, float *y)
 {
-	float l;
-	float fx;
-	float fy;
-	float fz;
+    float l;
+    float fx;
+    float fy;
+    float fz;
 
     fx = v2[0] - v1[0];
     fy = v2[1] - v1[1];
     fz = v2[2] - v1[2];
-    
 
-    l = SgSqrtf(fx * fx + fz * fz);
-    
-    *y = SgAtan2f(fx, fz);
-    *x = SgAtan2f(l, fy) + PI_HALF;
-    
-    // TODO: these are macros. create one!
-    *x = (*x > PI) ? (*x - TWO_PI) : ((*x < -PI) ? *x + TWO_PI : *x);
-    *y = (*y > PI) ? (*y - TWO_PI) : ((*y < -PI) ? *y + TWO_PI : *y);
+    l = VER_SQRTF(fx * fx + fz * fz);
+
+    *y = VER_ATAN2F(fx, fz);
+    *x = VER_ATAN2F(l, fy) + (PI / 2);
+
+    *x = WRAP_PI(*x);
+    *y = WRAP_PI(*y);
 }
 
 void Get2PosRot2(sceVu0FVECTOR v1, sceVu0FVECTOR v2, float *x, float *z)
 {
-    float fx; // doesn't get into STABS but Get2PosRot has it
-	float fy;
-	float fz;
+    float fx;
+    float fy;
+    float fz;
 
     fx = v2[0] - v1[0];
     fy = v2[1] - v1[1];
     fz = v2[2] - v1[2];
-    
-    *z = SgAtan2f(fx, fy);
-    *x = SgAtan2f(fz, fy);
 
-    // TODO: these are macros. create one!
-    *x = (*x > PI) ? (*x - TWO_PI) : ((*x < -PI) ? *x + TWO_PI : *x);
-    *z = (*z > PI) ? (*z - TWO_PI) : ((*z < -PI) ? *z + TWO_PI : *z);
+    *z = VER_ATAN2F(fx, fy);
+    *x = VER_ATAN2F(fz, fy);
+
+    *x = WRAP_PI(*x);
+    *z = WRAP_PI(*z);
 }
 
 void GetTrgtRotType2(float *p0, float *p1, float *rot, int id)
 {
-	sceVu0FVECTOR dist;
-    
+    sceVu0FVECTOR dist;
+
     rot[0] = 0.0f;
     rot[1] = 0.0f;
     rot[2] = 0.0f;
     rot[3] = 0.0f;
-    
+
     sceVu0SubVector(dist, p1, p0);
-    
-    if (id & 1)
+
+    if (id & 0x1)
     {
         dist[3] = GetDistV(p0, p1);
-        *rot = SgAtan2f(dist[1], dist[3]);
+
+        *rot = VER_ATAN2F(dist[1], dist[3]);
     }
-    
-    if (id & 2)
+
+    if (id & 0x2)
     {
-        rot[1] = SgAtan2f(dist[0], dist[2]);
+        rot[1] = VER_ATAN2F(dist[0], dist[2]);
     }
 }
 
 void CalcSimEquations(double (*sq)[3], float *x, float *y)
 {
-	double d;
-	int i;
-	int j;
-	int k;    
+    double d;
+    int i;
+    int j;
+    int k;
 
     for (k = 0; k < 1; k++)
     {
         for (i = k + 1; i < 2; i++)
         {
             d = sq[i][k] / sq[k][k];
-            
+
             for (j = k + 1; j < 3; j++)
             {
                 sq[i][j] -= sq[k][j] * d;
             }
         }
     }
-    
+
     for (i = 1; i >= 0; i--)
     {
         d = sq[i][2];
-        
+
         for (j = i + 1; j < 2; j++)
         {
             d -= sq[i][j] * sq[j][2];
         }
-        
+
         sq[i][2] = d / sq[i][i];
     }
-    
+
     *x = sq[0][2];
     *y = sq[1][2];
 }
 
 float Get2PLength(float *v1, float *v2)
 {
-	float xx;
-	float yy;
-	float zz;
+    float xx;
+    float yy;
+    float zz;
 
-    xx = (v2[0] - v1[0]) * (v2[0] - v1[0]);
-    yy = (v2[1] - v1[1]) * (v2[1] - v1[1]);
-    zz = (v2[2] - v1[2]) * (v2[2] - v1[2]);
+    xx = v2[0] - v1[0];
+    yy = v2[1] - v1[1];
+    zz = v2[2] - v1[2];
 
-    return SgSqrtf(xx + yy + zz);
+    return VER_SQRTF(xx * xx + yy *yy + zz * zz);
 }
 
 int log_2(float num)
 {
-	int n;
-    
+    int n;
+
     n = 0;
-    
+
     if (num / 2 > 1)
     {
         n = log_2(num / 2);
     }
-    
+
     return n + 1;
 }
 
 void LocalCopyLtoB_Sub(int no, int type, int addr) {
-	u_long128 *pbuf;
-	static sceGsStoreImage gs_simage1;
-	static sceGsStoreImage gs_simage2;
-    
+    u_long128 *pbuf;
+    static sceGsStoreImage gs_simage1;
+    static sceGsStoreImage gs_simage2;
+
     pbuf = (no != 0) ? buf2 : buf;
-    
+
     sceGsSetDefStoreImage(&gs_simage1, addr, SCR_WIDTH / 64, SCE_GS_PSMCT32, 0, 0, SCR_WIDTH, 200);
     sceGsSetDefStoreImage(&gs_simage2, addr, SCR_WIDTH / 64, SCE_GS_PSMCT32, 0, 200, SCR_WIDTH, 24);
-    
+
     CheckDMATrans();
-    
+
     sceGsSyncPath(0, 0);
-    
+
     FlushCache(0);
-    
+
     sceGsExecStoreImage(&gs_simage1, pbuf);
     sceGsExecStoreImage(&gs_simage2, &pbuf[32000]);
-    
-    if (type == 0)
+
+    if (type != 0)
     {
-        return;
+        sceGsSyncPath(0, 0);
     }
-    
-    sceGsSyncPath(0, 0);
 }
 
 void LocalCopyLtoB_Sub2(int no, int type, int addr)
@@ -2665,77 +2602,69 @@ void LocalCopyLtoB_Sub2(int no, int type, int addr)
 }
 
 void LocalCopyBtoL_Sub(int no, int type, int addr) {
-	u_long128 *bbuf;
-	int nloop;
-	int bline;
-	int rline;
-	int oline;
-    
+    u_long128 *bbuf;
+    int nloop;
+    int bline;
+    int rline;
+    int oline;
+
     bbuf = (no != 0) ? buf2 : buf;
 
     bline = 100;
     rline = SCR_HEIGHT;
-    
+
     Reserve2DPacket(0x1000);
 
     while (rline > 0)
     {
         oline = (rline > bline) ? bline : rline;
         nloop = oline * (SCR_WIDTH / 4);
-        
+
         pbuf[ndpkt].ui32[0] = DMAcnt | 6;
         pbuf[ndpkt].ui32[1] = 0;
         pbuf[ndpkt].ui32[2] = 0;
-        pbuf[ndpkt].ui32[3] = DMAcall | 6;
-        ndpkt++;
-        
+        pbuf[ndpkt++].ui32[3] = DMAcall | 6;
+
         pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(4, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 1);
-        pbuf[ndpkt].ul64[1] = SCE_GIF_PACKED_AD;
-        ndpkt++;
-        
+        pbuf[ndpkt++].ul64[1] = SCE_GIF_PACKED_AD;
+
         pbuf[ndpkt].ul64[0] = SCE_GS_SET_BITBLTBUF(0, 0, 0, addr, 10, 0);
-        pbuf[ndpkt].ul64[1] = SCE_GS_BITBLTBUF;
-        ndpkt++;
+        pbuf[ndpkt++].ul64[1] = SCE_GS_BITBLTBUF;
 
         pbuf[ndpkt].ul64[0] = SCE_GS_SET_TRXPOS(0, 0, 0, (SCR_HEIGHT) - rline, 0);
-        pbuf[ndpkt].ul64[1] = SCE_GS_TRXPOS;
-        ndpkt++;
-        
+        pbuf[ndpkt++].ul64[1] = SCE_GS_TRXPOS;
+
         pbuf[ndpkt].ul64[0] = SCE_GS_SET_TRXREG(SCR_WIDTH, oline);
-        pbuf[ndpkt].ul64[1] = SCE_GS_TRXREG;
-        ndpkt++;
-        
+        pbuf[ndpkt++].ul64[1] = SCE_GS_TRXREG;
+
         pbuf[ndpkt].ul64[0] = SCE_GS_SET_TRXDIR(0);
-        pbuf[ndpkt].ul64[1] = SCE_GS_TRXDIR;
-        ndpkt++;
+        pbuf[ndpkt++].ul64[1] = SCE_GS_TRXDIR;
 
         // pbuf[ndpkt].ul64[0] = nloop | 0x1800000000008000;
         pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(nloop, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_IMAGE, 1);
-        pbuf[ndpkt].ul64[1] = SCE_GIF_PACKED_AD;
-        ndpkt++;
-        
+        pbuf[ndpkt++].ul64[1] = SCE_GIF_PACKED_AD;
+
         pbuf[ndpkt].ui32[0] = DMAref + nloop; // +? not |? probably a compiler opt. that will fix itself .
         pbuf[ndpkt].ui32[1] = (u_int)&bbuf[((SCR_HEIGHT) - rline) * (SCR_WIDTH / 4)];
         pbuf[ndpkt].ui32[2] = 0;
-        pbuf[ndpkt].ui32[3] = DMAcall | nloop;
-        ndpkt++;
-        
+        pbuf[ndpkt++].ui32[3] = DMAcall | nloop;
+
         rline -= oline;
     }
-    
-    
+
+
     pbuf[ndpkt].ui32[0] = DMAcnt;
     pbuf[ndpkt].ui32[1] = 0;
     pbuf[ndpkt].ui32[2] = 0;
-    pbuf[ndpkt].ui32[3] = SCE_VIF1_SET_FLUSH(0);
-    ndpkt++;
-    
+    pbuf[ndpkt++].ui32[3] = SCE_VIF1_SET_FLUSH(0);
+
     pbuf[ndpkt].ui32[0] = DMAend;
     pbuf[ndpkt].ui32[1] = 0;
     pbuf[ndpkt].ui32[2] = 0;
     pbuf[ndpkt].ui32[3] = 0;
 }
 
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 int GetYOffset()
 {
     return (int)GS_Y_COORD(0) + 8 - pdrawenv->xyoffset1.OFY;
@@ -2743,8 +2672,9 @@ int GetYOffset()
 
 float GetYOffsetf()
 {
-    return ((int)GS_Y_COORD(0) + 8 - pdrawenv->xyoffset1.OFY) * 0.0625f;
+    return ((int)GS_Y_COORD(0) + 8 - pdrawenv->xyoffset1.OFY) / 16.0f;
 }
+#endif
 
 void LocalCopyLtoB2(int no, int addr)
 {
@@ -2772,6 +2702,7 @@ void LocalCopyBtoL_NB(int no, int addr)
     LocalCopyBtoL_Sub(no, 0, addr);
 }
 
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 void ClearLocalCopyLtoLCache()
 {
     old_ltol_addr1 = old_ltol_addr2 = -1;
@@ -2779,57 +2710,51 @@ void ClearLocalCopyLtoLCache()
 
 int LocalCopyLtoLDraw(int addr1, int addr2)
 {
-	int i;
-	int old_ndpkt;
-	int xyoff;
-	Q_WORDDATA *ppbuf;
-	// float *v0;
-	// float *v1;
-	// float *v0;
-	// float *v1;
-	// float *v0;
-	// float *v1;
+    int i;
+    int old_ndpkt;
+    int xyoff;
+    Q_WORDDATA *ppbuf;
 
     xyoff = GS_Y_COORD(0) + 8 - pdrawenv->xyoffset1.OFY;
-    
+
     Reserve2DPacket(0x1000);
-    
+
     ppbuf = Get2DPacketBufferAddress();
-    
+
     ppbuf[1].ul64[0] = SCE_GIF_SET_TAG(7, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 1);
     ppbuf[1].ul64[1] = SCE_GIF_PACKED_AD;
-    
+
     ppbuf[2].ul64[0] = 0;
     ppbuf[2].ul64[1] = SCE_GS_TEXFLUSH;
 
     ppbuf[3].ul64[0] = SCE_GS_SET_FRAME(addr2 / 32, 10, 0, 0);
     ppbuf[3].ul64[1] = SCE_GS_FRAME_1;
 
-    ppbuf[4].ul64[0] = SCE_GS_SET_XYOFFSET_1((2048-(SCR_WIDTH/2))*16, (2048-(SCR_HEIGHT/2))*16+8);
+    ppbuf[4].ul64[0] = SCE_GS_SET_XYOFFSET_1(GS_X_COORD(0), GS_Y_COORD(0)+8);
     ppbuf[4].ul64[1] = SCE_GS_XYOFFSET_1;
-    
+
     ppbuf[5].ul64[0] = SCE_GS_SET_TEST(2, 0, 0, 1, 0, 0, 0, SCE_GS_ZALWAYS);
     ppbuf[5].ul64[1] = SCE_GS_TEST_1;
 
     ppbuf[6].ul64[0] = SCE_GS_SET_ZBUF(pdrawenv->zbuf1.ZBP, pdrawenv->zbuf1.PSM, 0);
     ppbuf[6].ul64[1] = SCE_GS_ZBUF_1;
-    
+
     ppbuf[7].ul64[0] = SCE_GS_SET_TEX1(1, 0, SCE_GS_NEAREST, SCE_GS_NEAREST, 0, 0, 1);
     ppbuf[7].ul64[1] = SCE_GS_TEX1_1;
-    
+
     ppbuf[8].ul64[0] = SCE_GS_SET_TEX0(addr1, 10, SCE_GS_PSMCT32, 10, 8, 3, 1, 0, SCE_GS_PSMCT32, 0, 0, 0);
     ppbuf[8].ul64[1] = SCE_GS_TEX0_1;
 
     ppbuf += 9;
-    
+
     for (i = 0; i < SCR_WIDTH; i += 64, ppbuf += 5)
     {
-        ppbuf[0].ul64[0] = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_TRUE, 278, SCE_GIF_PACKED, 4);
+        ppbuf[0].ul64[0] = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_TRUE, SCE_GS_SET_PRIM(SCE_GS_PRIM_SPRITE, 0, 1, 0, 0, 0, 1, 0, 0), SCE_GIF_PACKED, 4);
         ppbuf[0].ul64[1] = 0 \
-        | SCE_GS_UV    << (4 * 0) 
-        | SCE_GS_XYZF2 << (4 * 1) 
-        | SCE_GS_UV    << (4 * 2) 
-        | SCE_GS_XYZF2 << (4 * 3);
+            | SCE_GS_UV    << (4 * 0)
+            | SCE_GS_XYZF2 << (4 * 1)
+            | SCE_GS_UV    << (4 * 2)
+            | SCE_GS_XYZF2 << (4 * 3);
 
         // UV, they are Q10.4 fixed point
         ppbuf[1].ui32[0] = i * 16; // U
@@ -2849,22 +2774,20 @@ int LocalCopyLtoLDraw(int addr1, int addr2)
         ppbuf[4].ui32[1] = GS_Y_COORD(SCR_HEIGHT) + 8; // Y
         ppbuf[4].ul64[1] = 0; // Z = 0, F = 0, dbit = 0
     }
-    
+
     ppbuf[0].ul64[0] = SCE_GIF_SET_TAG(3, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 1);
     ppbuf[0].ul64[1] = SCE_GIF_PACKED_AD;
-    
+
     Vu0CopyVector(ppbuf[1].fl32, (float *)&pdrawenv->frame1);
-    
     Vu0CopyVector(ppbuf[2].fl32, (float *)&pdrawenv->zbuf1);
-    
     Vu0CopyVector(ppbuf[3].fl32, (float *)&pdrawenv->xyoffset1);
-    
+
     old_ndpkt = ndpkt;
-    
+
     Set2DPacketBufferAddress(&ppbuf[4]);
 
     ppbuf = &pbuf[old_ndpkt];
-    
+
     i = (ndpkt - old_ndpkt) - 1;
 
     ppbuf->ui32[0] = DMAcnt | i;
@@ -2874,38 +2797,37 @@ int LocalCopyLtoLDraw(int addr1, int addr2)
 
     return -xyoff;
 }
+#endif
 
 void LocalCopyLtoL(int addr1, int addr2)
 {
-	int i;
+    int i;
     Q_WORDDATA *pbuf;
-    
+
     Reserve2DPacket(0x1000);
-    
+
     pbuf = Get2DPacketBufferAddress();
-    
+
     pbuf->ui32[0] = DMAcnt | 2; // DMAcnt - 2 QW worth of data
     pbuf->ui32[1] = 0;
-    // CHCR.TTE needs to be 1, so this 2 u32's are transferred
-    pbuf->ui32[2] = SCE_VIF1_SET_DIRECT(2, 0);
+    pbuf->ui32[2] = SCE_VIF1_SET_DIRECT(2, 0); // CHCR.TTE needs to be 1, so this 2 u32's are transferred
     pbuf->ui32[3] = SCE_VIF1_SET_FLUSH(0);
     pbuf++;
-    
+
     pbuf->ul64[0] = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 1);
     pbuf->ul64[1] = SCE_GIF_PACKED_AD;
     pbuf++;
-    
+
     pbuf->ul64[0] = 0;
     pbuf->ul64[1] = SCE_GS_TEXFLUSH;
     pbuf++;
-    
+
     pbuf->ui32[0] = DMAcnt | 32; // DMAcnt - 32 QW worth of data
     pbuf->ui32[1] = 0;
-    // CHCR.TTE needs to be 1, so this 2 u32's are transferred
-    pbuf->ui32[2] = 0; 
+    pbuf->ui32[2] = 0; // CHCR.TTE needs to be 1, so this 2 u32's are transferred
     pbuf->ui32[3] = SCE_VIF1_SET_DIRECT(32, 0);
     pbuf++;
-    
+
     pbuf->ul64[0] = SCE_GIF_SET_TAG(31, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 1);
     pbuf->ul64[1] = SCE_GIF_PACKED_AD;
     pbuf++;
@@ -2913,7 +2835,7 @@ void LocalCopyLtoL(int addr1, int addr2)
     pbuf->ul64[0] = SCE_GS_SET_BITBLTBUF(addr1, 10, 0, addr2, 10, 0);
     pbuf->ul64[1] = SCE_GS_BITBLTBUF;
     pbuf++;
-    
+
     for (i = 0; i < 10; i++, pbuf += 3)
     {
         pbuf[0].ul64[0] = SCE_GS_SET_TRXPOS(i * 64, 0, i * 64, 0, 0);
@@ -2925,34 +2847,39 @@ void LocalCopyLtoL(int addr1, int addr2)
         pbuf[2].ul64[0] = SCE_GS_SET_TRXDIR(2);
         pbuf[2].ul64[1] = SCE_GS_TRXDIR;
     }
-    
+
     pbuf->ui32[0] = DMAcnt | 0; // DMAcnt - 0 QW worth of data (just the embedded data in the tag)
     pbuf->ui32[1] = 0;
     pbuf->ui32[2] = 0;
     pbuf->ui32[3] = SCE_VIF1_SET_FLUSH(0);
     pbuf++;
-    
+
     Set2DPacketBufferAddress(pbuf);
 }
 
 void LocalCopyZtoBZ()
 {
-	static sceGsStoreImage gs_simage1;
+    static sceGsStoreImage gs_simage1;
 
     sceGsSetDefStoreImage(&gs_simage1, 4480, 10, 49, 0, 0, 640, 224);
     sceGsSyncPath(0, 0);
+
     CheckDMATrans();
+
     FlushCache(0);
+
     sceGsExecStoreImage(&gs_simage1,bufz);
     sceGsSyncPath(0, 0);
 }
 
 void LocalCopyBZtoZ()
 {
-	static sceGsLoadImage gs_limage1;
+    static sceGsLoadImage gs_limage1;
 
     sceGsSetDefLoadImage(&gs_limage1, 4480, 10, 49, 0, 0, 640, 224);
+
     FlushCache(0);
+
     sceGsExecLoadImage(&gs_limage1, bufz);
     sceGsSyncPath(0, 0);
 }
@@ -2961,12 +2888,16 @@ void LocalCopyLtoBD(int addr, void *outbuf)
 {
     static sceGsStoreImage gs_simage1;
     static sceGsStoreImage gs_simage2;
-    
+
     sceGsSetDefStoreImage(&gs_simage1, addr, 10, 0, 0, 0, 640, 200);
     sceGsSetDefStoreImage(&gs_simage2, addr, 10, 0, 0, 200, 640, 24);
+
     CheckDMATrans();
+
     sceGsSyncPath(0, 0);
+
     FlushCache(0);
+
     sceGsExecStoreImage(&gs_simage1, outbuf);
     sceGsExecStoreImage(&gs_simage2, outbuf + 0x7d000);
     sceGsSyncPath(0, 0);
@@ -2993,7 +2924,7 @@ void CallVibrate()
     {
         VibrateRequest1(0, 1);
     }
-    
+
     if (vib2_time-- > 0)
     {
         VibrateRequest2(0, vib2_pow);
@@ -3012,16 +2943,15 @@ void InitTecmotLogo()
 int SetTecmoLogo()
 {
     SPRT_DAT logotex[1] = {{
-        // .tex0 = 0x2004480669329A40,
-        .tex0 = SCE_GS_SET_TEX0(6720, 10, 19, 10, 9, 1, 0, 8768, 0, 0, 0, 1),
+        .tex0 = SCE_GS_SET_TEX0_1(0x1a40, 10, SCE_GS_PSMT8, 10, 9, 1, SCE_GS_MODULATE, 0x2240, SCE_GS_PSMCT32, 0, 0, 1),
         .u = 0,
         .v = 0,
         .w = 640,
         .h = 448,
         .x = 0,
         .y = 0,
-        .pri = 16,
-        .alpha = 128,
+        .pri = 0x10,
+        .alpha = 0x80,
     }};
     DISP_SPRT ds;
     static int cnt;
@@ -3029,19 +2959,20 @@ int SetTecmoLogo()
     int sec1;
     int sec2;
     int sec3;
-    
+
     sec1 = 90;
     sec2 = 60;
     sec3 = 90;
-    
+
     switch (tecmo_logo_flow)
     {
     case 0:
         cnt = 0;
         tecmo_logo_flow = 1;
     case 1:
-        alp = cnt * 128 / sec1;
+        alp = cnt * 0x80 / sec1;
         cnt++;
+
         if (cnt >= sec1)
         {
             cnt = 0;
@@ -3049,8 +2980,9 @@ int SetTecmoLogo()
         }
     break;
     case 2:
-        alp = 128;
+        alp = 0x80;
         cnt++;
+
         if (cnt >= sec2)
         {
             cnt = 0;
@@ -3058,8 +2990,9 @@ int SetTecmoLogo()
         }
     break;
     case 3:
-        alp = (sec3 - cnt) * 128 / sec3;
+        alp = (sec3 - cnt) * 0x80 / sec3;
         cnt++;
+
         if (cnt >= sec3)
         {
             cnt = 0;
@@ -3070,23 +3003,27 @@ int SetTecmoLogo()
         return 1;
     break;
     }
-    
-    SetSprFile3(0x1e90000, 0);
+
+    SetSprFile3(LOAD_ADDRESS_41, 0);
     CopySprDToSpr(&ds, logotex);
-    
-    ds.zbuf = 0x10100008c;
-    ds.test = 0x5000d;
+
+    ds.zbuf = SCE_GS_SET_ZBUF_1(0x8c, SCE_GS_PSMCT24, 1);
+    ds.test = SCE_GS_SET_TEST_1(1, SCE_GS_ALPHA_GREATER, 0, SCE_GS_AFAIL_KEEP, 0, 0, 1, SCE_GS_DEPTH_GEQUAL);
+
     ds.pri = logotex[0].pri;
     ds.z = 0x0fffffff - logotex[0].pri;
+
     ds.x = logotex[0].x;
     ds.y = logotex[0].y;
-    ds.r = 96;
-    ds.g = 96;
-    ds.b = 96;
+
+    ds.r = 0x60;
+    ds.g = 0x60;
+    ds.b = 0x60;
+
     ds.alpha = alp;
-    
+
     DispSprD(&ds);
-    
+
     return 0;
 }
 #endif
@@ -3102,74 +3039,69 @@ void set_vect(float *v, float x, float y, float z, float w)
 void Vu0SubOuterProduct(sceVu0FVECTOR v0, sceVu0FVECTOR v1, sceVu0FVECTOR v2, sceVu0FVECTOR v3 )
 {
     register u_int reg0 = 0;
-    
-	asm __volatile__(
-    	"lqc2    vf4,0x0(%1)\n"
-    	"lqc2    vf5,0x0(%2)\n"
-    	"lqc2    vf7,0x0(%3)\n"
-    	"vsub.xyz	vf5,vf5,vf4\n"
-    	"vsub.xyz	vf4,vf7,vf4\n"
-    	"vopmula.xyz	ACC,vf5,vf4\n"
-    	"vopmsub.xyz	vf6,vf4,vf5\n"
-    	"vsub.w vf6,vf6,vf6\n"
-    	"sqc2    vf6,0x0(%0)\n"
-    	: :"r"(v0),"r"(v1),"r"(v2),"r"(v3),"r"(reg0):"memory"
-    );
+
+    asm volatile("              \n\
+        lqc2        vf4,0x0(%1) \n\
+        lqc2        vf5,0x0(%2) \n\
+        lqc2        vf7,0x0(%3) \n\
+        vsub.xyz    vf5,vf5,vf4 \n\
+        vsub.xyz    vf4,vf7,vf4 \n\
+        vopmula.xyz ACC,vf5,vf4 \n\
+        vopmsub.xyz vf6,vf4,vf5 \n\
+        vsub.w      vf6,vf6,vf6 \n\
+        sqc2        vf6,0x0(%0) \n\
+    ": :"r"(v0),"r"(v1),"r"(v2),"r"(v3),"r"(reg0));
 }
 
 void Vu0Normalize(sceVu0FVECTOR v0, sceVu0FVECTOR v1)
 {
-    asm __volatile__(
-        "lqc2    vf4,0x0(%1)\n"
-        "vmul.xyz vf5,vf4,vf4\n"
-        "vaddy.x vf5,vf5,vf5\n"
-        "vaddz.x vf5,vf5,vf5\n"
-        "vsqrt Q,vf5x\n"
-        "vwaitq\n"
-        "vaddq.x vf5x,vf0x,Q\n"
-        "vdiv    Q,vf0w,vf5x\n"
-        "vsub.xyzw vf7,vf0,vf0\n"
-        "vwaitq\n"
-        "vmulq.xyz  vf7,vf4,Q\n"
-        "sqc2    vf7,0x0(%0)\n"
-        : :"r"(v0),"r"(v1):"memory"
-    );
+    asm volatile("            \n\
+        lqc2      vf4,0x0(%1) \n\
+        vmul.xyz  vf5,vf4,vf4 \n\
+        vaddy.x   vf5,vf5,vf5 \n\
+        vaddz.x   vf5,vf5,vf5 \n\
+        vsqrt     Q,vf5x      \n\
+        vwaitq                \n\
+        vaddq.x   vf5x,vf0x,Q \n\
+        vdiv      Q,vf0w,vf5x \n\
+        vsub.xyzw vf7,vf0,vf0 \n\
+        vwaitq                \n\
+        vmulq.xyz vf7,vf4,Q   \n\
+        sqc2      vf7,0x0(%0) \n\
+    ": :"r"(v0),"r"(v1));
 }
 
 void Vu0ApplyMatrix(sceVu0FVECTOR v0, sceVu0FMATRIX m0, sceVu0FVECTOR v1)
 {
-    asm __volatile__(
-    	"lqc2    vf4,0x0(%1)\n"
-    	"lqc2    vf5,0x10(%1)\n"
-    	"lqc2    vf6,0x20(%1)\n"
-    	"lqc2    vf7,0x30(%1)\n"
-    	"lqc2    vf8,0x0(%2)\n"
-    	"vmulax.xyzw	ACC,   vf4,vf8\n"
-    	"vmadday.xyzw	ACC,   vf5,vf8\n"
-    	"vmaddaz.xyzw	ACC,   vf6,vf8\n"
-    	"vmaddw.xyzw	vf12,vf7,vf8\n"
-    	"sqc2    vf12,0x0(%0)\n"
-    	: :"r"(v0),"r"(m0),"r"(v1):"memory"
-    );
+    asm volatile("                  \n\
+        lqc2         vf4,0x0(%1)    \n\
+        lqc2         vf5,0x10(%1)   \n\
+        lqc2         vf6,0x20(%1)   \n\
+        lqc2         vf7,0x30(%1)   \n\
+        lqc2         vf8,0x0(%2)    \n\
+        vmulax.xyzw  ACC,   vf4,vf8 \n\
+        vmadday.xyzw ACC,   vf5,vf8 \n\
+        vmaddaz.xyzw ACC,   vf6,vf8 \n\
+        vmaddw.xyzw  vf12,vf7,vf8   \n\
+        sqc2         vf12,0x0(%0)   \n\
+    ": :"r"(v0),"r"(m0),"r"(v1));
 }
 
 void Vu0MulVector(sceVu0FVECTOR v0, sceVu0FVECTOR v1, sceVu0FVECTOR v2)
 {
-    asm __volatile__(
-    	"lqc2    vf4,0x0(%1)\n"
-    	"lqc2    vf8,0x0(%2)\n"
-    	"vmul.xyzw	vf12,vf4,vf8\n"
-    	"sqc2    vf12,0x0(%0)\n"
-    	: :"r"(v0),"r"(v1),"r"(v2):"memory"
-    );
+    asm volatile("             \n\
+        lqc2      vf4,0x0(%1)  \n\
+        lqc2      vf8,0x0(%2)  \n\
+        vmul.xyzw vf12,vf4,vf8 \n\
+        sqc2      vf12,0x0(%0) \n\
+    ": :"r"(v0),"r"(v1),"r"(v2));
 }
 
 void Vu0FTOI0Vector(sceVu0IVECTOR v0, sceVu0FVECTOR v1)
 {
-    asm __volatile__(
-    	"lqc2    vf4,0(%1)\n"
-    	"vftoi0.xyzw	vf6,vf4\n"
-    	"sqc2    vf6,0(%0)\n"
-    	: :"r"(v0),"r"(v1):"memory"
-    );
+    asm volatile("            \n\
+        lqc2        vf4,0(%1) \n\
+        vftoi0.xyzw vf6,vf4   \n\
+        sqc2        vf6,0(%0) \n\
+    ": :"r"(v0),"r"(v1));
 }

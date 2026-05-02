@@ -49,18 +49,21 @@ typedef union {
 
 #if defined(BUILD_JP_VERSION)
     #define VER_LOAD_REQ_LANG LoadReq
+	#define VER_ATANF atanf
 	#define VER_ATAN2F atan2f
 	#define VER_SINF sinf
 	#define VER_COSF cosf
 	#define VER_SQRTF sqrtf
 #elif defined(BUILD_US_VERSION)
     #define VER_LOAD_REQ_LANG LoadReq
+	#define VER_ATANF SgAtanf
 	#define VER_ATAN2F SgAtan2f
 	#define VER_SINF SgSinf
 	#define VER_COSF SgCosf
 	#define VER_SQRTF SgSqrtf
 #elif defined(BUILD_EU_VERSION)
     #define VER_LOAD_REQ_LANG LoadReqLanguage
+	#define VER_ATANF SgAtanf
 	#define VER_ATAN2F SgAtan2f
 	#define VER_SINF SgSinf
 	#define VER_COSF SgCosf
