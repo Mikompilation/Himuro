@@ -4227,7 +4227,6 @@ enum VUPROG_SG {
     VUPROG_SG_SHADOW = 3
 };
 
-
 typedef enum {
     EF_NULL = 0,
     EF_Z_DEP = 1,

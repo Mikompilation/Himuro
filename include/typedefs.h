@@ -67,6 +67,19 @@ typedef union {
 	#define VER_SQRTF SgSqrtf
 #endif
 
+// #include <cstdlib.h>
+// RAND_MAX = (2**31-1)
+#define RAND_MAX 2147483647
+
+#if defined(BUILD_JP_VERSION)
+#define VER_RAND() rand() / (float)RAND_MAX
+#elif defined(BUILD_US_VERSION)
+#define VER_RAND() vu0Rand()
+#elif defined(BUILD_EU_VERSION)
+#define VER_RAND() vu0Rand()
+#endif
+
+
 #define PAD_DPAD_UP      0
 #define PAD_DPAD_DOWN    1
 #define PAD_DPAD_LEFT    2

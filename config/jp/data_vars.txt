@@ -26,3 +26,7 @@ rm_event                       = 0x2677e8; // type:u_int numel:42 nosize static
 
 // os/eeiop/se_plyr.c
 rand_ita_tbl                   = 0x267890; // type:SE_FOOT_RAND_ITA numel:11 nosize
+
+// graphics/graph2d/effect.c
+effdat                         = 0x26b380; // type:SPRT_DAT numel:60 nosize
+camdat                         = 0x26bb00; // type:SPRT_DAT numel:14 nosize
