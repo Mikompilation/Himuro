@@ -1,134 +1,134 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "effect_sub2.h"
 #include "enums.h"
 
 #include "ee/eestruct.h"
 #include "sce/libvu0.h"
 
-#include "main/glob.h"
-#include "os/eeiop/eese.h"
-#include "os/eeiop/cdvd/eecdvd.h"
-#include "os/eeiop/adpcm/ea_dat.h"
-#include "os/eeiop/adpcm/ea_ctrl.h"
-#include "os/eeiop/adpcm/ea_btlmode.h"
-// #include "os/eeiop/adpcm/ea_cmd.h" // do not include the declaration for `EAdpcmCmdPlay`
-#include "ingame/menu/item.h"
-#include "ingame/menu/ig_menu.h"
-#include "ingame/event/ev_main.h"
-// #include "ingame/plyr/plyr_ctl.h" // do not include the declaration for `FinderEndSet`
-#include "outgame/mode_slct.h"
-#include "outgame/btl_mode/btl_dat.h"
-#include "outgame/btl_mode/btl_mode.h"
-#include "graphics/graph2d/sprt.h"
-#include "graphics/graph2d/tim2.h"
+#include "graphics/graph2d/effect_obj.h"
+#include "graphics/graph2d/effect_scr.h"
+#include "graphics/graph2d/effect_sub.h"
 #include "graphics/graph2d/effect.h"
 #include "graphics/graph2d/message.h"
+#include "graphics/graph2d/sprt.h"
 #include "graphics/graph2d/tim2_new.h"
-#include "graphics/graph2d/effect_sub.h"
-#include "graphics/graph2d/effect_scr.h"
-#include "graphics/graph2d/effect_obj.h"
-#include "graphics/graph3d/sglib.h"
+#include "graphics/graph2d/tim2.h"
 #include "graphics/graph3d/libsg.h"
+#include "graphics/graph3d/sglib.h"
+#include "ingame/event/ev_main.h"
+#include "ingame/menu/ig_menu.h"
+#include "ingame/menu/item.h"
+// #include "ingame/plyr/plyr_ctl.h"
+#include "main/glob.h"
+#include "os/eeiop/adpcm/ea_btlmode.h"
+// #include "os/eeiop/adpcm/ea_cmd.h"
+#include "os/eeiop/adpcm/ea_ctrl.h"
+#include "os/eeiop/adpcm/ea_dat.h"
+#include "os/eeiop/cdvd/eecdvd.h"
+#include "os/eeiop/eese.h"
+#include "outgame/btl_mode/btl_dat.h"
+#include "outgame/btl_mode/btl_mode.h"
+#include "outgame/mode_slct.h"
 
-typedef struct { // 0x8
-	/* 0x0 */ void *start_point;
-	/* 0x4 */ short int start_num;
-	/* 0x6 */ short int end_num;
+typedef struct {
+    void *start_point;
+    short int start_num;
+    short int end_num;
 } ANM_WRK;
 
-typedef struct { // 0x40
-	/* 0x00 */ sceVu0FVECTOR fall_speed;
-	/* 0x10 */ sceVu0IVECTOR wind;
-	/* 0x20 */ sceVu0FVECTOR rotate;
-	/* 0x30 */ int stop_time;
-	/* 0x34 */ short int r;
-	/* 0x36 */ short int g;
-	/* 0x38 */ short int b;
-	/* 0x3a */ short int a;
+typedef struct {
+    sceVu0FVECTOR fall_speed;
+    sceVu0IVECTOR wind;
+    sceVu0FVECTOR rotate;
+    int stop_time;
+    short int r;
+    short int g;
+    short int b;
+    short int a;
 } FALL_TABLE;
 
-typedef struct { // 0x17b0
-	/* 0x0000 */ sceVu0FVECTOR mpos_keep;
-	/* 0x0010 */ void *pos_p;
-	/* 0x0014 */ short int at_ground[600];
-	/* 0x04c4 */ short int rgba[600][4];
-	/* 0x1784 */ int fnum_keep;
-	/* 0x1788 */ int fall_count;
-	/* 0x178c */ float fall_rate;
-	/* 0x1790 */ float rate_remain;
-	/* 0x1794 */ short int mode_keep;
-	/* 0x1796 */ short int area_keep;
-	/* 0x1798 */ short int dist;
-	/* 0x179a */ short int init_flg;
-	/* 0x179c */ short int offs[3];
+typedef struct {
+    sceVu0FVECTOR mpos_keep;
+    void *pos_p;
+    short int at_ground[600];
+    short int rgba[600][4];
+    int fnum_keep;
+    int fall_count;
+    float fall_rate;
+    float rate_remain;
+    short int mode_keep;
+    short int area_keep;
+    short int dist;
+    short int init_flg;
+    short int offs[3];
 } LEAVES_TABLE;
 
-typedef struct { // 0x10
-	/* 0x0 */ u_long tex_keep;
-	/* 0x8 */ short int tm2_id;
-	/* 0xa */ short int mode;
-	/* 0xc */ short int load_id;
-	/* 0xe */ short int pad;
+typedef struct {
+    u_long tex_keep;
+    short int tm2_id;
+    short int mode;
+    short int load_id;
+    short int pad;
 } BTL_ANM_LOAD;
 
-/* sdata 356430 */ enum T_LOAD_MODE {
-	BANM_NORM = 0,
-	BANM_LOAD = 1,
-	BANM_AFTLOAD = 2,
-	BANM_TEXDISP = 3
+enum T_LOAD_MODE {
+    BANM_NORM = 0,
+    BANM_LOAD = 1,
+    BANM_AFTLOAD = 2,
+    BANM_TEXDISP = 3
 };
 
 #define PI 3.1415927f
-#define PI_HALF 1.5707964f
 
 #define ANM2D_DAT_TABLE_P(table_p) ((ANM2D_DAT_TABLE *)table_p)
 #define ANM2D_WRK_TABLE_P(table_p) ((ANM2D_WRK_TABLE *)table_p)
 
-#include "data/fall_table.h" /* data 270e30 */ // FALL_TABLE fall_table[/*4*/];
-/* sdata 3563e8 */ short int fallen_effect_switch = 0;
-/* sdata 3563ea */ short int gus_effect_switch = 0;
-/* sdata 3563ec */ short int hole_effect_switch = 0;
-/* sdata 3563f0 */ short int line_effect_switch[4] = { 0, 0, 0, 0 };
+#include "data/fall_table.h" // FALL_TABLE fall_table[];
+short int fallen_effect_switch = 0;
+short int gus_effect_switch = 0;
+short int hole_effect_switch = 0;
+short int line_effect_switch[4] = { 0, 0, 0, 0 };
 
-#include "data/btl_strt.h"  /* data 270f30 */ // SPRT_SDAT btl_strt[11];
-#include "data/btl_rslt.h"  /* data 270fd0 */ // SPRT_SDAT btl_rslt[23];
-#include "data/msg_strt.h"  /* data 271118 */ // SPRT_SDAT msg_strt;
-#include "data/btl_msel.h"  /* data 271128 */ // SPRT_SDAT btl_msel[/*26*/];
-#include "data/btl_msel2.h" /* data 271298 */ // SPRT_SDAT btl_msel2[/*35*/];
-#include "data/anm2d_dat.h" /* data 2713f8 */ // ANM2D_DAT_TABLE anm2d_dat[/*36*/][12];
-#include "data/wrk_table.h" /* data 2735b8 */ // ANM2D_WRK_TABLE wrk_table[/*41*/];
-#include "data/clear_all.h" /* data 276148 */ // SPRT_DAT clear_all[11];
-#include "data/story_end.h" /* data 2762a8 */ // SPRT_DAT story_end[11];
-#include "data/fall_wrk.h"  /* data 276410 */ // LEAVES_TABLE fall_wrk;
-#include "data/gus_wrk.h"   /* data 277bc0 */ // LEAVES_TABLE gus_wrk;
-#include "data/hole_wrk.h"  /* data 279370 */ // LEAVES_TABLE hole_wrk;
-#include "data/line_wrk.h"  /* data 27ab20 */ // LEAVES_TABLE line_wrk[4];
-/* data 2809e0 */ BTL_ANM_LOAD banm = {0};
+#include "data/btl_strt.h"  // SPRT_SDAT btl_strt[11];
+#include "data/btl_rslt.h"  // SPRT_SDAT btl_rslt[23];
+#include "data/msg_strt.h"  // SPRT_SDAT msg_strt;
+#include "data/btl_msel.h"  // SPRT_SDAT btl_msel[];
+#include "data/btl_msel2.h" // SPRT_SDAT btl_msel2[];
+#include "data/anm2d_dat.h" // ANM2D_DAT_TABLE anm2d_dat[][12];
+#include "data/wrk_table.h" // ANM2D_WRK_TABLE wrk_table[];
+#include "data/clear_all.h" // SPRT_DAT clear_all[11];
+#include "data/story_end.h" // SPRT_DAT story_end[11];
+#include "data/fall_wrk.h"  // LEAVES_TABLE fall_wrk;
+#include "data/gus_wrk.h"   // LEAVES_TABLE gus_wrk;
+#include "data/hole_wrk.h"  // LEAVES_TABLE hole_wrk;
+#include "data/line_wrk.h"  // LEAVES_TABLE line_wrk[4];
+BTL_ANM_LOAD banm = {0};
 
-/* bss 359f90 */ static sceVu0FVECTOR leaves[600];
-/* bss 35c510 */ static sceVu0FVECTOR leavesaim[600];
-/* bss 35ea90 */ static sceVu0FVECTOR accel[600];
-/* bss 361010 */ static sceVu0FVECTOR rots[600];
-/* bss 363590 */ static sceVu0FVECTOR hole_gus[200];
-/* bss 364210 */ static sceVu0FVECTOR line_gus[4][80];
+static sceVu0FVECTOR leaves[600];
+static sceVu0FVECTOR leavesaim[600];
+static sceVu0FVECTOR accel[600];
+static sceVu0FVECTOR rots[600];
+static sceVu0FVECTOR hole_gus[200];
+static sceVu0FVECTOR line_gus[4][80];
 
 void InitEffectSub2()
 {
     fallen_effect_switch = 0;
     gus_effect_switch = 0;
-    
-    memset(&fall_wrk, 0, sizeof(LEAVES_TABLE));
-    memset(&gus_wrk, 0, sizeof(LEAVES_TABLE));
-    memset(&hole_wrk, 0, sizeof(LEAVES_TABLE));
-    
+
+    fall_wrk = (LEAVES_TABLE){0};
+    gus_wrk = (LEAVES_TABLE){0};
+    hole_wrk = (LEAVES_TABLE){0};
+
     InitCallAnm();
 }
 
-void CallFallenEffect(/* a0 4 */ sceVu0FVECTOR mpos, /* a1 5 */ int area, /* a2 6 */ int fall_num, /* a3 7 */ int fall_mode)
+void CallFallenEffect(sceVu0FVECTOR mpos, int area, int fall_num, int fall_mode)
 {
     fallen_effect_switch = 1;
-    
+
     if (fall_wrk.init_flg == 0)
     {
         FallObjInitAll(mpos, area, fall_num, fall_mode, 1500);
@@ -142,95 +142,83 @@ void CallFallenEffect(/* a0 4 */ sceVu0FVECTOR mpos, /* a1 5 */ int area, /* a2 
 void StopFallenEffect()
 {
     fallen_effect_switch = 0;
+
     fall_wrk.init_flg = 0;
 }
 
-void FallObjInit(/* a0 4 */ sceVu0FVECTOR mpos, /* t5 13 */ int leaf_no, /* a2 6 */ int area, /* a3 7 */ int fall_num, /* t0 8 */ int fall_mode)
+void FallObjInit(sceVu0FVECTOR mpos, int leaf_no, int area, int fall_num, int fall_mode)
 {
-	/* t1 9 */ int tmp;
-	// /* f0 38 */ float r;
-	// /* f1 39 */ float r;
-	// /* f1 39 */ float r;
-	// /* f0 38 */ float r;
-	// /* f1 39 */ float r;
-	// /* f1 39 */ float r;
-	// /* f0 38 */ float r;
-	// /* f1 39 */ float r;
-	// /* f1 39 */ float r;
-	// /* f0 38 */ float r;
-	// /* f1 39 */ float r;
-	// /* f1 39 */ float r;
-	// /* f0 38 */ float r;
+    int tmp;
 
-    tmp = (int)(vu0Rand() * 10.0f) + 1;
-    
+    tmp = (int)(10.0f * VER_RAND()) + 1;
+
     if (tmp < 6)
     {
-        leaves[leaf_no][0] = mpos[0] + (int)(area * vu0Rand());
+        leaves[leaf_no][0] = mpos[0] + (int)((float)area * VER_RAND());
     }
     else
     {
-        leaves[leaf_no][0] = mpos[0] - (int)(area * vu0Rand());
+        leaves[leaf_no][0] = mpos[0] - (int)((float)area * VER_RAND());
     }
 
-    tmp = (int)(vu0Rand() * 10.0f) + 1;
-    
+    tmp = (int)(10.0f * VER_RAND()) + 1;
+
     if (tmp < 6)
     {
-        leaves[leaf_no][2] = mpos[2] + (int)(area * vu0Rand());
+        leaves[leaf_no][2] = mpos[2] + (int)((float)area * VER_RAND());
     }
     else
     {
-        leaves[leaf_no][2] = mpos[2] - (int)(area * vu0Rand());
+        leaves[leaf_no][2] = mpos[2] - (int)((float)area * VER_RAND());
     }
-    
+
     leaves[leaf_no][1] = mpos[1] - fall_wrk.dist;
     leaves[leaf_no][3] = 1.0f;
-    
-    tmp = (int)(vu0Rand() * 10.0f) + 1;
-    
+
+    tmp = (int)(10.0f * VER_RAND()) + 1;
+
     if (tmp < 6)
     {
-        leavesaim[leaf_no][0] = (int)(fall_table[fall_mode].fall_speed[3] * vu0Rand());
+        leavesaim[leaf_no][0] = (int)(fall_table[fall_mode].fall_speed[3] * VER_RAND());
     }
     else
     {
-        leavesaim[leaf_no][0] = -(int)(fall_table[fall_mode].fall_speed[3] * vu0Rand());
-    }
-    
-    tmp = (int)(vu0Rand() * 10.0f) + 1;
-    
-    if (tmp < 6)
-    {
-        leavesaim[leaf_no][2] = (int)(fall_table[fall_mode].fall_speed[3] * vu0Rand());
-    }
-    else
-    {
-        leavesaim[leaf_no][2] = -(int)(fall_table[fall_mode].fall_speed[3] * vu0Rand());
+        leavesaim[leaf_no][0] = -(int)(fall_table[fall_mode].fall_speed[3] * VER_RAND());
     }
 
-    tmp = fall_table[fall_mode].fall_speed[1] - 1 + (int)(vu0Rand() * 3.0f);
-    
+    tmp = (int)(10.0f * VER_RAND()) + 1;
+
+    if (tmp < 6)
+    {
+        leavesaim[leaf_no][2] = (int)(fall_table[fall_mode].fall_speed[3] * VER_RAND());
+    }
+    else
+    {
+        leavesaim[leaf_no][2] = -(int)(fall_table[fall_mode].fall_speed[3] * VER_RAND());
+    }
+
+    tmp = fall_table[fall_mode].fall_speed[1] - 1 + (int)(3.0f * VER_RAND());
+
     accel[leaf_no][0] = 0.0f;
     accel[leaf_no][1] = tmp;
     accel[leaf_no][2] = 0.0f;
-    
+
     rots[leaf_no][0] = 0.0f;
     rots[leaf_no][1] = 0.0f;
     rots[leaf_no][2] = 0.0f;
-    
+
     fall_wrk.rgba[leaf_no][0] = fall_table[fall_mode].r;
     fall_wrk.rgba[leaf_no][1] = fall_table[fall_mode].g;
     fall_wrk.rgba[leaf_no][2] = fall_table[fall_mode].b;
     fall_wrk.rgba[leaf_no][3] = fall_table[fall_mode].a;
-    
+
     fall_wrk.at_ground[leaf_no] = 0;
 }
 
-void FallObjInitAll(/* a0 4 */ sceVu0FVECTOR mpos, /* s2 18 */ int area, /* s1 17 */ int fall_num, /* s3 19 */ int fall_mode, /* t0 8 */ int height)
+void FallObjInitAll(sceVu0FVECTOR mpos, int area, int fall_num, int fall_mode, int height)
 {
-	/* s0 16 */ int i;
-    
+    int i;
+
     fall_wrk.pos_p = mpos;
     fall_wrk.fnum_keep = fall_num;
     fall_wrk.mode_keep = fall_mode;
@@ -247,109 +235,98 @@ void FallObjInitAll(/* a0 4 */ sceVu0FVECTOR mpos, /* s2 18 */ int area, /* s1 1
 
 void FallObjDropSet()
 {
-	/* t0 8 */ int i;
-	// /* f1 39 */ float r;
+    int i;
 
     for (i = 0; i < fall_wrk.fnum_keep; i++)
     {
-        leaves[i][1] += (int)(fall_wrk.dist * vu0Rand()) -
+        leaves[i][1] += (int)((float)fall_wrk.dist * VER_RAND()) -
             fall_table[fall_wrk.mode_keep].stop_time * fall_table[fall_wrk.mode_keep].fall_speed[1];
     }
-    
+
     fall_wrk.fall_count = fall_wrk.fnum_keep;
     fall_wrk.rate_remain = fall_wrk.fall_rate;
 }
 
 void FallenObjects()
 {
-	/* sdata 3563f8 */ static int now_status = 0;
-	/* s3 19 */ int i;
-    
+    static int now_status = 0;
+    int i;
+
     if (fallen_effect_switch == 0)
     {
         return;
     }
-    
+
     if (fall_wrk.fall_count < fall_wrk.fnum_keep)
     {
         fall_wrk.rate_remain++;
-        
+
         while (fall_wrk.fall_rate <= fall_wrk.rate_remain)
         {
             fall_wrk.fall_count++;
             fall_wrk.rate_remain -= fall_wrk.fall_rate;
         }
     }
-    
+
     for (i = 0; i < fall_wrk.fnum_keep; i++)
     {
         if (i > fall_wrk.fall_count)
         {
             return;
         }
-        
+
         if (leaves[i][1] >= plyr_wrk.move_box.pos[1] - 20.0f)
         {
             fall_wrk.at_ground[i]++;
-            
+
             if (fall_wrk.rgba[i][3] > 0)
             {
                 fall_wrk.rgba[i][3] = fall_table[fall_wrk.mode_keep].a -
                           ((float)fall_wrk.at_ground[i] / (float)fall_table[fall_wrk.mode_keep].stop_time) *
                           fall_table[fall_wrk.mode_keep].a;
             }
-            
+
             if (fall_table[fall_wrk.mode_keep].stop_time < fall_wrk.at_ground[i])
             {
                 leaves[i][1] = fall_wrk.mpos_keep[1];
+
                 FallObjInit(fall_wrk.pos_p, i, fall_wrk.area_keep, fall_wrk.fnum_keep, fall_wrk.mode_keep);
             }
         }
         else
         {
             leaves[i][1] += accel[i][1];
+
             FallObjTrans(leaves[i], accel[i], leavesaim[i], fall_wrk.mode_keep);
             FallObjRot(rots[i], accel[i], leavesaim[i], fall_wrk.mode_keep);
         }
-    
+
         FallObjLight(leaves[i], fall_wrk.rgba[i], fall_wrk.mode_keep);
         FallObjDraw(leaves[i], rots[i], fall_wrk.rgba[i], fall_wrk.mode_keep);
     }
 }
 
-/* sdata 3563fc */ static u_char r_temp = 33;
-/* sdata 3563fd */ static u_char g_temp = 48;
-/* sdata 3563fe */ static u_char b_temp = 47;
-/* sdata 3563ff */ static u_char rate_temp = 7;
-/* sdata 356400 */ ANM_WRK anm_wrk = {0};
-/* sdata 356408 */ static short int anm_no_keep = -1;
-/* sdata 35640a */ static short int anm_load_id = 0;
-/* sdata 35640c */ static u_char anm_init = 0;
-/* sdata 35640d */ static u_char clear_end = 0;
-/* sdata 35640e */ static u_char clear_end2 = 0;
-/* sdata 35640f */ static u_char clear_end3 = 0;
-/* sdata 356410 */ int clear_anime_timer = 0;
+static u_char r_temp = 33;
+static u_char g_temp = 48;
+static u_char b_temp = 47;
+static u_char rate_temp = 7;
+ANM_WRK anm_wrk = {0};
+static short int anm_no_keep = -1;
+static short int anm_load_id = 0;
+static u_char anm_init = 0;
+static u_char clear_end = 0;
+static u_char clear_end2 = 0;
+static u_char clear_end3 = 0;
+int clear_anime_timer = 0;
 
-void FallObjTrans(/* a0 4 */ sceVu0FVECTOR leaf, /* a1 5 */ sceVu0FVECTOR axel, /* a2 6 */ sceVu0FVECTOR aim, /* a3 7 */ int fall_mode) {
-	/* v0 2 */ int tmp;
-	// /* f0 38 */ float r;
-	// /* f1 39 */ float r;
-	// /* f1 39 */ float r;
-	// /* f0 38 */ float r;
-	// /* f1 39 */ float r;
-	// /* f1 39 */ float r;
-	// /* f0 38 */ float r;
-	// /* f0 38 */ float r;
-	// /* f1 39 */ float r;
-	// /* f1 39 */ float r;
-	// /* f0 38 */ float r;
-	// /* f1 39 */ float r;
-	// /* f1 39 */ float r;
-    
+void FallObjTrans(sceVu0FVECTOR leaf, sceVu0FVECTOR axel, sceVu0FVECTOR aim, int fall_mode)
+{
+    int tmp;
+
     if (axel[0] < aim[0])
     {
         axel[0] = axel[0] + fall_table[fall_mode].fall_speed[0];
-        
+
         if (axel[0] < aim[0] * 0.5f)
         {
             leaf[0] = leaf[0] + axel[0];
@@ -358,27 +335,27 @@ void FallObjTrans(/* a0 4 */ sceVu0FVECTOR leaf, /* a1 5 */ sceVu0FVECTOR axel, 
         {
             leaf[0] = leaf[0] + (aim[0] - axel[0]);
         }
-        
+
         if (aim[0] <= axel[0])
         {
-            tmp = (int)(vu0Rand() * 10.0f) + 1;
-    
+            tmp = (int)(10.0f * VER_RAND()) + 1;
+
             if (tmp <= 5)
             {
-                aim[0] = (int)(fall_table[fall_mode].fall_speed[3] * vu0Rand());
+                aim[0] = (int)(fall_table[fall_mode].fall_speed[3] * VER_RAND());
             }
             else
             {
-                aim[0] = -(int)(fall_table[fall_mode].fall_speed[3] * vu0Rand());
+                aim[0] = -(int)(fall_table[fall_mode].fall_speed[3] * VER_RAND());
             }
-            
+
             axel[0] = 0.0f;
         }
     }
     else
     {
         axel[0] = axel[0] - fall_table[fall_mode].fall_speed[0];
-        
+
         if (aim[0] * 0.5f < axel[0])
         {
             leaf[0] = leaf[0] + axel[0];
@@ -387,25 +364,25 @@ void FallObjTrans(/* a0 4 */ sceVu0FVECTOR leaf, /* a1 5 */ sceVu0FVECTOR axel, 
         {
             leaf[0] = leaf[0] + (aim[0] - axel[0]);
         }
-        
+
         if (axel[0] <= aim[0])
         {
-            tmp = (int)(vu0Rand() * 10.0f) + 1;
-    
+            tmp = (int)(10.0f * VER_RAND()) + 1;
+
             if (tmp <= 5)
             {
-                aim[0] = (int)(fall_table[fall_mode].fall_speed[3] * vu0Rand());
+                aim[0] = (int)(fall_table[fall_mode].fall_speed[3] * VER_RAND());
             }
             else
             {
-                aim[0] = -(int)(fall_table[fall_mode].fall_speed[3] * vu0Rand());
+                aim[0] = -(int)(fall_table[fall_mode].fall_speed[3] * VER_RAND());
             }
-            
+
             axel[0] = 0.0f;
         }
     }
 
-    tmp = (int)(vu0Rand() * 10.0f) + 1;
+    tmp = (int)(10.0f * VER_RAND()) + 1;
 
     if (tmp <= 5)
     {
@@ -419,7 +396,7 @@ void FallObjTrans(/* a0 4 */ sceVu0FVECTOR leaf, /* a1 5 */ sceVu0FVECTOR axel, 
     if (axel[2] < aim[2])
     {
         axel[2] = axel[2] + fall_table[fall_mode].fall_speed[2];
-        
+
         if (axel[2] < aim[2] * 0.5f)
         {
             leaf[2] = leaf[2] + axel[2];
@@ -428,27 +405,27 @@ void FallObjTrans(/* a0 4 */ sceVu0FVECTOR leaf, /* a1 5 */ sceVu0FVECTOR axel, 
         {
             leaf[2] = leaf[2] + (aim[2] - axel[2]);
         }
-        
+
         if (axel[2] >= aim[2])
         {
-            tmp = (int)(vu0Rand() * 10.0f) + 1;
-    
+            tmp = (int)(10.0f * VER_RAND()) + 1;
+
             if (tmp <= 5)
             {
-                aim[2] = (int)(fall_table[fall_mode].fall_speed[3] * vu0Rand());
+                aim[2] = (int)(fall_table[fall_mode].fall_speed[3] * VER_RAND());
             }
             else
             {
-                aim[2] = -(int)(fall_table[fall_mode].fall_speed[3] * vu0Rand());
+                aim[2] = -(int)(fall_table[fall_mode].fall_speed[3] * VER_RAND());
             }
-            
+
             axel[2] = 0.0f;
         }
     }
     else
     {
         axel[2] = axel[2] - fall_table[fall_mode].fall_speed[2];
-        
+
         if (aim[2] * 0.5f < axel[2])
         {
             leaf[2] = leaf[2] + axel[2];
@@ -457,50 +434,51 @@ void FallObjTrans(/* a0 4 */ sceVu0FVECTOR leaf, /* a1 5 */ sceVu0FVECTOR axel, 
         {
             leaf[2] = leaf[2] + (aim[2] - axel[2]);
         }
-        
+
         if (axel[2] <= aim[2])
         {
-            tmp = (int)(vu0Rand() * 10.0f) + 1;
-    
+            tmp = (int)(10.0f * VER_RAND()) + 1;
+
             if (tmp <= 5)
             {
-                aim[2] = (int)(fall_table[fall_mode].fall_speed[3] * vu0Rand());
+                aim[2] = (int)(fall_table[fall_mode].fall_speed[3] * VER_RAND());
             }
             else
             {
-                aim[2] = -(int)(fall_table[fall_mode].fall_speed[3] * vu0Rand());
+                aim[2] = -(int)(fall_table[fall_mode].fall_speed[3] * VER_RAND());
             }
-        
+
             axel[2] = 0.0f;
         }
     }
 }
 
-void FallObjRot(/* t0 8 */ sceVu0FVECTOR rotation, /* a1 5 */ sceVu0FVECTOR axel, /* a2 6 */ sceVu0FVECTOR aim, /* a3 7 */ int fall_mode)
-{    
+void FallObjRot(sceVu0FVECTOR rotation, sceVu0FVECTOR axel, sceVu0FVECTOR aim, int fall_mode)
+{
     if (fall_mode == 0)
     {
-        Get2PosRot(camera.p, camera.i, rotation, rotation + 1);
+        Get2PosRot(camera.p, camera.i, &rotation[0], &rotation[1]);
+
         return;
     }
-    
+
     if (fall_mode != 1 && fall_mode != 2)
     {
         return;
     }
-    
+
     if (axel[0] < aim[0] && (aim[0] < -1.0f || aim[0] > 1.0f))
     {
-        
+
         if (axel[0] < aim[0] * 0.5f)
         {
-            rotation[2] = (axel[0] * -PI_HALF) / (aim[0] * 0.5f);
+            rotation[2] = (axel[0] * -(PI / 2)) / (aim[0] * 0.5f);
         }
         else
         {
-            rotation[2] = ((aim[0] - axel[0]) * -PI_HALF) / (aim[0] * 0.5f);
+            rotation[2] = ((aim[0] - axel[0]) * -(PI / 2)) / (aim[0] * 0.5f);
         }
-        
+
     }
     else
     {
@@ -508,66 +486,63 @@ void FallObjRot(/* t0 8 */ sceVu0FVECTOR rotation, /* a1 5 */ sceVu0FVECTOR axel
         {
             if (aim[0] * 0.5f < axel[0])
             {
-                rotation[2] = (axel[0] * PI_HALF) / (aim[0] * 0.5f);
+                rotation[2] = (axel[0] * (PI / 2)) / (aim[0] * 0.5f);
             }
             else
             {
-                rotation[2] = ((aim[0] - axel[0]) * PI_HALF) / (aim[0] * 0.5f);
+                rotation[2] = ((aim[0] - axel[0]) * (PI / 2)) / (aim[0] * 0.5f);
             }
-            
+
         }
         else
         {
             rotation[1] = (fall_table[fall_mode].rotate[1] * PI) / 180.0f;
         }
     }
-    
+
     if (axel[2] < aim[2] && (aim[2] < -1.0f || aim[2] > 1.0f))
     {
         if (axel[2] < aim[2] * 0.5f)
         {
-            rotation[0] = (axel[2] * PI_HALF) / (aim[2] * 0.5f);
+            rotation[0] = (axel[2] * (PI / 2)) / (aim[2] * 0.5f);
         }
         else
         {
-            rotation[0] = ((aim[2] - axel[2]) * PI_HALF) / (aim[2] * 0.5f);
+            rotation[0] = ((aim[2] - axel[2]) * (PI / 2)) / (aim[2] * 0.5f);
+        }
+    }
+    else if (axel[2] >= aim[2] && (aim[2] < -1.0f || aim[2] > 1.0f))
+    {
+        if (aim[2] * 0.5f < axel[2])
+        {
+            rotation[0] = (axel[2] * -(PI / 2)) / (aim[2] * 0.5f);
+        }
+        else
+        {
+            rotation[0] = ((aim[2] - axel[2]) * -(PI / 2)) / (aim[2] * 0.5f);
         }
     }
     else
     {
-        if (axel[2] >= aim[2] && (aim[2] < -1.0f || aim[2] > 1.0f))
-        {
-            if (aim[2] * 0.5f < axel[2])
-            {
-                rotation[0] = (axel[2] * -PI_HALF) / (aim[2] * 0.5f);
-            }
-            else
-            {
-                rotation[0] = ((aim[2] - axel[2]) * -PI_HALF) / (aim[2] * 0.5f);
-            }
-        }
-        else
-        {
-            rotation[1] = (fall_table[fall_mode].rotate[1] * PI) / 180.0f;
-        }
+        rotation[1] = (fall_table[fall_mode].rotate[1] * PI) / 180.0f;
     }
 }
 
-void FallObjWind(/* a0 4 */ sceVu0FVECTOR leaf, /* a1 5 */ int fall_mode)
+void FallObjWind(sceVu0FVECTOR leaf, int fall_mode)
 {
     leaf[0] += fall_table[fall_mode].wind[0];
     leaf[1] += fall_table[fall_mode].wind[1];
     leaf[2] += fall_table[fall_mode].wind[2];
 }
 
-void FallObjLight(/* a0 4 */ sceVu0FVECTOR leaf, /* s0 16 */ short int *rgba, /* s1 17 */ int fall_mode)
+void FallObjLight(sceVu0FVECTOR leaf, short int *rgba, int fall_mode)
 {
-	/* -0x40(sp) */ float tes1;
-	/* -0x3c(sp) */ float tes2;
-    
+    float tes1;
+    float tes2;
+
     tes1 = 0.0f;
     tes2 = 0.0f;
-    
+
     if (GetCornHitCheck2(leaf, 1200.0f, &tes1, &tes2))
     {
         rgba[0] = fall_table[fall_mode].r;
@@ -582,28 +557,28 @@ void FallObjLight(/* a0 4 */ sceVu0FVECTOR leaf, /* s0 16 */ short int *rgba, /*
     }
 }
 
-void FallObjDraw(/* a0 4 */ sceVu0FVECTOR mpos, /* s0 16 */ sceVu0FVECTOR rotation, /* s1 17 */ short int *rgba, /* s2 18 */ int fall_mode)
+void FallObjDraw(sceVu0FVECTOR mpos, sceVu0FVECTOR rotation, short int *rgba, int fall_mode)
 {
-	/* t3 11 */ int i;
-	/* a1 5 */ int w;
-	/* fp 30 */ int th;
-	/* s7 23 */ int tw;
-	/* t5 13 */ int bak;
-	/* 0x0(sp) */ sceVu0FMATRIX wlm;
-	/* 0x40(sp) */ sceVu0FMATRIX slm;
-	/* 0x80(sp) */ sceVu0IVECTOR ivec[4];
-	/* 0xc0(sp) */ sceVu0FVECTOR wpos;
-	/* 0xd0(sp) */ sceVu0FVECTOR ppos[4] = {
+    int i;
+    int w;
+    int th;
+    int tw;
+    int bak;
+    sceVu0FMATRIX wlm;
+    sceVu0FMATRIX slm;
+    sceVu0IVECTOR ivec[4];
+    sceVu0FVECTOR wpos;
+    sceVu0FVECTOR ppos[4] = {
         { -12.0f, +12.0f, 0.0f, 1.0f },
         { +12.0f, +12.0f, 0.0f, 1.0f },
         { -12.0f, -12.0f, 0.0f, 1.0f },
         { +12.0f, -12.0f, 0.0f, 1.0f },
     };
-	/* s5 21 */ u_char mr;
-	/* s6 22 */ u_char mg;
-	/* s4 20 */ u_char mb;
-	/* s0 16 */ u_long tex0;
-    
+    u_char mr;
+    u_char mg;
+    u_char mb;
+    u_long tex0;
+
     wpos[0] = mpos[0];
     wpos[1] = mpos[1];
     wpos[2] = mpos[2];
@@ -620,18 +595,18 @@ void FallObjDraw(/* a0 4 */ sceVu0FVECTOR mpos, /* s0 16 */ sceVu0FVECTOR rotati
         mg = rgba[1];
         mb = rgba[2];
     }
-    
+
     sceVu0UnitMatrix(wlm);
     sceVu0RotMatrixX(wlm, wlm, rotation[0]);
     sceVu0RotMatrixY(wlm, wlm, rotation[1]);
     sceVu0RotMatrixZ(wlm, wlm, rotation[2]);
     sceVu0TransMatrix(wlm, wlm, wpos);
     sceVu0MulMatrix(slm, SgWSMtx, wlm);
-    
+
     sceVu0RotTransPersN(ivec, slm, ppos, 4, 0);
-    
+
     w = 0;
-    
+
     for (i = 0; i < 4; i++)
     {
         if (ivec[i][0] < 0x4000 || ivec[i][0] > 0xc000)
@@ -643,16 +618,14 @@ void FallObjDraw(/* a0 4 */ sceVu0FVECTOR mpos, /* s0 16 */ sceVu0FVECTOR rotati
         {
             w = 1;
         }
-        
+
         if (ivec[i][2] < 0xff || ivec[i][2] > 0xffffff)
         {
             w = 1;
         }
     }
-    
-    i = 4;
-    
-    if (!w)
+
+    if (w == 0)
     {
         if (fall_mode == 0)
         {
@@ -666,42 +639,43 @@ void FallObjDraw(/* a0 4 */ sceVu0FVECTOR mpos, /* s0 16 */ sceVu0FVECTOR rotati
         {
             i = monochrome_mode + 20;
         }
-        
+
         th = effdat[i].h * 16;
         tw = effdat[i].w * 16;
+
         tex0 = effdat[i].tex0;
-        
+
         Reserve2DPacket(0x1000);
-        
+
         bak = ndpkt;
-        
+
         pbuf[ndpkt++].ul128 = (u_long128)0;
-        
+
         pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(6, SCE_GS_FALSE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 1);
         pbuf[ndpkt++].ul64[1] = SCE_GIF_PACKED_AD;
-        
+
         pbuf[ndpkt].ul64[0] = 0;
         pbuf[ndpkt++].ul64[1] = SCE_GS_TEXFLUSH;
-        
+
         pbuf[ndpkt].ul64[0] = tex0;
         pbuf[ndpkt++].ul64[1] = SCE_GS_TEX0_1;
-        
-        pbuf[ndpkt].ul64[0] = SCE_GS_SET_TEX1_1(1, 0, 1, 5, 0, 0, 0);
+
+        pbuf[ndpkt].ul64[0] = SCE_GS_SET_TEX1_1(1, 0, SCE_GS_LINEAR, SCE_GS_LINEAR_MIPMAP_LINEAR, 0, 0, 0);
         pbuf[ndpkt++].ul64[1] = SCE_GS_TEX1_1;
-        
+
         pbuf[ndpkt].ul64[0] = SCE_GS_SET_ZBUF_1(0x8c, SCE_GS_PSMCT24, 1);
         pbuf[ndpkt++].ul64[1] = SCE_GS_ZBUF_1;
-        
-        pbuf[ndpkt].ul64[0] = SCE_GS_SET_ALPHA_1(0, 1, 0, 1, 0);
+
+        pbuf[ndpkt].ul64[0] = SCE_GS_SET_ALPHA_1(SCE_GS_ALPHA_CS, SCE_GS_ALPHA_CD, SCE_GS_ALPHA_AS, SCE_GS_ALPHA_CD, 0);
         pbuf[ndpkt++].ul64[1] = SCE_GS_ALPHA_1;
-        
+
         pbuf[ndpkt].ul64[0] = SCE_GS_SET_TEST_1(SCE_GS_TRUE, SCE_GS_ALPHA_GREATER, SCE_GS_FALSE, SCE_GS_AFAIL_KEEP, SCE_GS_FALSE, SCE_GS_FALSE, SCE_GS_TRUE, SCE_GS_DEPTH_GEQUAL);
         pbuf[ndpkt++].ul64[1] = SCE_GS_TEST_1;
-        
-        pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(4, SCE_GS_TRUE, SCE_GS_TRUE, 340, SCE_GIF_PACKED, 3);
+
+        pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(4, SCE_GS_TRUE, SCE_GS_TRUE, SCE_GS_SET_PRIM(SCE_GS_PRIM_TRISTRIP, 0, 1, 0, 1, 0, 1, 0, 0), SCE_GIF_PACKED, 3);
         pbuf[ndpkt++].ul64[1] = 0 \
-            | SCE_GS_RGBAQ << (4 * 0) 
-            | SCE_GS_UV    << (4 * 1) 
+            | SCE_GS_RGBAQ << (4 * 0)
+            | SCE_GS_UV    << (4 * 1)
             | SCE_GS_XYZF2 << (4 * 2);
 
         for (i = 0; i < 4; i++)
@@ -728,9 +702,9 @@ void FallObjDraw(/* a0 4 */ sceVu0FVECTOR mpos, /* s0 16 */ sceVu0FVECTOR rotati
 
 void GusObjDebug()
 {
-    if (*key_now[14] != 0)
+    if (PAD_BTN_HELD(PAD_L3))
     {
-        if (*key_now[10] == 0)
+        if (PAD_BTN_NOT_HELD(PAD_R1))
         {
             if (r_temp < 0xff)
             {
@@ -745,10 +719,10 @@ void GusObjDebug()
             }
         }
     }
-    
-    if (*key_now[15] != 0)
+
+    if (PAD_BTN_HELD(PAD_R3))
     {
-        if (*key_now[10] == 0)
+        if (PAD_BTN_NOT_HELD(PAD_R1))
         {
             if (g_temp < 0xff)
             {
@@ -763,10 +737,10 @@ void GusObjDebug()
             }
         }
     }
-    
-    if (*key_now[5] != 0)
+
+    if (PAD_BTN_HELD(PAD_CROSS))
     {
-        if (*key_now[10] == 0)
+        if (PAD_BTN_NOT_HELD(PAD_R1))
         {
             if (b_temp < 0xff)
             {
@@ -783,10 +757,10 @@ void GusObjDebug()
     }
 }
 
-void CallGusEffect(/* a0 4 */ sceVu0FVECTOR mpos, /* a1 5 */ int area, /* a2 6 */ int height)
+void CallGusEffect(sceVu0FVECTOR mpos, int area, int height)
 {
     gus_effect_switch = 1;
-    
+
     if (gus_wrk.init_flg != 0)
     {
         GusObjMove(mpos);
@@ -794,6 +768,7 @@ void CallGusEffect(/* a0 4 */ sceVu0FVECTOR mpos, /* a1 5 */ int area, /* a2 6 *
     else
     {
         GusObjInitAll(mpos,area,height);
+
         gus_wrk.init_flg = 1;
     }
 }
@@ -803,127 +778,119 @@ void StopGusEffect()
     gus_effect_switch = 0;
 }
 
-void GusObjMove(/* a0 4 */ sceVu0FVECTOR mpos)
+void GusObjMove(sceVu0FVECTOR mpos)
 {
     gus_wrk.pos_p = mpos;
     gus_wrk.mpos_keep[0] = mpos[0];
     gus_wrk.mpos_keep[2] = mpos[2];
 }
 
-void GusObjInit(/* t2 10 */ sceVu0FVECTOR mpos, /* t3 11 */ int leaf_no, /* a2 6 */ int area)
+void GusObjInit(sceVu0FVECTOR mpos, int leaf_no, int area)
 {
-	/* v0 2 */ int tmp;
-	// /* f0 38 */ float r;
-	// /* f1 39 */ float r;
-	// /* f1 39 */ float r;
-	// /* f0 38 */ float r;
-	// /* f1 39 */ float r;
-	// /* f1 39 */ float r;
-	// /* f0 38 */ float r;
-    
+    int tmp;
+
     gus_wrk.mpos_keep[0] = mpos[0];
     gus_wrk.mpos_keep[1] = mpos[1];
     gus_wrk.mpos_keep[2] = mpos[2];
     gus_wrk.mpos_keep[3] = mpos[3];
-    
-    tmp = (int)(vu0Rand() * 10.0f) + 1;
-    
+
+    tmp = (int)(10.0f * VER_RAND()) + 1;
+
     if (tmp < 6)
     {
-        leaves[leaf_no][0] = (int)(gus_wrk.area_keep * vu0Rand());
+        leaves[leaf_no][0] = (int)((float)gus_wrk.area_keep * VER_RAND());
     }
     else
     {
-        leaves[leaf_no][0] = -(int)(gus_wrk.area_keep * vu0Rand());
+        leaves[leaf_no][0] = -(int)((float)gus_wrk.area_keep * VER_RAND());
     }
-    
-    tmp = (int)(vu0Rand() * 10.0f) + 1;
-    
+
+    tmp = (int)(10.0f * VER_RAND()) + 1;
+
     if (tmp < 6)
     {
-        leaves[leaf_no][2] = (int)(gus_wrk.area_keep * vu0Rand());
+        leaves[leaf_no][2] = (int)((float)gus_wrk.area_keep * VER_RAND());
     }
     else
     {
-        leaves[leaf_no][2] = -(int)(gus_wrk.area_keep * vu0Rand());
+        leaves[leaf_no][2] = -(int)((float)gus_wrk.area_keep * VER_RAND());
     }
-    
+
     leaves[leaf_no][1] = mpos[1];
     leaves[leaf_no][3] = 1.0f;
-    
+
     accel[leaf_no][1] = 0.0f;
     accel[leaf_no][0] = 0.0f;
     accel[leaf_no][2] = 0.0f;
-    
+
     rots[leaf_no][0] = 0.0f;
     rots[leaf_no][1] = 0.0f;
     rots[leaf_no][2] = 0.0f;
-    
+
     gus_wrk.rgba[leaf_no][0] = 0x80;
     gus_wrk.rgba[leaf_no][1] = 0x80;
     gus_wrk.rgba[leaf_no][2] = 0x80;
     gus_wrk.rgba[leaf_no][3] = 0x40;
-    
-    gus_wrk.at_ground[leaf_no] = vu0Rand() * 2;
+
+    gus_wrk.at_ground[leaf_no] = 2.0f * VER_RAND();
 }
 
-void GusObjInit3(/* a0 4 */ sceVu0FVECTOR mpos, /* s3 19 */ int leaf_no, /* a2 6 */ int area, /* s1 17 */ int fall_mode)
+void GusObjInit3(sceVu0FVECTOR mpos, int leaf_no, int area, int fall_mode)
 {
     int tmp;
-	// /* f20 58 */ float r;
-    
-    leaves[leaf_no][0] = -area / 2 + (leaf_no * 250) % area;
-    leaves[leaf_no][2] = -area / 2 + ((leaf_no * 250) / area) * 250;
-    
+
+    leaves[leaf_no][0] = (int)(-area / 2) + (int)((leaf_no * 250) % area);
+    leaves[leaf_no][2] = (int)(-area / 2) + (int)((leaf_no * 250) / area) * 250;
+
     leaves[leaf_no][1] = mpos[1];
     leaves[leaf_no][3] = 1.0f;
 
-    tmp = (int)((fall_table[fall_mode].fall_speed[1] - 1.0) + ((int) (vu0Rand() * 3.0)));
+    tmp = (int)((fall_table[fall_mode].fall_speed[1] - 1.0) + ((int) (3.0 * VER_RAND()))); // 1.0 and 3.0 are double!
 
     accel[leaf_no][0] = 0.0f;
     accel[leaf_no][1] = tmp;
     accel[leaf_no][2] = 0.0f;
-    
+
     rots[leaf_no][0] = 0.0f;
     rots[leaf_no][1] = 0.0f;
     rots[leaf_no][2] = 0.0f;
-    
+
     gus_wrk.rgba[leaf_no][0] = 0x80;
     gus_wrk.rgba[leaf_no][1] = 0x80;
     gus_wrk.rgba[leaf_no][2] = 0x80;
     gus_wrk.rgba[leaf_no][3] = fall_table[fall_mode].a;
-    
+
     gus_wrk.at_ground[leaf_no] = 0;
 }
 
-void GusObjInitAll(/* a0 4 */ sceVu0FVECTOR mpos, /* s2 18 */ int area, /* a2 6 */ int height)
+void GusObjInitAll(sceVu0FVECTOR mpos, int area, int height)
 {
-	/* s0 16 */ int i;
-    
+    int i;
+
     gus_wrk.mpos_keep[0] = mpos[0];
     gus_wrk.mpos_keep[1] = mpos[1];
     gus_wrk.mpos_keep[2] = mpos[2];
     gus_wrk.mpos_keep[3] = mpos[3];
-    
+
     gus_wrk.area_keep = area / 2;
     gus_wrk.fall_rate = 7.0f;
     gus_wrk.dist = height;
     gus_wrk.fnum_keep = gus_wrk.dist / 7.0f;
     gus_wrk.fall_count = 0;
     gus_wrk.pos_p = mpos;
-    
+
     for (i = 0; i < gus_wrk.fnum_keep; i++)
     {
         GusObjInit(gus_wrk.pos_p,i,area);
     }
-    
+
     gus_wrk.init_flg = 1;
 }
 
 void GusObjects()
 {
-	/* s0 16 */ int i;
-    
+    int i;
+
     if (gus_effect_switch != 0)
     {
         if (gus_wrk.fall_count < gus_wrk.fnum_keep)
@@ -936,7 +903,7 @@ void GusObjects()
                 gus_wrk.fall_count++;
             }
         }
-        
+
         for (i = 0; i < gus_wrk.fnum_keep; i++)
         {
             if (i <= gus_wrk.fall_count && GusObjTrans(i) != 0)
@@ -944,7 +911,7 @@ void GusObjects()
                 GusObjInit(gus_wrk.pos_p, i, gus_wrk.area_keep);
             }
         }
-        
+
         for (i = 0; i < gus_wrk.fnum_keep; i++)
         {
             if (i <= gus_wrk.fall_count)
@@ -952,28 +919,29 @@ void GusObjects()
                 GusAlpha(i);
             }
         }
-        
+
         GusObjDraw(gus_wrk.fnum_keep, 500, 0);
     }
 }
 
-int GusObjTrans(/* a0 4 */ int leaf_no)
+int GusObjTrans(int leaf_no)
 {
-	/* v0 2 */ int ret_num = 0;
-    
+    int ret_num = 0;
+
     leaves[leaf_no][1]--;
-    
+
     if (leaves[leaf_no][1] < gus_wrk.mpos_keep[1] - gus_wrk.dist)
     {
         ret_num = 1;
+
         leaves[leaf_no][1] = gus_wrk.mpos_keep[1];
     }
-    
+
     return ret_num;
 }
 
-void GusAlpha(/* a1 5 */ int leaf_no)
-{    
+void GusAlpha(int leaf_no)
+{
     if (gus_wrk.at_ground[leaf_no] >= 1)
     {
         if (gus_wrk.rgba[leaf_no][3] < 191)
@@ -998,33 +966,34 @@ void GusAlpha(/* a1 5 */ int leaf_no)
     }
 }
 
-void GusObjDraw(/* a0 4 */ int leaf_num, /* a1 5 */ int area, /* a2 6 */ int fall_mode)
+void GusObjDraw(int leaf_num, int area, int fall_mode)
 {
-	/* t6 14 */ int i;
-	/* a1 5 */ int w;
-	/* s2 18 */ int k;
-	/* 0x150(sp) */ int th;
-	/* 0x154(sp) */ int tw;
-	/* s3 19 */ int bak;
-	/* 0x0(sp) */ sceVu0FMATRIX wlm;
-	/* 0x40(sp) */ sceVu0FMATRIX slm;
-	/* 0x80(sp) */ sceVu0FMATRIX wlm2;
-	/* 0xc0(sp) */ sceVu0IVECTOR ivec[4];
-	/* 0x100(sp) */ sceVu0FVECTOR wpos;
-	/* 0x110(sp) */ sceVu0FVECTOR ppos[4] = {
+    int i;
+    int w;
+    int k;
+    int th;
+    int tw;
+    int bak;
+    sceVu0FMATRIX wlm;
+    sceVu0FMATRIX slm;
+    sceVu0FMATRIX wlm2;
+    sceVu0IVECTOR ivec[4];
+    sceVu0FVECTOR wpos;
+    sceVu0FVECTOR ppos[4] = {
         { -200.0f, +200.0f, 0.0f, 1.0f },
         { +200.0f, +200.0f, 0.0f, 1.0f },
         { -200.0f, -200.0f, 0.0f, 1.0f },
         { +200.0f, -200.0f, 0.0f, 1.0f },
     };
-	/* fp 30 */ u_char mr;
-	/* 0x158(sp) */ u_char mg;
-	/* s6 22 */ u_char mb;
-	/* s2 18 */ u_long tex0;
-    
+    u_char mr;
+    u_char mg;
+    u_char mb;
+    u_long tex0;
+
     i = 8;
-    
+
     tex0 = effdat[i].tex0;
+
     tw = effdat[i].w * 16;
     th = effdat[i].h * 16;
 
@@ -1040,35 +1009,36 @@ void GusObjDraw(/* a0 4 */ int leaf_num, /* a1 5 */ int area, /* a2 6 */ int fal
         mg = g_temp;
         mb = b_temp;
     }
-    
+
     Reserve2DPacket(0x1000);
 
     bak = ndpkt;
-    
+
     pbuf[ndpkt++].ul128 = (u_long128)0;
-    
+
     pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(6, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 1);
     pbuf[ndpkt++].ul64[1] = SCE_GIF_PACKED_AD;
-    
+
     pbuf[ndpkt].ul64[0] = 0;
     pbuf[ndpkt++].ul64[1] = SCE_GS_TEXFLUSH;
-    
+
     pbuf[ndpkt].ul64[0] = tex0;
     pbuf[ndpkt++].ul64[1] = SCE_GS_TEX0_1;
-    
-    pbuf[ndpkt].ul64[0] = SCE_GS_SET_TEX1_1(1, 0, 1, 5, 0, 0, 0);
+
+    pbuf[ndpkt].ul64[0] = SCE_GS_SET_TEX1_1(1, 0, SCE_GS_LINEAR, SCE_GS_LINEAR_MIPMAP_LINEAR, 0, 0, 0);
     pbuf[ndpkt++].ul64[1] = SCE_GS_TEX1_1;
-    
+
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_ZBUF_1(0x8c, SCE_GS_PSMCT24, 1);
     pbuf[ndpkt++].ul64[1] = SCE_GS_ZBUF_1;
-    
-    pbuf[ndpkt].ul64[0] = SCE_GS_SET_ALPHA_1(0, 1, 0, 1, 0);
+
+    pbuf[ndpkt].ul64[0] = SCE_GS_SET_ALPHA_1(SCE_GS_ALPHA_CS, SCE_GS_ALPHA_CD, SCE_GS_ALPHA_AS, SCE_GS_ALPHA_CD, 0);
     pbuf[ndpkt++].ul64[1] = SCE_GS_ALPHA_1;
-        
+
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_TEST_1(SCE_GS_TRUE, SCE_GS_ALPHA_GREATER, SCE_GS_FALSE, SCE_GS_AFAIL_KEEP, SCE_GS_FALSE, SCE_GS_FALSE, SCE_GS_TRUE, SCE_GS_DEPTH_GEQUAL);
     pbuf[ndpkt++].ul64[1] = SCE_GS_TEST_1;
 
     Get2PosRot(camera.p, camera.i, &rots[0][0], &rots[0][1]);
+
     sceVu0UnitMatrix(wlm);
     sceVu0RotMatrixX(wlm, wlm, rots[0][0]);
     sceVu0RotMatrixY(wlm, wlm, rots[0][1]);
@@ -1081,39 +1051,37 @@ void GusObjDraw(/* a0 4 */ int leaf_num, /* a1 5 */ int area, /* a2 6 */ int fal
             sceVu0TransMatrix(wlm2, wlm, leaves[k]);
             sceVu0MulMatrix(slm, SgWSMtx, wlm2);
             sceVu0RotTransPersN(ivec, slm, ppos, 4, 0);
-            
+
             w = 0;
-                    
+
             for (i = 0; i < 4; i++)
             {
                 if (ivec[i][0] < 0x4000 || ivec[i][0] > 0xc000)
                 {
                     w = 1;
                 }
-        
+
                 if (ivec[i][1] < 0x4000 || ivec[i][1] > 0xc000)
                 {
                     w = 1;
                 }
-                
+
                 if (ivec[i][2] < 0xff || ivec[i][2] > 0xffffff)
                 {
                     w = 1;
                 }
             }
-            
-            if (!w)
+
+            if (w == 0)
             {
                 pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(4, SCE_GS_TRUE, SCE_GS_TRUE, 340, SCE_GIF_PACKED, 3);
                 pbuf[ndpkt++].ul64[1] = 0 \
-                    | SCE_GS_RGBAQ << (4 * 0) 
-                    | SCE_GS_UV    << (4 * 1) 
+                    | SCE_GS_RGBAQ << (4 * 0)
+                    | SCE_GS_UV    << (4 * 1)
                     | SCE_GS_XYZF2 << (4 * 2);
-                
+
                 for (i = 0; i < 4; i++)
                 {
-                    u_short a;
-                    short b;
                     pbuf[ndpkt].ui32[0] = mr;
                     pbuf[ndpkt].ui32[1] = mg;
                     pbuf[ndpkt].ui32[2] = mb;
@@ -1123,7 +1091,7 @@ void GusObjDraw(/* a0 4 */ int leaf_num, /* a1 5 */ int area, /* a2 6 */ int fal
                     pbuf[ndpkt].ui32[1] = (i / 2) ? th : 0;
                     pbuf[ndpkt].ui32[2] = 0;
                     pbuf[ndpkt++].ui32[3] = 0;
-                    
+
                     pbuf[ndpkt].ui32[0] = ivec[i][0];
                     pbuf[ndpkt].ui32[1] = ivec[i][1];
                     pbuf[ndpkt].ui32[2] = ivec[i][2];
@@ -1132,25 +1100,25 @@ void GusObjDraw(/* a0 4 */ int leaf_num, /* a1 5 */ int area, /* a2 6 */ int fal
             }
         }
     }
-    
+
     pbuf[bak].ui32[0] = ndpkt + DMAend - bak - 1;
 }
 
-void CallHoleGusEffect(/* a0 4 */ sceVu0FVECTOR mpos)
+void CallHoleGusEffect(sceVu0FVECTOR mpos)
 {
-	/* s0 16 */ int i;
-    
+    int i;
+
     hole_effect_switch = 1;
-    
+
     if (hole_wrk.init_flg == 0)
     {
         HoleGusInitAll(mpos);
-        
+
         for (i = 0; i < hole_wrk.fnum_keep; i++)
         {
             HoleGusSetPos(i);
         }
-        
+
         hole_wrk.init_flg = 1;
     }
 }
@@ -1158,102 +1126,94 @@ void CallHoleGusEffect(/* a0 4 */ sceVu0FVECTOR mpos)
 void StopHoleGusEffect()
 {
     hole_effect_switch = 0;
+
     hole_wrk.init_flg = 0;
 }
 
-void HoleGusInit(/* a0 4 */ float *mpos, /* a1 5 */ int leaf_no)
+void HoleGusInit(sceVu0FVECTOR mpos, int leaf_no)
 {
-	/* v0 2 */ int tmp;
-	// /* f0 38 */ float r;
-	// /* f0 38 */ float r;
-	// /* f0 38 */ float r;
-	// /* f0 38 */ float r;
-	// /* f0 38 */ float r;
-	// /* f0 38 */ float r;
-	// /* f0 38 */ float r;
-	// /* f0 38 */ float r;
-	// /* f0 38 */ float r;
-    
+    int tmp;
+
     hole_gus[leaf_no][0] = hole_wrk.mpos_keep[0];
     hole_gus[leaf_no][1] = hole_wrk.mpos_keep[1];
     hole_gus[leaf_no][2] = hole_wrk.mpos_keep[2];
-    hole_gus[leaf_no][3] = 1.0;
+    hole_gus[leaf_no][3] = 1.0f;
 
-    tmp = (int)(vu0Rand() * 10.0f) + 1;
-    
+    tmp = (int)(10.0f * VER_RAND()) + 1;
+
     if (tmp < 6)
     {
-        hole_wrk.rgba[leaf_no][0] = (short int)(int)(vu0Rand() * 20.0f);
+        hole_wrk.rgba[leaf_no][0] = +(int)(20.0f * VER_RAND());
     }
     else
     {
-        hole_wrk.rgba[leaf_no][0] = -(int)(vu0Rand() * 20.0f);
+        hole_wrk.rgba[leaf_no][0] = -(int)(20.0f * VER_RAND());
     }
-    
-    tmp = (int)(vu0Rand() * 10.0f) + 1;
-    
+
+    tmp = (int)(10.0f * VER_RAND()) + 1;
+
     if (tmp < 6)
     {
-        hole_wrk.rgba[leaf_no][1] = (int)(vu0Rand() * 20.0f);
+        hole_wrk.rgba[leaf_no][1] = (int)(20.0f * VER_RAND());
     }
     else
     {
-        hole_wrk.rgba[leaf_no][1] = -(int)(vu0Rand() * 20.0f);
+        hole_wrk.rgba[leaf_no][1] = -(int)(20.0f * VER_RAND());
     }
-    
-    tmp = (int)(vu0Rand() * 10.0f) + 1;
-    
+
+    tmp = (int)(10.0f * VER_RAND()) + 1;
+
     if (tmp < 6)
     {
-        hole_wrk.rgba[leaf_no][2] = hole_wrk.rgba[leaf_no][2] + (int)(vu0Rand() * 2);
+        hole_wrk.rgba[leaf_no][2] = hole_wrk.rgba[leaf_no][2] + (int)(2.0f * VER_RAND());
     }
     else
     {
-        hole_wrk.rgba[leaf_no][2] = hole_wrk.rgba[leaf_no][2] - (int)(vu0Rand() * 2);
+        hole_wrk.rgba[leaf_no][2] = hole_wrk.rgba[leaf_no][2] - (int)(2.0f * VER_RAND());
     }
-    
+
     hole_wrk.rgba[leaf_no][3] = 0x140;
-    
+
     hole_wrk.at_ground[leaf_no] = 0;
 }
 
-void HoleGusInitAll(/* s1 17 */ sceVu0FVECTOR mpos)
+void HoleGusInitAll(sceVu0FVECTOR mpos)
 {
-	/* s0 16 */ int i;
+    int i;
 
     hole_wrk.mpos_keep[0] = mpos[0];
     hole_wrk.mpos_keep[1] = mpos[1];
     hole_wrk.mpos_keep[2] = mpos[2];
     hole_wrk.mpos_keep[3] = mpos[3];
-    
+
     hole_wrk.area_keep = 300;
     hole_wrk.dist = 500;
     hole_wrk.fnum_keep = 100;
     hole_wrk.fall_count = 0;
     hole_wrk.fall_rate = 7.0;
     hole_wrk.rate_remain = 0.0;
-    
+
     for (i = 0; i < hole_wrk.fnum_keep; i++)
     {
         HoleGusInit(mpos,i);
     }
 }
 
-void HoleGusSetPos(/* a0 4 */ int leaf_no)
+void HoleGusSetPos(int leaf_no)
 {
-	// /* f0 38 */ float r;
-    
-    hole_wrk.rgba[leaf_no][3] = (int)(vu0Rand() * 240.0f) + 80;
-    hole_gus[leaf_no][2] += (320 - hole_wrk.rgba[leaf_no][3]) / 3 * 10;
+    hole_wrk.rgba[leaf_no][3] = (int)(240.0f * VER_RAND()) + 80;
+
+    hole_gus[leaf_no][2] += (int)((320 - hole_wrk.rgba[leaf_no][3]) / 3 * 10);
+
     hole_wrk.at_ground[leaf_no] += (320 - hole_wrk.rgba[leaf_no][3]) / 3 * 2;
 }
 
 void HoleGusObjects()
 {
-	/* s0 16 */ int i;
-    
+    int i;
+
     i = 0;
-    
+
     if (hole_effect_switch)
     {
         while (i < hole_wrk.fnum_keep)
@@ -1261,7 +1221,7 @@ void HoleGusObjects()
             HoleGusTransX(i);
             HoleGusTransY(i);
             HoleGusTransZ(i);
-            
+
             if (HoleGusAlpha(i))
             {
                 HoleGusInit(hole_wrk.mpos_keep,i);
@@ -1269,12 +1229,12 @@ void HoleGusObjects()
 
             i++;
         }
-        
+
         for (i = 0; i < hole_wrk.fnum_keep; i++)
         {
-            // commented code? debug code?
+            // debug code?
         }
-        
+
         for (i = 0; i < hole_wrk.fnum_keep; i++)
         {
             HoleGusDraw(i);
@@ -1282,22 +1242,23 @@ void HoleGusObjects()
     }
 }
 
-int HoleGusTransX(/* a0 4 */ int leaf_no)
+int HoleGusTransX(int leaf_no)
 {
     hole_gus[leaf_no][0] += hole_wrk.rgba[leaf_no][0] / 8;
-    
+
     return 0;
 }
 
-int HoleGusTransZ(/* a3 7 */ int leaf_no)
+int HoleGusTransZ(int leaf_no)
 {
-	/* t2 10 */ int ret_num;
+    int ret_num;
 
     ret_num = 0;
 
     if (2.0f < 10 - hole_wrk.at_ground[leaf_no] / 8)
     {
         hole_gus[leaf_no][2] += 10 - hole_wrk.at_ground[leaf_no] / 8;
+
         hole_wrk.at_ground[leaf_no] += 2;
     }
     else
@@ -1309,70 +1270,71 @@ int HoleGusTransZ(/* a3 7 */ int leaf_no)
     {
         ret_num = 1;
     }
-    
+
     return ret_num;
 }
 
-int HoleGusTransY(/* a0 4 */ int leaf_no)
+int HoleGusTransY(int leaf_no)
 {
     hole_gus[leaf_no][1] += hole_wrk.rgba[leaf_no][1] / 8;
-    
+
     return 0;
 }
 
-int HoleGusAlpha(/* a0 4 */ int leaf_no)
+int HoleGusAlpha(int leaf_no)
 {
-	/* a1 5 */ int ret_num;
-    
+    int ret_num;
+
     ret_num = 0;
-    
+
     if (hole_wrk.rgba[leaf_no][3] >= 82)
     {
         hole_wrk.rgba[leaf_no][3] -= 3;
-        
+
         if (hole_wrk.rgba[leaf_no][3] < 82)
         {
             hole_wrk.rgba[leaf_no][3] = 80;
+
             ret_num = 1;
         }
     }
-    
+
     return ret_num;
 }
 
-void HoleGusDraw(/* s5 21 */ int leaf_no)
+void HoleGusDraw(int leaf_no)
 {
-	/* t4 12 */ int i;
-	/* a1 5 */ int w;
-	/* s4 20 */ int th;
-	/* s3 19 */ int tw;
-	/* t6 14 */ int bak;
-	/* 0x0(sp) */ sceVu0FMATRIX wlm;
-	/* 0x40(sp) */ sceVu0FMATRIX slm;
-	/* 0x80(sp) */ sceVu0FMATRIX wlm2;
-	/* 0xc0(sp) */ sceVu0IVECTOR ivec[4];
-	/* 0x150(sp) */ float tmp_x = 0.0f;
-	/* 0x154(sp) */ float tmp_y = 0.0f;
-	/* 0x100(sp) */ sceVu0FVECTOR wpos;
-	/* 0x110(sp) */ sceVu0FVECTOR ppos[4] = {
+    int i;
+    int w;
+    int th;
+    int tw;
+    int bak;
+    sceVu0FMATRIX wlm;
+    sceVu0FMATRIX slm;
+    sceVu0FMATRIX wlm2;
+    sceVu0IVECTOR ivec[4];
+    float tmp_x = 0.0f;
+    float tmp_y = 0.0f;
+    sceVu0FVECTOR wpos;
+    sceVu0FVECTOR ppos[4] = {
         { -30.0f, +30.0f, 0.0f, 1.0f },
         { +30.0f, +30.0f, 0.0f, 1.0f },
         { -30.0f, -30.0f, 0.0f, 1.0f },
         { +30.0f, -30.0f, 0.0f, 1.0f },
     };
-	/* s2 18 */ u_long tex0;
-    
+    u_long tex0;
+
     Get2PosRot(camera.p, camera.i, &tmp_x, &tmp_y);
+
     sceVu0UnitMatrix(wlm);
     sceVu0RotMatrixX(wlm, wlm, tmp_x);
     sceVu0RotMatrixY(wlm, wlm, tmp_y);
     sceVu0TransMatrix(wlm, wlm, hole_gus[leaf_no]);
     sceVu0MulMatrix(slm, SgWSMtx, wlm);
-    
     sceVu0RotTransPersN(ivec, slm, ppos, 4, 0);
 
     w = 0;
-    
+
     for (i = 0; i < 4; i++)
     {
         if (ivec[i][0] < 0x4000 || ivec[i][0] > 0xc000)
@@ -1384,21 +1346,22 @@ void HoleGusDraw(/* s5 21 */ int leaf_no)
         {
             w = 1;
         }
-        
+
         if (ivec[i][2] < 0xff || ivec[i][2] > 0xffffff)
         {
             w = 1;
         }
     }
-    
-    if (!w)
+
+    if (w == 0)
     {
         i = 8;
-        
+
         tw = effdat[i].w * 16;
         th = effdat[i].h * 16;
+
         tex0 = effdat[i].tex0;
-        
+
         if (monochrome_mode)
         {
             if (tw / 3) // probably not tw but it doesn't seem to matter what var we use here ...
@@ -1406,47 +1369,47 @@ void HoleGusDraw(/* s5 21 */ int leaf_no)
                 // debug code?
             }
         }
-        
+
         Reserve2DPacket(0x1000);
-        
+
         bak = ndpkt;
-        
+
         pbuf[ndpkt++].ul128 = (u_long128)0;
-        
+
         pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(6, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 1);
         pbuf[ndpkt++].ul64[1] = SCE_GIF_PACKED_AD;
-        
+
         pbuf[ndpkt].ul64[0] = 0;
         pbuf[ndpkt++].ul64[1] = SCE_GS_TEXFLUSH;
-        
+
         pbuf[ndpkt].ul64[0] = tex0;
         pbuf[ndpkt++].ul64[1] = SCE_GS_TEX0_1;
-        
+
         pbuf[ndpkt].ul64[0] = SCE_GS_SET_TEX1_1(1, 0, 1, 5, 0, 0, 0);
         pbuf[ndpkt++].ul64[1] = SCE_GS_TEX1_1;
-        
+
         pbuf[ndpkt].ul64[0] = SCE_GS_SET_ZBUF_1(0x8c, SCE_GS_PSMCT24, 1);
         pbuf[ndpkt++].ul64[1] = SCE_GS_ZBUF_1;
-        
+
         pbuf[ndpkt].ul64[0] = SCE_GS_SET_ALPHA_1(0, 1, 0, 1, 0);
         pbuf[ndpkt++].ul64[1] = SCE_GS_ALPHA_1;
-        
+
         pbuf[ndpkt].ul64[0] = SCE_GS_SET_TEST_1(SCE_GS_TRUE, SCE_GS_ALPHA_GREATER, SCE_GS_FALSE, SCE_GS_AFAIL_KEEP, SCE_GS_FALSE, SCE_GS_FALSE, SCE_GS_TRUE, SCE_GS_DEPTH_GEQUAL);
         pbuf[ndpkt++].ul64[1] = SCE_GS_TEST_1;
-        
+
         pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(4, SCE_GS_TRUE, SCE_GS_TRUE, 340, SCE_GIF_PACKED, 3);
         pbuf[ndpkt++].ul64[1] = 0 \
-            | SCE_GS_RGBAQ << (4 * 0) 
-            | SCE_GS_UV    << (4 * 1) 
+            | SCE_GS_RGBAQ << (4 * 0)
+            | SCE_GS_UV    << (4 * 1)
             | SCE_GS_XYZF2 << (4 * 2);
-        
+
         for (i = 0; i < 4; i++)
         {
             pbuf[ndpkt].ui32[0] = 101;
             pbuf[ndpkt].ui32[1] = 93;
             pbuf[ndpkt].ui32[2] = 94;
             pbuf[ndpkt++].ui32[3] = hole_wrk.rgba[leaf_no][3] / 8;
-            
+
             pbuf[ndpkt].ui32[0] = (i & 1) * tw;
             pbuf[ndpkt].ui32[1] = (i / 2) ? th : 0;
             pbuf[ndpkt].ui32[2] = 0;
@@ -1457,80 +1420,82 @@ void HoleGusDraw(/* s5 21 */ int leaf_no)
             pbuf[ndpkt].ui32[2] = ivec[i][2];
             pbuf[ndpkt++].ui32[3] = (i <= 1) ? 0x8000 : 0;
         }
-        
+
         pbuf[bak].ui32[0] = ndpkt + DMAend - bak - 1;
     }
 }
 
-void CallLineGusEffect(/* a0 4 */ sceVu0FVECTOR mpos1, /* a1 5 */ sceVu0FVECTOR mpos2, /* s2 18 */ int dir, /* s3 19 */ int line_num)
+void CallLineGusEffect(sceVu0FVECTOR mpos1, sceVu0FVECTOR mpos2, int dir, int line_num)
 {
-	/* s0 16 */ int i;
+    int i;
 
     line_effect_switch[line_num] = 1;
-    
+
     if (line_wrk[line_num].init_flg == 0)
     {
         LineGusInitAll(mpos1, mpos2, dir, line_num);
-        
+
         for (i = 0; i < line_wrk[line_num].fnum_keep; i++)
         {
             LineGusSetPos(i, dir, line_num);
         }
-        
+
         line_wrk[line_num].init_flg = 1;
     }
 }
 
-void StopLineGusEffect(/* a0 4 */ int line_num)
+void StopLineGusEffect(int line_num)
 {
     line_effect_switch[line_num] = 0;
     line_wrk[line_num].init_flg = 0;
 }
 
-void LineGusInit(/* a0 4 */ sceVu0FVECTOR mpos, /* a0 4 */ int leaf_no, /* t1 9 */ int line_num)
+void LineGusInit(sceVu0FVECTOR mpos, int leaf_no, int line_num)
 {
-	// /* f1 39 */ float r;
-	// /* f1 39 */ float r;
-	// /* f1 39 */ float r;
-	// /* f1 39 */ float r;
-	// /* f1 39 */ float r;
-	// /* f1 39 */ float r;
-    
     if (line_wrk[line_num].mode_keep == 1 || line_wrk[line_num].mode_keep == 2)
     {
         line_gus[line_num][leaf_no][0] = line_wrk[line_num].mpos_keep[0];
         line_gus[line_num][leaf_no][1] = line_wrk[line_num].mpos_keep[1];
         line_gus[line_num][leaf_no][2] = line_wrk[line_num].mpos_keep[2];
-        line_gus[line_num][leaf_no][1] += (int)(line_wrk[line_num].offs[1] * vu0Rand());
-        line_gus[line_num][leaf_no][2] += (int)(line_wrk[line_num].offs[2] * vu0Rand());
+
+        line_gus[line_num][leaf_no][1] += (int)((float)line_wrk[line_num].offs[1] * VER_RAND());
+        line_gus[line_num][leaf_no][2] += (int)((float)line_wrk[line_num].offs[2] * VER_RAND());
+
     }
     else if (line_wrk[line_num].mode_keep == 3 || line_wrk[line_num].mode_keep == 4)
     {
-        line_gus[line_num][leaf_no][0] = line_wrk[line_num].mpos_keep[0];
         line_gus[line_num][leaf_no][1] = line_wrk[line_num].mpos_keep[1];
+        line_gus[line_num][leaf_no][0] = line_wrk[line_num].mpos_keep[0];
         line_gus[line_num][leaf_no][2] = line_wrk[line_num].mpos_keep[2];
-        line_gus[line_num][leaf_no][0] += (int)(line_wrk[line_num].offs[0] * vu0Rand());
-        line_gus[line_num][leaf_no][2] += (int)(line_wrk[line_num].offs[2] * vu0Rand());
+
+        line_gus[line_num][leaf_no][0] += (int)((float)line_wrk[line_num].offs[0] * VER_RAND());
+        line_gus[line_num][leaf_no][2] += (int)((float)line_wrk[line_num].offs[2] * VER_RAND());
     }
     else if (line_wrk[line_num].mode_keep == 5 || line_wrk[line_num].mode_keep == 6)
     {
-        line_gus[line_num][leaf_no][2] = line_wrk[line_num].mpos_keep[2];
-        line_gus[line_num][leaf_no][1] = line_wrk[line_num].mpos_keep[1];
-        line_gus[line_num][leaf_no][1] += (int)(line_wrk[line_num].offs[1] * vu0Rand());
-        line_gus[line_num][leaf_no][2] += (int)(line_wrk[line_num].offs[2] * vu0Rand());
+        float keep2 = line_wrk[line_num].mpos_keep[2]; // not in STAB
+        float keep1 = line_wrk[line_num].mpos_keep[1]; // not in STAB
+
+        line_gus[line_num][leaf_no][1] = keep1;
+        line_gus[line_num][leaf_no][2] = keep2;
+
+        line_gus[line_num][leaf_no][1] += (int)((float)line_wrk[line_num].offs[1] * VER_RAND());
+        line_gus[line_num][leaf_no][2] += (int)((float)line_wrk[line_num].offs[2] * VER_RAND());
     }
-    
+
     line_gus[line_num][leaf_no][3] = 1.0f;
+
     line_wrk[line_num].rgba[leaf_no][3] = 0xf0;
+
     line_wrk[line_num].at_ground[leaf_no] = 0;
 }
 
-void LineGusInitAll(/* s3 19 */ sceVu0FVECTOR mpos1, /* a1 5 */ sceVu0FVECTOR mpos2, /* t0 8 */ int dir, /* s1 17 */ int line_num)
+void LineGusInitAll(sceVu0FVECTOR mpos1, sceVu0FVECTOR mpos2, int dir, int line_num)
 {
-	/* s0 16 */ int i;
+    int i;
 
     line_wrk[line_num].mpos_keep[3] = mpos1[3];
-    
+
     if (mpos1[0] > mpos2[0])
     {
         line_wrk[line_num].offs[0] = mpos1[0] - mpos2[0];
@@ -1541,7 +1506,7 @@ void LineGusInitAll(/* s3 19 */ sceVu0FVECTOR mpos1, /* a1 5 */ sceVu0FVECTOR mp
         line_wrk[line_num].offs[0] = mpos2[0] - mpos1[0];
         line_wrk[line_num].mpos_keep[0] = mpos1[0];
     }
-    
+
     if (mpos1[1] > mpos2[1])
     {
         line_wrk[line_num].offs[1] = mpos1[1] - mpos2[1];
@@ -1552,7 +1517,7 @@ void LineGusInitAll(/* s3 19 */ sceVu0FVECTOR mpos1, /* a1 5 */ sceVu0FVECTOR mp
         line_wrk[line_num].offs[1] = mpos2[1] - mpos1[1];
         line_wrk[line_num].mpos_keep[1] = mpos1[1];
     }
-    
+
     if (mpos1[2] > mpos2[2])
     {
         line_wrk[line_num].offs[2] = mpos1[2] - mpos2[2];
@@ -1563,7 +1528,7 @@ void LineGusInitAll(/* s3 19 */ sceVu0FVECTOR mpos1, /* a1 5 */ sceVu0FVECTOR mp
         line_wrk[line_num].offs[2] = mpos2[2] - mpos1[2];
         line_wrk[line_num].mpos_keep[2] = mpos1[2];
     }
-    
+
     line_wrk[line_num].area_keep = 300;
     line_wrk[line_num].dist = 0x32;
     line_wrk[line_num].fnum_keep = 100;
@@ -1571,262 +1536,218 @@ void LineGusInitAll(/* s3 19 */ sceVu0FVECTOR mpos1, /* a1 5 */ sceVu0FVECTOR mp
     line_wrk[line_num].fall_rate = 7.0f;
     line_wrk[line_num].rate_remain = 0.0f;
     line_wrk[line_num].mode_keep = dir;
-    
+
     for (i = 0; i < line_wrk[line_num].fnum_keep; i++)
     {
         LineGusInit(mpos1,i,line_num);
     }
 }
 
-void LineGusSetPos(/* t4 12 */ int leaf_no, /* a1 5 */ int dir, /* a2 6 */ int line_num)
+void LineGusSetPos(int leaf_no, int dir, int line_num)
 {
-	/* f4 42 */ float tmp;
-	// /* f1 39 */ float r;
-	// /* f1 39 */ float r;
-	// /* f1 39 */ float r;
-	// /* f1 39 */ float r;
-	// /* f0 38 */ float r;
-	// /* f0 38 */ float r;
-	// /* f0 38 */ float r;
-	// /* f0 38 */ float r;
-	// /* f0 38 */ float r;
-	// /* f0 38 */ float r;
-	// /* f1 39 */ float r;
-	// /* f0 38 */ float r;
-	// /* f0 38 */ float r;
-	// /* f0 38 */ float r;
-	// /* f0 38 */ float r;
-	// /* f0 38 */ float r;
-	// /* f0 38 */ float r;
-	// /* f1 39 */ float r;
-	// /* f0 38 */ float r;
-	// /* f0 38 */ float r;
-	// /* f0 38 */ float r;
-	// /* f0 38 */ float r;
-	// /* f0 38 */ float r;
-	// /* f0 38 */ float r;
-	// /* f1 39 */ float r;
-	// /* f0 38 */ float r;
-	// /* f0 38 */ float r;
-	// /* f0 38 */ float r;
-	// /* f0 38 */ float r;
-	// /* f0 38 */ float r;
-	// /* f0 38 */ float r;
-	// /* f1 39 */ float r;
-	// /* f0 38 */ float r;
-	// /* f0 38 */ float r;
-	// /* f0 38 */ float r;
-	// /* f0 38 */ float r;
-	// /* f0 38 */ float r;
-	// /* f0 38 */ float r;
-	// /* f1 39 */ float r;
-	// /* f0 38 */ float r;
-	// /* f0 38 */ float r;
-	// /* f0 38 */ float r;
-	// /* f0 38 */ float r;
-	// /* f0 38 */ float r;
-	// /* f0 38 */ float r;
-    
+    float tmp;
+
     line_gus[line_num][leaf_no][0] = line_wrk[line_num].mpos_keep[0];
     line_gus[line_num][leaf_no][1] = line_wrk[line_num].mpos_keep[1];
     line_gus[line_num][leaf_no][2] = line_wrk[line_num].mpos_keep[2];
-    
-    line_gus[line_num][leaf_no][0] += (int)(line_wrk[line_num].offs[0] * vu0Rand());
-    line_gus[line_num][leaf_no][1] += (int)(line_wrk[line_num].offs[1] * vu0Rand());
-    line_gus[line_num][leaf_no][2] += (int)(line_wrk[line_num].offs[2] * vu0Rand());
-    
+
+    line_gus[line_num][leaf_no][0] += (int)((float)line_wrk[line_num].offs[0] * VER_RAND());
+    line_gus[line_num][leaf_no][1] += (int)((float)line_wrk[line_num].offs[1] * VER_RAND());
+    line_gus[line_num][leaf_no][2] += (int)((float)line_wrk[line_num].offs[2] * VER_RAND());
+
     if (line_wrk[line_num].mode_keep == 1)
     {
         tmp = line_gus[line_num][leaf_no][0];
-        
-        line_gus[line_num][leaf_no][0] += (int)(line_wrk[line_num].dist * vu0Rand());
-        
+
+        line_gus[line_num][leaf_no][0] += (int)((float)line_wrk[line_num].dist * VER_RAND());
+
         line_wrk[line_num].rgba[leaf_no][3] = ((line_gus[line_num][leaf_no][0] - tmp) / line_wrk[line_num].dist) * 240.0f;
-        
-        tmp = (int)(vu0Rand() * 10.0f) + 1;
-        
+
+        tmp = (int)(10.0f * VER_RAND()) + 1;
+
         if (tmp <= 5.0f)
         {
-            line_wrk[line_num].rgba[leaf_no][1] += (int)vu0Rand();
+            line_wrk[line_num].rgba[leaf_no][1] += (int)(VER_RAND());
         }
         else
         {
-            line_wrk[line_num].rgba[leaf_no][1] -= (int)vu0Rand();
+            line_wrk[line_num].rgba[leaf_no][1] -= (int)(VER_RAND());
         }
-        
-        tmp = (int)(vu0Rand() * 10.0f) + 1;
-        
+
+        tmp = (int)(10.0f * VER_RAND()) + 1;
+
         if (tmp <= 5.0f)
         {
-            line_wrk[line_num].rgba[leaf_no][2] += (int)vu0Rand();
+            line_wrk[line_num].rgba[leaf_no][2] += (int)(VER_RAND());
         }
         else
         {
-            line_wrk[line_num].rgba[leaf_no][2] -= (int)vu0Rand();
+            line_wrk[line_num].rgba[leaf_no][2] -= (int)(VER_RAND());
         }
     }
 
     if (line_wrk[line_num].mode_keep == 2)
     {
         tmp = line_gus[line_num][leaf_no][0];
-        
-        line_gus[line_num][leaf_no][0] -= (int)(line_wrk[line_num].dist * vu0Rand());
-        
+
+        line_gus[line_num][leaf_no][0] -= (int)((float)line_wrk[line_num].dist * VER_RAND());
+
         line_wrk[line_num].rgba[leaf_no][3] = ((tmp - line_gus[line_num][leaf_no][0]) / line_wrk[line_num].dist) * 240.0f;
-        
-        tmp = (int)(vu0Rand() * 10.0f) + 1;
-        
+
+        tmp = (int)(10.0f * VER_RAND()) + 1;
+
         if (tmp <= 5.0f)
         {
-            line_wrk[line_num].rgba[leaf_no][1] += (int)vu0Rand();
+            line_wrk[line_num].rgba[leaf_no][1] += (int)(VER_RAND());
         }
         else
         {
-            line_wrk[line_num].rgba[leaf_no][1] -= (int)vu0Rand();
+            line_wrk[line_num].rgba[leaf_no][1] -= (int)(VER_RAND());
         }
-        
-        tmp = (int)(vu0Rand() * 10.0f) + 1;
-        
+
+        tmp = (int)(10.0f * VER_RAND()) + 1;
+
         if (tmp <= 5.0f)
         {
-            line_wrk[line_num].rgba[leaf_no][2] += (int)vu0Rand();
+            line_wrk[line_num].rgba[leaf_no][2] += (int)(VER_RAND());
         }
         else
         {
-            line_wrk[line_num].rgba[leaf_no][2] -= (int)vu0Rand();
+            line_wrk[line_num].rgba[leaf_no][2] -= (int)(VER_RAND());
         }
     }
-    
+
     if (line_wrk[line_num].mode_keep == 3)
     {
         tmp = line_gus[line_num][leaf_no][1];
-        
-        line_gus[line_num][leaf_no][1] += (int)(line_wrk[line_num].dist * vu0Rand());
-        
+
+        line_gus[line_num][leaf_no][1] += (int)((float)line_wrk[line_num].dist * VER_RAND());
+
         line_wrk[line_num].rgba[leaf_no][3] = ((line_gus[line_num][leaf_no][1] - tmp) / line_wrk[line_num].dist) * 240.0f;
-        
-        tmp = (int)(vu0Rand() * 10.0f) + 1;
-        
+
+        tmp = (int)(10.0f * VER_RAND()) + 1;
+
         if (tmp <= 5.0f)
         {
-            line_wrk[line_num].rgba[leaf_no][0] += (int)vu0Rand();
+            line_wrk[line_num].rgba[leaf_no][0] += (int)(VER_RAND());
         }
         else
         {
-            line_wrk[line_num].rgba[leaf_no][0] -= (int)vu0Rand();
+            line_wrk[line_num].rgba[leaf_no][0] -= (int)(VER_RAND());
         }
-        
-        tmp = (int)(vu0Rand() * 10.0f) + 1;
+
+        tmp = (int)(10.0f * VER_RAND()) + 1;
+
         if (tmp <= 5.0f)
         {
-            line_wrk[line_num].rgba[leaf_no][2] += (int)vu0Rand();
+            line_wrk[line_num].rgba[leaf_no][2] += (int)(VER_RAND());
         }
         else
         {
-            line_wrk[line_num].rgba[leaf_no][2] -= (int)vu0Rand();
+            line_wrk[line_num].rgba[leaf_no][2] -= (int)(VER_RAND());
         }
     }
-    
+
     if (line_wrk[line_num].mode_keep == 4)
     {
         tmp = line_gus[line_num][leaf_no][1];
-        
-        line_gus[line_num][leaf_no][1] -= (int)(line_wrk[line_num].dist * vu0Rand());
-        
+
+        line_gus[line_num][leaf_no][1] -= (int)((float)line_wrk[line_num].dist * VER_RAND());
+
         line_wrk[line_num].rgba[leaf_no][3] = ((tmp - line_gus[line_num][leaf_no][1]) / line_wrk[line_num].dist) * 240.0f;
-        
-        tmp = (int)(vu0Rand() * 10.0f) + 1;
-        
+
+        tmp = (int)(10.0f * VER_RAND()) + 1;
+
         if (tmp <= 5.0f)
         {
-            line_wrk[line_num].rgba[leaf_no][0] += (int)vu0Rand();
+            line_wrk[line_num].rgba[leaf_no][0] += (int)(VER_RAND());
         }
         else
         {
-            line_wrk[line_num].rgba[leaf_no][0] -= (int)vu0Rand();
+            line_wrk[line_num].rgba[leaf_no][0] -= (int)(VER_RAND());
         }
-        
-        tmp = (int)(vu0Rand() * 10.0f) + 1;
-        
+
+        tmp = (int)(10.0f * VER_RAND()) + 1;
+
         if (tmp <= 5.0f)
         {
-            line_wrk[line_num].rgba[leaf_no][2] += (int)vu0Rand();
+            line_wrk[line_num].rgba[leaf_no][2] += (int)(VER_RAND());
         }
         else
         {
-            line_wrk[line_num].rgba[leaf_no][2] -= (int)vu0Rand();
+            line_wrk[line_num].rgba[leaf_no][2] -= (int)(VER_RAND());
         }
     }
-    
+
     if (line_wrk[line_num].mode_keep == 5)
     {
         tmp = line_gus[line_num][leaf_no][2];
-        
-        line_gus[line_num][leaf_no][2] -= (int)(line_wrk[line_num].dist * vu0Rand());
-        
+
+        line_gus[line_num][leaf_no][2] -= (int)((float)line_wrk[line_num].dist * VER_RAND());
+
         line_wrk[line_num].rgba[leaf_no][3] = ((tmp - line_gus[line_num][leaf_no][2]) / line_wrk[line_num].dist) * 240.0f;
-        
-        tmp = (int)(vu0Rand() * 10.0f) + 1;
-        
+
+        tmp = (int)(10.0f * VER_RAND()) + 1;
+
         if (tmp <= 5.0f)
         {
-            line_wrk[line_num].rgba[leaf_no][0] += (int)vu0Rand();
+            line_wrk[line_num].rgba[leaf_no][0] += (int)(VER_RAND());
         }
         else
         {
-            line_wrk[line_num].rgba[leaf_no][0] -= (int)vu0Rand();
+            line_wrk[line_num].rgba[leaf_no][0] -= (int)(VER_RAND());
         }
-        
-        tmp = (int)(vu0Rand() * 10.0f) + 1;
-        
+
+        tmp = (int)(10.0f * VER_RAND()) + 1;
+
         if (tmp <= 5.0f)
         {
-            line_wrk[line_num].rgba[leaf_no][1] += (int)vu0Rand();
+            line_wrk[line_num].rgba[leaf_no][1] += (int)(VER_RAND());
         }
         else
         {
-            line_wrk[line_num].rgba[leaf_no][1] -= (int)vu0Rand();
+            line_wrk[line_num].rgba[leaf_no][1] -= (int)(VER_RAND());
         }
     }
-    
+
     if (line_wrk[line_num].mode_keep == 6)
     {
         tmp = line_gus[line_num][leaf_no][2];
-        
-        line_gus[line_num][leaf_no][2] -= (int)(line_wrk[line_num].dist * vu0Rand());
-        
+
+        line_gus[line_num][leaf_no][2] -= (int)((float)line_wrk[line_num].dist * VER_RAND());
+
         line_wrk[line_num].rgba[leaf_no][3] = ((tmp - line_gus[line_num][leaf_no][2]) / line_wrk[line_num].dist) * 240.0f;
-        
-        tmp = (int)(vu0Rand() * 10.0f) + 1;
-        
+
+        tmp = (int)(10.0f * VER_RAND()) + 1;
+
         if (tmp <= 5.0f)
         {
-            line_wrk[line_num].rgba[leaf_no][0] += (int)vu0Rand();
+            line_wrk[line_num].rgba[leaf_no][0] += (int)(VER_RAND());
         }
         else
         {
-            line_wrk[line_num].rgba[leaf_no][0] -= (int)vu0Rand();
+            line_wrk[line_num].rgba[leaf_no][0] -= (int)(VER_RAND());
         }
-        
-        tmp = (int)(vu0Rand() * 10.0f) + 1;
-        
+
+        tmp = (int)(10.0f * VER_RAND()) + 1;
+
         if (tmp <= 5.0f)
         {
-            line_wrk[line_num].rgba[leaf_no][1] += (int)vu0Rand();
+            line_wrk[line_num].rgba[leaf_no][1] += (int)(VER_RAND());
         }
         else
         {
-            line_wrk[line_num].rgba[leaf_no][1] -= (int)vu0Rand();
+            line_wrk[line_num].rgba[leaf_no][1] -= (int)(VER_RAND());
         }
     }
 }
 
-void LineGusObjects(/* s0 16 */ int line_num)
+void LineGusObjects(int line_num)
 {
-	/* s1 17 */ int i;
+    int i;
 
     i = 0;
-    
+
     if (line_effect_switch[line_num] != 0)
     {
         while (i < line_wrk[line_num].fnum_keep)
@@ -1835,17 +1756,17 @@ void LineGusObjects(/* s0 16 */ int line_num)
             {
                 LineGusTransX(i, line_wrk[line_num].mode_keep,line_num);
             }
-        
+
             if (line_wrk[line_num].mode_keep == 3 || line_wrk[line_num].mode_keep == 4)
             {
                 LineGusTransY(i, line_wrk[line_num].mode_keep,line_num);
             }
-            
+
             if (line_wrk[line_num].mode_keep == 5 || line_wrk[line_num].mode_keep == 6)
             {
                 LineGusTransZ(i, line_wrk[line_num].mode_keep,line_num);
             }
-            
+
             if (LineGusAlpha(i,line_num))
             {
                 LineGusInit(line_wrk[line_num].mpos_keep,i,line_num);
@@ -1853,7 +1774,7 @@ void LineGusObjects(/* s0 16 */ int line_num)
 
             i++;
         }
-        
+
         for (i = 0; i < line_wrk[line_num].fnum_keep; i++)
         {
             LineGusDraw(i,line_num);
@@ -1861,9 +1782,9 @@ void LineGusObjects(/* s0 16 */ int line_num)
     }
 }
 
-int LineGusTransX(/* t0 8 */ int leaf_no, /* a1 5 */ int dir, /* t1 9 */ int line_num)
+int LineGusTransX(int leaf_no, int dir, int line_num)
 {
-	/* t3 11 */ int ret_num;
+    int ret_num;
 
     ret_num = 0;
 
@@ -1891,7 +1812,7 @@ int LineGusTransX(/* t0 8 */ int leaf_no, /* a1 5 */ int dir, /* t1 9 */ int lin
             line_gus[line_num][leaf_no][0] -= 1.0f;
         }
     }
-    
+
     if (line_wrk[line_num].mpos_keep[0] + line_wrk[line_num].dist < line_gus[line_num][leaf_no][0])
     {
         ret_num = 1;
@@ -1900,10 +1821,10 @@ int LineGusTransX(/* t0 8 */ int leaf_no, /* a1 5 */ int dir, /* t1 9 */ int lin
     return ret_num;
 }
 
-int LineGusTransZ(/* t0 8 */ int leaf_no, /* a1 5 */ int dir, /* t1 9 */ int line_num)
+int LineGusTransZ(int leaf_no, int dir, int line_num)
 {
-	/* t4 12 */ int ret_num;
-    
+    int ret_num;
+
     ret_num = 0;
 
     if (line_wrk[line_num].mode_keep == 5)
@@ -1930,7 +1851,7 @@ int LineGusTransZ(/* t0 8 */ int leaf_no, /* a1 5 */ int dir, /* t1 9 */ int lin
             line_gus[line_num][leaf_no][2] -= 1.0f;
         }
     }
-    
+
     if (line_wrk[line_num].mpos_keep[2] + line_wrk[line_num].dist < line_gus[line_num][leaf_no][2])
     {
         ret_num = 1;
@@ -1939,10 +1860,10 @@ int LineGusTransZ(/* t0 8 */ int leaf_no, /* a1 5 */ int dir, /* t1 9 */ int lin
     return ret_num;
 }
 
-int LineGusTransY(/* t1 9 */ int leaf_no, /* a1 5 */ int dir, /* t0 8 */ int line_num)
+int LineGusTransY(int leaf_no, int dir, int line_num)
 {
-	/* t4 12 */ int ret_num;
-    
+    int ret_num;
+
     ret_num = 0;
 
     if (line_wrk[line_num].mode_keep == 3)
@@ -1969,7 +1890,7 @@ int LineGusTransY(/* t1 9 */ int leaf_no, /* a1 5 */ int dir, /* t0 8 */ int lin
             line_gus[line_num][leaf_no][1] -= 1.0f;
         }
     }
-    
+
     if (line_wrk[line_num].mpos_keep[1] + line_wrk[line_num].dist < line_gus[line_num][leaf_no][1])
     {
         ret_num = 1;
@@ -1981,16 +1902,16 @@ int LineGusTransY(/* t1 9 */ int leaf_no, /* a1 5 */ int dir, /* t0 8 */ int lin
     return ret_num;
 }
 
-int LineGusAlpha(/* a0 4 */ int leaf_no, /* a1 5 */ int line_num)
+int LineGusAlpha(int leaf_no, int line_num)
 {
-	/* a2 6 */ int ret_num;
+    int ret_num;
 
     ret_num = 0;
 
     if (line_wrk[line_num].rgba[leaf_no][3] >= 12)
     {
         line_wrk[line_num].rgba[leaf_no][3] -= 3;
-        
+
         if (line_wrk[line_num].rgba[leaf_no][3] < 12)
         {
             ret_num = 1;
@@ -2005,43 +1926,43 @@ int LineGusAlpha(/* a0 4 */ int leaf_no, /* a1 5 */ int line_num)
             line_wrk[line_num].rgba[leaf_no][3] = 8;
         }
     }
-    
+
     return ret_num;
 }
 
-void LineGusDraw(/* s6 22 */ int leaf_no, /* s5 21 */ int line_num)
+void LineGusDraw(int leaf_no, int line_num)
 {
-    /* t4 12 */ int i;
-	/* a1 5 */ int w;
-	/* s4 20 */ int th;
-	/* s3 19 */ int tw;
-	/* t6 14 */ int bak;
-	/* 0x0(sp) */ sceVu0FMATRIX wlm;
-	/* 0x40(sp) */ sceVu0FMATRIX slm;
-	/* 0x80(sp) */ sceVu0FMATRIX wlm2;
-	/* 0xc0(sp) */ sceVu0IVECTOR ivec[4];
-	/* 0x150(sp) */ float tmp_x = 0.0f;
-	/* 0x154(sp) */ float tmp_y = 0.0f;
-	/* 0x100(sp) */ sceVu0FVECTOR wpos;
-	/* 0x110(sp) */ sceVu0FVECTOR ppos[4] = {
+    int i;
+    int w;
+    int th;
+    int tw;
+    int bak;
+    sceVu0FMATRIX wlm;
+    sceVu0FMATRIX slm;
+    sceVu0FMATRIX wlm2;
+    sceVu0IVECTOR ivec[4];
+    float tmp_x = 0.0f;
+    float tmp_y = 0.0f;
+    sceVu0FVECTOR wpos;
+    sceVu0FVECTOR ppos[4] = {
         { -30.0f, +30.0f, 0.0f, 1.0f },
         { +30.0f, +30.0f, 0.0f, 1.0f },
         { -30.0f, -30.0f, 0.0f, 1.0f },
         { +30.0f, -30.0f, 0.0f, 1.0f },
     };
-	/* s2 18 */ u_long tex0;
-    
+    u_long tex0;
+
     Get2PosRot(camera.p, camera.i, &tmp_x, &tmp_y);
+
     sceVu0UnitMatrix(wlm);
     sceVu0RotMatrixX(wlm, wlm, tmp_x);
     sceVu0RotMatrixY(wlm, wlm, tmp_y);
     sceVu0TransMatrix(wlm, wlm, line_gus[line_num][leaf_no]);
     sceVu0MulMatrix(slm, SgWSMtx, wlm);
-    
     sceVu0RotTransPersN(ivec, slm, ppos, 4, 0);
 
     w = 0;
-    
+
     for (i = 0; i < 4; i++)
     {
         if (ivec[i][0] < 0x4000 || ivec[i][0] > 0xc000)
@@ -2053,21 +1974,22 @@ void LineGusDraw(/* s6 22 */ int leaf_no, /* s5 21 */ int line_num)
         {
             w = 1;
         }
-        
+
         if (ivec[i][2] < 0xff || ivec[i][2] > 0xffffff)
         {
             w = 1;
         }
     }
-    
-    if (!w)
+
+    if (w == 0)
     {
         i = 8;
-        
+
         tw = effdat[i].w * 16;
         th = effdat[i].h * 16;
+
         tex0 = effdat[i].tex0;
-        
+
         if (monochrome_mode)
         {
             if (tw / 3) // probably not tw but it doesn't seem to matter what var we use here ...
@@ -2075,47 +1997,47 @@ void LineGusDraw(/* s6 22 */ int leaf_no, /* s5 21 */ int line_num)
                 // debug code?
             }
         }
-        
+
         Reserve2DPacket(0x1000);
-        
+
         bak = ndpkt;
-        
+
         pbuf[ndpkt++].ul128 = (u_long128)0;
-        
+
         pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(6, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 1);
         pbuf[ndpkt++].ul64[1] = SCE_GIF_PACKED_AD;
-        
+
         pbuf[ndpkt].ul64[0] = 0;
         pbuf[ndpkt++].ul64[1] = SCE_GS_TEXFLUSH;
-        
+
         pbuf[ndpkt].ul64[0] = tex0;
         pbuf[ndpkt++].ul64[1] = SCE_GS_TEX0_1;
-        
-        pbuf[ndpkt].ul64[0] = SCE_GS_SET_TEX1_1(1, 0, 1, 5, 0, 0, 0);
+
+        pbuf[ndpkt].ul64[0] = SCE_GS_SET_TEX1_1(1, 0, SCE_GS_LINEAR, SCE_GS_LINEAR_MIPMAP_LINEAR, 0, 0, 0);
         pbuf[ndpkt++].ul64[1] = SCE_GS_TEX1_1;
-        
+
         pbuf[ndpkt].ul64[0] = SCE_GS_SET_ZBUF_1(0x8c, SCE_GS_PSMCT24, 1);
         pbuf[ndpkt++].ul64[1] = SCE_GS_ZBUF_1;
-        
-        pbuf[ndpkt].ul64[0] = SCE_GS_SET_ALPHA_1(0, 1, 0, 1, 0);
+
+        pbuf[ndpkt].ul64[0] = SCE_GS_SET_ALPHA_1(SCE_GS_ALPHA_CS, SCE_GS_ALPHA_CD, SCE_GS_ALPHA_AS, SCE_GS_ALPHA_CD, 0);
         pbuf[ndpkt++].ul64[1] = SCE_GS_ALPHA_1;
-        
+
         pbuf[ndpkt].ul64[0] = SCE_GS_SET_TEST_1(SCE_GS_TRUE, SCE_GS_ALPHA_GREATER, SCE_GS_FALSE, SCE_GS_AFAIL_KEEP, SCE_GS_FALSE, SCE_GS_FALSE, SCE_GS_TRUE, SCE_GS_DEPTH_GEQUAL);
         pbuf[ndpkt++].ul64[1] = SCE_GS_TEST_1;
-        
+
         pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(4, SCE_GS_TRUE, SCE_GS_TRUE, 340, SCE_GIF_PACKED, 3);
         pbuf[ndpkt++].ul64[1] = 0 \
-            | SCE_GS_RGBAQ << (4 * 0) 
-            | SCE_GS_UV    << (4 * 1) 
+            | SCE_GS_RGBAQ << (4 * 0)
+            | SCE_GS_UV    << (4 * 1)
             | SCE_GS_XYZF2 << (4 * 2);
-        
+
         for (i = 0; i < 4; i++)
         {
-            pbuf[ndpkt].ui32[0] = 81;
-            pbuf[ndpkt].ui32[1] = 73;
-            pbuf[ndpkt].ui32[2] = 74;
+            pbuf[ndpkt].ui32[0] = 0x51;
+            pbuf[ndpkt].ui32[1] = 0x49;
+            pbuf[ndpkt].ui32[2] = 0x4a;
             pbuf[ndpkt++].ui32[3] = line_wrk[line_num].rgba[leaf_no][3] / 8;
-            
+
             pbuf[ndpkt].ui32[0] = (i & 1) * tw;
             pbuf[ndpkt].ui32[1] = (i / 2) ? th : 0;
             pbuf[ndpkt].ui32[2] = 0;
@@ -2126,7 +2048,7 @@ void LineGusDraw(/* s6 22 */ int leaf_no, /* s5 21 */ int line_num)
             pbuf[ndpkt].ui32[2] = ivec[i][2];
             pbuf[ndpkt++].ui32[3] = (i <= 1) ? 0x8000 : 0;
         }
-        
+
         pbuf[bak].ui32[0] = ndpkt + DMAend - bak - 1;
     }
 }
@@ -2136,147 +2058,161 @@ void InitCallAnm()
     anm_no_keep = -1;
     anm_load_id = 0;
     anm_init = 0;
+
     clear_end = 0;
     clear_end2 = 0;
     clear_end3 = 0;
+
     banm.mode = BANM_NORM;
     banm.load_id = 0;
     banm.tex_keep = -1; // 0xffffffffffffffff;
     banm.tm2_id = -1;
 }
 
-// switch generates .rodata
 int CallReadyGo()
 {
-	/* s1 17 */ short int ret_num;
-    
+    short int ret_num;
+
     ret_num = 0;
-    
+
     if (ingame_wrk.stts & 0x20)
     {
         DrawScreen(0x7f000, 0x1a40, 0x80, 0x80, 0x80, 0x80);
     }
-    
+
     switch(anm_init) {
     case 0:
-        plyr_wrk.sta |= 2;
-        
+        plyr_wrk.sta |= 0x2;
+
         AdpcmPreBtlmodeFadeOut(0);
-        
+
         anm_init = 1;
     break;
     case 1:
-        if (IsEndAdpcmBtlmode())
+        if (IsEndAdpcmBtlmode() != 0)
         {
             anm_init = 2;
         }
     break;
     case 2:
-        if (BtlAnmInit(0))
+        if (BtlAnmInit(0) != 0)
         {
             AdpcmPreBtlmodePreload(AB030_STR);
-            
+
             anm_init = 3;
         }
     break;
     case 3:
-        if (IsPreLoadEndAdpcmBtlmode())
+        if (IsPreLoadEndAdpcmBtlmode() != 0)
         {
             anm_init = 4;
         }
     break;
     case 4:
         AdpcmBtlmodePreLoadEndPlay();
-        
+
         anm_init = 5;
-        
+
         ingame_wrk.stts |= 0x20;
-        
+
         CaptureScreen(0x1a40);
+    // case fall-through
     case 5:
-        if (BtlAnmMain())
+        if (BtlAnmMain() != 0)
         {
             anm_init = 0;
-            
-            plyr_wrk.sta &= 0xfffffffd;
-            
-            ingame_wrk.stts &= 0xdf;
-            
+
+            plyr_wrk.sta &= ~0x2;
+
+            ingame_wrk.stts &= ~0x20;
+
             ret_num = 1;
         }
+    break;
     }
-    
+
     return ret_num;
 }
 
 void ResultDisp()
 {
-	/* s0 16 */ u_long clear_time;
-    
-    PutStringYW(0x2e, 13, 118, 163, 0x808080, 0x80, 0x23000, 0);
-    PutStringYW(0x2e, 14, 218, 163, 0x808080, 0x80, 0x23000, 0);
-    PutStringYW(0x2e, 15, 118, 203, 0x808080, 0x80, 0x23000, 0);
-    PutStringYW(0x2e, 16, 203, 203, 0x808080, 0x80, 0x23000, 0);
-    PutStringYW(0x2e, 17, 118, 243, 0x808080, 0x80, 0x23000, 0);
-    PutStringYW(0x2e, 18, 218, 243, 0x808080, 0x80, 0x23000, 0);
-    PutStringYW(0x2e, 19, 118, 303, 0x808080, 0x80, 0x23000, 0);
+    u_long clear_time;
+
+    PutStringYW(IGMSG_BTL_MSON, 13, 118, 163, 0x808080, 0x80, 0x23000, 0);
+    PutStringYW(IGMSG_BTL_MSON, 14, 218, 163, 0x808080, 0x80, 0x23000, 0);
+    PutStringYW(IGMSG_BTL_MSON, 15, 118, 203, 0x808080, 0x80, 0x23000, 0);
+    PutStringYW(IGMSG_BTL_MSON, 16, 203, 203, 0x808080, 0x80, 0x23000, 0);
+    PutStringYW(IGMSG_BTL_MSON, 17, 118, 243, 0x808080, 0x80, 0x23000, 0);
+    PutStringYW(IGMSG_BTL_MSON, 18, 218, 243, 0x808080, 0x80, 0x23000, 0);
+    PutStringYW(IGMSG_BTL_MSON, 19, 118, 303, 0x808080, 0x80, 0x23000, 0);
 #ifdef BUILD_EU_VERSION
-    PutStringYW(0x2e, 40, 118, 333, 0x808080, 0x80, 0x23000, 0);
+    PutStringYW(IGMSG_BTL_MSON, 40, 118, 333, 0x808080, 0x80, 0x23000, 0);
 #else
-    PutStringYW(0x2e, 17, 118, 333, 0x808080, 0x80, 0x23000, 0);
+    PutStringYW(IGMSG_BTL_MSON, 17, 118, 333, 0x808080, 0x80, 0x23000, 0);
 #endif
-    
+
     clear_time = stage_dat[btl_wrk.stage_no].time - btl_wrk.time;
-    
-    PutNumberYW(0x3, clear_time / 3600, 429, 163, 1.0f, 1.0f, 0x808080, 0x80, 0x23000, 1, 1);
-    PutStringYW(0x2e, 11, 442, 163, 0x808080, 0x80, 0x23000, 0);
-    PutNumberYW(0x3, (clear_time / 60) % 60, 456, 163, 1.0f, 1.0f, 0x808080, 0x80, 0x23000, 2, 1);
-    PutStringYW(0x2e, 11, 487, 163, 0x808080, 0x80, 0x23000, 0);
-    PutNumberYW(0x3, (clear_time * 100 / 60) % 100, 499, 163, 1.0f, 1.0f, 0x808080, 0x80, 0x23000, 2, 1);
-    PutNumberYW(0x3, msn_high_score, 428, 203, 1.0f, 1.0f, 0x808080, 0x80, 0x23000, 4, 0);
-    PutStringYW(0x2e, 12, 493, 203, 0x808080, 0x80, 0x23000, 0);
-    PutNumberYW(0x3, msn_total_score, 364, 243, 1.0f, 1.0f, 0x808080, 0x80, 0x23000, 8, 0);
-    PutStringYW(0x2e, 12, 493, 243, 0x808080, 0x80, 0x23000, 0);
-    PutNumberYW(0x3, msn_bonus, 364, 303, 1.0f, 1.0f, 0x808080, 0x80, 0x23000, 8, 0);
-    PutStringYW(0x2e, 12, 493, 303, 0x808080, 0x80, 0x23000, 0);
-    PutNumberYW(0x3, msn_bonus + msn_total_score, 364, 333, 1.0f, 1.0f, 0x808080, 0x80, 0x23000, 8, 0);
-    PutStringYW(0x2e, 12, 493, 333, 0x808080, 0x80, 0x23000, 0);
+
+    PutNumberYW(3, clear_time / 3600, 429, 163, 1.0f, 1.0f, 0x808080, 0x80, 0x23000, 1, 1);
+    PutStringYW(IGMSG_BTL_MSON, 11, 442, 163, 0x808080, 0x80, 0x23000, 0);
+    PutNumberYW(3, (clear_time / 60) % 60, 456, 163, 1.0f, 1.0f, 0x808080, 0x80, 0x23000, 2, 1);
+    PutStringYW(IGMSG_BTL_MSON, 11, 487, 163, 0x808080, 0x80, 0x23000, 0);
+    PutNumberYW(3, (clear_time * 100 / 60) % 100, 499, 163, 1.0f, 1.0f, 0x808080, 0x80, 0x23000, 2, 1);
+    PutNumberYW(3, msn_high_score, 428, 203, 1.0f, 1.0f, 0x808080, 0x80, 0x23000, 4, 0);
+    PutStringYW(IGMSG_BTL_MSON, 12, 493, 203, 0x808080, 0x80, 0x23000, 0);
+    PutNumberYW(3, msn_total_score, 364, 243, 1.0f, 1.0f, 0x808080, 0x80, 0x23000, 8, 0);
+    PutStringYW(IGMSG_BTL_MSON, 12, 493, 243, 0x808080, 0x80, 0x23000, 0);
+    PutNumberYW(3, msn_bonus, 364, 303, 1.0f, 1.0f, 0x808080, 0x80, 0x23000, 8, 0);
+    PutStringYW(IGMSG_BTL_MSON, 12, 493, 303, 0x808080, 0x80, 0x23000, 0);
+    PutNumberYW(3, msn_bonus + msn_total_score, 364, 333, 1.0f, 1.0f, 0x808080, 0x80, 0x23000, 8, 0);
+    PutStringYW(IGMSG_BTL_MSON, 12, 493, 333, 0x808080, 0x80, 0x23000, 0);
 }
 
 int CallMissionClear()
 {
-	/* sdata 356414 */ static u_char now_pos = 0;
-	/* 0x0(sp) */ u_char alpha_res[3] = { 30, 30, 30 };
-	/* s3 19 */ int ret_num;
-	/* 0x10(sp) */ STR_DAT sd;
-	/* 0x40(sp) */ DISP_STR dsr;
+    static u_char now_pos = 0;
+    u_char alpha_res[3] = { 30, 30, 30 };
+    int ret_num;
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+    STR_DAT sd;
+    DISP_STR dsr;
+#endif
 
     ret_num = 0;
 
     switch(anm_init)
     {
     case 0:
-        plyr_wrk.sta |= 2;
-        btl_wrk.mode = 3;
-        
-        if (plyr_wrk.mode == 1) {
+        plyr_wrk.sta |= 0x2;
+
+        btl_wrk.mode = BTL_MODE_CLEAR;
+
+        if (plyr_wrk.mode == 1)
+        {
             FinderEndSet();
-            plyr_wrk.mode = 3;
+
+            plyr_wrk.mode = PMODE_FINDER_END;
         }
+
         AdpcmPreBtlmodeFadeOut(0);
-        SeFadeFlameAll(0x1e, 0);
+
+        SeFadeFlameAll(30, 0);
+
         anm_init = 1;
     break;
     case 1:
-        if (IsEndAdpcmBtlmode())
+        if (IsEndAdpcmBtlmode() != 0)
         {
             anm_init = 2;
         }
     break;
     case 2:
-        if (BtlAnmInit(2)) {
+        if (BtlAnmInit(2) != 0)
+        {
             anm_init = 3;
+
             clear_anime_timer = 180;
+
             AdpcmBtlmodePlay(AB028_STR);
         }
     break;
@@ -2285,125 +2221,148 @@ int CallMissionClear()
         {
             clear_anime_timer--;
         }
-        
+
         if (BtlAnmMain() || clear_anime_timer == 0)
         {
             clear_anime_timer = 0;
+
             anm_init = 4;
         }
     break;
     case 4:
-        if (BtlAnmInit(4))
+        if (BtlAnmInit(4) != 0)
         {
             anm_init = 5;
+
             ChangeMonochrome(1);
         }
     break;
     case 5:
         ResultDisp();
-        PolySquareYW(0.0f, 0.0f, 640, 448, 0x00000000, 60.0f, 1.0f, 1.0f, 0x24000, 0, 0, 0);
-        
-        if (BtlAnmMain())
+
+        VER_POLY_SQUARE_YW(0.0f, 0.0f, 640, 448, 0x00000000, 60.0f, 1.0f, 1.0f, 0x24000, 0, 0);
+
+        if (BtlAnmMain() != 0)
         {
             anm_init = 6;
+
             AdpcmPreBtlmodeFadeOut(0);
+
             break;
         }
-        
-        if (
-            *key_now[3] == 1 ||
-            (*key_now[3] > 25 && (*key_now[3] % 5) == 1) ||
-            Ana2PadDirCnt(1) == 1 ||
-            (Ana2PadDirCnt(1) > 25 && (Ana2PadDirCnt(1) % 5) == 1)
-        )
+
+        if (PAD_BTN_REPEAT(PAD_DPAD_RIGHT) || PAD_LANA_REPEAT(PAD_LANA_RIGHT))
         {
             now_pos = now_pos != 2 ? now_pos + 1 : 0;
+
             SeStartFix(0, 0, 0x1000, 0x1000, 0);
         }
-        
-        if (
-            *key_now[2] == 1 ||
-            (*key_now[2] > 25 && (*key_now[2] % 5) == 1) ||
-            Ana2PadDirCnt(3) == 1 ||
-            (Ana2PadDirCnt(3) > 25 && (Ana2PadDirCnt(3) % 5) == 1)
-        )
+
+        if (PAD_BTN_REPEAT(PAD_DPAD_LEFT) || PAD_LANA_REPEAT(PAD_LANA_LEFT))
         {
             now_pos = now_pos != 0 ? now_pos - 1 : 2;
+
             SeStartFix(0, 0, 0x1000, 0x1000, 0);
         }
-        
+
         alpha_res[now_pos] = 80;
-        
-        DispSprt2(&btl_rslt[10], 0x1e90000, 1, NULL, NULL, alpha_res[0]);
-        DispSprt2(&btl_rslt[11], 0x1e90000, 1, NULL, NULL, alpha_res[1]);
-        DispSprt2(&btl_rslt[12], 0x1e90000, 1, NULL, NULL, alpha_res[2]);
-        
+
+        DispSprt2(&btl_rslt[10], LOAD_ADDRESS_41, 1, NULL, NULL, alpha_res[0]);
+        DispSprt2(&btl_rslt[11], LOAD_ADDRESS_41, 1, NULL, NULL, alpha_res[1]);
+        DispSprt2(&btl_rslt[12], LOAD_ADDRESS_41, 1, NULL, NULL, alpha_res[2]);
+
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         if (btl_clear_disp == 2)
         {
             sd.r = 0x80;
             sd.g = 0x80;
             sd.b = 0x80;
+
             sd.alpha = 0x80;
+
             sd.pri = 0x1000;
-            sd.str = (u_char *)GetIngameMSGAddr(0x6, 43);
+
+            sd.str = (u_char *)GetIngameMSGAddr(IGMSG_MENU_MSG, 43);
+
             sd.pos_x = 88;
             sd.pos_y = 320;
+
             sd.type = 0;
+
             CopyStrDToStr(&dsr, &sd);
             SetMessageV2(&dsr);
+
             DrawMessageBox(0xa000, 64.0f, 302.0f, 512.0f, 60.0f, 0x80);
         }
+#endif
     break;
     case 6:
-        if (IsEndAdpcmBtlmode())
+        if (IsEndAdpcmBtlmode() != 0)
         {
-            plyr_wrk.sta = plyr_wrk.sta & 0xfffffffd;
+            plyr_wrk.sta &= ~0x2;
+
             anm_init = 0;
+
             ret_num = now_pos + 1;
+
             AdpcmMapCtrlInit();
         }
     break;
     }
-    
+
     return ret_num;
 }
 
 int CallMissionFailed()
 {
-	/* sdata 35641b */ static u_char now_pos = 0;
-	/* 0x0(sp) */ u_char alpha_res[3] = { 30, 30, 30 };
-	/* s2 18 */ int ret_num;
+    static u_char now_pos = 0;
+    u_char alpha_res[3] = { 30, 30, 30 };
+    int ret_num;
 
     ret_num = 0;
 
     switch(anm_init)
     {
     case 0:
-        plyr_wrk.sta |= 2;
-        btl_wrk.mode = 2;
-        
-        if (plyr_wrk.mode == 1 || plyr_wrk.mode == 6) {
+        plyr_wrk.sta |= 0x2;
+
+        btl_wrk.mode = BTL_MODE_FAILED;
+
+#if defined(BUILD_JP_VERSION)
+        if (plyr_wrk.mode == PMODE_FINDER)
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+        if (plyr_wrk.mode == PMODE_FINDER || plyr_wrk.mode == PMODE_FINDER_IN)
+#endif
+        {
             FinderEndSet();
-            plyr_wrk.mode = 3;
+
+            plyr_wrk.mode = PMODE_FINDER_END;
         }
+
         AdpcmPreBtlmodeFadeOut(0);
-        SeFadeFlameAll(0x1e, 0);
+
+        SeFadeFlameAll(30, 0);
+
         anm_init = 1;
     break;
     case 1:
-        if (IsEndAdpcmBtlmode())
+        if (IsEndAdpcmBtlmode() != 0)
         {
             anm_init = 2;
-#ifdef BUILD_EU_VERSION
+
+#if defined(BUILD_EU_VERSION)
             wrk_table[18].sdat_p = &btl_msel2[sys_wrk.language * 2 + 25];
             wrk_table[19].sdat_p = &btl_msel2[sys_wrk.language * 2 + 26];
 #endif
         }
     break;
     case 2:
-        if (BtlAnmInit(1)) {
+        if (BtlAnmInit(1) != 0)
+        {
             anm_init = 3;
+
             clear_anime_timer = 180;
+
             AdpcmBtlmodePlay(AB029_STR);
         }
     break;
@@ -2412,111 +2371,123 @@ int CallMissionFailed()
         {
             clear_anime_timer--;
         }
-        
-        if (BtlAnmMain() || clear_anime_timer == 0)
+
+        if (BtlAnmMain() != 0 || clear_anime_timer == 0)
         {
             clear_anime_timer = 0;
+
             anm_init = 4;
         }
     break;
     case 4:
-        if (BtlAnmInit(4))
+        if (BtlAnmInit(4) != 0)
         {
             anm_init = 5;
+
             ChangeMonochrome(1);
         }
     break;
     case 5:
         ResultDisp();
-        PolySquareYW(0.0f, 0.0f, 640, 448, 0x00000000, 60.0f, 1.0f, 1.0f, 0x24000, 0, 0, 0);
-        
-        if (BtlAnmMain())
+
+        VER_POLY_SQUARE_YW(0.0f, 0.0f, 640, 448, 0x00000000, 60.0f, 1.0f, 1.0f, 0x24000, 0, 0);
+
+        if (BtlAnmMain() != 0)
         {
             anm_init = 6;
+
             AdpcmPreBtlmodeFadeOut(0);
+
             break;
         }
-        
-        if (
-            *key_now[3] == 1 ||
-            (*key_now[3] > 25 && (*key_now[3] % 5) == 1) ||
-            Ana2PadDirCnt(1) == 1 ||
-            (Ana2PadDirCnt(1) > 25 && (Ana2PadDirCnt(1) % 5) == 1)
-        )
+
+        if (PAD_BTN_REPEAT(PAD_DPAD_RIGHT) || PAD_LANA_REPEAT(PAD_LANA_RIGHT))
         {
             now_pos = now_pos != 2 ? now_pos + 1 : 0;
+
             SeStartFix(0, 0, 0x1000, 0x1000, 0);
         }
-        
-        if (
-            *key_now[2] == 1 ||
-            (*key_now[2] > 25 && (*key_now[2] % 5) == 1) ||
-            Ana2PadDirCnt(3) == 1 ||
-            (Ana2PadDirCnt(3) > 25 && (Ana2PadDirCnt(3) % 5) == 1)
-        )
+
+        if (PAD_BTN_REPEAT(PAD_DPAD_LEFT) || PAD_LANA_REPEAT(PAD_LANA_LEFT))
         {
             now_pos = now_pos != 0 ? now_pos - 1 : 2;
+
             SeStartFix(0, 0, 0x1000, 0x1000, 0);
         }
-        
+
         alpha_res[now_pos] = 100;
-        
-        DispSprt2(&btl_rslt[10], 0x1e90000, 1, NULL, NULL, alpha_res[0]);
-        DispSprt2(&btl_rslt[11], 0x1e90000, 1, NULL, NULL, alpha_res[1]);
-        DispSprt2(&btl_rslt[12], 0x1e90000, 1, NULL, NULL, alpha_res[2]);
+
+        DispSprt2(&btl_rslt[10], LOAD_ADDRESS_41, 1, NULL, NULL, alpha_res[0]);
+        DispSprt2(&btl_rslt[11], LOAD_ADDRESS_41, 1, NULL, NULL, alpha_res[1]);
+        DispSprt2(&btl_rslt[12], LOAD_ADDRESS_41, 1, NULL, NULL, alpha_res[2]);
     break;
     case 6:
-        if (IsEndAdpcmBtlmode())
+        if (IsEndAdpcmBtlmode() != 0)
         {
-            plyr_wrk.sta = plyr_wrk.sta & 0xfffffffd;
+            plyr_wrk.sta &= ~0x2;
+
             anm_init = 0;
+
             ret_num = now_pos + 1;
+
             AdpcmMapCtrlInit();
         }
     break;
     }
-    
+
     return ret_num;
 }
 
 int CallMissionAllClear()
 {
-	/* sdata 35641c */ static u_char now_pos = 0;
-	/* 0x0(sp) */ u_char alpha_res[3] = { 30, 30, 30 };
-	/* s4 20 */ int ret_num;
-	/* 0x10(sp) */ STR_DAT sd;
-	/* 0x40(sp) */ SPRT_DAT ssd;
-	/* 0x60(sp) */ DISP_STR dsr;
-	/* 0xa0(sp) */ DISP_SPRT ds;
-	/* s2 18 */ int i;
+    static u_char now_pos = 0;
+    u_char alpha_res[3] = { 30, 30, 30 };
+    int ret_num;
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+    STR_DAT sd;
+#endif
+    SPRT_DAT ssd;
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+    DISP_STR dsr;
+#endif
+    DISP_SPRT ds;
+    int i;
 
     ret_num = 0;
 
     switch(anm_init)
     {
     case 0:
-        plyr_wrk.sta = plyr_wrk.sta | 2;
-        btl_wrk.mode = 3;
-        
-        if (plyr_wrk.mode == 1)
+        plyr_wrk.sta |= 0x2;
+
+        btl_wrk.mode = BTL_MODE_CLEAR;
+
+        if (plyr_wrk.mode == PMODE_FINDER)
         {
             FinderEndSet();
-            plyr_wrk.mode = 3;
+
+            plyr_wrk.mode = PMODE_FINDER_END;
         }
+
         AdpcmPreBtlmodeFadeOut(0);
-        SeFadeFlameAll(0x1e, 0);
+
+        SeFadeFlameAll(30, 0);
+
         anm_init = 1;
     break;
     case 1:
-        if (IsEndAdpcmBtlmode())
+        if (IsEndAdpcmBtlmode() != 0)
         {
             anm_init = 2;
         }
     break;
     case 2:
-        if (BtlAnmInit(2)) {
+        if (BtlAnmInit(2) != 0)
+        {
             anm_init = 3;
+
             clear_anime_timer = 180;
+
             AdpcmBtlmodePlay(AB028_STR);
         }
     break;
@@ -2525,10 +2496,11 @@ int CallMissionAllClear()
         {
             clear_anime_timer--;
         }
-        
-        if (BtlAnmMain() || clear_anime_timer == 0)
+
+        if (BtlAnmMain() != 0 || clear_anime_timer == 0)
         {
             clear_anime_timer = 0;
+
             anm_init = 4;
         }
     break;
@@ -2536,69 +2508,71 @@ int CallMissionAllClear()
         if (BtlAnmInit(4))
         {
             anm_init = 5;
+
             ChangeMonochrome(1);
         }
     break;
     case 5:
         ResultDisp();
-        PolySquareYW(0.0f, 0.0f, 0x280, 0x1c0, 0, 60.0f, 1.0f, 1.0f, 0x24000, 0, 0, 0);
-        if (BtlAnmMain())
+
+        VER_POLY_SQUARE_YW(0.0f, 0.0f, 640, 448, 0, 60.0f, 1.0f, 1.0f, 0x24000, 0, 0);
+
+        if (BtlAnmMain() != 0)
         {
             anm_init = 7;
         }
     break;
     case 7:
-        if (BtlAnmInit(3))
+        if (BtlAnmInit(3) != 0)
         {
-            anm_init = 0x8;
-            clear_anime_timer = 0x78;
+            anm_init = 8;
+
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+            clear_anime_timer = 120;
+#endif
         }
-        break;
+    break;
     case 8:
-        SetSprFile(0x1f108b0);
+        SetSprFile(LOAD_ADDRESS_43);
 
         for (i = 0; i < 11; i++)
         {
             ssd = clear_all[i];
+
             CopySprDToSpr(&ds, &ssd);
             DispSprD(&ds);
         }
 
-        
-        if (BtlAnmMain())
+
+        if (BtlAnmMain() != 0)
         {
             anm_init = 6;
+
             AdpcmPreBtlmodeFadeOut(0);
+
             break;
         }
-        
-        if (
-            *key_now[3] == 1 ||
-            (*key_now[3] > 25 && (*key_now[3] % 5) == 1) ||
-            Ana2PadDirCnt(1) == 1 ||
-            (Ana2PadDirCnt(1) > 25 && (Ana2PadDirCnt(1) % 5) == 1)
-        )
-        {
-            now_pos = now_pos == 0;
-            SeStartFix(0, 0, 0x1000, 0x1000, 0);
-        }
-        
-        if (
-            *key_now[2] == 1 ||
-            (*key_now[2] > 25 && (*key_now[2] % 5) == 1) ||
-            Ana2PadDirCnt(3) == 1 ||
-            (Ana2PadDirCnt(3) > 25 && (Ana2PadDirCnt(3) % 5) == 1)
-        )
-        {
-            now_pos = now_pos == 0;
-            SeStartFix(0, 0, 0x1000, 0x1000, 0);
-        }
-        
-        alpha_res[now_pos] = 100;
-        
-        DispSprt2(&btl_rslt[11], 0x1e90000, 1, NULL, NULL, alpha_res[0]);
-        DispSprt2(&btl_rslt[12], 0x1e90000, 1, NULL, NULL, alpha_res[1]);
 
+        if (PAD_BTN_REPEAT(PAD_DPAD_RIGHT) || PAD_LANA_REPEAT(PAD_LANA_RIGHT))
+        {
+            now_pos = now_pos == 0;
+
+            SeStartFix(0, 0, 0x1000, 0x1000, 0);
+        }
+
+        if (PAD_BTN_REPEAT(PAD_DPAD_LEFT) || PAD_LANA_REPEAT(PAD_LANA_LEFT))
+        {
+            now_pos = now_pos == 0;
+
+            SeStartFix(0, 0, 0x1000, 0x1000, 0);
+        }
+
+        alpha_res[now_pos] = 100;
+
+        DispSprt2(&btl_rslt[11], LOAD_ADDRESS_41, 1, NULL, NULL, alpha_res[0]);
+        DispSprt2(&btl_rslt[12], LOAD_ADDRESS_41, 1, NULL, NULL, alpha_res[1]);
+
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         if (clear_anime_timer != 0)
         {
             clear_anime_timer--;
@@ -2608,160 +2582,192 @@ int CallMissionAllClear()
             sd.r = 0x80;
             sd.g = 0x80;
             sd.b = 0x80;
+
             sd.alpha = 0x80;
+
             sd.pri = 0x1000;
-            sd.str = (u_char *)GetIngameMSGAddr(0x6, 0x2a);
-#if BUILD_EU_VERSION
-            sd.pos_x = 46;
-            sd.pos_y = 274;
-#else
+
+            sd.str = (u_char *)GetIngameMSGAddr(IGMSG_MENU_MSG, 42);
+
+#if defined(BUILD_US_VERSION)
             sd.pos_x = 88;
             sd.pos_y = 284;
+#elif defined(BUILD_EU_VERSION)
+            sd.pos_x = 46;
+            sd.pos_y = 274;
 #endif
+
             sd.type = 0;
-            
+
             CopyStrDToStr(&dsr, &sd);
             SetMessageV2(&dsr);
-#if BUILD_EU_VERSION
-            DrawMessageBox(0xa000, 19.0f, 262.0f, 592.0f, 96.0f, 0x80);
-#else
+
+#if defined(BUILD_US_VERSION)
             DrawMessageBox(0xa000, 64.0f, 262.0f, 512.0f, 88.0f, 0x80);
+#elif defined(BUILD_EU_VERSION)
+            DrawMessageBox(0xa000, 19.0f, 262.0f, 592.0f, 96.0f, 0x80);
 #endif
         }
+#endif
     break;
     case 6:
-        if (IsEndAdpcmBtlmode())
+        if (IsEndAdpcmBtlmode() != 0)
         {
             AdpcmMapCtrlInit();
-            plyr_wrk.sta = plyr_wrk.sta & 0xfffffffd;
-            clear_end = 0x0;
-            clear_end2 = 0x0;
-            clear_end3 = 0x0;
+
+            plyr_wrk.sta &= ~0x2;
+
+            clear_end = 0;
+            clear_end2 = 0;
+            clear_end3 = 0;
+
             anm_init = 0;
+
             ret_num = now_pos + 1;
         }
     break;
     }
-    
+
     return ret_num;
 }
 
 int CallStoryClear()
 {
-	/* s4 20 */ short int ret_num;
-	/* sdata 356420 */ static u_long clear_time = 0;
-	/* sdata 356428 */ static u_int t_point = 0;
-	/* 0x10(sp) */ SPRT_DAT ssd;
-	/* 0x30(sp) */ DISP_SPRT ds;
-	/* 0xc0(sp) */ DISP_STR dsr;
-	/* 0x100(sp) */ STR_DAT sd;
-	/* s2 18 */ int i;
+    short int ret_num;
+    static u_long clear_time = 0;
+    static u_int t_point = 0;
+    SPRT_DAT ssd;
+    DISP_SPRT ds;
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+    DISP_STR dsr;
+    STR_DAT sd;
+#endif
+    int i;
 
     ret_num = 0;
-    
+
     for (i = 0; i < 11; i++)
     {
         ssd = story_end[i];
+
         CopySprDToSpr(&ds, &ssd);
-        ds.tex1 = SCE_GS_SET_TEX1_1(1, 0, 1, 5, 0, 0, 0);
+
+        ds.tex1 = SCE_GS_SET_TEX1_1(1, 0, SCE_GS_LINEAR, SCE_GS_LINEAR_MIPMAP_LINEAR, 0, 0, 0);
+
         DispSprD(&ds);
     }
-    
-    if (anm_init == 0x0)
+
+    if (anm_init == 0)
     {
         if (BtlAnmInit(5) == 0)
         {
             return 0;
         }
-        
+
         AdpcmMapCtrlInit();
+
         EAdpcmCmdPlay(0, 1, AB027_STR, 0, GetAdpcmVol(AB027_STR), 640, 0xfff, 0);
-        
+
         anm_init = 1;
+
         clear_time = time_wrk.one_game;
+
         t_point = ingame_wrk.total_point;
     }
-    
-    if (!first_clear_flg && (cribo.clear_info & 2) == 0)
+
+    if (first_clear_flg == 0 && (cribo.clear_info & 2) == 0)
     {
         SetSquareS(0x18000, -320.0f, -224.0f, 320.0f, 224.0f, 0, 0, 0, 1);
     }
-    
-    if (clear_disp)
+
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+    if (clear_disp != 0)
     {
-        
         sd.r = 0x80;
         sd.g = 0x80;
         sd.b = 0x80;
+
         sd.alpha = 0x80;
+
         sd.pri = 0x1000;
-        
+
         if (clear_disp_mode == 1)
         {
-            sd.str = (u_char *)GetIngameMSGAddr(6, 41);
-#if BUILD_EU_VERSION
-            sd.pos_x = 72;
-            sd.pos_y = 170;
-#else
+            sd.str = (u_char *)GetIngameMSGAddr(IGMSG_MENU_MSG, 41);
+
+#if defined(BUILD_US_VERSION)
             sd.pos_x = 88;
+            sd.pos_y = 170;
+#elif defined(BUILD_EU_VERSION)
+            sd.pos_x = 72;
             sd.pos_y = 170;
 #endif
             sd.type = 0;
+
             CopyStrDToStr(&dsr, &sd);
             SetMessageV2(&dsr);
-#if BUILD_EU_VERSION
-            DrawMessageBox(0xa000, 32.0f, 152.0f, 576.0f, 128.0f, 0x80);
-#else
+
+#if defined(BUILD_US_VERSION)
             DrawMessageBox(0xa000, 64.0f, 152.0f, 512.0f, 128.0f, 0x80);
+#elif defined(BUILD_EU_VERSION)
+            DrawMessageBox(0xa000, 32.0f, 152.0f, 576.0f, 128.0f, 0x80);
 #endif
         }
+
         if (clear_disp_mode == 2)
         {
-            sd.str = (u_char *)GetIngameMSGAddr(6, 44);
-#if BUILD_EU_VERSION
-            sd.pos_x = 72;
-            sd.pos_y = 182;
-#else
+            sd.str = (u_char *)GetIngameMSGAddr(IGMSG_MENU_MSG, 44);
+
+#if defined(BUILD_US_VERSION)
             sd.pos_x = 88;
             sd.pos_y = 182;
+#elif defined(BUILD_EU_VERSION)
+            sd.pos_x = 72;
+            sd.pos_y = 182;
 #endif
+
             sd.type = 0;
+
             CopyStrDToStr(&dsr, &sd);
             SetMessageV2(&dsr);
-#if BUILD_EU_VERSION
-            DrawMessageBox(0xa000, 32.0f, 152.0f, 576.0f, 128.0f, 0x80);
-#else
+
+#if defined(BUILD_US_VERSION)
             DrawMessageBox(0xa000, 64.0f, 152.0f, 512.0f, 128.0f, 0x80);
+#elif defined(BUILD_EU_VERSION)
+            DrawMessageBox(0xa000, 32.0f, 152.0f, 576.0f, 128.0f, 0x80);
 #endif
         }
-        
+
         if (clear_disp_mode == 3)
         {
-            sd.str = (u_char *)GetIngameMSGAddr(6, 45);
-#if BUILD_EU_VERSION
-            sd.pos_x = 94;
-            sd.pos_y = 205;
-#else
+            sd.str = (u_char *)GetIngameMSGAddr(IGMSG_MENU_MSG, 45);
+
+#if defined(BUILD_US_VERSION)
             sd.pos_x = 110;
+            sd.pos_y = 205;
+#elif defined(BUILD_EU_VERSION)
+            sd.pos_x = 94;
             sd.pos_y = 205;
 #endif
             sd.type = 0;
-            CopyStrDToStr((DISP_STR *)&dsr, (STR_DAT *)&sd);
-            SetMessageV2((DISP_STR *)&dsr);
-#if BUILD_EU_VERSION
-            DrawMessageBox(0xa000, 32.0f, 172.0f, 576.0f, 88.0f, 0x80);
-#else
+
+            CopyStrDToStr(&dsr, &sd);
+            SetMessageV2(&dsr);
+
+#if defined(BUILD_US_VERSION)
             DrawMessageBox(0xa000, 64.0f, 172.0f, 512.0f, 88.0f, 0x80);
+#elif defined(BUILD_EU_VERSION)
+            DrawMessageBox(0xa000, 32.0f, 172.0f, 576.0f, 88.0f, 0x80);
 #endif
         }
-        
-        if (*key_now[5] == 1)
+
+        if (PAD_BTN_PRESSED(PAD_CROSS))
         {
             ret_num = 1;
-            
+
             clear_disp_mode = 0;
             anm_init = 0;
-            
+
             banm.tex_keep = 0;
             banm.mode = BANM_NORM;
             banm.tm2_id = -1;
@@ -2770,148 +2776,150 @@ int CallStoryClear()
     }
     else
     {
-        if (BtlAnmMain())
+#endif
+        if (BtlAnmMain() != 0)
         {
-
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
             if (clear_disp_mode != 0)
             {
                 clear_disp = 1;
             }
             else
             {
+#endif
                 ret_num = 1;
+
                 anm_init = 0;
+
                 banm.tex_keep = 0;
                 banm.mode = BANM_NORM;
                 banm.tm2_id = -1;
                 banm.load_id = -1;
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
             }
+#endif
         }
         else
         {
-            PutStringYW(0x2e, 13, 118, 123, 0x808080, 0x80, 0x18000, 0);
-            PutStringYW(0x2e, 14, 218, 123, 0x808080, 0x80, 0x18000, 0);
-            
-            PutNumberYW(0x3, clear_time / (3600 * 60), 413, 123, 1.0f, 1.0f, 0x808080, 0x80, 0x18000, 2, 1);
-            PutStringYW(0x2e, 11, 442, 123, 0x808080, 0x80, 0x18000, 0);
-            PutNumberYW(0x3, (clear_time / 3600) % 60, 456, 123, 1.0f, 1.0f, 0x808080, 0x80, 0x18000, 2, 1);
-            PutStringYW(0x2e, 11, 487, 123, 0x808080, 0x80, 0x18000, 0);
-            PutNumberYW(0x3, (clear_time / 60) % 60, 499, 123, 1.0f, 1.0f, 0x808080, 0x80, 0x18000, 2, 1);
-            PutStringYW(0x2e, 17, 118, 163, 0x808080, 0x80, 0x18000, 0);
-            PutStringYW(0x2e, 18, 218, 163, 0x808080, 0x80, 0x18000, 0);
-            PutNumberYW(0x3, t_point, 364, 163, 1.0f, 1.0f, 0x808080, 0x80, 0x18000, 8, 0);
-            PutStringYW(0x2e, 12, 493, 163, 0x808080, 0x80, 0x18000, 0);
+            PutStringYW(IGMSG_BTL_MSON, 13, 118, 123, 0x808080, 0x80, 0x18000, 0);
+            PutStringYW(IGMSG_BTL_MSON, 14, 218, 123, 0x808080, 0x80, 0x18000, 0);
+
+            PutNumberYW(3, clear_time / (3600 * 60), 413, 123, 1.0f, 1.0f, 0x808080, 0x80, 0x18000, 2, 1);
+            PutStringYW(IGMSG_BTL_MSON, 11, 442, 123, 0x808080, 0x80, 0x18000, 0);
+
+            PutNumberYW(3, (clear_time / 3600) % 60, 456, 123, 1.0f, 1.0f, 0x808080, 0x80, 0x18000, 2, 1);
+            PutStringYW(IGMSG_BTL_MSON, 11, 487, 123, 0x808080, 0x80, 0x18000, 0);
+
+            PutNumberYW(3, (clear_time / 60) % 60, 499, 123, 1.0f, 1.0f, 0x808080, 0x80, 0x18000, 2, 1);
+            PutStringYW(IGMSG_BTL_MSON, 17, 118, 163, 0x808080, 0x80, 0x18000, 0);
+            PutStringYW(IGMSG_BTL_MSON, 18, 218, 163, 0x808080, 0x80, 0x18000, 0);
+
+            PutNumberYW(3, t_point, 364, 163, 1.0f, 1.0f, 0x808080, 0x80, 0x18000, 8, 0);
+            PutStringYW(IGMSG_BTL_MSON, 12, 493, 163, 0x808080, 0x80, 0x18000, 0);
         }
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     }
-    
+#endif
+
     return ret_num;
 }
 
-int BtlAnmInit(/* s0 16 */ int anm_no)
+int BtlAnmInit(int anm_no)
 {
-    /* t3 11 */ int i;
-    /* t8 24 */ int j;
-    /* a2 6 */ int story_rank;
+    int i;
+    int j;
+    int story_rank;
+
+    j = i = 0;
 
     anm_no_keep = anm_no;
 
     anm_wrk.start_point = wrk_table;
 
-    for (i = 0, j = 0; j <= anm_no; j++)
+    while (j <= anm_no)
     {
         if (i != 0)
         {
             i++;
         }
-    
+
         anm_wrk.start_num = i;
-    
+
         while (ANM2D_WRK_TABLE_P(anm_wrk.start_point)[i].sdat_p != NULL)
         {
             i++;
         }
+
+        j++;
     }
-    
+
     anm_wrk.end_num = i;
-    
+
     if (anm_load_id == 0)
     {
         switch (anm_no)
         {
+        case 0:
+            VER_LOAD_REQ_LANG(TX_BTL_DMY_PK2, LOAD_ADDRESS_41);
+
+            anm_load_id = 1;
+        break;
         case 1:
         case 2:
-#ifdef BUILD_EU_VERSION
-            LoadReqLanguage(M_SLCT_STY_DMY_E_PK2, 0x1e90000);
-#else
-            LoadReq(M_SLCT_STY_DMY_PK2, 0x1e90000);
-#endif
-            anm_load_id = 1;
-            break;
-        case 3:
-#ifdef BUILD_EU_VERSION
-            LoadReqLanguage(TX_BTL_DMY_E_PK2, 0x1e90000);
-#else
-            LoadReq(TX_BTL_DMY_PK2, 0x1e90000);
-#endif
-            LoadReq(TX_BTL_RES_PK2, 0x1f108b0);
-            anm_load_id = 1;
-            break;
-        case 4:
+            VER_LOAD_REQ_LANG(M_SLCT_STY_DMY_PK2, LOAD_ADDRESS_41);
 
-#ifdef BUILD_EU_VERSION
-            LoadReqLanguage(M_SLCT_BTL_CHR_E_PK2, 0x1e90000);
-#else
-            LoadReq(M_SLCT_BTL_CHR_PK2, 0x1e90000);
-#endif
             anm_load_id = 1;
-            break;
+        break;
+        case 3:
+            VER_LOAD_REQ_LANG(TX_BTL_DMY_PK2, LOAD_ADDRESS_41);
+            LoadReq(TX_BTL_RES_PK2, LOAD_ADDRESS_43);
+
+            anm_load_id = 1;
+        break;
+        case 4:
+            VER_LOAD_REQ_LANG(M_SLCT_BTL_CHR_PK2, LOAD_ADDRESS_41);
+
+            anm_load_id = 1;
+        break;
         case 5:
-#ifdef BUILD_EU_VERSION
-            LoadReqLanguage(M_SLCT_STY_DMY_E_PK2, 0x1e90000);
-#else
-            LoadReq(M_SLCT_STY_DMY_PK2, 0x1e90000);
-#endif
-            LoadReq(S_MODE_CLEARBG_PK2, 0x14b0000);
+            VER_LOAD_REQ_LANG(M_SLCT_STY_DMY_PK2, LOAD_ADDRESS_41);
+            LoadReq(S_MODE_CLEARBG_PK2, LOAD_ADDRESS_23);
+
             anm_load_id = 1;
-            break;
-        case 0:
+        break;
         default:
-#ifdef BUILD_EU_VERSION
-            LoadReqLanguage(TX_BTL_DMY_E_PK2, 0x1e90000);
-#else
-            LoadReq(TX_BTL_DMY_PK2, 0x1e90000);
-#endif
-            do { anm_load_id = 1; } while (0); // HACK: fixes a reg-swap
-            break;
+            VER_LOAD_REQ_LANG(TX_BTL_DMY_PK2, LOAD_ADDRESS_41);
+
+            anm_load_id = 1;
+        break;
         }
     }
 
-    if (IsLoadEndAll())
+    if (IsLoadEndAll() != 0)
     {
         switch (anm_no)
         {
         case 3:
-            SetSprFile(0x1e90000);
-            SetSprFile(0x1f108b0);
+            SetSprFile(LOAD_ADDRESS_41);
+            SetSprFile(LOAD_ADDRESS_43);
         break;
         case 5:
-            SetSprFile(0x1e90000);
-            SetSprFile(0x14b0000);
+            SetSprFile(LOAD_ADDRESS_41);
+            SetSprFile(LOAD_ADDRESS_23);
         break;
         default:
-            SetSprFile(0x1e90000);
+            SetSprFile(LOAD_ADDRESS_41);
+        break;
         }
 
-        i = anm_wrk.start_num;
+        anm_load_id = 0;
     }
     else
     {
         return 0;
     }
-    
-    anm_load_id = 0;
-    
-    for (; i < anm_wrk.end_num; i++)
+
+    for (i = anm_wrk.start_num; i < anm_wrk.end_num; i++)
     {
         wrk_table[i].table_p = anm2d_dat[wrk_table[i].anm_index];
 
@@ -2926,23 +2934,23 @@ int BtlAnmInit(/* s0 16 */ int anm_no)
         }
         else if (ANM2D_DAT_TABLE_P(wrk_table[i].table_p)->attribute & 0x800)
         {
-            if (time_wrk.one_game < 3600*210)
+            if (time_wrk.one_game < 3600 * 210)
             {
                 story_rank = 0;
             }
-            else if (time_wrk.one_game < 3600*240)
+            else if (time_wrk.one_game < 3600 * 240)
             {
                 story_rank = 1;
             }
-            else if (time_wrk.one_game < 3600*300)
+            else if (time_wrk.one_game < 3600 * 300)
             {
                 story_rank = 2;
             }
-            else if (time_wrk.one_game < 3600*420)
+            else if (time_wrk.one_game < 3600 * 420)
             {
                 story_rank = 3;
             }
-            else if (time_wrk.one_game < 3600*600)
+            else if (time_wrk.one_game < 3600 * 600)
             {
                 story_rank = 4;
             }
@@ -2959,13 +2967,16 @@ int BtlAnmInit(/* s0 16 */ int anm_no)
         }
 
         wrk_table[i].counter = anm2d_dat[wrk_table[i].anm_index][0].counter;
+
         wrk_table[i].sscl[0].cx = wrk_table[i].sdat[0].x + wrk_table[i].sdat[0].w / 2;
         wrk_table[i].sscl[0].cy = wrk_table[i].sdat[0].y + wrk_table[i].sdat[0].h / 2;
         wrk_table[i].sscl[0].sw = anm2d_dat[wrk_table[i].anm_index][0].x_scale;
         wrk_table[i].sscl[0].sh = anm2d_dat[wrk_table[i].anm_index][0].y_scale;
+
         wrk_table[i].srot[0].cx = wrk_table[i].sdat[0].x + wrk_table[i].sdat[0].w / 2;
         wrk_table[i].srot[0].cy = wrk_table[i].sdat[0].y + wrk_table[i].sdat[0].h / 2;
         wrk_table[i].srot[0].rot = anm2d_dat[wrk_table[i].anm_index][0].rotation;
+
         wrk_table[i].sdat[0].alp = anm2d_dat[wrk_table[i].anm_index][0].alpha;
 
         for (j = 1; j < 8; j++)
@@ -2981,37 +2992,42 @@ int BtlAnmInit(/* s0 16 */ int anm_no)
 
 int BtlAnmMain()
 {
-	/* s7 23 */ int i;
-    
+    int i;
+
     for (i = anm_wrk.start_num; i < anm_wrk.end_num; i++)
     {
-        if (ANM2D_DAT_TABLE_P(wrk_table[i].table_p)->attribute & 0x80000) {
+        if (ANM2D_DAT_TABLE_P(wrk_table[i].table_p)->attribute & 0x80000)
+        {
             return 1;
         }
-        
-        if (
-            ANM2D_DAT_TABLE_P(wrk_table[i].table_p)->attribute & 0x100000 && 
-            *key_now[5] == 1
-        )
+
+#if defined(BUILD_JP_VERSION)
+        if (ANM2D_DAT_TABLE_P(wrk_table[i].table_p)->attribute & 0x100000 && (PAD_BTN_PRESSED(PAD_CIRCLE) || PAD_BTN_PRESSED(PAD_SQUARE)))
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+        if (ANM2D_DAT_TABLE_P(wrk_table[i].table_p)->attribute & 0x100000 && PAD_BTN_PRESSED(PAD_CROSS))
+#endif
         {
             SeStartFix(1, 0, 0x1000, 0x1000, 0);
+
             return 1;
         }
-        
+
         if (ANM2D_DAT_TABLE_P(wrk_table[i].table_p)->attribute & 0x8000)
         {
             BtlDataDirectSet(&wrk_table[i]);
         }
-        
+
         if ((ANM2D_DAT_TABLE_P(wrk_table[i].table_p)->attribute & 0x48000) == 0)
         {
             BtlTblTransX(&wrk_table[i], anm2d_dat[i], wrk_table[i].sdat);
             BtlTblTransY(&wrk_table[i], anm2d_dat[i], wrk_table[i].sdat);
             BtlTblRotate(&wrk_table[i], wrk_table[i].sdat, wrk_table[i].table_p);
             BtlTblScale(&wrk_table[i], wrk_table[i].sdat, wrk_table[i].table_p);
+
             TblAlphaChg(&wrk_table[i], wrk_table[i].sdat, wrk_table[i].table_p);
+
             ZanzouEffect(&wrk_table[i], wrk_table[i].sdat, wrk_table[i].table_p);
-            
+
             wrk_table[i].table_p = BtlTblIncl(anm2d_dat[wrk_table[i].anm_index],wrk_table[i].table_p, &wrk_table[i].counter);
 
             if ((ANM2D_DAT_TABLE_P(wrk_table[i].table_p)->attribute & 0x10000) == 0)
@@ -3027,25 +3043,25 @@ int BtlAnmMain()
             }
         }
     }
-    
+
     return 0;
 }
 
-void *BtlTblIncl(/* a0 4 */ ANM2D_DAT_TABLE *b_table, /* a1 5 */ void *p_table, /* a2 6 */ short int *count_keep)
+void *BtlTblIncl(ANM2D_DAT_TABLE *b_table, void *p_table, short int *count_keep)
 {
-    /* a3 7 */ int i;
+    int i;
 
     i = 0;
-    
+
     if (ANM2D_DAT_TABLE_P(p_table)->attribute & 0x20000)
     {
         return p_table;
     }
-    
+
     if (*count_keep < 1)
     {
         if (p_table == NULL)
-        {   
+        {
             p_table = b_table;
         }
         else
@@ -3056,7 +3072,7 @@ void *BtlTblIncl(/* a0 4 */ ANM2D_DAT_TABLE *b_table, /* a1 5 */ void *p_table, 
                 {
                     i++;
                 }
-                
+
                 p_table = &b_table[i];
             }
             else
@@ -3064,28 +3080,30 @@ void *BtlTblIncl(/* a0 4 */ ANM2D_DAT_TABLE *b_table, /* a1 5 */ void *p_table, 
                 p_table = &ANM2D_DAT_TABLE_P(p_table)[1];
             }
         }
-        
+
         *count_keep = ANM2D_DAT_TABLE_P(p_table)->counter;
     }
     else
     {
         (*count_keep)--;
     }
-    
+
     return p_table;
 }
 
-void BtlDataDirectSet(/* a0 4 */ ANM2D_WRK_TABLE *w_table)
+void BtlDataDirectSet(ANM2D_WRK_TABLE *w_table)
 {
     w_table->sdat[0].x = w_table->sdat[0].x + ANM2D_DAT_TABLE_P(w_table->table_p)->x_trans;
     w_table->sdat[0].y = w_table->sdat[0].y + ANM2D_DAT_TABLE_P(w_table->table_p)->y_trans;
+
     w_table->table_p = &ANM2D_DAT_TABLE_P(w_table->table_p)[1];
+
     w_table->counter = ANM2D_DAT_TABLE_P(w_table->table_p)->counter;
 }
 
-void BtlTblTransX(/* a0 4 */ ANM2D_WRK_TABLE *w_table, /* a1 5 */ ANM2D_DAT_TABLE *b_table, /* a2 6 */ SPRT_SDAT *ssd_p)
+void BtlTblTransX(ANM2D_WRK_TABLE *w_table, ANM2D_DAT_TABLE *b_table, SPRT_SDAT *ssd_p)
 {
-    
+
     if (
         w_table->counter == ANM2D_DAT_TABLE_P(w_table->table_p)->counter &&
         (ANM2D_DAT_TABLE_P(w_table->table_p)->attribute & 1) == 0
@@ -3093,22 +3111,25 @@ void BtlTblTransX(/* a0 4 */ ANM2D_WRK_TABLE *w_table, /* a1 5 */ ANM2D_DAT_TABL
     {
         w_table->x_speed = ANM2D_DAT_TABLE_P(w_table->table_p)->x_trans;
     }
-    
+
     if (w_table->table_p != NULL && (ANM2D_DAT_TABLE_P(w_table->table_p)->attribute & 0x4000) == 0)
     {
         if ((ANM2D_DAT_TABLE_P(w_table->table_p)->attribute & 1) != 0)
         {
             w_table->x_speed += ANM2D_DAT_TABLE_P(w_table->table_p)->x_trans;
-            ssd_p->x += w_table->x_speed >> 4;        }
+
+            ssd_p->x += w_table->x_speed >> 4;
+        }
         else
         {
             w_table->x_speed += ANM2D_DAT_TABLE_P(w_table->table_p)->x_trans;
-            
+
             if (ANM2D_DAT_TABLE_P(w_table->table_p)->x_trans >= 1)
             {
                 while (w_table->x_speed >= 16)
                 {
                     ssd_p->x++;
+
                     w_table->x_speed -= 16;
                 }
             }
@@ -3117,16 +3138,17 @@ void BtlTblTransX(/* a0 4 */ ANM2D_WRK_TABLE *w_table, /* a1 5 */ ANM2D_DAT_TABL
                 while (w_table->x_speed <= -16)
                 {
                     ssd_p->x--;
+
                     w_table->x_speed += 16;
                 }
             }
         }
-    } 
+    }
 }
 
-void BtlTblTransY(/* a0 4 */ ANM2D_WRK_TABLE *w_table, /* a1 5 */ ANM2D_DAT_TABLE *b_table, /* a2 6 */ SPRT_SDAT *ssd_p)
+void BtlTblTransY(ANM2D_WRK_TABLE *w_table, ANM2D_DAT_TABLE *b_table, SPRT_SDAT *ssd_p)
 {
-    
+
     if (
         w_table->counter == ANM2D_DAT_TABLE_P(w_table->table_p)->counter &&
         (ANM2D_DAT_TABLE_P(w_table->table_p)->attribute & 2) == 0
@@ -3134,22 +3156,25 @@ void BtlTblTransY(/* a0 4 */ ANM2D_WRK_TABLE *w_table, /* a1 5 */ ANM2D_DAT_TABL
     {
         w_table->y_speed = ANM2D_DAT_TABLE_P(w_table->table_p)->y_trans;
     }
-    
+
     if (w_table->table_p != NULL && (ANM2D_DAT_TABLE_P(w_table->table_p)->attribute & 0x4000) == 0)
     {
         if ((ANM2D_DAT_TABLE_P(w_table->table_p)->attribute & 2) != 0)
         {
             w_table->y_speed += ANM2D_DAT_TABLE_P(w_table->table_p)->y_trans;
-            ssd_p->y += w_table->y_speed >> 4;        }
+
+            ssd_p->y += w_table->y_speed >> 4;
+        }
         else
         {
             w_table->y_speed += ANM2D_DAT_TABLE_P(w_table->table_p)->y_trans;
-            
+
             if (ANM2D_DAT_TABLE_P(w_table->table_p)->y_trans >= 1)
             {
                 while (w_table->y_speed >= 16)
                 {
                     ssd_p->y++;
+
                     w_table->y_speed -= 16;
                 }
             }
@@ -3158,32 +3183,33 @@ void BtlTblTransY(/* a0 4 */ ANM2D_WRK_TABLE *w_table, /* a1 5 */ ANM2D_DAT_TABL
                 while (w_table->y_speed <= -16)
                 {
                     ssd_p->y--;
+
                     w_table->y_speed += 16;
                 }
             }
         }
-    } 
+    }
 }
 
-void BtlTblRotate(/* a3 7 */ ANM2D_WRK_TABLE *w_table, /* a1 5 */ SPRT_SDAT *ssd_p, /* t0 8 */ void *p_table)
+void BtlTblRotate(ANM2D_WRK_TABLE *w_table, SPRT_SDAT *ssd_p, void *p_table)
 {
     w_table->srot[0].cx = ssd_p->x + w_table->sdat[0].w / 2;
     w_table->srot[0].cy = ssd_p->y + w_table->sdat[0].h / 2;
-    
+
     if (ANM2D_DAT_TABLE_P(p_table)->counter == w_table->counter)
     {
         w_table->rot_off = ANM2D_DAT_TABLE_P(p_table)->rotation - w_table->srot[0].rot;
-        
+
         if (ANM2D_DAT_TABLE_P(p_table)->counter == w_table->counter)
         {
             return;
         }
     }
-    
+
     w_table->srot[0].rot = ANM2D_DAT_TABLE_P(p_table)->rotation - (w_table->rot_off * w_table->counter) / ANM2D_DAT_TABLE_P(p_table)->counter;
 }
 
-void BtlTblScale(/* a3 7 */ ANM2D_WRK_TABLE *w_table, /* t2 10 */ SPRT_SDAT *ssd_p, /* a2 6 */ void *p_table)
+void BtlTblScale(ANM2D_WRK_TABLE *w_table, SPRT_SDAT *ssd_p, void *p_table)
 {
     if (w_table->counter == ANM2D_DAT_TABLE_P(w_table->table_p)->counter)
     {
@@ -3198,10 +3224,10 @@ void BtlTblScale(/* a3 7 */ ANM2D_WRK_TABLE *w_table, /* t2 10 */ SPRT_SDAT *ssd
             w_table->yscal_off = ANM2D_DAT_TABLE_P(p_table)->y_scale - w_table->sscl[0].sh;
         }
     }
-    
+
     w_table->sscl[0].cx = ssd_p->x + w_table->sdat[0].w / 2;
     w_table->sscl[0].cy = ssd_p->y + w_table->sdat[0].h / 2;
-    
+
     if ((ANM2D_DAT_TABLE_P(w_table->table_p)->attribute & 0x4000) == 0)
     {
         if (ANM2D_DAT_TABLE_P(w_table->table_p)->attribute & 4)
@@ -3209,7 +3235,7 @@ void BtlTblScale(/* a3 7 */ ANM2D_WRK_TABLE *w_table, /* t2 10 */ SPRT_SDAT *ssd
             w_table->xscal_off = w_table->xscal_off + ANM2D_DAT_TABLE_P(w_table->table_p)->x_scale;
             w_table->yscal_off = w_table->yscal_off + ANM2D_DAT_TABLE_P(w_table->table_p)->y_scale;
 
-            
+
             if (w_table->sscl[0].sw + (w_table->xscal_off >> 4) >= 1)
             {
                 w_table->sscl[0].sw += (w_table->xscal_off >> 4);
@@ -3218,7 +3244,7 @@ void BtlTblScale(/* a3 7 */ ANM2D_WRK_TABLE *w_table, /* t2 10 */ SPRT_SDAT *ssd
             {
                 w_table->sscl[0].sw = 0;
             }
-            
+
             if (w_table->sscl[0].sh + (w_table->yscal_off >> 4) > 0)
             {
                 w_table->sscl[0].sh += (w_table->yscal_off >> 4);
@@ -3236,7 +3262,7 @@ void BtlTblScale(/* a3 7 */ ANM2D_WRK_TABLE *w_table, /* t2 10 */ SPRT_SDAT *ssd
     }
 }
 
-void TblAlphaChg(/* a0 4 */ ANM2D_WRK_TABLE *w_table, /* a1 5 */ SPRT_SDAT *ssd_p, /* a2 6 */ void *p_table)
+void TblAlphaChg(ANM2D_WRK_TABLE *w_table, SPRT_SDAT *ssd_p, void *p_table)
 {
     if (ANM2D_DAT_TABLE_P(p_table)->counter == w_table->counter)
     {
@@ -3251,15 +3277,15 @@ void TblAlphaChg(/* a0 4 */ ANM2D_WRK_TABLE *w_table, /* a1 5 */ SPRT_SDAT *ssd_
     ssd_p->alp = ANM2D_DAT_TABLE_P(p_table)->alpha - (w_table->alpha_off * w_table->counter) / ANM2D_DAT_TABLE_P(p_table)->counter;
 }
 
-void ZanzouEffect(/* a2 6 */ ANM2D_WRK_TABLE *w_table, /* a1 5 */ SPRT_SDAT *ssd_p, /* a2 6 */ void *p_table)
+void ZanzouEffect(ANM2D_WRK_TABLE *w_table, SPRT_SDAT *ssd_p, void *p_table)
 {
-	/* t0 8 */ int i;
-    
+    int i;
+
     if ((ANM2D_DAT_TABLE_P(p_table)->attribute & 8) == 0)
     {
         return;
     }
-    
+
     for (i = 7; i > 0; i--)
     {
         if (w_table->sdat[i-1].u != 0x7fff)
@@ -3282,17 +3308,17 @@ void ZanzouEffect(/* a2 6 */ ANM2D_WRK_TABLE *w_table, /* a1 5 */ SPRT_SDAT *ssd
                 w_table->sdat[i] = w_table->sdat[i-1];
                 w_table->srot[i] = w_table->srot[i-1];
                 w_table->sscl[i] = w_table->sscl[i-1];
-                
+
                 w_table->sdat[i].alp >>= 1;
             }
         }
     }
 }
 
-void BtlReadyDisp(/* s0 16 */ ANM2D_WRK_TABLE *w_table)
+void BtlReadyDisp(ANM2D_WRK_TABLE *w_table)
 {
-    /* s1 17 */ int i;
-    u_long addr = 0x1e90000; // workaround to make the last for loop match
+    int i;
+    u_long addr = LOAD_ADDRESS_41;
 
     SetSprFile(addr);
 
@@ -3300,14 +3326,14 @@ void BtlReadyDisp(/* s0 16 */ ANM2D_WRK_TABLE *w_table)
     {
         return;
     }
-    
+
     if (ANM2D_DAT_TABLE_P(w_table->table_p)->attribute & 0x10)
     {
         DrawMessageBox(0x1e000, w_table->sdat[0].x, w_table->sdat[0].y, 592.0f, 96.0f, w_table->sdat[0].alp);
     }
     else if (ANM2D_DAT_TABLE_P(w_table->table_p)->attribute & 0x20)
     {
-        PutStringYW(0x2e, 0x14, w_table->sdat[0].x, w_table->sdat[0].y, 0x808080, 0x80, 0x1000, 0);
+        PutStringYW(IGMSG_BTL_MSON, 20, w_table->sdat[0].x, w_table->sdat[0].y, 0x808080, 0x80, 0x1000, 0);
     }
     else if (ANM2D_DAT_TABLE_P(w_table->table_p)->attribute & 0x100)
     {
@@ -3331,8 +3357,8 @@ void BtlReadyDisp(/* s0 16 */ ANM2D_WRK_TABLE *w_table)
     else
     {
         DispSprt2(w_table->sdat, addr, w_table->sp_no, w_table->srot, w_table->sscl, 0x64);
-        
-        if (ANM2D_DAT_TABLE_P(w_table->table_p)->attribute & 8)
+
+        if (ANM2D_DAT_TABLE_P(w_table->table_p)->attribute & 0x8)
         {
             for (i = 2; i < 8; i++)
             {
@@ -3340,37 +3366,42 @@ void BtlReadyDisp(/* s0 16 */ ANM2D_WRK_TABLE *w_table)
                 {
                     break;
                 }
-                    
+
                 DispSprt2(&w_table->sdat[i], addr, w_table->sp_no, &w_table->srot[i], &w_table->sscl[i], 0x64);
             }
         }
     }
 }
 
-void SimpleMaskDraw(/* a0 4 */ u_char alpha)
+void SimpleMaskDraw(u_char alpha)
 {
     SetSquareS(0xf000, -320.0f, -224.0f, 320.0f, 224.0f, 0, 0, 0, alpha);
 }
 
-void DispSprt2(/* s0 16 */ SPRT_SDAT *ssd, /* a1 5 */ u_int addr, /* a2 6 */ int sp_no, /* s2 18 */ SPRT_SROT *srot, /* s3 19 */ SPRT_SSCL *sscl, /* t1 9 */ u_char alp_rate)
+void DispSprt2(SPRT_SDAT *ssd, u_int addr, int sp_no, SPRT_SROT *srot, SPRT_SSCL *sscl, u_char alp_rate)
 {
-	/* 0x0(sp) */ DISP_SPRT ds;
-	/* 0x90(sp) */ SPRT_DAT sd;
-    
+    DISP_SPRT ds;
+    SPRT_DAT sd;
+
     sd.tex0 = GetTex0Reg(addr, sp_no, 0);
+
     sd.u = ssd->u;
     sd.v = ssd->v;
+
     sd.w = ssd->w;
     sd.h = ssd->h;
+
     sd.x = ssd->x;
     sd.y = ssd->y;
-    sd.pri = ssd->pri * 4096;
+
+    sd.pri = ssd->pri << 12;
+
     sd.alpha = (ssd->alp * alp_rate) / 100;
-    
+
     CopySprDToSpr(&ds, &sd);
-    
-    ds.alphar = 0x48;
-    
+
+    ds.alphar = SCE_GS_SET_ALPHA_1(SCE_GS_ALPHA_CS, SCE_GS_ALPHA_ZERO, SCE_GS_ALPHA_AS, SCE_GS_ALPHA_CD, 0);
+
     if (srot != NULL)
     {
         if (srot->cx != 0x7fff)
@@ -3384,7 +3415,7 @@ void DispSprt2(/* s0 16 */ SPRT_SDAT *ssd, /* a1 5 */ u_int addr, /* a2 6 */ int
             ds.att |= srot->cy;
         }
     }
-    
+
     if (sscl != NULL)
     {
         ds.scw = sscl->sw / 100.0f;
@@ -3392,33 +3423,38 @@ void DispSprt2(/* s0 16 */ SPRT_SDAT *ssd, /* a1 5 */ u_int addr, /* a2 6 */ int
         ds.csx = sscl->cx;
         ds.csy = sscl->cy;
     }
-    
-    ds.tex1 = SCE_GS_SET_TEX1_1(1, 0, 1, 5, 0, 0, 0);
-    
+
+    ds.tex1 = SCE_GS_SET_TEX1_1(1, 0, SCE_GS_LINEAR, SCE_GS_LINEAR_MIPMAP_LINEAR, 0, 0, 0);
+
     DispSprD(&ds);
 }
 
-void DispSprt3(/* s0 16 */ SPRT_SDAT *ssd, /* a1 5 */ u_int addr, /* a2 6 */ int sp_no, /* s1 17 */ SPRT_SROT *srot, /* s2 18 */ SPRT_SSCL *sscl, /* t1 9 */ u_char alp_rate)
+void DispSprt3(SPRT_SDAT *ssd, u_int addr, int sp_no, SPRT_SROT *srot, SPRT_SSCL *sscl, u_char alp_rate)
 {
-	/* 0x0(sp) */ DISP_SPRT ds;
-	/* 0x90(sp) */ SPRT_DAT sd;
+    DISP_SPRT ds;
+    SPRT_DAT sd;
 
     sd.tex0 = GetTex0Reg(addr, sp_no, 0);
+
     sd.u = ssd->u;
     sd.v = ssd->v;
+
     sd.w = ssd->w;
     sd.h = ssd->h;
+
     sd.x = ssd->x;
     sd.y = ssd->y;
+
     sd.alpha = ssd->alp;
-    sd.pri = ssd->pri * 4096;
-    
+
+    sd.pri = ssd->pri << 12;
+
     CopySprDToSpr(&ds, &sd);
-    
-    ds.alphar = 0x48;
-    
-    ds.test = SCE_GS_SET_TEST_1(SCE_GS_TRUE, SCE_GS_ALPHA_GREATER, 2, SCE_GS_AFAIL_KEEP, SCE_GS_FALSE, SCE_GS_FALSE, SCE_GS_TRUE, SCE_GS_DEPTH_GEQUAL);
-    
+
+    ds.alphar = SCE_GS_SET_ALPHA_1(SCE_GS_ALPHA_CS, SCE_GS_ALPHA_ZERO, SCE_GS_ALPHA_AS, SCE_GS_ALPHA_CD, 0);
+
+    ds.test = SCE_GS_SET_TEST_1(1, SCE_GS_ALPHA_GREATER, 2, SCE_GS_AFAIL_KEEP, 0, 0, 1, SCE_GS_DEPTH_GEQUAL);
+
     if (srot != NULL)
     {
         if (srot->cx != 0x7fff)
@@ -3432,7 +3468,7 @@ void DispSprt3(/* s0 16 */ SPRT_SDAT *ssd, /* a1 5 */ u_int addr, /* a2 6 */ int
             ds.att |= srot->cy;
         }
     }
-    
+
     if (sscl != NULL)
     {
         ds.scw = sscl->sw / 100.0f;
@@ -3440,27 +3476,30 @@ void DispSprt3(/* s0 16 */ SPRT_SDAT *ssd, /* a1 5 */ u_int addr, /* a2 6 */ int
         ds.csx = sscl->cx;
         ds.csy = sscl->cy;
     }
-    
-    ds.tex1 = SCE_GS_SET_TEX1_1(1, 0, 1, 5, 0, 0, 0);
-    
+
+    ds.tex1 = SCE_GS_SET_TEX1_1(1, 0, SCE_GS_LINEAR, SCE_GS_LINEAR_MIPMAP_LINEAR, 0, 0, 0);
+
     DispSprD(&ds);
 }
 
-void DispSprtTemp(/* s1 17 */ SPRT_SDAT *ssd, /* a1 5 */ u_int addr, /* a2 6 */ int sp_no, /* s2 18 */ SPRT_SROT *srot, /* s3 19 */ SPRT_SSCL *sscl, /* s4 20 */ u_char alp_rate)
+void DispSprtTemp(SPRT_SDAT *ssd, u_int addr, int sp_no, SPRT_SROT *srot, SPRT_SSCL *sscl, u_char alp_rate)
 {
-	/* 0x0(sp) */ DISP_SPRT ds;
-	/* 0x90(sp) */ SPRT_DAT sd;
+    DISP_SPRT ds;
+    SPRT_DAT sd;
 
     sd.tex0 = GetTex0Reg(addr, sp_no, 0);
+
     sd.u = ssd->u;
     sd.v = ssd->v;
+
     sd.w = ssd->w;
     sd.h = ssd->h;
+
     sd.x = ssd->x;
     sd.y = ssd->y;
-    
-    sd.pri = ssd->pri * 4096;
-    
+
+    sd.pri = ssd->pri << 12;
+
     if (alp_rate == 0xff)
     {
         ds.alphar = 0x48;
@@ -3469,9 +3508,9 @@ void DispSprtTemp(/* s1 17 */ SPRT_SDAT *ssd, /* a1 5 */ u_int addr, /* a2 6 */ 
     {
         sd.alpha = (ssd->alp * alp_rate) / 100;
     }
-    
+
     CopySprDToSpr(&ds, &sd);
-    
+
     if (srot != NULL)
     {
         if (srot->cx != 0x7fff)
@@ -3485,44 +3524,48 @@ void DispSprtTemp(/* s1 17 */ SPRT_SDAT *ssd, /* a1 5 */ u_int addr, /* a2 6 */ 
             ds.att |= srot->cy;
         }
     }
-    
-    if (sscl != NULL) {
+
+    if (sscl != NULL)
+    {
         ds.scw = sscl->sw / 100.0f;
         ds.sch = sscl->sh / 100.0f;
         ds.csx = sscl->cx;
         ds.csy = sscl->cy;
     }
-    
+
     DispSprD(&ds);
 }
 
-void TestPk2Data_2dg(/* s1 17 */ long int sendtexaddr)
+void TestPk2Data_2dg(long int sendtexaddr)
 {
-	/* sdata 35642c */ static int ttest_count = 0;
-	/* 0x0(sp) */ SPRT_SDAT ssd;
-    
-    if (*key_now[8] == 1)
+    static int ttest_count = 0;
+    SPRT_SDAT ssd;
+
+    if (PAD_BTN_PRESSED(PAD_L1))
     {
         ttest_count++;
     }
-    
-    if (*key_now[9] == 1)
+
+    if (PAD_BTN_PRESSED(PAD_L2))
     {
         ttest_count--;
     }
-    
+
     SimpleDispSprtDatCopy(btl_strt, &ssd);
-    
+
     ssd.u = 1;
     ssd.v = 1;
+
     ssd.x = 0;
     ssd.y = 0;
-    ssd.w = 0x2a8;
-    ssd.h = 0x200;
+
+    ssd.w = 680;
+    ssd.h = 512;
+
     ssd.alp = 0x80;
     ssd.pri = 0;
-    
-    SimpleDispSprt(&ssd,sendtexaddr,ttest_count,NULL,NULL,0x64);
+
+    SimpleDispSprt(&ssd, sendtexaddr, ttest_count, NULL, NULL, 0x64);
 }
 
 enum T_LOAD_MODE T_LOAD_MODE = 0;

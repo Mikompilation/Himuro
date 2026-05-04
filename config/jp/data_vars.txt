@@ -30,3 +30,47 @@ rand_ita_tbl                   = 0x267890; // type:SE_FOOT_RAND_ITA numel:11 nos
 // graphics/graph2d/effect.c
 effdat                         = 0x26b380; // type:SPRT_DAT numel:60 nosize
 camdat                         = 0x26bb00; // type:SPRT_DAT numel:14 nosize
+
+// graphics/graph2d/effect_sub2.c
+fall_table                     = 0x270370; // type:FALL_TABLE numel:4 nosize
+btl_strt                       = 0x270470; // type:SPRT_SDAT numel:11
+btl_rslt                       = 0x270510; // type:SPRT_SDAT numel:23
+msg_strt                       = 0x270658; // type:SPRT_SDAT
+btl_msel                       = 0x270668; // type:SPRT_SDAT numel:26 nosize
+btl_msel2                      = 0x2707d8; // type:SPRT_SDAT numel:25 nosize
+anm2d_dat                      = 0x270938; // type:ANM2D_DAT_TABLE numel:36 numel:12 nosize
+wrk_table                      = 0x272af8; // type:ANM2D_WRK_TABLE numel:41 nosize
+clear_all                      = 0x275688; // type:SPRT_DAT numel:11
+story_end                      = 0x2757e8; // type:SPRT_DAT numel:11
+fall_wrk                       = 0x275950; // type:LEAVES_TABLE
+gus_wrk                        = 0x277100; // type:LEAVES_TABLE
+hole_wrk                       = 0x2788b0; // type:LEAVES_TABLE
+line_wrk                       = 0x27a060; // type:LEAVES_TABLE numel:4
+
+0x270470                       = &btl_strt[0];   // wrk_table
+0x27047e                       = &btl_strt[1];   // wrk_table
+0x27048c                       = &btl_strt[2];   // wrk_table
+0x27049a                       = &btl_strt[3];   // wrk_table
+0x2704a8                       = &btl_strt[4];   // wrk_table
+0x2704b6                       = &btl_strt[5];   // wrk_table
+0x2704c4                       = &btl_strt[6];   // wrk_table
+0x2704d2                       = &btl_strt[7];   // wrk_table
+0x2704e0                       = &btl_strt[8];   // wrk_table
+0x2704ee                       = &btl_strt[9];   // wrk_table
+0x2704fc                       = &btl_strt[10];  // wrk_table
+0x270510                       = &btl_rslt[0];   // wrk_table
+0x2705b8                       = &btl_rslt[12];  // wrk_table
+0x2705d4                       = &btl_rslt[14];  // wrk_table
+0x2705e2                       = &btl_rslt[15];  // wrk_table
+0x2705f0                       = &btl_rslt[16];  // wrk_table
+0x27060c                       = &btl_rslt[18];  // wrk_table
+0x27061a                       = &btl_rslt[19];  // wrk_table
+0x270636                       = &btl_rslt[21];  // wrk_table
+0x270644                       = &btl_rslt[22];  // wrk_table
+0x2707d8                       = &btl_msel2[0];  // wrk_table
+0x27082c                       = &btl_msel2[6];  // wrk_table
+0x27083a                       = &btl_msel2[7];  // wrk_table
+0x270848                       = &btl_msel2[8];  // wrk_table
+0x270856                       = &btl_msel2[9];  // wrk_table
+0x270872                       = &btl_msel2[11]; // wrk_table
+0x270880                       = &btl_msel2[12]; // wrk_table
