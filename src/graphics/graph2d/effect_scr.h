@@ -73,8 +73,10 @@ void SubDither4(float alp, float spd);
 void SetDither4(EFFECT_CONT *ec);
 void SubFadeFrame(u_char alp, u_int pri);
 void SetFadeFrame(EFFECT_CONT *ec);
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 void ChangeMAGATOKI2(int sw);
 void SetMAGATOKI2();
+#endif
 void SetMAGATOKI(EFFECT_CONT *ec);
 u_char SubNowLoading(int fl, int num, float sclx, float scly, float bx, float by, float spd, float rate, float trate);
 void InitNowLoading();
