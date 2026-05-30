@@ -1,9 +1,16 @@
 #include "common.h"
 #include "typedefs.h"
+#include "enums.h"
 #include "effect_obj.h"
 
 // gcc/src/newlib/libm/math/sf_tan.c
 float tanf(float x);
+
+// gcc/src/newlib/libm/math/sf_sin.c
+float sinf(float x);
+
+// gcc/src/newlib/libm/math/wf_sqrt.c
+float sqrtf(float x);
 
 #include "ee/kernel.h"
 #include "ee/eestruct.h"
@@ -20,51 +27,6 @@ float tanf(float x);
 #include "graphics/graph3d/libsg.h"
 #include "graphics/graph3d/sgdma.h"
 #include "graphics/graph3d/sgcam.h"
-
-static inline void Vu0Func0000(sceVu0FVECTOR v0, sceVu0FVECTOR v1)
-{
-    __asm__ __volatile__("                     \n\
-        lqc2         $vf12,0(%1)               \n\
-        vmulz.xy     $vf12xy,$vf12xy,$vf8z     \n\
-        vmulaw.xyzw  ACCxyzw,$vf7xyzw,$vf0w    \n\
-        vmaddaz.xyzw ACCxyzw,$vf6xyzw,$vf12z   \n\
-        vmadday.xyzw ACCxyzw,$vf5xyzw,$vf12y   \n\
-        vmaddx.xyzw  $vf13xyzw,$vf4xyzw,$vf12x \n\
-        vdiv         Q,$vf0w,$vf13w            \n\
-        vwaitq                                 \n\
-        vmulq.xyz    $vf13xyz,$vf13xyz,Q       \n\
-        vsub.xy      $vf13xy,$vf13xy,$vf8xy    \n\
-        vmaxx.x      $vf13x,$vf13x,$vf9x       \n\
-        vminiy.x     $vf13x,$vf13x,$vf9y       \n\
-        vmaxz.y      $vf13y,$vf13y,$vf9z       \n\
-        vminiw.y     $vf13y,$vf13y,$vf9w       \n\
-        vmulq.xy     $vf14xy,$vf10xy,Q         \n\
-        vmul.xy      $vf13xy,$vf13xy,$vf14xy   \n\
-        vmulq.z      $vf13z,$vf10z,Q           \n\
-        vmulw.xyz    $vf13xyz,$vf13xyz,$vf10w  \n\
-        sqc2         $vf13,0(%0)               \n\
-        ": : "r" (v0), "r" (v1)
-    );
-}
-
-static inline void dummy1(sceVu0FMATRIX m0)
-{
-    asm volatile ("\n\
-        lqc2 $vf4,0(%0) \n\
-        lqc2 $vf5,0x10(%0) \n\
-        lqc2 $vf6,0x20(%0) \n\
-        lqc2 $vf7,0x30(%0) \n\
-    ": :"r"(m0));
-}
-
-static inline void dummy2(sceVu0FVECTOR *v0)
-{
-    asm volatile ("\n\
-        lqc2 $vf8,0(%0) \n\
-        lqc2 $vf9,0x10(%0) \n\
-        lqc2 $vf10,0x20(%0) \n\
-    ": :"r"(v0));
-}
 
 typedef struct {
     u_int type;
@@ -86,19 +48,28 @@ typedef struct {
 } EFF_PARTSBLUR;
 
 #define PI 3.1415927f
-#define PI2 6.2831855f
 
 #define DISP_WIDTH 640
 #define DISP_HEIGHT 448
 
 static int p_dbg_flg = 0;
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 static float pdyoff0 = 1.0f;
 static float pdyoff1 = 0.0f;
 static float pdxoff = 0.0f;
+#endif
 
 static int init_pdef2;
 
 static EFF_PARTSBLUR eff_partsblur;
+
+#if defined(BUILD_JP_VERSION)
+#define VER_LOCAL_COPY_L_TO_L LocalCopyLtoL
+#elif defined(BUILD_US_VERSION)
+#define VER_LOCAL_COPY_L_TO_L LocalCopyLtoLDraw
+#elif defined(BUILD_EU_VERSION)
+#define VER_LOCAL_COPY_L_TO_L LocalCopyLtoLDraw
+#endif
 
 void InitEffectObj()
 {
@@ -184,27 +155,27 @@ void ResetPartsBlur()
 
 void* CallPartsDeform2(int type, float scale, void *pos, u_int in, u_int keep, u_int out)
 {
-    return SetEffects(0x1b, 4, type, 100, scale, scale, pos, in, keep, out, 0, 0, 0, 0);
+    return SetEffects(EF_PDEFORM, 4, type, 100, scale, scale, pos, in, keep, out, 0, 0, 0, 0);
 }
 
 void* CallPartsDeform3(int type, float scale, void *pos, u_int in, u_int keep, u_int out, int alp)
 {
-    return SetEffects(0x1b, 4, type, alp, scale, scale, pos, in, keep, out, 0, 0, 0, 0);
+    return SetEffects(EF_PDEFORM, 4, type, alp, scale, scale, pos, in, keep, out, 0, 0, 0, 0);
 }
 
 void* CallPartsDeform3_2(int type, float sclx, float scly, void *pos, u_int in, u_int keep, u_int out, int alp)
 {
-    return SetEffects(0x1b, 4, type, alp, sclx, scly, pos, in, keep, out, 0, 0, 0, 0);
+    return SetEffects(EF_PDEFORM, 4, type, alp, sclx, scly, pos, in, keep, out, 0, 0, 0, 0);
 }
 
 void* CallPartsDeform4(int type, float scale, void *pos, float *vol)
 {
-    return SetEffects(0x1b, 2, type, 0x80, scale, scale, pos, 0, 0, 0, vol, 0, 0, 0);
+    return SetEffects(EF_PDEFORM, 2, type, 0x80, scale, scale, pos, 0, 0, 0, vol, 0, 0, 0);
 }
 
 void* CallPartsDeform5(int type, float sclx, float scly, void *pos, float *vol)
 {
-    return SetEffects(0x1b, 2, type, 0x80, sclx, scly, pos, 0, 0, 0, vol, 0, 0, 0);
+    return SetEffects(EF_PDEFORM, 2, type, 0x80, sclx, scly, pos, 0, 0, 0, vol, 0, 0, 0);
 }
 
 void SetPartsDeform(EFFECT_CONT *ec)
@@ -218,80 +189,77 @@ void SetPartsDeform(EFFECT_CONT *ec)
     float vol;
     float tr;
 
-    n0 = (u_int)ec->dat.uc8[2];
+    n0 = ec->dat.uc8[2];
 
     sbj = n0 % 10;
     page = n0 / 10;
 
-    if (n0 == 24)
+    if (n0 != 24)
     {
-        // ??
-    }
-    else if (n0 == 25)
-    {
-        // ??
-    }
-    else
-    {
-        if (ec->dat.uc8[1] & 4)
+        if (n0 != 25)
         {
-            switch (ec->flow)
+            if (ec->dat.uc8[1] & 0x4)
             {
-            case 0:
-                if (stop_effects == 0)
+                switch (ec->flow)
                 {
-                    ec->cnt = ec->cnt + 1;
-                }
+                case 0:
+                    if (stop_effects == 0)
+                    {
+                        ec->cnt++;
+                    }
 
-                if (ec->in)
-                {
-                    ef = (int)((ec->cnt * ec->max) / (float)ec->in);
-                }
+                    if (ec->in)
+                    {
+                        ef = (int)((ec->cnt * ec->max) / (float)ec->in);
+                    }
 
-                if (ec->in <= ec->cnt)
-                {
-                    ec->flow = ec->keep == 0 ? (ec->out != 0 ? 2 : 3) : 1;
-                    ec->cnt = 0;
-                }
-            break;
-            case 1:
-                if (stop_effects == 0)
-                {
-                    ec->cnt++;
-                }
-                ef = ec->max;
+                    if (ec->in <= ec->cnt)
+                    {
+                        ec->flow = ec->keep == 0 ? (ec->out != 0 ? 2 : 3) : 1;
+                        ec->cnt = 0;
+                    }
+                break;
+                case 1:
+                    if (stop_effects == 0)
+                    {
+                        ec->cnt++;
+                    }
 
-                if (ec->cnt >= ec->keep)
-                {
-                    ec->cnt = 0;
-                    ec->flow = ec->out != 0 ? 2 : 3;
-                }
-            break;
-            case 2:
-                if (stop_effects == 0)
-                {
-                    ec->cnt++;
-                }
+                    ef = ec->max;
 
-                if (ec->out != 0)
-                {
-                    ef = ec->max - (int)((ec->cnt * ec->max) / (float)ec->out);
+                    if (ec->cnt >= ec->keep)
+                    {
+                        ec->flow = ec->out != 0 ? 2 : 3;
+                        ec->cnt = 0;
+                    }
+                break;
+                case 2:
+                    if (stop_effects == 0)
+                    {
+                        ec->cnt++;
+                    }
+
+                    if (ec->out != 0)
+                    {
+                        ef = ec->max - (int)((ec->cnt * ec->max) / (float)ec->out);
+                    }
+
+                    if (ec->out <= ec->cnt)
+                    {
+                        ec->flow = 3;
+                        ec->cnt = 0;
+                    }
+                break;
+                case 3:
+                    ec->flow = 4;
+
+                    ResetEffects(ec);
+
+                    return;
+                break;
                 }
-                if (ec->out <= ec->cnt)
-                {
-                    ec->cnt = 0;
-                    ec->flow = 3;
-                }
-            break;
-            case 3:
-                ec->flow = 4;
-                ResetEffects(ec);
-            return;
             }
-        }
-        else
-        {
-            if (ec->pnt[1] != NULL)
+            else if (ec->pnt[1] != NULL)
             {
                 ef = *(float *)ec->pnt[1];
             }
@@ -302,30 +270,11 @@ void SetPartsDeform(EFFECT_CONT *ec)
         }
     }
 
-    sp = 1.0f;
+    sp = ec->pnt[2] != NULL ? *(float *)ec->pnt[2] : 1.0f;
+    rt = ec->pnt[4] != NULL ? *(float *)ec->pnt[4] : 1.0f;
+    tr = ec->pnt[5] != NULL ? 2.0f - *(float *)ec->pnt[5] : 1.0f;
 
-    if (ec->pnt[2] != NULL)
-    {
-        sp = *(float *)ec->pnt[2];
-    }
-
-    rt = 1.0f;
-
-    if (ec->pnt[4] != NULL)
-    {
-        rt = *(float *)ec->pnt[4];
-    }
-
-    if (ec->pnt[5] != NULL)
-    {
-        tr = 2.0f - *(float *)ec->pnt[5];
-    }
-    else
-    {
-        tr = 1.0f;
-    }
-
-    vol = (float)ef / 100.0f;
+    vol = ef / 100.0f;
 
     if (page == 2)
     {
@@ -353,12 +302,48 @@ void SetPartsDeform(EFFECT_CONT *ec)
     }
 }
 
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 void SetVURand(float x)
 {
-    asm __volatile__(
-        "qmtc2    $2,$vf12\n"
-        "vrinit    R,$vf12x\n"
-        : :"r"(x):"memory"
+    asm volatile("        \n\
+        qmtc2  %0, $vf12  \n\
+        vrinit R,  $vf12x \n\
+    ": :"r"(x));
+}
+#endif
+
+static inline void Vu0LoadVector3(sceVu0FVECTOR *v0)
+{
+    asm volatile ("          \n\
+        lqc2 $vf8,  0x00(%0) \n\
+        lqc2 $vf9,  0x10(%0) \n\
+        lqc2 $vf10, 0x20(%0) \n\
+    "::"r"(v0));
+}
+
+static inline void Vu0ProjectSTQ(sceVu0FVECTOR v0, sceVu0FVECTOR v1)
+{
+    asm volatile("                                \n\
+        lqc2         $vf12,     0(%1)             \n\
+        vmulz.xy     $vf12xy,   $vf12xy,  $vf8z   \n\
+        vmulaw.xyzw  ACCxyzw,   $vf7xyzw, $vf0w   \n\
+        vmaddaz.xyzw ACCxyzw,   $vf6xyzw, $vf12z  \n\
+        vmadday.xyzw ACCxyzw,   $vf5xyzw, $vf12y  \n\
+        vmaddx.xyzw  $vf13xyzw, $vf4xyzw, $vf12x  \n\
+        vdiv         Q,         $vf0w,    $vf13w  \n\
+        vwaitq                                    \n\
+        vmulq.xyz    $vf13xyz,  $vf13xyz, Q       \n\
+        vsub.xy      $vf13xy,   $vf13xy,  $vf8xy  \n\
+        vmaxx.x      $vf13x,    $vf13x,   $vf9x   \n\
+        vminiy.x     $vf13x,    $vf13x,   $vf9y   \n\
+        vmaxz.y      $vf13y,    $vf13y,   $vf9z   \n\
+        vminiw.y     $vf13y,    $vf13y,   $vf9w   \n\
+        vmulq.xy     $vf14xy,   $vf10xy,  Q       \n\
+        vmul.xy      $vf13xy,   $vf13xy,  $vf14xy \n\
+        vmulq.z      $vf13z,    $vf10z,   Q       \n\
+        vmulw.xyz    $vf13xyz,  $vf13xyz, $vf10w  \n\
+        sqc2         $vf13,     0(%0)             \n\
+        ": : "r" (v0), "r" (v1)
     );
 }
 
@@ -366,34 +351,35 @@ int CalcPartsDeformXYZ(sceVu0IVECTOR vi, sceVu0FVECTOR vf)
 {
     int ret;
 
-    asm __volatile__(
-        "lqc2       $vf12, 0x0(%0)\n"
-        "vmulax.xyzw ACC, $vf4, $vf12x\n"
-        "vmadday.xyzw ACC, $vf5, $vf12y\n"
-        "vmaddaz.xyzw ACC, $vf6, $vf12z\n"
-        "vmaddw.xyzw $vf13, $vf7, $vf0w\n"
-        "vmulax.xyzw ACC, $vf8, $vf12x\n"
-        "vmadday.xyzw ACC, $vf9, $vf12y\n"
-        "vmaddaz.xyzw ACC, $vf10, $vf12z\n"
-        "vmaddw.xyzw $vf14, $vf11, $vf0w\n"
-        "vdiv       Q, $vf0w, $vf13w\n"
-        "vnop\n"
-        "vnop\n"
-        "vclipw.xyz $vf14, $vf14w\n"
-        "vnop\n"
-        "vnop\n"
-        "vnop\n"
-        "vwaitq\n"
-        "vmulq.xyz  $vf13, $vf13, Q\n"
-        "vnop\n"
-        "vftoi4.xy  $vf13, $vf13\n"
-        "vnop\n"
-        "vftoi0.z   $vf13, $vf13\n"
-        "vnop\n"
-        "sqc2       $vf13, 0x0(%1)\n"
-        "cfc2       $2, $vi18\n"
-        : :"r"(vf),"r"(vi):"memory"
-    );
+    asm volatile("                         \n\
+        lqc2         $vf12, 0(%0)          \n\
+        vmulax.xyzw  ACC,   $vf4,   $vf12x \n\
+        vmadday.xyzw ACC,   $vf5,   $vf12y \n\
+        vmaddaz.xyzw ACC,   $vf6,   $vf12z \n\
+        vmaddw.xyzw  $vf13, $vf7,   $vf0w  \n\
+        vmulax.xyzw  ACC,   $vf8,   $vf12x \n\
+        vmadday.xyzw ACC,   $vf9,   $vf12y \n\
+        vmaddaz.xyzw ACC,   $vf10,  $vf12z \n\
+        vmaddw.xyzw  $vf14, $vf11,  $vf0w  \n\
+        vdiv         Q,     $vf0w,  $vf13w \n\
+        vnop                               \n\
+        vnop                               \n\
+        vclipw.xyz   $vf14, $vf14w         \n\
+        vnop                               \n\
+        vnop                               \n\
+        vnop                               \n\
+        vwaitq                             \n\
+        vmulq.xyz    $vf13, $vf13,  Q      \n"
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+       "vnop                               \n"
+#endif
+       "vftoi4.xy    $vf13, $vf13          \n\
+        vnop                               \n\
+        vftoi0.z     $vf13, $vf13          \n\
+        vnop                               \n\
+        sqc2         $vf13, 0x0(%1)        \n\
+        cfc2         $2,    $vi18          \n\
+    ": :"r"(vf), "r"(vi));
 
     return ret;
 }
@@ -402,31 +388,87 @@ void MakePartsDeformPacket(int pnumw, int pnumh, sceVu0FVECTOR *vt, sceVu0FMATRI
 {
     int i;
     int j;
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     int k;
     int l;
+#endif
     int m;
     int bak;
+#if defined(BUILD_JP_VERSION)
+    int clips;
+    Q_WORDDATA *ppbuf;
+#endif
     u_long *plong;
     u_int *pint;
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     Q_WORDDATA *ppbuf;
+#endif
     int clip[289];
     sceVu0IVECTOR vtiw[289];
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     sceVu0IVECTOR colvec;
+#endif
     sceVu0FMATRIX slm;
 
     _SetMulMatrixBB(SgWSMtx, SgCMtx, wlm);
 
-    for (i = 0; i <  (pnumw + 1) * (pnumh + 1); i++)
+    for (i = 0; i <  (pnumw+1)*(pnumh+1); i++)
     {
         clip[i] = CalcPartsDeformXYZ(vtiw[i], vt[i]) & 0x3f;
     }
 
-    bak = ndpkt;
-
     m = pnumh * (pnumw + 1);
+
+    bak = ndpkt;
 
     ppbuf = Get2DPacketBufferAddress();
 
+#if defined(BUILD_JP_VERSION)
+    ppbuf->ul128 = (u_long128)0;
+    ppbuf++;
+
+    ppbuf->ul64[0] = SCE_GIF_SET_TAG(7, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 1);
+    ppbuf->ul64[1] = SCE_GIF_PACKED_AD;
+    ppbuf++;
+
+    ppbuf->ul64[0] = 0;
+    ppbuf->ul64[1] = SCE_GS_TEXFLUSH;
+    ppbuf++;
+
+    ppbuf->ul64[0] = tex0;
+    ppbuf->ul64[1] = SCE_GS_TEX0_1;
+    ppbuf++;
+
+    ppbuf->ul64[0] = SCE_GS_SET_TEX1_1(1, 0, SCE_GS_LINEAR, SCE_GS_LINEAR_MIPMAP_LINEAR, 0, 0, 0);
+    ppbuf->ul64[1] = SCE_GS_TEX1_1;
+    ppbuf++;
+
+    ppbuf->ul64[0] = SCE_GS_SET_ZBUF_1(0x8c, SCE_GS_PSMCT24, 1);
+    ppbuf->ul64[1] = SCE_GS_ZBUF_1;
+    ppbuf++;
+
+    ppbuf->ul64[0] = SCE_GS_SET_ALPHA_1(SCE_GS_ALPHA_CS, SCE_GS_ALPHA_CD, SCE_GS_ALPHA_AS, SCE_GS_ALPHA_CD, 0);
+    ppbuf->ul64[1] = SCE_GS_ALPHA_1;
+    ppbuf++;
+
+    ppbuf->ul64[0] = SCE_GS_SET_TEST_1(1, SCE_GS_ALPHA_GREATER, 0, SCE_GS_AFAIL_KEEP, 0, 0, 1, SCE_GS_DEPTH_GEQUAL);
+    ppbuf->ul64[1] = SCE_GS_TEST_1;
+    ppbuf++;
+
+    ppbuf->ul64[0] = SCE_GS_SET_CLAMP_1(SCE_GS_CLAMP, SCE_GS_CLAMP, 0, 0, 0, 0);
+    ppbuf->ul64[1] = SCE_GS_CLAMP_1;
+    ppbuf++;
+
+    ppbuf->ul64[0] = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_TRUE, 0, SCE_GIF_REGLIST, 2);
+    ppbuf->ul64[1] = 0
+        | SCE_GS_PRIM << (4 * 0)
+        | 0x0F        << (4 * 1);
+    ppbuf++;
+
+    ppbuf->ul64[0] = SCE_GS_SET_PRIM(SCE_GS_PRIM_TRISTRIP, 1, 1, 0, 1, 0, 0, 0, 0);
+    ppbuf->ul64[1] = 0;
+    ppbuf++;
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     ppbuf[0].ul128 = (u_long128)0;
 
     ppbuf[1].ul64[0] = SCE_GIF_SET_TAG(7, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 1);
@@ -454,7 +496,7 @@ void MakePartsDeformPacket(int pnumw, int pnumh, sceVu0FVECTOR *vt, sceVu0FMATRI
     ppbuf[8].ul64[1] = SCE_GS_CLAMP_1;
 
     ppbuf[9].ul64[0] = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_TRUE, 0, SCE_GIF_REGLIST, 2);
-    ppbuf[9].ul64[1] = 0 \
+    ppbuf[9].ul64[1] = 0
         | SCE_GS_PRIM << (4 * 0)
         | 0x0F        << (4 * 1);
 
@@ -462,14 +504,112 @@ void MakePartsDeformPacket(int pnumw, int pnumh, sceVu0FVECTOR *vt, sceVu0FMATRI
     ppbuf[10].ul64[1] = 0;
 
     ppbuf += 11;
+#endif
 
+#if defined(BUILD_JP_VERSION)
+    for (i = 0; i < m; i += 2)
+    {
+        j = i + pnumw + 1;
+
+        //     00AAAAAA   00BBBBBB       00CCCCCC          00DDDDDD         => 0b00000000_DDDDDD_CCCCCC_BBBBBB_AAAAAA
+        clips = clip[i] | clip[j] << 6 | clip[i+1] << 12 | clip[j+1] << 18;
+
+        if (clips == 0)
+        {
+            ppbuf->ul64[1] = 0
+                | SCE_GS_ST    << (4 * 0)
+                | SCE_GS_RGBAQ << (4 * 1)
+                | SCE_GS_XYZF2 << (4 * 2)
+                | SCE_GS_ST    << (4 * 3)
+                | SCE_GS_RGBAQ << (4 * 4)
+                | SCE_GS_XYZF2 << (4 * 5)
+                | SCE_GS_ST    << (4 * 6)
+                | SCE_GS_RGBAQ << (4 * 7)
+                | (u_long)SCE_GS_XYZF2 << (4 * 8)
+                | (u_long)SCE_GS_ST    << (4 * 9)
+                | (u_long)SCE_GS_RGBAQ << (4 * 10)
+                | (u_long)SCE_GS_XYZF2 << (4 * 11);
+        }
+        else if ((clips & 0x0003f000) != 0 || (clips & 0x00000fc0) != 0) // C != 0 || B != 0
+        {
+            continue;
+        }
+        else if (((clips & 0x0000003f) != 0 && (clips & 0x00fc0000) == 0)) // A != 0 && D == 0
+        {
+            ppbuf->ul64[1] = 0
+                | SCE_GS_ST    << (4 * 0)
+                | SCE_GS_RGBAQ << (4 * 1)
+                | SCE_GS_XYZF3 << (4 * 2)
+                | SCE_GS_ST    << (4 * 3)
+                | SCE_GS_RGBAQ << (4 * 4)
+                | SCE_GS_XYZF3 << (4 * 5)
+                | SCE_GS_ST    << (4 * 6)
+                | SCE_GS_RGBAQ << (4 * 7)
+                | (u_long)SCE_GS_XYZF3 << (4 * 8)
+                | (u_long)SCE_GS_ST    << (4 * 9)
+                | (u_long)SCE_GS_RGBAQ << (4 * 10)
+                | (u_long)SCE_GS_XYZF2 << (4 * 11);
+        }
+        else if ((clips & 0x00fc0000) != 0 && (clips & 0x0000003f) == 0)  // D != 0 && A == 0
+        {
+            ppbuf->ul64[1] = 0
+                | SCE_GS_ST    << (4 * 0)
+                | SCE_GS_RGBAQ << (4 * 1)
+                | SCE_GS_XYZF2 << (4 * 2)
+                | SCE_GS_ST    << (4 * 3)
+                | SCE_GS_RGBAQ << (4 * 4)
+                | SCE_GS_XYZF2 << (4 * 5)
+                | SCE_GS_ST    << (4 * 6)
+                | SCE_GS_RGBAQ << (4 * 7)
+                | (u_long)SCE_GS_XYZF2 << (4 * 8)
+                | (u_long)SCE_GS_ST    << (4 * 9)
+                | (u_long)SCE_GS_RGBAQ << (4 * 10)
+                | (u_long)SCE_GS_XYZF3 << (4 * 11);
+        }
+        else
+        {
+            continue;
+        }
+
+        ppbuf->ul64[0] = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_TRUE, 0, SCE_GIF_REGLIST, 12);
+
+        plong = ppbuf[1].ul64;
+        pint = ppbuf[1].ui32;
+
+        pint[0] = ((u_int *)stq[i])[0];
+        pint[1] = ((u_int *)stq[i])[1];
+
+        plong[1] = SCE_GS_SET_RGBAQ(0x80, 0x80, 0x80, (u_char)(use_alpha[i] * aprate), ((u_int *)stq[i])[2]);
+        plong[2] = SCE_GS_SET_XYZF(vtiw[i][0], vtiw[i][1], vtiw[i][2], 0);
+
+        pint[6] = ((u_int *)stq[j])[0];
+        pint[7] = ((u_int *)stq[j])[1];
+
+        plong[4] = SCE_GS_SET_RGBAQ(0x80, 0x80, 0x80, (u_char)(use_alpha[j] * aprate), ((u_int *)stq[j])[2]);
+        plong[5] = SCE_GS_SET_XYZF(vtiw[j][0], vtiw[j][1], vtiw[j][2], 0);
+
+        pint[12] = ((u_int *)stq[i+1])[0];
+        pint[13] = ((u_int *)stq[i+1])[1];
+
+        plong[7] = SCE_GS_SET_RGBAQ(0x80, 0x80, 0x80, (u_char)(use_alpha[i+1] * aprate), ((u_int *)stq[i+1])[2]);
+        plong[8] = SCE_GS_SET_XYZF(vtiw[i+1][0], vtiw[i+1][1], vtiw[i+1][2], 0);
+
+        pint[18] = ((u_int *)stq[j+1])[0];
+        pint[19] = ((u_int *)stq[j+1])[1];
+
+        plong[10] = SCE_GS_SET_RGBAQ(0x80, 0x80, 0x80, (u_char)(use_alpha[j+1] * aprate), ((u_int *)stq[j+1])[2]);
+        plong[11] = SCE_GS_SET_XYZF(vtiw[j+1][0], vtiw[j+1][1], vtiw[j+1][2], 0);
+
+        ppbuf += 7;
+    }
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     for (i = 0; i < m; i++)
     {
         j = i + pnumw + 1;
 
         if (i % (pnumw + 1) == 0)
         {
-            ppbuf[0].ul64[1] = 0 \
+            ppbuf[0].ul64[1] = 0
                 | SCE_GS_ST    << (4 * 0)
                 | SCE_GS_RGBAQ << (4 * 1)
                 | SCE_GS_XYZF3 << (4 * 2)
@@ -484,7 +624,7 @@ void MakePartsDeformPacket(int pnumw, int pnumh, sceVu0FVECTOR *vt, sceVu0FMATRI
 
             if (k + l == 0) // k == 0 && l == 0
             {
-                ppbuf[0].ul64[1] = 0 \
+                ppbuf[0].ul64[1] = 0
                     | SCE_GS_ST    << (4 * 0)
                     | SCE_GS_RGBAQ << (4 * 1)
                     | SCE_GS_XYZF2 << (4 * 2)
@@ -494,7 +634,7 @@ void MakePartsDeformPacket(int pnumw, int pnumh, sceVu0FVECTOR *vt, sceVu0FMATRI
             }
             else if (k != 0 && l != 0)
             {
-                ppbuf[0].ul64[1] = 0 \
+                ppbuf[0].ul64[1] = 0
                     | SCE_GS_ST    << (4 * 0)
                     | SCE_GS_RGBAQ << (4 * 1)
                     | SCE_GS_XYZF3 << (4 * 2)
@@ -504,7 +644,7 @@ void MakePartsDeformPacket(int pnumw, int pnumh, sceVu0FVECTOR *vt, sceVu0FMATRI
             }
             else if (k != 0 && l == 0)
             {
-                ppbuf[0].ul64[1] = 0 \
+                ppbuf[0].ul64[1] = 0
                     | SCE_GS_ST    << (4 * 0)
                     | SCE_GS_RGBAQ << (4 * 1)
                     | SCE_GS_XYZF3 << (4 * 2)
@@ -514,7 +654,7 @@ void MakePartsDeformPacket(int pnumw, int pnumh, sceVu0FVECTOR *vt, sceVu0FMATRI
             }
             else if (k == 0 && l != 0)
             {
-                ppbuf[0].ul64[1] = 0 \
+                ppbuf[0].ul64[1] = 0
                     | SCE_GS_ST    << (4 * 0)
                     | SCE_GS_RGBAQ << (4 * 1)
                     | SCE_GS_XYZF2 << (4 * 2)
@@ -547,6 +687,7 @@ void MakePartsDeformPacket(int pnumw, int pnumh, sceVu0FVECTOR *vt, sceVu0FMATRI
 
         ppbuf += 4;
     }
+#endif
 
     Set2DPacketBufferAddress(ppbuf);
 
@@ -614,44 +755,35 @@ u_char SubPartsDeform1(EFFECT_CONT *ec, u_char num, int page, int sbj, float scl
     float sclx2;
     float scly2;
 
+    clpx2 = 0xfd00;
+    clpy2 = 0xfd00;
+    clpz2 = 0x0fffffff;
+
+    add = 6.0f;
+    ml = 0.0f;
+
     sclx2 = sclx * 2;
     scly2 = scly * 2;
 
-    vnumw = 17;
-    vnumh = 17;
     pnumw = 16;
-    clpz2 = 0x0fffffff;
     pnumh = 16;
-
-    clpx2 = 0xfd00;
-    clpy2 = 0xfd00;
-
-    ml = 0.0f;
-    add = 6.0f;
+    vnumw = pnumw+1;
+    vnumh = pnumh+1;
 
     cntw = ((pnumw / 2) % vnumw) * sclx2;
     cnth = ((pnumh / 2) % vnumw) * scly2;
 
     if (num == 0xff)
     {
-        num = 0;
-
-        i = 0;
-        j = 0;
-        ret_num = 0xff;
-
-        while (i < 8 && j == 0)
+        for (num = 0, i = 0, j = 0, ret_num = 0xff; i < 8 && j == 0; i++)
         {
-
             if (efi[i].use == 0)
             {
                 efi[i].use = 1;
-                pefi = &efi[i];
                 ret_num = i;
+                pefi = &efi[i];
                 j = 1;
             }
-
-            i++;
         }
 
         if (ret_num == 0xff)
@@ -664,6 +796,7 @@ u_char SubPartsDeform1(EFFECT_CONT *ec, u_char num, int page, int sbj, float scl
         switch (sbj)
         {
         case 0:
+            // do nothing ...
         break;
         case 4:
         case 5:
@@ -672,10 +805,10 @@ u_char SubPartsDeform1(EFFECT_CONT *ec, u_char num, int page, int sbj, float scl
                 wix = i % vnumw;
                 wiy = i / vnumw;
 
-                wfw = (float)wix * sclx2 - cntw;
-                wfh = (float)wiy * scly2 - cnth;
+                wfw = wix * sclx2 - cntw;
+                wfh = wiy * scly2 - cnth;
 
-                lw = SgSqrtf(wfw * wfw + wfh * wfh);
+                lw = VER_SQRTF(wfw * wfw + wfh * wfh);
 
                 if (i == 0)
                 {
@@ -684,7 +817,11 @@ u_char SubPartsDeform1(EFFECT_CONT *ec, u_char num, int page, int sbj, float scl
 
                 l = (ml - lw);
 
+#if defined(BUILD_JP_VERSION)
+                pefi->ep[i].lng = (l * l) * 0.006 * rate; // 0.006 is double
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
                 pefi->ep[i].lng = (l * l) * 0.006f * rate;
+#endif
             }
         break;
         }
@@ -697,25 +834,21 @@ u_char SubPartsDeform1(EFFECT_CONT *ec, u_char num, int page, int sbj, float scl
 
     pefi->pass = 1;
 
+#ifdef MATCHING_DECOMP
+    if (renz) {} // HACK: fixes stack order
+#endif
+
     Get2PosRot(camera.p, camera.i, &rot_x, &rot_y);
 
     Vu0CopyVector(vpos, ec->pnt[0]);
 
-    fx = (vpos[0] - camera.p[0]) * (vpos[0] - camera.p[0]);
-    fy = (vpos[1] - camera.p[1]) * (vpos[1] - camera.p[1]);
-    fz = (vpos[2] - camera.p[2]) * (vpos[2] - camera.p[2]);
+    fx = vpos[0] - camera.p[0];
+    fy = vpos[1] - camera.p[1];
+    fz = vpos[2] - camera.p[2];
 
-    l = SgSqrtf(fx + fy + fz);
+    l = VER_SQRTF(fx * fx + fy * fy + fz * fz);
 
-    if (l > 200.0f)
-    {
-        aprate = vol;
-    }
-    else
-    {
-        if (l < 100.0f) aprate = 0.0f;
-        else aprate = ((l - 100.0f) * vol) / 100.0f;
-    }
+    aprate = l > 200.0f ? vol : (l < 100.0f ? 0.0f : ((l - 100.0f) * vol) / 100.0f);
 
     sceVu0UnitMatrix(wlm);
 
@@ -745,12 +878,12 @@ u_char SubPartsDeform1(EFFECT_CONT *ec, u_char num, int page, int sbj, float scl
 
     if (n != 0)
     {
-        return (u_char)ret_num;
+        return ret_num;
     }
 
     if (page == 0)
     {
-        LocalCopyLtoLDraw((sys_wrk.count & 1) * 0x8c0, 0x1a40);
+        VER_LOCAL_COPY_L_TO_L((sys_wrk.count & 1) * 0x8c0, 0x1a40);
         tex0 = SCE_GS_SET_TEX0_1(0x1a40, 10, SCE_GS_PSMCT32, 10, 8, 0, SCE_GS_MODULATE, 0, SCE_GS_PSMCT32, 0, 0, 1);
     }
     else
@@ -761,7 +894,7 @@ u_char SubPartsDeform1(EFFECT_CONT *ec, u_char num, int page, int sbj, float scl
         }
         else
         {
-            LocalCopyLtoLDraw((sys_wrk.count & 1) * 0x8c0, 0x1a40);
+            VER_LOCAL_COPY_L_TO_L((sys_wrk.count & 1) * 0x8c0, 0x1a40);
             tex0 = SCE_GS_SET_TEX0_1(0x1a40, 10, SCE_GS_PSMCT32, 10, 8, 0, SCE_GS_MODULATE, 0, SCE_GS_PSMCT32, 0, 0, 1);
         }
     }
@@ -769,8 +902,13 @@ u_char SubPartsDeform1(EFFECT_CONT *ec, u_char num, int page, int sbj, float scl
     f3 = sclx2 * 8.0f;
     f4 = scly2 * 8.0f;
 
+#if defined(BUILD_JP_VERSION)
+    stqparam[0][0] = 1727.5f;
+    stqparam[0][1] = 1935.5f;
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     stqparam[0][0] = 1726.5f;
     stqparam[0][1] = 1936.0f - GetYOffsetf();
+#endif
     stqparam[0][2] = trate;
 
     stqparam[1][0] = 0;
@@ -783,11 +921,10 @@ u_char SubPartsDeform1(EFFECT_CONT *ec, u_char num, int page, int sbj, float scl
     stqparam[2][2] = 1.0;
     stqparam[2][3] = 1.0f / 16.0f;
 
-    dummy1(slm);
-    dummy2(stqparam);
+    Vu0LoadMatrix(slm);
+    Vu0LoadVector3(stqparam);
 
     k = 0;
-
     yy = -f4;
 
     for (j = 0; j < vnumh; j++)
@@ -801,82 +938,133 @@ u_char SubPartsDeform1(EFFECT_CONT *ec, u_char num, int page, int sbj, float scl
             vt[k][2] = 0.0f;
             vt[k][3] = 1.0f;
 
+#if defined(BUILD_JP_VERSION)
+            Vu0ProjectSTQ(stq[k], vt[k]);
+#endif
+
             xx += sclx2;
             k++;
         }
+
         yy += scly2;
     }
 
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     for (i = 0; i < vnumh*vnumw; i++)
     {
-        Vu0Func0000(stq[i], vt[i]);
+        Vu0ProjectSTQ(stq[i], vt[i]);
     }
+#endif
 
-    if (ec->dat.uc8[1] & 1)
+    if (ec->dat.uc8[1] & 0x1)
     {
-        n = passflg[sbj] != sys_wrk.count;
         r = passcnt[sbj];
+        n = passflg[sbj] != sys_wrk.count;
     }
     else
     {
-        n = 1;
         r = ec->fw[0];
+        n = 1;
     }
 
     switch(sbj)
     {
     case 0:
-    return ret_num;
-    case 1: {
-        float vtrate = rate * 0.8f;
-
+        return ret_num;
+    break;
+    case 1:
+#if defined(BUILD_JP_VERSION)
         add = spd * 2;
-
-        for (i = 0; i < vnumw*vnumh; i++)
-        {
-            vt[i][1] += SgSinfd(r + (float)((int)(i / vnumw) * 30)) * vtrate;
-        }
-
-        if (stop_effects == 0 && n != 0)
-        {
-            r += add;
-            r = 360.0f < r ? r - 360.0f : r;
-        }
-    } break;
-    case 2: {
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+    {
         float vtrate;
-
-        add = spd * 4.0f;
-        vtrate = rate * 3.0f;
+        add = spd * 2;
+        vtrate = rate * 0.8f;
+#endif
 
         for (i = 0; i < vnumw*vnumh; i++)
         {
             wix = i % vnumw;
             wiy = i / vnumw;
 
-            wfw = (float)wix * sclx2 - cntw;
-            wfh = (float)wiy * scly2 - cnth;
+#if defined(BUILD_JP_VERSION)
+            vt[i][1] += VER_SINFD(r + (wiy * 30)) * 0.8f * rate;
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+            vt[i][1] += VER_SINFD(r + (wiy * 30)) * vtrate;
+#endif
+        }
 
-            lw = SgSqrtf(wfw * wfw + wfh * wfh);
+        if (stop_effects == 0)
+        {
+            if (n != 0)
+            {
+#if defined(BUILD_JP_VERSION)
+                r = r + add > 360.0f ? (r + add) - 360.0f : r + add;
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+                r += add;
+                r = r > 360.0f ? r - 360.0f : r;
+#endif
+            }
+        }
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+    }
+#endif
+    break;
+    case 2:
+#if defined(BUILD_JP_VERSION)
+        add = spd * 4.0f;
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+    {
+        float vtrate;
+
+        add = spd * 4.0f;
+        vtrate = rate * 3.0f;
+#endif
+
+        for (i = 0; i < vnumw*vnumh; i++) {
+            wix = i % vnumw;
+            wiy = i / vnumw;
+
+            wfw = wix * sclx2 - cntw;
+            wfh = wiy * scly2 - cnth;
+
+            lw = VER_SQRTF(wfw * wfw + wfh * wfh);
 
             if (i == 0)
             {
                 ml = lw;
             }
 
-            l = (lw * 30.0f);
+            l = lw * 30.0f;
 
-            vt[i][2] = SgSinfd(r + l) * (1.0f - lw / ml) * vtrate;
+#if defined(BUILD_JP_VERSION)
+            vt[i][2] = VER_SINFD(r + l) * (1.0f - lw / ml) * 3.0f * rate;
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+            vt[i][2] = VER_SINFD(r + l) * (1.0f - lw / ml) * vtrate;
+#endif
         }
 
-        if (stop_effects == 0 && n != 0)
+        if (stop_effects == 0)
         {
-            r = r - add;
-            r = r < -360.0f ? r + 360.0f : r;
+            if (n != 0)
+            {
+#if defined(BUILD_JP_VERSION)
+                r = r - add < -360.0f ? (r + 360.0f) - add : r - add;
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+                r = r - add;
+                r = r < -360.0f ? r + 360.0f : r;
+#endif
+            }
         }
-    } break;
-    case 3: {
-        float rr = SgSinfd(r) * 60.0f;
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+    }
+#endif
+    break;
+    case 3:
+    {
+        float rr;
+
+        rr = VER_SINFD(r) * 60.0f;
 
         add = spd * 0.2f;
 
@@ -885,31 +1073,42 @@ u_char SubPartsDeform1(EFFECT_CONT *ec, u_char num, int page, int sbj, float scl
             wix = i % vnumw;
             wiy = i / vnumw;
 
-            wfw = (float)wix * sclx2 - cntw;
-            wfh = (float)wiy * scly2 - cnth;
+            wfw = wix * sclx2 - cntw;
+            wfh = wiy * scly2 - cnth;
 
-            lw = SgSqrtf(wfw * wfw + wfh * wfh);
+            lw = VER_SQRTF(wfw * wfw + wfh * wfh);
 
             if (i == 0)
             {
                 ml = lw;
             }
 
-            l = (lw * 10.0f);
+            l = lw * 10.0f;
 
-            ss = SgSinfd(rr * l) * (1.0f - lw / ml) * rate;
+            ss = VER_SINFD(rr * l) * (1.0f - lw / ml) * rate;
 
             vt[i][2] = ss;
         }
 
-        if (stop_effects == 0 && n != 0)
+        if (stop_effects == 0)
         {
-            r += add;
-            r = 360.0f < r ? r - 360.0f : r;
+            if (n != 0)
+            {
+#if defined(BUILD_JP_VERSION)
+                r = r + add > 360.0f ? (r - 360.0f) + add : r + add;
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+                r += add;
+                r = r > 360.0f ? r - 360.0f : r;
+#endif
+            }
         }
-    } break;
-    case 4: {
-        float rr = SgSinfd(r) * 60.0f;
+    }
+    break;
+    case 4:
+    {
+        float rr;
+
+        rr = VER_SINFD(r) * 60.0f;
 
         add = spd * 2.0f;
 
@@ -921,8 +1120,8 @@ u_char SubPartsDeform1(EFFECT_CONT *ec, u_char num, int page, int sbj, float scl
             wix = i % vnumw;
             wiy = i / vnumw;
 
-            f3 = (float)wix * sclx2;
-            f4 = (float)wiy * scly2;
+            f3 = wix * sclx2;
+            f4 = wiy * scly2;
 
             wfw = f3 - cntw;
             wfh = f4 - cnth;
@@ -933,8 +1132,8 @@ u_char SubPartsDeform1(EFFECT_CONT *ec, u_char num, int page, int sbj, float scl
             {
                 rad = ((rr * l) * PI) / 180.0f;
 
-                ss = SgSinf(rad);
-                cc = SgCosf(rad);
+                ss = VER_SINF(rad);
+                cc = VER_COSF(rad);
 
                 vt[i][0] = (wfw * cc - wfh * ss + cntw) - f1;
                 vt[i][1] = (wfw * ss + wfh * cc + cnth) - f2;
@@ -946,14 +1145,25 @@ u_char SubPartsDeform1(EFFECT_CONT *ec, u_char num, int page, int sbj, float scl
             }
         }
 
-        if (stop_effects == 0 && n != 0)
+        if (stop_effects == 0)
         {
-            r += add;
-            r = 180.0f < r ? r - 360.0f: r;
+            if (n != 0)
+            {
+#if defined(BUILD_JP_VERSION)
+                r = r + add > 180.0f ? (r - 360.0f) + add : r + add;
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+                r += add;
+                r = r > 180.0f ? r - 360.0f: r;
+#endif
+            }
         }
-    } break;
-    case 5: {
-        float rr = SgSinfd(r) * 60.0f;
+    }
+    break;
+    case 5:
+    {
+        float rr;
+
+        rr = VER_SINFD(r) * 60.0f;
 
         add = spd * 2.0f;
 
@@ -965,8 +1175,8 @@ u_char SubPartsDeform1(EFFECT_CONT *ec, u_char num, int page, int sbj, float scl
             wix = i % vnumw;
             wiy = i / vnumw;
 
-            f3 = (float)wix * sclx2;
-            f4 = (float)wiy * scly2;
+            f3 = wix * sclx2;
+            f4 = wiy * scly2;
 
             wfw = f3 - cntw;
             wfh = f4 - cnth;
@@ -977,8 +1187,8 @@ u_char SubPartsDeform1(EFFECT_CONT *ec, u_char num, int page, int sbj, float scl
             {
                 rad = ((rr * l) * PI) / 180.0f;
 
-                ss = SgSinf(rad);
-                cc = SgCosf(rad);
+                ss = VER_SINF(rad);
+                cc = VER_COSF(rad);
 
                 vt[i][0] = (wfw * cc - wfh * ss + cntw) - f1;
                 vt[i][1] = (wfw * ss + wfh * cc + cnth) - f2;
@@ -990,48 +1200,58 @@ u_char SubPartsDeform1(EFFECT_CONT *ec, u_char num, int page, int sbj, float scl
             }
         }
 
-        if (stop_effects == 0 && n != 0)
+        if (stop_effects == 0)
         {
-            r += add;
-            r = 180.0f < r ? r - 360.0f: r;
+            if (n != 0)
+            {
+#if defined(BUILD_JP_VERSION)
+                r = r + add > 180.0f ? (r - 360.0f) + add : r + add;
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+                r += add;
+                r = r > 180.0f ? r - 360.0f: r;
+#endif
+            }
         }
-    } break;
+    }
+    break;
     case 6:
         for (i = 0; i < vnumw*vnumh; i++)
         {
             wix = i % vnumw;
             wiy = i / vnumw;
 
-            f1 = (float)wix * sclx2;
-            f4 = (float)wiy * scly2;
+            wfw = wix * sclx2 - cntw;
+            wfh = wiy * scly2 - cnth;
 
-            wfw = f1 - cntw;
-            wfh = f4 - cnth;
-
-            lw = SgSqrtf((wfw * wfw) + (wfh * wfh));
+            lw = VER_SQRTF(wfw * wfw + wfh * wfh);
 
             if (i == 0)
             {
                 ml = lw;
             }
 
-            fw = SgCosfd(r) * renz;
+            fw = VER_COSFD(r) * renz;
 
-            vt[i][0] = ((((1.0f - (lw / ml)) * fw) * wfw) + f1) - (sclx2 * 8.0f);
-            vt[i][1] = ((((1.0f - (lw / ml)) * fw) * wfh) + f4) - (scly2 * 8.0f);
+            vt[i][0] = ((((1.0f - (lw / ml)) * fw) * wfw) + wix * sclx2) - (sclx2 * 8.0f);
+            vt[i][1] = ((((1.0f - (lw / ml)) * fw) * wfh) + wiy * scly2) - (scly2 * 8.0f);
         }
 
-        fw = SgCosf((r * PI) / 180.0f) * renz;
+        fw = VER_COSF((r * PI) / 180.0f) * renz;
 
-        if (stop_effects == 0 && n != 0)
+        if (stop_effects == 0)
         {
-            r += add;
-            r = 360.0f < r ? r - 360.0f : r;
+            if (n != 0)
+            {
+#if defined(BUILD_JP_VERSION)
+                r = r > 360.0f ? (r - 360.0f) + add : r + add;
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+                r += add;
+                r = r > 360.0f ? r - 360.0f : r;
+#endif
+            }
         }
 
-
-
-        if (SgCosfd(r) * fw < 0.0f)
+        if (VER_COSFD(r) * fw < 0.0f)
         {
             if (renz <= 0.02f)
             {
@@ -1049,15 +1269,15 @@ u_char SubPartsDeform1(EFFECT_CONT *ec, u_char num, int page, int sbj, float scl
             wix = i % vnumw;
             wiy = i / vnumw;
 
-            wfw = (wix * sclx2) - cntw;
-            wfh = (wiy * scly2) - cnth;
+            wfw = wix * sclx2 - cntw;
+            wfh = wiy * scly2 - cnth;
 
-            lw = SgSqrtf(wfw * wfw + wfh * wfh);
+            lw = VER_SQRTF(wfw * wfw + wfh * wfh);
 
             if (i == 0)
             {
                 ml = lw;
-            }
+             }
 
             vt[i][0] = ((((1.0f - (lw / ml)) * wfw) * renz) + cntw) - (sclx2 * 8.0f);
             vt[i][1] = ((((1.0f - (lw / ml)) * wfh) * renz) + cnth) - (scly2 * 8.0f);
@@ -1072,7 +1292,7 @@ u_char SubPartsDeform1(EFFECT_CONT *ec, u_char num, int page, int sbj, float scl
             wfw = (wix * sclx2) - cntw;
             wfh = (wiy * scly2) - cnth;
 
-            lw = SgSqrtf(wfw * wfw + wfh * wfh);
+            lw = VER_SQRTF(wfw * wfw + wfh * wfh);
 
             if (i == 0)
             {
@@ -1087,7 +1307,7 @@ u_char SubPartsDeform1(EFFECT_CONT *ec, u_char num, int page, int sbj, float scl
 
     passflg[sbj] = (u_int)sys_wrk.count;
 
-    if (ec->dat.uc8[1] & 1)
+    if (ec->dat.uc8[1] & 0x1)
     {
         passcnt[sbj] = r;
     }
@@ -1116,15 +1336,19 @@ u_char SubPartsDeform2(EFFECT_CONT *ec, u_char num, int page, int sbj, float scl
     EFFPOS *pefp;
     EFFINFO2 *pefi;
     static EFFINFO2 pefi_once[3];
+#if defined(BUILD_JP_VERSION)
+    u_char ret_num;
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     u_char retnum;
+#endif
     int i;
     int j;
     int k;
     int n;
-    int vnumw;
-    int vnumh;
     int pnumw;
+    int vnumw;
     int pnumh;
+    int vnumh;
     int wix;
     int wiy;
     float l;
@@ -1164,29 +1388,33 @@ u_char SubPartsDeform2(EFFECT_CONT *ec, u_char num, int page, int sbj, float scl
     float scly2;
     u_long tex0;
 
+    ml = 0.0f;
+
+    clpx2 = 0xfd00;
+    clpy2 = 0xfd00;
+    clpz2 = 0x0fffffff;
+
     tex0 = SCE_GS_SET_TEX0_1(0x1a40, 10, SCE_GS_PSMCT32, 10, 8, 0, SCE_GS_MODULATE, 0, SCE_GS_PSMCT32, 0, 0, 1);
 
     sclx2 = sclx * 2;
     scly2 = scly * 2;
-
-    vnumw = 17;
-    vnumh = 17;
-    pnumw = 16;
-    pnumh = 16;
-
-    ml = 0;
 
     pr11 = 1.0f;
     pr12 = -0.3f;
     pr21 = 0.4f;
     pr22 = 0.2f;
 
+    pnumw = 16;
+    pnumh = 16;
+    vnumw = pnumw+1;
+    vnumh = pnumh+1;
+
     cntw = ((pnumw / 2) % vnumw) * sclx2;
     cnth = ((pnumh / 2) % vnumw) * scly2;
 
-    clpx2 = 0xfd00;
-    clpy2 = 0xfd00;
-    clpz2 = 0x0fffffff;
+#if defined(MATCHING_DECOMP)
+    (void)&wix; // HACK: fixes stack
+#endif
 
     if (init_pdef2 != 0)
     {
@@ -1201,9 +1429,14 @@ u_char SubPartsDeform2(EFFECT_CONT *ec, u_char num, int page, int sbj, float scl
             case 0:
                 for (i = 0; i < vnumw*vnumh; i++)
                 {
-                    pefi->ep[i].r = vu0Rand() * 360.0f;
-                    pefi->ep[i].h = vu0Rand() * 0.4f;
-                    pefi->ep[i].add = vu0Rand() * 1.5f;
+                    pefi->ep[i].r = 360.0f * VER_RAND();
+#if defined(BUILD_JP_VERSION)
+                    pefi->ep[i].h = 0.4f * VER_RAND() + 0.1f;
+                    pefi->ep[i].add = (1.5f * VER_RAND() + 1.0f) * spd;
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+                    pefi->ep[i].h = 0.4f * VER_RAND();
+                    pefi->ep[i].add = 1.5f * VER_RAND();
+#endif
                 }
             break;
             case 1:
@@ -1215,7 +1448,7 @@ u_char SubPartsDeform2(EFFECT_CONT *ec, u_char num, int page, int sbj, float scl
                     wfw = wix * sclx2 - cntw;
                     wfh = wiy * scly2 - cnth;
 
-                    lw = SgSqrtf(wfw * wfw + wfh * wfh);
+                    lw = VER_SQRTF(wfw * wfw + wfh * wfh);
 
                     if (i == 0)
                     {
@@ -1223,9 +1456,14 @@ u_char SubPartsDeform2(EFFECT_CONT *ec, u_char num, int page, int sbj, float scl
                     }
 
                     pefi->ep[i].lng = lw * 150.0f;
-                    pefi->ep[i].r = vu0Rand() * 360.0f;
-                    pefi->ep[i].h = vu0Rand() * 4.0f;
-                    pefi->ep[i].add = vu0Rand() * 3.0f;
+                    pefi->ep[i].r = 360.0f * VER_RAND();
+#if defined(BUILD_JP_VERSION)
+                    pefi->ep[i].h = 4.0f * VER_RAND() + 1.0f;
+                    pefi->ep[i].add = (3.0f * VER_RAND() + 2.0f) * spd;
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+                    pefi->ep[i].h = 4.0f * VER_RAND();
+                    pefi->ep[i].add = 3.0f * VER_RAND();
+#endif
                 }
             break;
             case 2:
@@ -1236,20 +1474,20 @@ u_char SubPartsDeform2(EFFECT_CONT *ec, u_char num, int page, int sbj, float scl
 
                     if (wix == 0)
                     {
-                        pefi->ep[i].h = pr11 * vu0Rand() + pr12;
+                        pefi->ep[i].h = pr11 * VER_RAND() + pr12;
                     }
                     else
                     {
-                        pefi->ep[i].h = (pefi->ep[i-1].h + pr21 * vu0Rand()) - pr22;
+                        pefi->ep[i].h = pefi->ep[i-1].h + pr21 * VER_RAND() - pr22;
                     }
 
                     if (wiy == 0)
                     {
-                        pefi->ep[i].r = pr11 * vu0Rand() + pr12;
+                        pefi->ep[i].r = pr11 * VER_RAND() + pr12;
                     }
                     else
                     {
-                        pefi->ep[i].r = (pefi->ep[i-vnumh].r + pr21 * vu0Rand()) - pr22;
+                        pefi->ep[i].r = pefi->ep[i-vnumh].r + pr21 * VER_RAND() - pr22;
                     }
                 }
             break;
@@ -1259,7 +1497,7 @@ u_char SubPartsDeform2(EFFECT_CONT *ec, u_char num, int page, int sbj, float scl
         init_pdef2 = 0;
     }
 
-    if (ec->dat.uc8[1] & 1)
+    if (ec->dat.uc8[1] & 0x1)
     {
         pefi = &pefi_once[sbj-1];
     }
@@ -1267,25 +1505,30 @@ u_char SubPartsDeform2(EFFECT_CONT *ec, u_char num, int page, int sbj, float scl
     {
         if (num == 0xff)
         {
-            i = 0;
-            j = 0;
-
-            retnum = 0xff;
-
-            while (i < 8 && j== 0)
+#if defined(BUILD_JP_VERSION)
+            for (i = 0, j = 0, ret_num = 0xff; i < 8 && j == 0; i++)
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+            for (i = 0, j = 0, retnum = 0xff; i < 8 && j == 0; i++)
+#endif
             {
                 if (efi[i].use == 0)
                 {
                     efi[i].use = 1;
-                    pefi = &efi[i];
+#if defined(BUILD_JP_VERSION)
+                    ret_num = i;
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
                     retnum = i;
+#endif
+                    pefi = &efi[i];
                     j = 1;
                 }
-
-                i++;
             }
 
+#if defined(BUILD_JP_VERSION)
+            if (ret_num == 0xff)
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
             if (retnum == 0xff)
+#endif
             {
                 return 0xff;
             }
@@ -1295,13 +1538,14 @@ u_char SubPartsDeform2(EFFECT_CONT *ec, u_char num, int page, int sbj, float scl
             switch (sbj)
             {
             case 0:
+                // do nothing ...
             break;
             case 1:
                 for (i = 0; i < vnumw*vnumh; i++)
                 {
-                    pefi->ep[i].r = vu0Rand() * 360.0f;
-                    pefi->ep[i].h = vu0Rand() * 0.4f + 0.1f;
-                    pefi->ep[i].add = vu0Rand() * 1.5f * spd + spd;
+                    pefi->ep[i].r = 360.0f * VER_RAND();
+                    pefi->ep[i].h = 0.4f * VER_RAND() + 0.1f;
+                    pefi->ep[i].add = 1.5f * VER_RAND() * spd + spd;
                 }
             break;
             case 2:
@@ -1313,7 +1557,7 @@ u_char SubPartsDeform2(EFFECT_CONT *ec, u_char num, int page, int sbj, float scl
                     wfw = wix * sclx2 - cntw;
                     wfh = wiy * scly2 - cnth;
 
-                    lw = SgSqrtf(wfw * wfw + wfh * wfh);
+                    lw = VER_SQRTF(wfw * wfw + wfh * wfh);
 
                     if (i == 0)
                     {
@@ -1321,9 +1565,9 @@ u_char SubPartsDeform2(EFFECT_CONT *ec, u_char num, int page, int sbj, float scl
                     }
 
                     pefi->ep[i].lng = lw * 150.0f;
-                    pefi->ep[i].r = vu0Rand() * 360.0f;
-                    pefi->ep[i].h = vu0Rand() * 4.0f + 1.0f;
-                    pefi->ep[i].add = (vu0Rand() * 3.0f + 2.0f) * spd;
+                    pefi->ep[i].r = 360.0f * VER_RAND();
+                    pefi->ep[i].h = 4.0f * VER_RAND() + 1.0f;
+                    pefi->ep[i].add = (3.0f * VER_RAND() + 2.0f) * spd;
                 }
             break;
             case 3:
@@ -1334,20 +1578,20 @@ u_char SubPartsDeform2(EFFECT_CONT *ec, u_char num, int page, int sbj, float scl
 
                     if (wix == 0)
                     {
-                        pefi->ep[i].h = pr11 * vu0Rand() + pr12;
+                        pefi->ep[i].h = pr11 * VER_RAND() + pr12;
                     }
                     else
                     {
-                        pefi->ep[i].h = (pefi->ep[i-1].h + pr21 * vu0Rand()) - pr22;
+                        pefi->ep[i].h = pefi->ep[i-1].h + pr21 * VER_RAND() - pr22;
                     }
 
                     if (wiy == 0)
                     {
-                        pefi->ep[i].r = pr11 * vu0Rand() + pr12;
+                        pefi->ep[i].r = pr11 * VER_RAND() + pr12;
                     }
                     else
                     {
-                        pefi->ep[i].r = (pefi->ep[i-vnumw].r + pr21 * vu0Rand()) - pr22;
+                        pefi->ep[i].r = pefi->ep[i-vnumw].r + pr21 * VER_RAND() - pr22;
                     }
                 }
             break;
@@ -1356,30 +1600,28 @@ u_char SubPartsDeform2(EFFECT_CONT *ec, u_char num, int page, int sbj, float scl
         else
         {
             pefi = &efi[num];
+
+#if defined(BUILD_JP_VERSION)
+            ret_num = num;
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
             retnum = num;
+#endif
         }
 
         pefi->pass = 1;
     }
 
     Get2PosRot(camera.p, camera.i, &rot_x, &rot_y);
+
     Vu0CopyVector(vpos, ec->pnt[0]);
 
-    fx = (vpos[0] - camera.p[0]) * (vpos[0] - camera.p[0]);
-    fy = (vpos[1] - camera.p[1]) * (vpos[1] - camera.p[1]);
-    fz = (vpos[2] - camera.p[2]) * (vpos[2] - camera.p[2]);
+    fx = vpos[0] - camera.p[0];
+    fy = vpos[1] - camera.p[1];
+    fz = vpos[2] - camera.p[2];
 
-    l = SgSqrtf(fx + fy + fz);
+    l = VER_SQRTF(fx * fx + fy * fy + fz * fz);
 
-    if (750.0f < l)
-    {
-        comp = l / 1300.0f;
-    }
-    else
-    {
-        comp = 0.57692307f;
-    }
-
+    comp = 750.0f < l ? l / 1300.0f : 0.57692307f;
     aprate = l > 200.0f ? vol : (l < 100.0f ? 0 : ((l - 100.0f) * vol) / 100.0f);
 
     sceVu0UnitMatrix(wlm);
@@ -1410,13 +1652,22 @@ u_char SubPartsDeform2(EFFECT_CONT *ec, u_char num, int page, int sbj, float scl
 
     if (n)
     {
+#if defined(BUILD_JP_VERSION)
+        return ret_num;
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         return retnum;
+#endif
     }
 
-    LocalCopyLtoLDraw((sys_wrk.count & 1) * 0x8c0, 0x1a40);
+    VER_LOCAL_COPY_L_TO_L((sys_wrk.count & 1) * 0x8c0, 0x1a40);
 
+#if defined(BUILD_JP_VERSION)
+    stqparam[0][0] = 1727.5f;
+    stqparam[0][1] = 1935.5f;
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     stqparam[0][0] = 1726.5f;
     stqparam[0][1] = 1936.0f - GetYOffsetf();
+#endif
     stqparam[0][2] = 1.0f;
 
     stqparam[1][0] = 0;
@@ -1429,15 +1680,16 @@ u_char SubPartsDeform2(EFFECT_CONT *ec, u_char num, int page, int sbj, float scl
     stqparam[2][2] = 1.0f;
     stqparam[2][3] = 1.0f / 16.0f;
 
-    dummy1(slm);
-    dummy2(stqparam);
+    Vu0LoadMatrix(slm);
+    Vu0LoadVector3(stqparam);
 
     k = 0;
-
     yy = scly2 * -8.0f;
+
     for (j = 0; j < vnumh; j++)
     {
         xx = sclx2 * -8.0f;
+
         for (i = 0; i < vnumw; i++)
         {
             vt[k][0] = xx;
@@ -1445,45 +1697,46 @@ u_char SubPartsDeform2(EFFECT_CONT *ec, u_char num, int page, int sbj, float scl
             vt[k][2] = 0.0f;
             vt[k][3] = 1.0f;
 
-            Vu0Func0000(stq[k], vt[k]);
+            Vu0ProjectSTQ(stq[k], vt[k]);
 
             xx += sclx2;
             k++;
         }
+
         yy += scly2;
     }
 
     switch (sbj)
     {
     case 0:
+#if defined(BUILD_JP_VERSION)
+        return ret_num;
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         return retnum;
+#endif
     break;
     case 1:
         for (i = 0; i < vnumw*vnumh; i++)
         {
-            pefp = &pefi->ep[i];
-
             wix = i % vnumw;
             wiy = i / vnumw;
 
-            // if (wix != 0 && wix != pnumw && wiy != 0 && wiy != pnumh)
-            // if (wix != 0 && wix != 0x10 && wiy != 0 && wiy != 0x10)
+            pefp = &pefi->ep[i];
+
             if (wix != 0 && wix != vnumw-1 && wiy != 0 && wiy != vnumw-1)
             {
-                l = SgSinf(((pefp->r + wiy * 50.0f) * PI) / 180.0f);
-                l = l * pefp->h * comp * rate;
+                l = VER_SINF(((pefp->r + wiy * 50.0f) * PI) / 180.0f) * pefp->h * comp * rate;
                 vt[i][0] += l;
 
-                l = SgSinf(((pefp->r + wix * 50.0f) * PI) / 180.0f);
-                l = l * pefp->h * comp * rate;
+                l = VER_SINF(((pefp->r + wix * 50.0f) * PI) / 180.0f) * pefp->h * comp * rate;
                 vt[i][1] += l;
 
                 if (stop_effects == 0)
                 {
                     if (vt[i][0] >= 0.0f && pefp->ox < 0.0f)
                     {
-                        pefp->h = vu0Rand() * 0.4f + 0.1f;
-                        pefp->add = vu0Rand() * 1.5f * spd + spd;
+                        pefp->h = 0.4f * VER_RAND() + 0.1f;
+                        pefp->add = 1.5f * VER_RAND() * spd + spd;
                     }
                 }
             }
@@ -1510,18 +1763,16 @@ u_char SubPartsDeform2(EFFECT_CONT *ec, u_char num, int page, int sbj, float scl
                 ml = l;
             }
 
-            // if (wix != 0 && wix != pnumw && wiy != 0 && wiy != pnumh)
-            // if (wix != 0 && wix != 0x10 && wiy != 0 && wiy != 0x10)
             if (wix != 0 && wix != vnumw-1 && wiy != 0 && wiy != vnumw-1)
             {
-                vt[i][2] = SgSinf(((pefp->r + l) * PI) / 180.0f) * (1.0f - l / ml) * pefp->h * comp * rate;
+                vt[i][2] = VER_SINF(((pefp->r + l) * PI) / 180.0f) * (1.0f - l / ml) * pefp->h * comp * rate;
 
                 if (stop_effects == 0)
                 {
                     if (vt[i][2] >= 0.0f && pefp->ox < 0.0f)
                     {
-                        pefp->h = vu0Rand() * 4.0f + 1.0f;
-                        pefp->add = (vu0Rand() * 3.0f + 2.0f) * spd;
+                        pefp->h = 4.0f * VER_RAND() + 1.0f;
+                        pefp->add = (3.0f * VER_RAND() + 2.0f) * spd;
                     }
                 }
             }
@@ -1535,6 +1786,63 @@ u_char SubPartsDeform2(EFFECT_CONT *ec, u_char num, int page, int sbj, float scl
     break;
     case 3:
         add = spd * 2.0f;
+
+#if defined(BUILD_JP_VERSION)
+        for (i = 0; i < vnumw*vnumh; i++)
+        {
+            wix = i % vnumw;
+            wiy = i / vnumw;
+
+            pefp = &pefi->ep[i];
+
+            if (stop_effects == 0)
+            {
+                pefp->x = VER_SINFD(pefi->r + wiy * 32.0f) * pefp->r * comp * rate;
+                pefp->y = VER_SINFD(pefi->r + wix * 32.0f) * pefp->h * comp * rate;
+
+                if (pefp->y >= 0 && pefp->oy < 0.0f)
+                {
+                    if (wix != 0)
+                    {
+                        pefp->h = pefi->ep[i-1].h + pr21 * (VER_RAND()) - pr22;
+                    }
+                    else
+                    {
+                        pefp->h = pr11 * (VER_RAND()) + pr12;
+                    }
+                }
+
+                if (pefp->x >= 0 && pefp->ox < 0.0f)
+                {
+                    if (wiy != 0)
+                    {
+#if defined(MATCHING_DECOMP)
+                        asm(""); // HACK: fixes codegen
+#endif
+                        pefp->r = pefi->ep[i-vnumh].r + pr21 * (VER_RAND()) - pr22;
+                    }
+                    else
+                    {
+                        pefp->r = pr11 * (VER_RAND()) + pr12;
+                    }
+#if defined(MATCHING_DECOMP)
+                    asm(""); // HACK: fixes codegen
+#endif
+                }
+
+                pefp->ox = pefp->x;
+                pefp->oy = pefp->y;
+            }
+
+            vt[i][0] += pefp->x;
+            vt[i][1] += pefp->y;
+        }
+
+        if (stop_effects == 0)
+        {
+            pefi->r = pefi->r + add <= 360.0f ? pefi->r + add : pefi->r + add - 360.0f;
+        }
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         if (stop_effects == 0)
         {
             float vtrate = comp * rate;
@@ -1546,18 +1854,18 @@ u_char SubPartsDeform2(EFFECT_CONT *ec, u_char num, int page, int sbj, float scl
 
                 pefp = &pefi->ep[i];
 
-                pefp->x = SgSinfd(pefi->r + wiy * 32.0f) * pefp->r * vtrate;
-                pefp->y = SgSinfd(pefi->r + wix * 32.0f) * pefp->h * vtrate;
+                pefp->x = VER_SINFD(pefi->r + wiy * 32.0f) * pefp->r * vtrate;
+                pefp->y = VER_SINFD(pefi->r + wix * 32.0f) * pefp->h * vtrate;
 
                 if (pefp->y >= 0 && pefp->oy < 0.0f)
                 {
                     if (wix != 0)
                     {
-                        pefp->h = (pefi->ep[i-1].h + pr21 * vu0Rand()) - pr22;
+                        pefp->h = pefi->ep[i-1].h + pr21 * (VER_RAND()) - pr22;
                     }
                     else
                     {
-                        pefp->h = pr11 * vu0Rand() + pr12;
+                        pefp->h = pr11 * (VER_RAND()) + pr12;
                     }
                 }
 
@@ -1565,11 +1873,11 @@ u_char SubPartsDeform2(EFFECT_CONT *ec, u_char num, int page, int sbj, float scl
                 {
                     if (wiy != 0)
                     {
-                        pefp->r = (pefi->ep[i-vnumh].r + pr21 * vu0Rand()) - pr22;
+                        pefp->r = pefi->ep[i-vnumh].r + pr21 * (VER_RAND()) - pr22;
                     }
                     else
                     {
-                        pefp->r = pr11 * vu0Rand() + pr12;
+                        pefp->r = pr11 * (VER_RAND()) + pr12;
                     }
                 }
 
@@ -1581,6 +1889,7 @@ u_char SubPartsDeform2(EFFECT_CONT *ec, u_char num, int page, int sbj, float scl
             }
 
             pefi->r += add;
+
             if (360.0f < pefi->r)
             {
                 pefi->r = pefi->r - 360.0f;
@@ -1591,17 +1900,24 @@ u_char SubPartsDeform2(EFFECT_CONT *ec, u_char num, int page, int sbj, float scl
             for (i = 0; i < vnumw*vnumh; i++)
             {
                 pefp = &pefi->ep[i];
+
                 vt[i][0] += pefp->x;
                 vt[i][1] += pefp->y;
             }
         }
+#endif
     break;
     }
 
     Reserve2DPacket(0x1000);
+
     MakePartsDeformPacket(pnumw, pnumh, vt, wlm, stq, alpha, aprate, tex0);
 
+#if defined(BUILD_JP_VERSION)
+    return ret_num;
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     return retnum;
+#endif
 }
 
 int GetCornHitCheck(float *bpos, float power)
@@ -1628,11 +1944,11 @@ int GetCornHitCheck2(float *bpos, float power, float *rrate, float *lrate)
     rot_x = plyr_wrk.spot_rot[0] + plyr_wrk.move_box.rot[0];
     rot_y = plyr_wrk.spot_rot[1] + plyr_wrk.move_box.rot[1];
 
-    while (rot_x < -PI) rot_x += PI2;
-    while (PI <= rot_x) rot_x -= PI2;
+    while (rot_x < -PI) rot_x += PI * 2;
+    while (PI <= rot_x) rot_x -= PI * 2;
 
-    while (rot_y < -PI) rot_y += PI2;
-    while (PI <= rot_y) rot_y -= PI2;
+    while (rot_y < -PI) rot_y += PI * 2;
+    while (PI <= rot_y) rot_y -= PI * 2;
 
     sceVu0UnitMatrix(wlm1);
     sceVu0RotMatrixX(wlm1, wlm1, rot_x);
@@ -1642,7 +1958,7 @@ int GetCornHitCheck2(float *bpos, float power, float *rrate, float *lrate)
     sceVu0ApplyMatrix(wpos, wlm2, bpos);
 
     lc = wpos[2] * tanf((PI * ang) / 180.0f);
-    lp = SgSqrtf(wpos[0] * wpos[0] + wpos[1] * wpos[1]);
+    lp = VER_SQRTF(wpos[0] * wpos[0] + wpos[1] * wpos[1]);
 
     *rrate = lp / lc;
     *lrate = wpos[2] / power;
@@ -1704,17 +2020,45 @@ void SetRenzFlare(EFFECT_CONT *ec)
         t2rot_y = (f2 * 180.0f) / PI;
     }
 
-    while (t1rot_x < 0.0f) t1rot_x += 360.0f;
-    while (t2rot_x < 0.0f) t2rot_x += 360.0f;
+    while (t1rot_x < 0.0f)
+    {
+        t1rot_x += 360.0f;
+    }
 
-    while (t1rot_x + 180.0f < t2rot_x) t1rot_x += 360.0f;
-    while (t2rot_x + 180.0f < t1rot_x) t2rot_x += 360.0f;
+    while (t2rot_x < 0.0f)
+    {
+        t2rot_x += 360.0f;
+    }
 
-    while (t1rot_y < 0.0f) t1rot_y += 360.0f;
-    while (t2rot_y < 0.0f) t2rot_y += 360.0f;
+    while (t1rot_x + 180.0f < t2rot_x)
+    {
+        t1rot_x += 360.0f;
+    }
 
-    while (t1rot_y + 180.0f < t2rot_y) t1rot_y += 360.0f;
-    while (t2rot_y + 180.0f < t1rot_y) t2rot_y += 360.0f;
+    while (t2rot_x + 180.0f < t1rot_x)
+    {
+        t2rot_x += 360.0f;
+    }
+
+    while (t1rot_y < 0.0f)
+    {
+        t1rot_y += 360.0f;
+    }
+
+    while (t2rot_y < 0.0f)
+    {
+        t2rot_y += 360.0f;
+    }
+
+    while (t1rot_y + 180.0f < t2rot_y)
+    {
+        t1rot_y += 360.0f;
+    }
+
+    while (t2rot_y + 180.0f < t1rot_y)
+    {
+        t2rot_y += 360.0f;
+    }
 
     n1 = (int)(t1rot_x - t2rot_x);
     n1 = n1 < 0 ? -n1 : n1;
@@ -1729,7 +2073,7 @@ void SetRenzFlare(EFFECT_CONT *ec)
     mx = f1 - 320.0f;
     my = f2 - 112.0f;
 
-    ang = (SgAtan2f(mx, my) * 180.0f) / PI + 45.0f;
+    ang = (VER_ATAN2F(mx, my) * 180.0f) / PI + 45.0f;
 
     sceVu0UnitMatrix(wlm);
 
@@ -1750,15 +2094,7 @@ void SetRenzFlare(EFFECT_CONT *ec)
         n1 = (int)f1 / 4;
         n2 = (int)f1 % 4;
 
-        sceGsSetDefStoreImage (
-            &gs_simage1,
-            (DISP_WIDTH * DISP_HEIGHT) / 64,
-            DISP_WIDTH / 64,
-            SCE_GS_PSMZ32,
-            n1 * 4,
-            f2,
-            4,
-            1);
+        sceGsSetDefStoreImage (&gs_simage1, (DISP_WIDTH * DISP_HEIGHT) / 64, DISP_WIDTH / 64, SCE_GS_PSMZ32, n1 * 4, f2, 4, 1);
 
         FlushCache(0);
         CheckDMATrans();
@@ -1766,7 +2102,7 @@ void SetRenzFlare(EFFECT_CONT *ec)
         CheckDMATrans();
         sceGsSyncPath(0,0);
 
-        ui = q.ui32[n2] & 0xffffff;
+        ui = q.ui32[n2] & 0x00ffffff;
 
         if ((ui >> 4) * 15.5f < pos1[2])
         {
@@ -1784,7 +2120,11 @@ void SetRenzFlare(EFFECT_CONT *ec)
     {
         if (stop_effects == 0)
         {
-            f1 = vu0Rand() / 100.0f + 0.25f;
+#if defined(BUILD_JP_VERSION)
+            f1 = 30.0f * VER_RAND() / 100.0f + 0.25f;
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+            f1 = VER_RAND() / 100.0f + 0.25f;
+#endif
             f1bk = f1;
         }
         else
@@ -1807,22 +2147,22 @@ void SetRenzFlare(EFFECT_CONT *ec)
                 }
                 else
                 {
-                    vpos[2] = 2.683945e+08;
+                    vpos[2] = 2.683945e+08; // 2**28-(4096*10)
                 }
 
                 vpos[3] = 1.0f;
 
                 if (i == 4)
                 {
-                    SetEffSQTex(0x16, vpos, tp, 80.0f, 80.0f, 0xff, 0x80, 0x80, (u_char)(f1 * 16.0f));
+                    SetEffSQTex(22, vpos, tp, 80.0f, 80.0f, 0xff, 0x80, 0x80, f1 * 16.0f);
 
                     if (ec->dat.uc8[2] != 0)
                     {
-                        SetStarRay(vpos,tp,f1,ec->dat.uc8[2],-ang);
+                        SetStarRay(vpos, tp, f1, ec->dat.uc8[2], -ang);
                     }
 
-                    SetEffSQTex(0x16, vpos, tp, 24.0f, 24.0f, 0xff, 0xc0, 0xd0, (u_char)(f1 * 32.0f));
-                    SetEffSQTex(0x16, vpos, tp, 12.0f, 12.0f, 0xff, 0xc0, 0xd0, (u_char)(f1 * 48.0f));
+                    SetEffSQTex(22, vpos, tp, 24.0f, 24.0f, 0xff, 0xc0, 0xd0, f1 * 32.0f);
+                    SetEffSQTex(22, vpos, tp, 12.0f, 12.0f, 0xff, 0xc0, 0xd0, f1 * 48.0f);
                 }
 
                 SetEffSQTex(
@@ -1834,12 +2174,12 @@ void SetRenzFlare(EFFECT_CONT *ec)
                     efrenz[i - 1].rgba[0],
                     efrenz[i - 1].rgba[1],
                     efrenz[i - 1].rgba[2],
-                    (u_char)(efrenz[i - 1].rgba[3] * f1));
+                    efrenz[i - 1].rgba[3] * f1);
             }
         }
     }
 
-    if (ec->dat.uc8[1] & 1)
+    if (ec->dat.uc8[1] & 0x1)
     {
         ResetEffects(ec);
     }
@@ -1858,10 +2198,10 @@ void SetStarRay(float *bpos, int tp, float sc, int num, float aang)
     float ang;
     float pos2[4][2];
     float pos[4][3] = {
-        { 0.0f, 4.0f, 0.0f },
-        { 0.0f, 0.0f, 28.0f },
-        { -100.0f, 0.0f, 0.0f },
-        { 0.0f, -4.0f, 0.0f },
+        {    0.0f,  4.0f,  0.0f },
+        {    0.0f,  0.0f, 28.0f },
+        { -100.0f,  0.0f,  0.0f },
+        {    0.0f, -4.0f,  0.0f },
     };
     u_char rr;
     u_char gg;
@@ -1884,11 +2224,12 @@ void SetStarRay(float *bpos, int tp, float sc, int num, float aang)
 
     bx = bpos[0];
     by = bpos[1];
+
     z = bpos[2] * 16.0f;
 
     div = g_bInterlace != 0 ? 2.0f : 1.0f;
 
-    ang = 360.0f / (float)num;
+    ang = 360.0f / num;
 
     Reserve2DPacket(0x1000);
 
@@ -1912,8 +2253,8 @@ void SetStarRay(float *bpos, int tp, float sc, int num, float aang)
 
     for (f = 0.0f; f < 360.0f; f += ang)
     {
-        ss = SgSinfd(f + aang);
-        cc = SgCosfd(f + aang);
+        ss = VER_SINFD(f + aang);
+        cc = VER_COSFD(f + aang);
 
         for (i = 0; i < 4; i++)
         {
@@ -1957,13 +2298,15 @@ void SetNegaCircle(EFFECT_CONT *ec)
 
     bx = ec->dat.fl32[1];
     by = ec->dat.fl32[2];
+
     rad = ec->dat.fl32[3];
     alp = ec->dat.uc8[3];
 
     r = ec->in;
     g = ec->keep;
     b = ec->out;
-    z = 0xfffefff;
+
+    z = 0x0fffffff - 0x1000;
 
     add = 10.0f;
 
@@ -1971,8 +2314,8 @@ void SetNegaCircle(EFFECT_CONT *ec)
 
     for (f = 0.0; f < 360.0f; f += add)
     {
-        ncf[n][0] = rad * SgCosf((f * PI) / 180.0f);
-        ncf[n][1] = rad * SgSinf((f * PI) / 180.0f);
+        ncf[n][0] = rad * VER_COSF((f * PI) / 180.0f);
+        ncf[n][1] = rad * VER_SINF((f * PI) / 180.0f);
         ncf[n][2] = 0.0f;
         ncf[n][3] = 1.0f;
 
@@ -2024,7 +2367,7 @@ void SetNegaCircle(EFFECT_CONT *ec)
     pbuf[ndpkt++].ui32[3] = 0;
 
     pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(n, SCE_GS_TRUE, SCE_GS_TRUE, 69, SCE_GIF_PACKED, 1);
-    pbuf[ndpkt++].ul64[1] = 0 \
+    pbuf[ndpkt++].ul64[1] = 0
         | SCE_GS_XYZF2 << (4 * 0);
 
     for (i = 0; i < n; i++)
@@ -2045,38 +2388,36 @@ void SetNegaCircle(EFFECT_CONT *ec)
 
 void _SetPartsDeformSTQRegs(sceVu0FVECTOR *params)
 {
-    asm __volatile__(
-        "lqc2    $vf8,0(%0)\n"
-        "lqc2    $vf9,0x10(%0)\n"
-        "lqc2    $vf10,0x20(%0)\n"
-        : :"r"(params):"memory"
-    );
+    asm volatile("           \n\
+        lqc2 $vf8,  0x00(%0) \n\
+        lqc2 $vf9,  0x10(%0) \n\
+        lqc2 $vf10, 0x20(%0) \n\
+    ": :"r"(params));
 }
 
 void _CalcParstDeformSTQ(float *stq, float *vt)
 {
-    asm __volatile__(
-        "lqc2       $vf12, 0x0(%0)\n"
-        "vmulz.xy   $vf12, $vf12, $vf8z\n"
-        "vmulaw.xyzw ACC, $vf7, $vf0w\n"
-        "vmaddaz.xyzw ACC, $vf6, $vf12z\n"
-        "vmadday.xyzw ACC, $vf5, $vf12y\n"
-        "vmaddx.xyzw $vf13, $vf4, $vf12x\n"
-        "vdiv       Q, $vf0w, $vf13w\n"
-        "vwaitq\n"
-        "vmulq.xyz  $vf13, $vf13, Q\n"
-        "vsub.xy    $vf13, $vf13, $vf8\n"
-        "vmaxx.x    $vf13, $vf13, $vf9x\n"
-        "vminiy.x   $vf13, $vf13, $vf9y\n"
-        "vmaxz.y    $vf13, $vf13, $vf9z\n"
-        "vminiw.y   $vf13, $vf13, $vf9w\n"
-        "vmulq.xy   $vf14, $vf10, Q\n"
-        "vmul.xy    $vf13, $vf13, $vf14\n"
-        "vmulq.z    $vf13, $vf10, Q\n"
-        "vmulw.xyz  $vf13, $vf13, $vf10w\n"
-        "sqc2       $vf13, 0x0(%1)\n"
-        : :"r"(vt),"r"(stq):"memory"
-    );
+    asm volatile("                         \n\
+        lqc2         $vf12, 0x0(%0)        \n\
+        vmulz.xy     $vf12, $vf12,  $vf8z  \n\
+        vmulaw.xyzw  ACC,   $vf7,   $vf0w  \n\
+        vmaddaz.xyzw ACC,   $vf6,   $vf12z \n\
+        vmadday.xyzw ACC,   $vf5,   $vf12y \n\
+        vmaddx.xyzw  $vf13, $vf4,   $vf12x \n\
+        vdiv         Q,     $vf0w,  $vf13w \n\
+        vwaitq                             \n\
+        vmulq.xyz    $vf13, $vf13,  Q      \n\
+        vsub.xy      $vf13, $vf13,  $vf8   \n\
+        vmaxx.x      $vf13, $vf13,  $vf9x  \n\
+        vminiy.x     $vf13, $vf13,  $vf9y  \n\
+        vmaxz.y      $vf13, $vf13,  $vf9z  \n\
+        vminiw.y     $vf13, $vf13,  $vf9w  \n\
+        vmulq.xy     $vf14, $vf10,  Q      \n\
+        vmul.xy      $vf13, $vf13,  $vf14  \n\
+        vmulq.z      $vf13, $vf10,  Q      \n\
+        vmulw.xyz    $vf13, $vf13,  $vf10w \n\
+        sqc2         $vf13, 0x0(%1)        \n\
+    ": :"r"(vt),"r"(stq));
 }
 
 EFFINFO2 efi[8] = {0};

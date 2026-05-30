@@ -74,3 +74,9 @@ line_wrk                       = 0x27a060; // type:LEAVES_TABLE numel:4
 0x270856                       = &btl_msel2[9];  // wrk_table
 0x270872                       = &btl_msel2[11]; // wrk_table
 0x270880                       = &btl_msel2[12]; // wrk_table
+
+// graphics/graph2d/effect_obj.c
+alpha                          = 0x34a120; // type:u_char numel:289
+alpha1                         = 0x34a120; // type:u_char numel:289
+alpha2                         = 0x34a248; // type:u_char numel:289
+efrenz                         = 0x34a3b8; // type:EFRENZ numel:9

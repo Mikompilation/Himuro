@@ -3,6 +3,8 @@
 
 #include "typedefs.h"
 
+#include "graphics/graph2d/effect.h"
+
 typedef struct {
 	float r;
 	float add;
@@ -23,8 +25,6 @@ typedef struct {
 	float r;
 } EFFINFO2;
 
-#include "graphics/graph2d/effect.h"
-
 extern EFFINFO2 efi[8];
 
 void InitEffectObj();
@@ -43,7 +43,9 @@ void* CallPartsDeform3_2(int type, float sclx, float scly, void *pos, u_int in, 
 void* CallPartsDeform4(int type, float scale, void *pos, float *vol);
 void* CallPartsDeform5(int type, float sclx, float scly, void *pos, float *vol);
 void SetPartsDeform(EFFECT_CONT *ec);
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 void SetVURand(float x);
+#endif
 int CalcPartsDeformXYZ(sceVu0IVECTOR vi, sceVu0FVECTOR vf);
 void MakePartsDeformPacket(int pnumw, int pnumh, sceVu0FVECTOR *vt, sceVu0FMATRIX wlm, sceVu0FVECTOR *stq, u_char *use_alpha, float aprate, u_long tex0);
 u_char SubPartsDeform1(EFFECT_CONT *ec, u_char num, int page, int sbj, float sclx, float scly, float vol, int fl, float spd, float rate, float trate);

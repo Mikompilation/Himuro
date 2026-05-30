@@ -54,6 +54,8 @@ typedef union {
 	#define VER_SINF sinf
 	#define VER_COSF cosf
 	#define VER_SQRTF sqrtf
+	#define VER_SINFD(d) sinf(((d) * PI) / 180.0f)
+	#define VER_COSFD(d) cosf(((d) * PI) / 180.0f)
 #elif defined(BUILD_US_VERSION)
     #define VER_LOAD_REQ_LANG LoadReq
 	#define VER_ATANF SgAtanf
@@ -61,6 +63,8 @@ typedef union {
 	#define VER_SINF SgSinf
 	#define VER_COSF SgCosf
 	#define VER_SQRTF SgSqrtf
+	#define VER_SINFD SgSinfd
+	#define VER_COSFD SgCosfd
 #elif defined(BUILD_EU_VERSION)
     #define VER_LOAD_REQ_LANG LoadReqLanguage
 	#define VER_ATANF SgAtanf
@@ -68,6 +72,8 @@ typedef union {
 	#define VER_SINF SgSinf
 	#define VER_COSF SgCosf
 	#define VER_SQRTF SgSqrtf
+	#define VER_SINFD SgSinfd
+	#define VER_COSFD SgCosfd
 #endif
 
 // #include <cstdlib.h>
