@@ -318,7 +318,7 @@ static inline void Vu0LoadVector3(sceVu0FVECTOR *v0)
         lqc2 $vf8,  0x00(%0) \n\
         lqc2 $vf9,  0x10(%0) \n\
         lqc2 $vf10, 0x20(%0) \n\
-    "::"r"(v0));
+    ": :"r"(v0));
 }
 
 static inline void Vu0ProjectSTQ(sceVu0FVECTOR v0, sceVu0FVECTOR v1)
@@ -343,8 +343,7 @@ static inline void Vu0ProjectSTQ(sceVu0FVECTOR v0, sceVu0FVECTOR v1)
         vmulq.z      $vf13z,    $vf10z,   Q       \n\
         vmulw.xyz    $vf13xyz,  $vf13xyz, $vf10w  \n\
         sqc2         $vf13,     0(%0)             \n\
-        ": : "r" (v0), "r" (v1)
-    );
+    ": : "r" (v0), "r" (v1));
 }
 
 int CalcPartsDeformXYZ(sceVu0IVECTOR vi, sceVu0FVECTOR vf)
@@ -978,6 +977,7 @@ u_char SubPartsDeform1(EFFECT_CONT *ec, u_char num, int page, int sbj, float scl
 #elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     {
         float vtrate;
+
         add = spd * 2;
         vtrate = rate * 0.8f;
 #endif
@@ -1944,11 +1944,25 @@ int GetCornHitCheck2(float *bpos, float power, float *rrate, float *lrate)
     rot_x = plyr_wrk.spot_rot[0] + plyr_wrk.move_box.rot[0];
     rot_y = plyr_wrk.spot_rot[1] + plyr_wrk.move_box.rot[1];
 
-    while (rot_x < -PI) rot_x += PI * 2;
-    while (PI <= rot_x) rot_x -= PI * 2;
+    while (rot_x < -PI)
+    {
+        rot_x += PI * 2;
+    }
 
-    while (rot_y < -PI) rot_y += PI * 2;
-    while (PI <= rot_y) rot_y -= PI * 2;
+    while (PI <= rot_x)
+    {
+        rot_x -= PI * 2;
+    }
+
+    while (rot_y < -PI)
+    {
+        rot_y += PI * 2;
+    }
+
+    while (PI <= rot_y)
+    {
+        rot_y -= PI * 2;
+    }
 
     sceVu0UnitMatrix(wlm1);
     sceVu0RotMatrixX(wlm1, wlm1, rot_x);
@@ -2166,15 +2180,15 @@ void SetRenzFlare(EFFECT_CONT *ec)
                 }
 
                 SetEffSQTex(
-                    efrenz[i - 1].type,
+                    efrenz[i-1].type,
                     vpos,
                     tp,
-                    efrenz[i - 1].tscl * 10.0f,
-                    efrenz[i - 1].tscl * 10.0f,
-                    efrenz[i - 1].rgba[0],
-                    efrenz[i - 1].rgba[1],
-                    efrenz[i - 1].rgba[2],
-                    efrenz[i - 1].rgba[3] * f1);
+                    efrenz[i-1].tscl * 10.0f,
+                    efrenz[i-1].tscl * 10.0f,
+                    efrenz[i-1].rgba[0],
+                    efrenz[i-1].rgba[1],
+                    efrenz[i-1].rgba[2],
+                    efrenz[i-1].rgba[3] * f1);
             }
         }
     }
