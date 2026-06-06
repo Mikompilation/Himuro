@@ -3,8 +3,18 @@
 #include "typedefs.h"
 #include "effect_oth.h"
 
+#if defined(BUILD_JP_VERSION)
+#include "sce/misc/diei.h"
+#endif
+
 #include "ee/eestruct.h"
 #include "sce/libvu0.h"
+
+// gcc/src/newlib/libm/math/sf_sin.c
+float sinf(float x);
+
+// gcc/src/newlib/libm/math/wf_sqrt.c
+float sqrtf(float x);
 
 #include "os/eeiop/eese.h"
 #include "os/eeiop/cdvd/eecdvd.h"
@@ -117,7 +127,7 @@ int SearchEmptyRippleBuf()
 
 void* CallRipple(void *pos, void *rot, float scale, int num, int time)
 {
-    return SetEffects(0x16, 8, 1, time, 0x80, 0x80, 0x80, 1.0f, scale, pos, rot, num);
+    return SetEffects(EF_RIPPLE2, 8, 1, time, 0x80, 0x80, 0x80, 1.0f, scale, pos, rot, num);
 }
 
 void SetRipple(EFFECT_CONT *ec)
@@ -134,10 +144,10 @@ void SetRipple(EFFECT_CONT *ec)
 
             if ((ec->dat.uc8[2] & 0xf) == 2)
             {
-                ec->dat.uc8[3] = (char)(int)(vu0Rand() * 24.0f) + 4;
+                ec->dat.uc8[3] = (int)(24.0f * VER_RAND()) + 4;
             }
 
-            if ((ec->dat.uc8[1] & 8) != 0)
+            if ((ec->dat.uc8[1] & 0x8) != 0)
             {
                 ec->dat.uc8[7]--;
             }
@@ -161,7 +171,7 @@ void SetRipple(EFFECT_CONT *ec)
 
         Vu0CopyVector(rs[n].pos, ec->pnt[0]);
 
-        if (ec->dat.uc8[0] == 0x15)
+        if (ec->dat.uc8[0] == 21)
         {
             rs[n].r = 0x80;
             rs[n].g = 0x80;
@@ -223,7 +233,7 @@ void RunRipple2()
         { -4.0, -0.5, +4.0, +1.0 },
         { +4.0, -0.5, +4.0, +1.0 },
         { -4.0, -0.5, -4.0, +1.0 },
-        { +4.0, -0.5, -4.0, +1.0 }
+        { +4.0, -0.5, -4.0, +1.0 },
     };
 
     clpx2 = 0xfd00;
@@ -249,6 +259,7 @@ void RunRipple2()
             if (rs[j].alp != 0)
             {
                 sceVu0UnitMatrix(wlm);
+
                 if (rs[j].rot[3] != 1.0f)
                 {
                     wlm[0][0] = wlm[2][2] = rs[j].scl * 25.0f;
@@ -257,6 +268,7 @@ void RunRipple2()
                 {
                     wlm[0][0] = wlm[2][2] = rs[j].mscl * 25.0f;
                 }
+
                 wlm[1][1] = 25.0f;
 
                 sceVu0RotMatrixX(wlm, wlm, rs[j].rot[0]);
@@ -357,8 +369,8 @@ void RunRipple2()
                         }
                         pbuf[ndpkt++].ul64[1] = SCE_GS_TEX0_1;
 
-                        pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(4, SCE_GS_TRUE, SCE_GS_TRUE, 92, SCE_GIF_PACKED, 3);
-                        pbuf[ndpkt++].ul64[1] = 0 \
+                        pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(4, SCE_GS_TRUE, SCE_GS_TRUE, SCE_GS_SET_PRIM(SCE_GS_PRIM_TRISTRIP, 1, 1, 0, 1, 0, 0, 0, 0), SCE_GIF_PACKED, 3);
+                        pbuf[ndpkt++].ul64[1] = 0
                             | SCE_GS_ST    << (4 * 0)
                             | SCE_GS_RGBAQ << (4 * 1)
                             | SCE_GS_XYZF2 << (4 * 2);
@@ -470,8 +482,8 @@ void SetEffSQTex(int n, float *v, int tp, float w, float h, u_char r, u_char g, 
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_TEST_1(1, SCE_GS_ALPHA_GREATER, 0, SCE_GS_AFAIL_KEEP, 0, 0, 1, SCE_GS_DEPTH_GEQUAL);
     pbuf[ndpkt++].ul64[1] = SCE_GS_TEST_1;
 
-    pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(4, SCE_GS_TRUE, SCE_GS_TRUE, 340, SCE_GIF_PACKED, 3);
-    pbuf[ndpkt++].ul64[1] = 0 \
+    pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(4, SCE_GS_TRUE, SCE_GS_TRUE, SCE_GS_SET_PRIM(SCE_GS_PRIM_TRISTRIP, 0, 1, 0, 1, 0, 1, 0, 0), SCE_GIF_PACKED, 3);
+    pbuf[ndpkt++].ul64[1] = 0
         | SCE_GS_RGBAQ << (4 * 0)
         | SCE_GS_UV    << (4 * 1)
         | SCE_GS_XYZF2 << (4 * 2);
@@ -565,8 +577,8 @@ void SetEffSQITex(int n, int *v, int tp, float w, float h, u_char r, u_char g, u
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_TEST_1(1, SCE_GS_ALPHA_GREATER, 0, SCE_GS_AFAIL_KEEP, 0, 0, 1, SCE_GS_DEPTH_GEQUAL);
     pbuf[ndpkt++].ul64[1] = SCE_GS_TEST_1;
 
-    pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(4, SCE_GS_TRUE, SCE_GS_TRUE, 340, SCE_GIF_PACKED, 3);
-    pbuf[ndpkt++].ul64[1] = 0 \
+    pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(4, SCE_GS_TRUE, SCE_GS_TRUE, SCE_GS_SET_PRIM(SCE_GS_PRIM_TRISTRIP, 0, 1, 0, 1, 0, 1, 0, 0), SCE_GIF_PACKED, 3);
+    pbuf[ndpkt++].ul64[1] = 0
         | SCE_GS_RGBAQ << (4 * 0)
         | SCE_GS_UV    << (4 * 1)
         | SCE_GS_XYZF2 << (4 * 2);
@@ -593,17 +605,17 @@ void SetEffSQITex(int n, int *v, int tp, float w, float h, u_char r, u_char g, u
 void* CallFire(void *pos, u_char r, u_char g, u_char b, float scale)
 {
     static float rate = 1.0f;
-    return SetEffects(0x19 , 2, 1, pos, &rate, &rate);
+    return SetEffects(EF_TORCH , 2, 1, pos, &rate, &rate);
 }
 
 void* CallFire2(void *pos, u_char r, u_char g, u_char b, float scl, u_char r2, u_char g2, u_char b2, float scl2)
 {
-    return SetEffects(0x17, 2, 3, pos, r, g, b, scl, r2, g2, b2, scl2);
+    return SetEffects(EF_FIRE, 2, 3, pos, r, g, b, scl, r2, g2, b2, scl2);
 }
 
 void* CallFire3(void *pos, int type, u_char r, u_char g, u_char b, float scl, u_char r2, u_char g2, u_char b2, float scl2)
 {
-    return SetEffects(0x17, 2, type ? 0 : 3,pos, r, g, b, scl, r2, g2, b2, scl2);
+    return SetEffects(EF_FIRE, 2, type ? 0 : 3,pos, r, g, b, scl, r2, g2, b2, scl2);
 }
 
 void SubFire1(EFFECT_CONT *ec)
@@ -670,21 +682,18 @@ void SubFire1(EFFECT_CONT *ec)
     }
 
     msc = ec->dat.fl32[2];
-
     mrh = ec->dat.uc8[5];
     mgh = ec->dat.uc8[6];
     mbh = ec->dat.uc8[7];
-
     msch = ec->dat.fl32[3];
 
-    if (ec->dat.uc8[1] & 1)
+    if (ec->dat.uc8[1] & 0x1)
     {
         wpat = pat;
         wscw = scw;
         wsch = sch;
     }
-    else
-    {
+    else {
         wpat = ec->cnt;
         wscw = ec->fw[1];
         wsch = ec->fw[2];
@@ -698,15 +707,12 @@ void SubFire1(EFFECT_CONT *ec)
         wpat = 0;
         wscw = 1.0f;
         wsch = 1.0f;
-
         ec->flow = 1;
     break;
     case 1:
         wscw += 9.0f;
         wsch += 12.0f;
-
-        if (wpat >= 6)
-        {
+        if (wpat >= 6) {
             ec->flow = 2;
         }
     break;
@@ -731,9 +737,8 @@ void SubFire1(EFFECT_CONT *ec)
         wpat++;
     }
 
-    n = 7;
-    mm = monochrome_mode + 32; // mm is not in STAB!
-    i = ((wpat / 3) % n) * 2 + mm; // mm is not in STAB!
+    mm = monochrome_mode + 32;
+    i = ((wpat / 3) % 7) * 2 + mm;
 
     tx0 = effdat[i].tex0;
 
@@ -741,7 +746,9 @@ void SubFire1(EFFECT_CONT *ec)
     th = effdat[i].h * 16;
 
     Vu0CopyVector(vpos, ec->pnt[0]);
+
     Get2PosRot(camera.p, camera.i, &rot_x, &rot_y);
+
     sceVu0UnitMatrix(wlm);
 
     wlm[0][0] = wlm[2][2] = wscw * msc;
@@ -758,17 +765,17 @@ void SubFire1(EFFECT_CONT *ec)
     {
         sceVu0RotTransPers(ivec[i], slm, wpos[i], 0);
 
-        if (0x8000 < ivec[i][0] - 0x4000U)
+        if (ivec[i][0] < 0x4000 || ivec[i][0] > 0xc000)
         {
             w = 1;
         }
 
-        if (0x8000 < ivec[i][1] - 0x4000U)
+        if (ivec[i][1] < 0x4000 || ivec[i][1] > 0xc000)
         {
             w = 1;
         }
 
-        if (0xfffff00 < ivec[i][2] - 0xffU)
+        if (ivec[i][2] < 0xff || ivec[i][2] > 0x0fffffff)
         {
             w = 1;
         }
@@ -781,19 +788,21 @@ void SubFire1(EFFECT_CONT *ec)
         ipos[2] = ec->z;
         ipos[3] = 0;
 
-        f = (((ivec[3][1] - ivec[0][1]) / 2) < ((ivec[3][0] - ivec[0][0]) / 2) ? ((ivec[3][0] - ivec[0][0]) / 2) : ((ivec[3][1] - ivec[0][1]) / 2)) * 0.0625f;
+        n = (((ivec[3][1] - ivec[0][1]) / 2) < ((ivec[3][0] - ivec[0][0]) / 2) ? ((ivec[3][0] - ivec[0][0]) / 2) : ((ivec[3][1] - ivec[0][1]) / 2));
+        f = n / 16.0f;
 
         if (stop_effects == 0)
         {
-            rnbk = rn = (int)(vu0Rand() * 8.0f);
+            rnbk = rn = (int)(8.0f * VER_RAND());
+
         }
         else
         {
             rn = rnbk;
         }
 
-        SetEffSQITex(monochrome_mode + 0x16, ipos, 3, f * msch, f * msch, mrh, mgh, mbh, ((int)(rn / 2) + 5) * arate);
-        SetEffSQITex(monochrome_mode + 0x16, ipos, 3, f * msch * 0.5f, f * msch * 0.5f, mrh, mgh, mbh, (rn + 2) * arate);
+        SetEffSQITex(monochrome_mode + 22, ipos, 3, f * msch, f * msch, mrh, mgh, mbh, ((int)(rn / 2) + 5) * arate);
+        SetEffSQITex(monochrome_mode + 22, ipos, 3, f * msch * 0.5f, f * msch * 0.5f, mrh, mgh, mbh, (rn + 2) * arate);
 
         Reserve2DPacket(0x1000);
 
@@ -821,8 +830,9 @@ void SubFire1(EFFECT_CONT *ec)
         pbuf[ndpkt].ul64[0] = SCE_GS_SET_TEST_1(1, SCE_GS_ALPHA_GREATER, 0, SCE_GS_AFAIL_KEEP, 0, 0, 1, SCE_GS_DEPTH_GEQUAL);
         pbuf[ndpkt++].ul64[1] = SCE_GS_TEST_1;
 
-        pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(4, SCE_GS_TRUE, SCE_GS_TRUE, 348, SCE_GIF_PACKED, 3);
-        pbuf[ndpkt++].ul64[1] = 0 \
+        pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(4, SCE_GS_TRUE, SCE_GS_TRUE, SCE_GS_SET_PRIM(SCE_GS_PRIM_TRISTRIP, 1, 1, 0, 1, 0, 1, 0, 0), SCE_GIF_PACKED, 3);
+
+        pbuf[ndpkt++].ul64[1] = 0
             | SCE_GS_RGBAQ << (4 * 0)
             | SCE_GS_UV    << (4 * 1)
             | SCE_GS_XYZF2 << (4 * 2);
@@ -846,7 +856,7 @@ void SubFire1(EFFECT_CONT *ec)
         }
     }
 
-    if (ec->dat.uc8[1] & 1)
+    if (ec->dat.uc8[1] & 0x1)
     {
         pat = wpat;
         scw = wscw;
@@ -861,6 +871,7 @@ void SubFire1(EFFECT_CONT *ec)
         ec->fw[2] = wsch;
     }
 }
+
 void SetFire(EFFECT_CONT *ec)
 {
     static float alp = 1.0f;
@@ -901,10 +912,10 @@ void SubHalo(float *p, int type, int textp, u_int z, u_char r, u_char g, u_char 
     sceVu0FVECTOR vpos;
     sceVu0FVECTOR vtw[4];
     sceVu0FVECTOR wpos[4] = {
-        {-4.0f, +4.0f, 0.0f, 1.0f},
-        {+4.0f, +4.0f, 0.0f, 1.0f},
-        {-4.0f, -4.0f, 0.0f, 1.0f},
-        {+4.0f, -4.0f, 0.0f, 1.0f},
+        { -4.0f, +4.0f, 0.0f, 1.0f },
+        { +4.0f, +4.0f, 0.0f, 1.0f },
+        { -4.0f, -4.0f, 0.0f, 1.0f },
+        { +4.0f, -4.0f, 0.0f, 1.0f },
     };
     static int rnbk = 0;
     static float scw = 25.0f;
@@ -918,7 +929,9 @@ void SubHalo(float *p, int type, int textp, u_int z, u_char r, u_char g, u_char 
     int n;
 
     Vu0CopyVector(vpos, p);
+
     Get2PosRot(camera.p, camera.i, &rot_x, &rot_y);
+
     sceVu0UnitMatrix(wlm);
 
     wlm[0][0] = wlm[2][2] = scw * sc;
@@ -935,17 +948,17 @@ void SubHalo(float *p, int type, int textp, u_int z, u_char r, u_char g, u_char 
     {
         sceVu0RotTransPers(ivec[i], slm, wpos[i], 0);
 
-        if (0x5000 < ivec[i][0] - 0x5800U)
+        if (ivec[i][0] < 0x5800 || ivec[i][0] > 0xa800)
         {
             w = 1;
         }
 
-        if (0x1c00 < ivec[i][1] - 0x7200U)
+        if (ivec[i][1] < 0x7200 || ivec[i][1] > 0x8e00)
         {
             w = 1;
         }
 
-        if (0xffff00 < ivec[i][2] - 0xffU)
+        if (ivec[i][2] < 0xff || ivec[i][2] > 0x00ffffff)
         {
             w = 1;
         }
@@ -959,18 +972,18 @@ void SubHalo(float *p, int type, int textp, u_int z, u_char r, u_char g, u_char 
         ipos[3] = 0;
 
         n = (((ivec[3][1] - ivec[0][1]) / 2) < ((ivec[3][0] - ivec[0][0]) / 2) ? ((ivec[3][0] - ivec[0][0]) / 2) : ((ivec[3][1] - ivec[0][1]) / 2));
-        f = n * 0.0625f;
+        f = n / 16.0f;
 
         if (stop_effects == 0)
         {
             if ((type & 1) == 0)
             {
-                n = vu0Rand() * 9.0f;
+                n = 9.0f * VER_RAND();
                 rnbk = rn = n;
             }
             else
             {
-                n = (int)(vu0Rand() * 6.0f + 3.0f);
+                n = (int)(6.0f * VER_RAND() + 3.0f);
                 rnbk = rn = n;
             }
         }
@@ -979,8 +992,8 @@ void SubHalo(float *p, int type, int textp, u_int z, u_char r, u_char g, u_char 
             rn = rnbk;
         }
 
-        SetEffSQITex((textp * 2 + 0x16) + monochrome_mode, ipos, 1, f * 2, f * 2, r, g, b, ((int)((rn / 2 + 7) * alp) / 100));
-        SetEffSQITex((textp * 2 + 0x16) + monochrome_mode, ipos, 1, f, f, r, g, b, ((int)((rn + 3) * alp) / 100));
+        SetEffSQITex((textp * 2 + 22) + monochrome_mode, ipos, 1, f * 2, f * 2, r, g, b, ((int)((rn / 2 + 7) * alp) / 100));
+        SetEffSQITex((textp * 2 + 22) + monochrome_mode, ipos, 1, f, f, r, g, b, ((int)((rn + 3) * alp) / 100));
 
     }
 }
@@ -1058,6 +1071,9 @@ int draw_distortion_particles(sceVu0FMATRIX *local_screen, sceVu0FMATRIX *local_
     sceVu0FVECTOR ones = { 1.0f, 1.0f, 1.0f, 0.0f };
     sceVu0FVECTOR st_add = { -1728.0f, -1936.0f, 0.0f, 0.0f };
     sceVu0FVECTOR st_scale = { 1.0 / 1024.0f, 1.0f / 256.0f, 0.0f, 0.0f };
+#if defined(BUILD_JP_VERSION)
+    int old_di;
+#endif
     unsigned int clip_flags;
 
     p = (sceVu0FVECTOR *)particles;
@@ -1122,6 +1138,10 @@ int draw_distortion_particles(sceVu0FMATRIX *local_screen, sceVu0FMATRIX *local_
     break;
     }
 
+#if defined(BUILD_JP_VERSION)
+    old_di = DIntr();
+#endif
+
     Reserve2DPacket(0x1000);
 
     d = (u_long *)&pbuf[ndpkt];
@@ -1152,27 +1172,25 @@ int draw_distortion_particles(sceVu0FMATRIX *local_screen, sceVu0FMATRIX *local_
     d[n++] = areg;
     d[n++] = SCE_GS_ALPHA_1;
 
-    asm __volatile__ (
-        "lqc2 $vf4,0(%0)\n"
-        "lqc2 $vf5,0x10(%0)\n"
-        "lqc2 $vf6,0x20(%0)\n"
-        "lqc2 $vf7,0x30(%0)\n"
-        "lqc2 $vf28,0(%1)\n"
-        "lqc2 $vf29,0x10(%1)\n"
-        "lqc2 $vf30,0x20(%1)\n"
-        "lqc2 $vf31,0x30(%1)\n"
-        : :"r"(local_screen),"r"(local_clip)
-    );
+    asm volatile ("      \n\
+        lqc2 $vf4,  0(%0)    \n\
+        lqc2 $vf5,  0x10(%0) \n\
+        lqc2 $vf6,  0x20(%0) \n\
+        lqc2 $vf7,  0x30(%0) \n\
+        lqc2 $vf28, 0x00(%1) \n\
+        lqc2 $vf29, 0x10(%1) \n\
+        lqc2 $vf30, 0x20(%1) \n\
+        lqc2 $vf31, 0x30(%1) \n\
+    ": :"r"(local_screen),"r"(local_clip));
 
-    asm __volatile__ (
-        "lqc2 $vf3,0(%0)\n"
-        "lqc2 $vf1,0(%1)\n"
-        "lqc2 $vf25,0(%2)\n"
-        "lqc2 $vf26,0(%3)\n"
-        "lqc2 $vf19,0(%4)\n"
-        "lqc2 $vf24,0(%5)\n"
-        : :"r"(particle_size),"r"(warp_add),"r"(st_add),"r"(st_scale),"r"(ones),"r"(screen_size)
-    );
+    asm __volatile__ ("    \n\
+        lqc2 $vf3,  0(%0) \n\
+        lqc2 $vf1,  0(%1) \n\
+        lqc2 $vf25, 0(%2) \n\
+        lqc2 $vf26, 0(%3) \n\
+        lqc2 $vf19, 0(%4) \n\
+        lqc2 $vf24, 0(%5) \n\
+    ": :"r"(particle_size),"r"(warp_add),"r"(st_add),"r"(st_scale),"r"(ones),"r"(screen_size));
 
     num = 0;
 
@@ -1191,48 +1209,46 @@ int draw_distortion_particles(sceVu0FMATRIX *local_screen, sceVu0FMATRIX *local_
                 p[1][0] = p[1][1] = p[1][2] = (rr + gg + bb) / 3.0f;
             }
 
-            asm __volatile__ (
-                "lqc2 $vf8, 0x0(%1)\n"
-                "lqc2 $vf22, 0x10(%1)\n"
-                "vmulax.xyzw  ACC, $vf28, $vf8x\n"
-                "vmadday.xyzw ACC, $vf29, $vf8y\n"
-                "vmaddaz.xyzw ACC, $vf30, $vf8z\n"
-                "vmaddw.xyzw  $vf12, $vf31, $vf8w\n"
-                "vclipw.xyz   $vf12xyz,$vf12w\n"
-                "vnop\n"
-                "vnop\n"
-                "vnop\n"
-                "vnop\n"
-                "vnop\n"
-                "cfc2 %0, $vi18\n"
-                :"=r"(clip_flags) :"r"(p)
-            );
+            asm volatile ("                           \n\
+                lqc2         $vf8,     0x00(%1)       \n\
+                lqc2         $vf22,    0x10(%1)       \n\
+                vmulax.xyzw  ACC,      $vf28,   $vf8x \n\
+                vmadday.xyzw ACC,      $vf29,   $vf8y \n\
+                vmaddaz.xyzw ACC,      $vf30,   $vf8z \n\
+                vmaddw.xyzw  $vf12,    $vf31,   $vf8w \n\
+                vclipw.xyz   $vf12xyz, $vf12w         \n\
+                vnop                                  \n\
+                vnop                                  \n\
+                vnop                                  \n\
+                vnop                                  \n\
+                vnop                                  \n\
+                cfc2         %0,       $vi18          \n\
+            ":"=r"(clip_flags) :"r"(p));
 
             if ((clip_flags & 0x3f) == 0)
             {
-                asm __volatile__ (
-                    "vmulax.xyzw  ACC, $vf4, $vf8x\n"
-                    "vmadday.xyzw ACC, $vf5, $vf8y\n"
-                    "vmaddaz.xyzw ACC, $vf6, $vf8z\n"
-                    "vmaddw.xyzw $vf12, $vf7, $vf8w\n"
-                    "vdiv Q, $vf0w, $vf12w\n"
-                    "vwaitq\n"
-                    "vmulq.xyzw $vf12, $vf12, Q\n"
-                    "vmulq.xyz $vf9, $vf3, Q\n"
-                    "vadd.xyzw $vf14, $vf12, $vf25\n"
-                    "vadd.xyzw $vf27, $vf14, $vf1\n"
-                    "vsub.xyzw $vf13, $vf27, $vf9\n"
-                    "vsub.xyzw $vf13, $vf13, $vf19\n"
-                    "vmax.xyzw $vf13, $vf13, $vf0\n"
-                    "vadd.xyzw $vf14, $vf27, $vf9\n"
-                    "vadd.xyzw $vf14, $vf14, $vf19\n"
-                    "vmini.xyzw $vf14, $vf14, $vf24\n"
-                );
+                asm volatile ("                       \n\
+                    vmulax.xyzw  ACC,   $vf4,  $vf8x  \n\
+                    vmadday.xyzw ACC,   $vf5,  $vf8y  \n\
+                    vmaddaz.xyzw ACC,   $vf6,  $vf8z  \n\
+                    vmaddw.xyzw  $vf12, $vf7,  $vf8w  \n\
+                    vdiv         Q,     $vf0w, $vf12w \n\
+                    vwaitq                            \n\
+                    vmulq.xyzw   $vf12, $vf12, Q      \n\
+                    vmulq.xyz    $vf9,  $vf3,  Q      \n\
+                    vadd.xyzw    $vf14, $vf12, $vf25  \n\
+                    vadd.xyzw    $vf27, $vf14, $vf1   \n\
+                    vsub.xyzw    $vf13, $vf27, $vf9   \n\
+                    vsub.xyzw    $vf13, $vf13, $vf19  \n\
+                    vmax.xyzw    $vf13, $vf13, $vf0   \n\
+                    vadd.xyzw    $vf14, $vf27, $vf9   \n\
+                    vadd.xyzw    $vf14, $vf14, $vf19  \n\
+                    vmini.xyzw   $vf14, $vf14, $vf24  \n\
+                ");
 
                 //                                                    prim 0x4d or 0x5d depending on dtex being 0 or 1
                 d[n++] = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_TRUE, (u_long)dtex << 4 | 0x4d, SCE_GIF_PACKED, 14);
-
-                d[n++] = 0 \
+                d[n++] = 0
                     | (long)SCE_GS_RGBAQ << (4 * 0)
                     | (long)SCE_GS_ST    << (4 * 1)
                     | (long)SCE_GS_XYZF2 << (4 * 2)
@@ -1248,55 +1264,53 @@ int draw_distortion_particles(sceVu0FMATRIX *local_screen, sceVu0FMATRIX *local_
                     | (long)SCE_GS_ST    << (4 * 12)
                     | (long)SCE_GS_XYZF2 << (4 * 13);
 
-                asm __volatile__ (
-                    "vftoi0.xyzw $vf22, $vf22\n"
-                    "sqc2 $vf22, 0x0(%0)\n"
-                    "vmove.w $vf22, $vf19\n"
-                    "sqc2 $vf22, 0x30(%0)\n"
-                    "vmove.w $vf9, $vf19\n"
-                    "vmul.xyzw $vf8, $vf9, $vf26\n"
-                    "vmove.xyzw $vf14, $vf8\n"
-                    "vmove.y $vf8, $vf0\n"
-                    "vmove.x $vf14, $vf0\n"
-                    "vmove.xyzw $vf22, $vf9\n"
-                    "vmove.y $vf9, $vf0\n"
-                    "vmove.x $vf22, $vf0\n"
-                    "vmove.z $vf27, $vf19\n"
-                    "vmul.xy $vf27, $vf27, $vf26\n"
-                    "sqc2 $vf27, 0x10(%0)\n"
-                    "vftoi4.xyzw $vf13, $vf12\n"
-                    "sqc2 $vf13, 0x20(%0)\n"
-                    "vsub.xyzw $vf13, $vf27, $vf14\n"
-                    "sqc2 $vf13, 0x40(%0)\n"
-                    "vsub.xyzw $vf10, $vf12, $vf22\n"
-                    "vftoi4.xyzw $vf13, $vf10\n"
-                    "sqc2 $vf13, 0x50(%0)\n"
-                    "vadd.xyzw $vf13, $vf27, $vf8\n"
-                    "sqc2 $vf13, 0x60(%0)\n"
-                    "vadd.xyzw $vf10, $vf12, $vf9\n"
-                    "vftoi4.xyzw $vf13, $vf10\n"
-                    "sqc2 $vf13, 0x70(%0)\n"
-                    "vadd.xyzw $vf13, $vf27, $vf14\n"
-                    "sqc2 $vf13, 0x80(%0)\n"
-                    "vadd.xyzw $vf10, $vf12, $vf22\n"
-                    "vftoi4.xyzw $vf13, $vf10\n"
-                    "sqc2 $vf13, 0x90(%0)\n"
-                    "vsub.xyzw $vf13, $vf27, $vf8\n"
-                    "sqc2 $vf13, 0xa0(%0)\n"
-                    "vsub.xyzw $vf13, $vf12, $vf9\n"
-                    "vftoi4.xyzw $vf13, $vf13\n"
-                    "sqc2 $vf13, 0xb0(%0)\n"
-                    "vsub.xyzw $vf13, $vf27, $vf14\n"
-                    "sqc2 $vf13, 0xc0(%0)\n"
-                    "vsub.xyzw $vf13, $vf12, $vf22\n"
-                    "vftoi4.xyzw $vf13, $vf13\n"
-                    "sqc2 $vf13, 0xd0(%0)\n"
-                    : :"r"(&d[n])
-                );
+                asm volatile("                        \n\
+                    vftoi0.xyzw $vf22, $vf22          \n\
+                    sqc2        $vf22, 0x00(%0)       \n\
+                    vmove.w     $vf22, $vf19          \n\
+                    sqc2        $vf22, 0x30(%0)       \n\
+                    vmove.w     $vf9,  $vf19          \n\
+                    vmul.xyzw   $vf8,  $vf9,    $vf26 \n\
+                    vmove.xyzw  $vf14, $vf8           \n\
+                    vmove.y     $vf8,  $vf0           \n\
+                    vmove.x     $vf14, $vf0           \n\
+                    vmove.xyzw  $vf22, $vf9           \n\
+                    vmove.y     $vf9,  $vf0           \n\
+                    vmove.x     $vf22, $vf0           \n\
+                    vmove.z     $vf27, $vf19          \n\
+                    vmul.xy     $vf27, $vf27,   $vf26 \n\
+                    sqc2        $vf27, 0x10(%0)       \n\
+                    vftoi4.xyzw $vf13, $vf12          \n\
+                    sqc2        $vf13, 0x20(%0)       \n\
+                    vsub.xyzw   $vf13, $vf27,   $vf14 \n\
+                    sqc2        $vf13, 0x40(%0)       \n\
+                    vsub.xyzw   $vf10, $vf12,   $vf22 \n\
+                    vftoi4.xyzw $vf13, $vf10          \n\
+                    sqc2        $vf13, 0x50(%0)       \n\
+                    vadd.xyzw   $vf13, $vf27,   $vf8  \n\
+                    sqc2        $vf13, 0x60(%0)       \n\
+                    vadd.xyzw   $vf10, $vf12,   $vf9  \n\
+                    vftoi4.xyzw $vf13, $vf10          \n\
+                    sqc2        $vf13, 0x70(%0)       \n\
+                    vadd.xyzw   $vf13, $vf27,   $vf14 \n\
+                    sqc2        $vf13, 0x80(%0)       \n\
+                    vadd.xyzw   $vf10, $vf12,   $vf22 \n\
+                    vftoi4.xyzw $vf13, $vf10          \n\
+                    sqc2        $vf13, 0x90(%0)       \n\
+                    vsub.xyzw   $vf13, $vf27,   $vf8  \n\
+                    sqc2        $vf13, 0xa0(%0)       \n\
+                    vsub.xyzw   $vf13, $vf12,   $vf9  \n\
+                    vftoi4.xyzw $vf13, $vf13          \n\
+                    sqc2        $vf13, 0xb0(%0)       \n\
+                    vsub.xyzw   $vf13, $vf27,   $vf14 \n\
+                    sqc2        $vf13, 0xc0(%0)       \n\
+                    vsub.xyzw   $vf13, $vf12,   $vf22 \n\
+                    vftoi4.xyzw $vf13, $vf13          \n\
+                    sqc2        $vf13, 0xd0(%0)       \n\
+                ": :"r"(&d[n]));
 
                 n += 14 * 2;
             }
-
             p[1][0] = rr;
             p[1][1] = gg;
             p[1][2] = bb;
@@ -1306,6 +1320,13 @@ int draw_distortion_particles(sceVu0FMATRIX *local_screen, sceVu0FMATRIX *local_
     d[0] = DMAend + (n - 1) / 2;
 
     ndpkt = ndpkt + (n + 1) / 2;
+
+#if defined(BUILD_JP_VERSION)
+    if (old_di != 0)
+    {
+        EIntr();
+    }
+#endif
 
     return num;
 }
@@ -1442,6 +1463,7 @@ void sceVu0RotCameraMatrix(sceVu0FMATRIX m, float *p, float *zd, float *yd, floa
 void sceVu0ViewClipMatrix(sceVu0FMATRIX vc, float scrw, float scrh, float scrz, float zmin, float zmax)
 {
     sceVu0UnitMatrix(vc);
+
     vc[0][0] = (scrz + scrz) / scrw;
     vc[1][1] = (scrz + scrz) / scrh;
     vc[2][2] = (zmax + zmin) / (zmax - zmin);
@@ -1455,16 +1477,12 @@ void* ContHeatHaze(void *addr, int type, float *pos, float *pos2, int st, float 
     static float pcnt1;
     static float pcnt2;
     int n1;
-#ifdef MATCHING_DECOMP
-    register int n2 asm("s6");
-#else
     int n2;
-#endif
     int i;
     float f;
     float fw1;
     float lng;
-    float escl;
+    float escl = 3.8f;
     sceVu0FVECTOR wpos;
     sceVu0FVECTOR camera_p = {0.0f, 0.0f, -12.0f, 0.0f};
     sceVu0FVECTOR camera_zd = {0.0f, 0.0f, 1.0f, 1.0f};
@@ -1487,17 +1505,16 @@ void* ContHeatHaze(void *addr, int type, float *pos, float *pos2, int st, float 
     n1 = 25;
     n2 = 12;
 
-    escl = 3.8f;
-
     if (addr == NULL)
     {
         return NULL;
     }
 
     hh = (HEAT_HAZE *)addr;
+
     hh->flag |= 0xff;
 
-    if (ingame_wrk.mode == 0xa)
+    if (ingame_wrk.mode == INGAME_MODE_MENU)
     {
         return addr;
     }
@@ -1531,13 +1548,14 @@ void* ContHeatHaze(void *addr, int type, float *pos, float *pos2, int st, float 
     {
     case 9:
         GetTrgtRot(camera.p, camera.i, rot, 3);
-        sceVu0UnitMatrix(work);
 
+        sceVu0UnitMatrix(work);
         work[0][0] = work[1][1] = work[2][2] = camera.fov * 25.0f;
 
         sceVu0RotMatrixX(work, work, rot[0]);
         sceVu0RotMatrixY(work, work, rot[1]);
         sceVu0TransMatrix(local_world, work, pos);
+
         sceVu0MulMatrix(local_screen, SgWSMtx, local_world);
         sceVu0MulMatrix(local_clip, SgCMtx, local_world);
     break;
@@ -1560,11 +1578,11 @@ void* ContHeatHaze(void *addr, int type, float *pos, float *pos2, int st, float 
             Get2PosRot2(pos2, pos, &rx, &rz);
         }
 
-        fx = (pos[0] - camera.p[0]) * (pos[0] - camera.p[0]);
-        fy = (pos[1] - camera.p[1]) * (pos[1] - camera.p[1]);
-        fz = (pos[2] - camera.p[2]) * (pos[2] - camera.p[2]);
+        fx = pos[0] - camera.p[0];
+        fy = pos[1] - camera.p[1];
+        fz = pos[2] - camera.p[2];
 
-        lng = SgSqrtf(fx + fy + fz);
+        lng = VER_SQRTF(fx * fx + fy * fy + fz * fz);
 
         sceVu0UnitMatrix(work);
 
@@ -1573,6 +1591,7 @@ void* ContHeatHaze(void *addr, int type, float *pos, float *pos2, int st, float 
         sceVu0RotMatrixX(work, work, rx);
         sceVu0RotMatrixZ(work, work, -rz);
         sceVu0TransMatrix(local_world, work, pos);
+
         sceVu0MulMatrix(local_screen, SgWSMtx, local_world);
         sceVu0MulMatrix(local_clip, SgCMtx, local_world);
     } break;
@@ -1584,21 +1603,24 @@ void* ContHeatHaze(void *addr, int type, float *pos, float *pos2, int st, float 
         Vu0CopyVector(wpos, pos);
         wpos[1] -= 10.0f;
 
-#ifdef MATCHING_DECOMP
-        // matches most of the asm generated by the code
-        // that has been optimized out by the compiler.
-        // needs patching to fix 2 asm instructions
+#if defined(MATCHING_DECOMP)
+        if ((hh->cnt / n1 % 2) == 0)
         {
-            int a = hh->cnt / n1;
-
-            asm volatile ("mfhi $3");
-            asm volatile ("andi $2,$2,1");
-
-            if (hh->cnt / n1 <= n2 && hh->cnt / n1)
+            if ((hh->cnt % n1) <= n2 && hh->cnt / n1)
             {
-                n2 = ~n2;
+                // debug code?
             }
         }
+        else if ((hh->cnt % n1) <= n2 && hh->cnt / n1)
+        {
+            // debug code?
+        }
+
+#if defined(BUILD_JP_VERSION)
+        asm volatile ("" : : "r"(n2), "r"(n2)); // HACK: forces n2 into $s6 register
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+        asm volatile ("" : : "r"(n2), "r"(n2), "r"(n2)); // HACK: forces n2 into $s6 register
+#endif
 #endif
 
         SubHalo(wpos, 1, 0, 0, 0x28, 0x28, 0x6e, 0x6e, 0.6f);
@@ -1621,22 +1643,25 @@ void* ContHeatHaze(void *addr, int type, float *pos, float *pos2, int st, float 
         float rate;
 
         Vu0CopyVector(wpos, pos);
+
         wpos[1] -= 10.0f;
 
-        fx = (pos[0] - camera.p[0]) * (pos[0] - camera.p[0]);
-        fy = (pos[1] - camera.p[1]) * (pos[1] - camera.p[1]);
-        fz = (pos[2] - camera.p[2]) * (pos[2] - camera.p[2]);
+        fx = pos[0] - camera.p[0];
+        fy = pos[1] - camera.p[1];
+        fz = pos[2] - camera.p[2];
 
-        l = SgSqrtf(fx + fy + fz);
+        l = VER_SQRTF(fx * fx + fy * fy + fz * fz);
 
         rate = 600.0f < l ? 2.0f : (l < 300.0f ? 8.0f : ((600.0f - l) * 6.0f) / 300.0f + 2.0f);
-        fw1 = SgSinf(pcnt1) * rate;
 
-        f = vu0Rand() * (PI / 360.0f);
-        pcnt1 = pcnt1 + f > PI ? pcnt1 + f - PI2 : pcnt1 + f;
+        fw1 = VER_SINF(pcnt1) * rate;
+        f = (PI / 360.0f) * VER_RAND();
+
+        pcnt1 = pcnt1 + f > PI ? pcnt1 + f - (PI * 2) : pcnt1 + f;
 
         hh->disp = draw_distortion_particles(&local_screen, &local_clip, sys_wrk.count % 2, 200, hh->particles, 0x40, (size * escl) / camera.fov, fw1, type);
-    } break;
+    }
+    break;
     case 11: {
         float fx;
         float fy;
@@ -1647,17 +1672,18 @@ void* ContHeatHaze(void *addr, int type, float *pos, float *pos2, int st, float 
         Vu0CopyVector(wpos, pos);
         wpos[1] -= 10.0f;
 
-        fx = (pos[0] - camera.p[0]) * (pos[0] - camera.p[0]);
-        fy = (pos[1] - camera.p[1]) * (pos[1] - camera.p[1]);
-        fz = (pos[2] - camera.p[2]) * (pos[2] - camera.p[2]);
+        fx = pos[0] - camera.p[0];
+        fy = pos[1] - camera.p[1];
+        fz = pos[2] - camera.p[2];
 
-        l = SgSqrtf(fx + fy + fz);
+        l = VER_SQRTF(fx * fx + fy * fy + fz * fz);
 
         rate = 600.0f < l ? 4.0f : (l < 300.0f ? 12.0f : ((600.0f - l) * 8.0f) / 300.0f + 4.0f);
-        fw1 = SgSinf(pcnt1) * rate;
 
-        f = vu0Rand() * (PI / 180.0f);
-        pcnt1 = pcnt1 + f > PI ? pcnt1 + f - PI2 : pcnt1 + f;
+        fw1 = VER_SINF(pcnt1) * rate;
+
+        f = (PI / 180.0f) * VER_RAND();
+        pcnt1 = pcnt1 + f > PI ? pcnt1 + f - (PI * 2) : pcnt1 + f;
 
         hh->disp = draw_distortion_particles(&local_screen, &local_clip, sys_wrk.count % 2, 200, hh->particles, 0x40, (size * escl) / camera.fov, fw1, type);
     } break;
@@ -1673,29 +1699,32 @@ void* ContHeatHaze(void *addr, int type, float *pos, float *pos2, int st, float 
         switch (type)
         {
         case 8:
-            if ((hh->cnt / n1 % 2) == 0 && (hh->cnt % 2) == 0)
+            if ((hh->cnt / n1 % 2) == 0)
             {
-                ppos[0] = (vu0Rand() - 0.5f) * 1.3f;
-                ppos[1] = 0.0f;
-                ppos[2] = (vu0Rand() - 0.5f) * 1.3f;
+                if ((hh->cnt % 2) == 0)
+                {
+                    ppos[0] = (VER_RAND() - 0.5f) * 1.3f;
+                    ppos[1] = 0.0f;
+                    ppos[2] = (VER_RAND() - 0.5f) * 1.3f;
 
-                pvel[0] = (vu0Rand() - 0.5f) * 0.01;
-                pvel[1] = -(vu0Rand() * 0.04f) - 0.01f;
-                pvel[2] = (vu0Rand() - 0.5f) * 0.01;
+                    pvel[0] = (VER_RAND() - 0.5f) * 0.01;
+                    pvel[1] = -(0.04f * VER_RAND()) - 0.01f;
+                    pvel[2] = (VER_RAND() - 0.5f) * 0.01;
 
-                add_particle(type, hh, ppos, pvel, r, g, b, a);
+                    add_particle(type, hh, ppos, pvel, r, g, b, a);
+                }
             }
         break;
         case 9:
             for (i = 0; i < 1; i++)
             {
-                ppos[0] = (vu0Rand() - 0.5f) * 1.3f;
+                ppos[0] = (VER_RAND() - 0.5f) * 1.3f;
                 ppos[1] = 0.0f;
-                ppos[2] = (vu0Rand() - 0.5f) * 1.3f;
+                ppos[2] = (VER_RAND() - 0.5f) * 1.3f;
 
-                pvel[0] = (vu0Rand() - 0.5f) * 0.01f;
-                pvel[1] = -(vu0Rand() * 0.02f) - 0.02f;
-                pvel[2] = (vu0Rand() - 0.5f) * 0.01f;
+                pvel[0] = (VER_RAND() - 0.5f) * 0.01f;
+                pvel[1] = -(0.02f * VER_RAND()) - 0.02f;
+                pvel[2] = (VER_RAND() - 0.5f) * 0.01f;
 
                 add_particle(type, hh, ppos, pvel, r, g, b, a);
             }
@@ -1703,13 +1732,13 @@ void* ContHeatHaze(void *addr, int type, float *pos, float *pos2, int st, float 
         case 10:
             if ((hh->cnt % 2) == 0)
             {
-                ppos[0] = ((vu0Rand() - 0.5f) * 1.5f) * escl;
+                ppos[0] = ((VER_RAND() - 0.5f) * 1.5f) * escl;
                 ppos[1] = 0.0f;
-                ppos[2] = ((vu0Rand() - 0.5f) * 1.5f) * escl;
+                ppos[2] = ((VER_RAND() - 0.5f) * 1.5f) * escl;
 
-                pvel[0] = ((vu0Rand() - 0.5f) * 0.015f) * escl;
-                pvel[1] = (-(vu0Rand() * 0.02f) - 0.04f) * escl;
-                pvel[2] = ((vu0Rand() - 0.5f) * 0.015f) * escl;
+                pvel[0] = ((VER_RAND() - 0.5f) * 0.015f) * escl;
+                pvel[1] = (-(0.02f * VER_RAND()) - 0.04f) * escl;
+                pvel[2] = ((VER_RAND() - 0.5f) * 0.015f) * escl;
 
                 add_particle2(type, hh, ppos, pvel, r, g, b, a);
             }
@@ -1717,13 +1746,13 @@ void* ContHeatHaze(void *addr, int type, float *pos, float *pos2, int st, float 
         case 11:
             if ((hh->cnt % 4) == 0)
             {
-                ppos[0] = ((vu0Rand() - 0.5f) * 1.5f) * escl;
+                ppos[0] = ((VER_RAND() - 0.5f) * 1.5f) * escl;
                 ppos[1] = 0.0f;
-                ppos[2] = ((vu0Rand() - 0.5f) * 1.5f) * escl;
+                ppos[2] = ((VER_RAND() - 0.5f) * 1.5f) * escl;
 
-                pvel[0] = ((vu0Rand() - 0.5f) * 0.01f) * escl;
-                pvel[1] = (-(vu0Rand() * 0.02f) - 0.01f) * escl;
-                pvel[2] = ((vu0Rand() - 0.5f) * 0.01f) * escl;
+                pvel[0] = ((VER_RAND() - 0.5f) * 0.01f) * escl;
+                pvel[1] = (-(0.02f * VER_RAND()) - 0.01f) * escl;
+                pvel[2] = ((VER_RAND() - 0.5f) * 0.01f) * escl;
 
                 add_particle2(type, hh, ppos, pvel, r, g, b, a);
             }
@@ -1737,35 +1766,32 @@ void* ContHeatHaze(void *addr, int type, float *pos, float *pos2, int st, float 
     {
     case 8:
     case 9:
+        if (st != 0)
         {
-            if (st != 0)
-            {
-                update_particles(hh->particles);
-                update_particles(hh->particles);
-                update_particles(hh->particles);
-                update_particles(hh->particles);
-            }
-
+            update_particles(hh->particles);
+            update_particles(hh->particles);
+            update_particles(hh->particles);
             update_particles(hh->particles);
         }
+
+        update_particles(hh->particles);
     break;
     case 10:
     case 11:
+        if (st == 0)
         {
-            if (st == 0)
-            {
-                update_particles2(hh, lng, arate);
-            }
-            else
-            {
-                update_particles2(hh, lng, arate);
-                update_particles2(hh, lng, arate);
-                update_particles2(hh, lng, arate);
-                update_particles2(hh, lng, arate);
-                update_particles2(hh, lng, arate);
-            }
+            update_particles2(hh, lng, arate);
+        }
+        else
+        {
+            update_particles2(hh, lng, arate);
+            update_particles2(hh, lng, arate);
+            update_particles2(hh, lng, arate);
+            update_particles2(hh, lng, arate);
+            update_particles2(hh, lng, arate);
         }
     }
+
     return addr;
 }
 
@@ -1784,6 +1810,7 @@ void SetPartInit(HEAT_HAZE *addr, int type, int lifetime)
         p->color[3] = 0.0f;
         p->lifetime = 0;
     }
+
     addr->head = 0;
     addr->flag = 1;
     addr->cnt = 0;
@@ -1841,7 +1868,9 @@ void* GetEnePartAddr(void *addr, int type, int lifetime)
             if (ene_particle[i].flag == 0)
             {
                 SetPartInit(&ene_particle[i], type, lifetime);
+
                 ret = &ene_particle[i];
+
                 n = 1;
             }
 
@@ -1874,7 +1903,9 @@ void* GetAmuPartAddr(void *addr, int type, int lifetime)
             if (amu_particle[i].flag == 0)
             {
                 SetPartInit(&amu_particle[i], type, lifetime);
+
                 ret = &amu_particle[i];
+
                 n = 1;
             }
 
@@ -1907,8 +1938,11 @@ void* GetTorchPartAddr(void *addr, int type, int lifetime)
             if (torch_particle[i].flag == 0)
             {
                 printf("Set Torch work no = [%d]\n", i);
+
                 SetPartInit(&torch_particle[i], type, lifetime);
+
                 ret = &torch_particle[i];
+
                 n = 1;
             }
 
@@ -1928,7 +1962,6 @@ void* GetSmokePartAddr(void *addr, int type, int lifetime)
     int i;
     int n;
     void *ret;
-    float r;
 
     if (addr == NULL)
     {
@@ -1942,8 +1975,11 @@ void* GetSmokePartAddr(void *addr, int type, int lifetime)
             if (smoke_particle[i].flag == 0)
             {
                 SetPartInit(&smoke_particle[i], type, lifetime);
-                smoke_particle[i].cnt = (int)(vu0Rand() * 360.0f);
+
+                smoke_particle[i].cnt = (int)(360.0f * VER_RAND());
+
                 ret = &smoke_particle[i];
+
                 n = 1;
             }
 
@@ -1977,7 +2013,7 @@ void SetNewItemEffect(NEW_ITEM *nip)
         .zbuf = SCE_GS_SET_ZBUF_1(0x8c, SCE_GS_PSMCT24, 0),
         .test = SCE_GS_SET_TEST_1(1, SCE_GS_ALPHA_GREATER, 0, SCE_GS_AFAIL_KEEP, 0, 0, 1, SCE_GS_DEPTH_GEQUAL),
         .clamp = SCE_GS_SET_CLAMP_1(SCE_GS_REPEAT, SCE_GS_REPEAT, 0, 0, 0, 0),
-        .prim = SCE_GIF_SET_TAG(4, SCE_GS_TRUE, SCE_GS_TRUE, 84, SCE_GIF_PACKED, 3),
+        .prim = SCE_GIF_SET_TAG(4, SCE_GS_TRUE, SCE_GS_TRUE, SCE_GS_SET_PRIM(SCE_GS_PRIM_TRISTRIP, 0, 1, 0, 1, 0, 0, 0, 0), SCE_GIF_PACKED, 3),
     };
 
     Vu0CopyVector(wpos, nip->pos);
@@ -2045,6 +2081,7 @@ void SetNewItemEffect(NEW_ITEM *nip)
         if (wait <= cnt)
         {
             cnt = 0.0f;
+
             flow = 1;
         }
         else if (stop_effects == 0)
@@ -2054,9 +2091,11 @@ void SetNewItemEffect(NEW_ITEM *nip)
     break;
     case 1:
         size = cnt / out;
+
         if (out <= cnt)
         {
             cnt = 0.0f;
+
             flow = 2;
         }
         else if (stop_effects == 0)
@@ -2066,9 +2105,11 @@ void SetNewItemEffect(NEW_ITEM *nip)
     break;
     case 2:
         size = (out - cnt) / out;
+
         if (out <= cnt)
         {
             cnt = 0.0f;
+
             flow = 0;
         }
         else if (stop_effects == 0)
@@ -2123,9 +2164,9 @@ void SetNewItemEffect(NEW_ITEM *nip)
         sceVu0TransMatrix(wlm[4], wlm[4], wpos);
 
         Set3DPosTexure(wlm[1], &de, 0x10, size * 150.0f, size * 150.0f, 0xff, 0xff, 0xff, 0x50);
-        Set3DPosTexure(wlm[2], &de, 0x12, 78.0f, 78.0f, 0xf0, 0xf0, 0xff, size * 64);
-        Set3DPosTexure(wlm[3], &de, 0x12, 78.0f, 78.0f, 0xf0, 0xff, 0xf0, size * 64);
-        Set3DPosTexure(wlm[4], &de, 0x12, 78.0f, 78.0f, 0xff, 0xf0, 0xf0, size * 64);
+        Set3DPosTexure(wlm[2], &de, 0x12, 78.0f, 78.0f, 0xf0, 0xf0, 0xff, size * 64.0f);
+        Set3DPosTexure(wlm[3], &de, 0x12, 78.0f, 78.0f, 0xf0, 0xff, 0xf0, size * 64.0f);
+        Set3DPosTexure(wlm[4], &de, 0x12, 78.0f, 78.0f, 0xff, 0xf0, 0xf0, size * 64.0f);
     }
 
     nip->flow = flow;
@@ -2156,9 +2197,9 @@ void CheckItemEffect()
             item_heat_onum[i] = -1;
             item_heat_use[i] = -1;
 
-            ni[i].flow = (u_int)(vu0Rand() * 2.9f);
+            ni[i].flow = (u_int)(2.9f * VER_RAND());
             ni[i].rot = 0.0f;
-            ni[i].cnt = vu0Rand() * 10.0f;
+            ni[i].cnt = 10.0f * VER_RAND();
         }
 
         init_newitem = 0;
@@ -2172,15 +2213,19 @@ void CheckItemEffect()
 
     i = 0;
     n = 0;
+
     while (i < 2)
     {
         j = 0;
+
         while (item_dsp_wrk[i][j].item_no != 0xffff)
         {
             if (item_dsp_wrk[i][j].disp != 0)
             {
                 Vu0CopyVector(item_heat_wpos[n], item_dsp_wrk[i][j].pos);
+
                 item_heat_num[n] = item_dsp_wrk[i][j].item_no;
+
                 n++;
             }
 
@@ -2193,9 +2238,11 @@ void CheckItemEffect()
     item_heat_num[n] = -1;
 
     i = 0;
+
     while (item_heat_onum[i] != -1)
     {
         j = 0;
+
         while (item_heat_num[j] != -1)
         {
             if (item_heat_onum[i] == item_heat_num[j])
@@ -2212,17 +2259,20 @@ void CheckItemEffect()
 
     i = 0;
     num = 0;
+
     while (item_heat_onum[i] != -1)
     {
         if (iwo[i] == 0 || num >= 16)
         {
             j = 0;
             n = 1;
+
             while (j < 24 && n)
             {
                 if (item_heat_onum[i] == item_heat_use[j])
                 {
                     item_heat_use[j] = -1;
+
                     n = 0;
                 }
 
@@ -2238,24 +2288,29 @@ void CheckItemEffect()
     }
 
     i = 0;
+
     while (item_heat_num[i] != -1)
     {
         if (iwn[i] == 0 && num < 16)
         {
             j = 0;
             n = 1;
+
             while (j < 24 && n)
             {
                 if (item_heat_use[j] == -1)
                 {
                     item_heat_use[j] = item_heat_num[i];
+
                     Vu0CopyVector(item_heat_pos[j], item_heat_wpos[i]);
+
                     item_heat_addr[j] = NULL;
+
                     n = 0;
 
-                    ni[j].flow = (u_int)(vu0Rand() * 2.9f);
+                    ni[j].flow = (u_int)(2.9f * VER_RAND());
                     ni[j].rot = 0.0f;
-                    ni[j].cnt = vu0Rand() * 10.0f;
+                    ni[j].cnt = 10.0f * VER_RAND();
 
                     num++;
                 }
@@ -2272,7 +2327,7 @@ void CheckItemEffect()
         item_heat_onum[i] = item_heat_num[i];
     }
 
-    if (1) // preprocessor variable? or just a new context to define and initialize variables?
+    if (1) // always true condition, or more likely a context block
     {
         int w;
         sceVu0IVECTOR ivec;
@@ -2371,7 +2426,6 @@ void SetEneFire(EFFECT_CONT *ec)
         ec->pnt[3] = ContHeatHaze(ec->pnt[3], ty, pos1, NULL, 0, r, g, b, a, s, ar);
     }
 
-
     if (ec->dat.uc8[1] & 1)
     {
         ResetEffects(ec);
@@ -2439,11 +2493,11 @@ int SetAmuletFire()
     break;
     }
 
-    fx = (camera.i[0] - camera.p[0]) * (camera.i[0] - camera.p[0]);
-    fy = (camera.i[1] - camera.p[1]) * (camera.i[1] - camera.p[1]);
-    fz = (camera.i[2] - camera.p[2]) * (camera.i[2] - camera.p[2]);
+    fx = camera.i[0] - camera.p[0];
+    fy = camera.i[1] - camera.p[1];
+    fz = camera.i[2] - camera.p[2];
 
-    l = SgSqrtf(fx + fy + fz);
+    l = VER_SQRTF(fx * fx + fy * fy + fz * fz);
 
     bpos[0] = camera.p[0] + ((camera.i[0] - camera.p[0]) * lla) / l;
     bpos[1] = camera.p[1] + ((camera.i[1] - camera.p[1]) * lla) / l;
@@ -2484,32 +2538,32 @@ int SetAmuletFire()
         sceVu0RotTransPers(ivec[i][0], local_screen, seal[i][0], 1);
         sceVu0RotTransPers(ivec[i][1], local_screen, seal[i][1], 1);
 
-        if (0x5000 < ivec[i][0][0] - 0x5800U)
+        if (ivec[i][0][0] < 0x5800 || ivec[i][0][0] > 0xa800)
         {
             w = 1;
         }
 
-        if (0x1c00 < ivec[i][0][1] - 0x7200U)
+        if (ivec[i][0][1] < 0x7200 || ivec[i][0][1] > 0x8e00)
         {
             w = 1;
         }
 
-        if (0xffff00 < ivec[i][0][2] - 0xffU)
+        if (ivec[i][0][2] < 0xff || ivec[i][0][2] > 0x00ffffff)
         {
             w = 1;
         }
 
-        if (0x5000 < ivec[i][1][0] - 0x5800U)
+        if (ivec[i][1][0] < 0x5800 || ivec[i][1][0] > 0xa800)
         {
             w = 1;
         }
 
-        if (0x1c00 < ivec[i][1][1] - 0x7200U)
+        if (ivec[i][1][1] < 0x7200 || ivec[i][1][1] > 0x8e00)
         {
             w = 1;
         }
 
-        if (0xffff00 < ivec[i][1][2] - 0xffU)
+        if (ivec[i][1][2] < 0xff || ivec[i][1][2] > 0x00ffffff)
         {
             w = 1;
         }
@@ -2517,12 +2571,13 @@ int SetAmuletFire()
         tq[i][0].fl32 = 1.0f / ivec[i][0][3];
         ts[i][0].fl32 = tq[i][0].fl32 * 0.02f * 94.0f / 128.0f;
         tt[i][0].fl32 = ((i * 0.96f) / fdiv + 0.02f) * tq[i][0].fl32;
+
         tq[i][1].fl32 = 1.0f / ivec[i][1][3];
         ts[i][1].fl32 = tq[i][1].fl32 * 0.98f * 94.0f / 128.0f;
         tt[i][1].fl32 = ((i * 0.96f) / fdiv + 0.02f) * tq[i][1].fl32;
     }
 
-    if (w)
+    if (w != 0)
     {
         return ret;
     }
@@ -2555,8 +2610,8 @@ int SetAmuletFire()
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_TEST_1(1, SCE_GS_ALPHA_GREATER, 0, SCE_GS_AFAIL_KEEP, 0, 0, 1, SCE_GS_DEPTH_ALWAYS);
     pbuf[ndpkt++].ul64[1] = SCE_GS_TEST_1;
 
-    pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(17, SCE_GS_TRUE, SCE_GS_TRUE, 92, SCE_GIF_PACKED, 6);
-    pbuf[ndpkt++].ul64[1] = 0 \
+    pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(17, SCE_GS_TRUE, SCE_GS_TRUE, SCE_GS_SET_PRIM(SCE_GS_PRIM_TRISTRIP, 1, 1, 0, 1, 0, 0, 0, 0), SCE_GIF_PACKED, 6);
+    pbuf[ndpkt++].ul64[1] = 0
         | SCE_GS_ST    << (4 * 0)
         | SCE_GS_RGBAQ << (4 * 1)
         | SCE_GS_XYZF2 << (4 * 2)
@@ -2607,13 +2662,16 @@ int SetAmuletFire()
     break;
     case 0:
         cnt = 0;
+
         load_id = SeFileLoadAndSet(ST012_OFUDA_BD, 21);
+
         amulet_fire_flow++;
     break;
     case 1:
         if (IsLoadEnd(load_id) != 0)
         {
             SeStartFix(0x5d, 0, 0x1000, 0x1000, 0);
+
             amulet_fire_ret = NULL;
             amulet_fire_flow++;
         }
@@ -2637,6 +2695,7 @@ int SetAmuletFire()
                 {
                     alp[0] = alp[0] - 16 < 0 ? 0 : alp[0] - 16;
                 }
+
                 h = (((128.0f - alp[0]) / 128.0f + 0.0f) * size) / fdiv - (size * 0.5f);
                 n = 0;
             }
@@ -2656,17 +2715,21 @@ int SetAmuletFire()
             }
         }
 
-        if (1) // always true condition, or simply a context block?
+        if (1) // always true condition, or more likely a context block
         {
             sceVu0FVECTOR fpos = {0.0f, 0.0f, 0.0f, 1.0f};
             HEAT_HAZE *hh;
 
             fpos[1] = h + 0.6f;
             fpos[3] = 1.0f;
+
             sceVu0ApplyMatrix(fire_pos, local_world, fpos);
+
             amulet_fire_ret = GetAmuPartAddr(amulet_fire_ret, 9, 200);
             amulet_fire_ret = ContHeatHaze(amulet_fire_ret, 9, fire_pos, NULL, n, 128.0f, 120.0f, 255.0f, 128.0f, 3500.0f, 1.0f);
+
             hh = (HEAT_HAZE *)amulet_fire_ret;
+
             if (alp[16] == 0 && hh->disp <= 0)
             {
                 amulet_fire_flow = 0xfe;
@@ -2682,7 +2745,6 @@ int SetAmuletFire()
 
     return ret;
 }
-
 
 u_char prgb = 0x40;
 u_char pa = 0x0c;
@@ -2752,11 +2814,11 @@ void* ContTorch(void *addr, int type, float *pos, float *pos2, int st, float r, 
         Get2PosRot2(pos2, pos, &rx, &rz);
     }
 
-    fx = (pos[0] - camera.p[0]) * (pos[0] - camera.p[0]);
-    fy = (pos[1] - camera.p[1]) * (pos[1] - camera.p[1]);
-    fz = (pos[2] - camera.p[2]) * (pos[2] - camera.p[2]);
+    fx = pos[0] - camera.p[0];
+    fy = pos[1] - camera.p[1];
+    fz = pos[2] - camera.p[2];
 
-    SgSqrtf(fx + fy + fz);
+    VER_SQRTF(fx * fx + fy * fy + fz * fz);
 
     sceVu0UnitMatrix(work);
 
@@ -2767,6 +2829,7 @@ void* ContTorch(void *addr, int type, float *pos, float *pos2, int st, float r, 
     sceVu0TransMatrix(local_world, work, pos);
     sceVu0MulMatrix(local_screen, SgWSMtx, local_world);
     sceVu0MulMatrix(local_clip, SgCMtx, local_world);
+
     Vu0CopyVector(wpos, pos);
 
     switch(tp2)
@@ -2774,20 +2837,24 @@ void* ContTorch(void *addr, int type, float *pos, float *pos2, int st, float r, 
     case 0:
         rrate = 1.14f;
         escl = 3.8f;
+
         wpos[1] -= 40.0f;
         SubHalo(wpos, 0, 0, 0, 0x80, 0x5c, 0x3c, (hh->disp * 80.0f * ar) / hh->max, (hh->disp * 0.3f * sr) / hh->max);
     break;
     case 1:
         rrate = 1.14f;
         escl = 3.8f;
+
         wpos[1] -= 40.0f;
         SubHalo(wpos, 0, 0, 0, 0x3c, 0x5c, 0x80, (hh->disp * 80.0f * ar) / hh->max, (hh->disp * 0.3f * sr) / hh->max);
     break;
     case 2:
         rrate = 1.2f;
         escl = 3.8f;
+
         wpos[1] -= 20.0f;
         SubHalo(wpos, 0, 0, 0, 0x3c, 0x5c, 0x80, (hh->disp * 80.0f * ar) / hh->max, (hh->disp * 0.2f * sr) / hh->max);
+
         wpos[1] += 10.0f;
         SubHalo(wpos, 0, 0, 0, 0xff, 0xff, 0xff, (hh->disp * 200.0f * ar) / hh->max, (hh->disp * 0.04f * sr) / hh->max);
     break;
@@ -2796,6 +2863,7 @@ void* ContTorch(void *addr, int type, float *pos, float *pos2, int st, float r, 
         ysp2 = 0.1f;
         rrate = 3.4f;
         escl = 3.8f;
+
         wpos[1] -= 40.0f;
         SubHalo(wpos, 2, 0, 0, 0xff, 0xa0, 0x80, (hh->disp * 128.0f * ar) / hh->max, (hh->disp * 0.8f * sr) / hh->max);
     break;
@@ -2804,6 +2872,7 @@ void* ContTorch(void *addr, int type, float *pos, float *pos2, int st, float r, 
         ysp2 = 0.3f;
         rrate = 4.8f;
         escl = 3.8f;
+
         wpos[1] -= 40.0f;
         SubHalo(wpos, 2, 0, 0, 0xff, 0xa0, 0x80, (hh->disp * 128.0f * ar) / hh->max,  (hh->disp * 0.8f * sr) / hh->max);
     break;
@@ -2811,7 +2880,7 @@ void* ContTorch(void *addr, int type, float *pos, float *pos2, int st, float r, 
 
     hh->disp = draw_distortion_particles(&local_screen, &local_clip, sys_wrk.count & 1, 200, addr, 0x40, (size * escl * sr) / camera.fov, -1.0f, type);
 
-    wind = vu0Rand() * 0.02f - 0.01f;
+    wind = 0.02f * VER_RAND() - 0.01f;
 
     if (stop_effects == 0)
     {
@@ -2823,13 +2892,13 @@ void* ContTorch(void *addr, int type, float *pos, float *pos2, int st, float r, 
             case 4:
                 for (i = 0; i < 4; i++)
                 {
-                    ppos[0] = (vu0Rand() - 0.5f) * 0.9f * rrate;
+                    ppos[0] = (VER_RAND() - 0.5f) * 0.9f * rrate;
                     ppos[1] = 0.0f;
-                    ppos[2] = (vu0Rand() - 0.5f) * 0.9f * rrate;
+                    ppos[2] = (VER_RAND() - 0.5f) * 0.9f * rrate;
 
-                    pvel[0] = (vu0Rand() - 0.5f) * 0.02f * rrate + wind;
-                    pvel[1] = -(ysp1 * vu0Rand()) - ysp2;
-                    pvel[2] = (vu0Rand() - 0.5f) * 0.02f * rrate;
+                    pvel[0] = (VER_RAND() - 0.5f) * 0.02f * rrate + wind;
+                    pvel[1] = -(ysp1 * VER_RAND()) - ysp2;
+                    pvel[2] = (VER_RAND() - 0.5f) * 0.02f * rrate;
 
                     add_particle(type, addr, ppos, pvel, r, g, b, a * ar);
                 }
@@ -2839,13 +2908,13 @@ void* ContTorch(void *addr, int type, float *pos, float *pos2, int st, float r, 
             case 2:
                 for (i = 0; i < 4; i++)
                 {
-                    ppos[0] = (vu0Rand() - 0.5f) * 0.7f * rrate;
+                    ppos[0] = (VER_RAND() - 0.5f) * 0.7f * rrate;
                     ppos[1] = 0.0f;
-                    ppos[2] = (vu0Rand() - 0.5f) * 0.7f * rrate;
+                    ppos[2] = (VER_RAND() - 0.5f) * 0.7f * rrate;
 
-                    pvel[0] = (vu0Rand() - 0.5f) * 0.02f + wind;
-                    pvel[1] = -(vu0Rand() * 0.03f) - 0.05f;
-                    pvel[2] = (vu0Rand() - 0.5f) * 0.02f;
+                    pvel[0] = (VER_RAND() - 0.5f) * 0.02f + wind;
+                    pvel[1] = -(0.03f * VER_RAND()) - 0.05f;
+                    pvel[2] = (VER_RAND() - 0.5f) * 0.02f;
 
                     add_particle(type, addr, ppos, pvel, r, g, b, a * ar);
                 }
@@ -2884,6 +2953,7 @@ void SetTorch(EFFECT_CONT *ec)
         if (ec->dat.uc8[3])
         {
             torch_type = 4;
+
             ec->dat.uc8[3]--;
         }
         else
@@ -2942,7 +3012,7 @@ void SetTorch(EFFECT_CONT *ec)
     ec->pnt[1] = GetTorchPartAddr(ec->pnt[1], 12, life * sr);
     ec->pnt[1] = ContTorch(ec->pnt[1], 12, pos, NULL, st, tr, tg, tb, 128.0f, 1300.0f, 1.0f, torch_type, ar, sr);
 
-    if (ec->dat.uc8[1] & 1)
+    if (ec->dat.uc8[1] & 0x1)
     {
         ResetEffects(ec);
     }
@@ -2991,7 +3061,7 @@ void* ContSmoke(void *addr, int type, float *pos, float *pos2, int st, float r, 
 
     hh->flag |= 0xff;
 
-    if (ingame_wrk.mode != 0xa)
+    if (ingame_wrk.mode != INGAME_MODE_MENU)
     {
         if (pos2 == NULL)
         {
@@ -3003,11 +3073,11 @@ void* ContSmoke(void *addr, int type, float *pos, float *pos2, int st, float r, 
             Get2PosRot2(pos2, pos, &rx, &rz);
         }
 
-        fx = (pos[0] - camera.p[0]) * (pos[0] - camera.p[0]);
-        fy = (pos[1] - camera.p[1]) * (pos[1] - camera.p[1]);
-        fz = (pos[2] - camera.p[2]) * (pos[2] - camera.p[2]);
+        fx = pos[0] - camera.p[0];
+        fy = pos[1] - camera.p[1];
+        fz = pos[2] - camera.p[2];
 
-        SgSqrtf(fx + fy + fz);
+        VER_SQRTF(fx * fx + fy * fy + fz * fz);
 
         sceVu0UnitMatrix(work);
 
@@ -3019,26 +3089,23 @@ void* ContSmoke(void *addr, int type, float *pos, float *pos2, int st, float r, 
         sceVu0MulMatrix(local_screen, SgWSMtx, local_world);
         sceVu0MulMatrix(local_clip, SgCMtx, local_world);
 
-        hh->disp = draw_distortion_particles(
-            &local_screen, &local_clip, sys_wrk.count % 2,
-            200, hh->particles, sizeof(PARTICLE),
-            (psize * escl) / camera.fov, -1.0f, type);
+        hh->disp = draw_distortion_particles(&local_screen, &local_clip, sys_wrk.count % 2, 200, hh->particles, sizeof(PARTICLE), (psize * escl) / camera.fov, -1.0f, type);
 
         if (stop_effects == 0)
         {
             if (st == 0)
             {
-                wind = SgSinf((hh->cnt * wind1 * PI) / 180.0f) * wind2;
+                wind = VER_SINF((hh->cnt * wind1 * PI) / 180.0f) * wind2;
 
                 if (hh->cnt % 8 == 0)
                 {
-                    ppos[0] = (vu0Rand() - 0.5f) * ppos1 * rate;
+                    ppos[0] = (VER_RAND() - 0.5f) * ppos1 * rate;
                     ppos[1] = 0.0f;
-                    ppos[2] = (vu0Rand() - 0.5f) * ppos1 * rate;
+                    ppos[2] = (VER_RAND() - 0.5f) * ppos1 * rate;
 
-                    pvel[0] = (vu0Rand() - 0.5f) * pvel3 + wind;
-                    pvel[1] = -(pvel1 * vu0Rand()) - pvel2;
-                    pvel[2] = (vu0Rand() - 0.5f) * pvel3 + wind;
+                    pvel[0] = (VER_RAND() - 0.5f) * pvel3 + wind;
+                    pvel[1] = -(pvel1 * VER_RAND()) - pvel2;
+                    pvel[2] = (VER_RAND() - 0.5f) * pvel3 + wind;
 
                     add_particle(type, hh, ppos, pvel, prgb, prgb, prgb, pa);
                 }
@@ -3067,17 +3134,17 @@ void* ContSmoke(void *addr, int type, float *pos, float *pos2, int st, float r, 
 
             for (i = 0; i < 800; i++)
             {
-                wind = SgSinf((hh->cnt * wind1 * PI) / 180.0f) * wind2;
+                wind = VER_SINF((hh->cnt * wind1 * PI) / 180.0f) * wind2;
 
                 if (hh->cnt % 8 == 0)
                 {
-                    ppos[0] = (vu0Rand() - 0.5f) * ppos1 * rate;
+                    ppos[0] = (VER_RAND() - 0.5f) * ppos1 * rate;
                     ppos[1] = 0.0f;
-                    ppos[2] = (vu0Rand() - 0.5f) * ppos1 * rate;
+                    ppos[2] = (VER_RAND() - 0.5f) * ppos1 * rate;
 
-                    pvel[0] = (vu0Rand() - 0.5f) * pvel3 + wind;
-                    pvel[1] = -(pvel1 * vu0Rand()) - pvel2;
-                    pvel[2] = (vu0Rand() - 0.5f) * pvel3 + wind;
+                    pvel[0] = (VER_RAND() - 0.5f) * pvel3 + wind;
+                    pvel[1] = -(pvel1 * VER_RAND()) - pvel2;
+                    pvel[2] = (VER_RAND() - 0.5f) * pvel3 + wind;
 
                     add_particle(type, hh, ppos, pvel, prgb, prgb, prgb, pa);
                 }
@@ -3128,32 +3195,41 @@ void SetSmoke(EFFECT_CONT *ec)
 void SetSunshine(EFFECT_CONT *ec)
 {
     int nsun = 1;
-    int i; int j; int k; int n;
+    int i;
+    int j;
+    int k;
+    int n;
     int num;
-    float rot_x; float rot_y; float power;
+    float rot_x;
+    float rot_y;
+    float power;
     float ww;
     float hh;
-    float fx; float fy; float fz;
+    float fx;
+    float fy;
+    float fz;
     float l;
     float add;
     sceVu0FMATRIX wlm;
     sceVu0FMATRIX slm;
     sceVu0FVECTOR wpos;
-    sceVu0FVECTOR base_pos = {22875.0f, -457.0f, 8676.0f, 1.0f};
+    sceVu0FVECTOR base_pos = { 22875.0f, -457.0f, 8676.0f, 1.0f };
     sceVu0FVECTOR mpos[6] = {
-        {0.0f, -120.0f, -92.0f, 1.0f},
-        {-5.0f, +5.0f, 0.0f, 1.0f},
-        {+5.0f, +5.0f, 0.0f, 1.0f},
-        {+5.0f, -5.0f, 0.0f, 1.0f},
-        {-5.0f, -5.0f, 0.0f, 1.0f},
-        {-5.0f, +5.0f, 0.0f, 1.0f}
+        {  0.0f, -120.0f, -92.0f, 1.0f },
+        { -5.0f,   +5.0f,   0.0f, 1.0f },
+        { +5.0f,   +5.0f,   0.0f, 1.0f },
+        { +5.0f,   -5.0f,   0.0f, 1.0f },
+        { -5.0f,   -5.0f,   0.0f, 1.0f },
+        { -5.0f,   +5.0f,   0.0f, 1.0f }
     };
     EFF_SUNSHINE eff_ray[6];
     Q_WORDDATA pbh[1024];
-#ifdef MATCHING_DECOMP
+#if defined(MATCHING_DECOMP)
     u_int *cnt_ptr;
 #endif
-    u_char mr, mg, mb;
+    u_char mr;
+    u_char mg;
+    u_char mb;
     u_int max;
 
     Vu0CopyVector(mpos[0], ec->pnt[0]);
@@ -3167,9 +3243,12 @@ void SetSunshine(EFFECT_CONT *ec)
     rot_x = wpos[0];
     rot_y = wpos[1];
     power = max;
-#ifdef MATCHING_DECOMP
+
+#if defined(MATCHING_DECOMP)
+    // HACK: fixes codegen
     cnt_ptr = &ec->cnt;
 
+    // HACK: fixes swap allocation
     if (rot_x) {}
     if (rot_y) {}
     {
@@ -3183,7 +3262,13 @@ void SetSunshine(EFFECT_CONT *ec)
     mr = ec->dat.uc8[2];
     mg = ec->dat.uc8[3];
     mb = ec->dat.uc8[4];
+
     add = (int)ec->cnt / 2000.0f;
+
+#if defined(MATCHING_DECOMP)
+    // HACK: fixes swap allocation
+    if (power) {}
+#endif
 
     mpos[1][0] = mpos[4][0] = mpos[5][0] = -ww;
     mpos[2][0] = mpos[3][0] = ww;
@@ -3204,7 +3289,7 @@ void SetSunshine(EFFECT_CONT *ec)
         fy = eff_ray[i].fpos[0][1] - eff_ray[0].fpos[0][1];
         fz = eff_ray[i].fpos[0][2] - eff_ray[0].fpos[0][2];
 
-        l = SgSqrtf(fx * fx + fy * fy + fz * fz);
+        l = VER_SQRTF(fx * fx + fy * fy + fz * fz);
 
         eff_ray[i].ts[0].fl32 = i - 1;
         eff_ray[i].tt[0].fl32 = 1.0f - add;
@@ -3232,7 +3317,8 @@ void SetSunshine(EFFECT_CONT *ec)
         }
     }
 
-#ifdef MATCHING_DECOMP
+#if defined(MATCHING_DECOMP)
+    // HACK: fixes codegen
     *cnt_ptr = (int)*cnt_ptr + 2 >= 2000 ? 0 : (int)*cnt_ptr + 1;
 #else
     ec->cnt = (int)ec->cnt + 2 >= 2000 ? 0 : (int)ec->cnt + 1;
@@ -3246,7 +3332,6 @@ void SetSunshine(EFFECT_CONT *ec)
     sceVu0RotMatrixY(wlm, wlm, rot_y);
     sceVu0TransMatrix(wlm, wlm, base_pos);
     sceVu0MulMatrix(slm, SgWSMtx, wlm);
-
     sceVu0RotTransPers(eff_ray[0].ipos[0], slm, eff_ray[0].fpos[0], 0);
 
     n = 0;
@@ -3261,7 +3346,7 @@ void SetSunshine(EFFECT_CONT *ec)
         n = 1;
     }
 
-    if (eff_ray[0].ipos[0][2] < 0xff || eff_ray[0].ipos[0][2] > 0xfffffff)
+    if (eff_ray[0].ipos[0][2] < 0xff || eff_ray[0].ipos[0][2] > 0x0fffffff)
     {
         n = 1;
     }
@@ -3295,7 +3380,7 @@ void SetSunshine(EFFECT_CONT *ec)
                 n = 1;
             }
 
-            if (eff_ray[i].ipos[j][2] < 0xff || eff_ray[i].ipos[j][2] > 0xfffffff)
+            if (eff_ray[i].ipos[j][2] < 0xff || eff_ray[i].ipos[j][2] > 0x0fffffff)
             {
                 n = 1;
             }
@@ -3325,7 +3410,9 @@ void SetSunshine(EFFECT_CONT *ec)
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_ZBUF_1(0x8c, SCE_GS_PSMCT24, 1);
     pbuf[ndpkt++].ul64[1] = SCE_GS_ZBUF_1;
 
+
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_ALPHA_1(SCE_GS_ALPHA_CS, SCE_GS_ALPHA_ZERO, SCE_GS_ALPHA_AS, SCE_GS_ALPHA_CD, 0);
+
     pbuf[ndpkt++].ul64[1] = SCE_GS_ALPHA_1;
 
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_TEST_1(1, SCE_GS_ALPHA_GREATER, 0, SCE_GS_AFAIL_KEEP, 0, 0, 1, SCE_GS_DEPTH_GEQUAL);
@@ -3336,8 +3423,8 @@ void SetSunshine(EFFECT_CONT *ec)
 
     if (eff_ray[0].clip[0] != 0)
     {
-        pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_TRUE, 64, SCE_GIF_PACKED, 2);
-        pbuf[ndpkt++].ul64[1] = 0 \
+        pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_TRUE, SCE_GS_SET_PRIM(SCE_GS_PRIM_POINT, 0, 0, 0, 1, 0, 0, 0, 0), SCE_GIF_PACKED, 2);
+        pbuf[ndpkt++].ul64[1] = 0
             | SCE_GS_RGBAQ << (4 * 0)
             | SCE_GS_XYZF2 << (4 * 1);
 
@@ -3352,8 +3439,8 @@ void SetSunshine(EFFECT_CONT *ec)
         pbuf[ndpkt++].ui32[3] = 0;
     }
 
-    pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(32, SCE_GS_TRUE, SCE_GS_TRUE, 92, SCE_GIF_PACKED, 6);
-    pbuf[ndpkt++].ul64[1] = 0 \
+    pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(32, SCE_GS_TRUE, SCE_GS_TRUE, SCE_GS_SET_PRIM(SCE_GS_PRIM_TRISTRIP, 1, 1, 0, 1, 0, 0, 0, 0), SCE_GIF_PACKED, 6);
+    pbuf[ndpkt++].ul64[1] = 0
         | SCE_GS_ST    << (4 * 0)
         | SCE_GS_RGBAQ << (4 * 1)
         | SCE_GS_XYZF2 << (4 * 2)
@@ -3403,7 +3490,7 @@ void SetSunshine(EFFECT_CONT *ec)
 
     pbuf[n].ui32[0] = ndpkt + DMAend - n - 1;
 
-    if (ec->dat.uc8[1] & 1)
+    if (ec->dat.uc8[1] & 0x1)
     {
         ResetEffects(ec);
     }
@@ -3450,10 +3537,10 @@ void SetDust(EFFECT_CONT *ec)
     sceVu0FVECTOR bpos;
     sceVu0FVECTOR wpos;
     sceVu0FVECTOR ppos[4] = {
-        {-5.0f, 10.0f, 0.0f, 1.0f},
-        {+5.0f, 10.0f, 0.0f, 1.0f},
-        {-5.0f,  0.0f, 0.0f, 1.0f},
-        {+5.0f,  0.0f, 0.0f, 1.0f},
+        { -5.0f, 10.0f, 0.0f, 1.0f },
+        { +5.0f, 10.0f, 0.0f, 1.0f },
+        { -5.0f,  0.0f, 0.0f, 1.0f },
+        { +5.0f,  0.0f, 0.0f, 1.0f },
     };
 
     if (ec->dat.uc8[2] != 0)
@@ -3464,8 +3551,8 @@ void SetDust(EFFECT_CONT *ec)
             eff_dust[n].cnt = 0.0f;
             eff_dust[n].pos[0] = 0.0f;
             eff_dust[n].pos[1] = 0.0f;
-            eff_dust[n].vel[0] = vu0Rand() * 60.0f + mv1x;
-            eff_dust[n].vel[1] = vu0Rand() * 10.0f + mv1y;
+            eff_dust[n].vel[0] = 60.0f * VER_RAND() + mv1x;
+            eff_dust[n].vel[1] = 10.0f * VER_RAND() + mv1y;
         }
 
         for (f = 0.0f; f < 360.0f; f += mang, n++)
@@ -3474,8 +3561,8 @@ void SetDust(EFFECT_CONT *ec)
             eff_dust[n].cnt = 0.0f;
             eff_dust[n].pos[0] = 0.0f;
             eff_dust[n].pos[1] = 0.0f;
-            eff_dust[n].vel[0] = vu0Rand() * 40.0f + mv2x;
-            eff_dust[n].vel[1] = vu0Rand() * 10.0f + mv2y;
+            eff_dust[n].vel[0] = 40.0f * VER_RAND() + mv2x;
+            eff_dust[n].vel[1] = 10.0f * VER_RAND() + mv2y;
         }
 
         ec->dat.uc8[2] = 0;
@@ -3514,8 +3601,8 @@ void SetDust(EFFECT_CONT *ec)
         Vu0CopyVector(eff_dust[n].opos, eff_dust[n].pos);
         Vu0CopyVector(wpos, bpos);
 
-        ss = SgSinf((f * PI) / 180.0f);
-        cc = SgCosf((f * PI) / 180.0f);
+        ss = VER_SINF((f * PI) / 180.0f);
+        cc = VER_COSF((f * PI) / 180.0f);
 
         wpos[0] += (eff_dust[n].pos[0] * cc - eff_dust[n].pos[2] * ss) * 0.2f;
         wpos[1] += (eff_dust[n].pos[1]) * 0.2f;
@@ -3558,7 +3645,7 @@ void SetDust(EFFECT_CONT *ec)
         }
     }
 
-    for (f = mang * 0.5f; f < mang * 0.5f + 360.0f; f = f + mang)
+    for (f = mang * 0.5f; f < mang * 0.5f + 360.0f; f += mang)
     {
         eff_dust[n].pos[0] = +eff_dust[n].vel[0] * eff_dust[n].cnt - grv2x * eff_dust[n].cnt * eff_dust[n].cnt;
         eff_dust[n].pos[1] = -eff_dust[n].vel[1] * eff_dust[n].cnt + grv2y * eff_dust[n].cnt * eff_dust[n].cnt;
@@ -3580,8 +3667,8 @@ void SetDust(EFFECT_CONT *ec)
         Vu0CopyVector(eff_dust[n].opos, eff_dust[n].pos);
         Vu0CopyVector(wpos, bpos);
 
-        ss = SgSinf((f * PI) / 180.0f);
-        cc = SgCosf((f * PI) / 180.0f);
+        ss = VER_SINF((f * PI) / 180.0f);
+        cc = VER_COSF((f * PI) / 180.0f);
 
         wpos[0] += (eff_dust[n].pos[0] * cc - eff_dust[n].pos[2] * ss) * 0.2f;
         wpos[1] += (eff_dust[n].pos[1]) * 0.2f;
@@ -3618,7 +3705,7 @@ void SetDust(EFFECT_CONT *ec)
             }
         }
 
-        if (!w)
+        if (w == 0)
         {
             n++;
         }
@@ -3646,6 +3733,7 @@ void SetDust(EFFECT_CONT *ec)
 
         th = effdat[monochrome_mode + 6].h * 16;
         tw = effdat[monochrome_mode + 6].w * 16;
+
         tx0 = effdat[monochrome_mode + 6].tex0;
 
         Reserve2DPacket(0x1000);
@@ -3680,7 +3768,7 @@ void SetDust(EFFECT_CONT *ec)
             k = so[j];
 
             pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(4, SCE_GS_TRUE, SCE_GS_TRUE, 348, SCE_GIF_PACKED, 3);
-            pbuf[ndpkt++].ul64[1] = 0 \
+            pbuf[ndpkt++].ul64[1] = 0
                     | SCE_GS_RGBAQ << (4 * 0)
                     | SCE_GS_UV    << (4 * 1)
                     | SCE_GS_XYZF2 << (4 * 2);
@@ -3738,15 +3826,15 @@ void SetWaterdrop(EFFECT_CONT *ec)
     sceVu0FMATRIX wlm;
     sceVu0FMATRIX slm;
     sceVu0FVECTOR wpos;
-    static sceVu0FVECTOR dummy_rot = {0.0f, 0.0f, 0.0f, 1.0f};
+    static sceVu0FVECTOR dummy_rot = { 0.0f, 0.0f, 0.0f, 1.0f };
     static sceVu0FVECTOR wwpos[24];
     static int wwcnt = 0;
     sceVu0IVECTOR ivec[4];
     sceVu0FVECTOR ppos[4] = {
-        {-1.0f, +1.0f, 0.0f, 1.0f},
-        {+1.0f, +1.0f, 0.0f, 1.0f},
-        {-1.0f, -1.0f, 0.0f, 1.0f},
-        {+1.0f, -1.0f, 0.0f, 1.0f},
+        { -1.0f, +1.0f, 0.0f, 1.0f },
+        { +1.0f, +1.0f, 0.0f, 1.0f },
+        { -1.0f, -1.0f, 0.0f, 1.0f },
+        { +1.0f, -1.0f, 0.0f, 1.0f },
     };
     u_int val50 = 50;
 
@@ -3779,14 +3867,14 @@ void SetWaterdrop(EFFECT_CONT *ec)
     {
         if (wddely < wpos[1])
         {
-            if (!(wdnwait-- > 0))
+            if (wdnwait-- <= 0)
             {
                 wdcnt = 0.0f;
-                wdnwait = (u_int)(vu0Rand() * 100.0f) + (wdbwait - val50);
+                wdnwait = (u_int)(100.0f * VER_RAND()) + (wdbwait - val50);
 
                 if (ec->dat.uc8[5] == 4)
                 {
-                    ec->dat.uc8[7] = vu0Rand() * 100.0f < 10.0f ? 1 : 0;
+                    ec->dat.uc8[7] = 100.0f * VER_RAND() < 10.0f ? 1 : 0;
                 }
             }
 
@@ -3803,7 +3891,7 @@ void SetWaterdrop(EFFECT_CONT *ec)
                 Vu0CopyVector(wwpos[wwcnt], wpos);
                 wwpos[wwcnt][1] = wddely;
 
-                SetEffects(0x16, 8, 1, (u_int)(vu0Rand() * 16.0f) + 8, 0x20, 0x20, 0x30, 0.3f, 4.5f, wwpos[wwcnt], dummy_rot, 2);
+                SetEffects(EF_RIPPLE2, 8, 1, (u_int)(16.0f * VER_RAND()) + 8, 0x20, 0x20, 0x30, 0.3f, 4.5f, wwpos[wwcnt], dummy_rot, 2);
 
                 if (plyr_wrk.pr_info.room_no == 23)
                 {
@@ -3811,6 +3899,7 @@ void SetWaterdrop(EFFECT_CONT *ec)
                 }
 
                 wwcnt = (wwcnt + 1) % 16;
+
                 ec->flow = 0;
             }
 
@@ -3822,11 +3911,11 @@ void SetWaterdrop(EFFECT_CONT *ec)
             if (ec->dat.uc8[5] == 0x2)
             {
                 Vu0CopyVector(wwpos[wwcnt], wpos);
-                wwpos[wwcnt][0] += (vu0Rand() * 128.0f - 64.0f);
+                wwpos[wwcnt][0] += (128.0f * VER_RAND() - 64.0f);
                 wwpos[wwcnt][1] = wddely;
-                wwpos[wwcnt][2] += (vu0Rand() * 128.0f - 64.0f);
+                wwpos[wwcnt][2] += (128.0f * VER_RAND() - 64.0f);
 
-                SetEffects(0x16, 8, 0x81, 0x10, 0x40, 0, 0, 0.002f, 0.3f, wwpos[wwcnt], dummy_rot, 1);
+                SetEffects(EF_RIPPLE2, 8, 0x81, 0x10, 0x40, 0, 0, 0.002f, 0.3f, wwpos[wwcnt], dummy_rot, 1);
 
                 if (plyr_wrk.pr_info.room_no == 1 || plyr_wrk.pr_info.room_no == 26)
                 {
@@ -3852,28 +3941,29 @@ void SetWaterdrop(EFFECT_CONT *ec)
 
             if (ec->dat.uc8[7] != 0)
             {
-                SetEffects(0x16, 8, 0x41, 0x20, 0x40, 0, 0, 0.05f, 4.0f, wwpos[wwcnt], dummy_rot, 2);
+                SetEffects(EF_RIPPLE2, 8, 0x41, 0x20, 0x40, 0, 0, 0.05f, 4.0f, wwpos[wwcnt], dummy_rot, 2);
             }
             else
             {
-                SetEffects(0x16, 8, 1, (u_int)(vu0Rand() * 16.0f) + 8, 0x20, 0x20, 0x30, 0.3f, 4.5f, wwpos[wwcnt], dummy_rot, 2);
+                SetEffects(EF_RIPPLE2, 8, 1, (u_int)(16.0f * VER_RAND()) + 8, 0x20, 0x20, 0x30, 0.3f, 4.5f, wwpos[wwcnt], dummy_rot, 2);
             }
             if (plyr_wrk.pr_info.room_no == 0x17)
             {
                 SeStartPosEventFlame(plyr_wrk.pr_info.room_no, 0, wwpos[wwcnt], 0, 0x1000, 0x1000);
             }
 
-            wwcnt = (wwcnt + 1) % 0x18;
+            wwcnt = (wwcnt + 1) % 24;
+
             ec->flow = 0;
 
             return;
         }
 
         ec->flow = 1;
+
         wdcnt += wdadd;
     }
 
-    wdnwait = wdnwait;
     Get2PosRot(camera.p, camera.i, &rot_x, &rot_y);
     sceVu0UnitMatrix(wlm);
 
@@ -3915,6 +4005,7 @@ void SetWaterdrop(EFFECT_CONT *ec)
 
     th = effdat[monochrome_mode + 52].h * 16;
     tw = effdat[monochrome_mode + 52].w * 16;
+
     tx0 = effdat[monochrome_mode + 52].tex0;
 
     Reserve2DPacket(0x1000);
@@ -3944,8 +4035,8 @@ void SetWaterdrop(EFFECT_CONT *ec)
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_TEST_1(1, SCE_GS_ALPHA_GREATER, 0, SCE_GS_AFAIL_KEEP, 0, 0, 1, SCE_GS_DEPTH_GEQUAL);
     pbuf[ndpkt++].ul64[1] = SCE_GS_TEST_1;
 
-    pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(4, SCE_GS_TRUE, SCE_GS_TRUE, 348, SCE_GIF_PACKED, 3);
-    pbuf[ndpkt++].ul64[1] = 0 \
+    pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(4, SCE_GS_TRUE, SCE_GS_TRUE, SCE_GS_SET_PRIM(SCE_GS_PRIM_TRISTRIP, 1, 1, 0, 1, 0, 1, 0, 0), SCE_GIF_PACKED, 3);
+    pbuf[ndpkt++].ul64[1] = 0
                     | SCE_GS_RGBAQ << (4 * 0)
                     | SCE_GS_UV    << (4 * 1)
                     | SCE_GS_XYZF2 << (4 * 2);
@@ -3981,8 +4072,8 @@ void SetWaterdrop(EFFECT_CONT *ec)
 
 void SetDustLeaf(sceVu0FVECTOR pos, int type)
 {
-    u_char rgb1[3] = {0x12, 0x18, 0x1e};
-    u_char rgb2[3] = {0x16, 0x16, 0x1a};
+    u_char rgb1[3] = { 0x12, 0x18, 0x1e };
+    u_char rgb2[3] = { 0x16, 0x16, 0x1a };
     u_char mr;
     u_char mg;
     u_char mb;
@@ -4100,8 +4191,8 @@ void SetDustLeaf(sceVu0FVECTOR pos, int type)
         for (i = 0; i < leaf_num; i++)
         {
 
-            lepo[i].mang = (ang - angr * vu0Rand()) + angr * 0.5f;
-            lepo[i].mang = lepo[i].mang < -PI ? lepo[i].mang + PI2 : (lepo[i].mang > PI ? lepo[i].mang - PI2 : lepo[i].mang);
+            lepo[i].mang = (ang - angr * VER_RAND()) + angr * 0.5f;
+            lepo[i].mang = lepo[i].mang < -PI ? lepo[i].mang + (PI * 2) : (lepo[i].mang > PI ? lepo[i].mang - (PI * 2) : lepo[i].mang);
 
             lepo[i].cnt = 0.0f;
 
@@ -4109,21 +4200,21 @@ void SetDustLeaf(sceVu0FVECTOR pos, int type)
             lepo[i].pos[1] = 0.0f;
             lepo[i].pos[2] = 0.0f;
 
-            lepo[i].vel[0] = vu0Rand() * 10.0f + wvx;
-            lepo[i].vel[1] = vu0Rand() * 15.0f + wvy;
+            lepo[i].vel[0] = 10.0f * VER_RAND() + wvx;
+            lepo[i].vel[1] = 15.0f * VER_RAND() + wvy;
 
             lepo[i].fl = 0;
 
-            lepo[i].ang[0] = vu0Rand() * PI2 - PI;
-            lepo[i].ang[1] = vu0Rand() * PI2 - PI;
+            lepo[i].ang[0] = (PI * 2) * VER_RAND() - PI;
+            lepo[i].ang[1] = (PI * 2) * VER_RAND() - PI;
 
-            lepo[i].r = (mrr * vu0Rand() + mr);
-            lepo[i].g = (mrg * vu0Rand() + mg);
-            lepo[i].b = (mrb * vu0Rand() + mb);
+            lepo[i].r = (mrr * VER_RAND() + mr);
+            lepo[i].g = (mrg * VER_RAND() + mg);
+            lepo[i].b = (mrb * VER_RAND() + mb);
 
             status = lep->type;
 
-            lepo[i].a = status ? 0x1c : 0x80;
+            lepo[i].a = status != 0 ? 0x1c : 0x80;
         }
     }
 }
@@ -4187,18 +4278,18 @@ void RunLeafSub(EFF_LEAF *lep)
     sceVu0FVECTOR wpos;
     sceVu0FVECTOR ppos[2][5] = {
         {
-            {-6.0f, 13.5f, 0.0f, 1.0f},
-            {+6.0f, 13.5f, 0.0f, 1.0f},
-            {-6.0f, 0.0f, 0.0f, 1.0f},
-            {+6.0f, 0.0f, 0.0f, 1.0f},
-            {0.0f, 6.7f, 0.0f, 1.0f},
+            { -6.0f, 13.5f, 0.0f, 1.0f },
+            { +6.0f, 13.5f, 0.0f, 1.0f },
+            { -6.0f,  0.0f, 0.0f, 1.0f },
+            { +6.0f,  0.0f, 0.0f, 1.0f },
+            {  0.0f,  6.7f, 0.0f, 1.0f },
         },
         {
-            {-20.0f, +20.0f, 0.0f, 1.0f},
-            {+20.0f, +20.0f, 0.0f, 1.0f},
-            {-20.0f, -20.0f, 0.0f, 1.0f},
-            {+20.0f, -20.0f, 0.0f, 1.0f},
-            {0.0f, 0.0f, 0.0f, 1.0f},
+            { -20.0f, +20.0f, 0.0f, 1.0f },
+            { +20.0f, +20.0f, 0.0f, 1.0f },
+            { -20.0f, -20.0f, 0.0f, 1.0f },
+            { +20.0f, -20.0f, 0.0f, 1.0f },
+            {   0.0f,   0.0f, 0.0f, 1.0f },
         }
     };
     EFF_LEAF_ONE *elo = lep->lo;
@@ -4245,8 +4336,8 @@ void RunLeafSub(EFF_LEAF *lep)
 
         if (stop_effects == 0 && stop_lf == 0)
         {
-#ifdef MATCHING_DECOMP
-            elo[i].fl += 0; // fixes float regswap
+#if defined(MATCHING_DECOMP)
+            elo[i].fl += 0; // HACK: fixes float regswap
 #endif
             elo[i].cnt += fw2;
         }
@@ -4254,8 +4345,8 @@ void RunLeafSub(EFF_LEAF *lep)
         Vu0CopyVector(elo[i].opos, elo[i].pos);
         Vu0CopyVector(wpos, bpos);
 
-        ss = SgSinf(f);
-        cc = SgCosf(f);
+        ss = VER_SINF(f);
+        cc = VER_COSF(f);
 
         wpos[0] += elo[i].pos[0] * cc - elo[i].pos[2] * ss;
         wpos[1] += elo[i].pos[1];
@@ -4300,7 +4391,7 @@ void RunLeafSub(EFF_LEAF *lep)
             }
         }
 
-        disp[i] = !w;
+        disp[i] = w == 0;
     }
 
     j = 0;
@@ -4337,12 +4428,14 @@ void RunLeafSub(EFF_LEAF *lep)
     {
         th = effdat[monochrome_mode + 20].h * 16;
         tw = effdat[monochrome_mode + 20].w * 16;
+
         tx0 = effdat[monochrome_mode + 20].tex0;
     }
     else
     {
         th = effdat[monochrome_mode + 6].h * 16;
         tw = effdat[monochrome_mode + 6].w * 16;
+
         tx0 = effdat[monochrome_mode + 6].tex0;
     }
 
@@ -4382,7 +4475,7 @@ void RunLeafSub(EFF_LEAF *lep)
             if (disp[k] != 0)
             {
                 pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(4, SCE_GS_TRUE, SCE_GS_TRUE, SCE_GS_SET_PRIM(SCE_GS_PRIM_TRISTRIP, 1, 1, 0, 1, 0, 1, 0, 0), SCE_GIF_PACKED, 3);
-                pbuf[ndpkt++].ul64[1] = 0 \
+                pbuf[ndpkt++].ul64[1] = 0
                     | SCE_GS_RGBAQ << (4 * 0)
                     | SCE_GS_UV    << (4 * 1)
                     | SCE_GS_XYZF2 << (4 * 2);
@@ -4440,16 +4533,33 @@ void RunLeaf()
 void light_rgb(sceVu0IVECTOR c0, sceVu0FMATRIX LocalLightMatrix, sceVu0FMATRIX LightColorMatrix, float *v0, float *v1, float *v2, float *c1)
 {
     sceVu0FVECTOR vector;
+#if defined(BUILD_JP_VERSION)
+    int old_di;
+#endif
+
+#if defined(BUILD_JP_VERSION)
+    old_di = DIntr();
+#endif
 
     Vu0SubOuterProduct(vector, v0, v2, v1);
     Vu0Normalize(vector, vector);
     Vu0ApplyMatrix(vector, LocalLightMatrix, vector);
+
     sceVu0ClampVector(vector, vector, 0.0f, 1.0f);
     vector[3] = 1.0f;
+
     Vu0ApplyMatrix(vector, LightColorMatrix, vector);
     sceVu0ClampVector(vector, vector, 0.0f, 1.0f);
+
     Vu0MulVector(vector, c1, vector);
     Vu0FTOI0Vector(c0, vector);
+
+#if defined(BUILD_JP_VERSION)
+    if (old_di)
+    {
+        EIntr();
+    }
+#endif
 }
 
 u_char SetCanalSub(int no, float *mpos)
@@ -4520,8 +4630,10 @@ u_char SetCanalSub(int no, float *mpos)
     sufcol[2] = sufcol[1] = sufcol[0] = 255.0f;
     sufcol[3] = 0.0f;
 
-#ifdef MATCHING_DECOMP
-    ripp = &rip[j]; // fixes reg+stack swap
+#if defined(MATCHING_DECOMP)
+    // fixes reg+stack swap
+    ripp = &rip[j];
+    y = (rippm->v * rippm->t) - (((grav * rippm->t) * rippm->t) * 0.5f);
 #endif
 
     if (setlight != 0)
@@ -4560,8 +4672,9 @@ u_char SetCanalSub(int no, float *mpos)
     {
         wix = i % rw1.vnumw;
         wiy = i / rw1.vnumw;
+
         f = wix * cana1 + wiy * cana2 + canaltm[no];
-        rw1.vt[i][1] = SgSinf((f * PI) / 180.0f) * cana4;
+        rw1.vt[i][1] = VER_SINF((f * PI) / 180.0f) * cana4;
     }
 
     if (stop_effects == 0)
@@ -4578,6 +4691,7 @@ u_char SetCanalSub(int no, float *mpos)
             for (i = 0; i < rw1.vnumw * rw1.vnumh; i++)
             {
                 rippm = &ripp->rip2m[i];
+
                 lw = (int)(rippm->dist / 4);
 
                 if (lw < ripp->time)
@@ -4620,6 +4734,7 @@ u_char SetCanalSub(int no, float *mpos)
 
                         l = 1.0f - lw / ldec;
                         l = (l < 0.0f) ? 0.0f : l;
+
                         rw1.vt[i][1] += -y * l;
                     }
                 }
@@ -4635,7 +4750,9 @@ u_char SetCanalSub(int no, float *mpos)
     for (i = 0; i < rw1.vnumw * rw1.vnumh; i++)
     {
         sceVu0ApplyMatrix(wpos, wlm, rw1.vt[i]);
+
         l = Get2PLength(camera.p, wpos);
+
         rw1.fg[i] = far <= l ? 0 : (l <= near ? 0xff : (u_int)(((far - l) * 255.0f) / (far - near)));
     }
 
@@ -4655,8 +4772,8 @@ u_char SetCanalSub(int no, float *mpos)
 
     for (i = 0; i < rw1.vnumw * rw1.vnumh; i++)
     {
-        int wix = i % (rw1.pnumw + 1); // local ??
-        int wiy = i / (rw1.pnumw + 1); // local ??
+        int wix = i % (rw1.pnumw + 1);
+        int wiy = i / (rw1.pnumw + 1);
 
         if (wix == rw1.pnumw && wiy == rw1.pnumh)
         {
@@ -4687,6 +4804,7 @@ u_char SetCanalSub(int no, float *mpos)
         {
             c1[2] = c1[1] = c1[0] = i * f;
             c1[3] = 0.0f;
+
             light_rgb(rw1.col[i], LocalLightMatrix, LightColorMatrix, rw1.vt[v1], rw1.vt[v2], rw1.vt[v3], c1);
         }
         else
@@ -4733,7 +4851,9 @@ u_char SetCanalSub(int no, float *mpos)
         rw2.ty[i] = (wiy * 128 / rw2.pnumh) * 16;
 
         sceVu0ApplyMatrix(wpos, wlm, rw2.vt[i]);
+
         l = Get2PLength(camera.p, wpos);
+
         rw2.fg[i] = far <= l ? 0 : (l <= near ? 0xff : (u_int)(((far - l) * 255.0f) / (far - near)));
     }
 
@@ -4812,7 +4932,7 @@ u_char SetCanalSub(int no, float *mpos)
 
     for (i = 0; i < m; i++)
     {
-        j = i + rw1.pnumw+1;
+        j = i + rw1.pnumw + 1;
 
         pbuf[ndpkt].ul64[0] = SCE_GS_SET_UV(rw1.tx[i], rw1.ty[i]);
         pbuf[ndpkt++].ul64[1] = SCE_GS_SET_RGBAQ((u_char)rw1.col[i][0], (u_char)rw1.col[i][1], (u_char)rw1.col[i][2], 0x38, 0x3f800000);
@@ -4823,7 +4943,7 @@ u_char SetCanalSub(int no, float *mpos)
 
         if (k >= 3)
         {
-            reg |= (long)(0 \
+            reg |= (long)(0
                 | SCE_GS_UV    << (4 * 0)
                 | SCE_GS_RGBAQ << (4 * 1)
                 | SCE_GS_XYZF2 << (4 * 2)
@@ -4831,7 +4951,7 @@ u_char SetCanalSub(int no, float *mpos)
         }
         else
         {
-            reg |= (long)(0 \
+            reg |= (long)(0
                 | SCE_GS_UV    << (4 * 0)
                 | SCE_GS_RGBAQ << (4 * 1)
                 | SCE_GS_XYZF3 << (4 * 2)
@@ -4848,7 +4968,7 @@ u_char SetCanalSub(int no, float *mpos)
 
         if (k >= 3)
         {
-            reg |= (long)(0 \
+            reg |= (long)(0
                 | SCE_GS_UV    << (4 * 0)
                 | SCE_GS_RGBAQ << (4 * 1)
                 | SCE_GS_XYZF2 << (4 * 2)
@@ -4856,7 +4976,7 @@ u_char SetCanalSub(int no, float *mpos)
         }
         else
         {
-            reg |= (long)(0 \
+            reg |= (long)(0
                 | SCE_GS_UV    << (4 * 0)
                 | SCE_GS_RGBAQ << (4 * 1)
                 | SCE_GS_XYZF3 << (4 * 2)
@@ -4893,8 +5013,8 @@ u_char SetCanalSub(int no, float *mpos)
         pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_TRUE, 0, SCE_GIF_REGLIST, 2);
         pbuf[ndpkt++].ul64[1] = 0xf0;
 
-        pbuf[ndpkt].ul64[0] = 0x17c;
-        pbuf[ndpkt++].ul64[1] = 0;
+        pbuf[ndpkt].ul64[0] = SCE_GS_SET_PRIM(SCE_GS_PRIM_TRISTRIP, 1, 1, 1, 1, 0, 1, 0, 0);
+        pbuf[ndpkt++].ul64[1] = SCE_GS_PRIM;
 
         tagnum = ndpkt++;
 
@@ -4914,11 +5034,19 @@ u_char SetCanalSub(int no, float *mpos)
 
             if (k >= 3)
             {
-                reg |= (long)(0 | SCE_GS_UV    << (4 * 0) | SCE_GS_RGBAQ << (4 * 1) | SCE_GS_XYZF2 << (4 * 2)) << (cnt * 12);
+                reg |= (long)(0
+                    | SCE_GS_UV    << (4 * 0)
+                    | SCE_GS_RGBAQ << (4 * 1)
+                    | SCE_GS_XYZF2 << (4 * 2)
+                ) << (cnt * 12);
             }
             else
             {
-                reg |= (long)(0 | SCE_GS_UV    << (4 * 0) | SCE_GS_RGBAQ << (4 * 1) | SCE_GS_XYZF3 << (4 * 2)) << (cnt * 12);
+                reg |= (long)(0
+                    | SCE_GS_UV    << (4 * 0)
+                    | SCE_GS_RGBAQ << (4 * 1)
+                    | SCE_GS_XYZF3 << (4 * 2)
+                ) << (cnt * 12);
             }
             pbuf[ndpkt++].ul64[1] = SCE_GS_SET_UV(rw2.tx[j], rw2.ty[j]);
 
@@ -4931,11 +5059,19 @@ u_char SetCanalSub(int no, float *mpos)
 
             if (k >= 3)
             {
-                reg |= (long)(0 | SCE_GS_UV    << (4 * 0) | SCE_GS_RGBAQ << (4 * 1) | SCE_GS_XYZF2 << (4 * 2)) << (cnt * 12);
+                reg |= (long)(0
+                    | SCE_GS_UV    << (4 * 0)
+                    | SCE_GS_RGBAQ << (4 * 1)
+                    | SCE_GS_XYZF2 << (4 * 2)
+                ) << (cnt * 12);
             }
             else
             {
-                reg |= (long)(0 | SCE_GS_UV    << (4 * 0) | SCE_GS_RGBAQ << (4 * 1) | SCE_GS_XYZF3 << (4 * 2)) << (cnt * 12);
+                reg |= (long)(0
+                    | SCE_GS_UV    << (4 * 0)
+                    | SCE_GS_RGBAQ << (4 * 1)
+                    | SCE_GS_XYZF3 << (4 * 2)
+                ) << (cnt * 12);
             }
 
             cnt++;
@@ -5047,7 +5183,7 @@ void Call3DRipple(sceVu0FVECTOR bpos)
             x3 = x2 - x1;
             z3 = z2 - z1;
 
-            rip[m].rip2m[i].dist = SgSqrtf(x3 * x3 + z3 * z3) * 4.0f;
+            rip[m].rip2m[i].dist = VER_SQRTF(x3 * x3 + z3 * z3) * 4.0f;
         }
 
         rip[m].time = 0.0f;
@@ -5147,10 +5283,10 @@ void SetGlowOfAFirefly(float *p, float sc, u_char r1, u_char g1, u_char b1, u_ch
     sceVu0FVECTOR vpos;
     sceVu0FVECTOR vtw[4];
     sceVu0FVECTOR wpos[4] = {
-        {-1.0f, +1.0f, 0.0f, 1.0f},
-        {+1.0f, +1.0f, 0.0f, 1.0f},
-        {-1.0f, -1.0f, 0.0f, 1.0f},
-        {+1.0f, -1.0f, 0.0f, 1.0f},
+        { -1.0f, +1.0f, 0.0f, 1.0f },
+        { +1.0f, +1.0f, 0.0f, 1.0f },
+        { -1.0f, -1.0f, 0.0f, 1.0f },
+        { +1.0f, -1.0f, 0.0f, 1.0f },
     };
     float f;
     float rot_x;
@@ -5160,7 +5296,9 @@ void SetGlowOfAFirefly(float *p, float sc, u_char r1, u_char g1, u_char b1, u_ch
     int n;
 
     Vu0CopyVector(vpos, p);
+
     Get2PosRot(camera.p, camera.i, &rot_x, &rot_y);
+
     sceVu0UnitMatrix(wlm);
 
     wlm[0][0] = wlm[1][1] = wlm[2][2] = sc;
@@ -5176,25 +5314,24 @@ void SetGlowOfAFirefly(float *p, float sc, u_char r1, u_char g1, u_char b1, u_ch
     {
         sceVu0RotTransPers(ivec[i], slm, wpos[i], 0);
 
-        if (0x5000 < ivec[i][0] - 0x5800U)
+        if (ivec[i][0] < 0x5800 || ivec[i][0] > 0xa800)
         {
             w = 1;
         }
 
-        if (0x1c00 < ivec[i][1] - 0x7200U)
+        if (ivec[i][1] < 0x7200 || ivec[i][1] > 0x8e00)
         {
             w = 1;
         }
 
-        if (0xffff00 < ivec[i][2] - 0xffU)
+        if (ivec[i][2] < 0xff || ivec[i][2] > 0x00ffffff)
         {
             w = 1;
         }
     }
 
-    if (!w)
+    if (w == 0)
     {
-
         ipos[0] = (ivec[0][0] + ivec[3][0]) / 2;
         ipos[1] = (ivec[0][1] + ivec[3][1]) / 2;
         ipos[2] = (ivec[0][2] + ivec[3][2]) / 2;
@@ -5215,33 +5352,36 @@ void SetFireflySub(FIREFLY *ffp)
     sceVu0FVECTOR rot;
     sceVu0FVECTOR pos;
     sceVu0FMATRIX mtx;
-    int cnt = 20;
+    int cnt;
     float fw1;
     float fw2;
-    float rate = 0.1f;
-    float top = 0.0f;
-    float under; // unused?
+    float rate;
+    float top;
+    float under;
     float ph;
+
+    rate = 0.1f;
+
+    top = 0.0f;
+    under = 200.0f;
 
     if (ffp->time <= 0)
     {
         if (ffp->vel[2] != 0.0f)
         {
-            fw1 = vu0Rand();
-            fw1 = fw1 * 2.0f - 1.0f;
-            fw1 = fw1 * 0.5f;
+            fw1 = (2.0f * VER_RAND() - 1.0f) * 0.5f;
 
-            if (ffp->npos[1] > 200.0f)
+            if (ffp->npos[1] > under)
             {
-                fw2 = (vu0Rand() - 1.0f) * 0.5f;
+                fw2 = (VER_RAND() - 1.0f) * 0.5f;
             }
             else if (ffp->npos[1] < top)
             {
-                fw2 = vu0Rand() * 0.5f;
+                fw2 = (VER_RAND()) * 0.5f;
             }
             else
             {
-                fw2 = (vu0Rand() * 2.0f - 1.0f) * 0.5f;
+                fw2 = (2.0f * VER_RAND() - 1.0f) * 0.5f;
             }
 
             ffp->vel[0] = ffp->vel[0] + fw1 > 0.7f || ffp->vel[0] + fw1 < -0.7f ? ffp->vel[0] : ffp->vel[0] + fw1;
@@ -5251,30 +5391,45 @@ void SetFireflySub(FIREFLY *ffp)
             ffp->vel[1] *= rate;
         }
 
-        ffp->time = cnt;
+        ffp->time = 20;
     }
 
-    GetTrgtRotType2(ffp->bpos,ffp->npos,rot,3);
+    GetTrgtRotType2(ffp->bpos, ffp->npos, rot, 3);
 
-    while (rot[0] < -PI) rot[0] += PI2;
-    while (PI <= rot[0]) rot[0] -= PI2;
-    while (rot[1] < -PI) rot[1] += PI2;
-    while (PI <= rot[1]) rot[1] -= PI2;
+    while (rot[0] < -PI)
+    {
+        rot[0] += PI * 2;
+    }
+
+    while (PI <= rot[0])
+    {
+        rot[0] -= PI * 2;
+    }
+
+    while (rot[1] < -PI)
+    {
+        rot[1] += PI * 2;
+    }
+
+    while (PI <= rot[1])
+    {
+        rot[1] -= PI * 2;
+    }
 
     sceVu0UnitMatrix(mtx);
-    sceVu0RotMatrix(mtx,mtx,rot);
-    sceVu0TransMatrix(mtx,mtx,ffp->npos);
-    sceVu0ApplyMatrix(pos,mtx,ffp->vel);
+    sceVu0RotMatrix(mtx, mtx, rot);
+    sceVu0TransMatrix(mtx, mtx, ffp->npos);
+    sceVu0ApplyMatrix(pos, mtx, ffp->vel);
 
     Vu0CopyVector(ffp->bpos, ffp->npos);
     Vu0CopyVector(ffp->npos, pos);
 
     if (ffp->vel[2] != 0.0f)
     {
-        fw1 = ((vu0Rand() * 2.0f) - 1.0f) / 5.0f;
-        under = ffp->vel[2] + fw1;
-        under = under < 10.0f ? 8.0f : (12.0f < under ? 12.0f : under);
-        ffp->vel[2] = under * rate;
+        fw1 = ((2.0f * VER_RAND()) - 1.0f) / 5.0f;
+        fw1 = ffp->vel[2] + fw1 < 10.0f ? 8.0f : (12.0f < ffp->vel[2] + fw1 ? 12.0f : ffp->vel[2] + fw1);
+
+        ffp->vel[2] = fw1 * rate;
     }
 
     if (ffp->life >= 836)
@@ -5287,12 +5442,15 @@ void SetFireflySub(FIREFLY *ffp)
     }
     else
     {
-        ph = ((((836 - ffp->life) * 1080.0f) / 772.0f) * PI);
-        ffp->alp = (SgCosf(ph / 180.0f) + 1.0f) * 64.0f * 0.5f + 12.0f;
+        cnt = 836 - ffp->life;
+
+        ph = (cnt * 1080.0f) / 772.0f;
+
+        ffp->alp = (VER_COSF((ph * PI) / 180.0f) + 1.0f) * 64.0f * 0.5f + 12.0f;
     }
 
-    ffp->life--;
     ffp->time--;
+    ffp->life--;
 }
 
 void SetFirefly()
@@ -5301,11 +5459,13 @@ void SetFirefly()
     static int no = 0;
     static FIREFLY ff[20];
     int i;
-    float rate = 0.1f;
+    float rate;
     sceVu0FVECTOR fpos;
     sceVu0FVECTOR bpos = { 19800.0f, 100.0f, 36500.0f, 1.0f };
     sceVu0FMATRIX mtx;
     FIREFLY *ffp;
+
+    rate = 0.1f;
 
     if (plyr_wrk.pr_info.room_no == 22)
     {
@@ -5315,11 +5475,11 @@ void SetFirefly()
 
             Vu0CopyVector(ffp->npos, bpos);
 
-            ffp->npos[0] = ffp->npos[0] + ((vu0Rand() * 2.0f) - 1.0f) * 7000.0f;
-            ffp->npos[1] = ffp->npos[1] + ((vu0Rand() * 2.0f) - 1.0f) * 100.0f;
-            ffp->npos[2] = ffp->npos[2] + ((vu0Rand() * 2.0f) - 1.0f) * 3000.0f;
+            ffp->npos[0] = ffp->npos[0] + ((2.0f * VER_RAND()) - 1.0f) * 7000.0f;
+            ffp->npos[1] = ffp->npos[1] + ((2.0f * VER_RAND()) - 1.0f) * 100.0f;
+            ffp->npos[2] = ffp->npos[2] + ((2.0f * VER_RAND()) - 1.0f) * 3000.0f;
 
-            if (vu0Rand() * 2.0f < 1.0f)
+            if (2.0f * VER_RAND() < 1.0f)
             {
                 ffp->vel[0] = 0.0f;
                 ffp->vel[1] = 0.0f;
@@ -5327,9 +5487,9 @@ void SetFirefly()
             }
             else
             {
-                ffp->vel[0] = vu0Rand() * 2.0f - 1.0f;
-                ffp->vel[1] = vu0Rand() * 2.0f - 1.0f;
-                ffp->vel[2] = vu0Rand() * 5.0f + 10.0f;
+                ffp->vel[0] = 2.0f * VER_RAND() - 1.0f;
+                ffp->vel[1] = 2.0f * VER_RAND() - 1.0f;
+                ffp->vel[2] = 5.0f * VER_RAND() + 10.0f;
             }
 
             ffp->vel[3] = 1.0f;
@@ -5347,6 +5507,7 @@ void SetFirefly()
             Vu0CopyVector(ffp->npos, fpos);
 
             wait = 45;
+
             no = no + 1 >= 20 ? 0 : no + 1;
         }
 
@@ -5410,10 +5571,10 @@ void SetSky()
         plyr_wrk.pr_info.room_no == 0x26 || plyr_wrk.pr_info.room_no == 0x19
     )
     {
-        fx = (camera.i[0] - camera.p[0]) * (camera.i[0] - camera.p[0]);
-        fz = (camera.i[2] - camera.p[2]) * (camera.i[2] - camera.p[2]);
+        fx = camera.i[0] - camera.p[0];
+        fz = camera.i[2] - camera.p[2];
 
-        l = SgSqrtf(fx + fz);
+        l = VER_SQRTF(fx * fx + fz * fz);
 
         cpos[0] = camera.p[0] + ((camera.i[0] - camera.p[0]) * length) / l;
         cpos[1] = wline;
@@ -5438,7 +5599,7 @@ void SetSky()
             clip = 1;
         }
 
-        if (!clip)
+        if (clip == 0)
         {
             GetTrgtRot(camera.p, camera.i, rot, 2);
 
@@ -5446,23 +5607,40 @@ void SetSky()
             hline = hori < 128 ? 128 : (352 < hori ? 352 : hori);
 
             height = (rot[1] * 256.0f) * sc_speed / PI;
-            while (height <    0.0f) height += 256.0f;
-            while (height >= 256.0f) height -= 256.0f;
+
+            while (height < 0.0f)
+            {
+                height += 256.0f;
+            }
+
+            while (height >= 256.0f)
+            {
+                height -= 256.0f;
+            }
 
             x1 = 0x6c00;
             x2 = 0x9400;
 
             y1 = ivec[1];
-            y2 = ivec[1] - (hline * 16);
+            y2 = ivec[1] - hline * 16;
 
-            { // MACRO ?
-            sceVu0IVECTOR ivec;
-            ((float *)ivec)[0] = height;
-            ((float *)ivec)[1] = height + 639.0f;
-            _ftoi4(ivec, (float *)ivec);
-            u1 = ivec[0];
-            u2 = ivec[1];
+#if defined(BUILD_JP_VERSION)
+            u1 = height * 16.0f;
+            u2 = (height + 639.0f) * 16.0f;
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+            if (1) // always true condition, or more likely a context block
+            {
+                sceVu0IVECTOR ivec;
+
+                ((float *)ivec)[0] = height;
+                ((float *)ivec)[1] = height + 639.0f;
+
+                _ftoi4(ivec, (float *)ivec);
+
+                u1 = ivec[0];
+                u2 = ivec[1];
             }
+#endif
 
             Reserve2DPacket(0x1000);
 
@@ -5495,8 +5673,8 @@ void SetSky()
             pbuf[ndpkt].ul64[0] = SCE_GS_SET_CLAMP_1(SCE_GS_REPEAT, SCE_GS_CLAMP, 0, 0, 0, 0);
             pbuf[ndpkt++].ul64[1] = SCE_GS_CLAMP_1;
 
-            pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_TRUE, 342, SCE_GIF_PACKED, 5);
-            pbuf[ndpkt++].ul64[1] = 0 \
+            pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_TRUE, SCE_GS_SET_PRIM(SCE_GS_PRIM_SPRITE, 0, 1, 0, 1, 0, 1, 0, 0), SCE_GIF_PACKED, 5);
+            pbuf[ndpkt++].ul64[1] = 0
                 | SCE_GS_RGBAQ << (4 * 0)
                 | SCE_GS_UV    << (4 * 1)
                 | SCE_GS_XYZF2 << (4 * 2)
@@ -5564,7 +5742,7 @@ void SetPond()
     float near;
     u_long reg;
     TEX_WORK txw[1089];
-    sceVu0FVECTOR bpos = {19000.0f, 630.0f, 38000.0f, 1.0f};
+    sceVu0FVECTOR bpos = { 19000.0f, 630.0f, 38000.0f, 1.0f };
     sceVu0FMATRIX wlm;
     sceVu0FMATRIX slm;
     sceVu0FVECTOR wfv;
@@ -5586,12 +5764,12 @@ void SetPond()
         return;
     }
 
-    pnumw = 0x20;
-    pnumh = 0x20;
-    vnumw = 0x21;
-    vnumh = 0x21;
-
     tsh = 625.0f;
+
+    pnumw = 32;
+    pnumh = 32;
+    vnumw = pnumw + 1;
+    vnumh = pnumh + 1;
 
     sceVu0UnitMatrix(wlm);
     sceVu0TransMatrix(wlm, wlm, bpos);
@@ -5607,7 +5785,7 @@ void SetPond()
         f = wix * fcana2 + wiy * fcana2 + wave;
 
         wfv[0] = wix * tsh - 10000.0f;
-        wfv[1] = SgSinf((f * PI) / 180.0f) * fcana4;
+        wfv[1] = VER_SINF((f * PI) / 180.0f) * fcana4;
         wfv[2] = wiy * tsh - 10000.0f;
         wfv[3] = 1.0f;
 
@@ -5688,15 +5866,14 @@ void SetPond()
     pbuf[ndpkt].ul64[0] = SCE_GS_SET_PRIM(SCE_GS_PRIM_TRISTRIP, 1, 1, 1, 1, 0, 1, 0, 0);
     pbuf[ndpkt++].ul64[1] = SCE_GS_PRIM;
 
-    tagnum = ndpkt;
-    ndpkt++;
+    tagnum = ndpkt++;
 
     reg = 0;
     cnt = 0;
 
     for (i = 0; i < m; i++)
     {
-        j = i + pnumw+1;
+        j = i + pnumw + 1;
 
         pbuf[ndpkt].ul64[0] = SCE_GS_SET_UV(txw[i].tx, txw[i].ty);
         pbuf[ndpkt++].ul64[1] = SCE_GS_SET_RGBAQ(0x80, 0x80, 0x80, txw[i].alp, 0x3f800000);
@@ -5707,7 +5884,7 @@ void SetPond()
 
         if (k >= 3)
         {
-            reg |= (long)(0 \
+            reg |= (long)(0
                 | SCE_GS_UV    << (4 * 0)
                 | SCE_GS_RGBAQ << (4 * 1)
                 | SCE_GS_XYZF2 << (4 * 2)
@@ -5715,7 +5892,7 @@ void SetPond()
         }
         else
         {
-            reg |= (long)(0 \
+            reg |= (long)(0
                 | SCE_GS_UV    << (4 * 0)
                 | SCE_GS_RGBAQ << (4 * 1)
                 | SCE_GS_XYZF3 << (4 * 2)
@@ -5732,7 +5909,7 @@ void SetPond()
 
         if (k >= 3)
         {
-            reg |= (long)(0 \
+            reg |= (long)(0
                 | SCE_GS_UV    << (4 * 0)
                 | SCE_GS_RGBAQ << (4 * 1)
                 | SCE_GS_XYZF2 << (4 * 2)
@@ -5740,7 +5917,7 @@ void SetPond()
         }
         else
         {
-            reg |= (long)(0 \
+            reg |= (long)(0
                 | SCE_GS_UV    << (4 * 0)
                 | SCE_GS_RGBAQ << (4 * 1)
                 | SCE_GS_XYZF3 << (4 * 2)
@@ -5754,8 +5931,7 @@ void SetPond()
             pbuf[tagnum].ul64[0] = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_TRUE, 0, SCE_GIF_REGLIST, cnt * 3);
             pbuf[tagnum].ul64[1] = reg;
 
-            tagnum = ndpkt;
-            ndpkt++;
+            tagnum = ndpkt++;
 
             reg = 0;
             cnt = 0;
@@ -5805,7 +5981,10 @@ void SetHaze_Pond()
     static HAZE_NUMS hn[10];
     long v2;
 
-    if ((plyr_wrk.pr_info.room_no != 0x16 && plyr_wrk.pr_info.room_no != 0x10) || realtime_scene_flg != 0 || init_haze_pond == 0)
+    if (
+        (plyr_wrk.pr_info.room_no != 22 && plyr_wrk.pr_info.room_no != 16) ||
+        (realtime_scene_flg != 0 || init_haze_pond == 0)
+    )
     {
         return;
     }
@@ -5819,8 +5998,8 @@ void SetHaze_Pond()
     {
         for (i = 0; i < 10; i++)
         {
-            hn[i].scr = vu0Rand() * 128.0f;
-            hn[i].mov = vu0Rand() * 0.15f - 0.05f;
+            hn[i].scr =  128.0f * VER_RAND();
+            hn[i].mov = 0.15f * (VER_RAND()) - 0.05f;
             hn[i].lng = near + (float)(9 - i) * dist;
         }
     }
@@ -5835,11 +6014,11 @@ void SetHaze_Pond()
         }
 
         hn[0].lng = hn[0].lng + dist;
-        hn[0].scr = vu0Rand() * 128.0f;
-        hn[0].mov = vu0Rand() * 0.15f - 0.05f;
+        hn[0].scr = 128.0f * VER_RAND();
+        hn[0].mov = 0.15f * (VER_RAND()) - 0.05f;
     }
 
-    if (hn[9].lng >= (dist+near))
+    if (hn[9].lng >= dist + near)
     {
         for (i = 0; i < 9; i++)
         {
@@ -5849,8 +6028,8 @@ void SetHaze_Pond()
         }
 
         hn[9].lng = hn[9].lng - dist;
-        hn[9].scr = vu0Rand() * 128.0f;
-        hn[9].mov = vu0Rand() * 0.15f - 0.05f;
+        hn[9].scr = 128.0f * VER_RAND();
+        hn[9].mov = 0.15f * (VER_RAND()) - 0.05f;
     }
 
     for (i = 0; i < 10; i++)
@@ -5858,7 +6037,7 @@ void SetHaze_Pond()
         fx = camera.i[0] - camera.p[0];
         fz = camera.i[2] - camera.p[2];
 
-        l = SgSqrtf(fx * fx + fz * fz);
+        l = VER_SQRTF(fx * fx + fz * fz);
 
         cpos[0] = camera.p[0] + ((camera.i[0] - camera.p[0]) * hn[i].lng) / l;
         cpos[1] = 330.0f;
@@ -5882,15 +6061,15 @@ void SetHaze_Pond()
 
             ang = rw2[1] - rw1[1];
 
-            while (ang < -PI) ang += PI2;
-            while (ang >= PI) ang -= PI2;
+            while (ang < -PI) ang += PI * 2;
+            while (ang >= PI) ang -= PI * 2;
 
             fx = camera.p[0] - hn[i].oposc[0];
             fz = camera.p[2] - hn[i].oposc[2];
 
-            l = SgSqrtf(fx * fx + fz * fz);
+            l = VER_SQRTF(fx * fx + fz * fz);
 
-            ll = l * SgCosf(ang);
+            ll = l * VER_COSF(ang);
 
             hn[i].lng = hn[i].lng - ll;
         }
@@ -5901,7 +6080,7 @@ void SetHaze_Pond()
         fx = camera.i[0] - camera.p[0];
         fz = camera.i[2] - camera.p[2];
 
-        l = SgSqrtf(fx * fx + fz * fz);
+        l = VER_SQRTF(fx * fx + fz * fz);
 
         cpos[0] = camera.p[0] + ((camera.i[0] - camera.p[0]) * hn[i].lng) / l;
         cpos[1] = 330.0f;
@@ -6024,7 +6203,7 @@ void SetHaze_Pond()
     pbuf[ndpkt++].ul64[1] = SCE_GS_CLAMP_1;
 
     pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(40, SCE_GS_TRUE, SCE_GS_TRUE, SCE_GS_SET_PRIM(SCE_GS_PRIM_TRISTRIP, 1, 1, 0, 1, 0, 1, 0, 0), SCE_GIF_PACKED, 3);
-    pbuf[ndpkt++].ul64[1] = 0 \
+    pbuf[ndpkt++].ul64[1] = 0
                 | SCE_GS_RGBAQ << (4 * 0)
                 | SCE_GS_UV    << (4 * 1)
                 | SCE_GS_XYZF2 << (4 * 2);
@@ -6128,7 +6307,7 @@ void DrawNewPerticleSub(int num, sceVu0FVECTOR *pos, u_char r1, u_char g1, u_cha
 
     clpx2 = 0xff80;
     clpy2 = 0xff80;
-    clpz2 = 0xffffff;
+    clpz2 = 0x00ffffff;
 
     if (monochrome_mode != 0)
     {
@@ -6196,7 +6375,7 @@ void DrawNewPerticleSub(int num, sceVu0FVECTOR *pos, u_char r1, u_char g1, u_cha
     pbuf[ndpkt++].ul64[1] = SCE_GS_ALPHA_1;
 
     pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_TRUE, 0, SCE_GIF_REGLIST, 2);
-    pbuf[ndpkt++].ul64[1] = 0 \
+    pbuf[ndpkt++].ul64[1] = 0
         | SCE_GS_PRIM << (4 * 0)
         | 0x0f        << (4 * 1);
 
@@ -6232,14 +6411,14 @@ void DrawNewPerticleSub(int num, sceVu0FVECTOR *pos, u_char r1, u_char g1, u_cha
 
             if (cl >= 3)
             {
-                reg |= (long)(0 \
+                reg |= (long)(0
                     | SCE_GS_RGBAQ << (4 * 0)
                     | SCE_GS_XYZF2 << (4 * 1)
                 ) << (cnt * 8);
             }
             else
             {
-                reg |= (long)(0 \
+                reg |= (long)(0
                     | SCE_GS_RGBAQ << (4 * 0)
                     | SCE_GS_XYZF3 << (4 * 1)
                 ) << (cnt * 8);
@@ -6254,14 +6433,14 @@ void DrawNewPerticleSub(int num, sceVu0FVECTOR *pos, u_char r1, u_char g1, u_cha
 
             if (cl >= 3)
             {
-                reg |= (long)(0 \
+                reg |= (long)(0
                     | SCE_GS_RGBAQ << (4 * 0)
                     | SCE_GS_XYZF2 << (4 * 1)
                 ) << (cnt * 8);
             }
             else
             {
-                reg |= (long)(0 \
+                reg |= (long)(0
                     | SCE_GS_RGBAQ << (4 * 0)
                     | SCE_GS_XYZF3 << (4 * 1)
                 ) << (cnt * 8);
@@ -6315,26 +6494,24 @@ void SetEneFace(EFFECT_CONT *ec)
     float dirfl;
     float rot_x;
     float rot_y;
-    float stq[2] = {0.01f, 0.99f};
+    float stq[2] = { 0.01f, 0.99f };
     sceVu0FMATRIX wlm;
     sceVu0FMATRIX slm;
     sceVu0IVECTOR ivec[16][4];
     sceVu0FVECTOR wpos;
     sceVu0FVECTOR ppos[4] = {
-        {-256.0f, -217.0f, 0.0f, 1.0f},
-        {+256.0f, -217.0f, 0.0f, 1.0f},
-        {-256.0f, +217.0f, 0.0f, 1.0f},
-        {+256.0f, +217.0f, 0.0f, 1.0f},
+        { -256.0f, -217.0f, 0.0f, 1.0f },
+        { +256.0f, -217.0f, 0.0f, 1.0f },
+        { -256.0f, +217.0f, 0.0f, 1.0f },
+        { +256.0f, +217.0f, 0.0f, 1.0f },
     };
     U32DATA ts[16][4];
     U32DATA tt[16][4];
     U32DATA tq[16][4];
 
-#ifdef MATCHING_DECOMP
-    if (rot_x)
-    {
-        // fixes stack reordering issue
-    }
+#if defined(MATCHING_DECOMP)
+    // HACK: fixes stack order
+    if (rot_x) {}
 #endif
 
     clpx2 = 0xfd00;
@@ -6350,11 +6527,13 @@ void SetEneFace(EFFECT_CONT *ec)
     num = ec->dat.uc8[2];
 
     direc = ec->dat.uc8[3];
+
     ec->cnt += 2;
 
     if (ec->cnt >= 180.0f)
     {
         alp = 0;
+
         ResetEffects(ec);
     }
     else if (ec->cnt < 90.0f)
@@ -6450,8 +6629,8 @@ void SetEneFace(EFFECT_CONT *ec)
     {
         if (clip[j][0] + clip[j][1] + clip[j][2] + clip[j][3] == 0)
         {
-            pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(4, SCE_GS_TRUE, SCE_GS_TRUE, 84, SCE_GIF_PACKED, 3);
-            pbuf[ndpkt++].ul64[1] = 0 \
+            pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(4, SCE_GS_TRUE, SCE_GS_TRUE, SCE_GS_SET_PRIM(SCE_GS_PRIM_TRISTRIP, 0, 1, 0, 1, 0, 0, 0, 0), SCE_GIF_PACKED, 3);
+            pbuf[ndpkt++].ul64[1] = 0
                     | SCE_GS_ST    << (4 * 0)
                     | SCE_GS_RGBAQ << (4 * 1)
                     | SCE_GS_XYZF2 << (4 * 2);
@@ -6594,7 +6773,7 @@ void SetFaceSpirit(EFFECT_CONT *ec)
     u_int clpx2 = 0xc000;
     u_int clpy2 = 0xc000;
     u_int clpz1 = 1; // ???
-    u_int clpz2;
+    u_int clpz2= 0x00ffffff;
     float sc;
     float arate;
     float fx;
@@ -6614,23 +6793,19 @@ void SetFaceSpirit(EFFECT_CONT *ec)
     sceVu0IVECTOR ivecb[4];
     sceVu0FVECTOR bpos;
     sceVu0FVECTOR wpos;
-    sceVu0FVECTOR zero = {0.0f, 0.0f, 0.0f, 1.0f};
+    sceVu0FVECTOR zero = { 0.0f, 0.0f, 0.0f, 1.0f };
     sceVu0FVECTOR ppos[4] = {
-        {-180.0f, -180.0f, 0.0f, 1.0f},
-        {+180.0f, -180.0f, 0.0f, 1.0f},
-        {-180.0f, +180.0f, 0.0f, 1.0f},
-        {+180.0f, +180.0f, 0.0f, 1.0f},
+        { -180.0f, -180.0f, 0.0f, 1.0f },
+        { +180.0f, -180.0f, 0.0f, 1.0f },
+        { -180.0f, +180.0f, 0.0f, 1.0f },
+        { +180.0f, +180.0f, 0.0f, 1.0f },
     };
 
-#ifdef MATCHING_DECOMP
-    if (rot_x)
-    {
-        // fixes stack order
-    }
+#if defined(MATCHING_DECOMP)
+    // HACK: fixes stack order
+    if (rot_x) {}
+    if (rot_y) {}
 #endif
-
-    // clpz1 = 1; // ???
-    clpz2 = 0xffffff;
 
     cnt = sys_wrk.count;
 
@@ -6641,13 +6816,17 @@ void SetFaceSpirit(EFFECT_CONT *ec)
     Vu0CopyVector(bpos, ec->pnt[0]);
 
     arate = *(float *)ec->pnt[clpz1]; // clpz1 ???
+
     if (ec->keep == 0)
     {
         ec->cnt = 0;
         ec->max = 0;
         ec->keep = 1;
+
         fs = &facespirit[ec->dat.uc8[5]];
+
         ec->dat.uc8[6] = fly_wrk[ec->dat.uc8[5]].ene;
+
         for (i = 0; i < 24; i++)
         {
             fs->tbl[i] = i;
@@ -6666,9 +6845,11 @@ void SetFaceSpirit(EFFECT_CONT *ec)
     if (stop_effects == 0 && (cnt % 3) == 0)
     {
         n = top;
+
         for (i = 0; i < 24; i++)
         {
             fs->tbl[i] = n;
+
             n = n - 1 < 0 ? 23 : n - 1;
         }
 
@@ -6678,7 +6859,7 @@ void SetFaceSpirit(EFFECT_CONT *ec)
             fy = 0.0f;
             fz = bpos[2] - fs->opos[fs->tbl[1]][2];
 
-            l = SgSqrtf(fx * fx + fy * fy + fz * fz);
+            l = VER_SQRTF(fx * fx + fy * fy + fz * fz);
         }
         else
         {
@@ -6700,6 +6881,7 @@ void SetFaceSpirit(EFFECT_CONT *ec)
             {
                 ResetEffects(ec);
             }
+
             return;
         }
 
@@ -6710,7 +6892,9 @@ void SetFaceSpirit(EFFECT_CONT *ec)
         else
         {
             num = num + 1 > 24 ? 24 : num + 1;
+
             Vu0CopyVector(fs->opos[top], bpos);
+
             top = (top + 1) % 24;
         }
 
@@ -6730,7 +6914,7 @@ void SetFaceSpirit(EFFECT_CONT *ec)
         fy = fs->opos[n][1] - camera.p[1];
         fz = fs->opos[n][2] - camera.p[2];
 
-        l = SgSqrtf(fx * fx + fy * fy + fz * fz);
+        l = VER_SQRTF(fx * fx + fy * fy + fz * fz);
 
         wpos[0] = camera.p[0] + (fs->opos[n][0] - camera.p[0]) * (l - 150.0f) / l;
         wpos[1] = camera.p[1] + (fs->opos[n][1] - camera.p[1]) * (l - 150.0f) / l;
@@ -6773,7 +6957,7 @@ void SetFaceSpirit(EFFECT_CONT *ec)
     fy = bpos[1] - camera.p[1];
     fz = bpos[2] - camera.p[2];
 
-    l = SgSqrtf(fx * fx + fy * fy + fz * fz);
+    l = VER_SQRTF(fx * fx + fy * fy + fz * fz);
 
     wpos[0] = camera.p[0] + ((bpos[0] - camera.p[0]) * (l - 150.0f)) / l;
     wpos[1] = camera.p[1] + ((bpos[1] - camera.p[1]) * (l - 150.0f)) / l;
@@ -6807,6 +6991,7 @@ void SetFaceSpirit(EFFECT_CONT *ec)
 
     th = effdat[24].h * 16;
     tw = effdat[24].w * 16;
+
     tx0 = effdat[24].tex0;
 
     Reserve2DPacket(0x1000);
@@ -6839,10 +7024,11 @@ void SetFaceSpirit(EFFECT_CONT *ec)
     for (j = num-1; j >= 0; j--)
     {
         l = (float)j / num;
+
         if (clip[fs->tbl[j]] == 0)
         {
-            pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(4, SCE_GS_TRUE, SCE_GS_TRUE, 340, SCE_GIF_PACKED, 3);
-            pbuf[ndpkt++].ul64[1] = 0 \
+            pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(4, SCE_GS_TRUE, SCE_GS_TRUE, SCE_GS_SET_PRIM(SCE_GS_PRIM_TRISTRIP, 0, 1, 0, 1, 0, 1, 0, 0), SCE_GIF_PACKED, 3);
+            pbuf[ndpkt++].ul64[1] = 0
                 | SCE_GS_UV    << (4 * 0)
                 | SCE_GS_RGBAQ << (4 * 1)
                 | SCE_GS_XYZF2 << (4 * 2);
@@ -6871,8 +7057,8 @@ void SetFaceSpirit(EFFECT_CONT *ec)
 
     if (bclip == 0)
     {
-        pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(4, SCE_GS_TRUE, SCE_GS_TRUE, 340, SCE_GIF_PACKED, 3);
-        pbuf[ndpkt++].ul64[1] = 0 \
+        pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(4, SCE_GS_TRUE, SCE_GS_TRUE, SCE_GS_SET_PRIM(SCE_GS_PRIM_TRISTRIP, 0, 1, 0, 1, 0, 1, 0, 0), SCE_GIF_PACKED, 3);
+        pbuf[ndpkt++].ul64[1] = 0
                 | SCE_GS_UV    << (4 * 0)
                 | SCE_GS_RGBAQ << (4 * 1)
                 | SCE_GS_XYZF2 << (4 * 2);
@@ -6910,30 +7096,30 @@ void SetFaceSpirit(EFFECT_CONT *ec)
 void SetSaveCameraLamp()
 {
     sceVu0FVECTOR bbpos[7] = {
-        {23100.0f, 0.0f, 10325.0f, 1.0f},
-        {17875.0f, 0.0f, 23125.0f, 1.0f},
-        {35900.0f, 400.0f, 28050.0f, 1.0f},
-        {27968.0f, -1400.0f, 16345.0f, 1.0f},
-        {35850.0f, 400.0f, 17850.0f, 1.0f},
-        {33050.0f, -1800.0, 20750.0f, 1.0f},
-        {20775.0f, 3000.0f, 25975.0f, 1.0f},
+        { 23100.0f,     0.0f, 10325.0f, 1.0f },
+        { 17875.0f,     0.0f, 23125.0f, 1.0f },
+        { 35900.0f,   400.0f, 28050.0f, 1.0f },
+        { 27968.0f, -1400.0f, 16345.0f, 1.0f },
+        { 35850.0f,   400.0f, 17850.0f, 1.0f },
+        { 33050.0f, -1800.0f, 20750.0f, 1.0f },
+        { 20775.0f,  3000.0f, 25975.0f, 1.0f },
     };
     int n;
     int col;
     u_char rgb1[2][4] = {
-        {0xff, 0x00, 0x00, 0x08},
-        {0x10, 0x10, 0xff, 0x08},
+        { 0xff, 0x00, 0x00, 0x08 },
+        { 0x10, 0x10, 0xff, 0x08 },
     };
     u_char rgb2[2][4] = {
-        {0xff, 0x10, 0x10, 0x40},
-        {0x40, 0x40, 0xff, 0x40},
+        { 0xff, 0x10, 0x10, 0x40 },
+        { 0x40, 0x40, 0xff, 0x40 },
     };
     float rot_x;
     float rot_y;
     float direc[7] = {
         PI, -PI/2, PI, -(3*PI)/4, 0.0f, -PI/2, PI,
     };
-    sceVu0FVECTOR comp = {0.0f, -574.0f, 38.0f, 1.0f};
+    sceVu0FVECTOR comp = { 0.0f, -574.0f, 38.0f, 1.0f };
     sceVu0FVECTOR wpos;
     sceVu0FMATRIX wlm;
     DRAW_ENV de = {
@@ -6942,7 +7128,7 @@ void SetSaveCameraLamp()
         .zbuf = SCE_GS_SET_ZBUF_1(0x8c, SCE_GS_PSMCT24, 1),
         .test = SCE_GS_SET_TEST_1(1, SCE_GS_ALPHA_GREATER, 0, SCE_GS_AFAIL_KEEP, 0, 0, 1, SCE_GS_DEPTH_GEQUAL),
         .clamp = SCE_GS_SET_CLAMP_1(SCE_GS_REPEAT, SCE_GS_REPEAT, 0, 0, 0, 0),
-        .prim = SCE_GIF_SET_TAG(4, SCE_GS_TRUE, SCE_GS_TRUE, 84, SCE_GIF_PACKED, 3),
+        .prim = SCE_GIF_SET_TAG(4, SCE_GS_TRUE, SCE_GS_TRUE, SCE_GS_SET_PRIM(SCE_GS_PRIM_TRISTRIP, 0, 1, 0, 1, 0, 0, 0, 0), SCE_GIF_PACKED, 3),
     };
     float pos1 = 128.0f;
     float pos2 = 20.0f;

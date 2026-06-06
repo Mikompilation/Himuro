@@ -62,7 +62,6 @@ LANGUAGES: dict[str, str] = {
 # in two steps: c -> asm, then asm -> obj. in between, the intermediate
 # asm will be passed to `tools/python/fix_asm_matching.py` for patching.
 ASM_PATCH_LIST: list[str] = [
-    "effect_oth.c.o",
     "photo.c.o",
     "ig_camra.c.o",
 ]

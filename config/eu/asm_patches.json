@@ -1,10 +1,4 @@
 {
-    "effect_oth.c.S": {
-        "ContHeatHaze": [
-            [271, "slt $22,$22,$2",   "slt $2,$22,$3"  ],
-            [272, "bne $22,$0,$L435", "bne $2,$0,$L435"]
-        ]
-    },
     "photo.c.S": {
         "PhotoScoreCount": [
             [152, "lui $4,%hi(ingame_wrk) # high",     "lui $2,%hi(ingame_wrk) # high"    ],

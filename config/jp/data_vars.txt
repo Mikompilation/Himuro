@@ -80,3 +80,8 @@ alpha                          = 0x34a120; // type:u_char numel:289
 alpha1                         = 0x34a120; // type:u_char numel:289
 alpha2                         = 0x34a248; // type:u_char numel:289
 efrenz                         = 0x34a3b8; // type:EFRENZ numel:9
+
+// graphics/graph2d/effect_oth.c
+canal_bpos                     = 0x296990; // type:sceVu0FVECTOR numel:3
+canal_size                     = 0x2969c0; // type:float numel:3 numel:2
+eneface                        = 0x296a10; // type:SPRT_DAT numel:2 nosize static
