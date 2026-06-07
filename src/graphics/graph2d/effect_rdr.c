@@ -1,8 +1,13 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
+#include "enums.h"
 #include "effect_rdr.h"
 
 #include "sce/libvu0.h"
+
+// gcc/src/newlib/libm/math/sf_sin.c
+float sinf(float x);
 
 #include "os/pad.h"
 #include "main/glob.h"
@@ -21,17 +26,17 @@
 #include "ingame/map/furn_spe/fsla_main.h"
 
 typedef struct {
-	sceVu0FVECTOR bpos;
-	sceVu0FVECTOR brot;
-	sceVu0FVECTOR lpos;
-	float ww;
-	float hh;
-	int power;
-	u_char r;
-	u_char g;
-	u_char b;
-	u_char a;
-	void *adr;
+    sceVu0FVECTOR bpos;
+    sceVu0FVECTOR brot;
+    sceVu0FVECTOR lpos;
+    float ww;
+    float hh;
+    int power;
+    u_char r;
+    u_char g;
+    u_char b;
+    u_char a;
+    void *adr;
 } SUNSHINE;
 
 #include "data/sunshine.h"       // static SUNSHINE sunshine[];
@@ -62,7 +67,7 @@ static void *ef_smoke_addr[4];
 
 void InitEffectRdr()
 {
-	int i;
+    int i;
 
     room_old = -1;
 
@@ -128,8 +133,8 @@ void* SearchBurnFireFurnID(u_short furn_id)
 
 void SetRDLongFire2(sceVu0FVECTOR pos, u_char sta, float szw, float szh, float sw, float sh, float r, float g, float b, float room, u_short furn_id)
 {
-	EFFECT_CONT *ecw;
-	void *ret;
+    EFFECT_CONT *ecw;
+    void *ret;
 
     ret = GetBurnFireWork();
 
@@ -139,7 +144,7 @@ void SetRDLongFire2(sceVu0FVECTOR pos, u_char sta, float szw, float szh, float s
 
         Vu0CopyVector(bf->fpos, pos);
 
-        bf->ebuf = SetEffects(0x17, 2, 0, &bf->fpos, 0x80, 0x75, 0x70, 0.3f, 0xf0, 0xd0, 0xa0, 3.0f);
+        bf->ebuf = SetEffects(EF_FIRE, 2, 0, &bf->fpos, 0x80, 0x75, 0x70, 0.3f, 0xf0, 0xd0, 0xa0, 3.0f);
 
         bf->furn_id = furn_id;
         bf->ligdiff[0] = r;
@@ -152,7 +157,7 @@ void SetRDLongFire2(sceVu0FVECTOR pos, u_char sta, float szw, float szh, float s
         bf->sh = sh;
         bf->sta = sta;
 
-        if (sta & 1)
+        if (sta & 0x1)
         {
             bf->lignum = AddNewPointLight(&bf->ligpos, &bf->ligdiff, &bf->ligpow, room);
         }
@@ -170,7 +175,7 @@ void SetRDLongFire(sceVu0FVECTOR pos, float r, float g, float b, float room, u_s
 
 void ResetRDLongFire(u_short furn_id)
 {
-	void *ret;
+    void *ret;
 
     ret = SearchBurnFireFurnID(furn_id);
 
@@ -191,75 +196,74 @@ void ResetRDLongFire(u_short furn_id)
 
 void SubRDFire(EFFECT_CONT *ec)
 {
-	static int rnbk = 0;
-	u_char mr;
-	u_char mg;
-	u_char mb;
-	u_char mrh;
-	u_char mgh;
-	u_char mbh;
-	int bak;
-	int i;
-	int n;
-	int rn;
-	int tw;
-	int th;
-	int w;
-	int wpat;
-	u_int vv[24];
-	u_int clpx2;
-	u_int clpy2;
-	u_int clpz2;
-	float bsw;
-	float bsh;
-	float sw;
-	float sh;
-	float fire1;
-	float fire2;
-	// float fire3;
-	float fire4;
-	float fire5;
-	float fire6;
-	float fire7;
-	float arate;
-	float wscw;
-	float wsch;
-	float ligpow;
-	float msc;
-	float msch;
-	float f;
-	float f1;
-	float f2;
-	float rot_x;
-	float rot_y;
-	u_long tx0;
-	sceVu0FMATRIX wlm;
-	sceVu0FMATRIX slm;
-	sceVu0IVECTOR ipos;
-	sceVu0IVECTOR ivec[48];
-	sceVu0FVECTOR vtw[48];
-	sceVu0FVECTOR vpos;
-	sceVu0FVECTOR wcpos = { 0.0f, 4.0f, 0.0f, 1.0f };
-	BURN_FIRE *bf;
-	DRAW_ENV de = {
-           .tex1 = SCE_GS_SET_TEX1_1(1, 0, SCE_GS_LINEAR, SCE_GS_LINEAR_MIPMAP_LINEAR, 0, 0, 0),
-           .alpha = SCE_GS_SET_ALPHA_1(SCE_GS_ALPHA_CS, SCE_GS_ALPHA_CD, SCE_GS_ALPHA_AS, SCE_GS_ALPHA_CD, 0),
-           .zbuf = SCE_GS_SET_ZBUF_1(0x8c, SCE_GS_PSMCT24, 1),
-           .test = SCE_GS_SET_TEST_1(1, SCE_GS_ALPHA_GREATER, 0, SCE_GS_AFAIL_KEEP, 0, 0, 1, SCE_GS_DEPTH_GEQUAL),
-           .clamp = 0,
-           .prim = SCE_GIF_SET_TAG(4, SCE_GS_TRUE, SCE_GS_TRUE, 84, SCE_GIF_PACKED, 3),
+    static int rnbk = 0;
+    u_char mr;
+    u_char mg;
+    u_char mb;
+    u_char mrh;
+    u_char mgh;
+    u_char mbh;
+    int bak;
+    int i;
+    int n;
+    int rn;
+    int tw;
+    int th;
+    int w;
+    int wpat;
+    u_int vv[24];
+    u_int clpx2;
+    u_int clpy2;
+    u_int clpz2;
+    float bsw;
+    float bsh;
+    float sw;
+    float sh;
+    float fire1;
+    float fire2;
+    // float fire3; ???
+    float fire4;
+    float fire5;
+    float fire6;
+    float fire7;
+    float arate;
+    float wscw;
+    float wsch;
+    float ligpow;
+    float msc;
+    float msch;
+    float f;
+    float f1;
+    float f2;
+    float rot_x;
+    float rot_y;
+    u_long tx0;
+    sceVu0FMATRIX wlm;
+    sceVu0FMATRIX slm;
+    sceVu0IVECTOR ipos;
+    sceVu0IVECTOR ivec[48];
+    sceVu0FVECTOR vtw[48];
+    sceVu0FVECTOR vpos;
+    sceVu0FVECTOR wcpos = { 0.0f, 4.0f, 0.0f, 1.0f };
+    BURN_FIRE *bf;
+    DRAW_ENV de = {
+        .tex1 = SCE_GS_SET_TEX1_1(1, 0, SCE_GS_LINEAR, SCE_GS_LINEAR_MIPMAP_LINEAR, 0, 0, 0),
+        .alpha = SCE_GS_SET_ALPHA_1(SCE_GS_ALPHA_CS, SCE_GS_ALPHA_CD, SCE_GS_ALPHA_AS, SCE_GS_ALPHA_CD, 0),
+        .zbuf = SCE_GS_SET_ZBUF_1(0x8c, SCE_GS_PSMCT24, 1),
+        .test = SCE_GS_SET_TEST_1(1, SCE_GS_ALPHA_GREATER, 0, SCE_GS_AFAIL_KEEP, 0, 0, 1, SCE_GS_DEPTH_GEQUAL),
+        .clamp = SCE_GS_SET_CLAMP_1(SCE_GS_REPEAT, SCE_GS_REPEAT, 0, 0, 0, 0),
+        .prim = SCE_GIF_SET_TAG(4, SCE_GS_TRUE, SCE_GS_TRUE, SCE_GS_SET_PRIM(SCE_GS_PRIM_TRISTRIP, 0, 1, 0, 1, 0, 0, 0, 0), SCE_GIF_PACKED, 3),
     };
-    int mm; // not in STAB!
-    int *ivec47; // not in STAB!
-    float ss; // not in STAB!
+    int mm;
 
     clpx2 = 0xe400;
     clpy2 = 0xe400;
-    clpz2 = 0xffffff;
+    clpz2 = 0x00ffffff;
 
-    if (ec->dat.uc8[1] & 1)
+    if (ec->dat.uc8[1] & 0x1)
     {
         ResetEffects(ec);
+
         return;
     }
 
@@ -273,7 +277,7 @@ void SubRDFire(EFFECT_CONT *ec)
 
     fire1 = sh * 60.0f;
     fire2 = sh * 0.5f;
-    // fire3 ??
+    // fire3 ???
     fire4 = sh * 0.1f;
     fire5 = sh * 0.08f;
     fire6 = sh * 0.04f;
@@ -299,6 +303,7 @@ void SubRDFire(EFFECT_CONT *ec)
     msch = ec->dat.fl32[3];
 
     wpat = ec->cnt;
+
     wscw = ec->fw[1];
     wsch = ec->fw[2];
     arate = ec->fw[0];
@@ -307,16 +312,12 @@ void SubRDFire(EFFECT_CONT *ec)
     {
     case 0:
         wpat = 0;
-
         wscw = 1.0f;
         wsch = 1.0f;
-
         ligpow = 0.0f;
 
         bf->wavew = fire2;
         bf->rate = 0.0f;
-
-        // wsch = wscw;
 
         if (plyr_wrk.pr_info.room_no == 14)
         {
@@ -339,7 +340,7 @@ void SubRDFire(EFFECT_CONT *ec)
 
         bf->wavew = fire4 < bf->wavew - fire5 ? bf->wavew - fire5 : fire4;
 
-        if (bf->sta & 2)
+        if (bf->sta & 0x2)
         {
             VibrateRequest1(0, 1);
         }
@@ -370,12 +371,10 @@ void SubRDFire(EFFECT_CONT *ec)
         }
     break;
     case 0xff:
-        ligpow = 6.0f;
-
         bf->wavew = 0.01f;
-
         wsch = bsh;
         wscw = bsw;
+        ligpow = 6.0f;
     break;
     }
 
@@ -384,8 +383,8 @@ void SubRDFire(EFFECT_CONT *ec)
         wpat++;
     }
 
-    mm = monochrome_mode + 32; // mm is not in STAB!
-    i = ((wpat / 3) % 7) * 2 + mm; // mm is not in STAB!
+    mm = 32;
+    i = ((wpat / 3) % 7) * 2 + (monochrome_mode + mm);
 
     tx0 = effdat[i].tex0;
 
@@ -393,7 +392,9 @@ void SubRDFire(EFFECT_CONT *ec)
     th = effdat[i].h * 16;
 
     Vu0CopyVector(vpos, ec->pnt[0]);
+
     Get2PosRot(camera.p, camera.i, &rot_x, &rot_y);
+
     sceVu0UnitMatrix(wlm);
 
     wlm[0][0] = wlm[2][2] = wscw * msc;
@@ -418,24 +419,23 @@ void SubRDFire(EFFECT_CONT *ec)
 
     for (i = 0; i < 24; i++)
     {
-        f1 = i;
         f = 23.0f / 2.0f;
+#if defined(MATCHING_DECOMP)
+        f1 = i; // HACK: fixes float reg alloc
+#endif
         f = f - __builtin_fabsf(f - i);
-        ss = SgSinf(((bf->rate + (f1 * fire1)) * PI) / 180.0f);
-        ss = ss * bf->wavew;
-        f2 = ss * f;
+
+        f2 = VER_SINF(((bf->rate + (i * fire1)) * PI) / 180.0f) * bf->wavew * f;
 
         vtw[i*2+0][0] += f2;
         vtw[i*2+1][0] += f2;
     }
 
-    bf->rate = bf->rate + fire1;
+    bf->rate += fire1;
 
     sceVu0RotTransPersN(ivec, slm, vtw, 48, 0);
 
-    w = 0;
-
-    for (i = 0; i < 48; i++)
+    for (w = 0, i = 0; i < 48; i++)
     {
         if ((ivec[i][0] >= 0 && ivec[i][0] < 0x1c00) || ivec[i][0] > clpx2)
         {
@@ -453,32 +453,32 @@ void SubRDFire(EFFECT_CONT *ec)
         }
     }
 
-    if (!w)
+    if (w == 0)
     {
-        ivec47 = ivec[47];
+        int last = 48 - 1;
 
-        ipos[0] = (ivec[0][0] + ivec47[0]) / 2;
-        ipos[1] = ((ivec[0][1] - ivec47[1]) * 0.3f) + ivec47[1];
+        ipos[0] = (ivec[0][0] + ivec[last][0]) / 2;
+        ipos[1] = ((ivec[0][1] - ivec[last][1]) * 0.3f) + ivec[last][1];
         ipos[2] = ec->z;
         ipos[3] = 0;
 
-        n = ((((ivec47[1] - ivec[0][1]) / 2) < ((ivec47[0] - ivec[0][0]) / 2)) ? ((ivec47[0] - ivec[0][0]) / 2) : ((ivec47[1] - ivec[0][1]) / 2));
-        f = n * 0.0625f;
+        n = ((((ivec[last][1] - ivec[0][1]) / 2) < ((ivec[last][0] - ivec[0][0]) / 2)) ? ((ivec[last][0] - ivec[0][0]) / 2) : ((ivec[last][1] - ivec[0][1]) / 2));
+        f = n / 16.0f;
 
         if (stop_effects == 0)
         {
-            rnbk = rn = (int)(vu0Rand() * 8.0f);
+            rnbk = rn = (int)(8.0f * VER_RAND());
+
         }
         else
         {
             rn = rnbk;
         }
 
-        fire7 = (int)(rn / 2 + 5);
-        bf->ligpow = (fire7 * 2 + ligpow) * arate;
+        bf->ligpow = ((int)(rn / 2 + 5) * 2.0f + ligpow) * arate;
 
-        SetEffSQITex(monochrome_mode + 0x16, ipos, 3, f * msch, f * msch, mrh, mgh, mbh, (fire7 * arate));
-        SetEffSQITex(monochrome_mode + 0x16, ipos, 3, f * msch * 0.5f, f * msch * 0.5f, mrh, mgh, mbh, (rn + 2) * arate);
+        SetEffSQITex(monochrome_mode + 22, ipos, 3, f * msch, f * msch, mrh, mgh, mbh, ((int)(rn / 2 + 5) * arate));
+        SetEffSQITex(monochrome_mode + 22, ipos, 3, f * msch * 0.5f, f * msch * 0.5f, mrh, mgh, mbh, (rn + 2) * arate);
 
         Reserve2DPacket(0x1000);
 
@@ -507,8 +507,9 @@ void SubRDFire(EFFECT_CONT *ec)
         pbuf[ndpkt].ul64[0] = SCE_GS_SET_TEST_1(1, SCE_GS_ALPHA_GREATER, 0, SCE_GS_AFAIL_KEEP, 0, 0, 1, SCE_GS_DEPTH_GEQUAL);
         pbuf[ndpkt++].ul64[1] = SCE_GS_TEST_1;
 
-        pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(24, SCE_GS_TRUE, SCE_GS_TRUE, 348, SCE_GIF_PACKED, 6);
-        pbuf[ndpkt++].ul64[1] = 0 \
+        pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(24, SCE_GS_TRUE, SCE_GS_TRUE, SCE_GS_SET_PRIM(SCE_GS_PRIM_TRISTRIP, 1, 1, 0, 1, 0, 1, 0, 0), SCE_GIF_PACKED, 6);
+
+        pbuf[ndpkt++].ul64[1] = 0
             | SCE_GS_RGBAQ << (4 * 0)
             | SCE_GS_UV    << (4 * 1)
             | SCE_GS_XYZF2 << (4 * 2)
@@ -516,7 +517,7 @@ void SubRDFire(EFFECT_CONT *ec)
             | SCE_GS_UV    << (4 * 4)
             | SCE_GS_XYZF2 << (4 * 5);
 
-        for (i = 0; i < 24; i++) // i++
+        for (i = 0; i < 24; i++)
         {
             pbuf[ndpkt].ui32[0] = mr;
             pbuf[ndpkt].ui32[1] = mg;
@@ -553,13 +554,14 @@ void SubRDFire(EFFECT_CONT *ec)
     }
 
     ec->cnt = wpat;
+
     ec->fw[1] = wscw;
     ec->fw[2] = wsch;
 }
 
 void SetRDFire3(FURN_ACT_WRK *f1, FURN_ACT_WRK *f2, FURN_ACT_WRK *f3, FURN_ACT_WRK *f4, FURN_ACT_WRK *f5, FURN_ACT_WRK *f6)
 {
-	int i;
+    int i;
 
     ef_rdfire3_cnt = 0;
 
@@ -578,7 +580,7 @@ void SetRDFire3(FURN_ACT_WRK *f1, FURN_ACT_WRK *f2, FURN_ACT_WRK *f3, FURN_ACT_W
 
 void ResetRDFire3()
 {
-	int i;
+    int i;
 
     for (i = 0; i < 6; i++)
     {
@@ -590,8 +592,8 @@ void ResetRDFire3()
 
 void SubRDFire3()
 {
-	int i;
-	int time[6] = { 0, 30, 60, 90, 120, 150 };
+    int i;
+    int time[6] = { 0, 30, 60, 90, 120, 150 };
 
     if (ef_rdfire3_cnt < 0)
     {
@@ -632,8 +634,8 @@ void ResetRDPazzEne()
 
 void SetRoomDirecPazzEne()
 {
-	static u_char alp;
-	sceVu0FVECTOR bpos;
+    static u_char alp;
+    sceVu0FVECTOR bpos;
 
     switch(ef_pazz_ene_flow)
     {
@@ -641,18 +643,18 @@ void SetRoomDirecPazzEne()
         // do nothing ...
     break;
     case 1:
-        g2d_load_flg.pazz = LoadReq(pazz_textbl[7], 0x1cb0000);
+        g2d_load_flg.pazz = LoadReq(pazz_textbl[7], LOAD_ADDRESS_25);
 
         ef_pazz_ene_flow = 2;
     case 2:
         if (IsLoadEnd(g2d_load_flg.pazz))
         {
-            ef_pazz_ene_flow = 0x3;
+            ef_pazz_ene_flow = 3;
         }
     break;
     case 3:
         alp = 0;
-        ef_pazz_ene_flow = 0x4;
+        ef_pazz_ene_flow = 4;
     case 4:
         alp = alp + 4 >= 0x40 ? 0x40 : alp + 4;
 
@@ -669,20 +671,21 @@ void SetRoomDirecPazzEne()
 
         if (alp == 0)
         {
-            ef_pazz_ene_flow = 0x6;
+            ef_pazz_ene_flow = 6;
         }
     break;
     case 6:
-        ef_pazz_ene_flow = 0x0;
+        ef_pazz_ene_flow = 0;
+    break;
     }
 }
 
 void SetRDSmoke()
 {
-    ef_smoke_addr[0] = SetEffects(26, 2, ef_smoke_pos11);
-    ef_smoke_addr[1] = SetEffects(26, 2, ef_smoke_pos12);
-    ef_smoke_addr[2] = SetEffects(26, 2, ef_smoke_pos13);
-    ef_smoke_addr[3] = SetEffects(26, 2, ef_smoke_pos14);
+    ef_smoke_addr[0] = SetEffects(EF_SMOKE, 2, ef_smoke_pos11);
+    ef_smoke_addr[1] = SetEffects(EF_SMOKE, 2, ef_smoke_pos12);
+    ef_smoke_addr[2] = SetEffects(EF_SMOKE, 2, ef_smoke_pos13);
+    ef_smoke_addr[3] = SetEffects(EF_SMOKE, 2, ef_smoke_pos14);
 }
 
 void ResetRDSmoke()
@@ -695,7 +698,7 @@ void ResetRDSmoke()
 
 void SetRoomDirecSmoke()
 {
-	int room_id;
+    int room_id;
 
     room_id = 3;
 
@@ -722,7 +725,7 @@ void SetRDSunshine(int n)
     if (sunshine[n].adr == NULL)
     {
         sunshine[n].adr = SetEffects(
-            31, 2,
+            EF_SUNSHINE, 2,
             sunshine[n].lpos, &sunshine[n],
             sunshine[n].brot, sunshine[n].power,
             sunshine[n].ww, sunshine[n].hh,
@@ -739,7 +742,7 @@ void ResetRDSunshine(int n)
 
 short int GetRDBloodDropWork()
 {
-	int i;
+    int i;
 
     for (i = 0; i < 16; i++)
     {
@@ -754,7 +757,7 @@ short int GetRDBloodDropWork()
 
 short int SearchRDBloodDropWork(u_short furn_id)
 {
-	int i;
+    int i;
 
     for (i = 0; i < 16; i++)
     {
@@ -767,9 +770,9 @@ short int SearchRDBloodDropWork(u_short furn_id)
     return -1;
 }
 
-void SetRDBloodDrop(float *pos, int sta, u_short furn_id)
+void SetRDBloodDrop(sceVu0FVECTOR pos, int sta, u_short furn_id)
 {
-	int ret;
+    int ret;
 
     ret = GetRDBloodDropWork();
 
@@ -778,13 +781,13 @@ void SetRDBloodDrop(float *pos, int sta, u_short furn_id)
         return;
     }
 
-    if (sta & 4)
+    if (sta & 0x4)
     {
-        blood_drop_rsv[ret].adr = SetEffects(0x1e, 2, pos, sta, 250.0f, 200, 0x80, 0x80, 0x80);
+        blood_drop_rsv[ret].adr = SetEffects(EF_WATERDROP, 2, pos, sta, 250.0f, 200, 0x80, 0x80, 0x80);
     }
     else
     {
-        blood_drop_rsv[ret].adr = SetEffects(0x1e, 2, pos, sta, -10.0f, 0x78, 0x80, 0, 0);
+        blood_drop_rsv[ret].adr = SetEffects(EF_WATERDROP, 2, pos, sta, -10.0f, 0x78, 0x80, 0, 0);
     }
 
     blood_drop_rsv[ret].furn_id = furn_id;
@@ -808,7 +811,7 @@ void ResetRDBloodDrop(u_short furn_id)
 
 short int GetRDPFireWork()
 {
-	int i;
+    int i;
 
     for (i = 0; i < 4; i++)
     {
@@ -823,7 +826,7 @@ short int GetRDPFireWork()
 
 short int SearchRDPFireWork(u_short furn_id)
 {
-	int i;
+    int i;
 
     for (i = 0; i < 4; i++)
     {
@@ -847,14 +850,14 @@ void SetRDPFire(sceVu0FVECTOR pos, u_short furn_id)
         return;
     }
 
-    pfire_rsv[ret].adr = SetEffects(25, 2, 3, pos, 0, 0);
+    pfire_rsv[ret].adr = SetEffects(EF_TORCH, 2, 3, pos, 0, 0);
 
     pfire_rsv[ret].furn_id = furn_id;
 }
 
-void SetRDPFire2(float *pos, u_short furn_id)
+void SetRDPFire2(sceVu0FVECTOR pos, u_short furn_id)
 {
-	EFFECT_CONT *ecw;
+    EFFECT_CONT *ecw;
     short int ret;
 
     ret = SearchRDPFireWork(furn_id);
@@ -871,8 +874,8 @@ void SetRDPFire2(float *pos, u_short furn_id)
 
 void ResetRDPFire(u_short furn_id)
 {
-	HEAT_HAZE *hh;
-	EFFECT_CONT *ec;
+    HEAT_HAZE *hh;
+    EFFECT_CONT *ec;
     short int ret;
 
     ret = SearchRDPFireWork(furn_id);
@@ -885,9 +888,10 @@ void ResetRDPFire(u_short furn_id)
     ec = pfire_rsv[ret].adr;
 
     hh = ec->pnt[1];
+
     hh->flag = 0;
 
     ResetEffects(ec);
 
-    pfire_rsv[ret].furn_id = 0xffff;
+    pfire_rsv[ret].furn_id = -1;
 }

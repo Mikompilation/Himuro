@@ -85,3 +85,15 @@ efrenz                         = 0x34a3b8; // type:EFRENZ numel:9
 canal_bpos                     = 0x296990; // type:sceVu0FVECTOR numel:3
 canal_size                     = 0x2969c0; // type:float numel:3 numel:2
 eneface                        = 0x296a10; // type:SPRT_DAT numel:2 nosize static
+
+// graphics/graph2d/effect_rdr.c
+sunshine                       = 0x297010; // type:SUNSHINE numel:7 nosize static
+ef_pazzene_p                   = 0x297240; // type:sceVu0FVECTOR static
+ef_smoke_pos11                 = 0x297250; // type:sceVu0FVECTOR static
+ef_smoke_pos12                 = 0x297260; // type:sceVu0FVECTOR static
+ef_smoke_pos13                 = 0x297270; // type:sceVu0FVECTOR static
+ef_smoke_pos14                 = 0x297280; // type:sceVu0FVECTOR static
+ef_smoke_pos21                 = 0x297290; // type:sceVu0FVECTOR static
+ef_smoke_pos22                 = 0x2972a0; // type:sceVu0FVECTOR static
+ef_smoke_pos23                 = 0x2972b0; // type:sceVu0FVECTOR static
+ef_smoke_pos24                 = 0x2972c0; // type:sceVu0FVECTOR static
