@@ -16,20 +16,20 @@ float sinf(float x);
 // gcc/src/newlib/libm/math/wf_sqrt.c
 float sqrtf(float x);
 
-#include "os/eeiop/eese.h"
-#include "os/eeiop/cdvd/eecdvd.h"
-#include "main/glob.h"
+#include "graphics/graph2d/effect_obj.h"
+#include "graphics/graph2d/effect_sub.h"
+#include "graphics/graph2d/effect.h"
+#include "graphics/graph2d/tim2_new.h"
+#include "graphics/graph2d/tim2.h"
+#include "graphics/graph3d/libsg.h"
+#include "graphics/graph3d/sglib.h"
+#include "ingame/enemy/ene_ctl.h"
 #include "ingame/ig_glob.h"
 #include "ingame/menu/sp_menu.h"
 #include "ingame/plyr/unit_ctl.h"
-#include "ingame/enemy/ene_ctl.h"
-#include "graphics/graph2d/tim2.h"
-#include "graphics/graph2d/tim2_new.h"
-#include "graphics/graph3d/sglib.h"
-#include "graphics/graph3d/libsg.h"
-#include "graphics/graph2d/effect.h"
-#include "graphics/graph2d/effect_sub.h"
-#include "graphics/graph2d/effect_obj.h"
+#include "main/glob.h"
+#include "os/eeiop/cdvd/eecdvd.h"
+#include "os/eeiop/eese.h"
 
 int stop_lf = 0;
 
@@ -6480,10 +6480,10 @@ void SetEneFace(EFFECT_CONT *ec)
 {
     int alp;
     int direc;
-    int i;
-    int j;
-    int th;
-    int tw;
+    int i = 0;
+    int j = 0;
+    int th = 0;
+    int tw = 0;
     int bak;
     int num;
     u_int clip[16][4];
@@ -6508,11 +6508,6 @@ void SetEneFace(EFFECT_CONT *ec)
     U32DATA ts[16][4];
     U32DATA tt[16][4];
     U32DATA tq[16][4];
-
-#if defined(MATCHING_DECOMP)
-    // HACK: fixes stack order
-    if (rot_x) {}
-#endif
 
     clpx2 = 0xfd00;
     clpy2 = 0xfd00;
@@ -6760,11 +6755,11 @@ void SetFaceSpirit(EFFECT_CONT *ec)
     float mr;
     float mg;
     float mb;
-    int i;
-    int j;
-    int n;
-    int tw;
-    int th;
+    int i = 0;
+    int j = 0;
+    int n = 0;
+    int tw = 0;
+    int th = 0;
     int bak;
     int num;
     int top;
@@ -6800,12 +6795,6 @@ void SetFaceSpirit(EFFECT_CONT *ec)
         { -180.0f, +180.0f, 0.0f, 1.0f },
         { +180.0f, +180.0f, 0.0f, 1.0f },
     };
-
-#if defined(MATCHING_DECOMP)
-    // HACK: fixes stack order
-    if (rot_x) {}
-    if (rot_y) {}
-#endif
 
     cnt = sys_wrk.count;
 
