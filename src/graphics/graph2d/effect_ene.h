@@ -3,6 +3,9 @@
 
 #include "typedefs.h"
 
+#include "graphics/graph2d/effect_sub.h"
+#include "graphics/graph2d/effect.h"
+
 typedef struct {
 	sceVu0FVECTOR npos;
 	sceVu0FVECTOR *oposp;
@@ -45,10 +48,10 @@ typedef struct {
 	int enedmg_chance;
 } ENDMG2;
 
-typedef struct { // 0x8
-	/* 0x0 */ u_char mdl_no;
-	/* 0x2 */ u_short tex_no;
-	/* 0x4 */ int addr;
+typedef struct {
+	u_char mdl_no;
+	u_short tex_no;
+	int addr;
 } EDMG_TEX_WRK;
 
 typedef struct {
@@ -166,12 +169,9 @@ extern sceVu0FVECTOR sword_line[2];
 extern EDMG_TEX_WRK edmg_tex_wrk[10];
 extern TAIL_DMG2_DAT enedmg2_tail[44];
 
-#include "graphics/graph2d/effect_sub.h"
-#include "graphics/graph2d/effect.h"
-
 void InitEffectEne();
 void InitEffectEneEF();
-void SetETOCircleTexure(/* t8 24 */ sceVu0FMATRIX wlm, DRAW_ENV *de, float w, float h, u_char r, u_char g, u_char b, u_char a);
+void SetETOCircleTexure(sceVu0FMATRIX wlm, DRAW_ENV *de, float w, float h, u_char r, u_char g, u_char b, u_char a);
 int SetCamFont(int no, int fl);
 int SetEFLight(int flg, int eneno, int ligno, int in, int keep, int out);
 void IniCamSearch();
@@ -196,7 +196,7 @@ int CheckCamSubEffect();
 void SetSwordLineSub(void *pos, int num, u_char r1, u_char g1, u_char b1, u_char r2, u_char g2, u_char b2);
 void SetSwordSwitch(int sw);
 void SetSwordLine();
-int SetSpiritAway(int fl, float *tpos);
+int SetSpiritAway(int fl, sceVu0FVECTOR tpos);
 int SetNewEneOut(int flag, u_char eneno, u_char type, float *bpos, float sc);
 void SetEneDmgEffect3_Sub2(NEW_PERTICLE *np, float *bpos1, float *bpos2, u_char r1, u_char g1, u_char b1, u_char r2, u_char g2, int b2);
 int SetEneDmgEffect3(int flag, u_char eneno, sceVu0FVECTOR *pos);

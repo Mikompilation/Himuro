@@ -97,3 +97,9 @@ ef_smoke_pos21                 = 0x297290; // type:sceVu0FVECTOR static
 ef_smoke_pos22                 = 0x2972a0; // type:sceVu0FVECTOR static
 ef_smoke_pos23                 = 0x2972b0; // type:sceVu0FVECTOR static
 ef_smoke_pos24                 = 0x2972c0; // type:sceVu0FVECTOR static
+
+// graphics/graph2d/effect_ene.c
+enedmg_fileno_tbl              = 0x297730; // type:int numel:69 numel:2 static nosize
+enedmg_texno_tbl               = 0x297958; // type:SPRT_DAT numel:2 static nosize
+eto_light                      = 0x2979a0; // type:sceVu0FVECTOR numel:5 static
+eto_rgb                        = 0x2979f0; // type:u_char numel:5 numel:3 static
