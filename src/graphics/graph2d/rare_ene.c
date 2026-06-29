@@ -1,5 +1,6 @@
 #include "common.h"
 #include "typedefs.h"
+#include "enums.h"
 #include "rare_ene.h"
 
 #include "sce/libvu0.h"
@@ -105,7 +106,7 @@ void DrawRareEne_Sub(int mno, int dno, sceVu0FVECTOR pos, int tblno, int ani, in
     }
     else
     {
-        redp = &((RARE_ENE_DAT *)&draw_mpri[902])[tblno];
+        redp = &pazz_ene[tblno-0x80];
     }
 
     re1dp = redp[ani].re1d;
@@ -411,7 +412,7 @@ void DrawRareEne()
                     }
                     else
                     {
-                        redp = &((RARE_ENE_DAT *)&draw_mpri[902])[nene];
+                        redp = &pazz_ene[nene-0x80];
                     }
 
                     if (efbuf[i] != 0)
@@ -421,12 +422,12 @@ void DrawRareEne()
                             ResetEffects(efbuf[i]);
 
                             efbuf[i] = 0; // ??
-                            efbuf[i] = SetEffects(0x1b, 2, 21, 0, redp->sclw * 10.0f, redp->sclh * 10.0f, cpos, 0, 0, 0, &alp[i], &spd, &rate, &trate);
+                            efbuf[i] = SetEffects(EF_PDEFORM, 2, 21, 0, redp->sclw * 10.0f, redp->sclh * 10.0f, cpos, 0, 0, 0, &alp[i], &spd, &rate, &trate);
                         }
                     }
                     else
                     {
-                        efbuf[i] = SetEffects(0x1b, 2, 21, 0, redp->sclw * 10.0f, redp->sclh * 10.0f, cpos, 0, 0, 0, &alp[i], &spd, &rate, &trate);
+                        efbuf[i] = SetEffects(EF_PDEFORM, 2, 21, 0, redp->sclw * 10.0f, redp->sclh * 10.0f, cpos, 0, 0, 0, &alp[i], &spd, &rate, &trate);
                     }
 
                     DrawRareEne_Sub(j, i, rg_dsp_wrk[i].pos, rg_dsp_wrk[i].rg_no, rg_dsp_wrk[i].dsp_no, rg_dsp_wrk[i].alpha);
