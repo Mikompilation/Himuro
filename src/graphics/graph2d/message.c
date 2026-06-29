@@ -12,7 +12,7 @@
 #include "graphics/graph2d/tim2.h"
 #include "graphics/graph2d/effect.h"
 #include "graphics/graph2d/effect_sub.h"
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
 #include "graphics/graph2d/subtitles.h"
 #endif
 #include "graphics/graph3d/sglib.h"
@@ -26,7 +26,7 @@
 #include "data/wbyte_font_tbl4.h" // int wbyte_font_tbl4[];
 #include "data/wbyte_font_tbl5.h" // int wbyte_font_tbl5[];
 #include "data/font_w_b0.h"       // static int font_w_b0[];
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
 #include "data/font_w_b0_e.h"     // static int font_w_b0_e[];
 #endif
 #include "data/font_w_b1.h"       // static int font_w_b1[];
@@ -40,13 +40,15 @@
 int *mes_ex_nums[] = { &mc_ctrl.port_mes };
 
 static MES_DAT msdat;
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 static MESV22 mesv22;
+#endif
 
 static void SetMesFrame2(int pri, float bx, float by, float sw, float sh);
 static void SetFontPacketHeader(int n, int type, u_char alp);
 static void SetFont(int pri, int type, int no, int x, int y, u_char r, u_char g, u_char b, u_char a);
 static void FontInit();
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
 static void SetFontTex(int path, int flg, int bank);
 static void SetFontEnv(int path);
 static void SetFontPat(int path, int pri, int fn, int x, int y, int fw, u_char r, u_char g, u_char b, u_char a);
@@ -60,6 +62,28 @@ static void MesPacketEnd();
 static void PacketEnd();
 static void MesKeyCheck();
 
+#if defined(BUILD_JP_VERSION)
+#define PAD_ACTION_CONFIRM PAD_CIRCLE
+#elif defined(BUILD_US_VERSION)
+#define PAD_ACTION_CONFIRM PAD_CROSS
+#elif defined(BUILD_EU_VERSION)
+#define PAD_ACTION_CONFIRM PAD_CROSS
+#endif
+
+#if defined(BUILD_JP_VERSION)
+#define VER_SET_FONT_TEX(flg, bank) SetFontTex(flg, bank)
+#define VER_SET_FONT_ENV() SetFontEnv()
+#define VER_SET_FONT_PAT(pri, fn, x, y, fw, r, g, b, a) SetFontPat(pri, fn, x, y, fw, r, g, b, a)
+#elif defined(BUILD_US_VERSION)
+#define VER_SET_FONT_TEX(flg, bank) SetFontTex(flg, bank)
+#define VER_SET_FONT_ENV() SetFontEnv()
+#define VER_SET_FONT_PAT(pri, fn, x, y, fw, r, g, b, a) SetFontPat(pri, fn, x, y, fw, r, g, b, a)
+#elif defined(BUILD_EU_VERSION)
+#define VER_SET_FONT_TEX(flg, bank) SetFontTex(0, flg, bank)
+#define VER_SET_FONT_ENV() SetFontEnv(0)
+#define VER_SET_FONT_PAT(pri, fn, x, y, fw, r, g, b, a) SetFontPat(0, pri, fn, x, y, fw, r, g, b, a)
+#endif
+
 #define PI 3.1415927f
 
 #define SCR_WIDTH 640
@@ -70,10 +94,14 @@ static void MesKeyCheck();
 void InitMessage()
 {
     FontInit();
+
     save_mes_addr = 0;
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     mesv22 = (MESV22){0};
+#endif
 }
 
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 void InitMessageEF()
 {
     if (mesv22.pass != 0)
@@ -86,7 +114,7 @@ void InitMessageEF()
         mesv22.pass_flg = 0;
     }
 
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
     if (msdat.bx_pass_st == 1 && msdat.bx_pass == 0)
     {
         msdat.bx_pass_st = 0;
@@ -96,6 +124,7 @@ void InitMessageEF()
     msdat.bx_pass = 0;
 #endif
 }
+#endif
 
 void SetMessageDirect(int addr, int pri, int fn, int x, int y, u_char r, u_char g, u_char b)
 {
@@ -105,9 +134,9 @@ void SetMessageDirect(int addr, int pri, int fn, int x, int y, u_char r, u_char 
         .pos_x = 0,
         .pos_y = 0,
         .type = 1,
-        .r = 0xFF,
-        .g = 0xFF,
-        .b = 0xFF,
+        .r = 0xff,
+        .g = 0xff,
+        .b = 0xff,
         .alpha = 0x80,
         .pri = 0,
     };
@@ -128,14 +157,17 @@ void SetMessageDirect(int addr, int pri, int fn, int x, int y, u_char r, u_char 
 void SetMessageAddr(int addr)
 {
     save_mes_addr = (u_char *)addr;
+
     SetMessageV3(save_mes_addr, 0x64000);
 }
 
 int SetMessage()
 {
     SetMessageV3(save_mes_addr, 0x64000);
+
     return MesStatusCheck();
 }
+
 void MessageWaitOff()
 {
     return;
@@ -165,12 +197,12 @@ void SetMesFrame(int pri, int type, float bx, float by, float sw, float sh)
 {
     switch (type)
     {
-        case 0:
-            // do nothing
-        break;
-        case 1:
-            SetMesFrame2(pri,bx,by,sw,sh);
-        break;
+    case 0:
+        // do nothing
+    break;
+    case 1:
+        SetMesFrame2(pri, bx, by, sw, sh);
+    break;
     }
 }
 
@@ -235,6 +267,7 @@ void SetASCIIString3(int pri, float x, float y, int type, u_char r, u_char g, u_
 
     draw_mpri[nmdpri][0] = pri > 0 ? pri : 0x1000;
     draw_mpri[nmdpri][1] = nmdpkt;
+
     nmdpri++;
 
     while (str[i] != NULL)
@@ -304,7 +337,7 @@ void SetASCIIString3(int pri, float x, float y, int type, u_char r, u_char g, u_
 
         SetFont(pri, type, tbl[code] + offset, x + xoff, y, r, g, b, a);
 
-#if BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
         if (sys_wrk.language == 0)
         {
             if ((type & 1) == 0)
@@ -471,7 +504,9 @@ void SetString(float x, float y, char *fmt, ...)
                 {
                 case 's':
                     sprintf(cwo, "%s", va_arg(ap, char *));
+
                     len = strlen(cwo);
+
                     if (len < n)
                     {
                         for (i = 0; i < n - len; i++)
@@ -479,16 +514,20 @@ void SetString(float x, float y, char *fmt, ...)
                             *buf++= '+';
                         }
                     }
+
                     for (i = 0; i < strlen(cwo); i++)
                     {
                         *buf++ = cwo[i];
                     }
+
                     fmt++;
                     flag = 1;
                 break;
                 case 'd':
                     sprintf(cwo, "%d", va_arg(ap, int));
+
                     len = strlen(cwo);
+
                     if (len < n)
                     {
                         for (i = 0; i < n - len; i++)
@@ -496,16 +535,20 @@ void SetString(float x, float y, char *fmt, ...)
                             *buf++ = '+';
                         }
                     }
+
                     for (i = 0; i < strlen(cwo); i++)
                     {
                         *buf++ = cwo[i];
                     }
+
                     fmt++;
                     flag = 1;
                 break;
                 case 'c':
                     sprintf(cwo, "%c", va_arg(ap, char));
+
                     len = strlen(cwo);
+
                     if (len < n)
                     {
                         for (i = 0; i < n - len; i++)
@@ -513,10 +556,12 @@ void SetString(float x, float y, char *fmt, ...)
                             *buf++= '+';
                         }
                     }
+
                     for (i = 0; i < strlen(cwo); i++)
                     {
                         *buf++ = cwo[i];
                     }
+
                     fmt++;
                     flag = 1;
                 break;
@@ -528,14 +573,18 @@ void SetString(float x, float y, char *fmt, ...)
                 default:
                     // 0x30-0x39 are the ASCII values for 0-9
                     fmt++;
+
                     len = (cw - 0x30);
+
                     if ((len & 0xff) < 10U)
                     {
                         cw = *fmt;
                         n = len;
+
                         while (cw - 0x30U < 10)
                         {
                             fmt++;
+
                             n = n * 10 + cw - 0x30;
                             cw = *fmt;
                         }
@@ -553,6 +602,7 @@ void SetString(float x, float y, char *fmt, ...)
     va_end(ap);
 
     *buf = '\0';
+
     SetASCIIString(x, y, str);
 }
 
@@ -578,6 +628,7 @@ void SetString2(int pri, float x, float y, int type, u_char r, u_char g, u_char 
         if (*fmt == '%')
         {
             fmt++;
+
             cw = *fmt;
             n = -1;
             flag = 0;
@@ -588,7 +639,9 @@ void SetString2(int pri, float x, float y, int type, u_char r, u_char g, u_char 
                 {
                 case 's':
                     sprintf(cwo, "%s", va_arg(ap, char *));
+
                     len = strlen(cwo);
+
                     if (len < n)
                     {
                         for (i = 0; i < n - len; i++)
@@ -596,16 +649,20 @@ void SetString2(int pri, float x, float y, int type, u_char r, u_char g, u_char 
                             *buf++= ' ';
                         }
                     }
+
                     for (i = 0; i < strlen(cwo); i++)
                     {
                         *buf++ = cwo[i];
                     }
+
                     fmt++;
                     flag = 1;
                 break;
                 case 'd':
                     sprintf(cwo, "%d", va_arg(ap, int));
+
                     len = strlen(cwo);
+
                     if (len < n)
                     {
                         for (i = 0; i < n - len; i++)
@@ -613,16 +670,20 @@ void SetString2(int pri, float x, float y, int type, u_char r, u_char g, u_char 
                             *buf++ = ' ';
                         }
                     }
+
                     for (i = 0; i < strlen(cwo); i++)
                     {
                         *buf++ = cwo[i];
                     }
+
                     fmt++;
                     flag = 1;
                 break;
                 case 'c':
                     sprintf(cwo, "%c", va_arg(ap, char));
+
                     len = strlen(cwo);
+
                     if (len < n)
                     {
                         for (i = 0; i < n - len; i++)
@@ -630,10 +691,12 @@ void SetString2(int pri, float x, float y, int type, u_char r, u_char g, u_char 
                             *buf++= ' ';
                         }
                     }
+
                     for (i = 0; i < strlen(cwo); i++)
                     {
                         *buf++ = cwo[i];
                     }
+
                     fmt++;
                     flag = 1;
                 break;
@@ -645,14 +708,18 @@ void SetString2(int pri, float x, float y, int type, u_char r, u_char g, u_char 
                 default:
                     // 0x30-0x39 are the ASCII values for 0-9
                     fmt++;
+
                     len = (cw - 0x30);
+
                     if ((len & 0xff) < 10U)
                     {
                         cw = *fmt;
                         n = len;
+
                         while (cw - 0x30U < 10)
                         {
                             fmt++;
+
                             n = n * 10 + cw - 0x30;
                             cw = *fmt;
                         }
@@ -670,6 +737,7 @@ void SetString2(int pri, float x, float y, int type, u_char r, u_char g, u_char 
     va_end(ap);
 
     *buf = '\0';
+
     SetASCIIString2(pri, x, y, type, r, g, b, str);
 }
 
@@ -734,7 +802,7 @@ static void SetFontPacketHeader(int n, int type, u_char alp)
     mpbuf[nmdpkt++].ul64[1] = SCE_GS_ZBUF_1;
 
     mpbuf[nmdpkt].ul64[0] = SCE_GIF_SET_TAG(n, SCE_GS_TRUE, SCE_GS_TRUE, SCE_GS_SET_PRIM(SCE_GS_PRIM_SPRITE, 0, 1, 0, 1, 0, 1, 0, 0), SCE_GIF_PACKED, 5);
-    mpbuf[nmdpkt++].ul64[1] = 0 \
+    mpbuf[nmdpkt++].ul64[1] = 0
         | SCE_GS_RGBAQ << (4 * 0)
         | SCE_GS_UV    << (4 * 1)
         | SCE_GS_XYZF2 << (4 * 2)
@@ -784,7 +852,7 @@ static void SetFont(int pri, int type, int no, int x, int y, u_char r, u_char g,
 
     div = g_bInterlace ? 2 : 1;
 
-    z = pri > 0 ? 0xfffffff - pri : 0xfffefff;
+    z = pri > 0 ? 0xfffffff - pri : 0xfffffff - 0x1000;
 
     dx = x + 1728; dx *= 16;
     dw = Font_W; dw *= 16;
@@ -854,14 +922,14 @@ static void FontInit()
     msdat.fntcnt = 0;
     msdat.selnum = 0;
 
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
     msdat.bx_pass = 0;
     msdat.bx_pass_old = 0;
     msdat.bx_pass_st = 0;
 #endif
 }
 
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
 static void SetFontTex(int path, int flg, int bank)
 #else
 static void SetFontTex(int flg, int bank)
@@ -879,7 +947,7 @@ static void SetFontTex(int flg, int bank)
 
     tex0 = *(sceGsTex0 *)&fntdat[bank].tex0;
 
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
     if (path == 1)
     {
         mpbuf[nmdpkt].ul128 = (u_long128)0;
@@ -918,13 +986,13 @@ static void SetFontTex(int flg, int bank)
     }
 }
 
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
 static void SetFontEnv(int path)
 #else
 static void SetFontEnv()
 #endif
 {
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
     if (path == 1)
     {
         mpbuf[nmdpkt].ul128 = (u_long128)0;
@@ -947,7 +1015,7 @@ static void SetFontEnv()
     mpbuf[nmdpkt].ul64[0] = SCE_GS_SET_TEST_1(1, SCE_GS_ALPHA_GREATER, 0, SCE_GS_AFAIL_KEEP, 0, 0, 1, SCE_GS_DEPTH_GEQUAL);
     mpbuf[nmdpkt++].ul64[1] = SCE_GS_TEST_1;
 
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
     if (path == 1)
     {
         mpbuf[nmdpkt].ul64[0] = SCE_GS_SET_ZBUF_1(0x8c, SCE_GS_PSMCT24, 1);
@@ -962,7 +1030,7 @@ static void SetFontEnv()
     mpbuf[nmdpkt++].ul64[1] = SCE_GS_ZBUF_1;
 }
 
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
 static void SetFontPat(int path, int pri, int fn, int x, int y, int fw, u_char r, u_char g, u_char b, u_char a)
 #else
 static void SetFontPat(int pri, int fn, int x, int y, int fw, u_char r, u_char g, u_char b, u_char a)
@@ -1003,7 +1071,7 @@ static void SetFontPat(int pri, int fn, int x, int y, int fw, u_char r, u_char g
     tw2 = (((fn % Num_W) * Font_W) + fw) * 16;
     th2 = (((fn / Num_W) * Font_W)) * 16 + (Font_W * 16);
 
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
     if (path == 1)
     {
         mpbuf[nmdpkt].ul128 = (u_long128)0;
@@ -1012,7 +1080,7 @@ static void SetFontPat(int pri, int fn, int x, int y, int fw, u_char r, u_char g
 #endif
 
     mpbuf[nmdpkt].ul64[0] = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_TRUE, 342, SCE_GIF_PACKED, 5);
-    mpbuf[nmdpkt++].ul64[1] = 0 \
+    mpbuf[nmdpkt++].ul64[1] = 0
             | SCE_GS_RGBAQ << (4 * 0)
             | SCE_GS_UV    << (4 * 1)
             | SCE_GS_XYZF2 << (4 * 2)
@@ -1070,7 +1138,7 @@ static void SetUnderLine(int sw, int pri, int x, int y, int fw, u_char r, u_char
         z = 0x0fffffff - pri;
 
         mpbuf[nmdpkt].ul64[0] = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_TRUE, 65, SCE_GIF_PACKED, 3);
-        mpbuf[nmdpkt++].ul64[1] = 0 \
+        mpbuf[nmdpkt++].ul64[1] = 0
             | SCE_GS_RGBAQ << (4 * 0)
             | SCE_GS_XYZF2 << (4 * 1)
             | SCE_GS_XYZF2 << (4 * 2);
@@ -1092,7 +1160,7 @@ static void SetUnderLine(int sw, int pri, int x, int y, int fw, u_char r, u_char
     }
 }
 
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
 static void MesPacketEnd()
 #else
 static void PacketEnd()
@@ -1126,6 +1194,7 @@ void CopyStrDToStr(DISP_STR *s, STR_DAT *d)
     s->st = 0;
 }
 
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 int SetMessageV2_2(DISP_STR *s)
 {
     u_char *c;
@@ -1173,13 +1242,8 @@ int SetMessageV2_2(DISP_STR *s)
     draw_mpri[nmdpri][0] = npri;
     draw_mpri[nmdpri][1] = nmdpkt++;
 
-#ifdef BUILD_EU_VERSION
-    SetFontTex(0, 0, 1);
-    SetFontEnv(0);
-#else
-    SetFontTex(0, 1);
-    SetFontEnv();
-#endif
+    VER_SET_FONT_TEX(0, 1);
+    VER_SET_FONT_ENV();
 
     loop = 1;
     sflg = 0;
@@ -1203,121 +1267,123 @@ int SetMessageV2_2(DISP_STR *s)
             c++;
             nfn = *c++;
             nfw = font_w_b1[nfn];
-#ifdef BUILD_EU_VERSION
-            SetFontTex(0, 1, 2);
-#else
-            SetFontTex(1, 2);
-#endif
+
+            VER_SET_FONT_TEX(1, 2);
+
             if (column <= mesv22.cnt - line)
             {
                 mesv22.mes_alps[line][column] = mesv22.mes_alps[line][column] + 4 > 0x80 ? 0x80 : mesv22.mes_alps[line][column] + 4;
             }
-#ifdef BUILD_EU_VERSION
-            SetFontPat(0, npri, nfn, nx, ny, nfw, nr, ng, nb, mesv22.mes_alps[line][column] * na >> 7);
-#else
-            SetFontPat(npri, nfn, nx, ny, nfw, nr, ng, nb, mesv22.mes_alps[line][column] * na >> 7);
-#endif
+
+            VER_SET_FONT_PAT(npri, nfn, nx, ny, nfw, nr, ng, nb, mesv22.mes_alps[line][column] * na >> 7);
+
             nx += nfw + nxw;
+
             if (sflg != 0)
             {
                 pw[selnum-1] += nfw + nxw;
             }
+
             column++;
         break;
         case 0xf1:
             c++;
+
             nfn = *c++;
             nfw = font_w_b2[nfn];
-#ifdef BUILD_EU_VERSION
-            SetFontTex(0, 1, 3);
-#else
-            SetFontTex(1, 3);
-#endif
+
+            VER_SET_FONT_TEX(1, 3);
+
             if (column <= mesv22.cnt - line)
             {
                 mesv22.mes_alps[line][column] = mesv22.mes_alps[line][column] + 4 > 0x80 ? 0x80 : mesv22.mes_alps[line][column] + 4;
             }
-#ifdef BUILD_EU_VERSION
-            SetFontPat(0, npri, nfn, nx, ny, nfw, nr, ng, nb, mesv22.mes_alps[line][column] * na >> 7);
-#else
-            SetFontPat(npri, nfn, nx, ny, nfw, nr, ng, nb,  mesv22.mes_alps[line][column] * na >> 7);
-#endif
+
+            VER_SET_FONT_PAT(npri, nfn, nx, ny, nfw, nr, ng, nb,  mesv22.mes_alps[line][column] * na >> 7);
+
             nx += nfw + nxw;
+
             if (sflg != 0)
             {
                 pw[selnum-1] += nfw + nxw;
             }
+
             column++;
         break;
         case 0xf2:
             c++;
+
             nfn = *c++;
             nfw = font_w_b3[nfn];
-#ifdef BUILD_EU_VERSION
-            SetFontTex(0, 1, 4);
-#else
-            SetFontTex(1, 4);
-#endif
+
+            VER_SET_FONT_TEX(1, 4);
+
             if (column <= mesv22.cnt - line)
             {
                 mesv22.mes_alps[line][column] = mesv22.mes_alps[line][column] + 4 > 0x80 ? 0x80 : mesv22.mes_alps[line][column] + 4;
             }
-#ifdef BUILD_EU_VERSION
-            SetFontPat(0, npri, nfn, nx, ny, nfw, nr, ng, nb, mesv22.mes_alps[line][column] * na >> 7);
-#else
-            SetFontPat(npri, nfn, nx, ny, nfw, nr, ng, nb, mesv22.mes_alps[line][column] * na >> 7);
-#endif
+
+            VER_SET_FONT_PAT(npri, nfn, nx, ny, nfw, nr, ng, nb, mesv22.mes_alps[line][column] * na >> 7);
+
             nx += nfw + nxw;
+
             if (sflg != 0)
             {
                 pw[selnum-1] += nfw + nxw;
             }
+
             column++;
         break;
         case 0xf3:
             c++;
+
             nfn = *c++;
             nfw = font_w_b4[nfn];
-#ifdef BUILD_EU_VERSION
-            SetFontTex(0, 1, 5);
-#else
-            SetFontTex(1, 5);
-#endif
+
+            VER_SET_FONT_TEX(1, 5);
+
             if (column <= mesv22.cnt - line)
             {
                 mesv22.mes_alps[line][column] = mesv22.mes_alps[line][column] + 4 > 0x80 ? 0x80 : mesv22.mes_alps[line][column] + 4;
             }
-#ifdef BUILD_EU_VERSION
-            SetFontPat(0, npri, nfn, nx, ny, nfw, nr, ng, nb, mesv22.mes_alps[line][column] * na >> 7);
-#else
-            SetFontPat(npri, nfn, nx, ny, nfw, nr, ng, nb, mesv22.mes_alps[line][column] * na >> 7);
-#endif
+
+            VER_SET_FONT_PAT(npri, nfn, nx, ny, nfw, nr, ng, nb, mesv22.mes_alps[line][column] * na >> 7);
+
             nx += nfw + nxw;
+
             if (sflg != 0)
             {
                 pw[selnum-1] += nfw + nxw;
             }
+
             column++;
         break;
         case 0xf7:
             c++;
+
             nxw = *c++;
         break;
         case 0xf8:
             c++;
+
             nyw = *c++;
         break;
         case 0xf9:
             s->st |= 0x20;
             cp = c;
+
             c++;
+
             {
                 u_char c1, c2;
+
                 c1 = *++c;
                 c2 = *++c;
                 nx = c2 << 8 | c1;
             }
+
             c++;
+
             if (s->type != 0)
             {
                 if (s->str != cp)
@@ -1334,49 +1400,58 @@ int SetMessageV2_2(DISP_STR *s)
                     ny += nfh + nyw;
                 }
             }
+
             sflg = 1;
+
             px[selnum] = nx;
             py[selnum] = ny;
             pw[selnum] = 0;
+
             selnum++;
         break;
         case 0xfa:
             nx = s->pos_x;
             nfh = 24;
             ny += nyw + nfh;
+
             c++;
             column = 0;
             line++;
         break;
         case 0xfb:
             c++;
+
             m = *c++;
+
             sprintf(cwo, "%d", *mes_ex_nums[*c++]);
+
             i = 0;
+
             while (cwo[i] != '\0' && loop != 2)
             {
-                nfn = m != 0 ? cwo[i] + 5 :  cwo[i] + 15;
-#ifdef BUILD_EU_VERSION
+                nfn = m != 0 ? cwo[i] + 5 : cwo[i] + 15;
+#if defined(BUILD_EU_VERSION)
                 nfw = sys_wrk.language == 0 ? font_w_b0_e[nfn] : font_w_b0[nfn];
-                SetFontTex(0, 1, 1);
 #else
                 nfw = font_w_b0[nfn];
-                SetFontTex(1, 1);
 #endif
+
+                VER_SET_FONT_TEX(1, 1);
+
                 if (column <= mesv22.cnt - line)
                 {
                     mesv22.mes_alps[line][column] = mesv22.mes_alps[line][column] + 4 > 0x80 ? 0x80 : mesv22.mes_alps[line][column] + 4;
                 }
-#ifdef BUILD_EU_VERSION
-                SetFontPat(0, npri, nfn, nx, ny, nfw, nr, ng, nb, mesv22.mes_alps[line][column] * na >> 7);
-#else
-                SetFontPat(npri, nfn, nx, ny, nfw, nr, ng, nb, mesv22.mes_alps[line][column] * na >> 7);
-#endif
+
+                VER_SET_FONT_PAT(npri, nfn, nx, ny, nfw, nr, ng, nb, mesv22.mes_alps[line][column] * na >> 7);
+
                 nx += nfw + nxw;
+
                 if (sflg != 0)
                 {
                     pw[selnum-1] += nfw + nxw;
                 }
+
                 i++;
             }
         break;
@@ -1386,46 +1461,52 @@ int SetMessageV2_2(DISP_STR *s)
             nr = *++c;
             ng = *++c;
             nb = *++c;
+
             c++;
         break;
         case 0xfe:
             nx = s->pos_x;
             nfh = 24;
             ny += nyw + nfh;
+
             c++;
+
             column = 0;
             line++;
         break;
         case 0xff:
             loop = 0;
             s->st |= 0x40;
+
             c++;
+
             column = 0;
             line = 0;
         break;
         default:
             nfn = *c++;
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
             nfw = sys_wrk.language == 0 ? font_w_b0_e[nfn] : font_w_b0[nfn];
-            SetFontTex(0, 1, 1);
 #else
             nfw = font_w_b0[nfn];
-            SetFontTex(1, 1);
 #endif
+
+            VER_SET_FONT_TEX(1, 1);
+
             if (column <= mesv22.cnt - line)
             {
                 mesv22.mes_alps[line][column] = mesv22.mes_alps[line][column] + 4 > 0x80 ? 0x80 : mesv22.mes_alps[line][column] + 4;
             }
-#ifdef BUILD_EU_VERSION
-            SetFontPat(0, npri, nfn, nx, ny, nfw, nr, ng, nb, mesv22.mes_alps[line][column] * na >> 7);
-#else
-            SetFontPat(npri, nfn, nx, ny, nfw, nr, ng, nb, mesv22.mes_alps[line][column] * na >> 7);
-#endif
+
+            VER_SET_FONT_PAT(npri, nfn, nx, ny, nfw, nr, ng, nb, mesv22.mes_alps[line][column] * na >> 7);
+
             nx += nfw + nxw;
+
             if (sflg != 0)
             {
                 pw[selnum-1] += nfw + nxw;
             }
+
             column++;
         break;
         }
@@ -1449,30 +1530,30 @@ int SetMessageV2_2(DISP_STR *s)
         {
             if (s->type != 0)
             {
-                if (*key_now[0] == 1)
+                if (PAD_BTN_PRESSED(PAD_DPAD_UP))
                 {
                     s->csr = s->csr > 0 ? s->csr - 1 : selnum - 1;
                 }
 
-                if (*key_now[1] == 1)
+                if (PAD_BTN_PRESSED(PAD_DPAD_DOWN))
                 {
                     s->csr = s->csr >= selnum - 1 ? 0 : s->csr + 1;
                 }
             }
             else
             {
-                if (*key_now[2] == 1)
+                if (PAD_BTN_PRESSED(PAD_DPAD_LEFT))
                 {
                     s->csr = s->csr > 0 ? s->csr - 1 : selnum - 1;
                 }
 
-                if (*key_now[3] == 1)
+                if (PAD_BTN_PRESSED(PAD_DPAD_RIGHT))
                 {
                     s->csr = s->csr >= selnum - 1 ? 0 : s->csr + 1;
                 }
             }
 
-            if (*key_now[5] == 1)
+            if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
             {
                 s->st = s->st ^ 0x20 | 0x80;
             }
@@ -1496,8 +1577,10 @@ int SetMessageV2_2(DISP_STR *s)
         dq.y[3] = dq.y[1] + 24;
 
         dq.alpha = 0x40;
+
         {
             int i;
+
             for (i = 0; i < 4; i++)
             {
                 dq.r[i] = 0x20;
@@ -1505,16 +1588,20 @@ int SetMessageV2_2(DISP_STR *s)
                 dq.b[i] = 0x80;
             }
         }
+
         dq.pri = npri - 16;
         dq.z = 0x1000000f - npri;
+
         DispSqrD(&dq);
     }
 
     s->brnch_num = selnum;
 
     i = draw_mpri[nmdpri][1];
+
     mpbuf[i].ul128 = (u_long128)0;
     mpbuf[i].ui32[0] = nmdpkt + DMAend - i - 1;
+
     nmdpri++;
 
     mesv22.cnt++;
@@ -1522,6 +1609,7 @@ int SetMessageV2_2(DISP_STR *s)
 
     return s->csr + 1;
 }
+#endif
 
 int SetMessageV2(DISP_STR *s)
 {
@@ -1568,13 +1656,8 @@ int SetMessageV2(DISP_STR *s)
     draw_mpri[nmdpri][0] = npri;
     draw_mpri[nmdpri][1] = nmdpkt++;
 
-#ifdef BUILD_EU_VERSION
-    SetFontTex(0, 0, 1);
-    SetFontEnv(0);
-#else
-    SetFontTex(0, 1);
-    SetFontEnv();
-#endif
+    VER_SET_FONT_TEX(0, 1);
+    VER_SET_FONT_ENV();
 
     loop = 1;
     sflg = 0;
@@ -1585,16 +1668,15 @@ int SetMessageV2(DISP_STR *s)
         {
         case 0xf0:
             c++;
+
             nfn = *c++;
             nfw = font_w_b1[nfn];
-#ifdef BUILD_EU_VERSION
-            SetFontTex(0, 1, 2);
-            SetFontPat(0, npri, nfn, nx, ny, nfw, nr, ng, nb, na);
-#else
-            SetFontTex(1, 2);
-            SetFontPat(npri, nfn, nx, ny, nfw, nr, ng, nb, na);
-#endif
+
+            VER_SET_FONT_TEX(1, 2);
+            VER_SET_FONT_PAT(npri, nfn, nx, ny, nfw, nr, ng, nb, na);
+
             nx += nfw + nxw;
+
             if (sflg != 0)
             {
                 pw[selnum-1] += nfw + nxw;
@@ -1602,16 +1684,15 @@ int SetMessageV2(DISP_STR *s)
         break;
         case 0xf1:
             c++;
+
             nfn = *c++;
             nfw = font_w_b2[nfn];
-#ifdef BUILD_EU_VERSION
-            SetFontTex(0, 1, 3);
-            SetFontPat(0, npri, nfn, nx, ny, nfw, nr, ng, nb, na);
-#else
-            SetFontTex(1, 3);
-            SetFontPat(npri, nfn, nx, ny, nfw, nr, ng, nb, na);
-#endif
+
+            VER_SET_FONT_TEX(1, 3);
+            VER_SET_FONT_PAT(npri, nfn, nx, ny, nfw, nr, ng, nb, na);
+
             nx += nfw + nxw;
+
             if (sflg != 0)
             {
                 pw[selnum-1] += nfw + nxw;
@@ -1619,16 +1700,15 @@ int SetMessageV2(DISP_STR *s)
         break;
         case 0xf2:
             c++;
+
             nfn = *c++;
             nfw = font_w_b3[nfn];
-#ifdef BUILD_EU_VERSION
-            SetFontTex(0, 1, 4);
-            SetFontPat(0, npri, nfn, nx, ny, nfw, nr, ng, nb, na);
-#else
-            SetFontTex(1, 4);
-            SetFontPat(npri, nfn, nx, ny, nfw, nr, ng, nb, na);
-#endif
+
+            VER_SET_FONT_TEX(1, 4);
+            VER_SET_FONT_PAT(npri, nfn, nx, ny, nfw, nr, ng, nb, na);
+
             nx += nfw + nxw;
+
             if (sflg != 0)
             {
                 pw[selnum-1] += nfw + nxw;
@@ -1636,16 +1716,15 @@ int SetMessageV2(DISP_STR *s)
         break;
         case 0xf3:
             c++;
+
             nfn = *c++;
             nfw = font_w_b4[nfn];
-#ifdef BUILD_EU_VERSION
-            SetFontTex(0, 1, 5);
-            SetFontPat(0, npri, nfn, nx, ny, nfw, nr, ng, nb, na);
-#else
-            SetFontTex(1, 5);
-            SetFontPat(npri, nfn, nx, ny, nfw, nr, ng, nb, na);
-#endif
+
+            VER_SET_FONT_TEX(1, 5);
+            VER_SET_FONT_PAT(npri, nfn, nx, ny, nfw, nr, ng, nb, na);
+
             nx += nfw + nxw;
+
             if (sflg != 0)
             {
                 pw[selnum-1] += nfw + nxw;
@@ -1653,23 +1732,30 @@ int SetMessageV2(DISP_STR *s)
         break;
         case 0xf7:
             c++;
+
             nxw = *c++;
         break;
         case 0xf8:
             c++;
+
             nyw = *c++;
         break;
         case 0xf9:
             s->st |= 0x20;
             cp = c;
+
             c++;
+
             {
                 u_char c1, c2;
+
                 c1 = *++c;
                 c2 = *++c;
                 nx = c2 << 8 | c1;
             }
+
             c++;
+
             if (s->type != 0)
             {
                 if (s->str != cp)
@@ -1686,53 +1772,66 @@ int SetMessageV2(DISP_STR *s)
                     ny += nfh + nyw;
                 }
             }
+
             sflg = 1;
+
             px[selnum] = nx;
             py[selnum] = ny;
             pw[selnum] = 0;
+
             selnum++;
         break;
         case 0xfa:
             nx = s->pos_x;
             nfh = 24;
             ny += nfh + nyw;
+
             c++;
         break;
         case 0xfb:
             c++;
+
             m = *c++;
+
             sprintf(cwo, "%d", *mes_ex_nums[*c++]);
+
             i = 0;
+
             while (cwo[i] != '\0' && loop != 2)
             {
                 nfn = m != 0 ? cwo[i] + 5 :  cwo[i] + 15;
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
                 nfw = sys_wrk.language == 0 ? font_w_b0_e[nfn] : font_w_b0[nfn];
-                SetFontTex(0, 1, 1);
-                SetFontPat(0, npri, nfn, nx, ny, nfw, nr, ng, nb, na);
 #else
                 nfw = font_w_b0[nfn];
-                SetFontTex(1, 1);
-                SetFontPat(npri, nfn, nx, ny, nfw, nr, ng, nb, na);
 #endif
+
+                VER_SET_FONT_TEX(1, 1);
+                VER_SET_FONT_PAT(npri, nfn, nx, ny, nfw, nr, ng, nb, na);
+
                 nx += nfw + nxw;
+
                 if (sflg != 0)
                 {
                     pw[selnum-1] += nfw + nxw;
                 }
+
                 i++;
             }
         break;
         case 0xfc:
+            // do nothing ...
         break;
         case 0xfd:
             nr = *++c;
             ng = *++c;
             nb = *++c;
+
             c++;
         break;
         case 0xfe:
             c++;
+
             nx = s->pos_x;
             nfh = 24;
             ny += nyw + nfh;
@@ -1740,20 +1839,22 @@ int SetMessageV2(DISP_STR *s)
         case 0xff:
             loop = 0;
             s->st |= 0x40;
+
             c++;
         break;
         default:
             nfn = *c++;
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
             nfw = sys_wrk.language == 0 ? font_w_b0_e[nfn] : font_w_b0[nfn];
-            SetFontTex(0, 1, 1);
-            SetFontPat(0, npri, nfn, nx, ny, nfw, nr, ng, nb, na);
 #else
             nfw = font_w_b0[nfn];
-            SetFontTex(1, 1);
-            SetFontPat(npri, nfn, nx, ny, nfw, nr, ng, nb, na);
 #endif
+
+            VER_SET_FONT_TEX(1, 1);
+            VER_SET_FONT_PAT(npri, nfn, nx, ny, nfw, nr, ng, nb, na);
+
             nx += nfw + nxw;
+
             if (sflg != 0)
             {
                 pw[selnum-1] += nfw + nxw;
@@ -1780,30 +1881,30 @@ int SetMessageV2(DISP_STR *s)
         {
             if (s->type != 0)
             {
-                if (*key_now[0] == 1)
+                if (PAD_BTN_PRESSED(PAD_DPAD_UP))
                 {
                     s->csr = s->csr > 0 ? s->csr - 1 : selnum - 1;
                 }
 
-                if (*key_now[1] == 1)
+                if (PAD_BTN_PRESSED(PAD_DPAD_DOWN))
                 {
                     s->csr = s->csr >= selnum - 1 ? 0 : s->csr + 1;
                 }
             }
             else
             {
-                if (*key_now[2] == 1)
+                if (PAD_BTN_PRESSED(PAD_DPAD_LEFT))
                 {
                     s->csr = s->csr > 0 ? s->csr - 1 : selnum - 1;
                 }
 
-                if (*key_now[3] == 1)
+                if (PAD_BTN_PRESSED(PAD_DPAD_RIGHT))
                 {
                     s->csr = s->csr >= selnum - 1 ? 0 : s->csr + 1;
                 }
             }
 
-            if (*key_now[5] == 1)
+            if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
             {
                 s->st = s->st ^ 0x20 | 0x80;
             }
@@ -1827,8 +1928,10 @@ int SetMessageV2(DISP_STR *s)
         dq.y[3] = dq.y[1] + 24;
 
         dq.alpha = 0x40;
+
         {
             int i;
+
             for (i = 0; i < 4; i++)
             {
                 dq.r[i] = 0x20;
@@ -1836,16 +1939,20 @@ int SetMessageV2(DISP_STR *s)
                 dq.b[i] = 0x80;
             }
         }
+
         dq.pri = npri - 16;
         dq.z = 0x1000000f - npri;
+
         DispSqrD(&dq);
     }
 
     s->brnch_num = selnum;
 
     i = draw_mpri[nmdpri][1];
+
     mpbuf[i].ul128 = (u_long128)0;
     mpbuf[i].ui32[0] = nmdpkt + DMAend - i - 1;
+
     nmdpri++;
 
     return s->csr + 1;
@@ -1884,7 +1991,7 @@ int SubMessageV3(u_char *s, int pri, int delflg)
 
     if (msdat.pass != 0)
     {
-        return;
+        return; // missing return value!
     }
 
     if (delflg != 0 && plyr_wrk.mode == 1)
@@ -1896,7 +2003,7 @@ int SubMessageV3(u_char *s, int pri, int delflg)
     {
         if (s == 0)
         {
-            return;
+            return; // missing return value!
         }
 
         msdat.bx = (s[1] << 8) + s[0];
@@ -1964,13 +2071,8 @@ int SubMessageV3(u_char *s, int pri, int delflg)
     draw_mpri[nmdpri][0] = npri;
     draw_mpri[nmdpri][1] = nmdpkt++;
 
-#ifdef BUILD_EU_VERSION
-    SetFontTex(0, 0, 1);
-    SetFontEnv(0);
-#else
-    SetFontTex(0, 1);
-    SetFontEnv();
-#endif
+    VER_SET_FONT_TEX(0, 1);
+    VER_SET_FONT_ENV();
 
     while (loop == 0)
     {
@@ -1980,16 +2082,15 @@ int SubMessageV3(u_char *s, int pri, int delflg)
             c++;
             nfn = *c++;
             nfw = font_w_b1[nfn];
-#ifdef BUILD_EU_VERSION
-            SetFontTex(0, 1, 2);
-            SetFontPat(0, npri, nfn, nx, ny, nfw, nr, ng, nb, na);
-#else
-            SetFontTex(1, 2);
-            SetFontPat(npri, nfn, nx, ny, nfw, nr, ng, nb, na);
-#endif
+
+            VER_SET_FONT_TEX(1, 2);
+            VER_SET_FONT_PAT(npri, nfn, nx, ny, nfw, nr, ng, nb, na);
+
             SetUnderLine(nul, npri, nx, ny, nfw, msdat.usrgb[1], msdat.usrgb[2], msdat.usrgb[3], (u_int)na);
+
             nx += nfw + nxw;
             msdat.fntcnt++;
+
             if (sflg != 0)
             {
                 pw[msdat.selnum-1] += nfw + nxw;
@@ -1997,18 +2098,18 @@ int SubMessageV3(u_char *s, int pri, int delflg)
         break;
         case 0xf1:
             c++;
+
             nfn = *c++;
             nfw = font_w_b2[nfn];
-#ifdef BUILD_EU_VERSION
-            SetFontTex(0, 1, 3);
-            SetFontPat(0, npri, nfn, nx, ny, nfw, nr, ng, nb, na);
-#else
-            SetFontTex(1, 3);
-            SetFontPat(npri, nfn, nx, ny, nfw, nr, ng, nb, na);
-#endif
+
+            VER_SET_FONT_TEX(1, 3);
+            VER_SET_FONT_PAT(npri, nfn, nx, ny, nfw, nr, ng, nb, na);
+
             SetUnderLine(nul, npri, nx, ny, nfw, msdat.usrgb[1], msdat.usrgb[2], msdat.usrgb[3], na);
+
             nx += nfw + nxw;
             msdat.fntcnt++;
+
             if (sflg != 0)
             {
                 pw[msdat.selnum-1] += nfw + nxw;
@@ -2016,18 +2117,18 @@ int SubMessageV3(u_char *s, int pri, int delflg)
         break;
         case 0xf2:
             c++;
+
             nfn = *c++;
             nfw = font_w_b3[nfn];
-#ifdef BUILD_EU_VERSION
-            SetFontTex(0, 1, 4);
-            SetFontPat(0, npri, nfn, nx, ny, nfw, nr, ng, nb, na);
-#else
-            SetFontTex(1, 4);
-            SetFontPat(npri, nfn, nx, ny, nfw, nr, ng, nb, na);
-#endif
+
+            VER_SET_FONT_TEX(1, 4);
+            VER_SET_FONT_PAT(npri, nfn, nx, ny, nfw, nr, ng, nb, na);
+
             SetUnderLine(nul, npri, nx, ny, nfw, msdat.usrgb[1], msdat.usrgb[2], msdat.usrgb[3], na);
+
             nx += nfw + nxw;
             msdat.fntcnt++;
+
             if (sflg != 0)
             {
                 pw[msdat.selnum-1] += nfw + nxw;
@@ -2035,18 +2136,18 @@ int SubMessageV3(u_char *s, int pri, int delflg)
         break;
         case 0xf3:
             c++;
+
             nfn = *c++;
             nfw = font_w_b4[nfn];
-#ifdef BUILD_EU_VERSION
-            SetFontTex(0, 1, 5);
-            SetFontPat(0, npri, nfn, nx, ny, nfw, nr, ng, nb, na);
-#else
-            SetFontTex(1, 5);
-            SetFontPat(npri, nfn, nx, ny, nfw, nr, ng, nb, na);
-#endif
+
+            VER_SET_FONT_TEX(1, 5);
+            VER_SET_FONT_PAT(npri, nfn, nx, ny, nfw, nr, ng, nb, na);
+
             SetUnderLine(nul, npri, nx, ny, nfw, msdat.usrgb[1], msdat.usrgb[2], msdat.usrgb[3], na);
+
             nx += nfw + nxw;
             msdat.fntcnt++;
+
             if (sflg != 0)
             {
                 pw[msdat.selnum-1] += nfw + nxw;
@@ -2056,39 +2157,52 @@ int SubMessageV3(u_char *s, int pri, int delflg)
             i = *++c;
             j = *++c;
             k = *++c;
+
             c++;
-            if (msdat.vib == 0x0)
+
+            if (msdat.vib == 0)
             {
                 SetVibrate(i, j, k);
+
                 msdat.vib = 1;
             }
         break;
         case 0xf6:
             nul = *++c;
+
             msdat.usrgb[1] = *++c;
             msdat.usrgb[2] = *++c;
             msdat.usrgb[3] = *++c;
+
             c++;
         break;
         case 0xf7:
             c++;
+
             nxw = *c++;
         break;
         case 0xf8:
             c++;
+
             nyw = *c++;
         break;
         case 0xf9:
             cp = c++;
+
             msdat.seltype = *c;
             msdat.sta |= 0x20;
+
             {
                 u_char c1, c2;
+
                 c1 = *++c;
                 c2 = *++c;
+
                 nx = c2 << 8 | c1;
             }
+
             c++;
+
             if (msdat.seltype != 0)
             {
                 if (msdat.stp != cp)
@@ -2105,25 +2219,32 @@ int SubMessageV3(u_char *s, int pri, int delflg)
                     ny += nfh + nyw;
                 }
             }
+
             sflg = 1;
+
             px[msdat.selnum] = nx;
             py[msdat.selnum] = ny;
             pw[msdat.selnum] = 0;
+
             msdat.selnum++;
         break;
         case 0xfa:
             c++;
+
             if (msdat.sta & 0x1)
             {
                 nx = msdat.bx;
                 ny = msdat.by;
+
                 msdat.sta ^= 0x1f;
                 msdat.stp = c;
+
                 if (msdat.disptype != 0)
                 {
                     msdat.fntmcnt = 0;
                     msdat.fntwait = 0;
                 }
+
                 msdat.r = nr;
                 msdat.g = ng;
                 msdat.b = nb;
@@ -2134,51 +2255,64 @@ int SubMessageV3(u_char *s, int pri, int delflg)
             {
                 msdat.sta |= 0x10;
             }
+
             loop = 1;
         break;
         case 0xfb:
             c++;
+
             m = *c++;
+
             sprintf(cwo, "%d", *mes_ex_nums[*c++]);
+
             i = 0;
+
             while (cwo[i] != '\0' && loop != 2)
             {
                 nfn = m != 0 ? cwo[i] + 5 :  cwo[i] + 15;
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
                 nfw = sys_wrk.language == 0 ? font_w_b0_e[nfn] : font_w_b0[nfn];
-                SetFontTex(0, 1, 1);
-                SetFontPat(0, npri, nfn & 0xff, nx, ny, nfw, nr, ng, nb, na);
 #else
                 nfw = font_w_b0[nfn];
-                SetFontTex(1, 1);
-                SetFontPat(npri, nfn & 0xff, nx, ny, nfw, nr, ng, nb, na);
 #endif
+
+                VER_SET_FONT_TEX(1, 1);
+                VER_SET_FONT_PAT(npri, nfn & 0xff, nx, ny, nfw, nr, ng, nb, na);
+
                 SetUnderLine(nul, npri, nx, ny, nfw, msdat.usrgb[1], msdat.usrgb[2], msdat.usrgb[3], na);
+
                 msdat.fntcnt++;
+
                 nx += nfw + nxw;
+
                 if (sflg != 0)
                 {
                     pw[msdat.selnum-1] += nfw + nxw;
                 }
+
                 if (msdat.fntmcnt <= msdat.fntcnt)
                 {
                     loop = 2;
                 }
+
                 i++;
             }
         break;
         case 0xfc:
+            // do nothing ...
         break;
         case 0xfd:
             nr = *++c;
             ng = *++c;
             nb = *++c;
+
             c++;
         break;
         case 0xfe:
             nx = msdat.bx;
             nfh = 24;
             ny += nyw + nfh;
+
             c++;
         break;
         case 0xff:
@@ -2187,6 +2321,7 @@ int SubMessageV3(u_char *s, int pri, int delflg)
                 if (msdat.sta & 0x1)
                 {
                     msdat.mes_is_end = 1;
+
                     SetVibrate(0, 0, 0);
                     SetVibrate(1, 0, 0);
                 }
@@ -2199,18 +2334,21 @@ int SubMessageV3(u_char *s, int pri, int delflg)
         break;
         default:
             nfn = *c++;
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
             nfw = sys_wrk.language == 0 ? font_w_b0_e[nfn] : font_w_b0[nfn];
-            SetFontTex(0, 1, 1);
-            SetFontPat(0, npri, nfn, nx, ny, nfw, nr, ng, nb, na);
 #else
             nfw = font_w_b0[nfn];
-            SetFontTex(1, 1);
-            SetFontPat(npri, nfn, nx, ny, nfw, nr, ng, nb, na);
 #endif
+
+            VER_SET_FONT_TEX(1, 1);
+            VER_SET_FONT_PAT(npri, nfn, nx, ny, nfw, nr, ng, nb, na);
+
             SetUnderLine(nul, npri, nx, ny, nfw, msdat.usrgb[1], msdat.usrgb[2], msdat.usrgb[3], na);
+
             nx += nfw + nxw;
+
             msdat.fntcnt++;
+
             if (sflg != 0)
             {
                 pw[msdat.selnum-1] += nfw + nxw;
@@ -2224,7 +2362,7 @@ int SubMessageV3(u_char *s, int pri, int delflg)
         }
     }
 
-    if ((loop == 2) && (msdat.fntwait-- < 1))
+    if (loop == 2 && msdat.fntwait-- < 1)
     {
         msdat.fntmcnt++;
         msdat.fntwait = 4;
@@ -2233,17 +2371,19 @@ int SubMessageV3(u_char *s, int pri, int delflg)
     if ((msdat.sta & 0x10) != 0)
     {
         float ss;
-        ss = SgCosf((msdat.cnt * 6.0f * PI) / 180.0f);
-        DrawButtonTex(
-            pri - 16,
-            3,
-            msdat.bx + (nxw + 24) * 0x13,
-            msdat.by + (nyw + 24) * 2,
-            (ss + 1.0f) * 64.0f);
-        msdat.cnt = msdat.cnt + 1;
+
+        ss = VER_COSF((msdat.cnt * 6.0f * PI) / 180.0f);
+
+#if defined(BUILD_JP_VERSION)
+        DrawButtonTex(pri - 0x10, 2, msdat.bx + (nxw + 24) * 19, msdat.by + (nyw + 24) * 2, (ss + 1.0f) * 64.0f);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+        DrawButtonTex(pri - 0x10, 3, msdat.bx + (nxw + 24) * 19, msdat.by + (nyw + 24) * 2, (ss + 1.0f) * 64.0f);
+#endif
+
+        msdat.cnt++;
     }
 
-    if ((msdat.sta & 0x20U) != 0)
+    if ((msdat.sta & 0x20) != 0)
     {
         sq = (SQAR_DAT){
             .w = 0x64,
@@ -2261,32 +2401,32 @@ int SubMessageV3(u_char *s, int pri, int delflg)
         {
             if (msdat.seltype != 0)
             {
-                if (*key_now[0] == 1)
+                if (PAD_BTN_PRESSED(PAD_DPAD_UP))
                 {
                     msdat.csr = msdat.csr > 0 ? msdat.csr - 1 : msdat.selnum - 1;
                 }
 
-                if (*key_now[1] == 1)
+                if (PAD_BTN_PRESSED(PAD_DPAD_DOWN))
                 {
                     msdat.csr = msdat.csr >= msdat.selnum - 1 ? 0 : msdat.csr + 1;
                 }
             }
             else
             {
-                if (*key_now[2] == 1)
+                if (PAD_BTN_PRESSED(PAD_DPAD_LEFT))
                 {
                     msdat.csr = msdat.csr > 0 ? msdat.csr - 1 : msdat.selnum - 1;
                 }
 
-                if (*key_now[3] == 1)
+                if (PAD_BTN_PRESSED(PAD_DPAD_RIGHT))
                 {
                     msdat.csr = msdat.csr >= msdat.selnum - 1 ? 0 : msdat.csr + 1;
                 }
             }
 
-            if (*key_now[5] == 1)
+            if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
             {
-                msdat.sta ^= 0x2f;
+                msdat.sta ^= (0x20 | 0x8 | 0x4 | 0x2 | 0x1);
                 msdat.decide = 1;
             }
         }
@@ -2311,8 +2451,10 @@ int SubMessageV3(u_char *s, int pri, int delflg)
         dq.y[3] = dq.y[1] + 24;
 
         dq.alpha = msdat.alp / 2;
+
         {
             int i;
+
             for (i = 0; i < 4; i++)
             {
                 dq.r[i] = 0x20;
@@ -2320,7 +2462,8 @@ int SubMessageV3(u_char *s, int pri, int delflg)
                 dq.b[i] = 0x80;
             }
         }
-        dq.pri = npri - 16;
+
+        dq.pri = npri - 0x10;
         dq.z = 0x1000000f - npri;
 
         DispSqrD(&dq);
@@ -2349,8 +2492,10 @@ int SubMessageV3(u_char *s, int pri, int delflg)
     }
 
     i = draw_mpri[nmdpri][1];
+
     mpbuf[i].ul128 = (u_long128)0;
     mpbuf[i].ui32[0] = nmdpkt + DMAend - i - 1;
+
     nmdpri++;
 
     MesKeyCheck();
@@ -2382,7 +2527,7 @@ void MesPassCheck()
 
 static void MesKeyCheck()
 {
-    if ((msdat.sta & 0x10) != 0 && *key_now[5] == 1)
+    if ((msdat.sta & 0x10) != 0 && PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
     {
         msdat.sta |= 0x1;
     }
@@ -2435,6 +2580,7 @@ void DrawButtonTex(u_int pri, int type, float x, float y, u_char alp)
     DispSprD(&ds);
 }
 
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 void DrawButtonTexNZ(u_int pri, int type, float x, float y, u_char alp)
 {
     DISP_SPRT ds;
@@ -2452,6 +2598,7 @@ void DrawButtonTexNZ(u_int pri, int type, float x, float y, u_char alp)
 
     DispSprD(&ds);
 }
+#endif
 
 void DrawMessageBox(u_int pri, float x, float y, float sizew, float sizeh, u_char alp)
 {
@@ -2504,7 +2651,7 @@ void DrawMessageBox(u_int pri, float x, float y, float sizew, float sizeh, u_cha
     sh[1] = sh[2] = ssh / p1h;
     sh[0] = sh[3] = 1.0f;
 
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
     if (subtitles_sys.run != 0)
     {
         msdat.bx_pass_st = 1;
@@ -2529,9 +2676,9 @@ void DrawMessageBox(u_int pri, float x, float y, float sizew, float sizeh, u_cha
     SetSquareSN(
         pri,
         px[4]       - SCR_WIDTH_HALF - msx,
-        py[5]       - SCR_HEIGHT - msy,
+        py[5]       - SCR_HEIGHT     - msy,
         px[4] + ssw - SCR_WIDTH_HALF + msx,
-        py[5] + ssh - SCR_HEIGHT + msy,
+        py[5] + ssh - SCR_HEIGHT     + msy,
         0x0b, 0x08, 0x07, alp1);
 
     for (i = 0; i < 4; i++)
@@ -2633,7 +2780,7 @@ int GetStrLength(u_char *str)
     return num;
 }
 
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
 int GetStrWidthMain(u_char *str, int type)
 {
     u_char *c;
@@ -2719,7 +2866,7 @@ int GetStrWidth(u_char *str)
 {
     return GetStrWidthMain(str, 0);
 }
-#else
+#elif defined(BUILD_US_VERSION)
 int GetStrWidth(u_char *str)
 {
     u_char *c;
@@ -2792,7 +2939,7 @@ int GetStrWidth(u_char *str)
 }
 #endif
 
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
 int GetStrWidthST(u_char *str)
 {
     return GetStrWidthMain(str, 1);
@@ -2805,20 +2952,20 @@ void FontDispSample()
     static float h = 100.0f;
     static int fl = 0;
     u_char str3[14] = {
-        0xF0, 0x00, 0xF0, 0x01,
-        0xFB, 0x01, 0x00, 0xF1,
-        0x00, 0xF1, 0x16, 0xF1,
-        0x2A, 0xFF
+        0xf0, 0x00, 0xf0, 0x01,
+        0xfb, 0x01, 0x00, 0xf1,
+        0x00, 0xf1, 0x16, 0xf1,
+        0x2a, 0xff,
     };
     u_char str2[11] = {
-        0x3F, 0x40, 0x41, 0x42,
+        0x3f, 0x40, 0x41, 0x42,
         0x43, 0x40, 0x42, 0x43,
-        0x46, 0x77, 0xFF
+        0x46, 0x77, 0xff,
     };
     u_char str1[11] = {
-        0x3F, 0x40, 0x41, 0x42,
-        0x43, 0x3F, 0x41, 0x42,
-        0x45, 0x76, 0xFF
+        0x3f, 0x40, 0x41, 0x42,
+        0x43, 0x3f, 0x41, 0x42,
+        0x45, 0x76, 0xff,
 };
     DISP_STR ds;
     STR_DAT sd = {
@@ -2826,9 +2973,9 @@ void FontDispSample()
         .pos_x = 0,
         .pos_y = 0,
         .type = 1,
-        .r = 0xFF,
-        .g = 0xFF,
-        .b = 0xFF,
+        .r = 0xff,
+        .g = 0xff,
+        .b = 0xff,
         .alpha = 0x80,
         .pri = 0x5000,
     };
@@ -2836,14 +2983,14 @@ void FontDispSample()
     CopyStrDToStr(&ds, &sd);
 
     ds.pri = 0x2000;
-    ds.pos_x = 0x28;
-    ds.pos_y = 0x5a;
+    ds.pos_x = 40;
+    ds.pos_y = 90;
     ds.str = str3;
 
     SetMessageV2(&ds);
 }
 
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
 int SetMessageMov(int path, int type, DISP_STR *s)
 {
     u_char *c;
@@ -2899,34 +3046,46 @@ int SetMessageMov(int path, int type, DISP_STR *s)
         {
         case 0xf0:
             c++;
+
             nfn = *c++;
             nfw = font_w_b1[nfn];
+
             SetFontTex(path, 1, 2);
             SetFontPat(path, npri, nfn, nx, ny, nfw, nr, ng, nb, na);
+
             nx += nfw + nxw;
         break;
         case 0xf1:
             c++;
+
             nfn = *c++;
             nfw = font_w_b2[nfn];
+
             SetFontTex(path, 1, 3);
             SetFontPat(path, npri, nfn, nx, ny, nfw, nr, ng, nb, na);
+
             nx += nfw + nxw;
         break;
         case 0xf2:
             c++;
+
             nfn = *c++;
             nfw = font_w_b3[nfn];
+
             SetFontTex(path, 1, 4);
             SetFontPat(path, npri, nfn, nx, ny, nfw, nr, ng, nb, na);
+
             nx += nfw + nxw;
         break;
         case 0xf3:
             c++;
+
             nfn = *c++;
             nfw = font_w_b4[nfn];
+
             SetFontTex(path, 1, 5);
             SetFontPat(path, npri, nfn, nx, ny, nfw, nr, ng, nb, na);
+
             nx += nfw + nxw;
         break;
         case 0xfd:
@@ -2955,8 +3114,10 @@ int SetMessageMov(int path, int type, DISP_STR *s)
         default:
             nfn = *c++;
             nfw = font_w_b1[nfn];
+
             SetFontTex(path, 1, 2);
             SetFontPat(path, npri, nfn, nx, ny, nfw, nr, ng, nb, na);
+
             nx += nfw + nxw;
         break;
         }
@@ -2965,8 +3126,10 @@ int SetMessageMov(int path, int type, DISP_STR *s)
     if (path != 1)
     {
         i = draw_mpri[nmdpri][1];
+
         mpbuf[i].ul128 = (u_long128)0;
         mpbuf[i].ui32[0] = nmdpkt + DMAend - i - 1;
+
         nmdpri++;
     }
 
