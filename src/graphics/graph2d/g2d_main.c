@@ -16,8 +16,7 @@
 #include "graphics/graph2d/effect_obj.h"
 #include "graphics/graph2d/effect_sub.h"
 #include "graphics/graph2d/effect_scr.h"
-
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
 #include "graphics/graph2d/subtitles.h"
 #endif
 
@@ -31,7 +30,7 @@ static void gra2dSubLAST();
 
 void gra2dInitBG()
 {
-	int i;
+    int i;
 
     g2d_load_flg.dmg = 0;
     g2d_load_flg.hint = 0;
@@ -53,7 +52,7 @@ void gra2dInitST()
     InformationDispInit();
     PauseInit();
     SpdMenuInit();
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
     InitSubtitlesSys();
 #endif
 }
@@ -88,7 +87,7 @@ static void gra2dSubG3(int fl)
     PhotoMakeSave2();
     EffectControl(8);
     PauseDisp();
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
     CallSubtitles();
 #endif
     CheckHintTex();
@@ -99,49 +98,51 @@ static void gra2dSubG3(int fl)
 
 static void gra2dSubLAST()
 {
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
     CheckSubtitlesFlag();
 #endif
     EffectEndSet();
     MesPassCheck();
     InitHeatHaze();
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     InitMessageEF();
+#endif
 }
 
 void gra2dDraw(int fl)
 {
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     SetVURand(rand() / (float)RAND_MAX);
+#endif
 
     switch (fl)
     {
-        case 0:
-            gra2dSubO();
-        break;
-        case 1:
-        case 3:
-            gra2dSubG0(fl);
-        break;
-        case 2:
-        case 4:
-            gra2dSubG1(fl);
-        break;
-        case 5:
-            gra2dSubG2(fl);
-        break;
-        case 6:
-            gra2dSubG3(fl);
-        break;
-        case 9:
-        break;
-        case 10:
-        break;
-        case 11:
-        break;
-        case 0xff:
-        break;
+    case 0:
+        gra2dSubO();
+    break;
+    case 1:
+    case 3:
+        gra2dSubG0(fl);
+    break;
+    case 2:
+    case 4:
+        gra2dSubG1(fl);
+    break;
+    case 5:
+        gra2dSubG2(fl);
+    break;
+    case 6:
+        gra2dSubG3(fl);
+    break;
+    case 9:
+    case 10:
+    case 11:
+    case 0xff:
+        // do nothing ...
+    break;
     }
 
-    if (*key_now[13] != 0 && dbg_wrk.oth_perf != 0)
+    if (PAD_BTN_HELD(PAD_SELECT) != 0 && dbg_wrk.oth_perf != 0)
     {
         InitPerformanceCounter();
     }
