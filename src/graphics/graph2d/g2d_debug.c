@@ -1,5 +1,7 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
+#include "enums.h"
 #include "g2d_debug.h"
 
 #include "sce/libpc.h"
@@ -257,6 +259,17 @@ static int *dbgmenu_inttbl[] = {
 #define MIN0(x, y) (x) < (0) ? (y) : (x)
 #define MAX0(x, y) (x) > (y) ? (0) : (x)
 
+#if defined(BUILD_JP_VERSION)
+#define PAD_ACTION_CONFIRM PAD_CIRCLE
+#define PAD_ACTION_BACK PAD_SQUARE
+#elif defined(BUILD_US_VERSION)
+#define PAD_ACTION_CONFIRM PAD_CROSS
+#define PAD_ACTION_BACK PAD_TRIANGLE
+#elif defined(BUILD_EU_VERSION)
+#define PAD_ACTION_CONFIRM PAD_CROSS
+#define PAD_ACTION_BACK PAD_TRIANGLE
+#endif
+
 void gra2dInitDbgMenu()
 {
     dbg_wrk.mode_on = 0;
@@ -356,12 +369,12 @@ void gra2dInitDbgMenu()
 
 void gra2dDrawDbgMenuSub(DEBUG_MENU *wlp)
 {
-	int i;
-	int n;
-	int bx;
-	int by;
-	int sw;
-	int sh;
+    int i;
+    int n;
+    int bx;
+    int by;
+    int sw;
+    int sh;
     int var1;
     int var2;
 
@@ -431,15 +444,15 @@ start:
 
 void gra2dDrawDbgMenu()
 {
-	static int now_tree = 0;
-	int i;
-	int l;
-	int n;
-	int ok;
-	int pad;
-	char cwo[16];
-	DEBUG_MENU *nlp;
-	DEBUG_MENU *wlp;
+    static int now_tree = 0;
+    int i;
+    int l;
+    int n;
+    int ok;
+    int pad;
+    char cwo[16];
+    DEBUG_MENU *nlp;
+    DEBUG_MENU *wlp;
 
     dbg_wrk.param_film14 = poss_item[1];
     dbg_wrk.param_film37 = poss_item[2];
@@ -508,7 +521,7 @@ void gra2dDrawDbgMenu()
     l = strlen(nlp->title);
     nlp->max = nlp->max < l ? l : nlp->max;
 
-    if (*key_now[1] == 1)
+    if (PAD_BTN_PRESSED(PAD_DPAD_DOWN))
     {
         nlp->pos = nlp->pos < nlp->mnum -1 ? nlp->pos + 1 : 0;
 
@@ -518,7 +531,7 @@ void gra2dDrawDbgMenu()
         }
     }
 
-    if (*key_now[0] == 1)
+    if (PAD_BTN_PRESSED(PAD_DPAD_UP))
     {
         nlp->pos = nlp->pos < 1 ? nlp->mnum - 1 : nlp->pos - 1;
 
@@ -528,17 +541,17 @@ void gra2dDrawDbgMenu()
         }
     }
 
-    if (*key_now[3] != 0)
+    if (PAD_BTN_HELD(PAD_DPAD_RIGHT))
     {
         ok = 0;
 
-        if (*key_now[9] == 0 || *key_now[3] == 1)
+        if (PAD_BTN_NOT_HELD(PAD_L2) || PAD_BTN_PRESSED(PAD_DPAD_RIGHT))
         {
-            pad = *key_now[10] != 0 ? 3 : 1;
+            pad = PAD_BTN_HELD(PAD_R1) ? 3 : 1;
 
             if (nlp->submenu[nlp->pos].subnum & 0x10000)
             {
-                ok = *key_now[3] != 1 ? ok : 1;
+                ok = PAD_BTN_PRESSED(PAD_DPAD_RIGHT) == 1 ? 1 : ok;
             }
 
             if ((nlp->submenu[nlp->pos].subnum & 0x10000) == 0 && nlp->submenu[nlp->pos].subnum & 0xa000)
@@ -552,7 +565,7 @@ void gra2dDrawDbgMenu()
             {
                 if (n >= 29 && n <= 34)
                 {
-                    if (*key_now[11] != 0)
+                    if (PAD_BTN_HELD(PAD_R2))
                     {
                         if (n >= 29 && n <= 31)
                         {
@@ -576,7 +589,7 @@ void gra2dDrawDbgMenu()
                 {
                     *dbgmenu_inttbl[n] = MIN(*dbgmenu_inttbl[n] + pad, nlp->submenu[nlp->pos].nmax);
                 }
-                else if (*key_now[3] == 1)
+                else if (PAD_BTN_PRESSED(PAD_DPAD_RIGHT))
                 {
                     *dbgmenu_inttbl[n] = MAX0(*dbgmenu_inttbl[n] + pad, nlp->submenu[nlp->pos].nmax);
                 }
@@ -584,22 +597,22 @@ void gra2dDrawDbgMenu()
         }
     }
 
-    if (*key_now[2] != 0)
+    if (PAD_BTN_HELD(PAD_DPAD_LEFT))
     {
         ok = 0;
 
-        if (*key_now[9] == 0 || *key_now[2] == 1)
+        if (PAD_BTN_NOT_HELD(PAD_L2) || PAD_BTN_PRESSED(PAD_DPAD_LEFT))
         {
-            pad = *key_now[10] != 0 ? 3 : 1;
+            pad = PAD_BTN_HELD(PAD_R1) ? 3 : 1;
 
             if (nlp->submenu[nlp->pos].subnum & 0x10000)
             {
-                ok = *key_now[3] != 1 ? ok : 1;
+                ok = PAD_BTN_PRESSED(PAD_DPAD_RIGHT) ? 1 : ok;
             }
 
             if (nlp->submenu[nlp->pos].subnum & 0x10000)
             {
-                ok = *key_now[2] != 1 ? ok : 1;
+                ok = PAD_BTN_PRESSED(PAD_DPAD_LEFT) ? 1 : ok;
             }
 
             if ((nlp->submenu[nlp->pos].subnum & 0x10000) == 0 && nlp->submenu[nlp->pos].subnum & 0xa000)
@@ -613,7 +626,7 @@ void gra2dDrawDbgMenu()
             {
                 if (n >= 29 && n <= 34)
                 {
-                    if (*key_now[11] != 0)
+                    if (PAD_BTN_HELD(PAD_R2))
                     {
                         if (n >= 29 && n <= 31)
                         {
@@ -635,7 +648,7 @@ void gra2dDrawDbgMenu()
                 }
                 else if (nlp->submenu[nlp->pos].subnum & 0x2000)
                 {
-                    if (*key_now[2] == 1)
+                    if (PAD_BTN_PRESSED(PAD_DPAD_LEFT))
                     {
                         *dbgmenu_inttbl[n] = MIN0(*dbgmenu_inttbl[n] - pad, nlp->submenu[nlp->pos].nmax);
                     }
@@ -648,13 +661,13 @@ void gra2dDrawDbgMenu()
         }
     }
 
-    if (nlp->submenu[nlp->pos].subnum & 0x8000 && *key_now[11] != 0 && *key_now[9] != 0)
+    if (nlp->submenu[nlp->pos].subnum & 0x8000 && PAD_BTN_HELD(PAD_R2) && PAD_BTN_HELD(PAD_L2))
     {
         n = nlp->submenu[nlp->pos].subnum & 0xfff;
         *dbgmenu_inttbl[n] = 0;
     }
 
-    if (*key_now[5] == 1)
+    if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
     {
         if ((nlp->submenu[nlp->pos].subnum & 0xe000))
         {
@@ -687,7 +700,7 @@ void gra2dDrawDbgMenu()
         }
     }
 
-    if (*key_now[4] == 1)
+    if (PAD_BTN_PRESSED(PAD_ACTION_BACK))
     {
         if (nlp->parent != -1)
         {
@@ -699,7 +712,7 @@ void gra2dDrawDbgMenu()
         }
     }
 
-    if (*key_now[13] == 1)
+    if (PAD_BTN_PRESSED(PAD_SELECT))
     {
         dbg_wrk.mode_on = 2;
     }
@@ -715,10 +728,10 @@ void gra2dDrawDbgMenu()
 
     if (dbg_wrk.param_camera != poss_item[9] && dbg_wrk.param_camera == 1)
     {
-        poss_item[1] = 0x32;
-        poss_item[2] = 0x32;
-        poss_item[3] = 0x32;
-        poss_item[4] = 0x32;
+        poss_item[1] = 50;
+        poss_item[2] = 50;
+        poss_item[3] = 50;
+        poss_item[4] = 50;
     }
 
     poss_item[9] = dbg_wrk.param_camera;
@@ -757,8 +770,10 @@ void SetShibataSet()
         dbg_wrk.eff_dither = 0;
         dbg_wrk.eff_dithsp = 8;
         dbg_wrk.eff_dithal = 0x20;
+
         dither_alp = 0x40;
         dither_col = 0x78;
+
         dbg_wrk.eff_focus = 0;
         dbg_wrk.eff_sccol_tp1 = 0;
         dbg_wrk.eff_sccol_tp2 = 0;
@@ -772,8 +787,10 @@ void SetShibataSet()
         dbg_wrk.eff_dither = 0;
         dbg_wrk.eff_dithsp = 8;
         dbg_wrk.eff_dithal = 0x20;
+
         dither_alp = 0x40;
         dither_col = 0x78;
+
         dbg_wrk.eff_focus = 0;
         dbg_wrk.eff_sccol_tp1 = 0;
         dbg_wrk.eff_sccol_tp2 = 3;
@@ -781,7 +798,7 @@ void SetShibataSet()
         dbg_wrk.eff_sccol_cont_alp = 0x8c;
         dbg_wrk.eff_sccol_blk = 0x28;
         dbg_wrk.eff_ffr = 1;
-        dbg_wrk.eff_ffra = 0x3c;
+        dbg_wrk.eff_ffra = 60;
     break;
     case 2:
         dbg_wrk.eff_dither = 2;
@@ -796,29 +813,33 @@ void SetShibataSet()
         dbg_wrk.eff_sccol_cont_alp = 0x87;
         dbg_wrk.eff_sccol_blk = 0x28;
         dbg_wrk.eff_ffr = 1;
-        dbg_wrk.eff_ffra = 0x3c;
+        dbg_wrk.eff_ffra = 60;
     break;
     case 3:
         dbg_wrk.eff_dither = 6;
         dbg_wrk.eff_dithsp = 10;
         dbg_wrk.eff_dithal = 0x4a;
+
         dither_alp = 0x43;
         dither_col = 0x66;
+
         dbg_wrk.eff_focus = 0;
         dbg_wrk.eff_sccol_tp1 = 1;
         dbg_wrk.eff_sccol_tp2 = 3;
         dbg_wrk.eff_sccol_cont_col = 200;
         dbg_wrk.eff_sccol_cont_alp = 200;
-        dbg_wrk.eff_sccol_blk = 0x3c;
+        dbg_wrk.eff_sccol_blk = 60;
         dbg_wrk.eff_ffr = 1;
-        dbg_wrk.eff_ffra = 0x3c;
+        dbg_wrk.eff_ffra = 60;
     break;
     case 4:
         dbg_wrk.eff_dither = 4;
         dbg_wrk.eff_dithsp = 8;
         dbg_wrk.eff_dithal = 0x2e;
+
         dither_alp = 0x37;
         dither_col = 0x66;
+
         dbg_wrk.eff_focus = 0x14;
         dbg_wrk.eff_sccol_tp1 = 0;
         dbg_wrk.eff_sccol_tp2 = 2;
@@ -826,7 +847,7 @@ void SetShibataSet()
         dbg_wrk.eff_sccol_cont_alp = 0x87;
         dbg_wrk.eff_sccol_blk = 0x28;
         dbg_wrk.eff_ffr = 1;
-        dbg_wrk.eff_ffra = 0x3c;
+        dbg_wrk.eff_ffra = 60;
     break;
     case 5:
         dbg_wrk.eff_blur = 1;
@@ -868,11 +889,11 @@ void StartPerformanceCounter()
 
 void StopPerformanceCounter()
 {
-	static u_char ow = 0;
-	static int cnt = 0;
-	// int ctr0;
+    static u_char ow = 0;
+    static int cnt = 0;
 
     perf_sec = scePcGetCounter0();
+
     scePcStop();
 }
 
@@ -911,7 +932,11 @@ void DrawPerformanceCounter()
         perf_max = f;
     }
 
+#if defined(BUILD_JP_VERSION)
+    if (f < 1.0) // 1.0 is double!
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     if (f < 1.0f)
+#endif
     {
         r = f * 255.0f;
         g = f * 255.0f;
@@ -967,30 +992,23 @@ void WaitFrameTop(int type)
 
 void CheckHintTex()
 {
-	int n;
-	int num;
-	int target;
-	u_char alp;
-	float posy;
-	static int num_old = -1;
-	static int hint_tbl[48] = {
-#ifdef BUILD_EU_VERSION
-        548, 549, 550, 551, 552, 553, 554, 555,
-        556, 557, 558, 559, 560, 561, 562, 563,
-        564, 565, 566, 567, 568, 569, 570, 571,
-        572, 573, 574, 575, 576, 577, 578, 579,
-        580, 581, 582, 583, 584, 585, 586, 587,
-        588, 589, 590, 591, 592, 593, 594, 595,
-#else
-        280, 281, 282, 283, 284, 285, 286, 287,
-        288, 289, 290, 291, 292, 293, 294, 295,
-        296, 297, 298, 299, 300, 301, 302, 303,
-        304, 305, 306, 307, 308, 309, 310, 311,
-        312, 313, 314, 315, 316, 317, 318, 319,
-        320, 321, 322, 323, 324, 325, 326, 327,
-#endif
+    int n;
+    int num;
+    int target;
+    u_char alp;
+    float posy;
+    static int num_old = -1;
+    static int hint_tbl[48] = {
+        HINT_00_PK2, HINT_01_PK2, HINT_02_PK2, HINT_03_PK2, HINT_04_PK2, HINT_05_PK2,
+        HINT_06_PK2, HINT_07_PK2, HINT_08_PK2, HINT_09_PK2, HINT_10_PK2, HINT_11_PK2,
+        HINT_12_PK2, HINT_13_PK2, HINT_14_PK2, HINT_15_PK2, HINT_16_PK2, HINT_17_PK2,
+        HINT_18_PK2, HINT_19_PK2, HINT_20_PK2, HINT_21_PK2, HINT_22_PK2, HINT_23_PK2,
+        HINT_24_PK2, HINT_25_PK2, HINT_26_PK2, HINT_27_PK2, HINT_28_PK2, HINT_29_PK2,
+        HINT_30_PK2, HINT_31_PK2, HINT_32_PK2, HINT_33_PK2, HINT_34_PK2, HINT_35_PK2,
+        HINT_36_PK2, HINT_37_PK2, HINT_38_PK2, HINT_39_PK2, HINT_40_PK2, HINT_41_PK2,
+        HINT_42_PK2, HINT_43_PK2, HINT_44_PK2, HINT_45_PK2, HINT_46_PK2, HINT_47_PK2,
     };
-	DISP_SPRT ds;
+    DISP_SPRT ds;
 
     n = 0;
 
@@ -1011,11 +1029,13 @@ void CheckHintTex()
     if (hint_test_sw != 0)
     {
         alp = ((100.0f - hint_test_posx) * 64.0f) / 100.0f;
+
         dbg_wrk.oth_hint_alp = alp;
     }
     else
     {
         alp = dbg_wrk.oth_hint_alp;
+
         hint_test_posx = 0;
     }
 
@@ -1023,11 +1043,11 @@ void CheckHintTex()
 
     if (num != num_old)
     {
-        g2d_load_flg.hint = LoadReq(hint_tbl[num], 0x1e90000);
+        g2d_load_flg.hint = LoadReq(hint_tbl[num], LOAD_ADDRESS_41);
     }
 
-    MakeTim2ClutDirect4(0x1e90000, 0, -1, -1, 0);
-    MakeTim2ClutDirect4(0x1e90000, 1, -1, -1, 0);
+    MakeTim2ClutDirect4(LOAD_ADDRESS_41, 0, -1, -1, 0);
+    MakeTim2ClutDirect4(LOAD_ADDRESS_41, 1, -1, -1, 0);
 
     if (*key_now[9] != 0)
     {
@@ -1040,39 +1060,45 @@ void CheckHintTex()
 
     CopySprDToSpr(&ds, &hintdat[target]);
 
-    ds.tex1 = 0x161;
-    ds.zbuf = 0x10100008c;
-    ds.test = 0x3000d;
-    ds.alphar = 0x8000000044;
+    ds.tex1 = SCE_GS_SET_TEX1_1(1, 0, SCE_GS_LINEAR, SCE_GS_LINEAR_MIPMAP_LINEAR, 0, 0, 0);
+    ds.zbuf = SCE_GS_SET_ZBUF_1(0x8c, SCE_GS_PSMCT24, 1);
+    ds.test = SCE_GS_SET_TEST_1(1, SCE_GS_ALPHA_GREATER, 0, SCE_GS_AFAIL_KEEP, 0, 0, 1, SCE_GS_DEPTH_ALWAYS);
+    ds.alphar = SCE_GS_SET_ALPHA_1(SCE_GS_ALPHA_CS, SCE_GS_ALPHA_CD, SCE_GS_ALPHA_AS, SCE_GS_ALPHA_CD, 0x80);
+
     ds.pri = 0x470;
-    ds.z = 0xffffb8f;
+    ds.z = 0x0fffffff - ds.pri;
+
     ds.alpha = alp;
 
     if (hint_test_sw != 0)
     {
         ds.pri = 0x4b0;
-        ds.z = 0xffffb4f;
+        ds.z = 0x0fffffff - ds.pri;
+
         ds.x = (320 - (int)(hintdat[target].w / 2)) - posy;
         ds.y = (324 - (int)(hintdat[target].h / 2)) - posy;
 
         DispSprD(&ds);
 
         ds.pri = 0x4a0;
-        ds.z = 0xffffb5f;
+        ds.z = 0x0fffffff - ds.pri;
+
         ds.x = (320 - (int)(hintdat[target].w / 2)) - posy;
         ds.y = (324 - (int)(hintdat[target].h / 2)) + posy;
 
         DispSprD(&ds);
 
         ds.pri = 0x490;
-        ds.z = 0xffffb6f;
+        ds.z = 0x0fffffff - ds.pri;
+
         ds.x = (320 - (int)(hintdat[target].w / 2)) + posy;
         ds.y = (324 - (int)(hintdat[target].h / 2)) - posy;
 
         DispSprD(&ds);
 
         ds.pri = 0x480;
-        ds.z = 0xffffb7f;
+        ds.z = 0x0fffffff - ds.pri;
+
         ds.x = (320 - (int)(hintdat[target].w / 2)) + posy;
         ds.y = (324 - (int)(hintdat[target].h / 2)) + posy;
 

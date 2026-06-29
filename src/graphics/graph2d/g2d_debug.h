@@ -3,11 +3,10 @@
 
 #include "typedefs.h"
 
-typedef struct
-{ // 0xc
-    /* 0x0 */ char *name;
-    /* 0x4 */ int subnum;
-    /* 0x8 */ int nmax;
+typedef struct {
+	char *name;
+	int subnum;
+	int nmax;
 } DEBUG_SUB_MENU;
 
 typedef struct {
