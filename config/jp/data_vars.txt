@@ -181,3 +181,6 @@ font_w_b4                       = 0x2aa338; // type:int numel:210 static nosize
 fntdat                          = 0x2aa680; // type:SPRT_DAT numel:6 nosize
 mesbox                          = 0x2aa740; // type:SPRT_DAT numel:8 nosize
 btntex                          = 0x2aa840; // type:SPRT_DAT numel:4 nosize
+
+// graphics/graph2d/number.c
+number_tex                      = 0x2aa8c8; // type:SPRT_DAT numel:4 numel:10 nosize
