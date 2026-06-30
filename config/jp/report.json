@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 31.0403421807846,
+    "fuzzy_match_percent": 32.34823623106815,
     "total_code": "1165232",
-    "matched_code": "361692",
-    "matched_code_percent": 31.0403421807846,
+    "matched_code": "376932",
+    "matched_code_percent": 32.34823623106815,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 818,
-    "matched_functions_percent": 24.101355332940482,
+    "matched_functions": 883,
+    "matched_functions_percent": 26.016499705362403,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -7163,9 +7163,14 @@
     {
       "name": "graphics/graph2d/tim2",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "15240",
+        "matched_code": "15240",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 65,
+        "matched_functions": 65,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -7173,14 +7178,17 @@
         {
           "name": ".text",
           "size": "15352",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -7188,326 +7196,391 @@
         {
           "name": "printClut",
           "size": "44",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ResetClutAlpha",
           "size": "48",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ResetPIXELAlpha",
           "size": "60",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "Tim2CheckFileHeaer",
           "size": "116",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "Tim2GetPictureHeader",
           "size": "76",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "Tim2IsClut2",
           "size": "12",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "Tim2GetMipMapPictureSize",
           "size": "136",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "Tim2GetMipMapHeader",
           "size": "56",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "Tim2GetUserSpace",
           "size": "92",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "Tim2GetUserData",
           "size": "88",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "Tim2GetComment",
           "size": "84",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "Tim2GetImage",
           "size": "96",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "Tim2GetClut",
           "size": "36",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "Tim2GetClutColor",
           "size": "496",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "Tim2SetClutColor",
           "size": "616",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "Tim2GetTexel",
           "size": "392",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "Tim2SetTexel",
           "size": "496",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "Tim2GetTextureColor",
           "size": "268",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "Tim2LoadPicture2",
           "size": "96",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "Tim2LoadImage2",
           "size": "848",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "Tim2LoadClut2",
           "size": "824",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "Tim2LoadPicture",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "Tim2LoadTexture",
           "size": "396",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "Tim2CalcBufWidth__local_1",
           "size": "108",
-          "metadata": {}
+          "metadata": {},
+          "fuzzy_match_percent": 100.0
         },
         {
           "name": "Tim2CalcBufSize",
           "size": "28",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "Tim2LoadImage",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "Tim2LoadClut",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "Tim2TakeSnapshot",
           "size": "1024",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "Tim2GetLog2",
           "size": "60",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "LoadTIM2Sub",
           "size": "592",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetLog2",
           "size": "60",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FlushTextureCache",
           "size": "84",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetTex0Reg",
           "size": "176",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetTex0RegTM",
           "size": "160",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "InitTIM2Files",
           "size": "112",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "InitTIM2Addr",
           "size": "60",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "LoadTIM2File",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DrawOne2D",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SortEffectPacket",
           "size": "192",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SortMessagePacket",
           "size": "192",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DmaSync_Vif1",
           "size": "44",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DrawOne2D_P2",
           "size": "124",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DrawAll2D_P2",
           "size": "384",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DrawAllMes_P2",
           "size": "328",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DrawOne2D2a",
           "size": "48",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DrawOne2D2b",
           "size": "16",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DrawAll2D",
           "size": "36",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DrawAllMes",
           "size": "32",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "LoadSprFileToMainD",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetSprFile",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetSprFile2",
           "size": "16",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetSprFile3",
           "size": "16",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetETIM2File",
           "size": "108",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetFTIM2File",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetScissor",
           "size": "264",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ResetScissor",
           "size": "156",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CopySprDToSpr",
           "size": "236",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "_ftoi0__local_1",
           "size": "20",
-          "metadata": {}
+          "metadata": {},
+          "fuzzy_match_percent": 100.0
         },
         {
           "name": "_ftoi4",
           "size": "20",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DispSprD",
           "size": "2220",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CopySqrDToSqr",
           "size": "276",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CopyGSqDToSqr",
           "size": "296",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CopySq4DToSqr",
           "size": "284",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CopyGS4DToSqr",
           "size": "336",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DispSqrD",
           "size": "1692",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -23183,14 +23256,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 31.0403421807846,
+        "fuzzy_match_percent": 32.34823623106815,
         "total_code": "1165232",
-        "matched_code": "361692",
-        "matched_code_percent": 31.0403421807846,
+        "matched_code": "376932",
+        "matched_code_percent": 32.34823623106815,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 818,
-        "matched_functions_percent": 24.101355332940482,
+        "matched_functions": 883,
+        "matched_functions_percent": 26.016499705362403,
         "complete_data_percent": 100.0,
         "total_units": 154
       }

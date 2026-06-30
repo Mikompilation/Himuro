@@ -3,6 +3,12 @@
 #include "addresses.h"
 #include "tim2.h"
 
+// gcc/src/newlib/libm/math/sf_cos.c
+float cosf(float x);
+
+// gcc/src/newlib/libm/math/sf_sin.c
+float sinf(float x);
+
 #include "ee/kernel.h"
 #include "ee/eekernel.h"
 #include "sce/libdma.h"
@@ -1493,7 +1499,11 @@ void DrawOne2D_P2(Q_WORDDATA *packet_buf)
 
     FlushCache(0);
 
+#if defined(BUILD_JP_VERSION)
+    sceDmaSend(DmaVif, (void *)((u_int)packet_buf));
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     sceDmaSend(DmaVif, (void *)((u_int)packet_buf & 0x0fffffff));
+#endif
     sceDmaSync(DmaVif, 0, 0);
     sceGsSyncPath(0, 0);
 }
@@ -1505,7 +1515,7 @@ void DrawAll2D_P2()
     int n;
     int s;
 
-    if (0 < ndpri)
+    if (ndpri > 0)
     {
         for (i = 0; i < ndpri - 1; i++)
         {
@@ -1517,7 +1527,11 @@ void DrawAll2D_P2()
             if (pbuf[n].uc8[3] == 0x70) // upper part of 0x70000000 (DMAend) ??
             {
                 pbuf[n].uc8[3] = 0x20; // upper part of 0x20000000 (DMAnext) ??
+#if defined(BUILD_JP_VERSION)
+                pbuf[n].ui32[1] = (u_int)&pbuf[m];
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
                 pbuf[n].ui32[1] = (u_int)&pbuf[m] & 0x0fffffff;
+#endif
                 pbuf[n].ui32[2] = 0;
 
                 if (s != 0)
@@ -1535,7 +1549,11 @@ void DrawAll2D_P2()
         if (pbuf[n].uc8[3] == 0x70) // upper part of 0x70000000 (DMAend) ??
         {
             pbuf[n].uc8[3] = 0x20; // upper part of 0x20000000 (DMAnext) ??
+#if defined(BUILD_JP_VERSION)
+            pbuf[n].ui32[1] = (u_int)&pbuf[m];
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
             pbuf[n].ui32[1] = (u_int)&pbuf[m] & 0x0fffffff;
+#endif
             pbuf[n].ui32[2] = 0;
 
             if (s != 0)
@@ -1566,7 +1584,7 @@ void* DrawAllMes_P2(u_int ret_addr)
 
     SortMessagePacket();
 
-    if (nmdpri >= 1)
+    if (nmdpri > 0)
     {
         for (i = 0; i < nmdpri - 1; i++)
         {
@@ -1576,7 +1594,11 @@ void* DrawAllMes_P2(u_int ret_addr)
                 s = mpbuf[n].us16[0];
 
                 mpbuf[n].uc8[3] = 0x20;
+#if defined(BUILD_JP_VERSION)
+                mpbuf[n].ui32[1] = (u_int)&mpbuf[m];
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
                 mpbuf[n].ui32[1] = (u_int)&mpbuf[m] & 0x0fffffff;
+#endif
                 mpbuf[n].ui32[2] = 0;
                 mpbuf[n].ui32[3] = s | DMAcall;
         }
@@ -1588,7 +1610,11 @@ void* DrawAllMes_P2(u_int ret_addr)
         if (ret_addr != 0)
         {
             mpbuf[n].uc8[3] = 0x20;
-            mpbuf[n].ui32[1] = ret_addr & 0xfffffff;
+#if defined(BUILD_JP_VERSION)
+            mpbuf[n].ui32[1] = ret_addr;
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+            mpbuf[n].ui32[1] = ret_addr & 0x0fffffff;
+#endif
         }
         else
         {
@@ -1599,7 +1625,11 @@ void* DrawAllMes_P2(u_int ret_addr)
         mpbuf[n].ui32[3] = s | DMAcall;
         mpbuf[n].ui32[2] = 0;
 
+#if defined(BUILD_JP_VERSION)
+        ret = (void *)((u_int)&mpbuf[draw_mpri[0][1]]);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         ret = (void *)((u_int)&mpbuf[draw_mpri[0][1]] & 0x0fffffff);
+#endif
     }
     else
     {
@@ -1742,7 +1772,7 @@ void CopySprDToSpr(DISP_SPRT *s, SPRT_DAT *d)
     s->alphar = SCE_GS_SET_ALPHA_1(SCE_GS_ALPHA_CS, SCE_GS_ALPHA_CD, SCE_GS_ALPHA_AS, SCE_GS_ALPHA_CD, 0x80);
     s->zbuf = SCE_GS_SET_ZBUF_1(0x8c, SCE_GS_PSMCT24, 0);
     s->test = SCE_GS_SET_TEST_1(1, SCE_GS_ALPHA_GREATER, 0, SCE_GS_AFAIL_KEEP, 0, 0, 1, SCE_GS_DEPTH_GEQUAL);
-    s->gftg = 0 \
+    s->gftg = 0
         | SCE_GS_XYZF2 << (4 * 0)
         | SCE_GS_XYZ2  << (4 * 1)
         | SCE_GS_RGBAQ << (4 * 2);
@@ -1756,27 +1786,27 @@ void CopySprDToSpr(DISP_SPRT *s, SPRT_DAT *d)
 
 void _ftoi0(int *out, float *in)
 {
-    asm volatile ("\n\
-        lqc2    $vf12,0(%0) \n\
-        vftoi0.xyzw $vf12xyzw,$vf12xyzw \n\
-        sqc2    $vf12,0(%1) \n\
+    asm volatile("                       \n\
+        lqc2        $vf12,     0(%0)     \n\
+        vftoi0.xyzw $vf12xyzw, $vf12xyzw \n\
+        sqc2        $vf12,     0(%1)     \n\
     ": :"r"(in),"r"(out));
 }
 
 void _ftoi4(int *out, float *in)
 {
-    asm volatile ("\n\
-        lqc2    $vf12,0(%0) \n\
-        vftoi4.xyzw $vf12xyzw,$vf12xyzw \n\
-        sqc2    $vf12,0(%1) \n\
+    asm volatile("                       \n\
+        lqc2        $vf12,     0(%0)     \n\
+        vftoi4.xyzw $vf12xyzw, $vf12xyzw \n\
+        sqc2        $vf12,     0(%1)     \n\
     ": :"r"(in),"r"(out));
 }
 
 void DispSprD(DISP_SPRT *s)
 {
     u_int ui;
-    int i;
-    int psm;
+    int i = 0;
+    int psm = 0;
     float ss;
     float cc;
     u_int matt;
@@ -1832,7 +1862,12 @@ void DispSprD(DISP_SPRT *s)
     mz = s->z;
     msw = s->scw;
     msh = s->sch;
+#if defined(BUILD_JP_VERSION)
+    mrot = s->rot;
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     mrot = (s->rot * PI) / 180.0f;
+#endif
+
     mtex0 = s->tex0;
     mtex1 = s->tex1;
     mtexa = s->texa;
@@ -1846,6 +1881,7 @@ void DispSprD(DISP_SPRT *s)
     mg = s->g;
     mb = s->b;
     ma = s->alpha;
+
     mlud = s->col;
 
     psm = ((sceGsTex0 *)&s->tex0)->PSM;
@@ -1872,10 +1908,10 @@ void DispSprD(DISP_SPRT *s)
         y[2] = y[3] = my + mh;
     }
 
-    if (!msw)
-    {
-        // HACK to alter/fix stack allocation order
-    }
+#if defined(BUILD_JP_VERSION)
+    ss = VER_SINF((mrot * PI) / 180.0f);
+    cc = VER_COSF((mrot * PI) / 180.0f);
+#endif
 
     for (i = 0; i < 4; i++)
     {
@@ -1885,8 +1921,11 @@ void DispSprD(DISP_SPRT *s)
 
     if (mrot != 0.0f)
     {
-        ss = SgSinf(mrot);
-        cc = SgCosf(mrot);
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+        ss = VER_SINF(mrot);
+        cc = VER_COSF(mrot);
+#endif
+
         x2[0] = x[0] * cc - y[0] * ss;
         y2[0] = x[0] * ss + y[0] * cc;
         x2[1] = x[1] * cc - y[1] * ss;
@@ -1919,7 +1958,7 @@ void DispSprD(DISP_SPRT *s)
         ftmp[0] = x2[i] + 2048.0f;
         ftmp[1] = y2[i] * 0.5f + 2048.0f;
 
-        _ftoi4(itmp,ftmp);
+        _ftoi4(itmp, ftmp);
 
         xx[i] = itmp[0];
         yy[i] = itmp[1];
@@ -1940,8 +1979,8 @@ void DispSprD(DISP_SPRT *s)
     {
         ui = uu[0];
         uu[0] = uu[1];
-        uu[2] = uu[1];
         uu[1] = ui;
+        uu[2] = uu[0];
         uu[3] = ui;
     }
 
@@ -1970,19 +2009,22 @@ void DispSprD(DISP_SPRT *s)
 
     if (psm == 20)
     {
-        sceGsTex0 tex0;
+        sceGsTex0 tex0_0;
+        sceGsTex0 tex0_1;
 
-        tex0 = *(sceGsTex0 *)&mtex0;
-        tex0.PSM = SCE_GS_PSMT8;
-        tex0.CSA = 0;
-        tex0.CLD = 1;
-        pbuf[ndpkt].ul64[0] = *(u_long *)&tex0;
+        tex0_0 = *(sceGsTex0 *)&mtex0;
+        tex0_0.PSM = SCE_GS_PSMT8;
+        tex0_0.CSA = 0;
+        tex0_0.CLD = 1;
+
+        tex0_1 = *(sceGsTex0 *)&mtex0;
+        tex0_1.CSA = 0;
+        tex0_1.CLD = 0;
+
+        pbuf[ndpkt].ul64[0] = *(u_long *)&tex0_0;
         pbuf[ndpkt++].ul64[1] = SCE_GS_TEX0_1;
 
-        tex0 = *(sceGsTex0 *)&mtex0;
-        tex0.CSA = 0;
-        tex0.CLD = 0;
-        pbuf[ndpkt].ul64[0] = *(u_long *)&tex0;
+        pbuf[ndpkt].ul64[0] = *(u_long *)&tex0_1;
         pbuf[ndpkt++].ul64[1] = SCE_GS_TEX0_1;
     }
     else
@@ -2016,7 +2058,7 @@ void DispSprD(DISP_SPRT *s)
     pbuf[ndpkt++].ul64[1] = SCE_GS_TEXCLUT;
 
     pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_TRUE, mgftg, SCE_GIF_PACKED, 12);
-    pbuf[ndpkt++].ul64[1] = 0 \
+    pbuf[ndpkt++].ul64[1] = 0
         | (long)SCE_GS_UV    << (4 *  0)
         | (long)SCE_GS_RGBAQ << (4 *  1)
         | (long)SCE_GS_XYZF2 << (4 *  2)
@@ -2069,7 +2111,7 @@ void CopySqrDToSqr(DISP_SQAR *s, SQAR_DAT *d)
     s->texa = SCE_GS_SET_TEXA(0, 1, 128);
     s->alphar = SCE_GS_SET_ALPHA_1(SCE_GS_ALPHA_CS, SCE_GS_ALPHA_CD, SCE_GS_ALPHA_AS, SCE_GS_ALPHA_CD, 0x80);
     s->zbuf = SCE_GS_SET_ZBUF_1(0x8c, SCE_GS_PSMCT24, 0);
-    s->test = SCE_GS_SET_ZBUF_1(0x5000d, SCE_GS_PSMCT32, 0);
+    s->test = SCE_GS_SET_TEST_1(1, SCE_GS_ALPHA_GREATER, 0, SCE_GS_AFAIL_KEEP, 0, 0, 1, SCE_GS_DEPTH_GEQUAL);
     s->pri = d->pri;
 
     for (i = 0; i < 4; i++)
@@ -2095,7 +2137,7 @@ void CopyGSqDToSqr(DISP_SQAR *s, GSQR_DAT *d)
     s->x[1] = s->x[3] = d->x + d->w;
     s->y[0] = s->y[1] = d->y;
     s->y[2] = s->y[3] = d->y + d->h;
-    s->z = 0xfffffff - d->pri;
+    s->z = 0x0fffffff - d->pri;
     s->scw = 1.0f;
     s->sch = 1.0f;
     s->rot = 0.0f;
@@ -2131,7 +2173,7 @@ void CopySq4DToSqr(DISP_SQAR *s, SQR4_DAT *d)
         s->y[i] = d->y[i];
     }
 
-    s->z = 0xfffffff - d->pri;
+    s->z = 0x0fffffff - d->pri;
     s->scw = 1.0f;
     s->sch = 1.0f;
     s->rot = 0.0f;
@@ -2167,7 +2209,7 @@ void CopyGS4DToSqr(DISP_SQAR *s, GSQ4_DAT *d)
         s->y[i] = d->y[i];
     }
 
-    s->z = 0xfffffff - d->pri;
+    s->z = 0x0fffffff - d->pri;
     s->scw = 1.0f;
     s->sch = 1.0f;
     s->rot = 0.0f;
@@ -2231,16 +2273,16 @@ void DispSqrD(DISP_SQAR *s)
         my[i] = s->y[i] - 224.0f;
     }
 
-    mz = s->z; /* 0xd8(sp) */
-    msw = s->scw; /* f5 */
-    msh = s->sch; /* f6 */
-    mrot = s->rot;  /* f24 */
-    mtexa = s->texa; /* 0xe8(sp) */
-    malpr = s->alphar; /* 0xf0(sp) */
-    mzbuf = s->zbuf; /* 0xf8(sp) */
-    mtest = s->test; /* 0x100(sp) */
-    mpri = s->pri;  /* 0x10c(sp) */
-    ma = s->alpha;  /* 0x78(sp) */
+    mz = s->z;
+    msw = s->scw;
+    msh = s->sch;
+    mrot = s->rot;
+    mtexa = s->texa;
+    malpr = s->alphar;
+    mzbuf = s->zbuf;
+    mtest = s->test;
+    mpri = s->pri;
+    ma = s->alpha;
 
     for (i = 0; i < 4; i++)
     {
@@ -2279,8 +2321,8 @@ void DispSqrD(DISP_SQAR *s)
         }
     }
 
-    ss = SgSinf((mrot * PI) / 180.0f);
-    cc = SgCosf((mrot * PI) / 180.0f);
+    ss = VER_SINF((mrot * PI) / 180.0f);
+    cc = VER_COSF((mrot * PI) / 180.0f);
 
     for (i = 0; i < 4; i++)
     {
@@ -2321,7 +2363,9 @@ void DispSqrD(DISP_SQAR *s)
     {
         ftmp[0] = x2[i] + 2048.0f;
         ftmp[1] = y2[i] * 0.5f + 2048.0f;
+
         _ftoi4(itmp, ftmp);
+
         xx[i] = itmp[0];
         yy[i] = itmp[1];
     }
@@ -2347,7 +2391,7 @@ void DispSqrD(DISP_SQAR *s)
     pbuf[ndpkt++].ul64[1] = SCE_GS_ALPHA_1;
 
     pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_TRUE, SCE_GS_SET_PRIM(SCE_GS_PRIM_TRISTRIP, 1, 0, 0, 1, 0, 0, 0, 0), SCE_GIF_PACKED, 8);
-    pbuf[ndpkt++].ul64[1] = 0 \
+    pbuf[ndpkt++].ul64[1] = 0
         | SCE_GS_RGBAQ << (4 * 0)
         | SCE_GS_XYZF2 << (4 * 1)
         | SCE_GS_RGBAQ << (4 * 2)
@@ -2355,7 +2399,7 @@ void DispSqrD(DISP_SQAR *s)
         | SCE_GS_RGBAQ << (4 * 4)
         | SCE_GS_XYZF2 << (4 * 5)
         | SCE_GS_RGBAQ << (4 * 6)
-        | SCE_GS_XYZF2 << (4 * 7) ;
+        | SCE_GS_XYZF2 << (4 * 7);
 
     for (i = 0; i < 4; i++)
     {

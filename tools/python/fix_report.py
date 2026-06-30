@@ -36,11 +36,19 @@ def fix_unit(unit: dict[str, Any]):
     duplicate_functions = (
         "Tim2CalcBufWidth__2",
         "_ftoi0__2",
+        "_ftoi0__local_1",
+        "_ftoi0__local_2",
         "ItemGetMain__2",
         "setD3_CHCR__2",
         "setD4_CHCR__2",
         "setD4_CHCR__3",
         "_fpadd_parts__2",
+        "Tim2CalcBufWidth__local_1",
+        "Tim2CalcBufWidth__local_2",
+        "ItemGetMain__local_1",
+        "ItemGetMain__local_2",
+        "setD3_CHCR__local_2",
+        "setD4_CHCR__local_3",
     )
 
     for function in functions:
