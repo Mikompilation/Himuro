@@ -132,7 +132,7 @@ def fix_report(report_path: Path):
     # /path/to/report.json -> /path/to/report_fixed.json
     # fixed_report_path = report_path.with_name(f"{report_path.stem}_fixed{report_path.suffix}")
     # fixed_report_path.write_text(json.dumps(report))
-    report_path.write_text(json.dumps(report))
+    report_path.write_text(json.dumps(report, indent=2))
 
     print(f"Wrote fixed report to {report_path}")
 
