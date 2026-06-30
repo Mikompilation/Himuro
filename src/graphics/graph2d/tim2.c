@@ -1,5 +1,6 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "tim2.h"
 
 #include "ee/kernel.h"
@@ -40,8 +41,6 @@ static sceDmaChan *DmaVif;
 
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 224
-
-#define PBUF_ADDRESS 0x720000
 
 static int Tim2CalcBufWidth(int psm, int w);
 static int Tim2CalcBufSize(int psm, int w, int h);
@@ -1346,7 +1345,7 @@ void InitTIM2Files()
 
     InitTIM2Addr();
 
-    pbuf = (Q_WORDDATA *)PBUF_ADDRESS;
+    pbuf = (Q_WORDDATA *)G2D_START_ADDRESS;
     mpbuf = mpbufw[0];
     mes_swap = 0;
     ndpkt = 0;
@@ -1354,7 +1353,7 @@ void InitTIM2Files()
     nmdpkt = 0;
     nmdpri = 0;
 
-    SetG2DTopPkt(PBUF_ADDRESS);
+    SetG2DTopPkt(G2D_START_ADDRESS);
     LoadTIM2File();
 }
 

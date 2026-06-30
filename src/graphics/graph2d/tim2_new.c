@@ -1,5 +1,6 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "tim2_new.h"
 
 #include "main/glob.h"
@@ -683,11 +684,11 @@ void DrawAll2DMes_P2()
     ndpri = 0;
     ndpkt = 0;
 
-    mes_swap = mes_swap ^ 1;
+    mes_swap ^= 1;
 
     mpbuf = (Q_WORDDATA *)UNCACHED(mpbufw[mes_swap]);
 
-    mmp = (void *)(mes_swap * 0x60000 + 0x720000); // what's this ??
+    mmp = (void *)(G2D_START_ADDRESS + mes_swap * 0x60000); // what's 0x60000 ??
     pbuf = (Q_WORDDATA *)UNCACHED(mmp);
 
     SetG2DTopPkt((u_int)pbuf);

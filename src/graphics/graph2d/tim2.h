@@ -5,15 +5,17 @@
 
 #include "sce/libgraph.h"
 
+#include "graphics/graph2d/effect_sub.h"
 #include "graphics/graph2d/sprt.h"
+#include "outgame/mode_slct.h"
 
 enum TIM2_gattr_type {
-	TIM2_NONE = 0,
-	TIM2_RGB16 = 1,
-	TIM2_RGB24 = 2,
-	TIM2_RGB32 = 3,
-	TIM2_IDTEX4 = 4,
-	TIM2_IDTEX8 = 5
+    TIM2_NONE = 0,
+    TIM2_RGB16 = 1,
+    TIM2_RGB24 = 2,
+    TIM2_RGB32 = 3,
+    TIM2_IDTEX4 = 4,
+    TIM2_IDTEX8 = 5
 };
 
 typedef unsigned char TIM2_UCHAR8;
@@ -22,46 +24,43 @@ typedef short unsigned int TIM2_UINT16;
 typedef long unsigned int TIM2_UINT64;
 
 typedef struct {
-	TIM2_UCHAR8 FileId[4];
-	TIM2_UCHAR8 FormatVersion;
-	TIM2_UCHAR8 FormatId;
-	TIM2_UINT16 Pictures;
-	TIM2_UCHAR8 pad[8];
+    TIM2_UCHAR8 FileId[4];
+    TIM2_UCHAR8 FormatVersion;
+    TIM2_UCHAR8 FormatId;
+    TIM2_UINT16 Pictures;
+    TIM2_UCHAR8 pad[8];
 } TIM2_FILEHEADER;
 
-typedef struct { // 0x10
-	/* 0x0 */ TIM2_UCHAR8 ExHeaderId[4];
-	/* 0x4 */ TIM2_UINT32 UserSpaceSize;
-	/* 0x8 */ TIM2_UINT32 UserDataSize;
-	/* 0xc */ TIM2_UINT32 Reserved;
+typedef struct {
+    TIM2_UCHAR8 ExHeaderId[4];
+    TIM2_UINT32 UserSpaceSize;
+    TIM2_UINT32 UserDataSize;
+    TIM2_UINT32 Reserved;
 } TIM2_EXHEADER;
 
 typedef struct {
-	TIM2_UINT32 TotalSize;
-	TIM2_UINT32 ClutSize;
-	TIM2_UINT32 ImageSize;
-	TIM2_UINT16 HeaderSize;
-	TIM2_UINT16 ClutColors;
-	TIM2_UCHAR8 PictFormat;
-	TIM2_UCHAR8 MipMapTextures;
-	TIM2_UCHAR8 ClutType;
-	TIM2_UCHAR8 ImageType;
-	TIM2_UINT16 ImageWidth;
-	TIM2_UINT16 ImageHeight;
-	TIM2_UINT64 GsTex0;
-	TIM2_UINT64 GsTex1;
-	TIM2_UINT32 GsTexaFbaPabe;
-	TIM2_UINT32 GsTexClut;
+    TIM2_UINT32 TotalSize;
+    TIM2_UINT32 ClutSize;
+    TIM2_UINT32 ImageSize;
+    TIM2_UINT16 HeaderSize;
+    TIM2_UINT16 ClutColors;
+    TIM2_UCHAR8 PictFormat;
+    TIM2_UCHAR8 MipMapTextures;
+    TIM2_UCHAR8 ClutType;
+    TIM2_UCHAR8 ImageType;
+    TIM2_UINT16 ImageWidth;
+    TIM2_UINT16 ImageHeight;
+    TIM2_UINT64 GsTex0;
+    TIM2_UINT64 GsTex1;
+    TIM2_UINT32 GsTexaFbaPabe;
+    TIM2_UINT32 GsTexClut;
 } TIM2_PICTUREHEADER;
 
 typedef struct {
-	TIM2_UINT64 GsMiptbp1;
-	TIM2_UINT64 GsMiptbp2;
-	TIM2_UINT32 MMImageSize[0];
+    TIM2_UINT64 GsMiptbp1;
+    TIM2_UINT64 GsMiptbp2;
+    TIM2_UINT32 MMImageSize[0];
 } TIM2_MIPMAPHEADER;
-
-#include "graphics/graph2d/effect_sub.h"
-#include "outgame/mode_slct.h"
 
 extern u_char g_bInterlace;
 extern int ndpkt;
