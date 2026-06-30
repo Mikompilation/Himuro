@@ -5,28 +5,28 @@
 #include "sce/sifdev.h"
 
 typedef struct {
-	u_char bfType[2];
+    u_char bfType[2];
 } BITMAPFILEHEADER1;
 
 typedef struct {
-	u_int bfSize;
-	u_short bfReserved1;
-	u_short bfReserved2;
-	u_int bfOffbits;
+    u_int bfSize;
+    u_short bfReserved1;
+    u_short bfReserved2;
+    u_int bfOffbits;
 } BITMAPFILEHEADER2;
 
 typedef struct {
-	u_int biSize;
-	u_int biWidth;
-	u_int biHeight;
-	u_short biPlanes;
-	u_short biBitCount;
-	u_int biCompression;
-	u_int biSizeImage;
-	u_int biXPelsPerMeter;
-	u_int biYPelsPerMeter;
-	u_int biClrUsed;
-	u_int biClrImportant;
+    u_int biSize;
+    u_int biWidth;
+    u_int biHeight;
+    u_short biPlanes;
+    u_short biBitCount;
+    u_int biCompression;
+    u_int biSizeImage;
+    u_int biXPelsPerMeter;
+    u_int biYPelsPerMeter;
+    u_int biClrUsed;
+    u_int biClrImportant;
 } BITMAPINFOHEADER;
 
 #define BI_RGB 0x0000
@@ -34,28 +34,28 @@ typedef struct {
 static BITMAPFILEHEADER1 bfhp1 = {
     .bfType = {'B', 'M'},
 };
-static int now_no[2] = {0, 0};
+static int now_no[2] = { 0, 0 };
 
 #define SCREEN_WIDTH   640
 #define SCREEN_HEIGHT  224
 
 void TakeSnapshot(char *data_i, char *data_o, int size_w, int size_h, int type)
 {
-	int bx;
-	int by;
-	int x;
-	int y;
-	int oneli;
-	int onelo;
-	int fd;
-	char fname[256];
-	int k;
-	int nBytes;
-	int offset;
-	int tex_size;
-	int bitc;
-	BITMAPFILEHEADER2 bfhp2;
-	BITMAPINFOHEADER bihp;
+    int bx;
+    int by;
+    int x;
+    int y;
+    int oneli;
+    int onelo;
+    int fd;
+    char fname[256];
+    int k;
+    int nBytes;
+    int offset;
+    int tex_size;
+    int bitc;
+    BITMAPFILEHEADER2 bfhp2;
+    BITMAPINFOHEADER bihp;
     int ch; // not in STAB
 
     ch = 3;
@@ -112,6 +112,6 @@ void TakeSnapshot(char *data_i, char *data_o, int size_w, int size_h, int type)
         sceWrite(fd, data_o, tex_size);
         sceClose(fd);
 
-        now_no[type % 2]++;
+        now_no[type%2]++;
     }
 }
