@@ -25,8 +25,7 @@ void SetG2DTopPkt(u_int addr);
 Q_WORDDATA* Get2DPacketBufferAddress();
 void Set2DPacketBufferAddress(Q_WORDDATA *addr);
 void DrawAll2DMes_P2();
-
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
 void SendFontTex();
 #endif
 

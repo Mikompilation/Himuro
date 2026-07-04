@@ -63,7 +63,7 @@ u_int* MakeTim2Direct2(u_int *pkt_addr, u_int *tim2_addr, int tbp)
 
     qw = SetImageTransParam2(qw, tbp, tbw, psm, tph->ImageWidth, tph->ImageHeight);
 
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
     qw->ul64[0] = SCE_GIF_SET_TAG(nloop, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_IMAGE, 0);
 #else
     qw->ul64[0] = SCE_GIF_SET_TAG(nloop, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_IMAGE, 1);
@@ -138,7 +138,7 @@ u_int* MakeClutDirect2(u_int *pkt_addr, u_int *tim2_addr, int cbp)
         qw = SetImageTransParam2(qw, cbp, tbw, psm, 16, h);
     }
 
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
     qw->ul64[0] = SCE_GIF_SET_TAG(nloop, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_IMAGE, 0);
 #else
     qw->ul64[0] = SCE_GIF_SET_TAG(nloop, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_IMAGE, 1);
@@ -224,7 +224,7 @@ void MakeFontTexSendPacket()
     int addr;
     int *offtop;
 
-    addr = 0x1e30000;
+    addr = LOAD_ADDRESS_39;
 
     texnum = ((int *)addr)[0];
     offtop = &((int *)addr)[4];
@@ -458,7 +458,11 @@ void MakeTim2ClutDirect3(u_int tm2_addr, int tbp, int cbp, int offset)
     }
 
     pbuf[ndpkt].ui32[0] = DMAnext;
+#if defined(BUILD_JP_VERSION)
+    pbuf[ndpkt].ui32[1] = (u_int)&pbuf[ndpkt+1];
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     pbuf[ndpkt].ui32[1] = (u_int)&pbuf[ndpkt+1] & 0x0fffffff;
+#endif
     pbuf[ndpkt].ui32[2] = 0;
     pbuf[ndpkt++].ui32[3] = VU0_ADDRESS;
 }
@@ -492,7 +496,11 @@ void MakeTim2ClutDirect4(u_int tm2_addr, int num, int tbp, int cbp, int offset)
     }
 
     pbuf[ndpkt].ui32[0] = DMAnext;
+#if defined(BUILD_JP_VERSION)
+    pbuf[ndpkt].ui32[1] = (u_int)&pbuf[ndpkt+1];
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     pbuf[ndpkt].ui32[1] = (u_int)&pbuf[ndpkt+1] & 0x0fffffff;
+#endif
     pbuf[ndpkt].ui32[2] = 0;
     pbuf[ndpkt++].ui32[3] = VU0_ADDRESS;
 }
@@ -510,7 +518,11 @@ void MakeTim2SendPacket(u_int tm2_addr, int offset)
     MakeClutDirect3((u_int *)tm2_addr, -1, offset);
 
     pbuf[ndpkt].ui32[0] = DMAnext;
+#if defined(BUILD_JP_VERSION)
+    pbuf[ndpkt].ui32[1] = (u_int)&pbuf[ndpkt+1];
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     pbuf[ndpkt].ui32[1] = (u_int)&pbuf[ndpkt+1] & 0x0fffffff;
+#endif
     pbuf[ndpkt].ui32[2] = 0;
     pbuf[ndpkt++].ui32[3] = VU0_ADDRESS;
 }
@@ -552,7 +564,11 @@ void Reserve2DPacket_Load()
 void SetG2DTopPkt(u_int addr)
 {
     g2d_top_pkt[mes_swap].ui32[0] = DMAnext;
-    g2d_top_pkt[mes_swap].ui32[1] = addr & 0xfffffff;
+#if defined(BUILD_JP_VERSION)
+    g2d_top_pkt[mes_swap].ui32[1] = addr;
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+    g2d_top_pkt[mes_swap].ui32[1] = addr & 0x0fffffff;
+#endif
     g2d_top_pkt[mes_swap].ui32[2] = VU0_ADDRESS;
     g2d_top_pkt[mes_swap].ui32[3] = 0; // DMArefe ?
 }
@@ -564,7 +580,7 @@ Q_WORDDATA* Get2DPacketBufferAddress()
 
 void Set2DPacketBufferAddress(Q_WORDDATA *addr)
 {
-    ndpkt = (((u_int)addr & 0xfffffff) - ((u_int)pbuf & 0xfffffff)) / 16;
+    ndpkt = (((u_int)addr & 0x0fffffff) - ((u_int)pbuf & 0x0fffffff)) / 16;
 }
 
 void DrawAll2DMes_P2()
@@ -585,14 +601,6 @@ void DrawAll2DMes_P2()
     {
         for (i = 0; i < ndpri-1; i++)
         {
-#ifdef MATCHING_DECOMP
-            // hack to fix t0<->t1 regswap
-            if (pbuf)
-            {
-                unsigned char x = -x;
-            }
-#endif
-
             n = draw_pri[i][1];
             m = draw_pri[i+1][1];
 
@@ -601,7 +609,11 @@ void DrawAll2DMes_P2()
             if (pbuf[n].uc8[3] == 0x70) // upper part of 0x70000000 (DMAend) ??
             {
                 pbuf[n].uc8[3] = 0x20; // upper part of 0x20000000 (DMAnext) ?? // Line 602
+#if defined(BUILD_JP_VERSION)
+                pbuf[n].ui32[1] = (u_int)&pbuf[m];
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
                 pbuf[n].ui32[1] = (u_int)&pbuf[m] & 0x0fffffff;
+#endif
                 pbuf[n].ui32[2] = 0;
 
                 if (s != 0)
@@ -622,7 +634,11 @@ void DrawAll2DMes_P2()
         if (pbuf[n].uc8[3] == 0x70) // upper part of 0x70000000 (DMAend) ??
         {
             pbuf[n].uc8[3] = 0x20; // upper part of 0x20000000 (DMAnext) ??
+#if defined(BUILD_JP_VERSION)
+            pbuf[n].ui32[1] = (u_int)&pbuf[ndpkt];
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
             pbuf[n].ui32[1] = (u_int)&pbuf[ndpkt] & 0x0fffffff;
+#endif
             pbuf[n].ui32[2] = 0;
 
             if (s != 0)
@@ -648,19 +664,31 @@ void DrawAll2DMes_P2()
     if (mmp == NULL)
     {
         pbuf[ndpkt].ui32[0] = DMAnext;
+#if defined(BUILD_JP_VERSION)
+        pbuf[ndpkt].ui32[1] = (u_int)&g2d_end_pkt[mes_swap];
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         pbuf[ndpkt].ui32[1] = (u_int)&g2d_end_pkt[mes_swap] & 0x0fffffff;
+#endif
         pbuf[ndpkt].ui32[2] = 0;
         pbuf[ndpkt++].ui32[3] = 0;
     }
     else
     {
         pbuf[ndpkt].ui32[0] = DMAnext;
+#if defined(BUILD_JP_VERSION)
+        pbuf[ndpkt].ui32[1] = (u_int)fnt_pkt;
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         pbuf[ndpkt].ui32[1] = (u_int)fnt_pkt & 0x0fffffff;
+#endif
         pbuf[ndpkt].ui32[2] = 0;
         pbuf[ndpkt++].ui32[3] = 0;
 
         tm2_end_pkt[0] = DMAnext;
+#if defined(BUILD_JP_VERSION)
+        tm2_end_pkt[1] = (u_int)mmp;
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         tm2_end_pkt[1] = (u_int)mmp & 0x0fffffff;
+#endif
         tm2_end_pkt[2] = VU0_ADDRESS;
         tm2_end_pkt[3] = 0;
     }
@@ -686,10 +714,17 @@ void DrawAll2DMes_P2()
 
     mes_swap ^= 1;
 
+#if defined(BUILD_JP_VERSION)
+    mpbuf = (Q_WORDDATA *)mpbufw[mes_swap];
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     mpbuf = (Q_WORDDATA *)UNCACHED(mpbufw[mes_swap]);
+#endif
 
-    mmp = (void *)(G2D_START_ADDRESS + mes_swap * 0x60000); // what's 0x60000 ??
-    pbuf = (Q_WORDDATA *)UNCACHED(mmp);
+    pbuf = (void *)(G2D_START_ADDRESS + mes_swap * 0x60000); // what's 0x60000 ??
+
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+    pbuf = (Q_WORDDATA *)UNCACHED(pbuf);
+#endif
 
     SetG2DTopPkt((u_int)pbuf);
 
@@ -703,7 +738,7 @@ void DrawAll2DMes_P2()
     }
 }
 
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
 void SendFontTex()
 {
     if (sys_wrk.language != 0)

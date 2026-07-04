@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 32.34823623106815,
+    "fuzzy_match_percent": 32.73236574347426,
     "total_code": "1165232",
-    "matched_code": "376932",
-    "matched_code_percent": 32.34823623106815,
+    "matched_code": "381408",
+    "matched_code_percent": 32.73236574347426,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 883,
-    "matched_functions_percent": 26.016499705362403,
+    "matched_functions": 903,
+    "matched_functions_percent": 26.60577489687684,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -7593,9 +7593,14 @@
     {
       "name": "graphics/graph2d/tim2_new",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "4476",
+        "matched_code": "4476",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 20,
+        "matched_functions": 20,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -7603,14 +7608,17 @@
         {
           "name": ".text",
           "size": "4520",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -7618,101 +7626,121 @@
         {
           "name": "MakeTim2Direct2",
           "size": "288",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetImageTransParam2",
           "size": "132",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MakeClutDirect2",
           "size": "328",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MakeTim2ClutDirect2",
           "size": "64",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ChainPK2Direct",
           "size": "116",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MakeFontTexSendPacket",
           "size": "144",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CallFontTexSendPacket",
           "size": "76",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CallFontTexAndMesPacket",
           "size": "96",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MakeTim2Direct3",
           "size": "460",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MakeClutDirect3",
           "size": "496",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MakeTim2ClutDirect3",
           "size": "248",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "Reserve2DPacket_Load",
           "size": "52",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MakeTim2ClutDirect4",
           "size": "276",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MakeTim2SendPacket",
           "size": "188",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MakeTim2SendPacket_3Dpkt",
           "size": "236",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetG2DTopPkt",
           "size": "48",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "Reserve2DPacket",
           "size": "48",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "Get2DPacketBufferAddress",
           "size": "20",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "Set2DPacketBufferAddress",
           "size": "36",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DrawAll2DMes_P2",
           "size": "1124",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -23256,14 +23284,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 32.34823623106815,
+        "fuzzy_match_percent": 32.73236574347426,
         "total_code": "1165232",
-        "matched_code": "376932",
-        "matched_code_percent": 32.34823623106815,
+        "matched_code": "381408",
+        "matched_code_percent": 32.73236574347426,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 883,
-        "matched_functions_percent": 26.016499705362403,
+        "matched_functions": 903,
+        "matched_functions_percent": 26.60577489687684,
         "complete_data_percent": 100.0,
         "total_units": 154
       }
