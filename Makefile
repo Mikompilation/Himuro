@@ -3,9 +3,47 @@ MAKEFLAGS += --no-print-directory
 
 NUMPROC ?= $(shell nproc)
 
+CHECK_ENV_CMDS := \
+	python3 \
+	ninja \
+	stat \
+	iconv \
+	mips-ps2-decompals-as \
+	mips-ps2-decompals-strip \
+	mips-ps2-decompals-ld \
+	mips-ps2-decompals-objcopy
+
+GREEN  := \033[32m
+RED    := \033[31m
+YELLOW := \033[33m
+RESET  := \033[0m
+
+.check-env:
+	@missing=0; \
+	output=""; \
+	for cmd in $(CHECK_ENV_CMDS); do \
+		if command -v $$cmd >/dev/null 2>&1; then \
+			output="$$output  ${GREEN}[OK]${RESET}      $$cmd\n"; \
+		else \
+			output="$$output  ${RED}[MISSING]${RESET} $$cmd\n"; \
+			missing=1; \
+		fi; \
+	done; \
+	if [ $$missing -eq 1 ]; then \
+		printf "%-11s %s\n" "STATUS" "COMMAND"; \
+		printf "%-11s %s\n" "------" "-------"; \
+		printf "$$output"; \
+		printf "\n${RED}Environment check failed${RESET}\n\n"; \
+		exit 1; \
+	fi
+
+WITH_ENV := .check-env
+
 .PHONY: help \
+		.check-env \
 		.us-build-only .us-check-files-on-error us-configure us-build us-extract-data us-make-asm us-map-mismatch us-report clean \
-		.eu-build-only .eu-check-files-on-error eu-configure eu-build eu-extract-data eu-make-asm eu-map-mismatch eu-report clean
+		.eu-build-only .eu-check-files-on-error eu-configure eu-build eu-extract-data eu-make-asm eu-map-mismatch eu-report clean \
+		.jp-build-only .jp-check-files-on-error jp-configure jp-build jp-extract-data jp-make-asm jp-map-mismatch jp-report clean
 
 .DEFAULT_GOAL := help
 
@@ -51,10 +89,24 @@ endef
 export PY_HELP_SCRIPT
 PYHELP := python3 -c "$$PY_HELP_SCRIPT"
 
-help: ## Show this help
+help: $(WITH_ENV) ## Show this help
 	@$(PYHELP) $(MAKEFILE_LIST)
+
 ##
 ## US Commands:
+
+US_TARGETS := \
+	us-configure \
+	us-build \
+	us-extract-data \
+	us-make-asm \
+	us-map-mismatch \
+	us-report \
+	us-clean \
+	us-reset
+
+$(US_TARGETS): $(WITH_ENV)
+
 us-configure: ## Configure US project (needs SLUS_203.88)
 	@python3 configure.py config/us/ff1.us.yaml -c
 
@@ -94,6 +146,19 @@ us-reset:  ## Resets the US config directory to its original state
 
 ##
 ## EU Commands:
+
+EU_TARGETS := \
+	eu-configure \
+	eu-build \
+	eu-extract-data \
+	eu-make-asm \
+	eu-map-mismatch \
+	eu-report \
+	eu-clean \
+	eu-reset
+
+$(EU_TARGETS): $(WITH_ENV)
+
 eu-configure: ## Configure EU project (needs SLES_508.21)
 	@python3 configure.py config/eu/ff1.eu.yaml -c
 
@@ -124,7 +189,7 @@ eu-report:  ## Create progress report in EU config directory
 	@python3 tools/python/fix_report.py config/eu/report.json
 	@python3 -c "import json;from pathlib import Path;report=json.loads(Path('config/eu/report.json').read_text());print(f\"Progress: {report['measures']['fuzzy_match_percent']:.2f}%\")"
 
-eu-clean:  ## Clean artifact in US config directory
+eu-clean:  ## Clean artifact in EU config directory
 	@cd config/eu; \
 	ninja -t clean
 
@@ -133,6 +198,19 @@ eu-reset:  ## Resets the EU config directory to its original state
 
 ##
 ## JP Commands:
+
+JP_TARGETS := \
+	jp-configure \
+	jp-build \
+	jp-extract-data \
+	jp-make-asm \
+	jp-map-mismatch \
+	jp-report \
+	jp-clean \
+	jp-reset
+
+$(JP_TARGETS): $(WITH_ENV)
+
 jp-configure: ## Configure JP project (needs SLPS_250.74)
 	@python3 configure.py config/jp/ff1.jp.yaml -c
 
@@ -144,30 +222,30 @@ jp-configure: ## Configure JP project (needs SLPS_250.74)
 .jp-check-files-on-error:
 	ls -l config/jp/build/SLPS_250.74 config/jp/SLPS_250.74
 
-jp-build: ## Build EU project
+jp-build: ## Build JP project
 	@$(MAKE) .jp-build-only; status=$$?; [ $$status -eq 0 ] || { $(MAKE) .jp-check-files-on-error; }; exit $$status
 
-jp-extract-data:  ## Extract initialized variables from .data in EU config directory
+jp-extract-data:  ## Extract initialized variables from .data in JP config directory
 	@python3 tools/python/parse_data.py jp
 
-jp-make-asm:  ## Create expected asm folder in EU config directory
+jp-make-asm:  ## Create expected asm folder in JP config directory
 	@python3 configure.py config/jp/ff1.jp.yaml --make-asm
 
-jp-map-mismatch:  ## Check for mismatches in EU mapfile
+jp-map-mismatch:  ## Check for mismatches in JP mapfile
 	@python3 tools/python/map_mismatch.py --language jp
 
-jp-report:  ## Create progress report in EU config directory
+jp-report:  ## Create progress report in JP config directory
 	@(stat config/jp/expected/obj/ >/dev/null 2>&1 || (echo "Target objects do not exist, please run \`make jp-make-asm\`"; false));
 	@(stat config/jp/build/src/ >/dev/null 2>&1 || (echo "Base objects do not exist, please run \`make jp-build\`"; false));
 	@tools/objdiff/objdiff-cli report generate -p config/jp/ -o config/jp/report.json -f json
 	@python3 tools/python/fix_report.py config/jp/report.json
 	@python3 -c "import json;from pathlib import Path;report=json.loads(Path('config/jp/report.json').read_text());print(f\"Progress: {report['measures']['fuzzy_match_percent']:.2f}%\")"
 
-jp-clean:  ## Clean artifact in US config directory
+jp-clean:  ## Clean artifact in JP config directory
 	@cd config/jp; \
 	ninja -t clean
 
-jp-reset:  ## Resets the EU config directory to its original state
+jp-reset:  ## Resets the JP config directory to its original state
 	@python3 configure.py config/jp/ff1.jp.yaml --reset
 
 # Include custom makefile for user-defined commands

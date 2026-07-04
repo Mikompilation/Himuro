@@ -48,6 +48,8 @@ def suppress_stdout_stderr():
 ROOT = Path(__file__).parent.resolve()
 TOOLS_DIR = ROOT / "tools"
 
+CROSS = "mips-ps2-decompals-"
+
 COMPILER = "ee-gcc2.9-991111-01"
 COMPILER_FLAGS = "-DMATCHING_DECOMP -O2 -g2 -gstabs"  # -malign-functions=3
 
@@ -154,7 +156,7 @@ def write_permuter_settings(config_dir: Path, src_path: Path, language: str):
     with open(config_dir / "permuter_settings.toml", "w") as f:
         f.write(
             f"""compiler_command = "{game_compile_cmd} -D__GNUC__"
-assembler_command = "mips-linux-gnu-as -march=r5900 -mabi=eabi -Iinclude"
+assembler_command = "{CROSS}as -march=r5900 -mabi=eabi -Iinclude"
 compiler_type = "gcc"
 
 [preserve_macros]
@@ -214,8 +216,6 @@ def build_stuff(
     ninja = ninja_syntax.Writer(open(str(ROOT / config_dir / "build.ninja"), "w"), width=9999)
 
     # Rules
-    cross = "mips-linux-gnu-"
-
     ld_args = "--no-warn-rwx-segments -EL -T undefined_syms.txt -T undefined_syms_auto.txt -T undefined_funcs_auto.txt -Map $mapfile -T $in -o $out"
 
     cpp = Path("..", "..", get_compiler_command("cpp"))
@@ -226,7 +226,7 @@ def build_stuff(
         # NOTE: Japanese strings are EUC-JP encoded!!
         #       We need to convert them from (-f) UTF-8 to (-t) EUC-JP while compiling,
         #       otherwise Japanese strings will be compiled wrong!
-        command=f"{cpp} {common_includes} $in -o  - | iconv -f=UTF-8 -t=EUC-JP $in | {cross}as -no-pad-sections -EL -march=5900 -mabi=eabi -I{src_path.parent / 'include'} -o $out",
+        command=f"{cpp} {common_includes} $in -o  - | iconv -f=UTF-8 -t=EUC-JP | {CROSS}as -no-pad-sections -EL -march=5900 -mabi=eabi -I{src_path.parent / 'include'} -o $out",
     )
 
     ninja.rule(
@@ -238,14 +238,14 @@ def build_stuff(
             f"{game_compile_cmd.replace(' -c ', ' -S ')} $in -o $$s_in && "  # .......... 3) replace -c with -S in gcc command to generate intermediate assembly file instead of object
             f"python3 {ROOT}/tools/python/fix_asm_matching.py {language} $$s_in && "  # . 4) fix assembly file using known patterns with tools/python/fix_asm_matching.py
             f"{game_compile_cmd} $$s_in -o $out && "  # ................................. 5) compile assembly file into object
-            f"{cross}strip $out -N dummy-symbol-name"  # ................................ 6) strip 'dummy-symbol-name' from object
+            f"{CROSS}strip $out -N dummy-symbol-name"  # ................................ 6) strip 'dummy-symbol-name' from object
         ),
     )
 
     ninja.rule(
         "cc",
         description="cc $in",
-        command=f"{game_compile_cmd} $in -o $out && {cross}strip $out -N dummy-symbol-name",
+        command=f"{game_compile_cmd} $in -o $out && {CROSS}strip $out -N dummy-symbol-name",
     )
 
     ninja.rule(
@@ -256,20 +256,20 @@ def build_stuff(
             f'mkdir -p $$(dirname "$$eucjp_in") && '  # .............................. 2) create directory from eucjp_in var: s_in=cc-src/src/path/to/file.c.eucjp.c -> mkdir -p cc-src/src/path/to/
             f"iconv -o $$eucjp_in -f=UTF-8 -t=EUC-JP $in && "  # ..................... 3) convert source file to EUC-JP (save converted source to cc-src/src/file.c.eucjp.c)
             f'{game_compile_cmd} -I$$(dirname "$in") $$eucjp_in -o $out && '  # ...... 4) compile converted source file into object (also add original source directory as include path to allow relative imports)
-            f"{cross}strip $out -N dummy-symbol-name"  # ............................. 5) strip 'dummy-symbol-name' from object
+            f"{CROSS}strip $out -N dummy-symbol-name"  # ............................. 5) strip 'dummy-symbol-name' from object
         ),
     )
 
     ninja.rule(
         "libcc",
         description="cc $in",
-        command=f"{lib_compile_cmd} $in -o $out && {cross}strip $out -N dummy-symbol-name",
+        command=f"{lib_compile_cmd} $in -o $out && {CROSS}strip $out -N dummy-symbol-name",
     )
 
     ninja.rule(
         "ld",
         description="link $out",
-        command=f"{cross}ld {ld_args}",
+        command=f"{CROSS}ld {ld_args}",
     )
 
     ninja.rule(
@@ -281,7 +281,7 @@ def build_stuff(
     ninja.rule(
         "elf",
         description="elf $out",
-        command=f"{cross}objcopy $in $out -O binary && python3 {ROOT}/tools/python/fix_bin_matching.py {language} $out",
+        command=f"{CROSS}objcopy $in $out -O binary && python3 {ROOT}/tools/python/fix_bin_matching.py {language} $out",
     )
 
     for entry in linker_entries:
@@ -468,8 +468,8 @@ def make_asm(config_path: Path, config: dict[str, Any]):
             obj_file.parent.mkdir(parents=True, exist_ok=True)
             subprocess.run(
                 f"{cpp} -I../../../src -I../../../include -Iinclude -isystem include/sdk/ee -isystem include/gcc -Wa,-I../../../include -Wa,-I../../..  '{asm_file_rel}' -o  - | "
-                f"iconv -f=UTF-8 -t=EUC-JP '{asm_file_rel}' | "
-                f"mips-linux-gnu-as -no-pad-sections -EL -march=5900 -mabi=eabi -I../../../include -o {obj_file_rel} {asm_file_rel}",
+                f"iconv -f=UTF-8 -t=EUC-JP | "
+                f"{CROSS}as -no-pad-sections -EL -march=5900 -mabi=eabi -I../../../include -o {obj_file_rel} {asm_file_rel}",
                 shell=True,
                 cwd=tmp_path,
             )
