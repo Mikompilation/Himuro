@@ -1,7 +1,11 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "enums.h"
 #include "rare_ene.h"
+
+// gcc/src/newlib/libm/math/wf_sqrt.c
+float sqrtf(float x);
 
 #include "sce/libvu0.h"
 
@@ -33,7 +37,19 @@ typedef struct {
 #include "data/rare_ene00102.h" // static SPRT_DAT rare_ene00102[];
 #include "data/rare_ene001.h"   // static RARE_ENE_1DAT rare_ene001[];
 #include "data/rare_ene.h"      // static RARE_ENE_DAT rare_ene[];
-#include "data/rare_textbl.h"   // static u_int rare_textbl[];
+static u_int rare_textbl[] = {
+    RARE_ENE001_PK2,
+    RARE_ENE001_PK2,
+    RARE_ENE001_PK2,
+    RARE_ENE001_PK2,
+    RARE_ENE001_PK2,
+    RARE_ENE001_PK2,
+    RARE_ENE001_PK2,
+    RARE_ENE001_PK2,
+    RARE_ENE001_PK2,
+    RARE_ENE001_PK2,
+    RARE_ENE001_PK2,
+};
 #include "data/pazz_ene00101.h" // static SPRT_DAT pazz_ene00101[];
 #include "data/pazz_ene001.h"   // static RARE_ENE_1DAT pazz_ene001[];
 #include "data/pazz_ene00201.h" // static SPRT_DAT pazz_ene00201[];
@@ -51,10 +67,19 @@ typedef struct {
 #include "data/pazz_ene10301.h" // static SPRT_DAT pazz_ene10301[];
 #include "data/pazz_ene103.h"   // static RARE_ENE_1DAT pazz_ene103[];
 #include "data/pazz_ene.h"      // static RARE_ENE_DAT pazz_ene[];
-#include "data/pazz_textbl.h"   // u_int pazz_textbl[];
+u_int pazz_textbl[] = {
+    PAZ_ENE001_PK2,
+    PAZ_ENE002_PK2,
+    PAZ_ENE003_PK2,
+    PAZ_ENE004_PK2,
+    PAZ_ENE005_PK2,
+    PAZ_ENE006_PK2,
+    PAZ_ENE007_PK2,
+    PAZ_ENE003_PK2,
+    PAZ_ENE003_PK2,
+};
 
-#define PI 3.1415928f
-#define PI_HALF 1.5707964f
+#define PI 3.1415927f
 
 void LoadRareEneTex()
 {
@@ -66,7 +91,7 @@ void DrawRareEne_Sub(int mno, int dno, sceVu0FVECTOR pos, int tblno, int ani, in
     unsigned char alp;
     int a;
     int b;
-    int i;
+    int i = 0;
     int j;
     int k;
     int m;
@@ -91,31 +116,23 @@ void DrawRareEne_Sub(int mno, int dno, sceVu0FVECTOR pos, int tblno, int ani, in
     int ry;
     int sp;
     int sub;
-
     sceGsTex0 tx0;
-    int one;
+    int nloop;
 
-    one = 1;
+    nloop = 1;
     alp = al;
 
     Vu0CopyVector(bpos, pos);
 
-    if (tblno < 0x80)
-    {
-        redp = &rare_ene[tblno];
-    }
-    else
-    {
-        redp = &pazz_ene[tblno-0x80];
-    }
-
+    redp = tblno < 0x80 ? &rare_ene[tblno] : &pazz_ene[tblno-0x80];
     re1dp = redp[ani].re1d;
+
     sdp = re1dp->spr;
 
     rx = (redp->attr & 0x4000) != 0 || (redp->attr & 0x8000) != 0;
     ry = (redp->attr & 0x2000) != 0 || (redp->attr & 0x8000) != 0;
-    sp = (redp->attr & 0x100) != 0;
 
+    sp = (redp->attr & 0x100) != 0;
     sub = redp->attr_sub;
 
     if (redp->attr & 0x1000 && plyr_wrk.mode == 1)
@@ -125,7 +142,7 @@ void DrawRareEne_Sub(int mno, int dno, sceVu0FVECTOR pos, int tblno, int ani, in
 
     offset = dno * 256;
 
-    SetSprFile2(mno * 0x10000 + 0x1c90000, offset);
+    SetSprFile2(LOAD_ADDRESS_24 + mno * 0x10000, offset); // what's 0x10000 ?
 
     sceVu0UnitMatrix(wlm);
 
@@ -147,12 +164,12 @@ void DrawRareEne_Sub(int mno, int dno, sceVu0FVECTOR pos, int tblno, int ani, in
         k = 1;
     }
 
-    if (ivec[0][2] < 0xff   || ivec[0][2] > 0xffffff)
+    if (ivec[0][2] < 0xff   || ivec[0][2] > 0x00ffffff)
     {
         k = 1;
     }
 
-    if (!k)
+    if (k == 0)
     {
         Reserve2DPacket(0x1000);
 
@@ -172,13 +189,13 @@ void DrawRareEne_Sub(int mno, int dno, sceVu0FVECTOR pos, int tblno, int ani, in
 
             if (sp != 0 && sub == 1)
             {
-                sceVu0RotMatrixX(wlm, wlm, (0.0f < rot_x) ? rot_x - PI : rot_x + PI);
+                sceVu0RotMatrixX(wlm, wlm,rot_x > 0.0f ? rot_x - PI : rot_x + PI);
                 sceVu0RotMatrixY(wlm, wlm, PI);
             }
 
             if (sp != 0 && sub == 3)
             {
-                sceVu0RotMatrixY(wlm, wlm, PI_HALF);
+                sceVu0RotMatrixY(wlm, wlm, PI / 2);
             }
 
             if (rx != 0)
@@ -194,7 +211,7 @@ void DrawRareEne_Sub(int mno, int dno, sceVu0FVECTOR pos, int tblno, int ani, in
             sceVu0TransMatrix(wlm, wlm, bpos);
             sceVu0MulMatrix(slm, SgWSMtx, wlm);
 
-            tx0 = *(sceGsTex0*)&(sdp + i*2 + monochrome_mode)->tex0;
+            tx0 = *(sceGsTex0*)&(sdp + i * 2 + monochrome_mode)->tex0;
             tx0.TBP0 += offset;
             tx0.CBP += offset;
 
@@ -234,13 +251,13 @@ void DrawRareEne_Sub(int mno, int dno, sceVu0FVECTOR pos, int tblno, int ani, in
                     k = 1;
                 }
 
-                if (ivec[j][2] < 0xff   || ivec[j][2] > 0xffffff)
+                if (ivec[j][2] < 0xff || ivec[j][2] > 0x00ffffff)
                 {
                     k = 1;
                 }
             }
 
-            if (!k)
+            if (k == 0)
             {
                 tx[0] = sdp[i].u * 16;
                 ty[0] = sdp[i].v * 16;
@@ -275,20 +292,16 @@ void DrawRareEne_Sub(int mno, int dno, sceVu0FVECTOR pos, int tblno, int ani, in
                 pbuf[ndpkt].ul64[0] = SCE_GS_SET_TEST_1(1, SCE_GS_ALPHA_GREATER, 0, SCE_GS_AFAIL_KEEP, 0, 0, 1, SCE_GS_DEPTH_GEQUAL);
                 pbuf[ndpkt++].ul64[1] = SCE_GS_TEST_1;
 
-                // prim = 348 is:
-                // SCE_GS_SET_PRIM(SCE_GS_PRIM_TRISTRIP, 1, 1, 0, 1, 0, 1, 0, 0)
-                pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(one * 4, SCE_GS_FALSE, SCE_GS_TRUE, 348, SCE_GIF_PACKED, 3);
-                pbuf[ndpkt++].ul64[1] = 0 \
-                    | SCE_GS_RGBAQ << (0 * 4) \
-                    | SCE_GS_UV    << (1 * 4) \
+                pbuf[ndpkt].ul64[0] = SCE_GIF_SET_TAG(nloop * 4, SCE_GS_FALSE, SCE_GS_TRUE, SCE_GS_SET_PRIM(SCE_GS_PRIM_TRISTRIP, 1, 1, 0, 1, 0, 1, 0, 0), SCE_GIF_PACKED, 3);
+                pbuf[ndpkt++].ul64[1] = 0
+                    | SCE_GS_RGBAQ << (0 * 4)
+                    | SCE_GS_UV    << (1 * 4)
                     | SCE_GS_XYZF2 << (2 * 4);
 
-                for (k = 0; k < one; k++)
+                for (k = 0; k < nloop; k++)
                 {
-                    a = (k+1) % 2;
-
-                    b = (k+1); // need to split this into two lines
-                    b /= 2;    // to fix a stack diff
+                    a = (k + 1) % 2;
+                    b = (k + 1) / 2;
 
                     fm = k != 0 ? (a ? (float)b : -(float)b) * 3.0f : 0.0f;
 
@@ -388,7 +401,6 @@ void DrawRareEne()
         {
             for (j = 0, n = 1; j < 5 && n; j++)
             {
-
                 if (rg_dsp_wrk[i].rg_no == area_wrk.rgst[j])
                 {
                     Vu0CopyVector(cpos, rg_dsp_wrk[i].pos);
@@ -397,23 +409,17 @@ void DrawRareEne()
                     fy = cpos[1] - camera.p[1];
                     fz = cpos[2] - camera.p[2];
 
-                    l = SgSqrtf(fx * fx + fy * fy + fz * fz);
+                    l = VER_SQRTF(fx * fx + fy * fy + fz * fz);
 
                     cpos[0] = camera.p[0] + ((cpos[0] - camera.p[0]) * (l - 100.0f)) / l;
                     cpos[1] = camera.p[1] + ((cpos[1] - camera.p[1]) * (l - 100.0f)) / l;
                     cpos[2] = camera.p[2] + ((cpos[2] - camera.p[2]) * (l - 100.0f)) / l;
 
                     nene = rg_dsp_wrk[i].rg_no;
+
                     alp[i] = rg_dsp_wrk[i].alpha;
 
-                    if (nene < 0x80)
-                    {
-                        redp = &rare_ene[nene];
-                    }
-                    else
-                    {
-                        redp = &pazz_ene[nene-0x80];
-                    }
+                    redp = nene < 0x80 ? &rare_ene[nene] : &pazz_ene[nene-0x80];
 
                     if (efbuf[i] != 0)
                     {
@@ -421,7 +427,8 @@ void DrawRareEne()
                         {
                             ResetEffects(efbuf[i]);
 
-                            efbuf[i] = 0; // ??
+                            efbuf[i] = 0;
+
                             efbuf[i] = SetEffects(EF_PDEFORM, 2, 21, 0, redp->sclw * 10.0f, redp->sclh * 10.0f, cpos, 0, 0, 0, &alp[i], &spd, &rate, &trate);
                         }
                     }
@@ -443,11 +450,15 @@ void DrawRareEne()
 
     for (i = 0; i < 3; i++)
     {
-        if (passflg[i] == 0 && efbuf[i] != 0)
+        if (passflg[i] == 0)
         {
-            ResetEffects(efbuf[i]);
+            if (efbuf[i] != 0)
+            {
+                ResetEffects(efbuf[i]);
 
-            efbuf[i] = 0;
+                efbuf[i] = 0;
+            }
         }
     }
 }
+

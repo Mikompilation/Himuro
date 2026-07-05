@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 32.73236574347426,
+    "fuzzy_match_percent": 33.035481346204016,
     "total_code": "1165232",
-    "matched_code": "381408",
-    "matched_code_percent": 32.73236574347426,
+    "matched_code": "384940",
+    "matched_code_percent": 33.035481346204016,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 903,
-    "matched_functions_percent": 26.60577489687684,
+    "matched_functions": 906,
+    "matched_functions_percent": 26.694166175604007,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -7753,9 +7753,14 @@
     {
       "name": "graphics/graph2d/rare_ene",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "3532",
+        "matched_code": "3532",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 3,
+        "matched_functions": 3,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -7763,14 +7768,17 @@
         {
           "name": ".text",
           "size": "3536",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -7778,16 +7786,19 @@
         {
           "name": "LoadRareEneTex",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DrawRareEne_Sub",
           "size": "2452",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DrawRareEne",
           "size": "1072",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -23284,14 +23295,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 32.73236574347426,
+        "fuzzy_match_percent": 33.035481346204016,
         "total_code": "1165232",
-        "matched_code": "381408",
-        "matched_code_percent": 32.73236574347426,
+        "matched_code": "384940",
+        "matched_code_percent": 33.035481346204016,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 903,
-        "matched_functions_percent": 26.60577489687684,
+        "matched_functions": 906,
+        "matched_functions_percent": 26.694166175604007,
         "complete_data_percent": 100.0,
         "total_units": 154
       }

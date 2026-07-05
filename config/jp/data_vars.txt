@@ -184,3 +184,47 @@ btntex                          = 0x2aa840; // type:SPRT_DAT numel:4 nosize
 
 // graphics/graph2d/number.c
 number_tex                      = 0x2aa8c8; // type:SPRT_DAT numel:4 numel:10 nosize
+
+// graphics/graph2d/rare_ene.c
+rare_ene00101                   = 0x2f4dd0; // type:SPRT_DAT numel:4 static nosize
+rare_ene00102                   = 0x2f4e50; // type:SPRT_DAT numel:4 static nosize
+rare_ene001                     = 0x2f4ed0; // type:RARE_ENE_1DAT numel:2 static nosize
+rare_ene                        = 0x2f4ee0; // type:RARE_ENE_DAT numel:11 nosize static
+rare_textbl                     = 0x2f4f90; // type:u_int numel:11 static nosize
+pazz_ene00101                   = 0x2f4fc0; // type:SPRT_DAT numel:2 static nosize
+pazz_ene001                     = 0x2f5000; // type:RARE_ENE_1DAT numel:1 static nosize
+pazz_ene00201                   = 0x2f5008; // type:SPRT_DAT numel:2 static nosize
+pazz_ene002                     = 0x2f5048; // type:RARE_ENE_1DAT numel:1 static nosize
+pazz_ene00301                   = 0x2f5050; // type:SPRT_DAT numel:2 static nosize
+pazz_ene003                     = 0x2f5090; // type:RARE_ENE_1DAT numel:1 static nosize
+pazz_ene00401                   = 0x2f5098; // type:SPRT_DAT numel:2 static nosize
+pazz_ene004                     = 0x2f50d8; // type:RARE_ENE_1DAT numel:1 static nosize
+pazz_ene00501                   = 0x2f50e0; // type:SPRT_DAT numel:2 static nosize
+pazz_ene005                     = 0x2f5120; // type:RARE_ENE_1DAT numel:1 static nosize
+pazz_ene00601                   = 0x2f5128; // type:SPRT_DAT numel:2 static nosize
+pazz_ene006                     = 0x2f5168; // type:RARE_ENE_1DAT numel:1 static nosize
+pazz_ene00701                   = 0x2f5170; // type:SPRT_DAT numel:2 static nosize
+pazz_ene007                     = 0x2f51b0; // type:RARE_ENE_1DAT numel:1 static nosize
+pazz_ene10301                   = 0x2f51b8; // type:SPRT_DAT numel:2 static nosize
+pazz_ene103                     = 0x2f51f8; // type:RARE_ENE_1DAT numel:1 static nosize
+pazz_ene                        = 0x2f5200; // type:RARE_ENE_DAT numel:9 static nosize
+pazz_textbl                     = 0x2f5290; // type:u_int numel:9 nosize
+0x2f4dd0                       = rare_ene00101;
+0x2f4e50                       = rare_ene00102;
+0x2f4ed0                       = rare_ene001;
+0x2f4fc0                       = pazz_ene00101;
+0x2f5000                       = pazz_ene001;
+0x2f5008                       = pazz_ene00201;
+0x2f5048                       = pazz_ene002;
+0x2f5050                       = pazz_ene00301;
+0x2f5090                       = pazz_ene003;
+0x2f5098                       = pazz_ene00401;
+0x2f50d8                       = pazz_ene004;
+0x2f50e0                       = pazz_ene00501;
+0x2f5120                       = pazz_ene005;
+0x2f5128                       = pazz_ene00601;
+0x2f5168                       = pazz_ene006;
+0x2f5170                       = pazz_ene00701;
+0x2f51b0                       = pazz_ene007;
+0x2f51b8                       = pazz_ene10301;
+0x2f51f8                       = pazz_ene103;
