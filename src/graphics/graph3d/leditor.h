@@ -4,24 +4,22 @@
 #include "typedefs.h"
 
 #include "graphics/graph3d/sglight.h"
-
-typedef struct
-{ // 0x30
-    /* 0x00 */ SgLIGHT *lights;
-    /* 0x04 */ SgLIGHT *plights;
-    /* 0x08 */ SgLIGHT *slights;
-    /* 0x0c */ int lnum;
-    /* 0x10 */ int pnum;
-    /* 0x14 */ int snum;
-    /* 0x18 */ int lmax;
-    /* 0x1c */ int pmax;
-    /* 0x20 */ int smax;
-    /* 0x24 */ u_int *ldata;
-    /* 0x28 */ u_int *pdata;
-    /* 0x2c */ u_int *sdata;
-} ROOM_LIGHT;
-
 #include "graphics/graph2d/g2d_debug.h"
+
+typedef struct {
+    SgLIGHT *lights;
+    SgLIGHT *plights;
+    SgLIGHT *slights;
+    int lnum;
+    int pnum;
+    int snum;
+    int lmax;
+    int pmax;
+    int smax;
+    u_int *ldata;
+    u_int *pdata;
+    u_int *sdata;
+} ROOM_LIGHT;
 
 void ReadLights(ROOM_LIGHT *rdata, void *buf);
 void ApplyLight(int room_no);

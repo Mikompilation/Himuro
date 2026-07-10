@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 34.575088909333076,
+    "fuzzy_match_percent": 34.99594930451618,
     "total_code": "1165232",
-    "matched_code": "402880",
-    "matched_code_percent": 34.575088909333076,
+    "matched_code": "407784",
+    "matched_code_percent": 34.99594930451618,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 966,
-    "matched_functions_percent": 28.46199175014732,
+    "matched_functions": 976,
+    "matched_functions_percent": 28.75662934590454,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -8211,9 +8211,14 @@
     {
       "name": "graphics/graph3d/leditor",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "4904",
+        "matched_code": "4904",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 10,
+        "matched_functions": 10,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -8221,14 +8226,17 @@
         {
           "name": ".text",
           "size": "4928",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -8236,51 +8244,61 @@
         {
           "name": "ReadLights",
           "size": "268",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "LoadLightData",
           "size": "796",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetSGDLightDataPointer",
           "size": "168",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "WriteSGDLightDataPointer",
           "size": "384",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SaveLightData",
           "size": "436",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ApplyLight",
           "size": "360",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ReadNMax",
           "size": "52",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MakeLightEditorData",
           "size": "1884",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MakeFogData",
           "size": "316",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ApplyFogData",
           "size": "240",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -23363,14 +23381,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 34.575088909333076,
+        "fuzzy_match_percent": 34.99594930451618,
         "total_code": "1165232",
-        "matched_code": "402880",
-        "matched_code_percent": 34.575088909333076,
+        "matched_code": "407784",
+        "matched_code_percent": 34.99594930451618,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 966,
-        "matched_functions_percent": 28.46199175014732,
+        "matched_functions": 976,
+        "matched_functions_percent": 28.75662934590454,
         "complete_data_percent": 100.0,
         "total_units": 154
       }
