@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 33.035481346204016,
+    "fuzzy_match_percent": 34.575088909333076,
     "total_code": "1165232",
-    "matched_code": "384940",
-    "matched_code_percent": 33.035481346204016,
+    "matched_code": "402880",
+    "matched_code_percent": 34.575088909333076,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 906,
-    "matched_functions_percent": 26.694166175604007,
+    "matched_functions": 966,
+    "matched_functions_percent": 28.46199175014732,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -7811,9 +7811,14 @@
     {
       "name": "graphics/graph3d/gra3d",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "17940",
+        "matched_code": "17940",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 60,
+        "matched_functions": 60,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -7821,14 +7826,17 @@
         {
           "name": ".text",
           "size": "18056",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -7836,301 +7844,361 @@
         {
           "name": "LoadDataFromDVD",
           "size": "144",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "LoadDataFromDVD2",
           "size": "164",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "LoadPackedTextureFromMemory",
           "size": "188",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "LoadPackedTexture",
           "size": "152",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CalcRoomCoord",
           "size": "112",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CalcCoordinate",
           "size": "156",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetUpRoomCoordinate",
           "size": "156",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ChoudoPreRender",
           "size": "492",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ChoudoPreRenderDual",
           "size": "320",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetPreRender",
           "size": "480",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetLWS",
           "size": "148",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ScenePrerender",
           "size": "792",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RequestBlackWhiteMode",
           "size": "96",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CancelBlackWhiteMode",
           "size": "92",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetEnvironment",
           "size": "272",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetEnvironment2",
           "size": "272",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ClearFrame",
           "size": "160",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CopyCoordinate",
           "size": "108",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "appendchar",
           "size": "64",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetUnitMatrix",
           "size": "104",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "InitializeRoom",
           "size": "288",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "gra3dInitFirst",
           "size": "192",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PlayerModelInit",
           "size": "168",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PlayerAccessoryInit",
           "size": "260",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SGDLoadInit",
           "size": "100",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "gra3dInit",
           "size": "116",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "Init3D",
           "size": "52",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetDefaultLightPower",
           "size": "68",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RequestSpirit",
           "size": "24",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "InitRequestSpirit",
           "size": "52",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RequestFly",
           "size": "24",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "InitRequestFly",
           "size": "52",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetSgSpotLight",
           "size": "60",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetMyLight",
           "size": "560",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "TransMyLight",
           "size": "1352",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CalcReflectLight",
           "size": "540",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "AppendReflectLight",
           "size": "116",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DeleteReflectLight",
           "size": "32",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetMyLightObj",
           "size": "184",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetMyLightRoom",
           "size": "112",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SceneSortUnit",
           "size": "128",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DrawRoom",
           "size": "120",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DrawFurniture",
           "size": "1432",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DrawGirl",
           "size": "1176",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "Kagu027Control",
           "size": "172",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MakeDebugValue",
           "size": "192",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "AppendSearchModel",
           "size": "40",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DrawOneRoom",
           "size": "316",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CalcShadowDirecion",
           "size": "828",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SearchBoundingBoxPacket",
           "size": "68",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DrawRoomShadow",
           "size": "416",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetWScissorBox",
           "size": "68",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ReSetWScissorBox",
           "size": "28",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "InitFogSelection",
           "size": "20",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FogSelection",
           "size": "348",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "gra3dDraw",
           "size": "752",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CalcGirlCoord",
           "size": "508",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DrawEnemy",
           "size": "1292",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DrawFlyMove",
           "size": "392",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CheckModelBoundingBox",
           "size": "820",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -23295,14 +23363,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 33.035481346204016,
+        "fuzzy_match_percent": 34.575088909333076,
         "total_code": "1165232",
-        "matched_code": "384940",
-        "matched_code_percent": 33.035481346204016,
+        "matched_code": "402880",
+        "matched_code_percent": 34.575088909333076,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 906,
-        "matched_functions_percent": 26.694166175604007,
+        "matched_functions": 966,
+        "matched_functions_percent": 28.46199175014732,
         "complete_data_percent": 100.0,
         "total_units": 154
       }

@@ -53,6 +53,7 @@ typedef union {
 	#define VER_ATAN2F atan2f
 	#define VER_SINF sinf
 	#define VER_COSF cosf
+	#define VER_ACOSF acosf
 	#define VER_SQRTF sqrtf
 	#define VER_SINFD(d) sinf(((d) * PI) / 180.0f)
 	#define VER_COSFD(d) cosf(((d) * PI) / 180.0f)
@@ -62,6 +63,7 @@ typedef union {
 	#define VER_ATAN2F SgAtan2f
 	#define VER_SINF SgSinf
 	#define VER_COSF SgCosf
+	#define VER_ACOSF SgACosf
 	#define VER_SQRTF SgSqrtf
 	#define VER_SINFD SgSinfd
 	#define VER_COSFD SgCosfd
@@ -71,6 +73,7 @@ typedef union {
 	#define VER_ATAN2F SgAtan2f
 	#define VER_SINF SgSinf
 	#define VER_COSF SgCosf
+	#define VER_ACOSF SgACosf
 	#define VER_SQRTF SgSqrtf
 	#define VER_SINFD SgSinfd
 	#define VER_COSFD SgCosfd

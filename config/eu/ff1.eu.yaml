@@ -634,7 +634,7 @@ segments:
           - { start: 0x25f500, type: .sbss,   vram: 0x35e5c4, name: graphics/graph2d/g2d_debug    }
           - { start: 0x25f500, type: .sbss,   vram: 0x35e5c8, name: graphics/graph2d/tim2         }
           - { start: 0x25f500, type: .sbss,   vram: 0x35e5d8, name: graphics/graph3d/gra3d        }
-          - { start: 0x25f500, type: .sbss,   vram: 0x35e61c, name: graphics/graph3d/leditor      }
+          - { start: 0x25f500, type: .sbss,   vram: 0x35e610, name: graphics/graph3d/leditor      }
           - { start: 0x25f500, type: .sbss,   vram: 0x35e620, name: graphics/graph3d/load3d       }
           - { start: 0x25f500, type: .sbss,   vram: 0x35e634, name: graphics/motion/mdlwork       }
           - { start: 0x25f500, type: .sbss,   vram: 0x35e638, name: graphics/motion/mdlact        }

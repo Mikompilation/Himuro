@@ -9,5 +9,7 @@ FURN_ATTR_FLG furn_attr_flg[500] = {0};
 DOOR_STTS_KEEP door_keep[300] = {0};
 FLY_WRK fly_wrk[10] = {0};
 u_char ep_sensor[3] = { 0, 0, 0 };
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 int disp3d_room_req = 0;
 int disp3d_furn_req = 0;
+#endif

@@ -12,7 +12,10 @@
 #include "graphics/graph3d/sglight.h"
 #include "graphics/graph3d/shadow.h"
 
-
+#if defined(BUILD_JP_VERSION)
+extern int disp3d_room_req;
+extern int disp3d_furn_req;
+#endif
 extern u_int fly_display[3];
 extern sceVu0FVECTOR fog_param[64];
 extern sceVu0IVECTOR fog_rgb[64];
@@ -29,10 +32,12 @@ extern u_int *pgirlacs[]; // [2] wrong declaration
 extern sceVu0FMATRIX runit_mtx;
 extern LIGHT_PACK girls_light;
 extern LIGHT_PACK enemy_light;
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 extern u_int *ssearch_models[15];
 extern u_int search_num;
 extern u_int *ssearch_models2[15];
 extern u_int search_num2;
+#endif
 extern sceVu0FVECTOR room_ambient_light;
 extern SgLIGHT room_pararell_light[12];
 extern SgLIGHT room_point_light[16];
@@ -81,13 +86,24 @@ void SetMyLightRoom(LIGHT_PACK *light_pack, sceVu0FVECTOR eyevec);
 void SceneSortUnit();
 void Kagu027Control(void *sgd_top);
 void MakeDebugValue();
+#if defined(BUILD_JP_VERSION)
+void AppendSearchModel(u_int **ssearch_models, int *search_num, void *sgd_top);
+void DrawOneRoom(int no, u_int **ssearch_models, int *search_num);
+void DrawRoom(int disp_no, u_int **ssearch_models, int *search_num);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 void AppendSearchModel(void *sgd_top, int room_no);
 void DrawOneRoom(int no);
 void DrawRoom(int disp_no);
+#endif
 int CalcShadowDirecion(ShadowHandle *shandle);
 u_int* SearchBoundingBoxPacket(u_int *prim);
+#if defined(BUILD_JP_VERSION)
+void DrawRoomShadow(u_int **ssearch_models, int search_num);
+void DrawFurniture(int disp_room, u_int **ssearch_models, int *search_num);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 void DrawRoomShadow();
 void DrawFurniture(int disp_room);
+#endif
 void SetWScissorBox(int disp_room);
 void ReSetWScissorBox();
 void InitFogSelection();
@@ -95,7 +111,11 @@ void FogSelection(int disp_room);
 void gra3dDraw();
 int CheckModelBoundingBox(sceVu0FMATRIX lwmtx, sceVu0FVECTOR *bbox);
 void CalcGirlCoord();
+#if defined(BUILD_JP_VERSION)
+void DrawGirl(u_int **ssearch_models, int search_num, int in_mirror);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 void DrawGirl(int in_mirror);
+#endif
 int DrawEnemy(int no);
 int DrawFlyMove(int work_no);
 

@@ -1,6 +1,13 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "gra3d.h"
+
+// gcc/src/newlib/libm/math/wf_acos.c
+float acosf(float x);
+
+// gcc/src/newlib/libm/math/wf_sqrt.c
+float sqrtf(float x);
 
 #include "sce/libvu0.h"
 #include "sce/libdma.h"
@@ -44,6 +51,8 @@
 #define UNCACHED(ptr)          ((void*)((u_int)(ptr) | 0x20000000))
 #define UNCACHED_ACCEL(ptr)    ((void*)((u_int)(ptr) | 0x30000000))
 
+#define SCRATCHPAD ((u_char *)0x70000000)
+
 extern unsigned int dma __attribute__((section(".vutext")));
 
 static u_int ene_display[4] = {0, 0, 0, 0};
@@ -57,6 +66,10 @@ u_int *pmanmodel[70] = {NULL};
 u_int *pmanmpk[70] = {NULL};
 u_int *pmanpk2[70] = {NULL};
 
+#if defined(BUILD_JP_VERSION)
+int disp3d_room_req = 1;
+int disp3d_furn_req = 1;
+#endif
 static u_int *ptexture = 0;
 static u_int *ctexture = 0;
 static u_int *itexture = 0;
@@ -82,10 +95,7 @@ static SgSourceChainTag tag_buffer[2][6144];
 static SgLIGHT lights[16];
 static SgLIGHT slights[16];
 
-#define PI_HALF 1.5707964f
 #define PI 3.1415927f
-#define PI_alt 3.1415925f
-#define PI2 6.2831855f
 
 u_int* LoadDataFromDVD(u_char *fname)
 {
@@ -102,6 +112,7 @@ u_int* LoadDataFromDVD(u_char *fname)
 
     len = sceLseek(rfd, 0, SCE_SEEK_END);
     buf = (u_int *)malloc(len + 16);
+
     sceLseek(rfd, 0, SCE_SEEK_SET);
     sceRead(rfd, buf, len);
     sceClose(rfd);
@@ -122,6 +133,7 @@ u_int* LoadDataFromDVD2(u_char *fname, u_int *addr)
     }
 
     len = sceLseek(rfd, 0, SCE_SEEK_END);
+
     sceLseek(rfd, 0, SCE_SEEK_SET);
     sceRead(rfd, addr, len);
     sceClose(rfd);
@@ -171,10 +183,13 @@ void LoadPackedTexture(u_char *fname)
 
     len = sceLseek(rfd, 0, SCE_SEEK_END);
     pointer = (u_int *)malloc(len + 16);
+
     sceLseek(rfd, 0, SCE_SEEK_SET);
     sceRead(rfd, pointer, len);
     sceClose(rfd);
+
     LoadPackedTextureFromMemory(pointer);
+
     free(pointer);
 }
 
@@ -266,13 +281,14 @@ void ChoudoPreRender(FURN_WRK* furn) {
         sceVu0RotMatrixX(cp->matrix, runit_mtx, PI);
 
         // I've seen this pattern often, I'm pretty sure it's a MACRO
-        grot = furn->rotate[1] + PI > PI ? (furn->rotate[1] + PI) - PI2 : furn->rotate[1] + PI;
+        grot = furn->rotate[1] + PI > PI ? (furn->rotate[1] + PI) - (PI * 2) : furn->rotate[1] + PI;
 
         sceVu0RotMatrixY(cp->matrix, cp->matrix, grot);
         sceVu0RotMatrixX(cp->matrix, cp->matrix, furn->rotate[0]);
         sceVu0RotMatrixZ(cp->matrix, cp->matrix, furn->rotate[2]);
 
         Vu0CopyVector(cp->matrix[3], furn->pos);
+
         cp->matrix[3][3] = 1.0f;
 
         CalcCoordinate(cp, hs->blocks - 1);
@@ -324,6 +340,7 @@ void ChoudoPreRenderDual(FURN_WRK *furn)
     }
 
     SgClearPreRender(tmpModelp, -1);
+
     ChoudoPreRender(furn);
 
     if (room_wrk.disp_no[0] == furn->room_id)
@@ -450,7 +467,7 @@ void ScenePrerender()
 
         if (disp_model >= 1000)
         {
-            tmpModelp = door_addr_tbl[disp_model - 1000];
+            tmpModelp = door_addr_tbl[disp_model-1000];
         }
         else
         {
@@ -565,7 +582,7 @@ void SetEnvironment()
 
     base[0][0] = (int)(SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 10) >>  0); // first half
     base[0][1] = (int)(SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 10) >> 32); // second half
-    base[0][2] = 0 \
+    base[0][2] = 0
         | SCE_GIF_PACKED_AD << (0 * 4)
         | SCE_GIF_PACKED_AD << (1 * 4)
         | SCE_GIF_PACKED_AD << (2 * 4)
@@ -574,7 +591,7 @@ void SetEnvironment()
         | SCE_GIF_PACKED_AD << (5 * 4)
         | SCE_GIF_PACKED_AD << (6 * 4)
         | SCE_GIF_PACKED_AD << (7 * 4);
-    base[0][3] = 0 \
+    base[0][3] = 0
         | SCE_GIF_PACKED_AD << (0 * 4)
         | SCE_GIF_PACKED_AD << (1 * 4);
 
@@ -620,7 +637,7 @@ void SetEnvironment2()
 
     base[0][0] = (int)(SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 10) >>  0); // first half
     base[0][1] = (int)(SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 10) >> 32); // second half
-    base[0][2] = 0 \
+    base[0][2] = 0
         | SCE_GIF_PACKED_AD << (0 * 4)
         | SCE_GIF_PACKED_AD << (1 * 4)
         | SCE_GIF_PACKED_AD << (2 * 4)
@@ -629,7 +646,7 @@ void SetEnvironment2()
         | SCE_GIF_PACKED_AD << (5 * 4)
         | SCE_GIF_PACKED_AD << (6 * 4)
         | SCE_GIF_PACKED_AD << (7 * 4);
-    base[0][3] = 0 \
+    base[0][3] = 0
         | SCE_GIF_PACKED_AD << (0 * 4)
         | SCE_GIF_PACKED_AD << (1 * 4);
 
@@ -674,7 +691,7 @@ void ClearFrame()
     base = (dword *)SgGetWorkBase();
 
     base[0][0] = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_TRUE, 6, SCE_GIF_PACKED, 4);
-    base[0][1] = 0 \
+    base[0][1] = 0
         | SCE_GS_RGBAQ << (4 * 0)
         | SCE_GS_XYZF2 << (4 * 1)
         | SCE_GS_RGBAQ << (4 * 2)
@@ -730,6 +747,7 @@ void SetLWS(SgCOORDUNIT *cp, SgCAMERA *camera)
     else
     {
         SetLWS(cp->parent, camera);
+
         sceVu0MulMatrix(cp->lwmtx, cp->parent->lwmtx, cp->matrix);
         sceVu0MulMatrix(cp->workm, camera->ws, cp->lwmtx);
 
@@ -850,7 +868,7 @@ void gra3dInitFirst()
     runit_mtx[1][1] = 25.0f;
     runit_mtx[2][2] = 25.0f;
 
-    SgSetPacketBuffer(UNCACHED(0x42fa00), 0x17830, UNCACHED_ACCEL(tag_buffer), 0x1800);
+    SgSetPacketBuffer(UNCACHED(0x420000)+4000*16, 0x17830, UNCACHED_ACCEL(tag_buffer), 0x1800);
     SgSetVNBuffer((sceVu0FVECTOR *)0x420000, 4000);
 
     SgInit3D();
@@ -869,7 +887,7 @@ u_int PlayerModelInit()
     u_int *tmpp;
     u_int *p;
 
-    tmpp = (u_int *)0x9a0000;
+    tmpp = (u_int *)LOAD_ADDRESS_03;
 
     pmanmodel[0] = &tmpp[0];
     pmanmpk[0] = &tmpp[0];
@@ -1121,7 +1139,7 @@ void TransMyLight(LIGHT_PACK *dest_pack, LIGHT_PACK *light_pack, sceVu0FVECTOR p
     int i;
     int j;
     int k;
-    int num;
+    int num = 0;
     int nbuf[9];
     int stocks;
     sceVu0FVECTOR subvec;
@@ -1133,7 +1151,6 @@ void TransMyLight(LIGHT_PACK *dest_pack, LIGHT_PACK *light_pack, sceVu0FVECTOR p
 
     stocks = 0;
 
-    num = light_pack->parallel_num > 3 ? 3 : light_pack->parallel_num;  // need to call this twice to fix stack allocation order !!
     num = light_pack->parallel_num > 3 ? 3 : light_pack->parallel_num;
 
     if (num != 0)
@@ -1159,7 +1176,7 @@ void TransMyLight(LIGHT_PACK *dest_pack, LIGHT_PACK *light_pack, sceVu0FVECTOR p
             sceVu0SubVector(subvec, light_pack->point[i].pos, pos);
             sceVu0MulVector(mulvec, subvec, subvec);
 
-            len = light_pack->point[i].power / SgSqrtf(mulvec[0] + mulvec[1] + mulvec[2]);
+            len = light_pack->point[i].power / VER_SQRTF(mulvec[0] + mulvec[1] + mulvec[2]);
 
             sceVu0ScaleVector(difbuf[stocks], light_pack->point[i].diffuse, len * 6.0f);
             Vu0CopyVector(dirbuf[stocks],  subvec);
@@ -1178,9 +1195,10 @@ void TransMyLight(LIGHT_PACK *dest_pack, LIGHT_PACK *light_pack, sceVu0FVECTOR p
         sceVu0SubVector(subvec, light_pack->spot[i].pos, pos);
         sceVu0MulVector(mulvec, subvec, subvec);
 
-        len = light_pack->spot[i].power / SgSqrtf(mulvec[0] + mulvec[1] + mulvec[2]);
+        len = light_pack->spot[i].power / VER_SQRTF(mulvec[0] + mulvec[1] + mulvec[2]);
 
         sceVu0ScaleVector(difbuf[stocks], light_pack->spot[i].diffuse, len * 0.25f);
+
         Vu0CopyVector(dirbuf[stocks], light_pack->spot[i].direction);
 
         nbuf[stocks] = stocks;
@@ -1213,7 +1231,7 @@ void TransMyLight(LIGHT_PACK *dest_pack, LIGHT_PACK *light_pack, sceVu0FVECTOR p
 
     if (stocks > 3)
     {
-           int dest_num;
+        int dest_num;
         int source_num;
         float ad;
         float as;
@@ -1268,7 +1286,7 @@ void CalcReflectLight()
 
     Vu0SubVector(cdir, psp->pos, mir_center);
 
-    len = SgSqrtf(cdir[0] * cdir[0] + cdir[1] * cdir[1] + cdir[2] * cdir[2]);
+    len = VER_SQRTF(cdir[0] * cdir[0] + cdir[1] * cdir[1] + cdir[2] * cdir[2]);
 
     _NormalizeVector(cdir, cdir);
     _NormalizeVector(sdirection, psp->direction);
@@ -1281,17 +1299,22 @@ void CalcReflectLight()
         return;
     }
 
-    if ((psp->intens > ip && len > 600.0f) || len > 2200.0f)
+    if (psp->intens > ip && len > 600.0f)
     {
         return;
     }
 
-    intens = psp->intens;
+    if (len > 2200.0f)
+    {
+        return;
+    }
 
-    if (1500.0f < len)
+    if (len > 1500.0f)
     {
         ip2 *= (2200.0f - len) / 700.0f;
     }
+
+    intens = psp->intens;
 
     mir_reflect_flg = 1;
 
@@ -1373,14 +1396,29 @@ void SetMyLightRoom(LIGHT_PACK *light_pack, sceVu0FVECTOR eyevec)
 
 void SceneSortUnit()
 {
+#if defined(BUILD_JP_VERSION)
+    u_int *ssearch_models[15];
+    int search_num;
+#endif
+
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     search_num2 = 0;
+#endif
     search_num = 0;
 
     CalcReflectLight();
+
+#if defined(BUILD_JP_VERSION)
+    DrawRoom(mir_room_workno, ssearch_models, &search_num);
+    DrawFurniture(room_wrk.disp_no[mir_room_workno], ssearch_models, &search_num);
+    DrawGirl(ssearch_models, search_num, 1);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     DrawRoom(mir_room_workno);
     DrawFurniture(room_wrk.disp_no[mir_room_workno]);
     DrawGirl(1);
-    SetMyLight(room_wrk.mylight,camera.zd);
+#endif
+
+    SetMyLight(room_wrk.mylight, camera.zd);
 }
 
 void Kagu027Control(void *sgd_top)
@@ -1454,6 +1492,16 @@ void MakeDebugValue()
     CancelBlackWhiteMode();
 }
 
+#if defined(BUILD_JP_VERSION)
+void AppendSearchModel(u_int **ssearch_models, int *search_num, void *sgd_top)
+{
+    if (*search_num < 15)
+    {
+        ssearch_models[*search_num] = sgd_top;
+        (*search_num)++;
+    }
+}
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 void AppendSearchModel(void *sgd_top, int room_no)
 {
     if (room_no == room_wrk.disp_no[0])
@@ -1473,8 +1521,13 @@ void AppendSearchModel(void *sgd_top, int room_no)
         }
     }
 }
+#endif
 
+#if defined(BUILD_JP_VERSION)
+void DrawOneRoom(int no, u_int **ssearch_models, int *search_num)
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 void DrawOneRoom(int no)
+#endif
 {
     int disp_room;
     void *mdl_addr;
@@ -1507,18 +1560,30 @@ void DrawOneRoom(int no)
 
     SetMyLightRoom(&room_wrk.mylight[no], camera.zd);
     SgSortUnitP(mdl_addr, -1);
+#if defined(BUILD_JP_VERSION)
+    AppendSearchModel(ssearch_models, search_num, mdl_addr);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     AppendSearchModel(mdl_addr, disp_room);
+#endif
 
     mdl_addr = room_addr_tbl[disp_room].ss_sgd;
 
     if (mdl_addr != NULL)
     {
         SgSortUnitP(mdl_addr, -1);
+#if defined(BUILD_JP_VERSION)
+        AppendSearchModel(ssearch_models, search_num, mdl_addr);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         AppendSearchModel(mdl_addr, disp_room);
+#endif
     }
 }
 
+#if defined(BUILD_JP_VERSION)
+void DrawRoom(int disp_no, u_int **ssearch_models, int *search_num)
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 void DrawRoom(int disp_no)
+#endif
 {
     int j;
 
@@ -1531,12 +1596,20 @@ void DrawRoom(int disp_no)
     {
         for (j = 1; j >= 0; j--)
         {
+#if defined(BUILD_JP_VERSION)
+            DrawOneRoom(j, ssearch_models, search_num);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
             DrawOneRoom(j);
+#endif
         }
     }
     else
     {
+#if defined(BUILD_JP_VERSION)
+        DrawOneRoom(disp_no, ssearch_models, search_num);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         DrawOneRoom(disp_no);
+#endif
     }
 }
 
@@ -1583,6 +1656,7 @@ int CalcShadowDirecion(ShadowHandle *shandle)
 
     sceVu0ApplyMatrix(center,cp[num].lwmtx, center);
     sceVu0SubVector(tmpvec, psp->pos, center);
+
     _NormalizeVector(tmpvec, tmpvec);
 
     degree = sceVu0InnerProduct(tmpvec, sdirection);
@@ -1593,8 +1667,11 @@ int CalcShadowDirecion(ShadowHandle *shandle)
         {
             sceVu0ApplyMatrix(tmpvec, cp[num].lwmtx, shandle->bbox[chk_bound[i]]);
             sceVu0SubVector(tmpvec, psp->pos, tmpvec);
+
             _NormalizeVector(tmpvec, tmpvec);
+
             degree = sceVu0InnerProduct(tmpvec, sdirection);
+
             if (degree * degree - psp->intens > 0.0f)
             {
                 break;
@@ -1603,10 +1680,13 @@ int CalcShadowDirecion(ShadowHandle *shandle)
     }
 
     sceVu0SubVector(interest, psp->pos, center);
+
     _NormalizeVector(interest, interest);
+
     sceVu0ScaleVector(interest, interest, 0.9f);
     sceVu0ScaleVector(tmpvec, sdirection, 0.1f);
     sceVu0AddVector(shandle->direction, interest, tmpvec);
+
     _NormalizeVector(shandle->direction, shandle->direction);
 
     if (shandle->direction[1] > -0.1f)
@@ -1619,7 +1699,7 @@ int CalcShadowDirecion(ShadowHandle *shandle)
     shandle->direction[3] = 1.0f;
 
     degree = sceVu0InnerProduct(shandle->direction, sdirection);
-    degree = (SgACosf(degree) * 180.0f) / PI_alt;
+    degree = (VER_ACOSF(degree) * 180.0f) / (PI - 0.0000002f);
 
     if (degree > 50.0f)
     {
@@ -1656,7 +1736,11 @@ u_int* SearchBoundingBoxPacket(u_int *prim)
     return NULL;
 }
 
+#if defined(BUILD_JP_VERSION)
+void DrawRoomShadow(u_int **ssearch_models, int search_num)
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 void DrawRoomShadow()
+#endif
 {
     int i;
     int disp_room;
@@ -1733,7 +1817,11 @@ void DrawRoomShadow()
     SetEnvironment();
 }
 
+#if defined(BUILD_JP_VERSION)
+void DrawFurniture(int disp_room, u_int **ssearch_models, int *search_num)
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 void DrawFurniture(int disp_room)
+#endif
 {
     int i;
     int j;
@@ -1773,11 +1861,13 @@ void DrawFurniture(int disp_room)
         else
         {
             tmpModelp = furn_addr_tbl[disp_chodo];
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 
             if (room_wrk.disp_no[1] == 0xff && furn_wrk[j].room_id != now_room)
             {
                 continue;
             }
+#endif
         }
 
         if (tmpModelp != NULL && (disp_room == -1 || disp_room == furn_wrk[j].room_id))
@@ -1794,20 +1884,24 @@ void DrawFurniture(int disp_room)
                 if (__builtin_abs((int)cp - (int)tmpModelp) <= 512)
                 {
                     sceVu0RotMatrixX(cp->matrix, runit_mtx, PI);
+
                     grot = furn_wrk[j].rotate[1] + PI;
+
                     if (PI < grot)
                     {
-                        grot = grot - PI2;
+                        grot -= PI * 2;
                     }
+
                     sceVu0RotMatrixZ(cp->matrix, cp->matrix, furn_wrk[j].rotate[2]);
                     sceVu0RotMatrixX(cp->matrix, cp->matrix, furn_wrk[j].rotate[0]);
                     sceVu0RotMatrixY(cp->matrix, cp->matrix, grot);
+
                     Vu0CopyVector(cp->matrix[3], furn_wrk[j].pos);
                     cp->matrix[3][3] = 1.0f;
 
-                    if ((hs->kind & 1) == 0)
+                    if ((hs->kind & 0x1) == 0)
                     {
-                        SetSpeFurnLight(furn_wrk + j);
+                        SetSpeFurnLight(&furn_wrk[j]);
                     }
                     else
                     {
@@ -1857,9 +1951,9 @@ void DrawFurniture(int disp_room)
                                 }
 
                                 acsCalcCoordinate(cp, hs->blocks - 1, &furn_wrk[j], &rope_ctrl[i]);
-
                                 {
                                     static sceVu0FVECTOR ofs = {3.45f, 0.0f, 0.0f, 1.0f};
+
                                     sceVu0ApplyMatrix(rope_ctrl[i].top, cp[rope_ctrl[i].p_num - 1].lwmtx, ofs);
                                 }
 
@@ -1912,7 +2006,11 @@ void DrawFurniture(int disp_room)
 
                     if (now_room == furn_wrk[j].room_id && write_coord > 0 && GetModelKind(tmpModelp) != 0)
                     {
+#if defined(BUILD_JP_VERSION)
+                        AppendSearchModel(ssearch_models, search_num, tmpModelp);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
                         AppendSearchModel(tmpModelp, furn_wrk[j].room_id);
+#endif
                     }
                 }
             }
@@ -1927,8 +2025,10 @@ void DrawFurniture(int disp_room)
 sceVu0FMATRIX runit_mtx = {0};
 LIGHT_PACK girls_light = {0};
 LIGHT_PACK enemy_light = {0};
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 u_int *ssearch_models[15] = {NULL};
 u_int *ssearch_models2[15] = {NULL};
+#endif
 sceVu0FVECTOR room_ambient_light = {0.0f, 0.0f, 0.0f, 0.0f};
 SgLIGHT room_pararell_light[12] = {0};
 SgLIGHT room_point_light[16] = {0};
@@ -1966,7 +2066,7 @@ void FogSelection(int disp_room)
     plyr_wrk_mode_or = plyr_wrk.mode == 6 || plyr_wrk.mode == 1;
     now_cam_door_or = plyr_wrk.pr_info.cam_type == 3;
 
-    if (!bak_cam_door_or && now_cam_door_or)
+    if (bak_cam_door_or == 0 && now_cam_door_or)
     {
         fog_lock = 1;
         locked_fog_room_no = GetRoomIdBeyondDoor2();
@@ -2012,8 +2112,16 @@ void gra3dDraw()
     int disp_room;
     static float arad = 0.0f;
     static float adeg = 0.1f;
+#if defined(BUILD_JP_VERSION)
+    u_int *ssearch_models[15];
+    int search_num;
+#endif
 
     disp_frame_counter++;
+
+#if defined(BUILD_JP_VERSION)
+    search_num = 0;
+#endif
 
     MakeDebugValue();
     SgSetRefCamera(&camera);
@@ -2081,12 +2189,20 @@ void gra3dDraw()
             }
         }
     }
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 
     search_num2 = 0;
     search_num = 0;
+#endif
 
+#if defined(BUILD_JP_VERSION)
+    DrawRoom(-1, ssearch_models, &search_num);
+    DrawFurniture(-1, ssearch_models, &search_num);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     DrawRoom(-1);
     DrawFurniture(-1);
+#endif
+
     CheckDMATrans();
 
     if (disp3d_2ddraw != 0)
@@ -2096,8 +2212,15 @@ void gra3dDraw()
 
     PlyrAcsAlphaCtrl();
     SetEnvironment();
+
+#if defined(BUILD_JP_VERSION)
+    DrawGirl(ssearch_models, search_num, 0);
+    DrawRoomShadow(ssearch_models, search_num);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     DrawGirl(0);
     DrawRoomShadow();
+#endif
+
     CheckDMATrans();
 
     if (disp3d_2ddraw != 0)
@@ -2133,8 +2256,8 @@ int CheckModelBoundingBox(sceVu0FMATRIX lwmtx, sceVu0FVECTOR *bbox)
     sceVu0FMATRIX tmpmat;
     float fog_max;
 
-    tmpvec = (sceVu0FVECTOR *)0x70000620;
-    ed = (sceVu0FVECTOR *)0x700006a0; // `ed[i]` can be replaced with `tmpvec[8+i]`
+    tmpvec = (sceVu0FVECTOR *)&SCRATCHPAD[0x620];
+    ed = (sceVu0FVECTOR *)&SCRATCHPAD[0x6a0]; // `ed[i]` can be replaced with `tmpvec[8+i]`
 
     _SetMulMatrix(SgCMVtx,lwmtx);
 
@@ -2246,7 +2369,7 @@ void CalcGirlCoord()
         }
         else if (motSetCoord(ani_mdl, 0xff) != 0)
         {
-            plyr_wrk.sta = plyr_wrk.sta | 0x20;
+            plyr_wrk.sta |= 0x20;
             plyr_wrk.mvsta &= ~0x200000;
         }
 
@@ -2259,16 +2382,18 @@ void CalcGirlCoord()
     cp->matrix[0][0] = cp->matrix[1][1] = cp->matrix[2][2] = 25.0f / manmdl_dat[plyr_mdl_no].scale;
 
     grot = plyr_wrk.move_box.rot[1];
+
     if (PI < plyr_wrk.move_box.rot[1])
     {
-        grot = plyr_wrk.move_box.rot[1] - PI2;
+        grot = plyr_wrk.move_box.rot[1] - (PI * 2);
     }
 
     sceVu0RotMatrixX(cp->matrix, cp->matrix, PI);
     sceVu0RotMatrixY(cp->matrix, cp->matrix, grot);
-    Vu0CopyVector(cp->matrix[3], plyr_wrk.move_box.pos);
 
+    Vu0CopyVector(cp->matrix[3], plyr_wrk.move_box.pos);
     cp->matrix[3][3] = 1.0f;
+
     CalcCoordinate(cp, hs->blocks - 1);
 
     if (motPlayerActCtrl(cp) != 0)
@@ -2281,10 +2406,16 @@ void CalcGirlCoord()
     GetPlyrAcsLightPos(plyr_wrk.spot_pos, ani_mdl);
 }
 
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 u_int search_num = 0;
 u_int search_num2 = 0;
+#endif
 
+#if defined(BUILD_JP_VERSION)
+void DrawGirl(u_int **ssearch_models, int search_num, int in_mirror)
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 void DrawGirl(int in_mirror)
+#endif
 {
     HeaderSection *hs;
     SgCOORDUNIT *cp;
@@ -2294,13 +2425,17 @@ void DrawGirl(int in_mirror)
     u_int i;
     sceVu0FMATRIX transmtx;
     sceVu0FVECTOR tgirlbox[8];
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     u_int *dssearch_models[30];
     u_int dsearch_num;
+#endif
     sceVu0FMATRIX tmpmat;
     sceVu0FVECTOR tmpvec;
     sceVu0FVECTOR tmpvec2;
 
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     dsearch_num = 0;
+#endif
 
     hs = (HeaderSection *)pgirlbase;
     cp = hs->coordp;
@@ -2362,6 +2497,7 @@ void DrawGirl(int in_mirror)
     {
         SetShadowAssignGroup(-1);
     }
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 
     for (i = 0; i < search_num; i++)
     {
@@ -2374,12 +2510,21 @@ void DrawGirl(int in_mirror)
         dssearch_models[i + search_num] = ssearch_models2[i];
         dsearch_num++;
     }
+#endif
 
     shandle.shadow_model = pgirlshadow;
     shandle.smodel_num = -1;
+#if defined(BUILD_JP_VERSION)
+    shandle.search_model = (void **)ssearch_models;
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     shandle.search_model = (void **)dssearch_models;
+#endif
     shandle.bbox = girlbox;
+#if defined(BUILD_JP_VERSION)
+    shandle.search_num = search_num;
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     shandle.search_num = dsearch_num;
+#endif
     shandle.source_model = NULL;
 
     if (plyr_wrk.shadow_direction[3] == 1.0f)
@@ -2391,7 +2536,7 @@ void DrawGirl(int in_mirror)
         grot = plyr_wrk.move_box.rot[1];
         if (PI < plyr_wrk.move_box.rot[1])
         {
-            grot = plyr_wrk.move_box.rot[1] - PI2;
+            grot = plyr_wrk.move_box.rot[1] - (PI * 2);
         }
 
         sceVu0UnitMatrix(tmpmat);
@@ -2516,7 +2661,7 @@ int DrawEnemy(int no)
         sceVu0MulMatrix(cp->matrix, cp->matrix, m);
         sceVu0CopyVector(cp->matrix[3], cp2[k].lwmtx[3]);
 
-        LocalRotMatrixZ(cp->matrix, cp->matrix, -PI_HALF);
+        LocalRotMatrixZ(cp->matrix, cp->matrix, -(PI / 2));
         LocalRotMatrixY(cp->matrix, cp->matrix, ene_child_ctrl[j].ry);
         sceVu0Normalize(vec, cp->matrix[2]);
         sceVu0ScaleVector(vec, vec, ene_child_ctrl[j].r);
@@ -2533,9 +2678,10 @@ int DrawEnemy(int no)
         sceVu0RotMatrixX(cp->matrix, cp->matrix, PI);
 
         grot = ene_wrk[j].move_box.rot[1];
-        if (PI < grot)
+
+        if (grot > PI)
         {
-            grot -= PI2;
+            grot -= PI * 2;
         }
 
         sceVu0RotMatrixY(cp->matrix, cp->matrix, grot);
@@ -2625,16 +2771,18 @@ int DrawFlyMove(int work_no)
     sceVu0RotMatrixX(cp->matrix, runit_mtx, PI);
 
     grot = fly_wrk[work_no].move_box.rot[1];
-    if (PI < grot)
+
+    if (grot > PI)
     {
-        grot = grot - PI2;
+        grot -= PI * 2;
     }
 
     sceVu0RotMatrixY(cp->matrix, cp->matrix, grot);
     LocalRotMatrixY(cp->matrix, cp->matrix, PI);
-    Vu0CopyVector(cp->matrix[3], fly_wrk[work_no].move_box.pos);
 
+    Vu0CopyVector(cp->matrix[3], fly_wrk[work_no].move_box.pos);
     cp->matrix[3][3] = 1.0f;
+
     CalcCoordinate(cp, hs->blocks - 1);
     ManmdlSetAlpha(tmpModelp, ene_wrk[fly_wrk[work_no].ene].tr_rate);
     SetMyLightObj(&enemy_light, &ene_wrk[fly_wrk[work_no].ene].mylight, camera.zd, ene_wrk[fly_wrk[work_no].ene].mpos.p0);
