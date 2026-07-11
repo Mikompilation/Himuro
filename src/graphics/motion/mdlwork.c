@@ -1,8 +1,9 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "enums.h"
 
-#ifdef MATCHING_DECOMP
+#if defined(MATCHING_DECOMP)
 #define INCLUDING_FROM_MDLWORK_C
 #include "mdlwork.h"
 #undef INCLUDING_FROM_MDLWORK_C
@@ -41,6 +42,7 @@ void ManmdlSetAlpha(void *sgd_top, u_char alpha)
     while (matp < (SgMaterial *)phead)
     {
         matp->Diffuse[3] = alpha;
+
         matp++;
     }
 }
@@ -81,7 +83,13 @@ void DrawGirlSubObj(u_int *mpk_p, u_char alpha)
     sceVu0FVECTOR vf2reg;
     HeaderSection *hs;
     SgCOORDUNIT *cp;
-    char obj_id[2][2] = { {0x03, 0x06}, {0x01, 0x08} };
+    char obj_id[2][2] = {
+#if defined(BUILD_JP_VERSION)
+        { 2, 6 }, { 1, 8 }
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+        { 3, 6 }, { 1, 8 }
+#endif
+    };
 
     obj_num = *mpk_p;
 
@@ -89,15 +97,32 @@ void DrawGirlSubObj(u_int *mpk_p, u_char alpha)
 
     GetVF2Register(vf2reg);
 
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     tmpvec[0] = 0.0f;
     tmpvec[1] = 0.0f;
     tmpvec[2] = 0.0f;
     tmpvec[3] = 0.0f;
+#endif
 
     for (i = 1; i < obj_num; i++)
     {
         hs = GetFileInPak(mpk_p,i);
 
+#if defined(BUILD_JP_VERSION)
+        if (i == obj_id[plyr_mdl_no][0])
+        {
+            tmpvec[0] = 0.0f;
+            tmpvec[1] = 0.0f;
+            tmpvec[2] = 0.0f;
+            tmpvec[3] = 0.0f;
+
+            SetVF2Register(tmpvec);
+        }
+        else if (i == obj_id[plyr_mdl_no][1])
+        {
+            SetVF2Register(vf2reg);
+        }
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         switch (i)
         {
         case 3:
@@ -110,6 +135,7 @@ void DrawGirlSubObj(u_int *mpk_p, u_char alpha)
             SetVF2Register(vf2reg);
         break;
         }
+#endif
 
         ManmdlSetAlpha(hs, alpha);
         ManTexflush();
@@ -134,6 +160,7 @@ void DrawEneSubObj(u_int *mpk_p, u_char alpha1, u_char alpha2)
         alpha = i == 1 ? alpha2 : alpha1;
 
         hs = GetFileInPak(mpk_p, i);
+
         ManmdlSetAlpha(hs, alpha);
         ManTexflush();
         SortUnitRefCoordKind(hs, cp, -1);
@@ -143,7 +170,9 @@ void DrawEneSubObj(u_int *mpk_p, u_char alpha1, u_char alpha2)
 void SortUnitRefCoordKind(void *sgd_top, SgCOORDUNIT *coordp, int num)
 {
     int old_di;
-    HeaderSection *hs = (HeaderSection *)sgd_top;
+    HeaderSection *hs;
+
+    hs = (HeaderSection *)sgd_top;
 
     old_di = DIntr();
 
@@ -203,6 +232,7 @@ void SortUnitRefCoordP(void *sgd_top, SgCOORDUNIT *coordp, int pnum)
     {
         save_tri2_pointer = (u_int *)0xffffffff; // an "invalid" pointer value?
         save_bw_pointer = (u_int *)0xffffffff;   // probably a #define
+
         SgSortPreProcessP((u_int *)pk[0]);
     }
     else
@@ -441,7 +471,9 @@ void ReleaseEneTexture(u_int work_id)
         if (ene_vram_ctrl[i].mdl_p == mdl_p)
         {
             offset = ene_vram_ctrl[i].offset;
+
             InitEneVramCtrlSub(&ene_vram_ctrl[i]);
+
             break;
         }
 
@@ -454,6 +486,7 @@ void ReleaseEneTexture(u_int work_id)
     }
 
     motPrintVramCtrl();
+
     SetEneVram(mdl_p, -offset);
 }
 
@@ -511,7 +544,7 @@ void MpkAddTexOffset(u_int *mpk_p, int offset)
 
     mpk_p += 4;
 
-    while ((*mpk_p - 1) < ~0x80000000)
+    while (*mpk_p - 1 < ~0x80000000)
     {
         hs = (HeaderSection *)(mpk_p + 4);
 
@@ -570,7 +603,7 @@ void motPrintVramCtrl()
 
     for (i = 0; i < 4; i++)
     {
-        // debug code? optimized out? something that printed ene_vram_ctrl?
+        // debug code?
     }
 }
 
@@ -654,9 +687,11 @@ char MsnInitPlyr()
     switch (plyr_init_ctrl.step)
     {
     case 0:
-        init_load_id = SeFileLoadAndSet(plyr_mdl_no + SV000_MIKU_BD, 2);
+        init_load_id = SeFileLoadAndSet(SV000_MIKU_BD + plyr_mdl_no, 2);
+
         plyr_init_ctrl.step = 1;
-        break;
+
+    break;
     case 1:
         if (IsLoadEnd(init_load_id) == 0)
         {
@@ -664,20 +699,25 @@ char MsnInitPlyr()
         }
 
         plyr_init_ctrl.step = 2;
+    // case fall-through
     case 2:
-        init_load_id = LoadReq(plyr_file_id[pk2_id].pk2, 0x9a0000);
+        init_load_id = LoadReq(plyr_file_id[pk2_id].pk2, LOAD_ADDRESS_03);
+
         plyr_init_ctrl.step = 3;
-        break;
+
+    break;
     case 3:
         if (IsLoadEnd(init_load_id) == 0)
         {
             break;
         }
 
-        SetManmdlTm2((u_int*)0x9a0000, 0, 1);
+        SetManmdlTm2((u_int*)LOAD_ADDRESS_03, 0, 1);
+
         plyr_init_ctrl.step = 4;
+
         sync_flg = 2;
-        break;
+    break;
     case 4:
         if (0 < sync_flg)
         {
@@ -685,33 +725,37 @@ char MsnInitPlyr()
             break;
         }
 
-        init_load_id = LoadReq(plyr_file_id[pk2_id].mpk, 0x9a0000);
+        init_load_id = LoadReq(plyr_file_id[pk2_id].mpk, LOAD_ADDRESS_03);
+
         plyr_init_ctrl.step = 5;
-        break;
+    break;
     case 5:
         if (IsLoadEnd(init_load_id) != 0)
         {
             init_load_adr = PlayerModelInit();
+
             plyr_init_ctrl.step = 6;
         }
-
-        break;
+    break;
     case 6:
         init_load_id = LoadReq(plyr_file_id[pk2_id].acs, init_load_adr);
+
         plyr_init_ctrl.step = 7;
-        break;
+
+    break;
     case 7:
         if (IsLoadEnd(init_load_id) != 0)
         {
             init_load_adr = PlayerAccessoryInit(init_load_adr);
+
             plyr_init_ctrl.step = 8;
         }
-
-        break;
+    break;
     case 8:
         init_load_id = LoadReq(plyr_file_id[pk2_id].bwc, init_load_adr);
+
         plyr_init_ctrl.step = 9;
-        break;
+    break;
     case 9:
         if (IsLoadEnd(init_load_id) == 0)
         {
@@ -719,13 +763,16 @@ char MsnInitPlyr()
         }
 
         plyr_bwc_addr = (u_int*)init_load_adr;
+
         init_load_adr = (int)GetPakTaleAddr((void*)init_load_adr);
+
         plyr_init_ctrl.step = 10;
-        break;
+    break;
     case 10:
         init_load_id = LoadReq(plyr_file_id[pk2_id].clt, init_load_adr);
+
         plyr_init_ctrl.step = 11;
-        break;
+    break;
     case 11:
         if (IsLoadEnd(init_load_id) == 0)
         {
@@ -733,13 +780,16 @@ char MsnInitPlyr()
         }
 
         plyr_clut_addr = (u_int*)init_load_adr;
+
         init_load_adr = (int)GetPakTaleAddr(plyr_bwc_addr);
+
         plyr_init_ctrl.step = 12;
-        break;
+    break;
     case 12:
         plyr_init_ctrl.step = 13;
-        init_load_id = LoadReq(plyr_file_id[pk2_id].anm, 0x870000);
-        break;
+
+        init_load_id = LoadReq(plyr_file_id[pk2_id].anm, LOAD_ADDRESS_02);
+    break;
     case 13:
         if (IsLoadEnd(init_load_id) == 0)
         {
@@ -748,7 +798,9 @@ char MsnInitPlyr()
 
         motInitPlayerAnm(plyr_mdl_no);
         motInitMsn();
+
         return 1;
+    break;
     }
 
     return 0;
@@ -758,10 +810,14 @@ void motInitMsn()
 {
     motInitAniMdlBuf();
     motInitPacketCtrl();
+
     InitEneVramCtrl();
+
     motInitEneKuttuki();
+
     InitPlyrAcsAlpha();
     InitQuake();
+
     motInitPlyrAct();
 }
 
@@ -873,7 +929,7 @@ ANI_CTRL* motGetAniMdl(u_int work_no)
     {
         for (i = 0; i < 20; i++)
         {
-            // empty
+            // debug code?
         }
     }
 
@@ -903,6 +959,7 @@ void motSetAnmPacket(u_char no)
 
             ene_pkt_ctrl[no].pkt_no = ani_mdl_ctrl[i].pkt_no;
             ene_pkt_ctrl[no].buf_no = i;
+
             break;
         }
     }
@@ -910,16 +967,17 @@ void motSetAnmPacket(u_char no)
 
 void motReleaseAnmPacket(u_char no)
 {
-    u_int i; // not from the debugging symbols
+    u_int i;
 
     for (i = 0; i < 20; i++)
     {
-        if ((ani_mdl_ctrl[i].anm_no == ene_wrk[no].dat->anm_no) && (ani_mdl_ctrl[i].pkt_no == ene_pkt_ctrl[no].pkt_no))
+        if (ani_mdl_ctrl[i].anm_no == ene_wrk[no].dat->anm_no && ani_mdl_ctrl[i].pkt_no == ene_pkt_ctrl[no].pkt_no)
         {
             ani_mdl_ctrl[i].map_flg = 0;
 
             ene_pkt_ctrl[no].buf_no = 0xff;
             ene_pkt_ctrl[no].pkt_no = 0xff;
+
             break;
         }
     }
@@ -931,7 +989,7 @@ void motEneTexAnm(ANI_CTRL *ani_ctrl, u_int work_id)
     u_int i;
     u_int offset;
     static u_int cnt = 0;
-    int num; // this does not get added to STAB
+    int num;
 
     if (sys_wrk.count % 2)
     {
@@ -978,9 +1036,9 @@ void motInitEneKuttuki()
 
 void motSetEnemyKuttuki(u_char work_id, u_char bone_id, float radius, float ry)
 {
-    short int bone_list[1] = {12};
+    short int bone_list[1] = { 12, };
 
-    if (bone_id >= 1)
+    if (bone_id > 0)
     {
         bone_id = 0;
     }

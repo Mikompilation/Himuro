@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 35.37081027640848,
+    "fuzzy_match_percent": 35.86753539209359,
     "total_code": "1165232",
-    "matched_code": "412152",
-    "matched_code_percent": 35.37081027640848,
+    "matched_code": "417940",
+    "matched_code_percent": 35.86753539209359,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 989,
-    "matched_functions_percent": 29.13965822038892,
+    "matched_functions": 1030,
+    "matched_functions_percent": 30.347672362993517,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -8429,9 +8429,14 @@
     {
       "name": "graphics/motion/mdlwork",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "5788",
+        "matched_code": "5788",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 41,
+        "matched_functions": 41,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -8439,14 +8444,17 @@
         {
           "name": ".text",
           "size": "5880",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -8454,206 +8462,247 @@
         {
           "name": "ManmdlSetAlpha",
           "size": "68",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motCheckTrRateMdl",
           "size": "52",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MpkMapUnit",
           "size": "124",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DrawGirlSubObj",
           "size": "292",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ManTexflush",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SortUnitRefCoordKind",
           "size": "148",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DrawEneSubObj",
           "size": "200",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SortUnitRefCoordP",
           "size": "272",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SortUnitRefCoord",
           "size": "324",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "InitEneVramCtrl",
           "size": "76",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "InitEneVramCtrlSub",
           "size": "24",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetEneTexture",
           "size": "388",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motGetAniMdl",
           "size": "220",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motPrintVramCtrl",
           "size": "44",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetEneVram",
           "size": "164",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetManmdlTm2",
           "size": "152",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MpkAddTexOffset",
           "size": "136",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ReleaseEneTexture",
           "size": "288",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SendManMdlTex",
           "size": "104",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetTextureToScene",
           "size": "108",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "BackupEneVramCtrl",
           "size": "88",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetTextureAfterScene",
           "size": "88",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetupEneVramCtrl",
           "size": "88",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SgdAddTexOffset",
           "size": "172",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetOkuraBuffer",
           "size": "44",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ReqMsnInitPlyr",
           "size": "16",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MsnInitPlyr",
           "size": "708",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motInitMsn",
           "size": "68",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motInitAniMdlBuf",
           "size": "72",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motInitPacketCtrl",
           "size": "56",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motInitEneKuttuki",
           "size": "56",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motInitAniMdlBufSub",
           "size": "24",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motSetAniMdlBuf",
           "size": "148",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motReleaseOneAniMdlBuf",
           "size": "224",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motReleaseAniMdlBuf",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motSetAnmPacket",
           "size": "132",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motReleaseAnmPacket",
           "size": "132",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motEneTexAnm",
           "size": "212",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motSetEnemyKuttuki",
           "size": "100",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motReleaseEnemyKuttuki",
           "size": "44",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetPlyrClut",
           "size": "116",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -23402,14 +23451,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 35.37081027640848,
+        "fuzzy_match_percent": 35.86753539209359,
         "total_code": "1165232",
-        "matched_code": "412152",
-        "matched_code_percent": 35.37081027640848,
+        "matched_code": "417940",
+        "matched_code_percent": 35.86753539209359,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 989,
-        "matched_functions_percent": 29.13965822038892,
+        "matched_functions": 1030,
+        "matched_functions_percent": 30.347672362993517,
         "complete_data_percent": 100.0,
         "total_units": 154
       }

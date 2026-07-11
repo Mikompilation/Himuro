@@ -705,6 +705,9 @@ arei_anm                       = 0x2fabc8; // type:ANI_CODE numel:2 nosize
 arei_loop_anm                  = 0x2fabd0; // type:ANI_CODE numel:4 nosize
 manmdl_dat                     = 0x2fb6f0; // type:MANMDL_DAT numel:67 nosize
 
+// graphics/motion/mdlwork.c
+plyr_file_id                   = 0x2fbd68; // type:PLYR_FILE_ID numel:5 nosize static
+
 // graphics/motion/acs_dat.c
 0x301bd0                       = m000_wmim_tbl;
 0x301c50                       = m021_wmim_tbl;
