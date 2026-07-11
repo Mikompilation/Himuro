@@ -34,6 +34,8 @@ extern u_int *furn_addr_tbl[500];
 extern u_int *door_addr_tbl[128];
 extern u_int *item_addr_tbl[48];
 
+#define ROOM_BLOCK_SIZE 0x2f0000
+
 u_int* RoomMdlLoadReq(u_int *addr, u_char blk_no, u_char msn_no, u_char room_no, u_char sereq_type);
 int RoomMdlLoadWait();
 void SetRenewDoorAddr(u_char blk_no);

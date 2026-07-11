@@ -1,11 +1,12 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "enums.h"
 #include "load3d.h"
 
 #include "main/glob.h"
 #include "ingame/ig_glob.h"
-#include "ingame/map/map_ctrl.h"
+// #include "ingame/map/map_ctrl.h"
 #include "ingame/map/door_ctl.h"
 #include "ingame/map/furn_ctl.h"
 #include "ingame/event/ev_main.h"
@@ -47,25 +48,25 @@ u_int* RoomMdlLoadReq(u_int *addr, u_char blk_no, u_char msn_no, u_char room_no,
     int i;
     int file_no;
     int tmp_load_id;
-    char room_from;
+    u_char room_from;
 
     rlb = &room_load_block[blk_no];
 
-    file_no = room_no * 2 + R000_GENKAN_PK2;
+    file_no = R000_GENKAN_PK2 + room_no * 2;
 
     SetRenewDoorAddr(blk_no);
 
     if (addr == NULL)
     {
-        addr = (u_int *)(blk_no * 0x2f0000 + 0x14b0000);
+        addr = (u_int *)(LOAD_ADDRESS_23 + blk_no * ROOM_BLOCK_SIZE);
     }
 
     next_addr = (u_int)addr;
 
     now_load_block = blk_no;
 
-    rlb->room_no = room_no;
     rlb->block_no = now_load_block;
+    rlb->room_no = room_no;
     rlb->chapter_no = msn_no;
 
     room_load_num = 0;
@@ -88,21 +89,22 @@ u_int* RoomMdlLoadReq(u_int *addr, u_char blk_no, u_char msn_no, u_char room_no,
 
     for (i = 0; i < rlb->furn_num; i++)
     {
-        // empty
+        // debug code?
     }
 
     for (i = 0; i < rlb->door_num; i++)
     {
-        // empty
+        // debug code?
     }
 
-    // could be a macro?
     next_addr = LoadReqGetAddr(file_no, next_addr, &room_load_id[room_load_num]);
+
     room_addr_tbl[room_no].pk2 = addr;
     addr = (u_int *)next_addr;
     room_load_num++;
 
     next_addr = LoadReqGetAddr(file_no + 1, next_addr, &room_load_id[room_load_num]);
+
     room_addr_tbl[room_no].lit_data = addr;
     addr = (u_int *)next_addr;
     room_load_num++;
@@ -112,6 +114,7 @@ u_int* RoomMdlLoadReq(u_int *addr, u_char blk_no, u_char msn_no, u_char room_no,
         if (LoadFDCheck(rlb->furn_id[i], 0) == 0)
         {
             next_addr = LoadReqGetAddr(F000_CLOCK_L_SGD + rlb->furn_id[i], next_addr, &room_load_id[room_load_num]);
+
             furn_addr_tbl[rlb->furn_id[i]] = addr;
             addr = (u_int *)next_addr;
             room_load_num++;
@@ -123,6 +126,7 @@ u_int* RoomMdlLoadReq(u_int *addr, u_char blk_no, u_char msn_no, u_char room_no,
         if (LoadFDCheck(rlb->door_id[i], 1) == 0)
         {
             next_addr = LoadReqGetAddr(D000_GEN1_SGD + rlb->door_id[i], next_addr, &room_load_id[room_load_num]);
+
             rlb->door_addr[i] = addr;
             addr = (u_int *)next_addr;
             room_load_num++;
@@ -132,6 +136,7 @@ u_int* RoomMdlLoadReq(u_int *addr, u_char blk_no, u_char msn_no, u_char room_no,
     if (mimchodo_tbl[rlb->room_no].dat != NULL)
     {
         next_addr = LoadReqGetAddr(R000_GENKAN_MIM + rlb->room_no, next_addr, &room_load_id[room_load_num]);
+
         mimchodo_tbl[rlb->room_no].addr = addr;
         addr = (u_int *)next_addr;
         room_load_num++;
@@ -147,6 +152,7 @@ u_int* RoomMdlLoadReq(u_int *addr, u_char blk_no, u_char msn_no, u_char room_no,
     switch (sereq_type)
     {
     case 0:
+        // do nothing ...
     break;
     case 1:
         tmp_load_id = SDoorLoadReqAndSetSub(tmp_load_id, 255, rlb->room_no);
@@ -166,8 +172,7 @@ u_int* RoomMdlLoadReq(u_int *addr, u_char blk_no, u_char msn_no, u_char room_no,
 
     if (tmp_load_id != -1)
     {
-        room_load_id[room_load_num] = tmp_load_id;
-        room_load_num++;
+        room_load_id[room_load_num++] = tmp_load_id;
     }
 
     return addr;
@@ -184,7 +189,7 @@ int RoomMdlLoadWait()
         return 1;
     }
 
-    if (!IsLoadEnd(room_load_id[room_load_num-1]))
+    if (IsLoadEnd(room_load_id[room_load_num-1]) == 0)
     {
         return 0;
     }
@@ -265,18 +270,20 @@ void SetRenewDoorAddr(u_char blk_no)
 
     for (i = 0; i < 2; i++)
     {
-        if (i != blk_no)
+        if (i == blk_no)
         {
-            seek_rlb = &room_load_block[i];
+            continue;
+        }
 
-            for (j = 0; j < rlb->door_num; j++)
+        seek_rlb = &room_load_block[i];
+
+        for (j = 0; j < rlb->door_num; j++)
+        {
+            for (k = 0; k < seek_rlb->door_num; k++)
             {
-                for (k = 0; k < seek_rlb->door_num; k++)
+                if (rlb->door_id[j] == seek_rlb->door_id[k])
                 {
-                    if (rlb->door_id[j] == seek_rlb->door_id[k])
-                    {
-                        door_addr_tbl[rlb->door_id[j]] = seek_rlb->door_addr[k];
-                    }
+                    door_addr_tbl[rlb->door_id[j]] = seek_rlb->door_addr[k];
                 }
             }
         }
@@ -515,7 +522,6 @@ int InitializeRoomUnder(RMDL_ADDR *room_tbl)
 
             init_st = 1;
         }
-
     break;
     case 1:
         SgMapUnit(room_tbl->far_sgd);
@@ -525,16 +531,16 @@ int InitializeRoomUnder(RMDL_ADDR *room_tbl)
     case 2:
         SgMapUnit(room_tbl->lit_data);
 
-        init_st = 3;
+        ((HeaderSection *)room_tbl->far_sgd)->coordp = ((HeaderSection *)room_tbl->near_sgd)->coordp;
 
-        room_tbl->far_sgd[2] = room_tbl->near_sgd[2];
+        init_st = 3;
     break;
     case 3:
         SetPreRender(room_tbl->near_sgd,room_tbl->lit_data);
 
         if (CheckMirrorModel(room_tbl->near_sgd) != 0)
         {
-            ((u_char*)room_tbl->near_sgd)[5] |= 0x2;
+            ((HeaderSection *)room_tbl->near_sgd)->kind |= 0x2;
         }
 
         init_st = 4;
@@ -631,8 +637,6 @@ int LoadInitDoorModel(ROOM_LOAD_BLOCK *rlb)
     int i;
     int ret;
     u_short door_id;
-
-    // the following var is not from the debugging symbols
     u_int addr;
 
     ret = 0;
@@ -680,7 +684,6 @@ int LoadInitDoorModel(ROOM_LOAD_BLOCK *rlb)
                 init_st = 2;
             }
         }
-
     break;
     case 2:
         fwp = furn_wrk;

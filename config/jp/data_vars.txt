@@ -239,3 +239,7 @@ enebox                         = 0x2f66d0; // type:sceVu0FVECTOR numel:8 nosize 
 
 // graphics/graph3d/leditor.c
 room_name                      = 0x2f8400; // type:c_str numel:42 nosize static
+
+// graphics/graph3d/load3d.c
+load_furn_num                  = 0x2f8630; // type:short numel:156 nosize static
+load_door_num                  = 0x2f8768; // type:short numel:81 nosize static

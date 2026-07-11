@@ -1,5 +1,6 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "enums.h"
 #include "map_area.h"
 
@@ -27,9 +28,6 @@ u_char area_dat[11][6] = {
 AREA_WRK area_wrk = {0};
 
 u_char one_room_load_ok = 0;
-
-#define ROOM_DATA_ADDRESS 0x14b0000
-#define ROOM_DATA_SIZE 0x2f0000
 
 void MapAreaInit()
 {
@@ -295,14 +293,14 @@ int GetEmptyRoomAddr()
 
     if (sys_wrk.game_mode != GAME_MODE_INGAME)
     {
-        return ROOM_DATA_ADDRESS;
+        return LOAD_ADDRESS_23;
     }
 
     for (i = 0; i < 2; i++)
     {
         if (plyr_wrk.pr_info.room_no != area_wrk.room[i])
         {
-            return i * ROOM_DATA_SIZE + ROOM_DATA_ADDRESS;
+            return LOAD_ADDRESS_23 + i * ROOM_BLOCK_SIZE;
         }
     }
 

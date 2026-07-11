@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 34.99594930451618,
+    "fuzzy_match_percent": 35.37081027640848,
     "total_code": "1165232",
-    "matched_code": "407784",
-    "matched_code_percent": 34.99594930451618,
+    "matched_code": "412152",
+    "matched_code_percent": 35.37081027640848,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 976,
-    "matched_functions_percent": 28.75662934590454,
+    "matched_functions": 989,
+    "matched_functions_percent": 29.13965822038892,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -8311,9 +8311,14 @@
     {
       "name": "graphics/graph3d/load3d",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "4368",
+        "matched_code": "4368",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 13,
+        "matched_functions": 13,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -8321,14 +8326,17 @@
         {
           "name": ".text",
           "size": "4400",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -8336,66 +8344,79 @@
         {
           "name": "RoomMdlLoadReq",
           "size": "1216",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetRenewDoorAddr",
           "size": "252",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DelSameMdlID",
           "size": "220",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "LoadFDCheck",
           "size": "92",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RoomMdlLoadWait",
           "size": "640",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetPreRenderR022",
           "size": "296",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetRenewDoorAddrForMovie",
           "size": "164",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "InitModelLoad",
           "size": "232",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "LoadItemModel",
           "size": "52",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ItemLoadAfterInit",
           "size": "28",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "InitializeRoomUnder",
           "size": "428",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "LoadInitFurnModel",
           "size": "284",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "LoadInitDoorModel",
           "size": "464",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -23381,14 +23402,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 34.99594930451618,
+        "fuzzy_match_percent": 35.37081027640848,
         "total_code": "1165232",
-        "matched_code": "407784",
-        "matched_code_percent": 34.99594930451618,
+        "matched_code": "412152",
+        "matched_code_percent": 35.37081027640848,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 976,
-        "matched_functions_percent": 28.75662934590454,
+        "matched_functions": 989,
+        "matched_functions_percent": 29.13965822038892,
         "complete_data_percent": 100.0,
         "total_units": 154
       }
