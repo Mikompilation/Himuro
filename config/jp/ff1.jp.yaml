@@ -113,7 +113,7 @@ segments:
           - [0x65118,  c,   graphics/graph3d/load3d]
           - [0x66248,  c,   graphics/motion/mdldat]
           - [0x66248,  c,   graphics/motion/mdlwork]
-          - [0x67940,  asm, graphics/motion/mdlact]
+          - [0x67940,  c,   graphics/motion/mdlact]
           - [0x68890,  asm, graphics/motion/mime]
           - [0x6a398,  asm, graphics/motion/accessory]
           - [0x6e218,  asm, graphics/motion/motion]
@@ -252,7 +252,7 @@ segments:
           - { start: 0x1f94c8, type: .data,   vram: 0x2f84c8, name: graphics/graph3d/load3d       }
           - { start: 0x1fa9a0, type: .data,   vram: 0x2f99a0, name: graphics/motion/mdldat        }
           - { start: 0x1fcd68, type: .data,   vram: 0x2fbd68, name: graphics/motion/mdlwork       }
-          - { start: 0x1fcda8, type:  data,   vram: 0x2fbda8, name: graphics/motion/mdlact        }
+          - { start: 0x1fcda8, type: .data,   vram: 0x2fbda8, name: graphics/motion/mdlact        }
           - { start: 0x1fcf40, type:  data,   vram: 0x2fbf40, name: graphics/motion/accessory     }
           - { start: 0x2008b0, type:  data,   vram: 0x2ff8b0, name: graphics/motion/motion        }
           - { start: 0x202980, type:  data,   vram: 0x301980, name: graphics/motion/mim_dat       }
@@ -462,7 +462,7 @@ segments:
           - { start: 0x255958, type: .lit4,   vram: 0x354958, name: graphics/graph2d/rare_ene     }
           - { start: 0x255968, type: .lit4,   vram: 0x354968, name: graphics/graph3d/gra3d        }
           - { start: 0x2559d8, type: .lit4,   vram: 0x3549d8, name: graphics/graph3d/leditor      }
-          - { start: 0x255a00, type:  lit4,   vram: 0x354a00, name: graphics/motion/mdlact        }
+          - { start: 0x255a00, type: .lit4,   vram: 0x354a00, name: graphics/motion/mdlact        }
           - { start: 0x255a4c, type:  lit4,   vram: 0x354a4c, name: graphics/motion/mime          }
           - { start: 0x255a54, type:  lit4,   vram: 0x354a54, name: graphics/motion/accessory     }
           - { start: 0x255ab8, type:  lit4,   vram: 0x354ab8, name: graphics/motion/motion        }
@@ -540,7 +540,7 @@ segments:
           - { start: 0x256b28, type: .sdata,  vram: 0x355b28, name: graphics/graph3d/leditor      }
           - { start: 0x256b68, type: .sdata,  vram: 0x355b68, name: graphics/graph3d/load3d       }
           - { start: 0x256b80, type: .sdata,  vram: 0x355b80, name: graphics/motion/mdlwork       }
-          - { start: 0x256b90, type:  sdata,  vram: 0x355b90, name: graphics/motion/mdlact        }
+          - { start: 0x256b90, type: .sdata,  vram: 0x355b90, name: graphics/motion/mdlact        }
           - { start: 0x256b9c, type:  sdata,  vram: 0x355b9c, name: graphics/motion/mime          }
           - { start: 0x256ba0, type:  sdata,  vram: 0x355ba0, name: graphics/motion/accessory     }
           - { start: 0x256bc0, type:  sdata,  vram: 0x355bc0, name: graphics/motion/motion        }
@@ -630,7 +630,7 @@ segments:
           - { start: 0x257800, type: .sbss,   vram: 0x356918, name: graphics/graph3d/leditor      }
           - { start: 0x257800, type: .sbss,   vram: 0x356928, name: graphics/graph3d/load3d       }
           - { start: 0x257800, type: .sbss,   vram: 0x35693c, name: graphics/motion/mdlwork       }
-          - { start: 0x257800, type:  sbss,   vram: 0x356940, name: graphics/motion/mdlact        }
+          - { start: 0x257800, type: .sbss,   vram: 0x356940, name: graphics/motion/mdlact        }
           - { start: 0x257800, type:  sbss,   vram: 0x356944, name: graphics/motion/accessory     }
           - { start: 0x257800, type:  sbss,   vram: 0x356948, name: graphics/graph3d/sgsgd        }
           - { start: 0x257800, type:  sbss,   vram: 0x356950, name: graphics/graph3d/sgsu         }

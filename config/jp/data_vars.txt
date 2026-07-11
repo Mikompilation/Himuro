@@ -708,6 +708,12 @@ manmdl_dat                     = 0x2fb6f0; // type:MANMDL_DAT numel:67 nosize
 // graphics/motion/mdlwork.c
 plyr_file_id                   = 0x2fbd68; // type:PLYR_FILE_ID numel:5 nosize static
 
+// graphics/motion/mdlact.c
+plyr_act_furi0                 = 0x2fbdc8; // type:PLYR_FURI_DAT numel:9 nosize
+plyr_act_furi1                 = 0x2fbe58; // type:PLYR_FURI_DAT numel:4 nosize
+plyr_act_furi2                 = 0x2fbe98; // type:PLYR_FURI_DAT numel:4 nosize
+plyr_act_furi3                 = 0x2fbed8; // type:PLYR_FURI_DAT numel:6 nosize
+
 // graphics/motion/acs_dat.c
 0x301bd0                       = m000_wmim_tbl;
 0x301c50                       = m021_wmim_tbl;

@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 35.86753539209359,
+    "fuzzy_match_percent": 36.201889409147704,
     "total_code": "1165232",
-    "matched_code": "417940",
-    "matched_code_percent": 35.86753539209359,
+    "matched_code": "421836",
+    "matched_code_percent": 36.201889409147704,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 1030,
-    "matched_functions_percent": 30.347672362993517,
+    "matched_functions": 1046,
+    "matched_functions_percent": 30.819092516205068,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -8715,9 +8715,14 @@
     {
       "name": "graphics/motion/mdlact",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "3896",
+        "matched_code": "3896",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 16,
+        "matched_functions": 16,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -8725,14 +8730,17 @@
         {
           "name": ".text",
           "size": "3920",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -8740,81 +8748,97 @@
         {
           "name": "motPlayerActCtrl",
           "size": "840",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motGetPlyrNeckRot",
           "size": "548",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motPlyrActExec",
           "size": "68",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motPlyrActStop",
           "size": "28",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motInitPlyrAct",
           "size": "56",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motPlyrActReq",
           "size": "56",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motPlyrActLookAt",
           "size": "212",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motPlyrActSurprise",
           "size": "312",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motPlyrActSowasowa",
           "size": "240",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motGetRandom",
           "size": "80",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motPlyrActKyoro",
           "size": "316",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "InitQuake",
           "size": "32",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "StopQuake",
           "size": "24",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ReqQuake",
           "size": "144",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "QuakeCamera",
           "size": "652",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motLinearSupValue",
           "size": "288",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -23451,14 +23475,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 35.86753539209359,
+        "fuzzy_match_percent": 36.201889409147704,
         "total_code": "1165232",
-        "matched_code": "417940",
-        "matched_code_percent": 35.86753539209359,
+        "matched_code": "421836",
+        "matched_code_percent": 36.201889409147704,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 1030,
-        "matched_functions_percent": 30.347672362993517,
+        "matched_functions": 1046,
+        "matched_functions_percent": 30.819092516205068,
         "complete_data_percent": 100.0,
         "total_units": 154
       }

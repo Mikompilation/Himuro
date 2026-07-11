@@ -1,6 +1,16 @@
 #include "common.h"
 #include "typedefs.h"
+#include "enums.h"
 #include "mdlact.h"
+
+// gcc/src/newlib/libm/math/sf_sin.c
+float sinf(float x);
+
+//gcc/src/newlib/libm/math/wf_acos.c
+float acosf(float x);
+
+// gcc/src/newlib/libm/math/wf_sqrt.c
+float sqrtf(float x);
 
 #include "sce/libvu0.h"
 
@@ -31,14 +41,12 @@ plyr_act_func_t plyr_act_func[] = {
 #define RAND_MAX 2147483647
 
 #define PI 3.1415927f
-#define PI2 6.2831855f
-#define PI_HALF 1.5707964f
 
 char motPlayerActCtrl(SgCOORDUNIT *cp)
 {
     sceVu0FVECTOR p;
     sceVu0FVECTOR trot = { 0.0f, 0.0f, 0.0f, 0.0f };
-    static float rot[2] = {0.0f, 0.0f};
+    static float rot[2] = { 0.0f, 0.0f };
     float spd;
     char type;
     sceVu0FVECTOR target;
@@ -76,7 +84,7 @@ char motPlayerActCtrl(SgCOORDUNIT *cp)
 
         type = plyr_act_wrk.move_type;
     }
-    else if (ingame_wrk.mode == 7 || plyr_wrk.mode == 4)
+    else if (ingame_wrk.mode == INGAME_MODE_EVENT || plyr_wrk.mode == PMODE_MSG_DISP)
     {
         trot[0] = trot[1] = 0.0f;
     }
@@ -90,7 +98,7 @@ char motPlayerActCtrl(SgCOORDUNIT *cp)
         motGetPlyrNeckRot(cp, trot, p);
     }
 
-    if (!(ingame_wrk.stts & 0x80) && !(ingame_wrk.stts & 0x10))
+    if ((ingame_wrk.stts & 0x80) == 0 && (ingame_wrk.stts & 0x10) == 0)
     {
         if (type != 0)
         {
@@ -119,7 +127,7 @@ char motPlayerActCtrl(SgCOORDUNIT *cp)
         LocalRotMatrixX(cp[13].matrix, cp[13].matrix, rot[0]);
         LocalRotMatrixZ(cp[13].matrix, cp[13].matrix, rot[1]);
 
-        if (plyr_wrk.mode != 1)
+        if (plyr_wrk.mode != PMODE_FINDER)
         {
             motInversKinematics(cp, target, ani_mdl[0].mot.dat, 5);
 
@@ -177,20 +185,18 @@ void motPlyrActStop()
 char motPlyrActLookAt(SgCOORDUNIT *cp)
 {
     sceVu0FVECTOR sub;
-    float len;
+    float dist;
 
-    plyr_act_wrk.timer++;
-
-    if (plyr_act_wrk.timer > 300)
+    if (++plyr_act_wrk.timer > 300)
     {
         return 1;
     }
 
     sceVu0SubVector(sub, cp->lwmtx[3], plyr_act_wrk.pos);
 
-    len = sceVu0InnerProduct(sub, sub);
+    dist = VER_SQRTF(sceVu0InnerProduct(sub, sub));
 
-    if (SgSqrtf(len) > 1500.0f)
+    if (dist > 1500.0f)
     {
         return 0;
     }
@@ -220,12 +226,12 @@ char motPlyrActSurprise(SgCOORDUNIT *cp)
 
     motGetPlyrNeckRot(cp, plyr_act_wrk.trot, plyr_act_wrk.pos);
 
-    if (((plyr_act_wrk.timer == 0) && (plyr_wrk.mode != 0x1)) && (ReqPlyrSpeAnime(68, 0) != 0))
+    if (plyr_act_wrk.timer == 0 && plyr_wrk.mode != PMODE_FINDER && ReqPlyrSpeAnime(68, 0) != 0)
     {
-        plyr_wrk.mode = 0xA;
+        plyr_wrk.mode = PMODE_ANIME;
     }
 
-    if ((plyr_wrk.mode == 0xA) && (plyr_act_wrk.timer < 20))
+    if (plyr_wrk.mode == PMODE_ANIME && plyr_act_wrk.timer < 20)
     {
         VibrateRequest2(0, 200);
     }
@@ -247,25 +253,26 @@ char motPlyrActSurprise(SgCOORDUNIT *cp)
 
 char motPlyrActSowasowa(SgCOORDUNIT *cp)
 {
-    static char ofs = '\0';
+    static char ofs = 0;
 
     plyr_act_wrk.spd = 1.6f;
     plyr_act_wrk.move_type = 1;
 
     if (plyr_act_wrk.timer == ofs + 70)
     {
-        plyr_act_wrk.trot[0] = motGetRandom(PI2 / 10.0f, PI / 10.0f);
+        plyr_act_wrk.trot[0] = motGetRandom((PI * 2) / 10.0f, PI / 10.0f);
 
         if (motGetRandom(1.0f, -1.0f) > 0)
         {
             plyr_act_wrk.trot[0] = -plyr_act_wrk.trot[0];
         }
 
-        plyr_act_wrk.trot[1] = motGetRandom(PI2 / 50.0f, -PI2 / 50.0f);
+        plyr_act_wrk.trot[1] = motGetRandom((PI * 2) / 50.0f, -(PI * 2) / 50.0f);
     }
     else if (plyr_act_wrk.timer >= ofs + 70)
     {
         ofs = motGetRandom(30.0f, 0.0f);
+
         plyr_act_wrk.timer = 0;
     }
 
@@ -291,10 +298,11 @@ char motPlyrActKyoro(SgCOORDUNIT *cp)
             dat = plyr_act_furi2;
         break;
         case 6:
-            if (plyr_act_wrk.timer == 0 && plyr_wrk.mode != 1 && ReqPlyrSpeAnime(68, 0) != 0)
+            if (plyr_act_wrk.timer == 0 && plyr_wrk.mode != PMODE_FINDER && ReqPlyrSpeAnime(68, 0) != 0)
             {
-                plyr_wrk.mode = 10;
+                plyr_wrk.mode = PMODE_ANIME;
             }
+
             dat = plyr_act_furi3;
         break;
     }
@@ -344,8 +352,6 @@ void motGetPlyrNeckRot(SgCOORDUNIT *cp, float *trot, float *tpos)
     sceVu0CopyVector(p, tpos);
     p[3] = 1.0f;
 
-    // d1 = plyr_wrk.move_box.pos;
-
     sceVu0SubVector(d0, p, plyr_wrk.move_box.pos);
 
     sceVu0CopyVector(d1, cp[13].lwmtx[1]);
@@ -361,14 +367,13 @@ void motGetPlyrNeckRot(SgCOORDUNIT *cp, float *trot, float *tpos)
     sceVu0Normalize(v0, v0);
 
     sceVu0ScaleVector(v1, v1, -1.0f);
-
     sceVu0Normalize(v1, v1);
 
     inner = sceVu0InnerProduct(v0, v1);
 
     if (inner > 0)
     {
-        trot[0] = SgACosf(inner);
+        trot[0] = VER_ACOSF(inner);
 
         sceVu0OuterProduct(n, v0, v1);
 
@@ -399,7 +404,7 @@ void motGetPlyrNeckRot(SgCOORDUNIT *cp, float *trot, float *tpos)
 
         inner = sceVu0InnerProduct(v0, v1);
 
-        trot[1] = SgACosf(inner);
+        trot[1] = VER_ACOSF(inner);
 
         if (cp[13].lwmtx[3][1] < p[1])
         {
@@ -479,11 +484,13 @@ char QuakeCamera()
     {
         return 0;
     }
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 
     if (ingame_wrk.stts & 0x20)
     {
         return 0;
     }
+#endif
 
     if (qk_p->cnt >= qk_p->all_cnt)
     {
@@ -499,13 +506,17 @@ char QuakeCamera()
         if (qk_p->loop == 0)
         {
             qk_p->req = 0;
+
             StopQuake();
+
             return 0;
         }
         else
         {
             qk_p->cnt = motGetRandom(600.0f, 1200.0f);
+
             qk_p->loop--;
+
             return 0;
         }
     }
@@ -573,10 +584,10 @@ float motLinearSupValue(float moto, float saki, u_char mode, u_int cnt, u_int al
         val = moto + dv * cnt_rate;
     break;
     case 1:
-        val = moto + dv * (SgSinf(cnt_rate * PI_HALF + -PI_HALF) + 1);
+        val = moto + dv * (VER_SINF(cnt_rate * (PI / 2) + -(PI / 2)) + 1);
     break;
     case 2:
-        val = moto + dv * SgSinf(cnt_rate * PI_HALF);
+        val = moto + dv * VER_SINF(cnt_rate * (PI / 2));
     break;
     }
 
