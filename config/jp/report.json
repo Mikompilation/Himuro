@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 36.201889409147704,
+    "fuzzy_match_percent": 36.78992681285787,
     "total_code": "1165232",
-    "matched_code": "421836",
-    "matched_code_percent": 36.201889409147704,
+    "matched_code": "428688",
+    "matched_code_percent": 36.78992681285787,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 1046,
-    "matched_functions_percent": 30.819092516205068,
+    "matched_functions": 1086,
+    "matched_functions_percent": 31.99764289923394,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -8851,9 +8851,14 @@
     {
       "name": "graphics/motion/mime",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "6852",
+        "matched_code": "6852",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 40,
+        "matched_functions": 40,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -8861,14 +8866,17 @@
         {
           "name": ".text",
           "size": "6920",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -8876,201 +8884,241 @@
         {
           "name": "mimInitMimeCtrl",
           "size": "448",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "mimGetPartsNo",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "mimSetMimeDat",
           "size": "48",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "mimSetMimeCtrl",
           "size": "112",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "mimAddressMapping",
           "size": "112",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "mimSetOriVertex",
           "size": "64",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "mimInitAcsCtrl",
           "size": "568",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "mimGetWeightName",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "mimRequest",
           "size": "88",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "mimInitLoop",
           "size": "84",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "mimGetFrameNum",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "mimRequestLastFrame",
           "size": "88",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "mimMepatiReq",
           "size": "108",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "mimLNigiriReq",
           "size": "108",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "mimRNigiriReq",
           "size": "108",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "mimStop",
           "size": "20",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "mimSetReso",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "mimClearVertex",
           "size": "64",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "mimCalcVertex",
           "size": "620",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "mimGetKeymdlNum",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "mimGetWavdata",
           "size": "44",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "mimGetKeymdlTop",
           "size": "32",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "mimGetFlg",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "mimSetVertex",
           "size": "468",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "mimWeightCtrl",
           "size": "612",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "mimAddFrame",
           "size": "256",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "mimClearToScene",
           "size": "108",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "mimClearAllVertex",
           "size": "108",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SceneMimSetVertex",
           "size": "356",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "mimChodoInitWork",
           "size": "80",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "mimChodoSetWork",
           "size": "240",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "mimChodoReleaseWork",
           "size": "156",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "mimInitChodo",
           "size": "536",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "mimDispChodo",
           "size": "288",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "mimChodoStop",
           "size": "84",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "mimChodoChkExec",
           "size": "84",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "mimChodoRequest",
           "size": "444",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "mimChodoSetReso",
           "size": "136",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "mimPlyrMepatiCtrl",
           "size": "56",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "mimInitWeight",
           "size": "76",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -23475,14 +23523,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 36.201889409147704,
+        "fuzzy_match_percent": 36.78992681285787,
         "total_code": "1165232",
-        "matched_code": "421836",
-        "matched_code_percent": 36.201889409147704,
+        "matched_code": "428688",
+        "matched_code_percent": 36.78992681285787,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 1046,
-        "matched_functions_percent": 30.819092516205068,
+        "matched_functions": 1086,
+        "matched_functions_percent": 31.99764289923394,
         "complete_data_percent": 100.0,
         "total_units": 154
       }

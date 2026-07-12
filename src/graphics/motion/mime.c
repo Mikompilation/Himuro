@@ -372,13 +372,15 @@ void mimCalcVertex(MIME_CTRL *m_ctrl, WMIM_CTRL *wmim, u_char clear_vtx_flg)
     if (m_ctrl->flg & 1)
     {
         j = 0;
+
         for (i = 0; i < 6; i++)
         {
             acs_flg[j] = 0;
 
-            if ((m_ctrl->flg >> (i+1)) & 1)
+            if ((m_ctrl->flg >> (i + 1)) & 0x1)
             {
                 acs_flg[j] = i;
+
                 j++;
             }
         }
@@ -400,13 +402,13 @@ void mimCalcVertex(MIME_CTRL *m_ctrl, WMIM_CTRL *wmim, u_char clear_vtx_flg)
 
             vtx_ofs = acs_flg[i];
 
-            if (vtx_ofs & 1)
+            if (vtx_ofs & 0x1)
             {
-                weight = wmim->w[vtx_ofs / 2];
+                weight = wmim->w[vtx_ofs/2];
             }
             else
             {
-                weight = -wmim->w[vtx_ofs / 2];
+                weight = -wmim->w[vtx_ofs/2];
             }
 
             if (weight < 0.0f)
@@ -471,7 +473,7 @@ void mimSetMimeCtrl(MIME_CTRL *m_ctrl, MIME_DAT *mdat, u_int furn_id, u_int part
     }
     else
     {
-        m_ctrl->stat = 1;
+        m_ctrl->stat = 0x1;
     }
 
     m_ctrl->loop = 0;
@@ -721,7 +723,7 @@ void SceneMimSetVertex(ANI_CTRL *ani_ctrl, u_int frame)
 
         mdat = m_ctrl->mdat;
 
-        if (!(m_ctrl->flg & 0x1))
+        if ((m_ctrl->flg & 0x1) == 0)
         {
             if (frame < mimGetFrameNum(mdat->dat))
             {
@@ -772,7 +774,7 @@ void mimChodoSetWork(u_int furn_id, u_char room_no)
 
     mim_no = furn_dat[furn_id].acs_flg;
 
-    if (!(mim_no & 0x80)) // sign bit is used as flag?
+    if ((mim_no & 0x80) == 0) // sign bit is used as flag
     {
         return;
     }
@@ -807,17 +809,19 @@ void mimChodoReleaseWork(u_int furn_id, u_char room_no)
 {
     u_int i;
 
-    if ((furn_dat[furn_id].acs_flg & 0x80))
+    if ((furn_dat[furn_id].acs_flg & 0x80) == 0)
     {
-        for (i = 0; i < 20; i++)
-        {
-            if (mim_chodo[i].furn_id == furn_id)
-            {
-                mim_chodo[i].furn_id = -1;
+        return;
+    }
 
-                mim_chodo_se[i] = 0xFF;
-                break;
-            }
+    for (i = 0; i < 20; i++)
+    {
+        if (mim_chodo[i].furn_id == furn_id)
+        {
+            mim_chodo[i].furn_id = -1;
+            mim_chodo_se[i] = 0xff;
+
+            break;
         }
     }
 }
@@ -844,6 +848,7 @@ void mimInitChodo(u_int *mim_p, u_short *furn_id, u_char room_id, u_short room_n
     mim_p = &mim_p[4];
 
     i = 0;
+
     while (chodo_num[i] != 0xff)
     {
         asm volatile ("nop");
@@ -889,19 +894,20 @@ void mimInitChodo(u_int *mim_p, u_short *furn_id, u_char room_id, u_short room_n
                 }
 
                 pkt_p = mimSetMimeDat(&mim_cdat[room_id][i], mim_p, pkt_p, furn_addr_tbl[chodo_num[i]]);
+
                 mimAddressMapping(mim_cdat[room_id][i].dat);
                 mimSetOriVertex(&mim_cdat[room_id][i]);
 
-                mim_p += (fsize / 4);
+                mim_p += fsize / 4;
             }
             else
             {
-                mim_p += (fsize / 4);
+                mim_p += fsize / 4;
             }
         }
         else
         {
-            mim_p += (fsize / 4);
+            mim_p += fsize / 4;
         }
     }
 }
@@ -912,7 +918,7 @@ void mimDispChodo(MIME_CTRL *m_ctrl, u_int *mdl_p)
 
     mdat = m_ctrl->mdat;
 
-    if (m_ctrl->stat == 2)
+    if (m_ctrl->stat == 0x2)
     {
         mimCalcVertex(m_ctrl, NULL, 0x1);
 
@@ -925,16 +931,15 @@ void mimDispChodo(MIME_CTRL *m_ctrl, u_int *mdl_p)
                 {
                     VibrateRequest1(0, 1);
                 }
-
-                break;
+            break;
             case 100:
             case 269:
             case 271:
                 VibrateRequest1(0, 1);
-                break;
+            break;
             case 316:
                 VibrateRequest1(0, 1);
-                break;
+            break;
             }
         }
 
@@ -960,7 +965,7 @@ u_char mimChodoChkExec(u_int furn_id)
 
     for (i = 0; i < 20; i++)
     {
-        if (furn_id == mim_chodo[i].furn_id && mim_chodo[i].stat == 2)
+        if (furn_id == mim_chodo[i].furn_id && mim_chodo[i].stat == 0x2)
         {
             return 1;
         }
@@ -975,7 +980,7 @@ void mimChodoRequest(FURN_ACT_WRK *fawp, u_char mode, u_char rev)
 
     for (i = 0; i < 20; i++)
     {
-        if (fawp->furn_id == mim_chodo[i].furn_id && !(fawp->furn_id == 270 && ingame_wrk.clear_count == 0))
+        if (fawp->furn_id == mim_chodo[i].furn_id && (fawp->furn_id != 270 || ingame_wrk.clear_count != 0))
         {
             switch (fawp->furn_id)
             {
@@ -1121,7 +1126,7 @@ void mimAddressMapping(u_int *top_addr)
 
     tbl_p = (MIM_ADDR_TABLE *)(head_p + 1);
 
-    if (*top_addr == 0x454D494D && head_p->map_flg != 1) // 0x454d494d is "EMIM" if interpreted as chars
+    if (*top_addr == 0x454d494d && head_p->map_flg != 1) // 0x454d494d is "EMIM" if interpreted as chars
     {
         for (i = 0; i < head_p->key_num; i++)
         {
@@ -1140,6 +1145,7 @@ void mimPlyrMepatiCtrl()
     if (++plyr_mepati_cnt >= 300)
     {
         mimMepatiReq(0, 0);
+
         plyr_mepati_cnt = 0;
     }
 }

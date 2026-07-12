@@ -114,7 +114,7 @@ segments:
           - [0x66248,  c,   graphics/motion/mdldat]
           - [0x66248,  c,   graphics/motion/mdlwork]
           - [0x67940,  c,   graphics/motion/mdlact]
-          - [0x68890,  asm, graphics/motion/mime]
+          - [0x68890,  c,   graphics/motion/mime]
           - [0x6a398,  asm, graphics/motion/accessory]
           - [0x6e218,  asm, graphics/motion/motion]
           - [0x71338,  asm, graphics/motion/anicode]
@@ -463,7 +463,7 @@ segments:
           - { start: 0x255968, type: .lit4,   vram: 0x354968, name: graphics/graph3d/gra3d        }
           - { start: 0x2559d8, type: .lit4,   vram: 0x3549d8, name: graphics/graph3d/leditor      }
           - { start: 0x255a00, type: .lit4,   vram: 0x354a00, name: graphics/motion/mdlact        }
-          - { start: 0x255a4c, type:  lit4,   vram: 0x354a4c, name: graphics/motion/mime          }
+          - { start: 0x255a4c, type: .lit4,   vram: 0x354a4c, name: graphics/motion/mime          }
           - { start: 0x255a54, type:  lit4,   vram: 0x354a54, name: graphics/motion/accessory     }
           - { start: 0x255ab8, type:  lit4,   vram: 0x354ab8, name: graphics/motion/motion        }
           - { start: 0x255acc, type:  lit4,   vram: 0x354acc, name: graphics/motion/anicode       }
@@ -541,7 +541,7 @@ segments:
           - { start: 0x256b68, type: .sdata,  vram: 0x355b68, name: graphics/graph3d/load3d       }
           - { start: 0x256b80, type: .sdata,  vram: 0x355b80, name: graphics/motion/mdlwork       }
           - { start: 0x256b90, type: .sdata,  vram: 0x355b90, name: graphics/motion/mdlact        }
-          - { start: 0x256b9c, type:  sdata,  vram: 0x355b9c, name: graphics/motion/mime          }
+          - { start: 0x256b9c, type: .sdata,  vram: 0x355b9c, name: graphics/motion/mime          }
           - { start: 0x256ba0, type:  sdata,  vram: 0x355ba0, name: graphics/motion/accessory     }
           - { start: 0x256bc0, type:  sdata,  vram: 0x355bc0, name: graphics/motion/motion        }
           - { start: 0x256be0, type:  sdata,  vram: 0x355be0, name: graphics/motion/acs_dat       }
