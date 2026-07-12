@@ -2,6 +2,12 @@
 #include "typedefs.h"
 #include "accessory.h"
 
+// gcc/src/newlib/libm/math/wf_acos.c
+float acosf(float x);
+
+// gcc/src/newlib/libm/math/wf_sqrt.c
+float sqrtf(float x);
+
 #include "sce/libvu0.h"
 
 #include "os/pad.h"
@@ -30,7 +36,6 @@
 #define RAND_MAX 2147483647
 
 #define PI 3.1415927f
-#define PI2 6.2831855f
 
 void InitPlyrAcsAlpha()
 {
@@ -77,8 +82,8 @@ void DispPlyrAcs(u_int *base_p, u_int *mdl_p, ACS_ALPHA *acs_ctrl, u_int bone_id
 void PlyrAcsAlphaCtrl()
 {
     u_int i;
-    u_char spd[2] = {3, 2};
-    u_char dspd[2] = {5, 2};
+    u_char spd[2] = { 3, 2 };
+    u_char dspd[2] = { 5, 2 };
     ACS_ALPHA *acs_ctrl;
 
     if (ingame_wrk.stts & 0x10 || ingame_wrk.stts & 0x80)
@@ -186,6 +191,7 @@ void acsInitRopeSub(u_int work_id, u_int furn_id, u_int type)
     u_int i;
     u_int j;
     ROPE_CTRL *rope;
+    float inner;
     sceVu0FVECTOR p1;
     sceVu0FVECTOR p2;
     sceVu0FVECTOR p3;
@@ -208,7 +214,10 @@ void acsInitRopeSub(u_int work_id, u_int furn_id, u_int type)
 
     acsSetMoveDir(rope->dir);
 
-    for (i = 0; !(rope->rdat->vtx[i] < 0.0f); i++) {
+    for (i = 0; ; i++)
+    {
+        if (rope->rdat->vtx[i] < 0.0f) break; // same line, no brackets!!
+
         rope->particle[i].p[0] = 0.0f;
         rope->particle[i].p[1] = rope->rdat->vtx[i];
         rope->particle[i].p[2] = 0.0f;
@@ -235,15 +244,18 @@ void acsInitRopeSub(u_int work_id, u_int furn_id, u_int type)
     {
         rope->spring[i].p1 = i;
         rope->spring[i].p2 = i + 1;
+
         sceVu0CopyVector(p1, rope->particle[rope->spring[i].p1].p);
         sceVu0CopyVector(p2, rope->particle[rope->spring[i].p2].p);
         sceVu0SubVector(p3, p1, p2);
-        rope->spring[i].ldef = SgSqrtf(sceVu0InnerProduct(p3, p3));
+
+        inner = sceVu0InnerProduct(p3, p3);
+        rope->spring[i].ldef = VER_SQRTF(inner);
     }
 
     for (j = 0; j < 60; j++)
     {
-        sceVu0FVECTOR d = {0.0f, 0.0f, 0.0f, 0.0f};
+        sceVu0FVECTOR d = { 0.0f, 0.0f, 0.0f, 0.0f };
         sceVu0FVECTOR force;
 
         d[1] = rope->rdat->gravity;
@@ -261,6 +273,7 @@ void acsInitRopeSub(u_int work_id, u_int furn_id, u_int type)
         {
             float r0;
             float dr;
+            float inner;
             u_int id0;
             u_int id1;
 
@@ -268,8 +281,11 @@ void acsInitRopeSub(u_int work_id, u_int furn_id, u_int type)
             id1 = rope->spring[i].p2;
 
             sceVu0SubVector(d, current[id0].p, current[id1].p);
-            r0 = SgSqrtf(sceVu0InnerProduct(d, d));
+
+            inner = sceVu0InnerProduct(d, d);
+            r0 = VER_SQRTF(inner);
             dr = rope->spring[i].ldef;
+
             sceVu0ScaleVector(force, d, ((dr - r0) * 0.5f) / r0);
             sceVu0AddVector(current[id0].p, current[id0].p, force);
             sceVu0SubVector(current[id1].p, current[id1].p, force);
@@ -306,6 +322,7 @@ void acsRopeMoveRequest(u_int furn_id, u_char move_mode, float pow)
         {
             rope_ctrl[i].move_mode = move_mode;
             rope_ctrl[i].pow = pow;
+
             return;
         }
     }
@@ -348,21 +365,24 @@ u_char acsCheckRopeMoveExec(u_int furn_id)
 void acsCalcCoordinate(SgCOORDUNIT* cp, u_int block_num, FURN_WRK* f_wrk, ROPE_CTRL* rope)
 {
     float grot;
+    float inner;
+    float theta;
     u_int i;
     sceVu0FVECTOR trans[10];
-    sceVu0FVECTOR x = {1.0f, 0.0f, 0.0f, 0.0f};
-    sceVu0FVECTOR y = {0.0f, 1.0f, 0.0f, 0.0f};
-    sceVu0FVECTOR z = {0.0f, 0.0f, 1.0f, 0.0f};
+    sceVu0FVECTOR x = { 1.0f, 0.0f, 0.0f, 0.0f };
+    sceVu0FVECTOR y = { 0.0f, 1.0f, 0.0f, 0.0f };
+    sceVu0FVECTOR z = { 0.0f, 0.0f, 1.0f, 0.0f };
     sceVu0FMATRIX base;
 
     sceVu0UnitMatrix(base);
 
     grot = f_wrk->rotate[1] + PI;
+
     base[0][0] = base[1][1] = base[2][2] = 25.0f;
 
     if (PI < grot)
     {
-        grot -= PI2;
+        grot -= PI * 2;
     }
 
     sceVu0RotMatrixX(base, base, PI);
@@ -370,6 +390,7 @@ void acsCalcCoordinate(SgCOORDUNIT* cp, u_int block_num, FURN_WRK* f_wrk, ROPE_C
     sceVu0RotMatrixX(base, base, f_wrk->rotate[0]);
     sceVu0RotMatrixZ(base, base, f_wrk->rotate[2]);
     sceVu0CopyMatrix(cp->matrix, base);
+
     Vu0CopyVector(cp->matrix[3], f_wrk->pos);
     cp->matrix[3][3] = 1.0f;
 
@@ -399,7 +420,11 @@ void acsCalcCoordinate(SgCOORDUNIT* cp, u_int block_num, FURN_WRK* f_wrk, ROPE_C
         sceVu0UnitMatrix(m);
         sceVu0OuterProduct(axis, x, cp[i+1].matrix[0]);
         sceVu0Normalize(axis, axis);
-        GetMatrixRotateAxis(m, axis, SgACosf(sceVu0InnerProduct(x, cp[i+1].matrix[0])));
+
+        inner = sceVu0InnerProduct(x, cp[i+1].matrix[0]);
+        theta = VER_ACOSF(inner);
+        GetMatrixRotateAxis(m, axis, theta);
+
         sceVu0ApplyMatrix(cp[i+1].matrix[1], m, y);
         sceVu0ApplyMatrix(cp[i+1].matrix[2], m, z);
         sceVu0MulMatrix(cp[i+1].matrix, cp[i+1].matrix, base);
@@ -413,7 +438,7 @@ void acsCalcCoordinate(SgCOORDUNIT* cp, u_int block_num, FURN_WRK* f_wrk, ROPE_C
     }
 }
 
-void acsSetMoveDir(float *dir)
+void acsSetMoveDir(sceVu0FVECTOR dir)
 {
     dir[0] = (float)(rand() - (int)(RAND_MAX / 2)) / (float)RAND_MAX;
     dir[1] = (float)(rand() - (int)(RAND_MAX / 2)) / (float)RAND_MAX;
@@ -451,7 +476,7 @@ void acsRopeMoveWind(ROPE_CTRL* rope, char dir_cng)
     C_PARTICLE* current;
     u_int i;
     char cnt;
-    char flg; // UNUSED!
+    char flg;
 
     cnt = 0;
     current = rope->particle;
@@ -495,6 +520,15 @@ void acsRopeMoveWind(ROPE_CTRL* rope, char dir_cng)
     sceVu0ScaleVector(wind, rope->dir, rope->pow);
 
     if (sys_wrk.count % 120 < cnt + 40)
+    {
+        flg = 1;
+    }
+    else
+    {
+        flg = 0;
+    }
+
+    if (flg != 0)
     {
         for (i = 0; i < rope->p_num; i++)
         {
@@ -553,6 +587,7 @@ void acsMoveRope(ROPE_CTRL *rope, SgCOORDUNIT *cp, COLLISION_DAT *collision, sce
     sceVu0FVECTOR force;
     float r0;
     float dr;
+    float inner;
     u_int id0;
     u_int id1;
     sceVu0FVECTOR p;
@@ -608,9 +643,13 @@ void acsMoveRope(ROPE_CTRL *rope, SgCOORDUNIT *cp, COLLISION_DAT *collision, sce
     {
         id0 = rope->spring[i].p1;
         id1 = rope->spring[i].p2;
+
         sceVu0SubVector(d, current[id0].p, current[id1].p);
-        r0 = SgSqrtf(sceVu0InnerProduct(d, d));
+
+        inner = sceVu0InnerProduct(d, d);
+        r0 = VER_SQRTF(inner);
         dr = rope->spring[i].ldef;
+
         sceVu0ScaleVector(force, d, ((dr - r0) * 0.5f) / r0);
         sceVu0AddVector(current[id0].p, current[id0].p, force);
         sceVu0SubVector(current[id1].p, current[id1].p, force);
@@ -641,7 +680,8 @@ void acsMoveRope(ROPE_CTRL *rope, SgCOORDUNIT *cp, COLLISION_DAT *collision, sce
             if (collision[j].type == 0)
             {
                 hit = acsCheckCollisionSphere((SPHERE*)collision[j].dat, p1, v1, rdat->Ke);
-            } else
+            }
+            else
             {
                 hit = acsCheckCollisionTube((TUBE*)collision[j].dat, p1, v1, rdat->Ke);
             }
@@ -719,6 +759,7 @@ u_int* acsInitCloth(CLOTH_CTRL *cloth_top, u_int *mpk_p, u_int *top_addr, u_int 
         }
 
         cloth_no++;
+
         cloth->w = cloth->cdat->dat->w;
         cloth->h = cloth->cdat->dat->h;
         cloth->reset_flg = 0x3;
@@ -730,15 +771,18 @@ u_int* acsInitCloth(CLOTH_CTRL *cloth_top, u_int *mpk_p, u_int *top_addr, u_int 
         {
             cloth->p_num = cloth->w * cloth->h;
             cloth->spring_num = cloth->w * (cloth->h - 1) + (cloth->w - 1) * cloth->h;
+
             div = cloth->w * (cloth->h - 1);
         }
         else if (dat->type == 1 || dat->type == 2)
         {
             cloth->p_num = cloth->w * cloth->h * 2;
             cloth->spring_num = cloth->w * (cloth->h - 1) + (cloth->w - 1) * cloth->h;
+
             div = cloth->w * (cloth->h - 1);
             div1 = cloth->spring_num;
             cloth->spring_num = div1 * 2;
+
             div2 = cloth->spring_num;
             cloth->spring_num += cloth->w * cloth->h;
 
@@ -747,6 +791,7 @@ u_int* acsInitCloth(CLOTH_CTRL *cloth_top, u_int *mpk_p, u_int *top_addr, u_int 
         {
             cloth->p_num = cloth->w * cloth->h;
             cloth->spring_num = (cloth->h - 1 + cloth->h) * cloth->w;
+
             div = cloth->w * (cloth->h - 1);
             div1 = div + (cloth->w - 1) * cloth->h;
         }
@@ -755,6 +800,7 @@ u_int* acsInitCloth(CLOTH_CTRL *cloth_top, u_int *mpk_p, u_int *top_addr, u_int 
             cloth->p_num = cloth->w * cloth->h;
             cloth->spring_num = ((cloth->h - 1) + cloth->h) * cloth->w;
             cloth->spring_num += (cloth->w * 2 * (cloth->h - 1));
+
             div = cloth->w * (cloth->h - 1);
             div1 = div + ((cloth->w - 1) * cloth->h);
             div2 = (cloth->h - 1 + cloth->h) * cloth->w;
@@ -762,6 +808,7 @@ u_int* acsInitCloth(CLOTH_CTRL *cloth_top, u_int *mpk_p, u_int *top_addr, u_int 
 
         cloth->particle = (C_PARTICLE *)motAlign128(addr);
         cloth->spring = (SPRING *)&cloth->particle[cloth->p_num];
+
         addr = (u_int *)&cloth->spring[cloth->spring_num];
         addr = motAlign128(addr);
 
@@ -769,6 +816,7 @@ u_int* acsInitCloth(CLOTH_CTRL *cloth_top, u_int *mpk_p, u_int *top_addr, u_int 
         {
             sceVu0CopyVector(cloth->particle[i].p, *vtx);
             cloth->particle[i].p[3] = 1.0f;
+
             vtx++;
 
             sceVu0CopyVector(cloth->particle[i].old, cloth->particle[i].p);
@@ -825,12 +873,14 @@ u_int* acsInitCloth(CLOTH_CTRL *cloth_top, u_int *mpk_p, u_int *top_addr, u_int 
                 else if (i < div1)
                 {
                     j = i - div;
+
                     id1 = (j % (cloth->w - 1)) * cloth->h + (j / (cloth->w - 1));
                     id2 = id1 + cloth->h;
                 }
                 else if (i < div1 + div)
                 {
                     j = ((i - div1) % (cloth->h - 1)) + ((i - div1) / (cloth->h - 1)) * cloth->h;
+
                     id1 = j + cloth->w * cloth->h;
                     id2 = id1 + 1;
                 }
@@ -897,6 +947,7 @@ u_int* acsInitCloth(CLOTH_CTRL *cloth_top, u_int *mpk_p, u_int *top_addr, u_int 
                 else if (i < div1)
                 {
                     j = i - div;
+
                     id1 = (j % (cloth->w - 1)) * cloth->h + j / (cloth->w - 1);
                     id2 = ((id1 + cloth->h) % cloth->p_num);
                 }
@@ -907,9 +958,10 @@ u_int* acsInitCloth(CLOTH_CTRL *cloth_top, u_int *mpk_p, u_int *top_addr, u_int 
                 }
                 else
                 {
-                    u_int ofs[2] = {cloth->h + 1, cloth->h - 1};
+                    u_int ofs[2] = { cloth->h + 1, cloth->h - 1 };
 
                     j = i - div2;
+
                     id1 = cloth->h * (j % (cloth->w * 2) / 2) + (j % 2) + j / (cloth->w * 2);
                     id2 = id1 + ofs[j % 2];
                     id2 = id2 % cloth->p_num;
@@ -932,13 +984,14 @@ void acsClothCtrl(ANI_CTRL* ani_ctrl, u_int* mpk_p, u_int mdl_no, u_char scene_f
     sceVu0FVECTOR* vtx;
     PHEAD* ph;
     u_int no;
-    static sceVu0FVECTOR pbak = {0.0f, 0.0f, 0.0f, 0.0f};
+    static sceVu0FVECTOR pbak = { 0.0f, 0.0f, 0.0f, 0.0f };
     sceVu0FVECTOR sub;
     sceVu0FVECTOR pos;
     float val;
     float* v1;
     CLOTH_DAT* cdat;
     COLLISION_DAT* collision;
+    float dist;
     float scale;
 
     cloth = ani_ctrl->cloth_ctrl;
@@ -950,14 +1003,17 @@ void acsClothCtrl(ANI_CTRL* ani_ctrl, u_int* mpk_p, u_int mdl_no, u_char scene_f
     }
 
     no = 0;
-    cp = (SgCOORDUNIT*)mpk_p[10];
+    cp = (SgCOORDUNIT *)mpk_p[10];
 
     Vu0CopyVector(pos, cp[manmdl_dat[mdl_no].waist_id].lwmtx[3]);
+
     sceVu0SubVector(sub, pos, ani_ctrl->pbak);
-    scale = SgSqrtf(sceVu0InnerProduct(sub, sub));
+
+    dist = VER_SQRTF(sceVu0InnerProduct(sub, sub));
+
     sceVu0CopyVector(ani_ctrl->pbak, pos);
 
-    if (100.0f < scale)
+    if (dist > 100.0f)
     {
         limit = 1;
     }
@@ -974,7 +1030,7 @@ void acsClothCtrl(ANI_CTRL* ani_ctrl, u_int* mpk_p, u_int mdl_no, u_char scene_f
         }
 
         ph = GetFileInPak(mpk_p, cdat->sgd_id);
-        vtx = (sceVu0FVECTOR*)ph->pUniqList[2];
+        vtx = (sceVu0FVECTOR *)ph->pUniqList[2];
 
         if (scene_flg != 0)
         {
@@ -1006,12 +1062,13 @@ void acsClothCtrl(ANI_CTRL* ani_ctrl, u_int* mpk_p, u_int mdl_no, u_char scene_f
 
 void acsMoveCloth(sceVu0FVECTOR *vtx, CLOTH_CTRL *cloth, SgCOORDUNIT *cp, COLLISION_DAT *collision, float scale, float collision_scale, u_int mdl_no)
 {
-#ifdef MATCHING_DECOMP
-// fixes syntax errors for new compilers/type checkers
-#define Restrict restrict
+#if !defined(RESTRICT_FIX)
+// define RESTRICT_FIX for modern compilers/modern IDEs (otherwise this produces syntax errors);
+// leave RESTRICT_FIX undefined for matching decompilation with original compiler
+#define _restrict restrict
 #endif
     u_int i;
-    u_int j;
+    u_int j = 0;
     u_int k;
     sceVu0FVECTOR gravity;
     C_PARTICLE *current = cloth->particle;
@@ -1020,12 +1077,13 @@ void acsMoveCloth(sceVu0FVECTOR *vtx, CLOTH_CTRL *cloth, SgCOORDUNIT *cp, COLLIS
     sceVu0FMATRIX l2w;
     sceVu0FMATRIX w2l;
     sceVu0FMATRIX l2w_rist;
-    char Restrict[121] = {0};
+    char _restrict[121] = {0};
     sceVu0FVECTOR ldef;
     sceVu0FVECTOR d;
     sceVu0FVECTOR force;
     float r0;
     float dr;
+    float inner;
     u_int id0;
     u_int id1;
     sceVu0FMATRIX w2c[5];
@@ -1034,6 +1092,7 @@ void acsMoveCloth(sceVu0FVECTOR *vtx, CLOTH_CTRL *cloth, SgCOORDUNIT *cp, COLLIS
     sceVu0FVECTOR v;
     sceVu0FVECTOR p1;
     sceVu0FVECTOR v1;
+    u_char hit;
 
     if (cloth->cdat == NULL)
     {
@@ -1067,16 +1126,18 @@ void acsMoveCloth(sceVu0FVECTOR *vtx, CLOTH_CTRL *cloth, SgCOORDUNIT *cp, COLLIS
             current[i].v[1] = 0.0f;
             current[i].v[2] = 0.0f;
             current[i].v[3] = 0.0f;
-
         }
 
-        if (cloth->reset_flg & 2)
+        if (cloth->reset_flg & 0x2)
         {
             for (i = 0; i < cloth->spring_num; i++)
             {
-                sceVu0SubVector(ldef, cloth->particle[cloth->spring[i].p1 & 0xff].p, cloth->particle[cloth->spring[i].p2 & 0xff].p);
-                r0 = SgSqrtf(sceVu0InnerProduct(ldef, ldef));
-                cloth->spring[i].ldef = r0;
+                u_char a = cloth->spring[i].p1;
+                u_char b = cloth->spring[i].p2;
+
+                sceVu0SubVector(ldef, cloth->particle[a].p, cloth->particle[b].p);
+
+                cloth->spring[i].ldef = VER_SQRTF(sceVu0InnerProduct(ldef, ldef));
             }
         }
 
@@ -1095,19 +1156,25 @@ void acsMoveCloth(sceVu0FVECTOR *vtx, CLOTH_CTRL *cloth, SgCOORDUNIT *cp, COLLIS
         {
             id0 = spring[i].p1;
             id1 = spring[i].p2;
+
             sceVu0SubVector(d, current[id0].p, current[id1].p);
-            r0 = SgSqrtf(sceVu0InnerProduct(d, d));
-            dr = spring[i].ldef;
-            sceVu0ScaleVector(force, d, ((dr - r0) * 0.5f) / r0);
+
+            inner = sceVu0InnerProduct(d, d);
+            r0 = VER_SQRTF(inner);
+            dr = spring[i].ldef - r0;
+
+            sceVu0ScaleVector(force, d, (dr * 0.5f) / r0);
             sceVu0AddVector(current[id0].p, current[id0].p, force);
             sceVu0SubVector(current[id1].p, current[id1].p, force);
-
         }
 
         if (k == 1 && cloth->cdat->flg != 0)
         {
-            for (i = 0; collision[i].dat != NULL && i < 5; i++)
+            for (i = 0; collision[i].dat != NULL; i++)
             {
+                if (i >= 5) break;
+                if (i >= 5) break; // line numbers say the check is done twice...
+
                 sceVu0CopyMatrix(c2w[i], cp[collision[i].bone_id].lwmtx);
                 sceVu0Normalize(c2w[i][0], c2w[i][0]);
                 sceVu0Normalize(c2w[i][1], c2w[i][1]);
@@ -1115,6 +1182,7 @@ void acsMoveCloth(sceVu0FVECTOR *vtx, CLOTH_CTRL *cloth, SgCOORDUNIT *cp, COLLIS
                 sceVu0ScaleVector(c2w[i][0], c2w[i][0], collision_scale);
                 sceVu0ScaleVector(c2w[i][1], c2w[i][1], collision_scale);
                 sceVu0ScaleVector(c2w[i][2], c2w[i][2], collision_scale);
+
                 motSetInvMatrix(w2c[i], c2w[i]);
             }
 
@@ -1123,13 +1191,13 @@ void acsMoveCloth(sceVu0FVECTOR *vtx, CLOTH_CTRL *cloth, SgCOORDUNIT *cp, COLLIS
                 sceVu0CopyVector(p, current[i].p);
                 sceVu0CopyVector(v, current[i].v);
 
-                for (j = 0; collision[j].dat != NULL && j < 5; j++)
+                for (j = 0; collision[j].dat != NULL; j++)
                 {
-                    u_char hit;
+                    if (j >= 5) break;
+                    if (j >= 5) break; // line numbers say the check is done twice...
 
                     sceVu0ApplyMatrix(p1, w2c[j], p);
                     sceVu0ApplyMatrix(v1, w2c[j], v);
-
 
                     if (collision[j].type == 0)
                     {
@@ -1157,21 +1225,25 @@ void acsMoveCloth(sceVu0FVECTOR *vtx, CLOTH_CTRL *cloth, SgCOORDUNIT *cp, COLLIS
             {
                 id0 = cloth->h - 1;
                 id1 = cloth->h - 2;
+
                 for (i = 0; i < cloth->w; i++)
                 {
                     sceVu0ApplyMatrix(current[(i * cloth->h) + id0].p, l2w, vtx[(i * cloth->h) + id0]);
                     sceVu0ApplyMatrix(current[(i * cloth->h) + id1].p, l2w, vtx[(i * cloth->h) + id1]);
-                    Restrict[(i * cloth->h) + id0] = 1;
-                    Restrict[(i * cloth->h) + id1] = 1;
+
+                    _restrict[(i * cloth->h) + id0] = 1;
+                    _restrict[(i * cloth->h) + id1] = 1;
                 }
             }
             else
             {
                 id0 =  cloth->h - 1;
+
                 for (i = 0; i < cloth->w; i++)
                 {
                     sceVu0ApplyMatrix(current[(i * cloth->h) + id0].p, l2w, vtx[(i * cloth->h) + id0]);
-                    Restrict[(i * cloth->h) + id0] = 1;
+
+                    _restrict[(i * cloth->h) + id0] = 1;
                 }
             }
         }
@@ -1184,20 +1256,22 @@ void acsMoveCloth(sceVu0FVECTOR *vtx, CLOTH_CTRL *cloth, SgCOORDUNIT *cp, COLLIS
 
             for (i = 0; i < cloth->w * 2; i++)
             {
-                id =  (i * cloth->h) + (cloth->h - 1);
+                id = i * cloth->h + (cloth->h - 1);
 
-                if ((cloth->w - 2) <= i && (cloth->w > i) || ((cloth->w * 2) - 2) <= i)
+                if (cloth->w - 2 <= i && cloth->w > i || cloth->w * 2 - 2 <= i)
                 {
                     if (cloth->cdat->rist_vtx != NULL)
                     {
                         sceVu0ApplyMatrix(current[id].p, l2w_rist, cloth->cdat->rist_vtx[cnt]);
+
                         cnt++;
                     }
                 }
                 else
                 {
                     sceVu0ApplyMatrix(current[id].p, l2w, vtx[id]);
-                    Restrict[id] = 1;
+
+                    _restrict[id] = 1;
                 }
             }
         }
@@ -1208,8 +1282,10 @@ void acsMoveCloth(sceVu0FVECTOR *vtx, CLOTH_CTRL *cloth, SgCOORDUNIT *cp, COLLIS
             for (i = 0; i < cloth->w * 2; i++)
             {
                 id = i * cloth->h + (cloth->h - 1);
+
                 sceVu0ApplyMatrix(current[id].p, l2w, vtx[id]);
-                Restrict[id] = 1;
+
+                _restrict[id] = 1;
             }
         }
         else
@@ -1217,10 +1293,12 @@ void acsMoveCloth(sceVu0FVECTOR *vtx, CLOTH_CTRL *cloth, SgCOORDUNIT *cp, COLLIS
             u_short id;
 
             id = cloth->h - 1;
+
             for (i = 0; i < cloth->w; i++)
             {
                 sceVu0ApplyMatrix(current[(i * cloth->h) + id].p, l2w, vtx[(i * cloth->h) + id]);
-                Restrict[(i * cloth->h) + id] = 1;
+
+                _restrict[(i * cloth->h) + id] = 1;
             }
         }
 
@@ -1238,18 +1316,19 @@ void acsMoveCloth(sceVu0FVECTOR *vtx, CLOTH_CTRL *cloth, SgCOORDUNIT *cp, COLLIS
 
     for (i = 0; i < cloth->p_num; i++)
     {
-        if (Restrict[i] == 0)
+        if (_restrict[i] == 0)
         {
             sceVu0ApplyMatrix(vtx[i], w2l, current[i].p);
         }
     }
 }
 
-u_char acsCheckCollisionSphere(SPHERE *sphere, float *current, float *relative_v, float Ke)
+u_char acsCheckCollisionSphere(SPHERE *sphere, sceVu0FVECTOR current, sceVu0FVECTOR relative_v, float Ke)
 {
     float r1;
     float r2;
     sceVu0FVECTOR tmp;
+    float inner;
     sceVu0FVECTOR v;
     sceVu0FVECTOR v1;
 
@@ -1259,7 +1338,8 @@ u_char acsCheckCollisionSphere(SPHERE *sphere, float *current, float *relative_v
     tmp[1] = current[1] - sphere->center[1];
     tmp[2] = current[2] - sphere->center[2];
 
-    r2 = SgSqrtf(sceVu0InnerProduct(tmp, tmp));
+    inner = sceVu0InnerProduct(tmp, tmp);
+    r2 = VER_SQRTF(inner);
 
     if (r2 < r1)
     {
@@ -1281,7 +1361,7 @@ u_char acsCheckCollisionSphere(SPHERE *sphere, float *current, float *relative_v
     return 0;
 }
 
-u_char acsCheckCollisionTube(TUBE *tube, float *current, float *relative_v, float Ke)
+u_char acsCheckCollisionTube(TUBE *tube, sceVu0FVECTOR current, sceVu0FVECTOR relative_v, float Ke)
 {
     sceVu0FVECTOR dir0;
     sceVu0FVECTOR dir1;
@@ -1328,13 +1408,16 @@ u_char acsCheckCollisionTube(TUBE *tube, float *current, float *relative_v, floa
     sceVu0SubVector(PA, current, p0);
     sceVu0SubVector(P1P0, p1, p0);
     sceVu0Normalize(n, P1P0);
+
     inner = sceVu0InnerProduct(P1P0, P1P0);
-    dist = sceVu0InnerProduct(n, PA) / SgSqrtf(inner);
+    dist = sceVu0InnerProduct(n, PA) / VER_SQRTF(inner);
+
     sceVu0ScaleVector(v2, P1P0, dist);
     sceVu0ScaleVector(AP, PA, -1.0f);
     sceVu0AddVector(normal, v2, AP);
+
     inner = sceVu0InnerProduct(normal, normal);
-    dist = SgSqrtf(inner);
+    dist = VER_SQRTF(inner);
 
     if (dist < tube->r)
     {
@@ -1417,7 +1500,7 @@ void acsChodoSetWork(u_int furn_id)
         return;
     }
 
-    acs_no &= 0xdf;
+    acs_no &= ~0x20;
 
     for (i = 0; i < 10; i++)
     {
@@ -1427,6 +1510,7 @@ void acsChodoSetWork(u_int furn_id)
             cmove_ctrl[i].type = acs_no;
             cmove_ctrl[i].timer = 0;
             cmove_ctrl[i].req =  0;
+
             return;
         }
     }
@@ -1447,6 +1531,7 @@ void acsChodoReleaseWork(u_int furn_id)
         {
             cmove_ctrl[i].furn_id = 0xffff;
             cmove_ctrl[i].req = 0;
+
             break;
         }
     }
@@ -1463,6 +1548,7 @@ void acsChodoMoveRequest(u_int furn_id)
             cmove_ctrl[i].req = 1;
             cmove_ctrl[i].timer = 0;
             cmove_ctrl[i].alpha = 0x7f;
+
             break;
         }
     }
@@ -1521,18 +1607,19 @@ void acsChodoMove(CMOVE_CTRL *mv, u_int *sgd_top)
     ManmdlSetAlpha(sgd_top, mv->alpha);
 }
 
-void acsChodoMoveKage(SgCOORDUNIT *cp, float *p, CMOVE_CTRL *mv)
+void acsChodoMoveKage(SgCOORDUNIT *cp, sceVu0FVECTOR p, CMOVE_CTRL *mv)
 {
     return;
 }
 
-char acsChodoMoveBird(SgCOORDUNIT *cp, float *p, CMOVE_CTRL *mv)
+char acsChodoMoveBird(SgCOORDUNIT *cp, sceVu0FVECTOR p, CMOVE_CTRL *mv)
 {
     sceVu0FVECTOR pos;
     u_int i;
     u_int all_cnt;
     u_int reaction_cnt;
     char mode;
+    float ry;
     sceVu0FVECTOR start;
     sceVu0FVECTOR end;
     sceVu0FVECTOR v1;
@@ -1581,7 +1668,9 @@ char acsChodoMoveBird(SgCOORDUNIT *cp, float *p, CMOVE_CTRL *mv)
     sceVu0Normalize(v1, cp->matrix[2]);
     sceVu0Normalize(v2, pos);
 
-    sceVu0RotMatrixY(cp->matrix, cp->matrix, SgSqrtf(sceVu0InnerProduct(v1, v2)));
+    ry = VER_SQRTF(sceVu0InnerProduct(v1, v2));
+
+    sceVu0RotMatrixY(cp->matrix, cp->matrix, ry);
     sceVu0RotMatrixY(cp->matrix, cp->matrix, PI);
 
     if (mv->timer == reaction_cnt)
@@ -1593,7 +1682,7 @@ char acsChodoMoveBird(SgCOORDUNIT *cp, float *p, CMOVE_CTRL *mv)
 
     sceVu0CopyVector(p, pos);
 
-    if (!(ingame_wrk.stts & 0x10) && !(ingame_wrk.stts & 0x80))
+    if ((ingame_wrk.stts & 0x10) == 0 && (ingame_wrk.stts & 0x80) == 0)
     {
         if (mv->furn_id == 286)
         {
@@ -1620,7 +1709,7 @@ char acsChodoMoveBird(SgCOORDUNIT *cp, float *p, CMOVE_CTRL *mv)
     return 1;
 }
 
-void acsChodoMoveNingyo(SgCOORDUNIT *cp, float *p, CMOVE_CTRL *mv)
+void acsChodoMoveNingyo(SgCOORDUNIT *cp, sceVu0FVECTOR p, CMOVE_CTRL *mv)
 {
     #include "data/ofs.h"   // static sceVu0FVECTOR ofs;
     #include "data/rot.h"   // static sceVu0FVECTOR rot[13];
@@ -1699,7 +1788,7 @@ void acsChodoMoveNingyo(SgCOORDUNIT *cp, float *p, CMOVE_CTRL *mv)
         motPlyrActReq(0, &pos, 0);
     }
 
-    if ((!(ingame_wrk.stts & 0x10)) && (!(ingame_wrk.stts & 0x80)))
+    if ((ingame_wrk.stts & 0x10) == 0 && (ingame_wrk.stts & 0x80) == 0)
     {
         if ((mv->timer == 15) || (mv->timer == 80))
         {
@@ -1723,7 +1812,7 @@ void acsChodoMoveNingyo(SgCOORDUNIT *cp, float *p, CMOVE_CTRL *mv)
     }
 }
 
-char acsChodoMoveKaidan(SgCOORDUNIT *cp, float *p1, CMOVE_CTRL *mv)
+char acsChodoMoveKaidan(SgCOORDUNIT *cp, sceVu0FVECTOR p1, CMOVE_CTRL *mv)
 {
     static sceVu0FVECTOR p;
     static sceVu0FVECTOR v;
@@ -1731,12 +1820,13 @@ char acsChodoMoveKaidan(SgCOORDUNIT *cp, float *p1, CMOVE_CTRL *mv)
     static float Ke = 0.5f;
     static float Kd = 0.973f;
     static float dv = 5.667f;
-    static sceVu0FVECTOR start = {27800.0f, -1350.0f, 13875.0f, 0.0f};
+    static sceVu0FVECTOR start = { 27800.0f, -1350.0f, 13875.0f, 0.0f };
     static char cnt;
     float earth;
     static float r = 0.0f;
     char se_flg;
     float dr;
+    float dist;
     sceVu0FVECTOR tmp;
     sceVu0FVECTOR sub;
 
@@ -1759,7 +1849,7 @@ char acsChodoMoveKaidan(SgCOORDUNIT *cp, float *p1, CMOVE_CTRL *mv)
         r = 0.0f;
     }
 
-    if ((!(ingame_wrk.stts & 0x10)) && (!(ingame_wrk.stts & 0x80)))
+    if ((ingame_wrk.stts & 0x10) == 0 && (ingame_wrk.stts & 0x80) == 0)
     {
         v[1] += a;
 
@@ -1769,21 +1859,22 @@ char acsChodoMoveKaidan(SgCOORDUNIT *cp, float *p1, CMOVE_CTRL *mv)
         {
         case 0:
             earth = 100.0f;
-            break;
+        break;
         case 1:
             earth = 270.0f;
-            break;
+        break;
         case 2:
             earth = 560.0f;
-            break;
+        break;
         case 3:
             earth = 920.0f;
-            break;
+        break;
         case 4:
             earth = 1150.0f;
-            break;
+        break;
         default:
             earth = 1305.0f;
+        break;
         }
 
         if (earth < p[1])
@@ -1824,7 +1915,7 @@ char acsChodoMoveKaidan(SgCOORDUNIT *cp, float *p1, CMOVE_CTRL *mv)
         dr = __builtin_fabsf(v[2]) / 30.0f;
     }
 
-    if (((ingame_wrk.stts & 0x10) == 0) && ((ingame_wrk.stts & 0x80) == 0))
+    if ((ingame_wrk.stts & 0x10) == 0 && (ingame_wrk.stts & 0x80) == 0)
     {
         r += dr;
     }
@@ -1846,7 +1937,9 @@ char acsChodoMoveKaidan(SgCOORDUNIT *cp, float *p1, CMOVE_CTRL *mv)
 
     sceVu0SubVector(sub, p1, plyr_wrk.move_box.pos);
 
-    if ((SgSqrtf(sceVu0InnerProduct(sub, sub)) <= 1000.0f) && (mv->timer < 360))
+    dist = VER_SQRTF(sceVu0InnerProduct(sub, sub));
+
+    if (dist <= 1000.0f && mv->timer < 360)
     {
         mv->timer = 360;
     }
@@ -1881,9 +1974,6 @@ void SetSpeFurnLight(FURN_WRK *furn)
     sceVu0FVECTOR ambient;
     u_int num;
     LIGHT_PACK *light_pack;
-    // float *v1;
-    // float *v1;
-    // float *v1;
 
     room_no = furn->room_id;
 

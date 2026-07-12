@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 36.78992681285787,
+    "fuzzy_match_percent": 38.15617834045066,
     "total_code": "1165232",
-    "matched_code": "428688",
-    "matched_code_percent": 36.78992681285787,
+    "matched_code": "444608",
+    "matched_code_percent": 38.15617834045066,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 1086,
-    "matched_functions_percent": 31.99764289923394,
+    "matched_functions": 1121,
+    "matched_functions_percent": 33.028874484384204,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -9131,9 +9131,14 @@
     {
       "name": "graphics/motion/accessory",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "15920",
+        "matched_code": "15920",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 35,
+        "matched_functions": 35,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -9141,14 +9146,17 @@
         {
           "name": ".text",
           "size": "16000",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -9156,176 +9164,211 @@
         {
           "name": "InitPlyrAcsAlpha",
           "size": "80",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DispPlyrAcs",
           "size": "156",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PlyrAcsAlphaCtrl",
           "size": "200",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "acsInitRopeWork",
           "size": "64",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "acsRopeSetWork",
           "size": "120",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "acsInitRopeSub",
           "size": "1368",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "acsRopeReleaseWork",
           "size": "112",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "acsGetRopePos",
           "size": "68",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "acsSetMoveDir",
           "size": "148",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "acsRopeMoveRequest",
           "size": "76",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "acsRopeMoveStop",
           "size": "64",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "acsCheckRopeMoveExec",
           "size": "80",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "acsCalcCoordinate",
           "size": "828",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetLWS2",
           "size": "92",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "acsRopeMoveCtrl",
           "size": "84",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "acsRopeMoveWind",
           "size": "428",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "acsRopeMoveVib",
           "size": "152",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "acsRopeMoveFall",
           "size": "100",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "acsMoveRope",
           "size": "1588",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "acsCheckCollisionSphere",
           "size": "328",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "acsCheckCollisionTube",
           "size": "856",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "acsInitCloth",
           "size": "2068",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "acsClothCtrl",
           "size": "608",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "acsMoveCloth",
           "size": "2620",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "acsInitChodoWork",
           "size": "68",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "acsChodoSetWork",
           "size": "108",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "acsChodoReleaseWork",
           "size": "140",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "acsChodoMoveRequest",
           "size": "108",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "acsChodoMoveStop",
           "size": "76",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "acsChodoMove",
           "size": "232",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "acsChodoMoveBird",
           "size": "668",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "acsChodoMoveKaidan",
           "size": "948",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "acsChodoMoveNingyo",
           "size": "1000",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "acsChodoMoveKage",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetSpeFurnLight",
           "size": "276",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -23523,14 +23566,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 36.78992681285787,
+        "fuzzy_match_percent": 38.15617834045066,
         "total_code": "1165232",
-        "matched_code": "428688",
-        "matched_code_percent": 36.78992681285787,
+        "matched_code": "444608",
+        "matched_code_percent": 38.15617834045066,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 1086,
-        "matched_functions_percent": 31.99764289923394,
+        "matched_functions": 1121,
+        "matched_functions_percent": 33.028874484384204,
         "complete_data_percent": 100.0,
         "total_units": 154
       }
