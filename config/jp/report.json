@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 39.22274705809659,
+    "fuzzy_match_percent": 39.412237219712466,
     "total_code": "1165232",
-    "matched_code": "457036",
-    "matched_code_percent": 39.22274705809659,
+    "matched_code": "459244",
+    "matched_code_percent": 39.412237219712466,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 1192,
-    "matched_functions_percent": 35.12080141426046,
+    "matched_functions": 1207,
+    "matched_functions_percent": 35.56275780789629,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -9847,9 +9847,14 @@
     {
       "name": "graphics/motion/anicode",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "2208",
+        "matched_code": "2208",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 15,
+        "matched_functions": 15,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -9857,14 +9862,17 @@
         {
           "name": ".text",
           "size": "2232",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -9872,76 +9880,91 @@
         {
           "name": "motAniCodeClearBuf",
           "size": "56",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motAniCodeSetBuf",
           "size": "84",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motAniCodeRead",
           "size": "104",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetAniCodeArgs",
           "size": "140",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motAniCodeExec",
           "size": "96",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motAniCodeReadCTRL",
           "size": "164",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motAniCodeReadMOT",
           "size": "136",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motAniCodeReadTIMER",
           "size": "24",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motAniTimerCodeExec",
           "size": "332",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motAniCodeReadMIM",
           "size": "252",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motAniCodeReadSE",
           "size": "116",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motAniCodeReadDOOR",
           "size": "144",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motAniCodeReadEFCT",
           "size": "336",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motAniCodeIsEnd",
           "size": "64",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motGetNextMotion",
           "size": "160",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -23645,14 +23668,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 39.22274705809659,
+        "fuzzy_match_percent": 39.412237219712466,
         "total_code": "1165232",
-        "matched_code": "457036",
-        "matched_code_percent": 39.22274705809659,
+        "matched_code": "459244",
+        "matched_code_percent": 39.412237219712466,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 1192,
-        "matched_functions_percent": 35.12080141426046,
+        "matched_functions": 1207,
+        "matched_functions_percent": 35.56275780789629,
         "complete_data_percent": 100.0,
         "total_units": 154
       }

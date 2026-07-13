@@ -11,7 +11,6 @@
 #include "graphics/motion/motion.h"
 #include "ingame/map/door_ctl.h"
 
-
 void motAniCodeClearBuf(ANI_CTRL *ani_ctrl)
 {
     u_int i;
@@ -55,13 +54,18 @@ u_char motAniCodeRead(ANI_CTRL *ani_ctrl)
 
     c_ctrl->stat = 0;
 
-    do
+    while (1)
     {
         code = *c_ctrl->code_now;
 
         GetAniCodeArgs(code, args);
         motAniCodeExec(ani_ctrl, code, args);
-    } while (c_ctrl->stat == 0);
+
+        if (c_ctrl->stat != 0)
+        {
+            break;
+        }
+    }
 
     return c_ctrl->stat == 1;
 }
@@ -104,7 +108,8 @@ void motAniTimerCodeExec(ANI_CTRL *ani_ctrl)
 
             GetAniCodeArgs(code, args);
 
-            switch (code >> 12) {
+            switch (code >> 12)
+            {
             case 3:
                 motAniCodeReadMIM(ani_ctrl, args);
             break;
@@ -230,6 +235,7 @@ void motAniCodeReadMIM(ANI_CTRL *ani_ctrl, int *args)
     if (ani_ctrl->mim == NULL)
     {
         ani_ctrl->anm.code_now++;
+
         return;
     }
 
@@ -355,6 +361,7 @@ void motAniCodeReadEFCT(ANI_CTRL *ani_ctrl, int *args)
         if (ingame_wrk.msn_no == 3 && quake.flg == 0)
         {
             ReqQuake(0, 0.015f, 180, 0, 1);
+
             quake.flg = 1;
         }
     break;
@@ -373,11 +380,11 @@ u_char motGetNextMotion(ANI_CTRL *ani_ctrl)
 
     c_ctrl->stat = 0;
 
-    do
+    while (1)
     {
         code = *c_ctrl->code_now;
 
-        GetAniCodeArgs(code,args);
+        GetAniCodeArgs(code, args);
 
         switch (code >> 12)
         {
@@ -391,7 +398,12 @@ u_char motGetNextMotion(ANI_CTRL *ani_ctrl)
             c_ctrl->code_now++;
         break;
         }
-    } while (c_ctrl->stat == 0);
+
+        if (c_ctrl->stat != 0)
+        {
+            break;
+        }
+    }
 
     return c_ctrl->stat == 1;
 }

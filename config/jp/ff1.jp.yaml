@@ -117,7 +117,7 @@ segments:
           - [0x68890,  c,   graphics/motion/mime]
           - [0x6a398,  c,   graphics/motion/accessory]
           - [0x6e218,  c,   graphics/motion/motion]
-          - [0x71338,  asm, graphics/motion/anicode]
+          - [0x71338,  c,   graphics/motion/anicode]
         # - [0x71bf0,  asm, graphics/motion/mim_dat]
         # - [0x71bf0,  asm, graphics/motion/acs_dat]
           - [0x71bf0,  asm, graphics/graph3d/object]
@@ -374,7 +374,7 @@ segments:
           - { start: 0x24d140, type: .rodata, vram: 0x34c140, name: graphics/motion/mdlwork       }
           - { start: 0x24d1a0, type: .rodata, vram: 0x34c1a0, name: graphics/motion/accessory     }
           - { start: 0x24d1e0, type: .rodata, vram: 0x34c1e0, name: graphics/motion/motion        }
-          - { start: 0x24d440, type:  rodata, vram: 0x34c440, name: graphics/motion/anicode       }
+          - { start: 0x24d440, type: .rodata, vram: 0x34c440, name: graphics/motion/anicode       }
           - { start: 0x24d478, type:  rodata, vram: 0x34c478, name: graphics/graph3d/sce_pp3      }
           - { start: 0x24d490, type:  rodata, vram: 0x34c490, name: graphics/graph3d/sgsgd        }
           - { start: 0x24d4e0, type:  rodata, vram: 0x34c4e0, name: graphics/graph3d/sglib        }
@@ -466,7 +466,7 @@ segments:
           - { start: 0x255a4c, type: .lit4,   vram: 0x354a4c, name: graphics/motion/mime          }
           - { start: 0x255a54, type: .lit4,   vram: 0x354a54, name: graphics/motion/accessory     }
           - { start: 0x255ab8, type: .lit4,   vram: 0x354ab8, name: graphics/motion/motion        }
-          - { start: 0x255acc, type:  lit4,   vram: 0x354acc, name: graphics/motion/anicode       }
+          - { start: 0x255acc, type: .lit4,   vram: 0x354acc, name: graphics/motion/anicode       }
           - { start: 0x255ad0, type:  lit4,   vram: 0x354ad0, name: graphics/graph3d/sglight      }
           - { start: 0x255ad8, type:  lit4,   vram: 0x354ad8, name: graphics/graph3d/shadow       }
           - { start: 0x255ae8, type:  lit4,   vram: 0x354ae8, name: graphics/graph3d/mirror       }
