@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 39.412237219712466,
+    "fuzzy_match_percent": 39.41704312960852,
     "total_code": "1165232",
-    "matched_code": "459244",
-    "matched_code_percent": 39.412237219712466,
+    "matched_code": "459300",
+    "matched_code_percent": 39.41704312960852,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 1207,
-    "matched_functions_percent": 35.56275780789629,
+    "matched_functions": 1209,
+    "matched_functions_percent": 35.62168532704773,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -9977,9 +9977,14 @@
     {
       "name": "graphics/graph3d/object",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "56",
+        "matched_code": "56",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 2,
+        "matched_functions": 2,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -9987,14 +9992,17 @@
         {
           "name": ".text",
           "size": "56",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -10002,11 +10010,13 @@
         {
           "name": "objInit",
           "size": "48",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "objFlush",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -23668,14 +23678,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 39.412237219712466,
+        "fuzzy_match_percent": 39.41704312960852,
         "total_code": "1165232",
-        "matched_code": "459244",
-        "matched_code_percent": 39.412237219712466,
+        "matched_code": "459300",
+        "matched_code_percent": 39.41704312960852,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 1207,
-        "matched_functions_percent": 35.56275780789629,
+        "matched_functions": 1209,
+        "matched_functions_percent": 35.62168532704773,
         "complete_data_percent": 100.0,
         "total_units": 154
       }
