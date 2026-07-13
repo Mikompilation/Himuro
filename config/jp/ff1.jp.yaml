@@ -119,7 +119,7 @@ segments:
           - [0x6e218,  c,   graphics/motion/motion]
           - [0x71338,  c,   graphics/motion/anicode]
           - [0x71bf0,  c,   graphics/motion/mim_dat]
-        # - [0x71bf0,  asm, graphics/motion/acs_dat]
+          - [0x71bf0,  c,   graphics/motion/acs_dat]
           - [0x71bf0,  asm, graphics/graph3d/object]
           - [0x71c28,  asm, graphics/graph3d/sce_pp3]
           - [0x71e80,  asm, graphics/graph3d/sgsgd]
@@ -256,7 +256,7 @@ segments:
           - { start: 0x1fcf40, type: .data,   vram: 0x2fbf40, name: graphics/motion/accessory     }
           - { start: 0x2008b0, type: .data,   vram: 0x2ff8b0, name: graphics/motion/motion        }
           - { start: 0x202980, type: .data,   vram: 0x301980, name: graphics/motion/mim_dat       }
-          - { start: 0x202b00, type:  data,   vram: 0x301b00, name: graphics/motion/acs_dat       }
+          - { start: 0x202b00, type: .data,   vram: 0x301b00, name: graphics/motion/acs_dat       }
           - { start: 0x203cd0, type:  data,   vram: 0x302cd0, name: graphics/graph3d/sglib        }
           - { start: 0x204190, type:  data,   vram: 0x303190, name: graphics/graph3d/sgsu         }
           - { start: 0x2041a0, type:  data,   vram: 0x3031a0, name: graphics/graph3d/sgdma        }
@@ -544,7 +544,7 @@ segments:
           - { start: 0x256b9c, type: .sdata,  vram: 0x355b9c, name: graphics/motion/mime          }
           - { start: 0x256ba0, type: .sdata,  vram: 0x355ba0, name: graphics/motion/accessory     }
           - { start: 0x256bc0, type: .sdata,  vram: 0x355bc0, name: graphics/motion/motion        }
-          - { start: 0x256be0, type:  sdata,  vram: 0x355be0, name: graphics/motion/acs_dat       }
+          - { start: 0x256be0, type: .sdata,  vram: 0x355be0, name: graphics/motion/acs_dat       }
           - { start: 0x256c10, type:  sdata,  vram: 0x355c10, name: graphics/graph3d/object       }
           - { start: 0x256c24, type:  sdata,  vram: 0x355c24, name: graphics/graph3d/sce_pp3      }
           - { start: 0x256c34, type:  sdata,  vram: 0x355c34, name: graphics/graph3d/sgsgd        }
