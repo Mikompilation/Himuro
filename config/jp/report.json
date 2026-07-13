@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 38.15617834045066,
+    "fuzzy_match_percent": 39.22274705809659,
     "total_code": "1165232",
-    "matched_code": "444608",
-    "matched_code_percent": 38.15617834045066,
+    "matched_code": "457036",
+    "matched_code_percent": 39.22274705809659,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 1121,
-    "matched_functions_percent": 33.028874484384204,
+    "matched_functions": 1192,
+    "matched_functions_percent": 35.12080141426046,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -9381,9 +9381,14 @@
     {
       "name": "graphics/motion/motion",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "12428",
+        "matched_code": "12428",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 71,
+        "matched_functions": 71,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -9391,14 +9396,17 @@
         {
           "name": ".text",
           "size": "12576",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -9406,356 +9414,427 @@
         {
           "name": "motInitPlayerAnm",
           "size": "104",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetPakTaleAddr",
           "size": "84",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motInitAniCtrl",
           "size": "724",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motInitEnemyAnm",
           "size": "36",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motInitMultiEnemyAnm",
           "size": "116",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motInitOneEnemyAnm",
           "size": "196",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motInitEnemyMdl",
           "size": "44",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motInitMultiEnemyMdl",
           "size": "112",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motInitFlyMdl",
           "size": "28",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motInitOneEnemyMdl",
           "size": "220",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetFileInPak",
           "size": "76",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motInitMultiFlyMdl",
           "size": "112",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motInitOneFlyMdl",
           "size": "28",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motInitClearAniCtrl",
           "size": "72",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motSetAnime",
           "size": "80",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motInitMotCtrl",
           "size": "292",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motAlign128",
           "size": "32",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motSetHierarchy",
           "size": "172",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motAddressMapping",
           "size": "172",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motGetFrameNum",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motGetInterpFrameNum",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motGetBoneNum",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motGetFrameData",
           "size": "24",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motSetCoordCamera",
           "size": "308",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motSetInterpMatrix",
           "size": "388",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motInterpAnm",
           "size": "492",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motAddFrame",
           "size": "104",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motSetCoordFrame",
           "size": "204",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motSetCoord",
           "size": "684",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motInitNewMotion",
           "size": "80",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motGetSIFrameNum",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motGetNowFrame",
           "size": "64",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ReqPlayerAnime",
           "size": "732",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motInitInterpAnime",
           "size": "204",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ReqEnemyAnime",
           "size": "144",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetMdlNeckPos",
           "size": "372",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetMdlBonePos",
           "size": "120",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetMdlWaistPos",
           "size": "68",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetMdlLegPos",
           "size": "68",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetMdlShldPos",
           "size": "48",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetPlyrFootPos",
           "size": "48",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetPlyrAcsLightPos",
           "size": "24",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetToushuKatanaPos",
           "size": "92",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetPlyrFtype",
           "size": "12",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "sceRotMatrixXYZ",
           "size": "112",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motInterpMatrix",
           "size": "488",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motMatrix2Quaternion",
           "size": "708",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motQuaternion2Matrix",
           "size": "188",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motQuaternionSlerp",
           "size": "168",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "LocalRotMatrixX",
           "size": "132",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "LocalRotMatrixY",
           "size": "132",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "LocalRotMatrixZ",
           "size": "132",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motInversKinematics",
           "size": "588",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motGetParentId",
           "size": "16",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "movGetFrameNum",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "movGetMaxval",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "movGetMoveval",
           "size": "328",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motGetTransBoneNum",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motGetRstBuffer",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motCheckRstFull",
           "size": "12",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motCheckTransCut",
           "size": "16",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motCheckIncludeRstPacket",
           "size": "16",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motGetFrameDataAddr",
           "size": "100",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motGetFrameDataRST",
           "size": "228",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motGetFrameDataRT",
           "size": "336",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motGetTransId",
           "size": "16",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SceneInitAnime",
           "size": "484",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SceneInitOtherAnime",
           "size": "304",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SceneSetCoordFrame",
           "size": "316",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motSetInvMatrix",
           "size": "556",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "motPrintVector",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -23566,14 +23645,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 38.15617834045066,
+        "fuzzy_match_percent": 39.22274705809659,
         "total_code": "1165232",
-        "matched_code": "444608",
-        "matched_code_percent": 38.15617834045066,
+        "matched_code": "457036",
+        "matched_code_percent": 39.22274705809659,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 1121,
-        "matched_functions_percent": 33.028874484384204,
+        "matched_functions": 1192,
+        "matched_functions_percent": 35.12080141426046,
         "complete_data_percent": 100.0,
         "total_units": 154
       }

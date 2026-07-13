@@ -1,7 +1,17 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "enums.h"
 #include "motion.h"
+
+// gcc/src/newlib/libm/math/wf_acos.c
+float acosf(float x);
+
+// gcc/src/newlib/libm/math/sf_sin.c
+float sinf(float x);
+
+// gcc/src/newlib/libm/math/wf_sqrt.c
+float sqrtf(float x);
 
 #include "sce/libvu0.h"
 
@@ -50,21 +60,17 @@ float now_frot_x = 0.0f;
 static sceVu0FMATRIX m_start[60];
 static sceVu0FMATRIX m_end[60];
 
-
 #define PI 3.1415927f
-#define PI_HALF 1.5707964f
 
 #define DEG2RAD(x) ((float)(x)*PI/180.0f)
-
-#define PLAYER_ANM_ADDR 0x870000
 
 void motInitPlayerAnm(char mdl_no)
 {
     u_int *pkt_p;
 
-    pkt_p = (u_int *)GetPakTaleAddr((void *)PLAYER_ANM_ADDR);
+    pkt_p = (u_int *)GetPakTaleAddr((void *)LOAD_ADDRESS_02);
 
-    motInitAniCtrl(ani_mdl, (u_int *)PLAYER_ANM_ADDR, pmanmpk[0], pkt_p, mdl_no, A000_MIKU);
+    motInitAniCtrl(ani_mdl, (u_int *)LOAD_ADDRESS_02, pmanmpk[0], pkt_p, mdl_no, A000_MIKU);
     mimLNigiriReq(M001_MIM_LHAND_NIGIRI, 0);
 
     ani_mdl[0].mot.reso = 1;
@@ -93,12 +99,13 @@ void motInitOneEnemyAnm(u_int *anm_p, u_int mdl_no, u_int anm_no)
 
     ani_ctrl = &ani_mdl[ret];
     mdl_p = pmanmodel[mdl_no];
+
     pkt_p = GetPakTaleAddr(anm_p);
     pkt_p = &pkt_p[ani_mdl_ctrl[ret].pkt_no * 0x4000];
 
     motInitAniCtrl(ani_ctrl, anm_p, mdl_p, pkt_p, mdl_no, anm_no);
 
-    ret = 0; // FIXES instruction order
+    ret = 0; // HACK: fixes codegen
 }
 
 void motInitMultiEnemyAnm(u_int *anm_p, u_int mdl_no, u_int anm_no, u_int num)
@@ -145,7 +152,8 @@ void motInitOneEnemyMdl(u_int *mdl_p, u_int mdl_no)
     {
         top = (u_int *)GetFileInPak(mdl_p, i);
 
-        switch (top[-3]) {
+        switch (top[-3])
+        {
         case 0:
             // do nothing
         break;
@@ -171,7 +179,8 @@ void motInitMultiEnemyMdl(u_int *mdl_addr, u_int mdl_no)
 
     for (i = 0; i < mdl_num; i++)
     {
-        mdl_p = (u_int *)GetFileInPak(mdl_addr,i);
+        mdl_p = (u_int *)GetFileInPak(mdl_addr, i);
+
         motInitOneEnemyMdl(mdl_p, mdl_no + i);
     }
 }
@@ -198,6 +207,7 @@ void motInitMultiFlyMdl(u_int *mpk_p, u_int mdl_no)
     for (i = 0; i < mdl_num; i++)
     {
         sgd_p = (u_int *)GetFileInPak(mpk_p, i);
+
         motInitOneFlyMdl(sgd_p, mdl_no + i);
     }
 }
@@ -205,6 +215,7 @@ void motInitMultiFlyMdl(u_int *mpk_p, u_int mdl_no)
 void motInitOneFlyMdl(u_int *sgd_p, u_int mdl_no)
 {
     pmanmodel[mdl_no] = sgd_p;
+
     SgMapUnit(sgd_p);
 }
 
@@ -257,7 +268,8 @@ u_int* motInitAniCtrl(ANI_CTRL *ani_ctrl, u_int *anm_p, u_int *mdl_p, u_int *pkt
         for (i = 0; i < num; i++) {
             top = (u_int *)GetFileInPak(mdl_p, i);
 
-            switch (top[-3]) {
+            switch (top[-3])
+            {
             case 4:
                 ani_ctrl->tanm_p = top;
             break;
@@ -341,6 +353,7 @@ u_int* motInitMotCtrl(MOT_CTRL *m_ctrl, u_int *mot_addr, u_int *rst_addr)
     for (i = 0; i < *mot_addr; i++)
     {
         top_addr = (u_int *)GetFileInPak(m_ctrl->top, i);
+
         motAddressMapping(top_addr);
     }
 
@@ -412,7 +425,7 @@ u_char motSetCoord(ANI_CTRL *ani_ctrl, u_char work_id)
 {
     MOT_CTRL *m_ctrl;
     u_char ani_end;
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
     u_int i;
     u_int loop;
 #endif
@@ -429,7 +442,7 @@ u_char motSetCoord(ANI_CTRL *ani_ctrl, u_char work_id)
     motInterpAnm(ani_ctrl, m_start, m_end);
 
     ani_end = 0;
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
     loop = 1;
 #endif
 
@@ -438,7 +451,7 @@ u_char motSetCoord(ANI_CTRL *ani_ctrl, u_char work_id)
         return 0;
     }
 
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
     if (work_id == 0xff)
     {
         switch (m_ctrl->play_id)
@@ -472,8 +485,8 @@ u_char motSetCoord(ANI_CTRL *ani_ctrl, u_char work_id)
         }
     }
 #endif
+#if defined(BUILD_EU_VERSION)
 
-#ifdef BUILD_EU_VERSION
     for (i = 0; i < loop; i++)
     {
 #endif
@@ -558,7 +571,7 @@ u_char motSetCoord(ANI_CTRL *ani_ctrl, u_char work_id)
         {
             motAniTimerCodeExec(ani_ctrl);
         }
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
     }
 #endif
 
@@ -659,6 +672,7 @@ void ReqPlayerAnime(u_char flame)
     )
     {
         mimLNigiriReq(1, 1);
+
         plyracs_ctrl[1].stat = 1;
     }
 
@@ -752,7 +766,7 @@ void* GetFileInPak(void *pak_head, int num)
         {
             file_size = *(int *)fp;
 
-            fp += 0x10;
+            fp += 16;
             fp += file_size;
 
             asm("nop");
@@ -796,7 +810,7 @@ void* GetPakTaleAddr(void *pak_head)
 void GetMdlNeckPos(sceVu0FVECTOR pos, ANI_CTRL *ani_ctrl, u_short mdl_no)
 {
     u_short id;
-    static sceVu0FVECTOR p = {0.0f, 0.0f, 0.0f, 1.0f};
+    static sceVu0FVECTOR p = { 0.0f, 0.0f, 0.0f, 1.0f };
     HeaderSection *hs;
 
     id = manmdl_dat[mdl_no].neck_id;
@@ -918,7 +932,7 @@ void GetPlyrFootPos(sceVu0FVECTOR pos, ANI_CTRL *ani_ctrl, u_char lr)
 
 void GetPlyrAcsLightPos(sceVu0FVECTOR pos, ANI_CTRL *ani_ctrl)
 {
-    static sceVu0FVECTOR p = {1.99221f, 0.9141f, 0.2095f, 1.0f};
+    static sceVu0FVECTOR p = { 1.99221f, 0.9141f, 0.2095f, 1.0f };
     HeaderSection *hs;
 
     hs = (HeaderSection *)ani_ctrl->base_p;
@@ -928,8 +942,8 @@ void GetPlyrAcsLightPos(sceVu0FVECTOR pos, ANI_CTRL *ani_ctrl)
 
 void GetToushuKatanaPos(sceVu0FVECTOR p0, sceVu0FVECTOR p1, ANI_CTRL *ani_ctrl)
 {
-    static sceVu0FVECTOR ofs0 = {1.4f, 1.4f, 0.3f, 1.0f};
-    static sceVu0FVECTOR ofs1 = {1.81f, 18.0f, -6.0f, 1.0f};
+    static sceVu0FVECTOR ofs0 = { 1.4f, 1.4f, 0.3f, 1.0f };
+    static sceVu0FVECTOR ofs1 = { 1.81f, 18.0f, -6.0f, 1.0f };
 
     sceVu0ApplyMatrix(p0, ((HeaderSection *)ani_ctrl->base_p)->coordp[5].lwmtx, ofs0);
     sceVu0ApplyMatrix(p1, ((HeaderSection *)ani_ctrl->base_p)->coordp[5].lwmtx, ofs1);
@@ -1051,7 +1065,9 @@ static void motInterpAnm(ANI_CTRL *ani_ctrl, sceVu0FMATRIX *start, sceVu0FMATRIX
         else
         {
             sceVu0UnitMatrix(interp);
+
             motInterpMatrix(interp, start[i-1], end[i-1], rate);
+
             sceVu0InterVector(trans, m_ctrl->rst1[i-1].trans, m_ctrl->rst0[i-1].trans, rate);
             sceVu0InterVector(scale, m_ctrl->rst1[i-1].scale, m_ctrl->rst0[i-1].scale, rate);
 
@@ -1073,6 +1089,7 @@ void motInterpMatrix(sceVu0FMATRIX interp, sceVu0FMATRIX m0, sceVu0FMATRIX m1, f
     short int i;
     sceVu0FMATRIX m;
     sceVu0FVECTOR v;
+    float inner;
     float r;
     float cos;
     float sin;
@@ -1083,11 +1100,11 @@ void motInterpMatrix(sceVu0FMATRIX interp, sceVu0FMATRIX m0, sceVu0FMATRIX m1, f
         sceVu0OuterProduct(v, m0[i], m1[i]);
         sceVu0Normalize(v, v);
 
-        val = sceVu0InnerProduct(m0[i], m1[i]);
-        r = SgACosf(val) * rate;
+        inner = sceVu0InnerProduct(m0[i], m1[i]);
+        r = VER_ACOSF(inner) * rate;
 
-        cos = SgCosf(r);
-        sin = SgSinf(r);
+        cos = VER_COSF(r);
+        sin = VER_SINF(r);
 
         val = 1.0f - cos;
 
@@ -1126,7 +1143,7 @@ void motMatrix2Quaternion(sceVu0FVECTOR q, sceVu0FMATRIX m)
 
     if (tr > 0.0f)
     {
-        s = SgSqrtf(tr + 1.0f);
+        s = VER_SQRTF(tr + 1.0f);
 
         q[3] = s * 0.5f;
 
@@ -1153,7 +1170,7 @@ void motMatrix2Quaternion(sceVu0FVECTOR q, sceVu0FMATRIX m)
         j = nxt[i];
         k = nxt[j];
 
-        s = SgSqrtf(m[i][i] - (m[j][j] + m[k][k]) + 1.0); // double!
+        s = VER_SQRTF(m[i][i] - (m[j][j] + m[k][k]) + 1.0); // double!
 
         q[i] = s * 0.5f;
 
@@ -1231,11 +1248,11 @@ void LocalRotMatrixX(sceVu0FMATRIX m0, sceVu0FMATRIX m1, float rx)
 
     sceVu0UnitMatrix(rot);
 
-    rot[1][1] = SgCosf(rx);
-    rot[2][1] = -SgSinf(rx);
+    rot[1][1] = VER_COSF(rx);
+    rot[2][1] = -VER_SINF(rx);
 
-    rot[1][2] = SgSinf(rx);
-    rot[2][2] = SgCosf(rx);
+    rot[1][2] = VER_SINF(rx);
+    rot[2][2] = VER_COSF(rx);
 
     sceVu0MulMatrix(m0, m1, rot);
 }
@@ -1246,11 +1263,11 @@ void LocalRotMatrixY(sceVu0FMATRIX m0, sceVu0FMATRIX m1, float ry)
 
     sceVu0UnitMatrix(rot);
 
-    rot[0][0] = SgCosf(ry);
-    rot[0][2] = SgSinf(ry);
+    rot[0][0] = VER_COSF(ry);
+    rot[0][2] = VER_SINF(ry);
 
-    rot[2][0] = -SgSinf(ry);
-    rot[2][2] = SgCosf(ry);
+    rot[2][0] = -VER_SINF(ry);
+    rot[2][2] = VER_COSF(ry);
 
     sceVu0MulMatrix(m0,m1,rot);
 }
@@ -1261,11 +1278,11 @@ void LocalRotMatrixZ(sceVu0FMATRIX m0, sceVu0FMATRIX m1, float rz)
 
     sceVu0UnitMatrix(rot);
 
-    rot[0][0] = SgCosf(rz);
-    rot[1][0] = -SgSinf(rz);
+    rot[0][0] = VER_COSF(rz);
+    rot[1][0] = -VER_SINF(rz);
 
-    rot[0][1] = SgSinf(rz);
-    rot[1][1] = SgCosf(rz);
+    rot[0][1] = VER_SINF(rz);
+    rot[1][1] = VER_COSF(rz);
 
     sceVu0MulMatrix(m0, m1, rot);
 }
@@ -1278,21 +1295,20 @@ void motInversKinematics(SgCOORDUNIT *cp, sceVu0FVECTOR target, u_int *top_addr,
     sceVu0FVECTOR end_root;
     sceVu0FVECTOR target_root;
     float inner;
+    float dist;
     sceVu0FMATRIX m;
     float r;
-    float dist;
     sceVu0FVECTOR raxis;
 
     sceVu0CopyVector(end_eff, cp[bone_id].lwmtx[3]);
 
     parent_id = bone_id;
 
-    do
+    while (1)
     {
         parent_id = motGetParentId(top_addr, parent_id - 1);
 
         sceVu0CopyVector(root, cp[parent_id].lwmtx[3]);
-
         sceVu0SubVector(end_root, end_eff, root);
         sceVu0SubVector(target_root, target, root);
         sceVu0Normalize(end_root, end_root);
@@ -1305,11 +1321,11 @@ void motInversKinematics(SgCOORDUNIT *cp, sceVu0FVECTOR target, u_int *top_addr,
             return;
         }
 
-        r = SgACosf(inner);
+        r = VER_ACOSF(inner);
 
-        if (PI_HALF < r)
+        if (PI / 2 < r)
         {
-            r = PI_HALF;
+            r = PI / 2;
         }
 
         if (plyr_wrk.spot_rot[0] < 0.0f)
@@ -1318,12 +1334,16 @@ void motInversKinematics(SgCOORDUNIT *cp, sceVu0FVECTOR target, u_int *top_addr,
         }
 
         sceVu0OuterProduct(raxis, end_root, target_root);
+
         LocalRotMatrixZ(cp[parent_id].matrix, cp[parent_id].matrix, r);
+
         sceVu0Normalize(raxis, raxis);
+
         GetMatrixRotateAxis(m, raxis, r);
+
         sceVu0SubVector(end_root, end_eff, root);
 
-        dist = SgSqrtf(sceVu0InnerProduct(end_root, end_root));
+        dist = VER_SQRTF(sceVu0InnerProduct(end_root, end_root));
 
         sceVu0Normalize(end_root, end_root);
         sceVu0ApplyMatrix(end_root, m, end_root);
@@ -1331,8 +1351,11 @@ void motInversKinematics(SgCOORDUNIT *cp, sceVu0FVECTOR target, u_int *top_addr,
         sceVu0ScaleVector(end_root, end_root, dist);
         sceVu0AddVector(end_eff, end_root, root);
 
-
-    } while (parent_id != 1);
+        if (parent_id == 1)
+        {
+            break;
+        }
+    }
 }
 
 static u_int movGetFrameNum(u_int *mov_p)
@@ -1547,11 +1570,11 @@ static u_int* motGetFrameDataAddr(u_int *top_addr, u_int frame)
 {
     u_int *addr;
 
-    addr = top_addr + 0x28;
+    addr = top_addr + 40;
 
     if (motCheckIncludeRstPacket(top_addr) != 0)
     {
-        addr = addr + motGetBoneNum(top_addr) * 0x18;
+        addr += motGetBoneNum(top_addr) * 0x18;
     }
 
     addr = &addr[frame];
@@ -1588,17 +1611,17 @@ static void motGetFrameDataRST(RST_DATA *rst, u_int *top_addr, u_int frame)
 
     for (i = 0; i < bone_num; i++)
     {
-            rst[i].rot[0] = *pkt++;
-            rst[i].rot[1] = *pkt++;
-            rst[i].rot[2] = *pkt++;
+        rst[i].rot[0] = *pkt++;
+        rst[i].rot[1] = *pkt++;
+        rst[i].rot[2] = *pkt++;
 
-            rst[i].scale[0] = *pkt++;
-            rst[i].scale[1] = *pkt++;
-            rst[i].scale[2] = *pkt++;
+        rst[i].scale[0] = *pkt++;
+        rst[i].scale[1] = *pkt++;
+        rst[i].scale[2] = *pkt++;
 
-            rst[i].trans[0] = *pkt++;
-            rst[i].trans[1] = *pkt++;
-            rst[i].trans[2] = *pkt++;
+        rst[i].trans[0] = *pkt++;
+        rst[i].trans[1] = *pkt++;
+        rst[i].trans[2] = *pkt++;
     }
 }
 
@@ -1657,16 +1680,16 @@ static void motGetFrameDataRT(RST_DATA *rst, u_int *top_addr, u_int frame, u_int
 
 static u_int motGetTransId(u_int *top_addr, u_int id)
 {
-    top_addr = (u_int *)((int)top_addr + 0x21);
+    top_addr = (u_int *)((int)top_addr + 33);
 
     return ((u_char *)top_addr)[id * 2];
 }
 
 static u_int motGetParentId(u_int *top_addr, u_int id)
 {
-    top_addr = (u_int *)((int)top_addr + 0x20);
+    top_addr = (u_int *)((int)top_addr + 32);
 
-    return ((u_char *)top_addr)[id * 2];
+    return ((u_char *)top_addr)[id*2];
 }
 
 void motSetHierarchy(SgCOORDUNIT *coord, u_int *top_addr)
@@ -1719,6 +1742,7 @@ u_int* SceneInitAnime(ANI_CTRL *ani_ctrl, u_int *mdl_p, u_int *mot_p, u_int *mim
     if (mot_p != NULL)
     {
         motInitMotCtrl(&ani_ctrl->mot, mot_p, NULL);
+
         ani_ctrl->mot_num = *mot_p;
     }
 
@@ -1727,6 +1751,7 @@ u_int* SceneInitAnime(ANI_CTRL *ani_ctrl, u_int *mdl_p, u_int *mot_p, u_int *mim
         ani_ctrl->mim_num = *mim_p;
         ani_ctrl->mim = (MIME_CTRL *)motAlign128(pkt_p);
         ani_ctrl->wmim = (WMIM_CTRL *)motAlign128((u_int *)(ani_ctrl->mim + 20));
+
         mim_dat = (MIME_DAT *)motAlign128((u_int *)(ani_ctrl->wmim + 10));
         tmp_p = motAlign128((u_int *)(mim_dat + 20));
 
@@ -1743,7 +1768,9 @@ u_int* SceneInitAnime(ANI_CTRL *ani_ctrl, u_int *mdl_p, u_int *mot_p, u_int *mim
     if (manmdl_dat[mdl_no].cdat != NULL)
     {
         ani_ctrl->cloth_ctrl = (CLOTH_CTRL *)motAlign128(pkt_p);
+
         top_add = motAlign128((u_int *)(ani_ctrl->cloth_ctrl + 10));
+
         pkt_p = acsInitCloth(ani_ctrl->cloth_ctrl, ani_ctrl->mpk_p, top_add, mdl_no);
     }
 
@@ -1777,12 +1804,14 @@ u_int* SceneInitOtherAnime(ANI_CTRL *ani_ctrl, u_int *mdl_p, u_int *mot_p, u_int
     if (mot_p != NULL)
     {
         motInitMotCtrl(&ani_ctrl->mot, mot_p, NULL);
+
         ani_ctrl->mot_num = *mot_p;
     }
 
     if (mim_p != NULL)
     {
         tmp_p = (u_int *)GetPakTaleAddr(mim_p);
+
         ani_ctrl->mim_num = *mim_p;
         ani_ctrl->mim = (MIME_CTRL *)motAlign128(tmp_p);
         mim_dat = (MIME_DAT *)motAlign128((u_int *)(ani_ctrl->mim + 20));
@@ -1895,9 +1924,9 @@ void motSetInvMatrix(sceVu0FMATRIX m1, sceVu0FMATRIX m0)
         rot[i][2] = m0[2][i];
     }
 
-    inv_inner[0] = 1.0f / SgSqrtf(sceVu0InnerProduct(rot[0], rot[0]));
-    inv_inner[1] = 1.0f / SgSqrtf(sceVu0InnerProduct(rot[1], rot[1]));
-    inv_inner[2] = 1.0f / SgSqrtf(sceVu0InnerProduct(rot[2], rot[2]));
+    inv_inner[0] = 1.0f / VER_SQRTF(sceVu0InnerProduct(rot[0], rot[0]));
+    inv_inner[1] = 1.0f / VER_SQRTF(sceVu0InnerProduct(rot[1], rot[1]));
+    inv_inner[2] = 1.0f / VER_SQRTF(sceVu0InnerProduct(rot[2], rot[2]));
 
     scale[0][0] = inv_inner[0];
     scale[1][1] = inv_inner[1];
