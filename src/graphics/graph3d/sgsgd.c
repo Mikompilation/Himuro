@@ -62,7 +62,7 @@ void MappingVUVNData(u_int *intpointer, HeaderSection *hs)
         }
     break;
     case SVA_COMMON:
-        // ...
+        // do nothing ...
     break;
     case SVA_WEIGHTED:
     default:
@@ -189,6 +189,7 @@ void MappingVertexList(VERTEXLIST *vli, PHEAD *ph)
     if (vnbuf_size < size)
     {
         printf("VNBuffer Over size %d needs %d\n", vnbuf_size, size);
+
         ph->pUniqList = ph->pWeightedList = NULL;
     }
 }
@@ -201,7 +202,7 @@ void SgMapRebuld(void *sgd_top)
 
     hs = (HeaderSection *)sgd_top;
 
-    if (hs->primitives == 0)
+    if (hs->primitives == NULL)
     {
         return;
     }
@@ -212,9 +213,7 @@ void SgMapRebuld(void *sgd_top)
     {
         nextprim = (u_int *)(prim[0] + (int)prim);
 
-        // check that always evaluates to false ???
-        // most likely `prim == 0` that got optimized out
-        if (0)
+        if (prim[0] == 0)
         {
             break;
         }
@@ -458,7 +457,7 @@ u_int* GetEndPacketAddr(void *sgd_top, int num)
 
     pk = GetPrimitiveAddr(sgd_top, num);
 
-    if ((u_int)pk == 0xFFFFFFFF || pk == NULL)
+    if ((u_int)pk == 0xffffffff || pk == NULL)
     {
         return pk;
     }
@@ -542,7 +541,6 @@ void SgSetTEX1(void *sgd_top, sceGsTex1 *ptex1)
 
     hs = (HeaderSection *)sgd_top;
     pk = (u_int **)&hs->primitives;
-
 
     for (i = 1; i < hs->blocks; i++)
     {

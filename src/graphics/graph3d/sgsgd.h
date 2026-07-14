@@ -2,6 +2,7 @@
 #define GRAPHICS_GRAPH3D_SGSGD_H
 
 #include "typedefs.h"
+
 #include "ee/eestruct.h"
 
 #include "graphics/graph3d/sg_dat.h"

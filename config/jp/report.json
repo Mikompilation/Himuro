@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 39.46819174207368,
+    "fuzzy_match_percent": 39.67690554327378,
     "total_code": "1165232",
-    "matched_code": "459896",
-    "matched_code_percent": 39.46819174207368,
+    "matched_code": "462328",
+    "matched_code_percent": 39.67690554327378,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 1215,
-    "matched_functions_percent": 35.79846788450206,
+    "matched_functions": 1231,
+    "matched_functions_percent": 36.26988803771361,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -10105,9 +10105,14 @@
     {
       "name": "graphics/graph3d/sgsgd",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "2432",
+        "matched_code": "2432",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 16,
+        "matched_functions": 16,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -10115,14 +10120,17 @@
         {
           "name": ".text",
           "size": "2456",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -10130,81 +10138,97 @@
         {
           "name": "MappingVUVNData",
           "size": "284",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MappingVUVNDataPreset",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MappingTYPE0",
           "size": "56",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MappingTYPE2",
           "size": "104",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MappingMeshData",
           "size": "76",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MappingCoordinateData",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MappingVertexList",
           "size": "144",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SgMapRebuld",
           "size": "108",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SgMapUnit",
           "size": "904",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetPrimitiveAddr",
           "size": "48",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetStartPacketAddr",
           "size": "40",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetEndPacketAddr",
           "size": "108",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PostChainPacket",
           "size": "16",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetModelKind",
           "size": "12",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SgSetTEX1Prim",
           "size": "400",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SgSetTEX1",
           "size": "116",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -23692,14 +23716,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 39.46819174207368,
+        "fuzzy_match_percent": 39.67690554327378,
         "total_code": "1165232",
-        "matched_code": "459896",
-        "matched_code_percent": 39.46819174207368,
+        "matched_code": "462328",
+        "matched_code_percent": 39.67690554327378,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 1215,
-        "matched_functions_percent": 35.79846788450206,
+        "matched_functions": 1231,
+        "matched_functions_percent": 36.26988803771361,
         "complete_data_percent": 100.0,
         "total_units": 154
       }
