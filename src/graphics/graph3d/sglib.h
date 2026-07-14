@@ -7,98 +7,97 @@
 
 #include "graphics/graph3d/sg_dat.h"
 
-// typedef sceVu0FMATRIX sceVu0FMATRIX[4];
 typedef float LMATRIX[3][4];
 
 typedef struct {
-	sceVu0FVECTOR pos[3];
-	sceVu0FVECTOR btimes;
-	sceVu0FVECTOR eyevec;
-	LMATRIX DColorMtx;
-	LMATRIX SColorMtx;
-	int lnum[3];
-	u_int pad;
+    sceVu0FVECTOR pos[3];
+    sceVu0FVECTOR btimes;
+    sceVu0FVECTOR eyevec;
+    LMATRIX DColorMtx;
+    LMATRIX SColorMtx;
+    int lnum[3];
+    u_int pad;
 } SgPOINTGROUP;
 
 typedef struct {
-	sceVu0FVECTOR pos[3];
-	sceVu0FVECTOR intens;
-	sceVu0FVECTOR intens_b;
-	sceVu0FVECTOR btimes;
-	LMATRIX WDLightMtx;
-	LMATRIX SLightMtx;
-	LMATRIX DColorMtx;
-	LMATRIX SColorMtx;
-	int lnum[3];
-	u_int pad;
+    sceVu0FVECTOR pos[3];
+    sceVu0FVECTOR intens;
+    sceVu0FVECTOR intens_b;
+    sceVu0FVECTOR btimes;
+    LMATRIX WDLightMtx;
+    LMATRIX SLightMtx;
+    LMATRIX DColorMtx;
+    LMATRIX SColorMtx;
+    int lnum[3];
+    u_int pad;
 } SgSPOTGROUP;
 
 typedef struct {
-	LMATRIX Parallel_DLight;
-	LMATRIX Parallel_SLight;
-	LMATRIX Spot_pos;
-	sceVu0FVECTOR Spot_intens;
-	sceVu0FVECTOR Spot_intens_b;
-	LMATRIX Spot_WDLightMtx;
-	LMATRIX Spot_SLightMtx;
-	LMATRIX Point_pos;
-	sceVu0FVECTOR Point_eyevec;
+    LMATRIX Parallel_DLight;
+    LMATRIX Parallel_SLight;
+    LMATRIX Spot_pos;
+    sceVu0FVECTOR Spot_intens;
+    sceVu0FVECTOR Spot_intens_b;
+    LMATRIX Spot_WDLightMtx;
+    LMATRIX Spot_SLightMtx;
+    LMATRIX Point_pos;
+    sceVu0FVECTOR Point_eyevec;
 } SgVULightCoord;
 
 typedef struct {
-	qword ParallelVif;
-	sceVu0FVECTOR Parallel_Ambient;
-	LMATRIX Parallel_DColor;
-	LMATRIX Parallel_SColor;
+    qword ParallelVif;
+    sceVu0FVECTOR Parallel_Ambient;
+    LMATRIX Parallel_DColor;
+    LMATRIX Parallel_SColor;
 } SgVULightParallel;
 
 typedef struct {
-	qword SpotVif;
-	sceVu0FVECTOR Spot_btimes;
-	LMATRIX Spot_DColor;
-	LMATRIX Spot_SColor;
+    qword SpotVif;
+    sceVu0FVECTOR Spot_btimes;
+    LMATRIX Spot_DColor;
+    LMATRIX Spot_SColor;
 } SgVULightSpot;
 
 typedef struct {
-	qword PointVif;
-	sceVu0FVECTOR Point_btimes;
-	LMATRIX Point_DColor;
-	LMATRIX Point_SColor;
+    qword PointVif;
+    sceVu0FVECTOR Point_btimes;
+    LMATRIX Point_DColor;
+    LMATRIX Point_SColor;
 } SgVULightPoint;
 
 typedef struct {
-	u_short QWC;
-	unsigned int DUMMY : 10;
-	unsigned int PCE : 2;
-	unsigned int ID : 3;
-	unsigned int IRQ : 1;
-	unsigned int ADDR : 31;
-	unsigned int SPR : 1;
-	u_int pad[2];
+    u_short QWC;
+    unsigned int DUMMY : 10;
+    unsigned int PCE : 2;
+    unsigned int ID : 3;
+    unsigned int IRQ : 1;
+    unsigned int ADDR : 31;
+    unsigned int SPR : 1;
+    u_int pad[2];
 } SgSourceChainTag __attribute__((aligned(16)));
 
 typedef struct {
-	int cache_on;
-	int edge_check;
-	int cn0;
-	int cn1;
-	u_int tagd_addr;
-	int qwc;
-	MatCache Parallel;
-	MatCache Point;
-	MatCache Spot;
+    int cache_on;
+    int edge_check;
+    int cn0;
+    int cn1;
+    u_int tagd_addr;
+    int qwc;
+    MatCache Parallel;
+    MatCache Point;
+    MatCache Spot;
 } CoordCache;
 
 typedef struct {
-	u_int addr;
-	u_int max_width;
-	u_int max_height;
-	u_int width;
-	u_int height;
-	u_int width_p;
-	u_int height_p;
-	float scale;
-	float fund_scale;
+    u_int addr;
+    u_int max_width;
+    u_int max_height;
+    u_int width;
+    u_int height;
+    u_int width_p;
+    u_int height_p;
+    float scale;
+    float fund_scale;
 } ShadowTexture;
 
 extern SgLIGHT *SgInfiniteLight;
@@ -182,18 +181,18 @@ float SgGetProjection();
 void SgInit3D();
 void GetMatrixFromQuaternion(sceVu0FMATRIX quat, sceVu0FVECTOR qvert);
 void GetMatrixRotateAxis(sceVu0FMATRIX quat, sceVu0FVECTOR axis, float theta);
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 float SgSinf(float rad);
 float SgCosf(float rad);
 float SgSinfd(float degree);
 float SgCosfd(float degree);
 float SgACosf(float ccos);
-static void GetATanf(sceVu0FVECTOR *tmpv);
 float SgAtanf(float x);
 float SgAtan2f(float y, float x);
 float SgSqrtf(float len);
 float SgRSqrtf(float len);
-static void GetSgCalclen(sceVu0FVECTOR tmpv);
 float SgCalcLen(float x, float y, float z);
+#endif
 float _CalcLen(sceVu0FVECTOR v0, sceVu0FVECTOR v1);
 void _MulRotMatrix(sceVu0FMATRIX ans, sceVu0FMATRIX m0, sceVu0FMATRIX m1);
 void _MulMatrix(sceVu0FMATRIX ans, sceVu0FMATRIX m0, sceVu0FMATRIX m1);

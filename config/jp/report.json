@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 39.67690554327378,
+    "fuzzy_match_percent": 39.870858335507435,
     "total_code": "1165232",
-    "matched_code": "462328",
-    "matched_code_percent": 39.67690554327378,
+    "matched_code": "464588",
+    "matched_code_percent": 39.870858335507435,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 1231,
-    "matched_functions_percent": 36.26988803771361,
+    "matched_functions": 1262,
+    "matched_functions_percent": 37.18326458456099,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -10241,9 +10241,14 @@
     {
       "name": "graphics/graph3d/sglib",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "2260",
+        "matched_code": "2260",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 31,
+        "matched_functions": 31,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -10251,14 +10256,17 @@
         {
           "name": ".text",
           "size": "2288",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -10266,156 +10274,187 @@
         {
           "name": "_GetNormalVectorFromVector",
           "size": "28",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "WaitVU1",
           "size": "40",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "_TransPPower",
           "size": "16",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "_TransSPower",
           "size": "16",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "Set12Register",
           "size": "68",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetVF2Register",
           "size": "24",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetVF2Register",
           "size": "24",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "printVector",
           "size": "136",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "printVectorC",
           "size": "152",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "printMat",
           "size": "164",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "printMatC",
           "size": "48",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "printLMatC",
           "size": "160",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SgSetWsMtx",
           "size": "48",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SgSetClipMtx",
           "size": "48",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SgSetClipVMtx",
           "size": "48",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SgSetWorkBase",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SgGetWorkBase",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SgSetProjection",
           "size": "32",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SgGetProjection",
           "size": "20",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SgInit3D",
           "size": "208",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetMatrixFromQuaternion",
           "size": "284",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetMatrixRotateAxis",
           "size": "112",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "_CalcLen",
           "size": "56",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "_MulRotMatrix",
           "size": "80",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "_MulMatrix",
           "size": "120",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "_SetMulMatrix",
           "size": "104",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "_CalcLenASM",
           "size": "48",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "_NormalizeVector",
           "size": "44",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "_NormalizeVector2",
           "size": "44",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "_ApplyRotMatrix",
           "size": "32",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "_ApplyMatrixXYZ",
           "size": "40",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -23716,14 +23755,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 39.67690554327378,
+        "fuzzy_match_percent": 39.870858335507435,
         "total_code": "1165232",
-        "matched_code": "462328",
-        "matched_code_percent": 39.67690554327378,
+        "matched_code": "464588",
+        "matched_code_percent": 39.870858335507435,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 1231,
-        "matched_functions_percent": 36.26988803771361,
+        "matched_functions": 1262,
+        "matched_functions_percent": 37.18326458456099,
         "complete_data_percent": 100.0,
         "total_units": 154
       }
