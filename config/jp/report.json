@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 39.41704312960852,
+    "fuzzy_match_percent": 39.46819174207368,
     "total_code": "1165232",
-    "matched_code": "459300",
-    "matched_code_percent": 39.41704312960852,
+    "matched_code": "459896",
+    "matched_code_percent": 39.46819174207368,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 1209,
-    "matched_functions_percent": 35.62168532704773,
+    "matched_functions": 1215,
+    "matched_functions_percent": 35.79846788450206,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -10029,9 +10029,14 @@
     {
       "name": "graphics/graph3d/sce_pp3",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "596",
+        "matched_code": "596",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 6,
+        "matched_functions": 6,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -10039,14 +10044,17 @@
         {
           "name": ".text",
           "size": "600",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -10054,31 +10062,37 @@
         {
           "name": "scePP13_Sync",
           "size": "216",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "scePP1_Kick",
           "size": "60",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "scePP3_Kick",
           "size": "296",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "scePP1_Disp",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "scePP1_Init",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "scePP1_End",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -23678,14 +23692,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 39.41704312960852,
+        "fuzzy_match_percent": 39.46819174207368,
         "total_code": "1165232",
-        "matched_code": "459300",
-        "matched_code_percent": 39.41704312960852,
+        "matched_code": "459896",
+        "matched_code_percent": 39.46819174207368,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 1209,
-        "matched_functions_percent": 35.62168532704773,
+        "matched_functions": 1215,
+        "matched_functions_percent": 35.79846788450206,
         "complete_data_percent": 100.0,
         "total_units": 154
       }

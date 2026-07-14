@@ -23,6 +23,7 @@ void scePP13_Sync()
     if (count > 220 || (fr & 0xff) == 0)
     {
         printf("count=%3d\n", count);
+
         count = 0;
     }
 
@@ -30,12 +31,14 @@ void scePP13_Sync()
 
     fr++;
 
-    odev = !sceGsSyncV(0);
+    odev = sceGsSyncV(0) == 0;
 
     *REG_RCNT1_COUNT = 0;
 
     sceGsSetHalfOffset(fr & 1 ? &db.draw1 : &db.draw0, 2048, 2048, odev);
+
     FlushCache(0);
+
     sceGsSwapDBuff(&db, fr);
 }
 
@@ -63,6 +66,7 @@ void scePP3_Kick(u_int *addr, int qwc)
     if (qwc >= 0x10000)
     {
         tp = tag[tid];
+
         sceDmaAddRef(&tp, 0xffff, addr);
         sceDmaAddRef(&tp, qwc - 0xffff, addr + 0x3fffc);
         sceDmaAddEnd(&tp, 0, 0);
@@ -70,6 +74,7 @@ void scePP3_Kick(u_int *addr, int qwc)
     else
     {
         tp = tag[tid];
+
         sceDmaAddRef(&tp, qwc, addr);
         sceDmaAddEnd(&tp, 0, 0);
     }
