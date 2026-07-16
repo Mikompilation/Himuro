@@ -3,6 +3,9 @@
 #include "enums.h"
 #include "sgsu.h"
 
+// gcc/src/newlib/libm/math/wf_sqrt.c
+float sqrtf(float x);
+
 #include "ee/eestruct.h"
 
 #include "graphics/graph3d/libsg.h"
@@ -21,8 +24,16 @@ extern SgSourceChainTag SgSuP0_dma_start() __attribute__((section(".vutext")));
 extern SgSourceChainTag SgSuP2_dma_start() __attribute__((section(".vutext")));
 extern SgSourceChainTag SgSu_dma_starts() __attribute__((section(".vutext")));
 
-#define Q12_4(i, f) (((i) << 4) | ((f) & 0xF))
+#define Q12_4(i, f) (((i) << 4) | ((f) & 0xf))
 #define SCRATCHPAD ((u_int *)0x70000000)
+
+#if defined(BUILD_JP_VERSION)
+    #define VER_PRINTF scePrintf
+#elif defined(BUILD_US_VERSION)
+    #define VER_PRINTF printf
+#elif defined(BUILD_EU_VERSION)
+    #define VER_PRINTF printf
+#endif
 
 static int write_flg = 0;
 static int write_counter = 0;
@@ -33,12 +44,11 @@ static int o1 = 0;
 
 void _AddColor(float *v)
 {
-    __asm__ volatile("\n\
-        lqc2     $vf12,0(%0)\n\
-        vadd.xyz $vf18xyz,$vf18xyz,$vf12xyz\n\
-        sqc2     $vf18,0(%0)\n\
-        ": : "r"(v)
-    );
+    asm volatile("                            \n\
+        lqc2     $vf12,    0(%0)              \n\
+        vadd.xyz $vf18xyz, $vf18xyz, $vf12xyz \n\
+        sqc2     $vf18,    0(%0)              \n\
+    ": : "r"(v));
 }
 
 void SgSuDebugOn()
@@ -66,8 +76,8 @@ void PutDebugSign()
         pedraw_buf = getObjWrk() + 1;
 
         ((u_long *)pedraw_buf)[0] = SCE_GIF_SET_TAG(2, SCE_GS_TRUE, SCE_GS_TRUE, SCE_GS_SET_PRIM(SCE_GS_PRIM_SPRITE, 1, 0, 0, 1, 0, 0, 0, 0), SCE_GIF_PACKED, 2);
-        ((u_long *)pedraw_buf)[1] = 0 \
-            | SCE_GS_RGBAQ << (0 * 4) \
+        ((u_long *)pedraw_buf)[1] = 0
+            | SCE_GS_RGBAQ << (0 * 4)
             | SCE_GS_XYZF2 << (1 * 4);
 
         pedraw_buf[1][0] = 0x80;
@@ -177,30 +187,73 @@ label:
     return 0;
 }
 
+#if defined(BUILD_JP_VERSION)
+static inline void LoadQword(sceVu0FVECTOR *v0)
+{
+    asm volatile("      \n\
+        lq $6, 0x00(%0) \n\
+    ": : "r" (v0) : "$6");
+}
+
+static inline void StoreQword(sceVu0FVECTOR *v0)
+{
+    asm volatile("      \n\
+        sq $6, 0x00(%0) \n\
+    ": : "r" (v0) : "$6");
+}
+
 void SetVU1Header()
 {
     sceVu0FVECTOR *svec;
     sceVu0FVECTOR *dvec;
     int i;
 
-    svec = (sceVu0FVECTOR *)0x70000000;
     dvec = (sceVu0FVECTOR *)getObjWrk();
+    svec = (sceVu0FVECTOR *)SCRATCHPAD;
 
+    for (i = 0; i < 26; i++)
+    {
+        LoadQword(svec);
+        svec++;
+
+        StoreQword(dvec);
+        dvec++;
+    }
+
+    AppendDmaBuffer(47);
+    FlushModel(0);
+}
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+void SetVU1Header()
+{
+    sceVu0FVECTOR *svec;
+    sceVu0FVECTOR *dvec;
+    int i;
+
+    dvec = (sceVu0FVECTOR *)getObjWrk();
+    svec = (sceVu0FVECTOR *)SCRATCHPAD;
+
+    /*
+     * US/EU version optimization: the original JP version copied one
+     * 16-byte sceVu0FVECTOR per iteration. This version unrolls the loop
+     * to copy two vectors (32 bytes) per iteration using lq/sq, reducing
+     * loop overhead without changing the total amount copied.
+     */
     for (i = 0; i < 13; i++)
     {
-        __asm__ __volatile__("\n\
-            lq $6,0x0(%0)\n\
-            lq $7,0x10(%0)\n\
-            ": : "r" (svec) : "$6", "$7"
-        );
+        /* Load two quadwords (2 x sceVu0FVECTOR) into GPRs. */
+        asm volatile("      \n\
+            lq $6, 0x00(%0) \n\
+            lq $7, 0x10(%0) \n\
+        ": : "r" (svec) : "$6", "$7");
 
         svec += 2;
 
-        __asm__ __volatile__("\n\
-            sq $6,0x0(%0)\n\
-            sq $7,0x10(%0)\n\
-            ": : "r" (dvec) : "$6", "$7"
-        );
+        /* Store the loaded quadwords to the object work buffer. */
+        asm volatile("      \n\
+            sq $6, 0x00(%0) \n\
+            sq $7, 0x10(%0) \n\
+        ": : "r" (dvec) : "$6", "$7");
 
         dvec += 2;
     }
@@ -208,6 +261,7 @@ void SetVU1Header()
     AppendDmaBuffer(47);
     FlushModel(0);
 }
+#endif
 
 void CalcVertexBuffer(u_int *prim)
 {
@@ -270,14 +324,24 @@ u_int* SetVUVNData(u_int *prim)
     vh = (VUVN_PRIM *)&prim[2];
     vp = (sceVu0FVECTOR *)getObjWrk();
 
+#if defined(BUILD_JP_VERSION)
+    Vu0CopyVector(vp[0], (float *)&prim[4]);
+    Vu0CopyVector(vp[1], (float *)&prim[8]);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     copy_skinned_data(vp, (float *)&prim[4], (float *)&prim[8]);
+#endif
 
     vp += 2;
     prim += 12;
 
     for (i = 0; i < vh->vnum; i++, vp += 2, prim += 2)
     {
+#if defined(BUILD_JP_VERSION)
+        Vu0CopyVector(vp[0], (float *)prim[0]);
+        Vu0CopyVector(vp[1], (float *)prim[1]);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         copy_skinned_data(vp, (float *)prim[0], (float *)prim[1]);
+#endif
     }
 
     return (u_int *)vp;
@@ -294,7 +358,12 @@ u_int* SetVUVNDataPost(u_int *prim)
     vh = (VUVN_PRIM *)&prim[2];
     vp = (sceVu0FVECTOR *)getObjWrk();
 
+#if defined(BUILD_JP_VERSION)
+    Vu0CopyVector(vp[0], (float *)&prim[4]);
+    Vu0CopyVector(vp[1], (float *)&prim[8]);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     copy_skinned_data(vp, (float *)&prim[4], (float *)&prim[8]);
+#endif
 
     vp += 2;
     prim += 12;
@@ -306,7 +375,12 @@ u_int* SetVUVNDataPost(u_int *prim)
         {
             for (i = 0; i < vh->vnum; i++, vp += 2, prim += 2)
             {
+#if defined(BUILD_JP_VERSION)
+                Vu0CopyVector(vp[0], (float *)prim[0]);
+                Vu0CopyVector(vp[1], (float *)prim[1]);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
                 copy_skinned_data(vp, (float *)prim[0], (float *)prim[1]);
+#endif
             }
         }
         else
@@ -327,7 +401,12 @@ u_int* SetVUVNDataPost(u_int *prim)
         {
             for (i = 0; i < vh->vnum; i++, vp += 2, prim += 2)
             {
+#if defined(BUILD_JP_VERSION)
+                Vu0CopyVector(vp[0], (float *)prim[0]);
+                Vu0CopyVector(vp[1], (float *)prim[1]);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
                 copy_skinned_data(vp, (float *)prim[0], (float *)prim[1]);
+#endif
             }
         }
         else
@@ -338,6 +417,7 @@ u_int* SetVUVNDataPost(u_int *prim)
 
                 load_matrix_0(lcp[cn[0x1c]].workm);
                 load_matrix_1(lcp[cn[0x1d]].workm);
+
                 calc_skinned_data(vp, (float *)prim[0], (float *)prim[1]);
             }
         }
@@ -345,8 +425,14 @@ u_int* SetVUVNDataPost(u_int *prim)
     default:
         for (i = 0; i < vh->vnum; i++, vp += 2, prim += 2)
         {
+#if defined(BUILD_JP_VERSION)
+            Vu0CopyVector(vp[0], (float *)prim[0]);
+            Vu0CopyVector(vp[1], (float *)prim[1]);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
             copy_skinned_data(vp, (float *)prim[0], (float *)prim[1]);
+#endif
         }
+    break;
     }
 
     return (u_int *)vp;
@@ -354,10 +440,10 @@ u_int* SetVUVNDataPost(u_int *prim)
 
 void printTEX0(sceGsTex0 *tex0)
 {
-    printf("TBP0 %x TBW %d PSM %x TW %d TH %d TCC %d\n",
+    VER_PRINTF("TBP0 %x TBW %d PSM %x TW %d TH %d TCC %d\n",
            tex0->TBP0, tex0->TBW, tex0->PSM, tex0->TW, tex0->TH, tex0->TCC);
 
-    printf("TFX %d CBP %x CPSM %x CSM %d CSA %d CLD %x\n",
+    VER_PRINTF("TFX %d CBP %x CPSM %x CSM %d CSA %d CLD %x\n",
            tex0->TFX, tex0->CBP, tex0->CPSM, tex0->CSM, tex0->CSA, tex0->CLD);
 
 }
@@ -436,9 +522,8 @@ void SetVUMeshData(u_int *prim)
         AppendDmaBuffer(1);
         FlushModel(0);
     break;
-
     default:
-        printf("Illegal Packet %d\n", mtype);
+        VER_PRINTF("Illegal Packet %d\n", mtype);
     break;
     }
 }
@@ -490,16 +575,21 @@ void SetVUMeshDataPost(u_int *prim)
         FlushModel(0);
     break;
     default:
-        printf("Illegal Packet %d\n", mtype);
+        VER_PRINTF("Illegal Packet %d\n", mtype);
     break;
     }
 }
 
 void SetCoordData(u_int *prim)
 {
+#if defined(BUILD_JP_VERSION)
+    int i;
+#endif
     int j;
     float abs;
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     SgCOORDUNIT *llp;
+#endif
 
     if (prim[3] == 0)
     {
@@ -508,6 +598,18 @@ void SetCoordData(u_int *prim)
 
     for (j = 1; j < blocksm - 1; j++)
     {
+#if defined(BUILD_JP_VERSION)
+        Vu0CopyMatrix(lcp[j].workm, lcp[j].lwmtx);
+
+        abs = 0.0f;
+
+        for (i = 0; i < 3; i++)
+        {
+            abs += sqrtf(lcp[j].workm[0][i] * lcp[j].workm[0][i] + lcp[j].workm[1][i] * lcp[j].workm[1][i] + lcp[j].workm[2][i] * lcp[j].workm[2][i]);
+        }
+
+        lcp[j].workm[3][3] = 3.0f / abs;
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         llp = &lcp[j];
 
         Vu0CopyMatrix(llp->workm, llp->lwmtx);
@@ -517,6 +619,7 @@ void SetCoordData(u_int *prim)
         abs += SgCalcLen(llp->workm[0][2], llp->workm[1][2], llp->workm[2][2]);
 
         llp->workm[3][3] = 3.0f / abs;
+#endif
     }
 
     SetLightData(&lcp[prim[2]], &lcp[prim[2]]);
@@ -652,7 +755,7 @@ int write_coord = 0;
 
 void AppendVUProgTag(u_int *prog)
 {
-    while(((SgSourceChainTag *)prog)->ID != 7) /* so long as it's not DmaEnd */
+    while(((SgSourceChainTag *)prog)->ID != 7) /* as long as it's not DmaEnd */
     {
         AppendDmaTag((u_int)(((SgSourceChainTag *)prog)+1), ((SgSourceChainTag *)prog)->QWC);
         prog = (u_int *)&(((u_long *)prog)[((SgSourceChainTag *)prog)->QWC * 2 + 2]);
@@ -666,7 +769,7 @@ void LoadSgProg(int load_prog)
         0x0,
         0x0,
         0x3000060,
-        0x20001D0,
+        0x20001d0,
     };
     static SgSourceChainTag starttag;
 
@@ -728,6 +831,7 @@ void SetUpSortUnit()
     SCRATCHPAD[3] = 0x6c2e0000;
 
     datap = &SCRATCHPAD[4];
+
     datap[12] = 0;
     datap[13] = 0x20364000;
 
@@ -773,6 +877,7 @@ void SetUpSortUnit()
     datap[5] = 0;
     datap[6] = 0;
     datap[7] = 0;
+
     AppendDmaBuffer(2);
 }
 
@@ -789,7 +894,7 @@ void SgSortUnit(void *sgd_top, int pnum)
 
     if (((u_int)lcp & 0xf) != 0)
     {
-        printf("SgSortUnit Data broken. %x lcp %x\n", sgd_top, lcp);
+        VER_PRINTF("SgSortUnit Data broken. %x lcp %x\n", sgd_top, lcp);
         return;
     }
 
@@ -842,7 +947,7 @@ void SgSortUnitKind(void *sgd_top, int num)
 
     hs = (HeaderSection *)sgd_top;
 
-    if (hs->kind & 1)
+    if (hs->kind & 0x1)
     {
         SgSortUnitP(sgd_top,num);
     }
@@ -854,58 +959,53 @@ void SgSortUnitKind(void *sgd_top, int num)
 
 void _SetLWMatrix0(sceVu0FMATRIX m0)
 {
-    __asm__ volatile ("\n\
-        lqc2    $vf4,0(%0)\n\
-        lqc2    $vf5,0x10(%0)\n\
-        lqc2    $vf6,0x20(%0)\n\
-        lqc2    $vf7,0x30(%0)\n\
-        ": :"r"(m0)
-    );
+    asm volatile ("            \n\
+        lqc2    $vf4, 0x00(%0) \n\
+        lqc2    $vf5, 0x10(%0) \n\
+        lqc2    $vf6, 0x20(%0) \n\
+        lqc2    $vf7, 0x30(%0) \n\
+    ": :"r"(m0));
 }
 
 void _SetLWMatrix1(sceVu0FMATRIX m0)
 {
-    __asm__ volatile ("\n\
-        lqc2    $vf8,0(%0)\n\
-        lqc2    $vf9,0x10(%0)\n\
-        lqc2    $vf10,0x20(%0)\n\
-        lqc2    $vf11,0x30(%0)\n\
-        ": :"r"(m0)
-    );
+    asm volatile("              \n\
+        lqc2    $vf8,  0x00(%0) \n\
+        lqc2    $vf9,  0x10(%0) \n\
+        lqc2    $vf10, 0x20(%0) \n\
+        lqc2    $vf11, 0x30(%0) \n\
+    ": :"r"(m0));
 }
 
 void _SetRotTransPersMatrix(sceVu0FMATRIX m0)
 {
-    __asm__ volatile ("\n\
-        lqc2    $vf8,0(%0)\n\
-        lqc2    $vf9,0x10(%0)\n\
-        lqc2    $vf10,0x20(%0)\n\
-        lqc2    $vf11,0x30(%0)\n\
-        ": :"r"(m0)
-    );
+    asm volatile("              \n\
+        lqc2    $vf8,  0x00(%0) \n\
+        lqc2    $vf9,  0x10(%0) \n\
+        lqc2    $vf10, 0x20(%0) \n\
+        lqc2    $vf11, 0x30(%0) \n\
+    ": :"r"(m0));
 }
 
 void _CalcVertex(float *dp, float *v, float *n)
 {
-    __asm__ volatile ("\n\
-        lqc2         $vf13,0(%1)\n\
-        vmulax.xyzw  ACCxyzw,$vf4xyzw,$vf13x\n\
-        vmadday.xyzw ACCxyzw,$vf5xyzw,$vf13y\n\
-        vmaddaz.xyzw ACCxyzw,$vf6xyzw,$vf13z\n\
-        vmaddw.xyzw  $vf12xyzw,$vf7xyzw,$vf13w\n\
-        lq           $6,0(%2)\n\
-        sq           $6,0x10(%0)\n\
-        sqc2         $vf12,0(%0)\n\
-        ": :"r"(dp), "r"(v), "r"(n) : "$6"
-    );
+    asm volatile("                               \n\
+        lqc2         $vf13,     0x00(%1)         \n\
+        vmulax.xyzw  ACCxyzw,   $vf4xyzw, $vf13x \n\
+        vmadday.xyzw ACCxyzw,   $vf5xyzw, $vf13y \n\
+        vmaddaz.xyzw ACCxyzw,   $vf6xyzw, $vf13z \n\
+        vmaddw.xyzw  $vf12xyzw, $vf7xyzw, $vf13w \n\
+        lq           $6,        0x00(%2)         \n\
+        sq           $6,        0x10(%0)         \n\
+        sqc2         $vf12,     0x00(%0)         \n\
+    ": :"r"(dp), "r"(v), "r"(n) : "$6");
 }
 
 void _vfito0(int *v0)
 {
-    __asm__ volatile ("\n\
-        vminiw.xyzw $vf18xyzw,$vf18xyzw,$vf19w\n\
-        vftoi0.xyzw $vf18xyzw,$vf18xyzw\n\
-        sqc2        $vf18,0(%0)\n\
-        ": :"r"(v0)
-    );
+    asm volatile("                               \n\
+        vminiw.xyzw $vf18xyzw, $vf18xyzw, $vf19w \n\
+        vftoi0.xyzw $vf18xyzw, $vf18xyzw         \n\
+        sqc2        $vf18,     0(%0)             \n\
+    ": :"r"(v0));
 }

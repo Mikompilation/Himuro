@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 39.870858335507435,
+    "fuzzy_match_percent": 40.38886676644651,
     "total_code": "1165232",
-    "matched_code": "464588",
-    "matched_code_percent": 39.870858335507435,
+    "matched_code": "470624",
+    "matched_code_percent": 40.38886676644651,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 1262,
-    "matched_functions_percent": 37.18326458456099,
+    "matched_functions": 1290,
+    "matched_functions_percent": 38.0082498526812,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -10467,9 +10467,14 @@
     {
       "name": "graphics/graph3d/sgsu",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "6036",
+        "matched_code": "6036",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 28,
+        "matched_functions": 28,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -10477,14 +10482,17 @@
         {
           "name": ".text",
           "size": "6096",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -10492,141 +10500,169 @@
         {
           "name": "_AddColor",
           "size": "20",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SgSuDebugOn",
           "size": "12",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SgSuDebugOff",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetDebugSign",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PutDebugSign",
           "size": "200",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SgSetVNBuffer",
           "size": "36",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CheckCoordCache",
           "size": "456",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetVU1Header",
           "size": "84",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CalcVertexBuffer",
           "size": "564",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetVUVNData",
           "size": "136",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetVUVNDataPost",
           "size": "852",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "printTEX0",
           "size": "236",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetVUMeshData",
           "size": "640",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetVUMeshDataPost",
           "size": "392",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetCoordData",
           "size": "404",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SgSortUnitPrim",
           "size": "244",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SgSortUnitPrimPost",
           "size": "212",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SgSortPreProcess",
           "size": "200",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "AppendVUProgTag",
           "size": "132",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "LoadSgProg",
           "size": "204",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetUpSortUnit",
           "size": "476",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SgSortUnit",
           "size": "352",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SgSortUnitKind",
           "size": "32",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "_SetLWMatrix0",
           "size": "24",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "_SetLWMatrix1",
           "size": "24",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "_SetRotTransPersMatrix",
           "size": "24",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "_CalcVertex",
           "size": "44",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "_vfito0",
           "size": "20",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -23755,14 +23791,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 39.870858335507435,
+        "fuzzy_match_percent": 40.38886676644651,
         "total_code": "1165232",
-        "matched_code": "464588",
-        "matched_code_percent": 39.870858335507435,
+        "matched_code": "470624",
+        "matched_code_percent": 40.38886676644651,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 1262,
-        "matched_functions_percent": 37.18326458456099,
+        "matched_functions": 1290,
+        "matched_functions_percent": 38.0082498526812,
         "complete_data_percent": 100.0,
         "total_units": 154
       }
