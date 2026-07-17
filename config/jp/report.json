@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 40.38886676644651,
+    "fuzzy_match_percent": 40.63190849547558,
     "total_code": "1165232",
-    "matched_code": "470624",
-    "matched_code_percent": 40.38886676644651,
+    "matched_code": "473456",
+    "matched_code_percent": 40.63190849547558,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 1290,
-    "matched_functions_percent": 38.0082498526812,
+    "matched_functions": 1318,
+    "matched_functions_percent": 38.83323512080141,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -10675,9 +10675,14 @@
     {
       "name": "graphics/graph3d/sgdma",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "2832",
+        "matched_code": "2832",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 28,
+        "matched_functions": 28,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -10685,14 +10690,17 @@
         {
           "name": ".text",
           "size": "2880",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -10700,141 +10708,169 @@
         {
           "name": "SetBlackWhiteCLUT",
           "size": "12",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ClearBlackWhiteCLUT",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SendDmaON",
           "size": "12",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SendDmaOFF",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ClearDMATrans",
           "size": "108",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CheckDMATrans",
           "size": "40",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CheckDmaSync",
           "size": "80",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FlushBuffer",
           "size": "304",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FlushModel",
           "size": "176",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "InitialDmaBuffer",
           "size": "32",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "AppendDmaTag",
           "size": "56",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "AppendDmaBuffer",
           "size": "92",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "AppendDmaTagCall",
           "size": "64",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "AppendDmaTagNextRet",
           "size": "44",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "AppendDmaBufferFromEndAddress",
           "size": "136",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ClearTextureCache",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PushTextureCache",
           "size": "12",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PopTextureCahche",
           "size": "12",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SgSetPacketBuffer",
           "size": "44",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetDmaScratch",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetDmaBSS",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GsImageProcess",
           "size": "12",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SgTEXTransEnable",
           "size": "12",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SgTEXTransDisenable",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "LoadTRI2Files",
           "size": "268",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RebuildTRI2Files",
           "size": "888",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetTextureAnimation",
           "size": "76",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "LoadTextureAnimation",
           "size": "304",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -23791,14 +23827,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 40.38886676644651,
+        "fuzzy_match_percent": 40.63190849547558,
         "total_code": "1165232",
-        "matched_code": "470624",
-        "matched_code_percent": 40.38886676644651,
+        "matched_code": "473456",
+        "matched_code_percent": 40.63190849547558,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 1290,
-        "matched_functions_percent": 38.0082498526812,
+        "matched_functions": 1318,
+        "matched_functions_percent": 38.83323512080141,
         "complete_data_percent": 100.0,
         "total_units": 154
       }

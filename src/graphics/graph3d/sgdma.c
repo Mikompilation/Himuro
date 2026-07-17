@@ -15,7 +15,7 @@
 #define REG_DMAC_ENABLEW     ((volatile u_int *)(0x1000f590))
 #define REG_DMAC_1_VIF1_CHCR ((volatile u_int *)(0x10009000))
 
-static int DummyFlushData[] = {0, 0, 0, 0};
+static int DummyFlushData[] = { 0, 0, 0, 0 };
 
 static u_int send_dma_flg = 1;
 
@@ -48,7 +48,7 @@ void ClearDMATrans()
     printf("Dma Trans Error %x\n", *REG_VIF1_STAT);
 
     *REG_DMAC_ENABLEW = 0x10000;
-    *REG_DMAC_1_VIF1_CHCR &= 0xfffffeff;
+    *REG_DMAC_1_VIF1_CHCR &= ~0x100;
     *REG_DMAC_ENABLEW = 0;
 
     sceDevVif1Reset();
@@ -159,7 +159,7 @@ void AppendDmaBuffer(int size)
     ptag->pad[0] = ptag->pad[1] = 0;
 
     ((int *)ptag)[0] = size | 0x30000000;
-    ((int *)ptag)[1] = (u_int)(&objwork[sbuffer_p]) & 0xfffffff;
+    ((int *)ptag)[1] = (u_int)(&objwork[sbuffer_p]) & 0x0fffffff;
 
     sbuffer_p += size;
     vu1tag_num++;
@@ -182,7 +182,7 @@ void AppendDmaTagCall(u_int next_tag_addr)
 void AppendDmaTagNextRet(void *tag_addr)
 {
     ((int *)tag_addr)[0] = 0x20000000;
-    ((int *)tag_addr)[1] = ((u_int)&cachetag[vu1tag_num]) & 0xfffffff;
+    ((int *)tag_addr)[1] = ((u_int)&cachetag[vu1tag_num]) & 0x0fffffff;
 }
 
 void AppendDmaBufferFromEndAddress(qword *end_adr)
@@ -206,7 +206,7 @@ void AppendDmaBufferFromEndAddress(qword *end_adr)
     read_p[3] = (size - 1 | 0x50000000);
 
     ((int *)ptag)[0] = size | 0x30000000;
-    ((int *)ptag)[1] = (u_int)read_p & 0xfffffff;
+    ((int *)ptag)[1] = (u_int)read_p & 0x0fffffff;
 
     ptag->pad[0] = ptag->pad[1] = 0;
 
@@ -466,15 +466,24 @@ void RebuildTRI2Files(u_int *prim)
         start_vif_code[3] = SCE_VIF1_SET_DIRECT(vtsize * 0x200 + 6, 0);
 
         *(u_long *)&start_vif_code[4] = SCE_GIF_SET_TAG(1, SCE_GS_FALSE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 4);
-        *(u_long *)&start_vif_code[6] = 0xeeee;
+        *(u_long *)&start_vif_code[6] = 0
+            | SCE_GIF_PACKED_AD << (4 * 0)
+            | SCE_GIF_PACKED_AD << (4 * 1)
+            | SCE_GIF_PACKED_AD << (4 * 2)
+            | SCE_GIF_PACKED_AD << (4 * 3);
+
         *(u_long *)&start_vif_code[8] = SCE_GS_SET_BITBLTBUF(0, 0, SCE_GS_PSMCT32, minaddr, 1, SCE_GS_PSMCT32);
         *(u_long *)&start_vif_code[10] = SCE_GS_BITBLTBUF;
+
         *(u_long *)&start_vif_code[12] = SCE_GS_SET_TRXPOS(0, 0, 0, 0, 0);
         *(u_long *)&start_vif_code[14] = SCE_GS_TRXPOS;
+
         *(u_long *)&start_vif_code[16] = SCE_GS_SET_TRXREG(2 * 32, vtsize * 32);
         *(u_long *)&start_vif_code[18] = SCE_GS_TRXREG;
+
         *(u_long *)&start_vif_code[20] = SCE_GS_SET_TRXDIR(0);
         *(u_long *)&start_vif_code[22] = SCE_GS_TRXDIR;
+
         *(u_long *)&start_vif_code[24] = SCE_GIF_SET_TAG(vtsize * 0x200, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_IMAGE, 0);
 
         start_vif_code = start_vif_code + 4 + (vtsize * 0x200 + 6) * 4;
