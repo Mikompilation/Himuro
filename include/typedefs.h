@@ -55,6 +55,7 @@ typedef union {
 	#define VER_COSF cosf
 	#define VER_ACOSF acosf
 	#define VER_SQRTF sqrtf
+    #define VER_RSQRTF(x) 1.0f / sqrtf(x)
 	#define VER_SINFD(d) sinf(((d) * PI) / 180.0f)
 	#define VER_COSFD(d) cosf(((d) * PI) / 180.0f)
 #elif defined(BUILD_US_VERSION)
@@ -65,6 +66,7 @@ typedef union {
 	#define VER_COSF SgCosf
 	#define VER_ACOSF SgACosf
 	#define VER_SQRTF SgSqrtf
+    #define VER_RSQRTF SgRSqrtf
 	#define VER_SINFD SgSinfd
 	#define VER_COSFD SgCosfd
 #elif defined(BUILD_EU_VERSION)
@@ -75,6 +77,7 @@ typedef union {
 	#define VER_COSF SgCosf
 	#define VER_ACOSF SgACosf
 	#define VER_SQRTF SgSqrtf
+    #define VER_RSQRTF SgRSqrtf
 	#define VER_SINFD SgSinfd
 	#define VER_COSFD SgCosfd
 #endif

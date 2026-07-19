@@ -1585,7 +1585,7 @@ void SetShadowCamera(float *center, sceVu0FVECTOR *bbox, SgCOORDUNIT *cp)
 
     tmpvec[3] = 0.0f;
 
-    Vu0MulVectorX(tmpmat[3], tmpvec, -1.0f);
+    Vu0ScaleVector(tmpmat[3], tmpvec, -1.0f);
 
     Vu0CopyMatrix(CullingMatrix, tmpmat);
 }

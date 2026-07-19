@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 40.63190849547558,
+    "fuzzy_match_percent": 41.72353660043665,
     "total_code": "1165232",
-    "matched_code": "473456",
-    "matched_code_percent": 40.63190849547558,
+    "matched_code": "486176",
+    "matched_code_percent": 41.72353660043665,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 1318,
-    "matched_functions_percent": 38.83323512080141,
+    "matched_functions": 1369,
+    "matched_functions_percent": 40.33588685916323,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -10883,9 +10883,14 @@
     {
       "name": "graphics/graph3d/sglight",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "12720",
+        "matched_code": "12720",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 51,
+        "matched_functions": 51,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -10893,14 +10898,17 @@
         {
           "name": ".text",
           "size": "12808",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -10908,256 +10916,307 @@
         {
           "name": "SgPreRenderDbgOn",
           "size": "12",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SgPreRenderDbgOff",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "QueSetMatrix",
           "size": "88",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "QueSetMatrixNonNormalized",
           "size": "36",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SgSetAmbient",
           "size": "24",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SgSetDefaultLight",
           "size": "436",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "_SetColorMtx",
           "size": "176",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "_ReadDLightMtx",
           "size": "20",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "_ReadSLightMtx",
           "size": "20",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "_ReadDColor",
           "size": "20",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "Tim2CalcBufWidth__local_2",
           "size": "108",
-          "metadata": {}
+          "metadata": {},
+          "fuzzy_match_percent": 100.0
         },
         {
           "name": "GetDecay",
           "size": "12",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetDecay",
           "size": "48",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetMaxColor255",
           "size": "172",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetBWLight",
           "size": "72",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetMaterialPointer",
           "size": "40",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ClearMaterialCache",
           "size": "56",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetMaterialDataVU",
           "size": "616",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetMaterialData",
           "size": "1312",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetMaterialPointerCoord",
           "size": "16",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetMaterialPointerCoordVU",
           "size": "28",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetMaterialDataPrerender",
           "size": "64",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "_SetDLight",
           "size": "40",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "_SetSLight",
           "size": "40",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetPointGroup",
           "size": "468",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetSpotGroup",
           "size": "736",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetLightData",
           "size": "956",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SgSetInfiniteLights",
           "size": "104",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SgSetPointLights",
           "size": "48",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SgSetSpotLights",
           "size": "144",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PushLight",
           "size": "248",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PopLight",
           "size": "216",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ClearLightStack",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "_CalcPointA",
           "size": "192",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "_CalcPointB",
           "size": "60",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CalcPointLight",
           "size": "136",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CalcSpotLight",
           "size": "348",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SgReadLights",
           "size": "1256",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetNextUnpackAddr",
           "size": "40",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetPreRenderTYPE0",
           "size": "420",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetPreRenderTYPE2",
           "size": "532",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetPreRenderTYPE2F",
           "size": "560",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetPreRenderMeshData",
           "size": "92",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "_SetSpotPos",
           "size": "16",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "_SpotInnerProduct",
           "size": "36",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SelectLight",
           "size": "1280",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SgPreRenderPrim",
           "size": "532",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SgPreRender",
           "size": "196",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ClearPreRenderMeshData",
           "size": "352",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SgClearPreRenderPrim",
           "size": "100",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SgClearPreRender",
           "size": "180",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -23827,14 +23886,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 40.63190849547558,
+        "fuzzy_match_percent": 41.72353660043665,
         "total_code": "1165232",
-        "matched_code": "473456",
-        "matched_code_percent": 40.63190849547558,
+        "matched_code": "486176",
+        "matched_code_percent": 41.72353660043665,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 1318,
-        "matched_functions_percent": 38.83323512080141,
+        "matched_functions": 1369,
+        "matched_functions_percent": 40.33588685916323,
         "complete_data_percent": 100.0,
         "total_units": 154
       }

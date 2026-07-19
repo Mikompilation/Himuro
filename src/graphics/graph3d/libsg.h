@@ -397,8 +397,17 @@ static inline void Vu0ApplyVectorInline(sceVu0FVECTOR v0, sceVu0FVECTOR v1)
 }
 
 // Line 463
-static inline float inline_asm__libsg_g_line_463(float *v0, float*v1)
+static inline float Vu0InnerProduct(float *v0, float*v1)
 {
+    /*
+     * Computes the 3D dot (inner) product of two vectors.
+     *
+     * Only the x, y, and z components are used; the w component is ignored.
+     *
+     * Equivalent C:
+     *
+     *     return (v0[0] * v1[0]) + (v0[1] * v1[1]) + (v0[2] * v1[2]);
+    */
     float ret;
 
     asm volatile("                        \n\
@@ -415,7 +424,7 @@ static inline float inline_asm__libsg_g_line_463(float *v0, float*v1)
 }
 
 // Line 478
-static inline void Vu0MulVectorX(sceVu0FVECTOR v0, sceVu0FVECTOR v1, float sc)
+static inline void Vu0ScaleVector(sceVu0FVECTOR v0, sceVu0FVECTOR v1, float sc)
 {
     asm volatile("                       \n\
         qmtc2        %1,    $vf13        \n\

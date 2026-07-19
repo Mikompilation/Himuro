@@ -2,6 +2,12 @@
 #include "typedefs.h"
 #include "sglight.h"
 
+//gcc/src/newlib/libm/math/sf_cos.c
+float cosf(float x);
+
+//gcc/src/newlib/libm/math/wf_sqrt.c
+float sqrtf(float x);
+
 #include "sce/libvu0.h"
 
 #include "graphics/graph3d/libsg.h"
@@ -23,6 +29,22 @@ static int stack_light_num[9];
 #define GET_MESH_GLOOPS(intpointer) (int)((char*)intpointer)[14]
 
 #define SCRATCHPAD ((u_char *)0x70000000)
+
+#if defined(BUILD_JP_VERSION)
+#define VER_VU0_INNER_PRODUCT sceVu0InnerProduct
+#define VER_VU0_SCALE_VECTOR_XYZ sceVu0ScaleVectorXYZ
+#define VER_VU0_SCALE_VECTOR sceVu0ScaleVector
+#elif defined(BUILD_US_VERSION)
+#define VER_VU0_INNER_PRODUCT Vu0InnerProduct
+#define VER_VU0_SCALE_VECTOR_XYZ Vu0ScaleVector
+#define VER_VU0_SCALE_VECTOR Vu0ScaleVector
+#elif defined(BUILD_EU_VERSION)
+#define VER_VU0_INNER_PRODUCT Vu0InnerProduct
+#define VER_VU0_SCALE_VECTOR_XYZ Vu0ScaleVector
+#define VER_VU0_SCALE_VECTOR Vu0ScaleVector
+#endif
+
+#define PI 3.1415925f
 
 void SgPreRenderDbgOn()
 {
@@ -66,7 +88,7 @@ void SgSetDefaultLight(sceVu0FVECTOR eye, SgLIGHT *p0, SgLIGHT *p1, SgLIGHT *p2)
 
     _NormalizeVector(ieye, eye);
 
-    Vu0MulVectorX(ieye, ieye, -1.0f);
+    VER_VU0_SCALE_VECTOR(ieye, ieye, -1.0f);
 
     for (i = 0; i < 3; i++)
     {
@@ -85,8 +107,10 @@ void SgSetDefaultLight(sceVu0FVECTOR eye, SgLIGHT *p0, SgLIGHT *p1, SgLIGHT *p2)
         if (po[i] != NULL)
         {
             _NormalizeVector(nl, po[i]->direction);
+
             Vu0CopyVector(DColorMtx[i], po[i]->diffuse);
             Vu0CopyVector(SColorMtx[i], po[i]->specular);
+
             QueSetMatrix(DLightMtx, i, nl);
             Vu0AddVector(tmpv, ieye, nl);
             _NormalizeVector(tmpv, tmpv);
@@ -104,76 +128,76 @@ void SgSetDefaultLight(sceVu0FVECTOR eye, SgLIGHT *p0, SgLIGHT *p1, SgLIGHT *p2)
 
 static void _SetColorMtx(sceVu0FMATRIX dc, sceVu0FMATRIX sc, sceVu0FVECTOR am, sceVu0FVECTOR v)
 {
-    __asm__ volatile ("\n\
-        lqc2      $vf16,0(%3)\n\
-        lqc2      $vf12,0(%2)\n\
-        vmul.xyz  $vf19xyz,$vf16xyz,$vf12xyz\n\
-        vmulw.xyz $vf19xyz,$vf19xyz,$vf12w\n\
-        lqc2      $vf16,0x30(%3)\n\
-        lqc2      $vf12,0(%0)\n\
-        vmulw.xyz $vf16xyz,$vf16xyz,$vf12w\n\
-        vadd.xyz  $vf19xyz,$vf19xyz,$vf16xyz\n\
-        lqc2      $vf16,0x10(%3)\n\
-        vmove.w   $vf19w,$vf12w\n\
-        lqc2      $vf12,0(%0)\n\
-        lqc2      $vf13,0x10(%0)\n\
-        lqc2      $vf14,0x20(%0)\n\
-        vmul.xyz  $vf26xyz,$vf12xyz,$vf16xyz\n\
-        vmul.xyz  $vf27xyz,$vf13xyz,$vf16xyz\n\
-        vmul.xyz  $vf28xyz,$vf14xyz,$vf16xyz\n\
-        vmulw.xyz $vf26xyz,$vf26xyz,$vf12w\n\
-        vmulw.xyz $vf27xyz,$vf27xyz,$vf12w\n\
-        vmulw.xyz $vf28xyz,$vf28xyz,$vf12w\n\
-        vmove.w   $vf27w,$vf16w\n\
-        lqc2      $vf16,0x20(%3)\n\
-        lqc2      $vf12,0(%1)\n\
-        lqc2      $vf13,0x10(%1)\n\
-        lqc2      $vf14,0x20(%1)\n\
-        vmul.xyz  $vf12xyz,$vf12xyz,$vf16xyz\n\
-        vmul.xyz  $vf13xyz,$vf13xyz,$vf16xyz\n\
-        vmul.xyz  $vf14xyz,$vf14xyz,$vf16xyz\n\
-        vmulw.xyz $vf12xyz,$vf12xyz,$vf13w\n\
-        vmulw.xyz $vf13xyz,$vf13xyz,$vf13w\n\
-        vmulw.xyz $vf14xyz,$vf14xyz,$vf13w\n\
-        vmove.w   $vf12w,$vf16w\n\
-        vmove.w   $vf13w,$vf27w\n\
-        vmove.w   $vf19w,$vf14w\n\
-        viaddi    $vi2,$vi0,0xf\n\
-        viaddi    $vi2,$vi2,0xb\n\
-        vsqi.xyzw $vf26xyzw,($vi2++)\n\
-        vsqi.xyzw $vf27xyzw,($vi2++)\n\
-        vsqi.xyzw $vf28xyzw,($vi2++)\n\
-        vsqi.xyzw $vf12xyzw,($vi2++)\n\
-        vsqi.xyzw $vf13xyzw,($vi2++)\n\
-        vsqi.xyzw $vf14xyzw,($vi2++)\n\
-        vsqi.xyzw $vf19xyzw,($vi2++) \n\
+    asm volatile("                              \n\
+        lqc2      $vf16,     0x00(%3)           \n\
+        lqc2      $vf12,     0x00(%2)           \n\
+        vmul.xyz  $vf19xyz,  $vf16xyz, $vf12xyz \n\
+        vmulw.xyz $vf19xyz,  $vf19xyz, $vf12w   \n\
+        lqc2      $vf16,     0x30(%3)           \n\
+        lqc2      $vf12,     0x00(%0)           \n\
+        vmulw.xyz $vf16xyz,  $vf16xyz, $vf12w   \n\
+        vadd.xyz  $vf19xyz,  $vf19xyz, $vf16xyz \n\
+        lqc2      $vf16,     0x10(%3)           \n\
+        vmove.w   $vf19w,    $vf12w             \n\
+        lqc2      $vf12,     0x00(%0)           \n\
+        lqc2      $vf13,     0x10(%0)           \n\
+        lqc2      $vf14,     0x20(%0)           \n\
+        vmul.xyz  $vf26xyz,  $vf12xyz, $vf16xyz \n\
+        vmul.xyz  $vf27xyz,  $vf13xyz, $vf16xyz \n\
+        vmul.xyz  $vf28xyz,  $vf14xyz, $vf16xyz \n\
+        vmulw.xyz $vf26xyz,  $vf26xyz, $vf12w   \n\
+        vmulw.xyz $vf27xyz,  $vf27xyz, $vf12w   \n\
+        vmulw.xyz $vf28xyz,  $vf28xyz, $vf12w   \n\
+        vmove.w   $vf27w,    $vf16w             \n\
+        lqc2      $vf16,     0x20(%3)           \n\
+        lqc2      $vf12,     0x00(%1)           \n\
+        lqc2      $vf13,     0x10(%1)           \n\
+        lqc2      $vf14,     0x20(%1)           \n\
+        vmul.xyz  $vf12xyz,  $vf12xyz, $vf16xyz \n\
+        vmul.xyz  $vf13xyz,  $vf13xyz, $vf16xyz \n\
+        vmul.xyz  $vf14xyz,  $vf14xyz, $vf16xyz \n\
+        vmulw.xyz $vf12xyz,  $vf12xyz, $vf13w   \n\
+        vmulw.xyz $vf13xyz,  $vf13xyz, $vf13w   \n\
+        vmulw.xyz $vf14xyz,  $vf14xyz, $vf13w   \n\
+        vmove.w   $vf12w,    $vf16w             \n\
+        vmove.w   $vf13w,    $vf27w             \n\
+        vmove.w   $vf19w,    $vf14w             \n\
+        viaddi    $vi2,      $vi0,0xf           \n\
+        viaddi    $vi2,      $vi2,0xb           \n\
+        vsqi.xyzw $vf26xyzw, ($vi2++)           \n\
+        vsqi.xyzw $vf27xyzw, ($vi2++)           \n\
+        vsqi.xyzw $vf28xyzw, ($vi2++)           \n\
+        vsqi.xyzw $vf12xyzw, ($vi2++)           \n\
+        vsqi.xyzw $vf13xyzw, ($vi2++)           \n\
+        vsqi.xyzw $vf14xyzw, ($vi2++)           \n\
+        vsqi.xyzw $vf19xyzw, ($vi2++)           \n\
     ": :"r"(dc), "r"(sc), "r"(am), "r"(v));
 }
 
 void _ReadDLightMtx(sceVu0FMATRIX tmp)
 {
-    __asm__ volatile ("\n\
-        sqc2    $vf20,0(%0)\n\
-        sqc2    $vf21,0x10(%0)\n\
-        sqc2    $vf22,0x20(%0)\n\
+    asm volatile("              \n\
+        sqc2    $vf20, 0x00(%0) \n\
+        sqc2    $vf21, 0x10(%0) \n\
+        sqc2    $vf22, 0x20(%0) \n\
     ": :"r"(tmp));
 }
 
 static void _ReadSLightMtx(sceVu0FMATRIX tmp)
 {
-    __asm__ volatile ("\n\
-        sqc2    $vf23,0(%0)\n\
-        sqc2    $vf24,0x10(%0)\n\
-        sqc2    $vf25,0x20(%0)\n\
+    asm volatile("              \n\
+        sqc2    $vf23, 0x00(%0) \n\
+        sqc2    $vf24, 0x10(%0) \n\
+        sqc2    $vf25, 0x20(%0) \n\
     ": :"r"(tmp));
 }
 
 void _ReadDColor(sceVu0FMATRIX tmp)
 {
-    __asm__ volatile ("\n\
-        sqc2    $vf26,0(%0)\n\
-        sqc2    $vf27,0x10(%0)\n\
-        sqc2    $vf28,0x20(%0)\n\
+    asm volatile("              \n\
+        sqc2    $vf26, 0(%0)    \n\
+        sqc2    $vf27, 0x10(%0) \n\
+        sqc2    $vf28, 0x20(%0) \n\
     ": :"r"(tmp));
 }
 
@@ -213,20 +237,18 @@ int GetDecay()
 {
     u_int tmp;
 
-    __asm__ volatile("\n\
-        cfc2    %0,$vi13\n\
-        ": :"r"(tmp)
-    );
+    asm volatile("        \n\
+        cfc2    %0, $vi13 \n\
+    ": :"r"(tmp));
 
     return tmp;
 }
 
 static inline void _SetDevay_asm(u_int decay)
 {
-    __asm__ volatile("\n\
-        ctc2    %0,$vi13\n\
-        ": :"r"(decay)
-    );
+    asm volatile("        \n\
+        ctc2    %0, $vi13 \n\
+    ": :"r"(decay));
 }
 
 static void SetDecay(u_int decay)
@@ -318,6 +340,7 @@ void SetMaterialDataVU(u_int *prim)
     if (old_tag_buf != tagswap)
     {
         ClearMaterialCache((HeaderSection *)sgd_top_addr);
+
         old_tag_buf = tagswap;
     }
 
@@ -439,24 +462,22 @@ void SetMaterialPointerCoordVU()
 
 inline static void load_abmient(float *amb)
 {
-    __asm__ volatile ("\n\
-        lqc2    $vf19,0(%0)\n\
-        ": :"r"(amb)
-    );
+    asm volatile("           \n\
+        lqc2    $vf19, 0(%0) \n\
+    ": :"r"(amb));
 }
 
 void SetMaterialDataPrerender()
 {
-    __asm__ volatile ("\n\
-        lqc2    $vf4,0(%0)\n\
-        lqc2    $vf5,0x10(%0)\n\
-        lqc2    $vf6,0x20(%0)\n\
-        lqc2    $vf7,0(%1)\n\
-        lqc2    $vf8,0x10(%1)\n\
-        lqc2    $vf9,0x20(%1)\n\
-        lqc2    $vf10,0x30(%1)\n\
-        ": :"r"(&SCRATCHPAD[0x110]), "r"(&SCRATCHPAD[0x150])
-    );
+    asm volatile("              \n\
+        lqc2    $vf4,  0(%0)    \n\
+        lqc2    $vf5,  0x10(%0) \n\
+        lqc2    $vf6,  0x20(%0) \n\
+        lqc2    $vf7,  0(%1)    \n\
+        lqc2    $vf8,  0x10(%1) \n\
+        lqc2    $vf9,  0x20(%1) \n\
+        lqc2    $vf10, 0x30(%1) \n\
+    ": :"r"(&SCRATCHPAD[0x110]), "r"(&SCRATCHPAD[0x150]));
 
     load_abmient(SgLightParallelp->Parallel_Ambient);
 }
@@ -491,7 +512,8 @@ void SetMaterialData(u_int *prim)
     Vu0MulVectorXYZ(*dvec, TAmbient, pmatC->Ambient);
     Vu0AddVector(*dvec, *dvec, pmatC->Emission);
     SetBWLight(*dvec);
-    Vu0MulVectorX(SgLightParallelp->Parallel_Ambient, *dvec, TAmbient[3]);
+
+    VER_VU0_SCALE_VECTOR_XYZ(SgLightParallelp->Parallel_Ambient, *dvec, TAmbient[3]);
 
     SgLightParallelp->Parallel_Ambient[3] = SColorMtx[2][3];
 
@@ -499,10 +521,13 @@ void SetMaterialData(u_int *prim)
     {
         Vu0MulVectorXYZ(*dvec, DColorMtx[i], pmatC->Diffuse);
         SetBWLight(*dvec);
-        Vu0MulVectorX(SgLightParallelp->Parallel_DColor[i], *dvec, DColorMtx[0][3]);
+
+        VER_VU0_SCALE_VECTOR_XYZ(SgLightParallelp->Parallel_DColor[i], *dvec, DColorMtx[0][3]);
+
         Vu0MulVectorXYZ(*dvec, SColorMtx[i], pmatC->Specular);
         SetBWLight(*dvec);
-        Vu0MulVectorX(SgLightParallelp->Parallel_SColor[i], *dvec, SColorMtx[1][3]);
+
+        VER_VU0_SCALE_VECTOR_XYZ(SgLightParallelp->Parallel_SColor[i], *dvec, SColorMtx[1][3]);
     }
 
     for (; i < 3; i++)
@@ -524,13 +549,15 @@ void SetMaterialData(u_int *prim)
         {
             Vu0MulVectorXYZW(*dvec, ppg->DColorMtx[j], pmatC->Diffuse);
             SetBWLight(*dvec);
-            Vu0MulVectorX(*dvec, *dvec, DColorMtx[0][3]);
+
+            VER_VU0_SCALE_VECTOR(*dvec, *dvec, DColorMtx[0][3]);
 
             max_color = SetMaxColor255(SgLightPointp->Point_DColor[j], *dvec);
 
             Vu0MulVectorXYZW(*dvec, ppg->SColorMtx[j], pmatC->Specular);
             SetBWLight(*dvec);
-            Vu0MulVectorX(SgLightPointp->Point_SColor[j], *dvec, SColorMtx[1][3] / max_color);
+
+            VER_VU0_SCALE_VECTOR(SgLightPointp->Point_SColor[j], *dvec, SColorMtx[1][3] / max_color);
 
             SgLightPointp->Point_btimes[j] = ppg->btimes[j] * max_color;
             pmatC->Point.lnum[j] = ppg->lnum[j];
@@ -545,13 +572,15 @@ void SetMaterialData(u_int *prim)
         {
             Vu0MulVectorXYZW(*dvec, spg->DColorMtx[j], pmatC->Diffuse);
             SetBWLight(*dvec);
-            Vu0MulVectorX(*dvec, *dvec, DColorMtx[0][3]);
+
+            VER_VU0_SCALE_VECTOR(*dvec, *dvec, DColorMtx[0][3]);
 
             max_color = SetMaxColor255(SgLightSpotp->Spot_DColor[j], *dvec);
 
             Vu0MulVectorXYZW(*dvec, spg->SColorMtx[j], pmatC->Specular);
             SetBWLight(*dvec);
-            Vu0MulVectorX(SgLightSpotp->Spot_SColor[j], *dvec, SColorMtx[1][3] / max_color);
+
+            VER_VU0_SCALE_VECTOR(SgLightSpotp->Spot_SColor[j], *dvec, SColorMtx[1][3] / max_color);
 
             SgLightSpotp->Spot_btimes[j] = spg->btimes[j] * max_color;
             pmatC->Spot.lnum[j] = spg->lnum[j];
@@ -561,32 +590,30 @@ void SetMaterialData(u_int *prim)
 
 static void _SetDLight(sceVu0FMATRIX m0)
 {
-    __asm__ volatile ("\n\
-        lqc2      $vf20,0(%0)\n\
-        lqc2      $vf21,0x10(%0)\n\
-        lqc2      $vf22,0x20(%0)\n\
-        viaddi    $vi2,$vi0,0xf\n\
-        viaddi    $vi2,$vi2,5\n\
-        vsqi.xyzw $vf20,($vi2++)\n\
-        vsqi.xyzw $vf21,($vi2++)\n\
-        vsqi.xyzw $vf22,($vi2++)\n\
-        ": :"r"(m0)
-    );
+    asm volatile("                        \n\
+        lqc2         $vf20, 0x00(%0)      \n\
+        lqc2         $vf21, 0x10(%0)      \n\
+        lqc2         $vf22, 0x20(%0)      \n\
+        viaddi       $vi2,  $vi0,     0xf \n\
+        viaddi       $vi2,  $vi2,     0x5 \n\
+        vsqi.xyzw    $vf20, ($vi2++)      \n\
+        vsqi.xyzw    $vf21, ($vi2++)      \n\
+        vsqi.xyzw    $vf22, ($vi2++)      \n\
+    ": :"r"(m0));
 }
 
 static void _SetSLight(sceVu0FMATRIX m0)
 {
-    __asm__ volatile ("\n\
-        lqc2      $vf23,0(%0)\n\
-        lqc2      $vf24,0x10(%0)\n\
-        lqc2      $vf25,0x20(%0)\n\
-        viaddi    $vi2,$vi0,0xf\n\
-        viaddi    $vi2,$vi2,8\n\
-        vsqi.xyzw $vf23,($vi2++)\n\
-        vsqi.xyzw $vf24,($vi2++)\n\
-        vsqi.xyzw $vf25,($vi2++)\n\
-        ": :"r"(m0)
-    );
+    asm volatile("                        \n\
+        lqc2         $vf23, 0x00(%0)      \n\
+        lqc2         $vf24, 0x10(%0)      \n\
+        lqc2         $vf25, 0x20(%0)      \n\
+        viaddi       $vi2,  $vi0,     0xf \n\
+        viaddi       $vi2,  $vi2,     0x8 \n\
+        vsqi.xyzw    $vf23, ($vi2++)      \n\
+        vsqi.xyzw    $vf24, ($vi2++)      \n\
+        vsqi.xyzw    $vf25, ($vi2++)      \n\
+    ": :"r"(m0));
 }
 
 void SetPointGroup()
@@ -790,7 +817,7 @@ void SetLightData(SgCOORDUNIT *cp0, SgCOORDUNIT *cp1)
             tmpv[1] = cp0->lwmtx[1][i];
             tmpv[2] = cp0->lwmtx[2][i];
 
-            scale[i] = SgRSqrtf(tmpv[0] * tmpv[0] + tmpv[1] * tmpv[1] + tmpv[2] * tmpv[2]);
+            scale[i] = VER_RSQRTF(tmpv[0] * tmpv[0] + tmpv[1] * tmpv[1] + tmpv[2] * tmpv[2]);
 
             _NormalizeVector(tmpv, tmpv);
 
@@ -819,7 +846,9 @@ void SetLightData(SgCOORDUNIT *cp0, SgCOORDUNIT *cp1)
     }
     else
     {
-        for (i = 0; i < SgSpotNum; i++)
+        int spotNum = SgSpotNum; // HACK: fixes stack order
+
+        for (i = 0; i < spotNum; i++)
         {
             SgSpotLight[i].SEnable = 0;
         }
@@ -830,10 +859,13 @@ void SetLightData(SgCOORDUNIT *cp0, SgCOORDUNIT *cp1)
         }
 
         sceVu0UnitMatrix(tmp);
+
         Vu0CopyMatrix(*(sceVu0FMATRIX *)&SCRATCHPAD[0x150], tmp);
         Vu0CopyMatrix(*(sceVu0FMATRIX *)&SCRATCHPAD[0x110], tmp);
+
         Vu0CopyMatrix(SgLightCoordp->Parallel_DLight, DLightMtx);
         Vu0CopyMatrix(SgLightCoordp->Parallel_SLight, SLightMtx);
+
         SetPointGroup();
         SetSpotGroup(NULL);
     }
@@ -910,7 +942,8 @@ void PushLight()
         stack_light[stack_num * 3 + 1] = SgPointLight;
         stack_light[stack_num * 3 + 2] = SgSpotLight;
 
-        Vu0MulVectorX(eye, ieye, -1.0f);
+        VER_VU0_SCALE_VECTOR(eye, ieye, -1.0f);
+
         Vu0CopyVector(stack_eye[stack_num], eye);
 
         stack_light_num[stack_num * 3 + 0] = SgInfiniteNum;
@@ -999,13 +1032,12 @@ static void _CalcPointA(sceVu0FMATRIX grc, float *grm, float *len)
         vwaitq                                  \n\
         vaddq.z        $vf27z,  $vf0z,   Q      \n\
         sqc2           $vf27,   0x00(%2)        \n\
-        ": :"r"(grc), "r"(grm), "r"(len)
-    );
+    ": :"r"(grc), "r"(grm), "r"(len));
 }
 
 static void _CalcPointB(float *len)
 {
-    asm volatile("\n\
+    asm volatile("                            \n\
         lqc2           $vf27, 0x00(%0)        \n\
         vmul.xyz       $vf25, $vf27,   $vf17  \n\
         vminiw.xyz     $vf25, $vf25,   $vf0w  \n\
@@ -1019,8 +1051,7 @@ static void _CalcPointB(float *len)
         vmadday.xyz    ACC,   $vf15,   $vf25y \n\
         vmaddaz.xyz    ACC,   $vf16,   $vf25z \n\
         vmadd.xyz      $vf18, $vf18,   $vf1   \n\
-        ": :"r"(len)
-    );
+    ": :"r"(len));
 }
 
 void CalcPointLight()
@@ -1133,8 +1164,7 @@ inline static void asm_CalcSpotLight(LMATRIX cdata, sceVu0FVECTOR mdata)
         vmaddax.xyz    ACC,   $vf14,    $vf25x  \n\
         vmadday.xyz    ACC,   $vf15,    $vf25y  \n\
         vmaddz.xyz     $vf18, $vf16,    $vf25z  \n\
-        ": :"r"(cdata), "r"(mdata)
-    );
+    ": :"r"(cdata), "r"(mdata));
 }
 
 void CalcSpotLight()
@@ -1172,9 +1202,10 @@ void SgReadLights(void *sgd_top, void *light_top, float *Ambient, SgLIGHT *Iligh
 
     if (cp != NULL)
     {
-        scale = SgSqrtf(inline_asm__libsg_g_line_463(cp->lwmtx[0], cp->lwmtx[0]));
-        scale += SgSqrtf(inline_asm__libsg_g_line_463(cp->lwmtx[1], cp->lwmtx[1]));
-        scale += SgSqrtf(inline_asm__libsg_g_line_463(cp->lwmtx[2], cp->lwmtx[2]));
+        scale = VER_SQRTF(VER_VU0_INNER_PRODUCT(cp->lwmtx[0], cp->lwmtx[0]));
+        scale += VER_SQRTF(VER_VU0_INNER_PRODUCT(cp->lwmtx[1], cp->lwmtx[1]));
+        scale += VER_SQRTF(VER_VU0_INNER_PRODUCT(cp->lwmtx[2], cp->lwmtx[2]));
+
         scale /= 3.0f;
     }
     else
@@ -1329,7 +1360,7 @@ void SgReadLights(void *sgd_top, void *light_top, float *Ambient, SgLIGHT *Iligh
                             sceVu0SubVector(Slight[i].direction, pvec[1], pvec[2]);
                         }
 
-                        cc = SgCosfd(pvec[1][3]);
+                        cc = VER_COSFD(pvec[1][3]);
 
                         Slight[i].intens = cc * cc;
                         Slight[i].power = _TransSPower(scale);
@@ -1368,8 +1399,26 @@ u_int* GetNextUnpackAddr(u_int *prim)
     }
 }
 
-inline static void asm_1__SetPreRenderTYPE0(sceVu0FVECTOR normal, sceVu0FVECTOR vertex)
+inline static void _PrepareLightingInputs(sceVu0FVECTOR normal, sceVu0FVECTOR vertex)
 {
+    /*
+     * Loads the surface normal and transforms the input vertex by the
+     * matrix stored in vf7-vf10.
+     *
+     * The transformed vertex is written to vf12, while the normal is
+     * loaded into vf13 for subsequent lighting calculations.
+     *
+     * Equivalent C:
+     *
+     *     vf13 = normal;
+     *
+     *     // vf12 = Matrix4x4Multiply(vf7_vf10, vertex);
+     *
+     *     vf12.x = (vf7.x * vertex.x) + (vf8.x * vertex.y) + (vf9.x * vertex.z) + (vf10.x * vertex.w);
+     *     vf12.y = (vf7.y * vertex.x) + (vf8.y * vertex.y) + (vf9.y * vertex.z) + (vf10.y * vertex.w);
+     *     vf12.z = (vf7.z * vertex.x) + (vf8.z * vertex.y) + (vf9.z * vertex.z) + (vf10.z * vertex.w);
+     *     vf12.w = (vf7.w * vertex.x) + (vf8.w * vertex.y) + (vf9.w * vertex.z) + (vf10.w * vertex.w);
+     */
     asm volatile("                              \n\
         lqc2            $vf13, 0x00(%0)         \n\
         lqc2            $vf12, 0x00(%1)         \n\
@@ -1381,16 +1430,31 @@ inline static void asm_1__SetPreRenderTYPE0(sceVu0FVECTOR normal, sceVu0FVECTOR 
     );
 }
 
-inline static void asm_2__SetPreRenderTYPE0(sceVu0FVECTOR first)
+inline static void _LoadLightingColor(sceVu0FVECTOR first)
 {
+    /*
+     * Loads the initial color into vf18.
+     *
+     * Equivalent C:
+     *
+     *     vf18 = first;
+     */
     asm volatile("              \n\
         lqc2    $vf18, 0x00(%0) \n\
         ": :"r"(first)
     );
 }
 
-inline static void asm_3__SetPreRenderTYPE0(sceVu0FVECTOR pcol)
+inline static void _ClampAndStoreLightingColor(sceVu0FVECTOR pcol)
 {
+    /*
+     * Clamps the computed color to the maximum value stored in vf19.w
+     * and stores the result.
+     *
+     * Equivalent C:
+     *
+     *     pcol = min(vf18, vf19.w);
+     */
     asm volatile("                           \n\
         vminiw.xyzw    $vf18, $vf18, $vf19w  \n\
         sqc2           $vf18, 0x00(%0)       \n\
@@ -1447,18 +1511,18 @@ void SetPreRenderTYPE0(int gloops, u_int *prim)
                 normal[1] = vp[4];
                 normal[2] = vp[5];
 
-                asm_1__SetPreRenderTYPE0(normal, vertex);
+                _PrepareLightingInputs(normal, vertex);
 
                 first[0] = ((float *)prim)[0];
                 first[1] = ((float *)prim)[1];
                 first[2] = ((float *)prim)[2];
 
-                asm_2__SetPreRenderTYPE0(first);
+                _LoadLightingColor(first);
 
                 CalcPointLight();
                 CalcSpotLight();
 
-                asm_3__SetPreRenderTYPE0(pcol);
+                _ClampAndStoreLightingColor(pcol);
 
                 ((float *)prim)[0] = pcol[0];
                 ((float *)prim)[1] = pcol[1];
@@ -1520,18 +1584,18 @@ void SetPreRenderTYPE2(int gloops, u_int *prim)
                 normal[1] = vp[4];
                 normal[2] = vp[5];
 
-                asm_1__SetPreRenderTYPE0(normal, vertex);
+                _PrepareLightingInputs(normal, vertex);
 
                 first[0] = ((float *)prim)[0];
                 first[1] = ((float *)prim)[1];
                 first[2] = ((float *)prim)[2];
 
-                asm_2__SetPreRenderTYPE0(first);
+                _LoadLightingColor(first);
 
                 CalcPointLight();
                 CalcSpotLight();
 
-                asm_3__SetPreRenderTYPE0(pcol);
+                _ClampAndStoreLightingColor(pcol);
 
                 if (dbg_flg != 0)
                 {
@@ -1608,18 +1672,18 @@ void SetPreRenderTYPE2F(int gloops, u_int *prim)
                 vertex[1] = vp[1];
                 vertex[2] = vp[2];
 
-                asm_1__SetPreRenderTYPE0(normal, vertex);
+                _PrepareLightingInputs(normal, vertex);
 
                 first[0] = ((float *)prim)[0];
                 first[1] = ((float *)prim)[1];
                 first[2] = ((float *)prim)[2];
 
-                asm_2__SetPreRenderTYPE0(first);
+                _LoadLightingColor(first);
 
                 CalcPointLight();
                 CalcSpotLight();
 
-                asm_3__SetPreRenderTYPE0(pcol);
+                _ClampAndStoreLightingColor(pcol);
 
                 if (dbg_flg != 0)
                 {
@@ -1666,26 +1730,24 @@ void SetPreRenderMeshData(u_int *prim)
 
 static void _SetSpotPos(sceVu0FVECTOR pos, sceVu0FVECTOR dir)
 {
-    asm volatile("              \n\
-        lqc2    $vf12, 0(%0)    \n\
-        lqc2    $vf13, 0(%1)    \n\
-        ": :"r"(pos), "r"(dir)
-    );
+    asm volatile("           \n\
+        lqc2    $vf12, 0(%0) \n\
+        lqc2    $vf13, 0(%1) \n\
+    ": :"r"(pos), "r"(dir));
 }
 
 static float _SpotInnerProduct(sceVu0FVECTOR bpos)
 {
     float ret;
 
-    asm volatile("\n\
-        lqc2        $vf14, 0(%1)          \n\
-        vsub.xyz    $vf14, $vf12, $vf14   \n\
-        vmul.xyz    $vf14, $vf13, $vf14   \n\
-        vaddy.x     $vf14, $vf14, $vf14y  \n\
-        vaddz.x     $vf14, $vf14, $vf14z  \n\
-        qmfc2       %0,    $vf14          \n\
-        ":"=r"(ret) :"r"(bpos)
-    );
+    asm volatile("                       \n\
+        lqc2        $vf14, 0(%1)         \n\
+        vsub.xyz    $vf14, $vf12, $vf14  \n\
+        vmul.xyz    $vf14, $vf13, $vf14  \n\
+        vaddy.x     $vf14, $vf14, $vf14y \n\
+        vaddz.x     $vf14, $vf14, $vf14z \n\
+        qmfc2       %0,    $vf14         \n\
+    ":"=r"(ret) :"r"(bpos));
 
     return ret;
 }
@@ -1710,7 +1772,7 @@ void SelectLight(u_int *prim)
     int j;
     int k;
 
-    if (SgSpotNum == 0 && SgPointNum == 0) // Line 1614
+    if (SgSpotNum == 0 && SgPointNum == 0)
     {
         return;
     }
@@ -1719,7 +1781,9 @@ void SelectLight(u_int *prim)
     pvec = (sceVu0FVECTOR *)&prim[4];
 
     Vu0AddVector(*(sceVu0FVECTOR *)&SCRATCHPAD[0x6a0], *pvec, *(sceVu0FVECTOR *)&prim[32]);
-    Vu0MulVectorX(*(sceVu0FVECTOR *)&SCRATCHPAD[0x6a0], *(sceVu0FVECTOR *)&SCRATCHPAD[0x6a0], 0.5f);
+
+    VER_VU0_SCALE_VECTOR(*(sceVu0FVECTOR *)&SCRATCHPAD[0x6a0], *(sceVu0FVECTOR *)&SCRATCHPAD[0x6a0], 0.5f);
+
     Vu0LoadMatrix(lcp[prim[2]].lwmtx);
 
     for (i = 0; i < 8; i++)
@@ -1754,6 +1818,7 @@ void SelectLight(u_int *prim)
 
                     maxpower[j] = TmpLight->spower;
                     maxnum[j] = i;
+
                     break;
                 }
             }
@@ -1782,15 +1847,16 @@ void SelectLight(u_int *prim)
             TmpLight->SEnable = 1;
 
             Vu0CopyVector(plain, TmpLight->direction);
-            plain[3] = -inline_asm__libsg_g_line_463(plain, TmpLight->pos);
+            plain[3] = -Vu0InnerProduct(plain, TmpLight->pos);
 
             Vu0AddVector(interest, TmpLight->pos, TmpLight->direction);
 
-            spotdir = inline_asm__libsg_g_line_463(plain, interest) + plain[3];
+            spotdir = Vu0InnerProduct(plain, interest) + plain[3];
 
             for (j = 0; j < 8; j++)
             {
-                spotvalue[j] = inline_asm__libsg_g_line_463(plain, tmpvec[j]) + plain[3];
+                spotvalue[j] = Vu0InnerProduct(plain, tmpvec[j]) + plain[3];
+
                 if (spotvalue[j] * spotdir < 0.0f)
                 {
                     break;
@@ -1814,6 +1880,7 @@ void SelectLight(u_int *prim)
 
                         maxpower[j] = TmpLight->spower;
                         maxnum[j] = i;
+
                         break;
                     }
                 }
@@ -1875,7 +1942,7 @@ void SgPreRenderPrim(u_int *prim)
         case 3:
             Vu0CopyMatrix(*(sceVu0FMATRIX *)&SCRATCHPAD[0x430], lcp[prim[2]].lwmtx);
             _MulMatrix(*(sceVu0FMATRIX *)&SCRATCHPAD[0x90], SgWSMtx, *(sceVu0FMATRIX *)&SCRATCHPAD[0x430]);
-            break;
+        break;
         case 4:
             SelectLight(prim);
             SetLightData(&lcp[prim[2]], NULL);
