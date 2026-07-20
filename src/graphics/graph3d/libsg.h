@@ -424,8 +424,20 @@ static inline float Vu0InnerProduct(float *v0, float*v1)
 }
 
 // Line 478
-static inline void Vu0ScaleVector(sceVu0FVECTOR v0, sceVu0FVECTOR v1, float sc)
+static inline void Vu0ScaleVectorXYZ(sceVu0FVECTOR v0, sceVu0FVECTOR v1, float sc)
 {
+    /*
+     * Scales the x, y, and z components of a vector by a scalar value.
+     *
+     * Only the x, y, and z components are modified; the w component is preserved.
+     *
+     * Equivalent C:
+     *
+     *     dst[0] = src[0] * sc;
+     *     dst[1] = src[1] * sc;
+     *     dst[2] = src[2] * sc;
+     *     dst[3] = src[3];
+    */
     asm volatile("                       \n\
         qmtc2        %1,    $vf13        \n\
         lqc2         $vf12, 0(%2)        \n\

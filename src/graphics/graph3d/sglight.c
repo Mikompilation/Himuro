@@ -36,12 +36,12 @@ static int stack_light_num[9];
 #define VER_VU0_SCALE_VECTOR sceVu0ScaleVector
 #elif defined(BUILD_US_VERSION)
 #define VER_VU0_INNER_PRODUCT Vu0InnerProduct
-#define VER_VU0_SCALE_VECTOR_XYZ Vu0ScaleVector
-#define VER_VU0_SCALE_VECTOR Vu0ScaleVector
+#define VER_VU0_SCALE_VECTOR_XYZ Vu0ScaleVectorXYZ
+#define VER_VU0_SCALE_VECTOR Vu0ScaleVectorXYZ
 #elif defined(BUILD_EU_VERSION)
 #define VER_VU0_INNER_PRODUCT Vu0InnerProduct
-#define VER_VU0_SCALE_VECTOR_XYZ Vu0ScaleVector
-#define VER_VU0_SCALE_VECTOR Vu0ScaleVector
+#define VER_VU0_SCALE_VECTOR_XYZ Vu0ScaleVectorXYZ
+#define VER_VU0_SCALE_VECTOR Vu0ScaleVectorXYZ
 #endif
 
 #define PI 3.1415925f
