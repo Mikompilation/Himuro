@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 41.72353660043665,
+    "fuzzy_match_percent": 42.01738366265259,
     "total_code": "1165232",
-    "matched_code": "486176",
-    "matched_code_percent": 41.72353660043665,
+    "matched_code": "489600",
+    "matched_code_percent": 42.01738366265259,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 1369,
-    "matched_functions_percent": 40.33588685916323,
+    "matched_functions": 1381,
+    "matched_functions_percent": 40.68945197407189,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -11229,9 +11229,14 @@
     {
       "name": "graphics/graph3d/sgsup",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "3424",
+        "matched_code": "3424",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 12,
+        "matched_functions": 12,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -11239,14 +11244,17 @@
         {
           "name": ".text",
           "size": "3456",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -11254,61 +11262,73 @@
         {
           "name": "SgSuPDbgOn",
           "size": "12",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SgSuPDbgOff",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DispMicroMemory",
           "size": "116",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DispVUMemory",
           "size": "432",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DrawBoundingBox",
           "size": "676",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetVUMeshDataP",
           "size": "556",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "BoundingBoxCalcP",
           "size": "404",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SgSortUnitPrimP",
           "size": "236",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SgSortPreProcessP",
           "size": "260",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SgSortUnitP",
           "size": "288",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetModelGroupPacket",
           "size": "76",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SgSortGroupP",
           "size": "360",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -23886,14 +23906,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 41.72353660043665,
+        "fuzzy_match_percent": 42.01738366265259,
         "total_code": "1165232",
-        "matched_code": "486176",
-        "matched_code_percent": 41.72353660043665,
+        "matched_code": "489600",
+        "matched_code_percent": 42.01738366265259,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 1369,
-        "matched_functions_percent": 40.33588685916323,
+        "matched_functions": 1381,
+        "matched_functions_percent": 40.68945197407189,
         "complete_data_percent": 100.0,
         "total_units": 154
       }

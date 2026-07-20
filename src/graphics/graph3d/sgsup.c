@@ -20,6 +20,10 @@
 static int write_flg = 0;
 static int write_counter = 0;
 static int dbg_flg = 0;
+#if defined(BUILD_JP_VERSION)
+static int dbg_num = 100000;
+static int dbg_max = -1;
+#endif
 
 extern void DIVP0_PROLOGUE_and_DIVP2_PROLOGUE() __attribute__((section(".vutext")));
 extern void MULTIP_PROLOGUE() __attribute__((section(".vutext")));
@@ -29,6 +33,15 @@ extern void DP2_PROLOGUE() __attribute__((section(".vutext")));
 #define GET_MESH_TYPE(intpointer) (char)((char*)intpointer)[13]
 
 #define SCRATCHPAD ((u_char *)0x70000000)
+
+#if defined(BUILD_JP_VERSION)
+void scePrintf(const char *fmt, ...);
+#define VER_PRINTF scePrintf
+#elif defined(BUILD_US_VERSION)
+#define VER_PRINTF printf
+#elif defined(BUILD_EU_VERSION)
+#define VER_PRINTF printf
+#endif
 
 void SgSuPDbgOn()
 {
@@ -48,7 +61,7 @@ void DispMicroMemory()
 
     while((u_int)read_p <= (u_int)(VU1_MICRO_ADDR + 1968*4*4))
     {
-        printf("%x:%x %x %x %x\n", (u_int)read_p, read_p[0], read_p[1], read_p[2], read_p[3]);
+        VER_PRINTF("%x:%x %x %x %x\n", (u_int)read_p, read_p[0], read_p[1], read_p[2], read_p[3]);
 
         read_p += 4;
     }
@@ -77,7 +90,7 @@ void DispVUMemory()
             read_p == (u_int *)(VU1_MEM_ADDR + 85*4*4) ||
             ((u_int)read_p >= (VU1_MEM_ADDR + 8*4*4) && (u_int)read_p <= (VU1_MEM_ADDR + 960 + 8*4*4)))
         {
-            printf("%x(%3d):%f %f %f %f\n",
+            VER_PRINTF("%x(%3d):%f %f %f %f\n",
                 (u_int)read_p, (u_int)((u_int)read_p - VU1_MEM_ADDR) / (4*4),
                 ((float *)read_p)[0],
                 ((float *)read_p)[1],
@@ -86,7 +99,7 @@ void DispVUMemory()
         }
         else
         {
-            printf("%x(%3d):%8x %8x %8x %8x\n",
+            VER_PRINTF("%x(%3d):%8x %8x %8x %8x\n",
                 (u_int)read_p, (u_int)((u_int)read_p - VU1_MEM_ADDR) / (4*4),
                 read_p[0],
                 read_p[1],
@@ -97,7 +110,7 @@ void DispVUMemory()
         read_p += 4;
     }
 
-    printf("\n");
+    VER_PRINTF("\n");
 
     exit(0);
 }
@@ -447,7 +460,7 @@ void SgSortPreProcessP(u_int *prim)
             GsImageProcess(prim);
         break;
         case 10:
-            if (save_tri2_pointer == (u_int *)0xFFFFFFFF)
+            if (save_tri2_pointer == (u_int *)0xffffffff)
             {
                 LoadTRI2Files(prim);
                 save_tri2_pointer = NULL;
@@ -460,7 +473,7 @@ void SgSortPreProcessP(u_int *prim)
         case 13:
             if (loadbw_flg != 0)
             {
-                if (save_bw_pointer == (u_int *)0xFFFFFFFF)
+                if (save_bw_pointer == (u_int *)0xffffffff)
                 {
                     LoadTRI2Files(prim);
                     save_bw_pointer = NULL;
@@ -501,7 +514,7 @@ void SgSortUnitP(void *sgd_top, int pnum)
 
     if (((u_int)lcp & 0xf) != 0)
     {
-        printf("SgSortUnitP Data broken. %x\n", (u_int)hs);
+        VER_PRINTF("SgSortUnitP Data broken. %x\n", (u_int)hs);
         return;
     }
 
@@ -532,8 +545,8 @@ void SgSortUnitP(void *sgd_top, int pnum)
     }
     else if (pnum == 0)
     {
-        save_tri2_pointer = (u_int *)0xFFFFFFFF;
-        save_bw_pointer = (u_int *)0xFFFFFFFF;
+        save_tri2_pointer = (u_int *)0xffffffff;
+        save_bw_pointer = (u_int *)0xffffffff;
         SgSortPreProcessP((u_int *)pk[pnum]);
     }
     else
@@ -584,7 +597,7 @@ void SgSortGroupP(void *sgd_top, int gnum)
 
     if (((u_int)lcp & 0xf) != 0)
     {
-        printf("SgSortGroupP Data broken. %x\n", (u_int)hs);
+        VER_PRINTF("SgSortGroupP Data broken. %x\n", (u_int)hs);
         return;
     }
 
