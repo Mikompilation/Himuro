@@ -14,8 +14,8 @@ float tanf(float x);
 #include "graphics/graph3d/libsg.h"
 #include "graphics/graph3d/sgdma.h"
 
-sceVu0FVECTOR clip_volume = {1920.0f, 896.0f, 256.0f, 16777000.0f};
-static sceVu0FVECTOR clip_volumev = {320.0f, 112.0f, 0.1f, 16777000.0f};
+sceVu0FVECTOR clip_volume = { 1920.0f, 896.0f, 256.0f, 16777000.0f };
+static sceVu0FVECTOR clip_volumev = { 320.0f, 112.0f, 0.1f, 16777000.0f };
 
 #define SCRATCHPAD ((u_char *)0x70000000)
 
@@ -129,8 +129,11 @@ void SetViewScreenClipMatrixOrtho(SgCAMERA *camera, float scrz)
     float zmax;
     float farz;
     float nearz;
-    /* 0x0(sp) */sceVu0FMATRIX mt;
-    float f24, f25, f26, f27; // not in STAB
+    sceVu0FMATRIX mt;
+    float f24; // not in STAB
+    float f25; // not in STAB
+    float f26; // not in STAB
+    float f27; // not in STAB
 
     zmin = camera->zmin;
     zmax = camera->zmax;
@@ -233,55 +236,116 @@ void printClipValue()
 
 int BoundClip(sceVu0FVECTOR ed, sceVu0FVECTOR v)
 {
+    /*
+     * Transforms a bounding-box vertex and performs a VU clipping test.
+     *
+     * The input vertex is transformed using the two 4x4 matrices currently
+     * loaded in vf4-vf7 and vf8-vf11. The first transformed result is
+     * tested with vclipw.xyz, which updates the VU clip flags. The second
+     * transformed result is written to ed.
+     *
+     * The returned value is the VU clip-code bitmask. The caller tests the
+     * eight corners of a bounding box and ANDs their clip codes together to
+     * determine whether the entire bounding volume lies outside a clipping
+     * plane.
+     *
+     * Equivalent C:
+     *
+     *     clipVertex = Matrix4x4Multiply(vf4_vf7, v);
+     *     transformed = Matrix4x4Multiply(vf8_vf11, v);
+     *
+     *     clipCode = VUClipTest(
+     *         clipVertex.x,
+     *         clipVertex.y,
+     *         clipVertex.z,
+     *         clipVertex.w
+     *     );
+     *
+     *     ed = transformed;
+     *
+     *     return clipCode;
+     */
     int ret;
 
-    asm volatile("                             \n\
-        lqc2            $vf12, 0(%1)           \n\
-        vmulax.xyzw     ACC,   $vf4,   $vf12x  \n\
-        vmadday.xyzw    ACC,   $vf5,   $vf12y  \n\
-        vmaddaz.xyzw    ACC,   $vf6,   $vf12z  \n\
-        vmaddw.xyzw     $vf14, $vf7,   $vf0w   \n\
-        vmulax.xyzw     ACC,   $vf8,   $vf12x  \n\
-        vmadday.xyzw    ACC,   $vf9,   $vf12y  \n\
-        vmaddaz.xyzw    ACC,   $vf10,  $vf12z  \n\
-        vmaddw.xyzw     $vf13, $vf11,  $vf0w   \n\
-        vclipw.xyz      $vf14, $vf14w          \n\
-        vnop                                   \n\
-        vnop                                   \n\
-        vnop                                   \n\
-        vnop                                   \n\
-        vnop                                   \n\
-        sqc2            $vf13, 0(%2)           \n\
-        cfc2            %0,    $vi18           \n\
-        ":"=r"(ret):"r"(v),"r"(ed)
-    );
+    asm volatile("                           \n\
+        lqc2            $vf12, 0(%1)         \n\
+        vmulax.xyzw     ACC,   $vf4,  $vf12x \n\
+        vmadday.xyzw    ACC,   $vf5,  $vf12y \n\
+        vmaddaz.xyzw    ACC,   $vf6,  $vf12z \n\
+        vmaddw.xyzw     $vf14, $vf7,  $vf0w  \n\
+        vmulax.xyzw     ACC,   $vf8,  $vf12x \n\
+        vmadday.xyzw    ACC,   $vf9,  $vf12y \n\
+        vmaddaz.xyzw    ACC,   $vf10, $vf12z \n\
+        vmaddw.xyzw     $vf13, $vf11, $vf0w  \n\
+        vclipw.xyz      $vf14, $vf14w        \n\
+        vnop                                 \n\
+        vnop                                 \n\
+        vnop                                 \n\
+        vnop                                 \n\
+        vnop                                 \n\
+        sqc2            $vf13, 0(%2)         \n\
+        cfc2            %0,    $vi18         \n\
+    ":"=r"(ret):"r"(v),"r"(ed));
 
     return ret;
 }
 
 int BoundClipQ(sceVu0FVECTOR ed, sceVu0FVECTOR v0, sceVu0FVECTOR v1)
 {
+    /*
+     * Transforms a bounding-box vertex, performs a VU clipping test, and
+     * computes its perspective-divided coordinates.
+     *
+     * The input vertex v1 is transformed using the matrices currently
+     * loaded in vf4-vf7 and vf8-vf11. The first transformed result is
+     * tested with vclipw.xyz and then perspective-divided using the
+     * quotient computed from vf0.w / vf14.w. Its xyz components are
+     * written to v0. The second transformed result is written to ed.
+     *
+     * The returned value is the VU clip-code bitmask.
+     *
+     * Equivalent C:
+     *
+     *     clipVertex = Matrix4x4Multiply(vf4_vf7, v1);
+     *     transformed = Matrix4x4Multiply(vf8_vf11, v1);
+     *
+     *     Q = vf0.w / clipVertex.w;
+     *
+     *     clipCode = ClipTest(
+     *         clipVertex.x,
+     *         clipVertex.y,
+     *         clipVertex.z,
+     *         clipVertex.w
+     *     );
+     *
+     *     v0.x = clipVertex.x * Q;
+     *     v0.y = clipVertex.y * Q;
+     *     v0.z = clipVertex.z * Q;
+     *
+     *     ed = transformed;
+     *
+     *     return clipCode;
+     */
     int ret;
 
-    asm volatile("                             \n\
-        lqc2            $vf12, 0(%1)           \n\
-        vmulax.xyzw     ACC,   $vf4,   $vf12x  \n\
-        vmadday.xyzw    ACC,   $vf5,   $vf12y  \n\
-        vmaddaz.xyzw    ACC,   $vf6,   $vf12z  \n\
-        vmaddw.xyzw     $vf14, $vf7,   $vf0w   \n\
-        vmulax.xyzw     ACC,   $vf8,   $vf12x  \n\
-        vmadday.xyzw    ACC,   $vf9,   $vf12y  \n\
-        vmaddaz.xyzw    ACC,   $vf10,  $vf12z  \n\
-        vdiv            Q,     $vf0w,  $vf14w  \n\
-        vclipw.xyz      $vf14, $vf14w          \n\
-        vmaddw.xyzw     $vf13, $vf11,  $vf0w   \n\
-        vwaitq                                 \n\
-        vmulq.xyz       $vf14, $vf14,  Q       \n\
-        sqc2            $vf13, 0(%2)           \n\
-        sqc2            $vf14, 0(%3)           \n\
-        cfc2            %0,    $vi18           \n\
-        ":"=r"(ret):"r"(v1),"r"(ed),"r"(v0)
-    );
+    asm volatile("                           \n\
+        lqc2            $vf12, 0(%1)         \n\
+        vmulax.xyzw     ACC,   $vf4,  $vf12x \n\
+        vmadday.xyzw    ACC,   $vf5,  $vf12y \n\
+        vmaddaz.xyzw    ACC,   $vf6,  $vf12z \n\
+        vmaddw.xyzw     $vf14, $vf7,  $vf0w  \n\
+        vmulax.xyzw     ACC,   $vf8,  $vf12x \n\
+        vmadday.xyzw    ACC,   $vf9,  $vf12y \n\
+        vmaddaz.xyzw    ACC,   $vf10, $vf12z \n\
+        vdiv            Q,     $vf0w, $vf14w \n\
+        vclipw.xyz      $vf14, $vf14w        \n\
+        vmaddw.xyzw     $vf13, $vf11, $vf0w  \n\
+        vwaitq                               \n\
+        vmulq.xyz       $vf14, $vf14, Q      \n\
+        sqc2            $vf13, 0(%2)         \n\
+        sqc2            $vf14, 0(%3)         \n\
+        cfc2            %0,    $vi18         \n\
+    ":"=r"(ret):"r"(v1),"r"(ed),"r"(v0));
 
     return ret;
 }
@@ -307,79 +371,108 @@ SgCAMERA *nowcamera = NULL;
 
 int ClipCheck(sceVu0FVECTOR *vec)
 {
+    /*
+     * Performs a VU0 clipping test on a transformed vertex.
+     *
+     * The input vector is expected to be in clip space. The vclipw.xyz
+     * instruction compares the x, y, and z components against the
+     * vector's w component and updates the VU clip flags.
+     *
+     * The resulting clip-code bitmask is returned from the VU status
+     * register.
+     *
+     * Equivalent C:
+     *
+     *     clipCode = 0;
+     *
+     *     if (v.x < -v.w) clipCode |= CLIP_LEFT;
+     *     if (v.x >  v.w) clipCode |= CLIP_RIGHT;
+     *     if (v.y < -v.w) clipCode |= CLIP_BOTTOM;
+     *     if (v.y >  v.w) clipCode |= CLIP_TOP;
+     *     if (v.z < -v.w) clipCode |= CLIP_NEAR;
+     *     if (v.z >  v.w) clipCode |= CLIP_FAR;
+     *
+     *     return clipCode;
+     */
     int ret;
 
-    asm volatile("\n\
-        lqc2          $vf12, 0(%1)       \n\
-        lqc2          $vf13, 0x10(%1)    \n\
-        lqc2          $vf14, 0x20(%1)    \n\
-        lqc2          $vf15, 0x30(%1)    \n\
-        vclipw.xyz    $vf12, $vf12w      \n\
-        vclipw.xyz    $vf13, $vf13w      \n\
-        vclipw.xyz    $vf14, $vf14w      \n\
-        vclipw.xyz    $vf15, $vf15w      \n\
-        vnop                             \n\
-        vnop                             \n\
-        vnop                             \n\
-        vnop                             \n\
-        vnop                             \n\
-        cfc2          %0,    $vi18       \n\
-        ":"=r"(ret):"r"(*vec)
-    );
+    asm volatile("                    \n\
+        lqc2          $vf12, 0x00(%1) \n\
+        lqc2          $vf13, 0x10(%1) \n\
+        lqc2          $vf14, 0x20(%1) \n\
+        lqc2          $vf15, 0x30(%1) \n\
+        vclipw.xyz    $vf12, $vf12w   \n\
+        vclipw.xyz    $vf13, $vf13w   \n\
+        vclipw.xyz    $vf14, $vf14w   \n\
+        vclipw.xyz    $vf15, $vf15w   \n\
+        vnop                          \n\
+        vnop                          \n\
+        vnop                          \n\
+        vnop                          \n\
+        vnop                          \n\
+        cfc2          %0,    $vi18    \n\
+    ":"=r"(ret):"r"(*vec));
 
     return ret;
 }
 
-// similar to: void _SetMulMatrixBB(sceVu0FMATRIX m0, sceVu0FMATRIX m1, sceVu0FMATRIX lw);
-static inline void asm_1__CheckBoundingBox(sceVu0FMATRIX m0, sceVu0FMATRIX m1, sceVu0FMATRIX lw)
+static inline void _PrepareBoundingBoxMatrices(sceVu0FMATRIX m0, sceVu0FMATRIX m1, sceVu0FMATRIX lw)
 {
-    asm volatile ("                              \n\
-        lqc2            $vf12, 0(%0)             \n\
-        lqc2            $vf13, 0x10(%0)          \n\
-        lqc2            $vf14, 0x20(%0)          \n\
-        lqc2            $vf15, 0x30(%0)          \n\
-        lqc2            $vf16, 0(%1)             \n\
-        lqc2            $vf17, 0x10(%1)          \n\
-        lqc2            $vf18, 0x20(%1)          \n\
-        lqc2            $vf19, 0x30(%1)          \n\
-        vmulax.xyzw     ACC,   $vf12,    $vf16x  \n\
-        vmadday.xyzw    ACC,   $vf13,    $vf16y  \n\
-        vmaddaz.xyzw    ACC,   $vf14,    $vf16z  \n\
-        vmaddw.xyzw     $vf4,  $vf15,    $vf16w  \n\
-        vmulax.xyzw     ACC,   $vf12,    $vf17x  \n\
-        vmadday.xyzw    ACC,   $vf13,    $vf17y  \n\
-        vmaddaz.xyzw    ACC,   $vf14,    $vf17z  \n\
-        vmaddw.xyzw     $vf5,  $vf15,    $vf17w  \n\
-        vmulax.xyzw     ACC,   $vf12,    $vf18x  \n\
-        vmadday.xyzw    ACC,   $vf13,    $vf18y  \n\
-        vmaddaz.xyzw    ACC,   $vf14,    $vf18z  \n\
-        vmaddw.xyzw     $vf6,  $vf15,    $vf18w  \n\
-        vmulax.xyzw     ACC,   $vf12,    $vf19x  \n\
-        vmadday.xyzw    ACC,   $vf13,    $vf19y  \n\
-        vmaddaz.xyzw    ACC,   $vf14,    $vf19z  \n\
-        vmaddw.xyzw     $vf7,  $vf15,    $vf19w  \n\
-        lqc2            $vf12, 0(%2)             \n\
-        lqc2            $vf13, 0x10(%2)          \n\
-        lqc2            $vf14, 0x20(%2)          \n\
-        lqc2            $vf15, 0x30(%2)          \n\
-        vmulax.xyzw     ACC,   $vf12,    $vf16x  \n\
-        vmadday.xyzw    ACC,   $vf13,    $vf16y  \n\
-        vmaddaz.xyzw    ACC,   $vf14,    $vf16z  \n\
-        vmaddw.xyzw     $vf8,  $vf15,    $vf16w  \n\
-        vmulax.xyzw     ACC,   $vf12,    $vf17x  \n\
-        vmadday.xyzw    ACC,   $vf13,    $vf17y  \n\
-        vmaddaz.xyzw    ACC,   $vf14,    $vf17z  \n\
-        vmaddw.xyzw     $vf9,  $vf15,    $vf17w  \n\
-        vmulax.xyzw     ACC,   $vf12,    $vf18x  \n\
-        vmadday.xyzw    ACC,   $vf13,    $vf18y  \n\
-        vmaddaz.xyzw    ACC,   $vf14,    $vf18z  \n\
-        vmaddw.xyzw     $vf10, $vf15,    $vf18w  \n\
-        vmulax.xyzw     ACC,   $vf12,    $vf19x  \n\
-        vmadday.xyzw    ACC,   $vf13,    $vf19y  \n\
-        vmaddaz.xyzw    ACC,   $vf14,    $vf19z  \n\
-        vmaddw.xyzw     $vf11, $vf15,    $vf19w  \n\
-        ": :"r"(m0),"r"(lw),"r"(m1)
-    );
+    /*
+     * Computes the two transformation matrices used by the bounding-box
+     * clipping path and stores them in the globally shared VU register state.
+     *
+     * Equivalent C:
+     *
+     *     vf4-vf7   = m0 * lw; // Matrix Multiplication
+     *     vf8-vf11  = m1 * lw; // Matrix Multiplication
+     */
+    asm volatile("                             \n\
+        lqc2            $vf12, 0x00(%0)        \n\
+        lqc2            $vf13, 0x10(%0)        \n\
+        lqc2            $vf14, 0x20(%0)        \n\
+        lqc2            $vf15, 0x30(%0)        \n\
+        lqc2            $vf16, 0x00(%1)        \n\
+        lqc2            $vf17, 0x10(%1)        \n\
+        lqc2            $vf18, 0x20(%1)        \n\
+        lqc2            $vf19, 0x30(%1)        \n\
+        vmulax.xyzw     ACC,   $vf12,   $vf16x \n\
+        vmadday.xyzw    ACC,   $vf13,   $vf16y \n\
+        vmaddaz.xyzw    ACC,   $vf14,   $vf16z \n\
+        vmaddw.xyzw     $vf4,  $vf15,   $vf16w \n\
+        vmulax.xyzw     ACC,   $vf12,   $vf17x \n\
+        vmadday.xyzw    ACC,   $vf13,   $vf17y \n\
+        vmaddaz.xyzw    ACC,   $vf14,   $vf17z \n\
+        vmaddw.xyzw     $vf5,  $vf15,   $vf17w \n\
+        vmulax.xyzw     ACC,   $vf12,   $vf18x \n\
+        vmadday.xyzw    ACC,   $vf13,   $vf18y \n\
+        vmaddaz.xyzw    ACC,   $vf14,   $vf18z \n\
+        vmaddw.xyzw     $vf6,  $vf15,   $vf18w \n\
+        vmulax.xyzw     ACC,   $vf12,   $vf19x \n\
+        vmadday.xyzw    ACC,   $vf13,   $vf19y \n\
+        vmaddaz.xyzw    ACC,   $vf14,   $vf19z \n\
+        vmaddw.xyzw     $vf7,  $vf15,   $vf19w \n\
+        lqc2            $vf12, 0x00(%2)        \n\
+        lqc2            $vf13, 0x10(%2)        \n\
+        lqc2            $vf14, 0x20(%2)        \n\
+        lqc2            $vf15, 0x30(%2)        \n\
+        vmulax.xyzw     ACC,   $vf12,   $vf16x \n\
+        vmadday.xyzw    ACC,   $vf13,   $vf16y \n\
+        vmaddaz.xyzw    ACC,   $vf14,   $vf16z \n\
+        vmaddw.xyzw     $vf8,  $vf15,   $vf16w \n\
+        vmulax.xyzw     ACC,   $vf12,   $vf17x \n\
+        vmadday.xyzw    ACC,   $vf13,   $vf17y \n\
+        vmaddaz.xyzw    ACC,   $vf14,   $vf17z \n\
+        vmaddw.xyzw     $vf9,  $vf15,   $vf17w \n\
+        vmulax.xyzw     ACC,   $vf12,   $vf18x \n\
+        vmadday.xyzw    ACC,   $vf13,   $vf18y \n\
+        vmaddaz.xyzw    ACC,   $vf14,   $vf18z \n\
+        vmaddw.xyzw     $vf10, $vf15,   $vf18w \n\
+        vmulax.xyzw     ACC,   $vf12,   $vf19x \n\
+        vmadday.xyzw    ACC,   $vf13,   $vf19y \n\
+        vmaddaz.xyzw    ACC,   $vf14,   $vf19z \n\
+        vmaddw.xyzw     $vf11, $vf15,   $vf19w \n\
+    ": :"r"(m0),"r"(lw),"r"(m1));
 }
 
 int CheckBoundingBox(u_int *prim)
@@ -392,9 +485,6 @@ int CheckBoundingBox(u_int *prim)
     int xmin_flg;
     int ymin_flg;
     int ymax_flg;
-    // float *lw[4];
-    // float *m0[4];
-    // float *v1;
     sceVu0FVECTOR *ed;
     sceVu0FVECTOR *vec_690;
     sceVu0FVECTOR *vec_6e0;
@@ -406,7 +496,7 @@ int CheckBoundingBox(u_int *prim)
 
     lcp[prim[2]].camin = 0;
 
-    asm_1__CheckBoundingBox(SgCMVtx, SgCMtx, lcp[prim[2]].lwmtx);
+    _PrepareBoundingBoxMatrices(SgCMVtx, SgCMtx, lcp[prim[2]].lwmtx);
 
     pvec = (sceVu0FVECTOR *)&prim[4];
 
@@ -599,51 +689,5 @@ void SgSetWScissorBox(float ax, float ay, float az, float bx, float by, float bz
 
 void _SetMulMatrixBB(sceVu0FMATRIX m0, sceVu0FMATRIX m1, sceVu0FMATRIX lw)
 {
-    asm volatile("\n\
-        lqc2            $vf12, 0(%0)             \n\
-        lqc2            $vf13, 0x10(%0)          \n\
-        lqc2            $vf14, 0x20(%0)          \n\
-        lqc2            $vf15, 0x30(%0)          \n\
-        lqc2            $vf16, 0(%1)             \n\
-        lqc2            $vf17, 0x10(%1)          \n\
-        lqc2            $vf18, 0x20(%1)          \n\
-        lqc2            $vf19, 0x30(%1)          \n\
-        vmulax.xyzw     ACC,   $vf12,    $vf16x  \n\
-        vmadday.xyzw    ACC,   $vf13,    $vf16y  \n\
-        vmaddaz.xyzw    ACC,   $vf14,    $vf16z  \n\
-        vmaddw.xyzw     $vf4,  $vf15,    $vf16w  \n\
-        vmulax.xyzw     ACC,   $vf12,    $vf17x  \n\
-        vmadday.xyzw    ACC,   $vf13,    $vf17y  \n\
-        vmaddaz.xyzw    ACC,   $vf14,    $vf17z  \n\
-        vmaddw.xyzw     $vf5,  $vf15,    $vf17w  \n\
-        vmulax.xyzw     ACC,   $vf12,    $vf18x  \n\
-        vmadday.xyzw    ACC,   $vf13,    $vf18y  \n\
-        vmaddaz.xyzw    ACC,   $vf14,    $vf18z  \n\
-        vmaddw.xyzw     $vf6,  $vf15,    $vf18w  \n\
-        vmulax.xyzw     ACC,   $vf12,    $vf19x  \n\
-        vmadday.xyzw    ACC,   $vf13,    $vf19y  \n\
-        vmaddaz.xyzw    ACC,   $vf14,    $vf19z  \n\
-        vmaddw.xyzw     $vf7,  $vf15,    $vf19w  \n\
-        lqc2            $vf12, 0(%2)             \n\
-        lqc2            $vf13, 0x10(%2)          \n\
-        lqc2            $vf14, 0x20(%2)          \n\
-        lqc2            $vf15, 0x30(%2)          \n\
-        vmulax.xyzw     ACC,   $vf12,    $vf16x  \n\
-        vmadday.xyzw    ACC,   $vf13,    $vf16y  \n\
-        vmaddaz.xyzw    ACC,   $vf14,    $vf16z  \n\
-        vmaddw.xyzw     $vf8,  $vf15,    $vf16w  \n\
-        vmulax.xyzw     ACC,   $vf12,    $vf17x  \n\
-        vmadday.xyzw    ACC,   $vf13,    $vf17y  \n\
-        vmaddaz.xyzw    ACC,   $vf14,    $vf17z  \n\
-        vmaddw.xyzw     $vf9,  $vf15,    $vf17w  \n\
-        vmulax.xyzw     ACC,   $vf12,    $vf18x  \n\
-        vmadday.xyzw    ACC,   $vf13,    $vf18y  \n\
-        vmaddaz.xyzw    ACC,   $vf14,    $vf18z  \n\
-        vmaddw.xyzw     $vf10, $vf15,    $vf18w  \n\
-        vmulax.xyzw     ACC,   $vf12,    $vf19x  \n\
-        vmadday.xyzw    ACC,   $vf13,    $vf19y  \n\
-        vmaddaz.xyzw    ACC,   $vf14,    $vf19z  \n\
-        vmaddw.xyzw     $vf11, $vf15,    $vf19w  \n\
-        ": :"r"(m0),"r"(lw),"r"(m1)
-    );
+    _PrepareBoundingBoxMatrices(m0, m1, lw);
 }
