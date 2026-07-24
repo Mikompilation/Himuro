@@ -862,3 +862,7 @@ m059_cloth                     = 0x302ca0; // type:CLOTH_DAT numel:4 nosize
 0x355bf8                       = "hair01";
 0x355c00                       = "lhand";
 0x355c08                       = "rhand";
+
+// graphics/graph3d/shadow.c
+scamera                        = 0x3031f0; // type:SgCAMERA
+shadow_pal                     = 0x303420; // type:qword numel:71 static

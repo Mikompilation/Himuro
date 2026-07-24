@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 42.37920002196987,
+    "fuzzy_match_percent": 43.31188982108284,
     "total_code": "1165232",
-    "matched_code": "493816",
-    "matched_code_percent": 42.37920002196987,
+    "matched_code": "504684",
+    "matched_code_percent": 43.31188982108284,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 1396,
-    "matched_functions_percent": 41.13140836770772,
+    "matched_functions": 1436,
+    "matched_functions_percent": 42.30995875073659,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -11471,9 +11471,14 @@
     {
       "name": "graphics/graph3d/shadow",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "10868",
+        "matched_code": "10868",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 40,
+        "matched_functions": 40,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -11481,14 +11486,17 @@
         {
           "name": ".text",
           "size": "10952",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -11496,201 +11504,241 @@
         {
           "name": "ShadowDbgOn",
           "size": "12",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ShadowDbgOff",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ShadowInit",
           "size": "40",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetShadowTexSize",
           "size": "20",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetShadowTexAddr",
           "size": "12",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetShadowFundamentScale",
           "size": "12",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetShadowAssignGroup",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "TransShadowClut",
           "size": "172",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetShadowTexture",
           "size": "12",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DispShadowSprite",
           "size": "484",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetInverseMatrix",
           "size": "348",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetVU1HeaderShadow",
           "size": "88",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "_CalcWeightedVertexSM",
           "size": "72",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "_CalcWeightedVertexBufferSM",
           "size": "72",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "_CalcVertexSM",
           "size": "32",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CalcVertexBufferShadow",
           "size": "308",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetVUVNDataShadowModel",
           "size": "712",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ShadowModelMesh",
           "size": "548",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DrawShadowModelPrim",
           "size": "376",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetUpShadowModel",
           "size": "356",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DrawShadowModel",
           "size": "232",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ShadowMeshDataVU",
           "size": "240",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ClipCheckShadow",
           "size": "68",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ShadowBoundClip",
           "size": "52",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "AppendShadowClipCheck",
           "size": "436",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CheckBoundingBoxShadowTrace",
           "size": "448",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CheckBoundingBoxShadow",
           "size": "120",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "AssignShadowPrim",
           "size": "724",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "AssignShadowPreProcess",
           "size": "68",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "AssignShadow",
           "size": "488",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetUpShadow",
           "size": "476",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ClearShadowFrame",
           "size": "188",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetShadowEnvironment",
           "size": "476",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetRotMatrixYZPlain",
           "size": "120",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetRotMatrixZAxis",
           "size": "200",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CalcShadowMatrix",
           "size": "688",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "_ftoi0__local_2",
           "size": "20",
-          "metadata": {}
+          "metadata": {},
+          "fuzzy_match_percent": 100.0
         },
         {
           "name": "CalcShadowHeight",
           "size": "416",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetShadowCamera",
           "size": "1416",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DrawShadow",
           "size": "300",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -23929,14 +23977,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 42.37920002196987,
+        "fuzzy_match_percent": 43.31188982108284,
         "total_code": "1165232",
-        "matched_code": "493816",
-        "matched_code_percent": 42.37920002196987,
+        "matched_code": "504684",
+        "matched_code_percent": 43.31188982108284,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 1396,
-        "matched_functions_percent": 41.13140836770772,
+        "matched_functions": 1436,
+        "matched_functions_percent": 42.30995875073659,
         "complete_data_percent": 100.0,
         "total_units": 154
       }

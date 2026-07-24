@@ -47,10 +47,10 @@ void DrawShadowModelPrim(u_int *prim);
 void SetUpShadowModel();
 void DrawShadowModel(void *sgd_top, int pnum);
 void ShadowMeshDataVU(u_int *prim);
-int ClipCheckShadow(sceVu0FVECTOR *vec, float *cul);
-int ShadowBoundClip(float *v0, float *v1);
+int ClipCheckShadow(sceVu0FVECTOR *vec, sceVu0FVECTOR cul);
+int ShadowBoundClip(sceVu0FVECTOR v0, sceVu0FVECTOR v1);
 int AppendShadowClipCheck(sceVu0FVECTOR *sts, BoundLine *bl);
-int CheckBoundingBoxShadowTrace(sceVu0FMATRIX lwmtx, sceVu0FVECTOR *tmpv, float *dir);
+int CheckBoundingBoxShadowTrace(sceVu0FMATRIX lwmtx, sceVu0FVECTOR *tmpv, sceVu0FVECTOR dir);
 int CheckBoundingBoxShadow(u_int *prim);
 void AssignShadowPrim(u_int *prim);
 void AssignShadowPreProcess(u_int *prim);
@@ -62,7 +62,7 @@ void GetRotMatrixYZPlain(sceVu0FMATRIX rmat, sceVu0FVECTOR vec);
 void GetRotMatrixZAxis(sceVu0FMATRIX rmat, sceVu0FVECTOR vec);
 void CalcShadowMatrix(ShadowHandle *shandle, sceVu0FVECTOR center, float ax, float ay);
 void CalcShadowHeight(sceVu0FVECTOR *bbox);
-void SetShadowCamera(float *center, sceVu0FVECTOR *bbox, SgCOORDUNIT *cp);
+void SetShadowCamera(sceVu0FVECTOR center, sceVu0FVECTOR *bbox, SgCOORDUNIT *cp);
 void DrawShadow(ShadowHandle *shandle, EnvFuncCallback env_func);
 
 #endif // GRAPHICS_GRAPH3D_SHADOW_H

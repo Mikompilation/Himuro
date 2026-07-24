@@ -2,6 +2,9 @@
 #include "typedefs.h"
 #include "shadow.h"
 
+// gcc/src/newlib/libm/math/wf_sqrt.c
+float sqrtf(float x);
+
 #include "ee/eestruct.h"
 #include "sce/libvu0.h"
 #include "sce/libgraph.h"
@@ -46,6 +49,14 @@ extern void DPS_PROLOGUE() __attribute__((section(".vutext")));
 
 #define SCREENX_TO_GSX_DR(x, swidth) (((2048+(swidth >> 1)) + (x)) << 4)
 #define SCREENY_TO_GSY_DR(y, sheight) (((2048+(sheight >> 1)) + (y)) << 4)
+
+#if defined(BUILD_JP_VERSION)
+#define VER_VU0_SCALE_VECTOR sceVu0ScaleVector
+#elif defined(BUILD_US_VERSION)
+#define VER_VU0_SCALE_VECTOR Vu0ScaleVectorXYZ
+#elif defined(BUILD_EU_VERSION)
+#define VER_VU0_SCALE_VECTOR Vu0ScaleVectorXYZ
+#endif
 
 void ShadowDbgOn()
 {
@@ -96,7 +107,7 @@ void TransShadowClut()
     shadow_pal[0][3] = DMAcall | (sizeof(shadow_pal) / sizeof(qword) - 1); // could also be a defined value - 1
 
     *(u_long *)&shadow_pal[1][0] = SCE_GIF_SET_TAG(1, SCE_GS_FALSE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 4);
-    *(u_long *)&shadow_pal[1][2] = 0 \
+    *(u_long *)&shadow_pal[1][2] = 0
         | SCE_GIF_PACKED_AD << (0 * 4)
         | SCE_GIF_PACKED_AD << (1 * 4)
         | SCE_GIF_PACKED_AD << (2 * 4)
@@ -145,7 +156,7 @@ void DispShadowSprite()
     base = (dword *)getObjWrk() + 1;
 
     base[0][0] = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_TRUE, 6, SCE_GIF_PACKED, 3);
-    base[0][1] = 0 \
+    base[0][1] = 0
         | SCE_GS_RGBAQ << (0 * 4)
         | SCE_GS_XYZF2 << (1 * 4)
         | SCE_GS_XYZF2 << (2 * 4);
@@ -170,7 +181,7 @@ void DispShadowSprite()
     base += 3;
 
     base[0][0] = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_TRUE, 86, SCE_GIF_PACKED, 7);
-    base[0][1] = 0 \
+    base[0][1] = 0
         | SCE_GS_TEX0_1 << (0 * 4)
         | SCE_GS_ST     << (1 * 4)
         | SCE_GS_RGBAQ  << (2 * 4)
@@ -237,7 +248,7 @@ void GetInverseMatrix(sceVu0FMATRIX inv, sceVu0FMATRIX org)
 
     for (i = 0; i < 3; i++)
     {
-        scale[i][i] = SgRSqrtf(sceVu0InnerProduct(rot[i], rot[i]));
+        scale[i][i] = VER_RSQRTF(sceVu0InnerProduct(rot[i], rot[i]));
     }
 
     _MulMatrix(inv, rot, scale);
@@ -264,61 +275,103 @@ void SetVU1HeaderShadow()
 
 static void _CalcWeightedVertexSM(sceVu0FVECTOR dp, sceVu0FVECTOR v)
 {
-    asm volatile("                               \n\
-        lqc2            $vf12, 0(%0)             \n\
-        vmulax.xyzw     ACC,   $vf4,     $vf12x  \n\
-        vmadday.xyzw    ACC,   $vf5,     $vf12y  \n\
-        vmaddaz.xyzw    ACC,   $vf6,     $vf12z  \n\
-        vmaddw.xyz      $vf13, $vf7,     $vf0w   \n\
-        vsubw.w         $vf14, $vf0,     $vf12   \n\
-        vmove.w         $vf13, $vf12             \n\
-        lqc2            $vf12, 0x10(%0)          \n\
-        vmulax.xyzw     ACC,   $vf8,     $vf12x  \n\
-        vmadday.xyzw    ACC,   $vf9,     $vf12y  \n\
-        vmaddaz.xyzw    ACC,   $vf10,    $vf12z  \n\
-        vmaddw.xyz      $vf14, $vf11,    $vf0w   \n\
-        vmulaw.xyz      ACC,   $vf13,    $vf13w  \n\
-        vmaddw.xyz      $vf15, $vf14,    $vf14w  \n\
-        vmove.w         $vf15, $vf0              \n\
-        sqc2            $vf15, 0(%1)             \n\
-        ": :"r"(v), "r"(dp)
-    );
+    /*
+     * Transforms two consecutive input vectors using the globally prepared
+     * matrices in vf4-vf7 and vf8-vf11, then combines the results using their
+     * w components.
+     *
+     * The vmulax/vmadday/vmaddaz/vmaddw sequences use the VU accumulator (ACC)
+     * to accumulate the four terms of each matrix-vector multiplication.
+     * The final weighted combination is also accumulated through ACC.
+     *
+     * Equivalent C:
+     *
+     *     a = Matrix4x4Multiply(vf4-vf7, v[0]);
+     *     b = Matrix4x4Multiply(vf8-vf11, v[1]);
+     *
+     *     dp.xyz = a.xyz * a.w + b.xyz * b.w;
+     *     dp.w   = vf0.w;
+     */
+    asm volatile("                             \n\
+        lqc2            $vf12, 0(%0)           \n\
+        vmulax.xyzw     ACC,   $vf4,    $vf12x \n\
+        vmadday.xyzw    ACC,   $vf5,    $vf12y \n\
+        vmaddaz.xyzw    ACC,   $vf6,    $vf12z \n\
+        vmaddw.xyz      $vf13, $vf7,    $vf0w  \n\
+        vsubw.w         $vf14, $vf0,    $vf12  \n\
+        vmove.w         $vf13, $vf12           \n\
+        lqc2            $vf12, 0x10(%0)        \n\
+        vmulax.xyzw     ACC,   $vf8,    $vf12x \n\
+        vmadday.xyzw    ACC,   $vf9,    $vf12y \n\
+        vmaddaz.xyzw    ACC,   $vf10,   $vf12z \n\
+        vmaddw.xyz      $vf14, $vf11,   $vf0w  \n\
+        vmulaw.xyz      ACC,   $vf13,   $vf13w \n\
+        vmaddw.xyz      $vf15, $vf14,   $vf14w \n\
+        vmove.w         $vf15, $vf0            \n\
+        sqc2            $vf15, 0(%1)           \n\
+    ": :"r"(v), "r"(dp));
 }
 
 static void _CalcWeightedVertexBufferSM(sceVu0FVECTOR dp, sceVu0FVECTOR v)
 {
-    asm volatile("                               \n\
-        lqc2            $vf12, 0(%0)             \n\
-        vmulax.xyzw     ACC,   $vf4,     $vf12x  \n\
-        vmadday.xyzw    ACC,   $vf5,     $vf12y  \n\
-        vmaddaz.xyzw    ACC,   $vf6,     $vf12z  \n\
-        vmaddw.xyz      $vf13, $vf7,     $vf0w   \n\
-        vsubw.w         $vf14, $vf0,     $vf12   \n\
-        vmove.w         $vf13, $vf12             \n\
-        lqc2            $vf12, 0x10(%0)          \n\
-        vmulax.xyzw     ACC,   $vf8,     $vf12x  \n\
-        vmadday.xyzw    ACC,   $vf9,     $vf12y  \n\
-        vmaddaz.xyzw    ACC,   $vf10,    $vf12z  \n\
-        vmaddw.xyz      $vf14, $vf11,    $vf0w   \n\
-        vmulaw.xyz      ACC,   $vf13,    $vf13w  \n\
-        vmaddw.xyz      $vf15, $vf14,    $vf14w  \n\
-        vmove.w         $vf15, $vf0              \n\
-        sqc2            $vf15, 0(%1)             \n\
-        ": :"r"(v), "r"(dp)
-    );
+    /*
+     * Transforms two consecutive input vectors using the globally prepared
+     * matrices in vf4-vf7 and vf8-vf11, then combines the results using their
+     * w components.
+     *
+     * The vmulax/vmadday/vmaddaz/vmaddw sequences use the VU accumulator (ACC)
+     * to accumulate the four terms of each matrix-vector multiplication.
+     * The final weighted combination is also accumulated through ACC.
+     *
+     * Equivalent C:
+     *
+     *     a = Matrix4x4Multiply(vf4-vf7, v[0]);
+     *     b = Matrix4x4Multiply(vf8-vf11, v[1]);
+     *
+     *     dp.xyz = a.xyz * a.w + b.xyz * b.w;
+     *     dp.w   = vf0.w;
+     */
+    asm volatile("                             \n\
+        lqc2            $vf12, 0(%0)           \n\
+        vmulax.xyzw     ACC,   $vf4,    $vf12x \n\
+        vmadday.xyzw    ACC,   $vf5,    $vf12y \n\
+        vmaddaz.xyzw    ACC,   $vf6,    $vf12z \n\
+        vmaddw.xyz      $vf13, $vf7,    $vf0w  \n\
+        vsubw.w         $vf14, $vf0,    $vf12  \n\
+        vmove.w         $vf13, $vf12           \n\
+        lqc2            $vf12, 0x10(%0)        \n\
+        vmulax.xyzw     ACC,   $vf8,    $vf12x \n\
+        vmadday.xyzw    ACC,   $vf9,    $vf12y \n\
+        vmaddaz.xyzw    ACC,   $vf10,   $vf12z \n\
+        vmaddw.xyz      $vf14, $vf11,   $vf0w  \n\
+        vmulaw.xyz      ACC,   $vf13,   $vf13w \n\
+        vmaddw.xyz      $vf15, $vf14,   $vf14w \n\
+        vmove.w         $vf15, $vf0            \n\
+        sqc2            $vf15, 0(%1)           \n\
+    ": :"r"(v), "r"(dp));
 }
 
 static void _CalcVertexSM(sceVu0FVECTOR dp, sceVu0FVECTOR v)
 {
-    asm volatile("\n\
-        lqc2            $vf13, 0(%0)          \n\
-        vmulax.xyzw     ACC,   $vf4,  $vf13x  \n\
-        vmadday.xyzw    ACC,   $vf5,  $vf13y  \n\
-        vmaddaz.xyzw    ACC,   $vf6,  $vf13z  \n\
-        vmaddw.xyzw     $vf12, $vf7,  $vf13w  \n\
-        sqc2            $vf12, 0(%1)          \n\
-        ": :"r"(v), "r"(dp)
-    );
+    /*
+     * Transforms a single input vertex using the globally prepared matrix in
+     * vf4-vf7.
+     *
+     * The vmulax/vmadday/vmaddaz/vmaddw sequence uses the VU accumulator (ACC)
+     * to accumulate the four terms of the matrix-vector multiplication.
+     *
+     * Equivalent C:
+     *
+     *     dp = Matrix4x4Multiply(vf4-vf7, v);
+     */
+    asm volatile("                          \n\
+        lqc2            $vf13, 0(%0)        \n\
+        vmulax.xyzw     ACC,   $vf4, $vf13x \n\
+        vmadday.xyzw    ACC,   $vf5, $vf13y \n\
+        vmaddaz.xyzw    ACC,   $vf6, $vf13z \n\
+        vmaddw.xyzw     $vf12, $vf7, $vf13w \n\
+        sqc2            $vf12, 0(%1)        \n\
+    ": :"r"(v), "r"(dp));
 }
 
 void CalcVertexBufferShadow(u_int *prim)
@@ -354,7 +407,6 @@ void CalcVertexBufferShadow(u_int *prim)
             _CalcWeightedVertexSM(*vpd, *vps);
         }
     }
-
 }
 
 u_int* SetVUVNDataShadowModel(u_int *prim)
@@ -369,7 +421,7 @@ u_int* SetVUVNDataShadowModel(u_int *prim)
     vp = (sceVu0FVECTOR *)getObjWrk();
 
     ((u_int *)&vp[0])[0] = 0x1000404;
-    ((u_int *)&vp[0])[1] = 0x6C018000;
+    ((u_int *)&vp[0])[1] = 0x6c018000;
     ((u_int *)&vp[0])[2] = prim[8];
     ((u_int *)&vp[0])[3] = prim[9];
 
@@ -384,7 +436,7 @@ u_int* SetVUVNDataShadowModel(u_int *prim)
     switch (((char *)vh)[5])
     {
     case 0:
-        _SetLWMatrix0((float (*) [4])0x70000430);
+        _SetLWMatrix0(*(sceVu0FMATRIX *)0x70000430);
 
         for (i = 0; i < vh->vnum; vp++, prim += 2, i++)
         {
@@ -425,9 +477,11 @@ u_int* SetVUVNDataShadowModel(u_int *prim)
             for (i = 0; i < vh->vnum; i++)
             {
                 cn = (char *)*prim;
+
                 _SetLWMatrix0(lcp[cn[0x1c]].workm);
                 _SetLWMatrix1(lcp[cn[0x1d]].workm);
                 _CalcWeightedVertexSM(*vp, *(sceVu0FVECTOR *)*prim);
+
                 vp++;
                 prim += 2;
             }
@@ -452,7 +506,11 @@ void ShadowModelMesh(u_int *prim)
 
     tmp = (short *)vuvnprim;
 
+#if defined(BUILD_JP_VERSION)
+    mtype = ((char *)prim)[13];
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     mtype = ((u_char *)prim)[13];
+#endif
 
     switch (mtype & (0x1 | 0x2 | 0x10 | 0x40 | 0x80)) // 0xd3
     {
@@ -466,6 +524,7 @@ void ShadowModelMesh(u_int *prim)
 
         AppendDmaTag((u_int)&prim[4], prim[2]);
         AppendDmaBuffer(tmp[4] + 3);
+
         FlushModel(0);
     break;
     case 2:
@@ -478,6 +537,7 @@ void ShadowModelMesh(u_int *prim)
 
         AppendDmaTag((u_int)&prim[4], prim[2]);
         AppendDmaBuffer(tmp[4] + 3);
+
         FlushModel(0);
     break;
     case 128:
@@ -491,6 +551,7 @@ void ShadowModelMesh(u_int *prim)
         read_p[3] = 0x17000000;
 
         AppendDmaBuffer(1);
+
         FlushModel(0);
     break;
     case 130:
@@ -542,6 +603,7 @@ void DrawShadowModelPrim(u_int *prim)
                 read_p[3] = 0x6c040008;
 
                 Vu0CopyMatrix(*(sceVu0FMATRIX *)&read_p[4], SgWSMtx);
+
                 AppendDmaBuffer(5);
             }
         break;
@@ -554,6 +616,7 @@ void DrawShadowModelPrim(u_int *prim)
             read_p[3] = 0x6c040008;
 
             _MulMatrix(*(sceVu0FMATRIX *)&read_p[4], SgWSMtx, lcp[prim[2]].lwmtx);
+
             AppendDmaBuffer(5);
         break;
         }
@@ -578,13 +641,13 @@ void SetUpShadowModel()
     datap += 4;
 
     *((u_long *)&datap[12]) = SCE_GIF_SET_TAG(0, SCE_GS_TRUE, SCE_GS_TRUE, 68, SCE_GIF_PACKED, 2);
-    datap[14] = 0 \
-        | SCE_GS_RGBAQ    << (0 * 4)
+    datap[14] = 0
+        | SCE_GS_RGBAQ << (0 * 4)
         | SCE_GS_XYZF2 << (1 * 4);
     datap[15] = 0;
 
     *((u_long *)&datap[16]) = SCE_GIF_SET_TAG(0, SCE_GS_TRUE, SCE_GS_TRUE, 84, SCE_GIF_PACKED, 3);
-    datap[18] = 0 \
+    datap[18] = 0
         | SCE_GS_ST    << (0 * 4)
         | SCE_GS_RGBAQ << (1 * 4)
         | SCE_GS_XYZF2 << (2 * 4);
@@ -692,50 +755,87 @@ void ShadowMeshDataVU(u_int *prim)
     }
 }
 
-int ClipCheckShadow(sceVu0FVECTOR *vec, float *cul)
+int ClipCheckShadow(sceVu0FVECTOR *vec, sceVu0FVECTOR cul)
 {
+    /*
+     * Clips four vectors against the W coordinate of cul and returns the
+     * accumulated VU clip flags.
+     *
+     * Each vclipw.xyz instruction updates the VU clip-status state. The final
+     * clip flags are read from the special VU integer register $vi18 using cfc2,
+     * which transfers the VU clip-status value into the EE integer result.
+     *
+     * Equivalent C:
+     *
+     *     int ret = 0;
+     *
+     *     ret |= ClipVectorAgainstW(vec[0], cul);
+     *     ret |= ClipVectorAgainstW(vec[1], cul);
+     *     ret |= ClipVectorAgainstW(vec[2], cul);
+     *     ret |= ClipVectorAgainstW(vec[3], cul);
+     *
+     *     return ret; // obtained from the VU clip-status register ($vi18)
+     */
     int ret;
 
-    asm volatile("                      \n\
-        lqc2          $vf16, 0(%1)       \n\
-        lqc2          $vf12, 0(%2)       \n\
-        lqc2          $vf13, 0x10(%2)    \n\
-        lqc2          $vf14, 0x20(%2)    \n\
-        lqc2          $vf15, 0x30(%2)    \n\
-        vclipw.xyz    $vf12, $vf16w      \n\
-        vclipw.xyz    $vf13, $vf16w      \n\
-        vclipw.xyz    $vf14, $vf16w      \n\
-        vclipw.xyz    $vf15, $vf16w      \n\
-        vnop                             \n\
-        vnop                             \n\
-        vnop                             \n\
-        vnop                             \n\
-        vnop                             \n\
-        cfc2          %0,    $vi18       \n\
-        ":"=r"(ret):"r"(cul),"r"(vec)
-    );
+    asm volatile("                    \n\
+        lqc2          $vf16, 0x00(%1) \n\
+        lqc2          $vf12, 0x00(%2) \n\
+        lqc2          $vf13, 0x10(%2) \n\
+        lqc2          $vf14, 0x20(%2) \n\
+        lqc2          $vf15, 0x30(%2) \n\
+        vclipw.xyz    $vf12, $vf16w   \n\
+        vclipw.xyz    $vf13, $vf16w   \n\
+        vclipw.xyz    $vf14, $vf16w   \n\
+        vclipw.xyz    $vf15, $vf16w   \n\
+        vnop                          \n\
+        vnop                          \n\
+        vnop                          \n\
+        vnop                          \n\
+        vnop                          \n\
+        cfc2          %0,    $vi18    \n\
+    ":"=r"(ret):"r"(cul),"r"(vec));
 
     return ret;
 }
 
-int ShadowBoundClip(float *v0, float *v1)
+int ShadowBoundClip(sceVu0FVECTOR v0, sceVu0FVECTOR v1)
 {
+    /*
+     * Transforms v1 by the matrix currently stored in the globally shared VU
+     * registers $vf4-$vf7, performs a W-coordinate clipping test on the
+     * transformed result, stores the transformed vector in v0, and returns the
+     * resulting VU clip flags.
+     *
+     * The matrix in $vf4-$vf7 is prepared by the preceding matrix setup code.
+     * The vclipw.xyz instruction updates the VU clip-status state, which is then
+     * read from the special VU integer register $vi18 using cfc2 and returned to
+     * the EE as the function result.
+     *
+     * Equivalent C:
+     *
+     *     vec = Matrix4x4Multiply(v1, vf4-vf7);
+     *     v0 = vec;
+     *
+     *     int ret = ClipVectorAgainstW(vec, vec.w);
+     *
+     *     return ret; // obtained from the VU clip-status register ($vi18)
+     */
     int ret;
 
-    asm volatile("                             \n\
-        lqc2            $vf12, 0(%1)           \n\
-        vmulax.xyzw     ACC,   $vf4,   $vf12x  \n\
-        vmadday.xyzw    ACC,   $vf5,   $vf12y  \n\
-        vmaddaz.xyzw    ACC,   $vf6,   $vf12z  \n\
-        vmaddw.xyzw     $vf12, $vf7,   $vf0w   \n\
-        vclipw.xyz      $vf12, $vf12w          \n\
-        sqc2            $vf12, 0(%2)           \n\
-        vnop                                   \n\
-        vnop                                   \n\
-        vnop                                   \n\
-        cfc2            %0,    $vi18           \n\
-        ":"=r"(ret):"r"(v1),"r"(v0)
-    );
+    asm volatile("                           \n\
+        lqc2            $vf12, 0(%1)         \n\
+        vmulax.xyzw     ACC,   $vf4,  $vf12x \n\
+        vmadday.xyzw    ACC,   $vf5,  $vf12y \n\
+        vmaddaz.xyzw    ACC,   $vf6,  $vf12z \n\
+        vmaddw.xyzw     $vf12, $vf7,  $vf0w  \n\
+        vclipw.xyz      $vf12, $vf12w        \n\
+        sqc2            $vf12, 0(%2)         \n\
+        vnop                                 \n\
+        vnop                                 \n\
+        vnop                                 \n\
+        cfc2            %0,    $vi18         \n\
+    ":"=r"(ret):"r"(v1),"r"(v0));
 
     return ret;
 }
@@ -751,10 +851,10 @@ int AppendShadowClipCheck(sceVu0FVECTOR *sts, BoundLine *bl) {
     int s;
     int e;
     static sceVu0FVECTOR shadowtex[4] = {
-        {-0.5f, -0.5f, 0.0f, 1.0f},
-        {+0.5f, -0.5f, 0.0f, 1.0f},
-        {-0.5f, +0.5f, 0.0f, 1.0f},
-        {+0.5f, +0.5f, 0.0f, 1.0f},
+        { -0.5f, -0.5f, 0.0f, 1.0f },
+        { +0.5f, -0.5f, 0.0f, 1.0f },
+        { -0.5f, +0.5f, 0.0f, 1.0f },
+        { +0.5f, +0.5f, 0.0f, 1.0f },
     };
     sceVu0FVECTOR kei;
 
@@ -817,16 +917,16 @@ int AppendShadowClipCheck(sceVu0FVECTOR *sts, BoundLine *bl) {
     return 1;
 }
 
-int CheckBoundingBoxShadowTrace(sceVu0FMATRIX lwmtx, sceVu0FVECTOR *tmpv, float *dir)
+int CheckBoundingBoxShadowTrace(sceVu0FMATRIX lwmtx, sceVu0FVECTOR *tmpv, sceVu0FVECTOR dir)
 {
     int i;
     int clip;
     sceVu0FMATRIX tmpmat;
     static sceVu0FMATRIX clipmtx = {
-        {1.0f, 0.0f, 0.0f, 0.0f},
-        {0.0f, 1.0f, 0.0f, 0.0f},
-        {0.0f, 0.0f, 1.0f, 0.0f},
-        {-0.5f, -0.5f, -0.5f, 0.5f},
+        {  1.0f,  0.0f,  0.0f, 0.0f },
+        {  0.0f,  1.0f,  0.0f, 0.0f },
+        {  0.0f,  0.0f,  1.0f, 0.0f },
+        { -0.5f, -0.5f, -0.5f, 0.5f },
     };
     static BoundLine boundline[12] = {
         {0, 1}, {4, 5}, {2, 3}, {6, 7}, {0, 4}, {1, 5},
@@ -1057,16 +1157,22 @@ void AssignShadow(void *sgd_top, int except_num)
                         AssignShadowPrim((u_int *)pk[groups]);
                     }
                 }
+
+#if defined(BUILD_JP_VERSION)
+                return;
+#endif
             }
+
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+            return;
+#endif
         }
-        else
+
+        for (i = 1; i < blocksm - 1; i++)
         {
-            for (i = 1; i < blocksm - 1; i++)
+            if (lcp[i].camin != 0)
             {
-                if (lcp[i].camin != 0)
-                {
-                    AssignShadowPrim((u_int *)pk[i]);
-                }
+                AssignShadowPrim((u_int *)pk[i]);
             }
         }
     }
@@ -1102,14 +1208,14 @@ void SetUpShadow(ShadowHandle *shandle)
     *(float *)&datap[15] = 0.0f;
 
     *(u_long *)&datap[16] = SCE_GIF_SET_TAG(0, SCE_GS_TRUE, SCE_GS_TRUE, SCE_GS_SET_PRIM(SCE_GS_PRIM_TRISTRIP, 0, 1, 1, 1, 0, 0, 0, 0), SCE_GIF_PACKED, 3);
-    datap[18] = 0 \
+    datap[18] = 0
         | SCE_GS_ST    << (0 * 4)
         | SCE_GS_RGBAQ << (1 * 4)
         | SCE_GS_XYZF2 << (2 * 4);
     datap[19] = 0;
 
     *(u_long *)&datap[20] = SCE_GIF_SET_TAG(0, SCE_GS_TRUE, SCE_GS_TRUE, SCE_GS_SET_PRIM(SCE_GS_PRIM_TRIFAN, 0, 1, 1, 1, 0, 0, 0, 0), SCE_GIF_PACKED, 3);
-    datap[22] = 0 \
+    datap[22] = 0
         | SCE_GS_ST    << (0 * 4)
         | SCE_GS_RGBAQ << (1 * 4)
         | SCE_GS_XYZF2 << (2 * 4);
@@ -1135,7 +1241,7 @@ void SetUpShadow(ShadowHandle *shandle)
     base = (dword *)&datap[4];
 
     base[0][0] = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 3);
-    base[0][1] = 0 \
+    base[0][1] = 0
         | SCE_GIF_PACKED_AD << (0 * 4)
         | SCE_GIF_PACKED_AD << (1 * 4)
         | SCE_GIF_PACKED_AD << (2 * 4);
@@ -1175,7 +1281,7 @@ void ClearShadowFrame()
     base = (dword *)getObjWrk();
 
     base[1][0] = SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_TRUE, SCE_GS_SET_PRIM(SCE_GS_PRIM_SPRITE, 0, 0, 0, 0, 0, 0, 0, 0), SCE_GIF_PACKED, 3);
-    base[1][1] = 0 \
+    base[1][1] = 0
         | SCE_GS_RGBAQ << (0 * 4)
         | SCE_GS_XYZF2 << (1 * 4)
         | SCE_GS_XYZF2 << (2 * 4);
@@ -1208,7 +1314,7 @@ void SetShadowEnvironment()
 
     base[0][0] = (int)(SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 9) >>  0);
     base[0][1] = (int)(SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 9) >> 32);
-    base[0][2] = 0 \
+    base[0][2] = 0
         | SCE_GIF_PACKED_AD << (0 * 4)
         | SCE_GIF_PACKED_AD << (1 * 4)
         | SCE_GIF_PACKED_AD << (2 * 4)
@@ -1217,7 +1323,7 @@ void SetShadowEnvironment()
         | SCE_GIF_PACKED_AD << (5 * 4)
         | SCE_GIF_PACKED_AD << (6 * 4)
         | SCE_GIF_PACKED_AD << (7 * 4);
-    base[0][3] = 0 \
+    base[0][3] = 0
         | SCE_GIF_PACKED_AD << (0 * 4);
 
     base[1][2] = SCE_GS_TEXFLUSH;
@@ -1259,7 +1365,7 @@ void SetShadowEnvironment()
     base = (qword *)getObjWrk() + 1;
     base[0][0] = (int)(SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 2) >>  0);
     base[0][1] = (int)(SCE_GIF_SET_TAG(1, SCE_GS_TRUE, SCE_GS_FALSE, 0, SCE_GIF_PACKED, 2) >> 32);
-    base[0][2] = 0 \
+    base[0][2] = 0
         | SCE_GIF_PACKED_AD << (0 * 4)
         | SCE_GIF_PACKED_AD << (1 * 4);
 
@@ -1286,7 +1392,7 @@ void GetRotMatrixYZPlain(sceVu0FMATRIX rmat, sceVu0FVECTOR vec)
 
     if (cvec[0] != 0.0f || cvec[2] != 0.0f)
     {
-        xzr = SgAtan2f(cvec[0], cvec[2]);
+        xzr = VER_ATAN2F(cvec[0], cvec[2]);
         sceVu0RotMatrixY(rmat, rmat, -xzr);
     }
 }
@@ -1304,14 +1410,14 @@ void GetRotMatrixZAxis(sceVu0FMATRIX rmat, sceVu0FVECTOR vec)
 
     if (cvec[0] != 0.0f || cvec[2] != 0.0f)
     {
-        yzr = SgAtan2f(cvec[0], cvec[2]);
+        yzr = VER_ATAN2F(cvec[0], cvec[2]);
         sceVu0RotMatrixY(rmat, rmat, -yzr);
         sceVu0ApplyMatrix(cvec, rmat, cvec);
     }
 
     if (cvec[1] != 0.0f || cvec[2] != 0.0f)
     {
-        yzr = SgAtan2f(cvec[1], cvec[2]);
+        yzr = VER_ATAN2F(cvec[1], cvec[2]);
         sceVu0RotMatrixX(rmat, rmat, yzr);
     }
 }
@@ -1397,12 +1503,27 @@ void CalcShadowMatrix(ShadowHandle *shandle, sceVu0FVECTOR center, float ax, flo
     }
 }
 
-static void _ftoi0(int *out, float *in)
+static void _ftoi0(sceVu0IVECTOR out, sceVu0FVECTOR in)
 {
-    asm volatile ("\n\
-        lqc2    $vf12,0(%0) \n\
-        vftoi0.xyzw $vf12xyzw,$vf12xyzw \n\
-        sqc2    $vf12,0(%1) \n\
+    /*
+     * Converts all four components of the input sceVu0FVECTOR from floating-point
+     * to integer using the VU0 vftoi0 instruction and stores the results in the
+     * output sceVu0IVECTOR.
+     *
+     * vftoi0 performs floating-point-to-integer conversion with a fixed-point
+     * scaling factor of 2^0, i.e. no fractional-bit shift.
+     *
+     * Equivalent C:
+     *
+     *     out[0] = (int)in[0];
+     *     out[1] = (int)in[1];
+     *     out[2] = (int)in[2];
+     *     out[3] = (int)in[3];
+     */
+    asm volatile("                        \n\
+        lqc2        $vf12,0(%0)           \n\
+        vftoi0.xyzw $vf12xyzw,  $vf12xyzw \n\
+        sqc2        $vf12,0(%1)           \n\
     ": :"r"(in),"r"(out));
 }
 
@@ -1416,7 +1537,7 @@ void CalcShadowHeight(sceVu0FVECTOR *bbox)
     sceVu0SubVector(tmpvec, bbox[0], bbox[7]);
     sceVu0MulVector(tmpvec, tmpvec, tmpvec);
 
-    scale = SgSqrtf(tmpvec[0] + tmpvec[1] + tmpvec[2]);
+    scale = VER_SQRTF(tmpvec[0] + tmpvec[1] + tmpvec[2]);
     tmpvec[0] = scale / shadowtex.fund_scale + 0.5f;
 
     _ftoi0(itmp, tmpvec);
@@ -1468,7 +1589,7 @@ void CalcShadowHeight(sceVu0FVECTOR *bbox)
     }
 }
 
-void SetShadowCamera(float *center, sceVu0FVECTOR *bbox, SgCOORDUNIT *cp)
+void SetShadowCamera(sceVu0FVECTOR center, sceVu0FVECTOR *bbox, SgCOORDUNIT *cp)
 {
     int i;
     float xmax;
@@ -1585,7 +1706,7 @@ void SetShadowCamera(float *center, sceVu0FVECTOR *bbox, SgCOORDUNIT *cp)
 
     tmpvec[3] = 0.0f;
 
-    Vu0ScaleVectorXYZ(tmpmat[3], tmpvec, -1.0f);
+    VER_VU0_SCALE_VECTOR(tmpmat[3], tmpvec, -1.0f);
 
     Vu0CopyMatrix(CullingMatrix, tmpmat);
 }
