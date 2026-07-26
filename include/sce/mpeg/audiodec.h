@@ -14,6 +14,8 @@
 
 #define UNIT_SIZE 1024
 
+#define AU_HDR_SIZE (sizeof(SpuStreamHeader) + sizeof(SpuStreamBody))
+
 typedef struct { // 0x20
     /* 0x00 */ char id[4];
     /* 0x04 */ int size;

@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 43.83539072047455,
+    "fuzzy_match_percent": 45.26652203166408,
     "total_code": "1165232",
-    "matched_code": "510784",
-    "matched_code_percent": 43.83539072047455,
+    "matched_code": "527460",
+    "matched_code_percent": 45.26652203166408,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 1451,
-    "matched_functions_percent": 42.751915144372425,
+    "matched_functions": 1552,
+    "matched_functions_percent": 45.72775486152033,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -11881,9 +11881,14 @@
     {
       "name": "graphics/mov/movie",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "16676",
+        "matched_code": "16676",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 101,
+        "matched_functions": 101,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -11891,14 +11896,17 @@
         {
           "name": ".text",
           "size": "16856",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -11906,506 +11914,607 @@
         {
           "name": "MovieInitWrk",
           "size": "16",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ReqMpegEvent",
           "size": "20",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PlayMpegEvent",
           "size": "584",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "movie",
           "size": "276",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "clearGsMem",
           "size": "568",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "initMov",
           "size": "544",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "readMpeg",
           "size": "572",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "termMov",
           "size": "184",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "switchThread",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "movVblankPad",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "readBufBeginPut",
           "size": "48",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "strFileRead",
           "size": "60",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "readBufEndPut",
           "size": "68",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "readBufBeginGet",
           "size": "72",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "readBufEndGet",
           "size": "36",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "proceedAudio",
           "size": "12",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "voBufIsFull",
           "size": "20",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "isAudioOK",
           "size": "52",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "startDisplay",
           "size": "60",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "audioDecStart",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "videoDecGetState",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "videoDecFlush",
           "size": "204",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "videoDecIsFlushed",
           "size": "72",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "endDisplay",
           "size": "12",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "audioDecReset",
           "size": "68",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "audioDecIsPreset",
           "size": "20",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "readBufCreate",
           "size": "24",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "videoDecCreate",
           "size": "256",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "audioDecCreate",
           "size": "256",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "videoCallback",
           "size": "288",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "videoDecSetStream",
           "size": "32",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "pcmCallback",
           "size": "212",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "voBufCreate",
           "size": "72",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "videoDecMain",
           "size": "112",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "strFileOpen",
           "size": "620",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "vblankHandlerM",
           "size": "432",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "handler_endimage",
           "size": "56",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "readBufDelete",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "voBufDelete",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "videoDecDelete",
           "size": "52",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "audioDecDelete",
           "size": "60",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "strFileClose",
           "size": "80",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "defMain",
           "size": "24",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ErrMessage",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "usage",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "audioDecSendToIOP",
           "size": "436",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MoviePlay",
           "size": "592",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MovieTest",
           "size": "356",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PadSyncCallback2",
           "size": "872",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ReqLogoMovie",
           "size": "284",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "sendToIOP",
           "size": "116",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "changeMasterVolume",
           "size": "104",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "audioDecPause",
           "size": "128",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "changeInputVolume",
           "size": "68",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "audioDecResume",
           "size": "108",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "audioDecBeginPut",
           "size": "160",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "audioDecEndPut",
           "size": "128",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "iopGetArea",
           "size": "168",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "sendToIOP2area",
           "size": "348",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "setImageTag",
           "size": "880",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "voBufGetTag",
           "size": "100",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "voBufDecCount",
           "size": "32",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "videoDecBeginPut",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "copy2area",
           "size": "312",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "videoDecPutTs",
           "size": "60",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "videoDecEndPut",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "getFIFOindex",
           "size": "64",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "setD3_CHCR__local_2",
           "size": "100",
-          "metadata": {}
+          "metadata": {},
+          "fuzzy_match_percent": 100.0
         },
         {
           "name": "setD4_CHCR__local_3",
           "size": "100",
-          "metadata": {}
+          "metadata": {},
+          "fuzzy_match_percent": 100.0
         },
         {
           "name": "scTag2",
           "size": "36",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "viBufCreate",
           "size": "120",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "viBufReset",
           "size": "328",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "viBufBeginPut",
           "size": "232",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "viBufEndPut",
           "size": "80",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "viBufAddDMA",
           "size": "496",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "viBufStopDMA",
           "size": "256",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "viBufRestartDMA",
           "size": "800",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "viBufDelete",
           "size": "88",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "viBufIsActive",
           "size": "64",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "viBufCount",
           "size": "76",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "viBufFlush",
           "size": "80",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "viBufModifyPts",
           "size": "364",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "viBufPutTs",
           "size": "236",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "viBufGetTs",
           "size": "396",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "mpegError",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "mpegNodata",
           "size": "44",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "mpegStopDMA",
           "size": "36",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "mpegRestartDMA",
           "size": "36",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "mpegTS",
           "size": "68",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "videoDecReset",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "videoDecSetDecodeMode",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "videoDecAbort",
           "size": "12",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "videoDecSetState",
           "size": "12",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "videoDecInputCount",
           "size": "28",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "videoDecInputSpaceCount",
           "size": "52",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "cpy2area",
           "size": "312",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "voBufReset",
           "size": "16",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "decBs0",
           "size": "452",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "voBufGetData",
           "size": "68",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "voBufIncCount",
           "size": "112",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "voBufIsEmpty",
           "size": "12",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -24000,14 +24109,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 43.83539072047455,
+        "fuzzy_match_percent": 45.26652203166408,
         "total_code": "1165232",
-        "matched_code": "510784",
-        "matched_code_percent": 43.83539072047455,
+        "matched_code": "527460",
+        "matched_code_percent": 45.26652203166408,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 1451,
-        "matched_functions_percent": 42.751915144372425,
+        "matched_functions": 1552,
+        "matched_functions_percent": 45.72775486152033,
         "complete_data_percent": 100.0,
         "total_units": 154
       }

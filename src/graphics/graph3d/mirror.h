@@ -6,9 +6,9 @@
 #include "ingame/camera/camera.h"
 
 typedef struct {
-	int mask;
-	int xyz;
-	float sgn;
+    int mask;
+    int xyz;
+    float sgn;
 } ClipData;
 
 typedef struct {

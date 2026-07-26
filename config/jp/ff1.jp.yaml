@@ -131,7 +131,7 @@ segments:
           - [0x793a0,  c,   graphics/graph3d/sgcam]
           - [0x7a440,  c,   graphics/graph3d/shadow]
           - [0x7cf08,  c,   graphics/graph3d/mirror]
-          - [0x7e6f8,  asm, graphics/mov/movie]
+          - [0x7e6f8,  c,   graphics/mov/movie]
           - [0x828d0,  asm, graphics/scene/fod]
           - [0x84320,  asm, graphics/scene/scene]
         # - [0x87178,  asm, graphics/scene/scene_dat]
@@ -264,7 +264,7 @@ segments:
           - { start: 0x2041d0, type: .data,   vram: 0x3031d0, name: graphics/graph3d/sgcam        }
           - { start: 0x2041f0, type: .data,   vram: 0x3031f0, name: graphics/graph3d/shadow       }
           - { start: 0x204970, type: .data,   vram: 0x303970, name: graphics/graph3d/mirror       }
-          - { start: 0x204ad0, type:  data,   vram: 0x303ad0, name: graphics/mov/movie            }
+          - { start: 0x204ad0, type: .data,   vram: 0x303ad0, name: graphics/mov/movie            }
           - { start: 0x204f30, type:  data,   vram: 0x303f30, name: graphics/scene/fod            }
           - { start: 0x205050, type:  data,   vram: 0x304050, name: graphics/scene/scene          }
           - { start: 0x20df40, type:  data,   vram: 0x30cf40, name: graphics/scene/scene_dat      }
@@ -384,7 +384,7 @@ segments:
           - { start: 0x24d850, type: .rodata, vram: 0x34c850, name: graphics/graph3d/sgsup        }
           - { start: 0x24da18, type: .rodata, vram: 0x34ca18, name: graphics/graph3d/sgcam        }
           - { start: 0x24da50, type: .rodata, vram: 0x34ca50, name: graphics/graph3d/mirror       }
-          - { start: 0x24da80, type:  rodata, vram: 0x34ca80, name: graphics/mov/movie            }
+          - { start: 0x24da80, type: .rodata, vram: 0x34ca80, name: graphics/mov/movie            }
           - { start: 0x24e010, type:  rodata, vram: 0x34d010, name: graphics/scene/fod            }
           - { start: 0x24e0d0, type:  rodata, vram: 0x34d0d0, name: ingame/ingame                 }
           - { start: 0x24e160, type:  rodata, vram: 0x34d160, name: ingame/ig_init                }
@@ -556,7 +556,7 @@ segments:
           - { start: 0x256da8, type: .sdata,  vram: 0x355da8, name: graphics/graph3d/sgcam        }
           - { start: 0x256db8, type: .sdata,  vram: 0x355db8, name: graphics/graph3d/shadow       }
           - { start: 0x256ddc, type: .sdata,  vram: 0x355ddc, name: graphics/graph3d/mirror       }
-          - { start: 0x256de0, type:  sdata,  vram: 0x355de0, name: graphics/mov/movie            }
+          - { start: 0x256de0, type: .sdata,  vram: 0x355de0, name: graphics/mov/movie            }
           - { start: 0x256e80, type:  sdata,  vram: 0x355e80, name: graphics/scene/fod            }
           - { start: 0x256e88, type:  sdata,  vram: 0x355e88, name: graphics/scene/scene          }
           - { start: 0x256ec8, type:  sdata,  vram: 0x355ec8, name: ingame/ingame                 }
@@ -639,7 +639,7 @@ segments:
           - { start: 0x257800, type: .sbss,   vram: 0x356964, name: graphics/graph3d/sgsup        }
           - { start: 0x257800, type: .sbss,   vram: 0x35696c, name: graphics/graph3d/shadow       }
           - { start: 0x257800, type: .sbss,   vram: 0x356974, name: graphics/graph3d/mirror       }
-          - { start: 0x257800, type:  sbss,   vram: 0x35698c, name: graphics/mov/movie            }
+          - { start: 0x257800, type: .sbss,   vram: 0x35698c, name: graphics/mov/movie            }
           - { start: 0x257800, type:  sbss,   vram: 0x356998, name: graphics/scene/scene          }
           - { start: 0x257800, type:  sbss,   vram: 0x3569a8, name: ingame/camera/camera          }
           - { start: 0x257800, type:  sbss,   vram: 0x3569c0, name: ingame/enemy/ene_ctl          }
@@ -705,7 +705,7 @@ segments:
           - { start: 0x257c00, type: .bss,    vram: 0x3fa390, name: graphics/graph3d/sglight      }
           - { start: 0x257c00, type: .bss,    vram: 0x3fa420, name: graphics/graph3d/sgsup        }
           - { start: 0x257c00, type: .bss,    vram: 0x3fa510, name: graphics/graph3d/shadow       }
-          - { start: 0x257c00, type:  bss,    vram: 0x3fa700, name: graphics/mov/movie            }
+          - { start: 0x257c00, type: .bss,    vram: 0x3fa700, name: graphics/mov/movie            }
           - { start: 0x257c00, type:  bss,    vram: 0x3fef40, name: graphics/scene/fod            }
           - { start: 0x257c00, type:  bss,    vram: 0x3ff460, name: graphics/scene/scene          }
           - { start: 0x257c00, type:  bss,    vram: 0x3ff480, name: ingame/camera/camera          }

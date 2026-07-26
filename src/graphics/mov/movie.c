@@ -1,5 +1,6 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "enums.h"
 #include "movie.h"
 
@@ -40,110 +41,7 @@
 #include "ingame/map/map_area.h"
 #include "graphics/scene/scene.h"
 
-#ifdef BUILD_EU_VERSION
-char *mpegName[][40] = {
-      {
-            "cdrom0:\\MOVIE3\\SCN0010P.PSS;1",
-            "cdrom0:\\MOVIE3\\SCN0031P.PSS;1",
-            "cdrom0:\\MOVIE3\\SCN1000P.PSS;1",
-            "cdrom0:\\MOVIE3\\SCN1031P.PSS;1",
-            "cdrom0:\\MOVIE3\\SCN1101P.PSS;1",
-            "cdrom0:\\MOVIE3\\SCN1240P.PSS;1",
-            "cdrom0:\\MOVIE3\\SCN1300P.PSS;1",
-            "cdrom0:\\MOVIE3\\SCN1331P.PSS;1",
-            "cdrom0:\\MOVIE3\\SCN1332P.PSS;1",
-            "cdrom0:\\MOVIE3\\SCN2010P.PSS;1",
-            "cdrom0:\\MOVIE3\\SCN2050P.PSS;1",
-            "cdrom0:\\MOVIE3\\SCN2061P.PSS;1",
-            "cdrom0:\\MOVIE3\\SCN2071P.PSS;1",
-            "cdrom0:\\MOVIE3\\SCN2091P.PSS;1",
-            "cdrom0:\\MOVIE3\\SCN2110P.PSS;1",
-            "cdrom0:\\MOVIE3\\SCN2131P.PSS;1",
-            "cdrom0:\\MOVIE3\\SCN2142P.PSS;1",
-            "cdrom0:\\MOVIE3\\SCN2143P.PSS;1",
-            "cdrom0:\\MOVIE3\\SCN2171P.PSS;1",
-            "cdrom0:\\MOVIE4\\SCN3010P.PSS;1",
-            "cdrom0:\\MOVIE4\\SCN3040P.PSS;1",
-            "cdrom0:\\MOVIE4\\SCN3080P.PSS;1",
-            "cdrom0:\\MOVIE4\\SCN3081P.PSS;1",
-            "cdrom0:\\MOVIE4\\SCN3090P.PSS;1",
-            "cdrom0:\\MOVIE4\\SCN4010P.PSS;1",
-            "cdrom0:\\MOVIE4\\SCN4031P.PSS;1",
-            "cdrom0:\\MOVIE4\\SCN4041P.PSS;1",
-            "cdrom0:\\MOVIE4\\SCN4060P.PSS;1",
-            "cdrom0:\\MOVIE4\\SCN4080P.PSS;1",
-            "cdrom0:\\MOVIE4\\SCN4090P.PSS;1",
-            "cdrom0:\\MOVIE4\\SCN4100P.PSS;1",
-            "cdrom0:\\MOVIE4\\SCN4110P.PSS;1",
-            "cdrom0:\\MOVIE4\\SCN4120P.PSS;1",
-            "cdrom0:\\MOVIE4\\SCN5010P.PSS;1",
-            "cdrom0:\\MOVIE4\\SCN5020P.PSS;1",
-            "cdrom0:\\MOVIE3\\SCN9000P.PSS;1",
-            "cdrom0:\\MOVIE3\\SCN9001P.PSS;1",
-            "cdrom0:\\MOVIE3\\TECMOP.PSS;1",
-            "cdrom0:\\MOVIE3\\SCN9100P.PSS;1",
-            "cdrom0:\\MOVIE3\\SCN9200P.PSS;1",
-      },
-      {
-            "cdrom0:\\MOVIE\\SCN0010.PSS;1",
-            "cdrom0:\\MOVIE\\SCN0031.PSS;1",
-            "cdrom0:\\MOVIE\\SCN1000.PSS;1",
-            "cdrom0:\\MOVIE\\SCN1031.PSS;1",
-            "cdrom0:\\MOVIE\\SCN1101.PSS;1",
-            "cdrom0:\\MOVIE\\SCN1240.PSS;1",
-            "cdrom0:\\MOVIE\\SCN1300.PSS;1",
-            "cdrom0:\\MOVIE\\SCN1331.PSS;1",
-            "cdrom0:\\MOVIE\\SCN1332.PSS;1",
-            "cdrom0:\\MOVIE\\SCN2010.PSS;1",
-            "cdrom0:\\MOVIE\\SCN2050.PSS;1",
-            "cdrom0:\\MOVIE\\SCN2061.PSS;1",
-            "cdrom0:\\MOVIE\\SCN2071.PSS;1",
-            "cdrom0:\\MOVIE\\SCN2091.PSS;1",
-            "cdrom0:\\MOVIE\\SCN2110.PSS;1",
-            "cdrom0:\\MOVIE\\SCN2131.PSS;1",
-            "cdrom0:\\MOVIE\\SCN2142.PSS;1",
-            "cdrom0:\\MOVIE\\SCN2143.PSS;1",
-            "cdrom0:\\MOVIE\\SCN2171.PSS;1",
-            "cdrom0:\\MOVIE2\\SCN3010.PSS;1",
-            "cdrom0:\\MOVIE2\\SCN3040.PSS;1",
-            "cdrom0:\\MOVIE2\\SCN3080.PSS;1",
-            "cdrom0:\\MOVIE2\\SCN3081.PSS;1",
-            "cdrom0:\\MOVIE2\\SCN3090.PSS;1",
-            "cdrom0:\\MOVIE2\\SCN4010.PSS;1",
-            "cdrom0:\\MOVIE2\\SCN4031.PSS;1",
-            "cdrom0:\\MOVIE2\\SCN4041.PSS;1",
-            "cdrom0:\\MOVIE2\\SCN4060.PSS;1",
-            "cdrom0:\\MOVIE2\\SCN4080.PSS;1",
-            "cdrom0:\\MOVIE2\\SCN4090.PSS;1",
-            "cdrom0:\\MOVIE2\\SCN4100.PSS;1",
-            "cdrom0:\\MOVIE2\\SCN4110.PSS;1",
-            "cdrom0:\\MOVIE2\\SCN4120.PSS;1",
-            "cdrom0:\\MOVIE2\\SCN5010.PSS;1",
-            "cdrom0:\\MOVIE2\\SCN5020.PSS;1",
-            "cdrom0:\\MOVIE\\SCN9000.PSS;1",
-            "cdrom0:\\MOVIE\\SCN9001.PSS;1",
-            "cdrom0:\\MOVIE\\TECMO.PSS;1",
-            "cdrom0:\\MOVIE\\SCN9100.PSS;1",
-            "cdrom0:\\MOVIE\\SCN9200.PSS;1",
-      }
-};
-char *mpegStaff[][5] = {
-      {
-            "cdrom0:\\MOVIE5\\SCN900EP.PSS;1",
-            "cdrom0:\\MOVIE5\\SCN900FP.PSS;1",
-            "cdrom0:\\MOVIE5\\SCN900GP.PSS;1",
-            "cdrom0:\\MOVIE5\\SCN900SP.PSS;1",
-            "cdrom0:\\MOVIE5\\SCN900IP.PSS;1",
-      },
-      {
-            "cdrom0:\\MOVIE5\\SCN900E.PSS;1",
-            "cdrom0:\\MOVIE5\\SCN900F.PSS;1",
-            "cdrom0:\\MOVIE5\\SCN900G.PSS;1",
-            "cdrom0:\\MOVIE5\\SCN900S.PSS;1",
-            "cdrom0:\\MOVIE5\\SCN900I.PSS;1",
-      }
-};
-#else
+#if defined(BUILD_JP_VERSION) || defined(BUILD_US_VERSION)
 char *mpegName[] = {
     "cdrom0:\\MOVIE\\SCN0010.PSS;1",
     "cdrom0:\\MOVIE\\SCN0031.PSS;1",
@@ -186,23 +84,136 @@ char *mpegName[] = {
     "cdrom0:\\MOVIE\\SCN9100.PSS;1",
     "cdrom0:\\MOVIE\\SCN9200.PSS;1",
 };
-#endif
-u_char mpeg_vol_rate[] = {
-    95,  90,  75,  90,  100, 100, 100, 90,  100, 100, 90, 100, 100, 100,
-    100, 100, 100, 100, 100, 100, 100, 100, 100, 90,  90, 90,  100, 80,
-    100, 100, 100, 100, 100, 100, 100, 100, 85,  90,  85, 70
+#elif defined(BUILD_EU_VERSION)
+char *mpegName[][40] = {
+    {
+        "cdrom0:\\MOVIE3\\SCN0010P.PSS;1",
+        "cdrom0:\\MOVIE3\\SCN0031P.PSS;1",
+        "cdrom0:\\MOVIE3\\SCN1000P.PSS;1",
+        "cdrom0:\\MOVIE3\\SCN1031P.PSS;1",
+        "cdrom0:\\MOVIE3\\SCN1101P.PSS;1",
+        "cdrom0:\\MOVIE3\\SCN1240P.PSS;1",
+        "cdrom0:\\MOVIE3\\SCN1300P.PSS;1",
+        "cdrom0:\\MOVIE3\\SCN1331P.PSS;1",
+        "cdrom0:\\MOVIE3\\SCN1332P.PSS;1",
+        "cdrom0:\\MOVIE3\\SCN2010P.PSS;1",
+        "cdrom0:\\MOVIE3\\SCN2050P.PSS;1",
+        "cdrom0:\\MOVIE3\\SCN2061P.PSS;1",
+        "cdrom0:\\MOVIE3\\SCN2071P.PSS;1",
+        "cdrom0:\\MOVIE3\\SCN2091P.PSS;1",
+        "cdrom0:\\MOVIE3\\SCN2110P.PSS;1",
+        "cdrom0:\\MOVIE3\\SCN2131P.PSS;1",
+        "cdrom0:\\MOVIE3\\SCN2142P.PSS;1",
+        "cdrom0:\\MOVIE3\\SCN2143P.PSS;1",
+        "cdrom0:\\MOVIE3\\SCN2171P.PSS;1",
+        "cdrom0:\\MOVIE4\\SCN3010P.PSS;1",
+        "cdrom0:\\MOVIE4\\SCN3040P.PSS;1",
+        "cdrom0:\\MOVIE4\\SCN3080P.PSS;1",
+        "cdrom0:\\MOVIE4\\SCN3081P.PSS;1",
+        "cdrom0:\\MOVIE4\\SCN3090P.PSS;1",
+        "cdrom0:\\MOVIE4\\SCN4010P.PSS;1",
+        "cdrom0:\\MOVIE4\\SCN4031P.PSS;1",
+        "cdrom0:\\MOVIE4\\SCN4041P.PSS;1",
+        "cdrom0:\\MOVIE4\\SCN4060P.PSS;1",
+        "cdrom0:\\MOVIE4\\SCN4080P.PSS;1",
+        "cdrom0:\\MOVIE4\\SCN4090P.PSS;1",
+        "cdrom0:\\MOVIE4\\SCN4100P.PSS;1",
+        "cdrom0:\\MOVIE4\\SCN4110P.PSS;1",
+        "cdrom0:\\MOVIE4\\SCN4120P.PSS;1",
+        "cdrom0:\\MOVIE4\\SCN5010P.PSS;1",
+        "cdrom0:\\MOVIE4\\SCN5020P.PSS;1",
+        "cdrom0:\\MOVIE3\\SCN9000P.PSS;1",
+        "cdrom0:\\MOVIE3\\SCN9001P.PSS;1",
+        "cdrom0:\\MOVIE3\\TECMOP.PSS;1",
+        "cdrom0:\\MOVIE3\\SCN9100P.PSS;1",
+        "cdrom0:\\MOVIE3\\SCN9200P.PSS;1",
+    },
+    {
+        "cdrom0:\\MOVIE\\SCN0010.PSS;1",
+        "cdrom0:\\MOVIE\\SCN0031.PSS;1",
+        "cdrom0:\\MOVIE\\SCN1000.PSS;1",
+        "cdrom0:\\MOVIE\\SCN1031.PSS;1",
+        "cdrom0:\\MOVIE\\SCN1101.PSS;1",
+        "cdrom0:\\MOVIE\\SCN1240.PSS;1",
+        "cdrom0:\\MOVIE\\SCN1300.PSS;1",
+        "cdrom0:\\MOVIE\\SCN1331.PSS;1",
+        "cdrom0:\\MOVIE\\SCN1332.PSS;1",
+        "cdrom0:\\MOVIE\\SCN2010.PSS;1",
+        "cdrom0:\\MOVIE\\SCN2050.PSS;1",
+        "cdrom0:\\MOVIE\\SCN2061.PSS;1",
+        "cdrom0:\\MOVIE\\SCN2071.PSS;1",
+        "cdrom0:\\MOVIE\\SCN2091.PSS;1",
+        "cdrom0:\\MOVIE\\SCN2110.PSS;1",
+        "cdrom0:\\MOVIE\\SCN2131.PSS;1",
+        "cdrom0:\\MOVIE\\SCN2142.PSS;1",
+        "cdrom0:\\MOVIE\\SCN2143.PSS;1",
+        "cdrom0:\\MOVIE\\SCN2171.PSS;1",
+        "cdrom0:\\MOVIE2\\SCN3010.PSS;1",
+        "cdrom0:\\MOVIE2\\SCN3040.PSS;1",
+        "cdrom0:\\MOVIE2\\SCN3080.PSS;1",
+        "cdrom0:\\MOVIE2\\SCN3081.PSS;1",
+        "cdrom0:\\MOVIE2\\SCN3090.PSS;1",
+        "cdrom0:\\MOVIE2\\SCN4010.PSS;1",
+        "cdrom0:\\MOVIE2\\SCN4031.PSS;1",
+        "cdrom0:\\MOVIE2\\SCN4041.PSS;1",
+        "cdrom0:\\MOVIE2\\SCN4060.PSS;1",
+        "cdrom0:\\MOVIE2\\SCN4080.PSS;1",
+        "cdrom0:\\MOVIE2\\SCN4090.PSS;1",
+        "cdrom0:\\MOVIE2\\SCN4100.PSS;1",
+        "cdrom0:\\MOVIE2\\SCN4110.PSS;1",
+        "cdrom0:\\MOVIE2\\SCN4120.PSS;1",
+        "cdrom0:\\MOVIE2\\SCN5010.PSS;1",
+        "cdrom0:\\MOVIE2\\SCN5020.PSS;1",
+        "cdrom0:\\MOVIE\\SCN9000.PSS;1",
+        "cdrom0:\\MOVIE\\SCN9001.PSS;1",
+        "cdrom0:\\MOVIE\\TECMO.PSS;1",
+        "cdrom0:\\MOVIE\\SCN9100.PSS;1",
+        "cdrom0:\\MOVIE\\SCN9200.PSS;1",
+    }
 };
+char *mpegStaff[][5] = {
+    {
+        "cdrom0:\\MOVIE5\\SCN900EP.PSS;1",
+        "cdrom0:\\MOVIE5\\SCN900FP.PSS;1",
+        "cdrom0:\\MOVIE5\\SCN900GP.PSS;1",
+        "cdrom0:\\MOVIE5\\SCN900SP.PSS;1",
+        "cdrom0:\\MOVIE5\\SCN900IP.PSS;1",
+    },
+    {
+        "cdrom0:\\MOVIE5\\SCN900E.PSS;1",
+        "cdrom0:\\MOVIE5\\SCN900F.PSS;1",
+        "cdrom0:\\MOVIE5\\SCN900G.PSS;1",
+        "cdrom0:\\MOVIE5\\SCN900S.PSS;1",
+        "cdrom0:\\MOVIE5\\SCN900I.PSS;1",
+    }
+};
+#endif
+#if defined(BUILD_JP_VERSION)
+u_char mpeg_vol_rate[] = {
+     85,  85,  70,  90,  90,  90,  90,  90, 100,  90,
+     85,  90,  85, 100, 100, 100, 100,  90,  90,  90,
+     90, 100,  90,  90,  90,  90,  90,  60, 100, 100,
+    100,  90, 100, 100, 100,  90,  80,  90,  85,  70,
+};
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+u_char mpeg_vol_rate[] = {
+     95,  90,  75,  90, 100, 100, 100,  90, 100, 100,
+     90, 100, 100, 100, 100, 100, 100, 100, 100, 100,
+    100, 100, 100,  90,  90,  90, 100,  80, 100, 100,
+    100, 100, 100, 100, 100, 100,  85,  90,  85,  70,
+};
+#endif
 VoBuf voBuf = {0};
 StrFile infile = {0};
 VideoDec videoDec = {0};
 AudioDec audioDec = {0};
 sceGsDBuff db = {0};
 
-static VoData *voBufData = (VoData *)0x00470100;
-static VoTag *voBufTag = (VoTag *)0x006d8100;
-ReadBuf *readBuf = (ReadBuf *)0x00420000;
-static u_char *audioBuff = (u_char *)0x006c8100;
-static char *videoDecStack = (u_char *)0x006d4100;
+static VoData *voBufData = (VoData *)VOBUF_DATA_ADDRESS;
+static VoTag *voBufTag = (VoTag *)VOBUF_TAG_ADDRESS;
+ReadBuf *readBuf = (ReadBuf *)READ_BUF_ADDRESS;
+static u_char *audioBuff = (u_char *)AUDIO_BUFF_ADDRESS;
+static char *videoDecStack = (u_char *)VIDEO_DEC_STACK_ADDRESS;
 u_int scene_bg_color = 0;
 int isWithAudio = 1;
 char *commandname = NULL;
@@ -241,9 +252,27 @@ static int cpy2area(u_char *pd0, int d0, u_char *pd1, int d1, u_char *ps0, int s
 
 #define IOP_BUFF_SIZE (12288*2)
 #define STACK_SIZE (16*1024)
+#define AUDIO_BUF_SIZE 0xc000
+#define ZERO_BUFF_SIZE 0x800
+
+#if defined(BUILD_JP_VERSION)
+#define VER_MPEG_NAME(x) mpegName[x]
+#define VER_GRAPH_OUTPUT_MODE SCE_GS_NTSC
+#elif defined(BUILD_US_VERSION)
+#define VER_MPEG_NAME(x) mpegName[x]
+#define VER_GRAPH_OUTPUT_MODE SCE_GS_NTSC
+#elif defined(BUILD_EU_VERSION)
+#define VER_MPEG_NAME(x) mpegName[sys_wrk.pal_disp_mode][x]
+#define VER_GRAPH_OUTPUT_MODE sys_wrk.pal_disp_mode == 0 ? SCE_GS_PAL: SCE_GS_NTSC
+#endif
+
+#define SCREEN_WIDTH 640
+#define SCREEN_HEIGHT 224
+
+#define DISP_WIDTH  640
+#define DISP_HEIGHT 448
 
 void MovieInitWrk(void)
-
 {
     movie_wrk.play_event_no = 0;
     movie_wrk.play_event_sta = 0;
@@ -286,38 +315,36 @@ int PlayMpegEvent()
         case 3:
             for (i = 0; i < 99; i++ )
             {
+#if defined(MATCHING_DECOMP)
                 u_char *smn = scene_movie_no; // HACK: regswap fix
+#endif
                 if (scene_movie_no[i] == movie_wrk.play_event_no)
                 {
                     play_mov_no = i;
                     break;
                 }
+#if defined(MATCHING_DECOMP)
                 smn = scene_movie_no; // HACK: regswap fix
+#endif
             }
 
             ClearDispRoom(1);
 
-#ifdef BUILD_EU_VERSION
-            movie(mpegName[sys_wrk.pal_disp_mode][play_mov_no]);
-#else
-            movie(mpegName[play_mov_no]);
-#endif
+            movie(VER_MPEG_NAME(play_mov_no));
+
             SetIopCmdSm(1, 1, 0, 0);
             SeSetMVol(opt_wrk.bgm_vol);
             SeSetSteMono(opt_wrk.sound_mode);
 
             movie_wrk.play_event_sta = 4;
+        // case fall-through
         case 4:
-#ifdef BUILD_EU_VERSION
-            sceGsResetGraph(1, SCE_GS_INTERLACE, sys_wrk.pal_disp_mode == 0 ? SCE_GS_PAL: SCE_GS_NTSC, SCE_GS_FRAME);
-#else
-            sceGsResetGraph(1, SCE_GS_INTERLACE, SCE_GS_NTSC, SCE_GS_FRAME);
-#endif
-            sceGsSetDefDBuff(&g_db, 0, 0x280, 0xe0, 2, 0x31, 1);
+            sceGsResetGraph(1, SCE_GS_INTERLACE, VER_GRAPH_OUTPUT_MODE, SCE_GS_FRAME);
+            sceGsSetDefDBuff(&g_db, 0, SCREEN_WIDTH, SCREEN_HEIGHT, SCE_GS_ZGEQUAL, SCE_GS_PSMZ24, SCE_GS_CLEAR);
 
             pdrawenv = &g_db.draw0;
 
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
             if (sys_wrk.pal_disp_mode == 0)
             {
                 g_db.disp[1].display.DX = 656;
@@ -343,12 +370,12 @@ int PlayMpegEvent()
             if (scene_bg_color == 0)
             {
                 SetSysBackColor(0, 0, 0);
-                clearGsMem(0, 0, 0, 0x280, 0x1c0);
+                clearGsMem(0, 0, 0, DISP_WIDTH, DISP_HEIGHT);
             }
             else
             {
                 SetSysBackColor(0xff, 0xff, 0xff);
-                clearGsMem(0xff, 0xff, 0xff, 0x280, 0x1c0);
+                clearGsMem(0xff, 0xff, 0xff, DISP_WIDTH, DISP_HEIGHT);
             }
 
             AdpcmReturnFromMovie();
@@ -373,11 +400,8 @@ u_int movie(char *name)
     sceGsSyncPath(0, 0);
     sceGsResetPath();
     sceDmaReset(1);
-#ifdef BUILD_EU_VERSION
-            sceGsResetGraph(1, SCE_GS_INTERLACE, sys_wrk.pal_disp_mode == 0 ? SCE_GS_PAL: SCE_GS_NTSC, SCE_GS_FRAME);
-#else
-            sceGsResetGraph(1, SCE_GS_INTERLACE, SCE_GS_NTSC, SCE_GS_FRAME);
-#endif
+    sceGsResetGraph(1, SCE_GS_INTERLACE, VER_GRAPH_OUTPUT_MODE, SCE_GS_FRAME);
+
     if (scene_bg_color == 0)
     {
         clearGsMem(0, 0, 0, 0x280, 0x1c0);
@@ -387,13 +411,13 @@ u_int movie(char *name)
         clearGsMem(0xff, 0xff, 0xff, 0x280, 0x1c0);
     }
 
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
     SendFontTex();
 #endif
 
-    sceGsSetDefDBuff(&db, 0, 0x280, 0xe0, 0, 0, 1);
+    sceGsSetDefDBuff(&db, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 1);
 
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
     if (sys_wrk.pal_disp_mode == 0)
     {
         db.disp[1].display.DX = 656;
@@ -417,7 +441,7 @@ u_int movie(char *name)
     ChangeThreadPriority(thread_id, 1);
 
     initMov(name);
-    readMpeg(&videoDec,readBuf,(StrFile *)&infile);
+    readMpeg(&videoDec, readBuf, &infile);
     termMov();
 
     ChangeThreadPriority(GetThreadId(), thread_id);
@@ -458,7 +482,7 @@ static int readMpeg(VideoDec *vd, ReadBuf *rb, StrFile *file)
 
     while (isPaused || (writerest > 4 && videoDecGetState(vd) != VD_STATE_END))
     {
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
         if (sys_wrk.pal_disp_mode == 0)
         {
             SceneSetVibrate(movie_wrk.play_event_no, (vd->mpeg.frameCount * 6) / 5);
@@ -470,6 +494,7 @@ static int readMpeg(VideoDec *vd, ReadBuf *rb, StrFile *file)
 #else
         SceneSetVibrate(movie_wrk.play_event_no, vd->mpeg.frameCount);
 #endif
+
         movVblankPad();
 
         if (*key_now[12] != 0 && vd->mpeg.frameCount >= 31 && movie_wrk.play_event_sta != 7)
@@ -478,6 +503,7 @@ static int readMpeg(VideoDec *vd, ReadBuf *rb, StrFile *file)
         }
 
         putsize = readBufBeginPut(rb, &put_ptr);
+
         if (readrest > 0 && putsize >= READ_UNIT_SIZE)
         {
             count = strFileRead(file, put_ptr, READ_UNIT_SIZE);
@@ -488,16 +514,19 @@ static int readMpeg(VideoDec *vd, ReadBuf *rb, StrFile *file)
         switchThread();
 
         getsize = readBufBeginGet(rb, &get_ptr);
+
         if (getsize > 0)
         {
             proceed = sceMpegDemuxPssRing(&vd->mpeg, get_ptr, getsize, rb->data, rb->size);
+
             readBufEndGet(rb, proceed);
+
             writerest -= proceed;
         }
 
         proceedAudio();
 
-        if (!isStarted && voBufIsFull(&voBuf) && isAudioOK())
+        if (isStarted == 0 && voBufIsFull(&voBuf) && isAudioOK())
         {
             startDisplay(1);
 
@@ -532,7 +561,7 @@ static int readMpeg(VideoDec *vd, ReadBuf *rb, StrFile *file)
 
 static int isAudioOK()
 {
-    return (isWithAudio)? audioDecIsPreset(&audioDec): 1;
+    return isWithAudio ? audioDecIsPreset(&audioDec) : 1;
 }
 
 void initMov(char *bsfilename)
@@ -540,14 +569,14 @@ void initMov(char *bsfilename)
     ThreadParam th_param;
     void *val;
 
-    *REG_DMAC_CTRL |= 3;
-    *REG_DMAC_STAT = 4;
+    *REG_DMAC_CTRL = (*REG_DMAC_CTRL | 0x003);
+    *REG_DMAC_STAT = 0x4; // clear D_STAT.CIS2
 
     scePcStop();
 
     if (movie_wrk.play_event_sta == 6 || movie_wrk.play_event_sta == 7)
     {
-        mpegWork = (u_char *)0x14b0000;
+        mpegWork = (u_char *)LOAD_ADDRESS_23;
     }
     else
     {
@@ -565,7 +594,7 @@ void initMov(char *bsfilename)
     sceSdRemoteInit();
     sceSdRemote(1, rSdInit, SD_INIT_COLD);
 
-    audioDecCreate(&audioDec, audioBuff, 0xc000, IOP_BUFF_SIZE);
+    audioDecCreate(&audioDec, audioBuff, AUDIO_BUF_SIZE, IOP_BUFF_SIZE);
     videoDecSetStream(&videoDec, 0, 0, (sceMpegCallback)videoCallback, readBuf);
 
     if (isWithAudio != 0)
@@ -585,7 +614,7 @@ void initMov(char *bsfilename)
     videoDecTh = CreateThread(&th_param);
     StartThread(videoDecTh, &videoDec);
 
-    while (!strFileOpen(&infile, bsfilename)) {}
+    while (strFileOpen(&infile, bsfilename) == 0) {}
 
     sceGsSyncVCallback(vblankHandlerM);
 
@@ -666,56 +695,62 @@ int MoviePlay(int scene_no)
 
     AdpcmShiftMovie();
     SeStopAll();
+
     vfunc();
 
+#if defined(MATCHING_DECOMP)
     do
     {
+#endif
         movie_wrk.play_event_no = scene_no;
         movie_wrk.play_event_sta = 0x2 | 0x4;
 
         for (i = 0; i < 99; i++)
         {
+#if defined(MATCHING_DECOMP)
             u_char *smn = scene_movie_no; // HACK: regswap fix
+#endif
             if (scene_movie_no[i] == movie_wrk.play_event_no)
             {
                 play_mov_no = i;
                 break;
             }
+#if defined(MATCHING_DECOMP)
             smn = scene_movie_no; // HACK: regswap fix
+#endif
         }
+#if defined(MATCHING_DECOMP)
     } while (0);
+#endif
 
     if (scene_no != 0 && scene_no != 0x62 && scene_no != 99)
     {
         ClearDispRoom(1);
     }
 
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_JP_VERSION) || defined(BUILD_US_VERSION)
+    movie(VER_MPEG_NAME(play_mov_no));
+#elif defined(BUILD_EU_VERSION)
     if (scene_no == 0x60)
     {
         movie(mpegStaff[sys_wrk.pal_disp_mode][sys_wrk.language]);
     }
     else
     {
-        movie(mpegName[sys_wrk.pal_disp_mode][play_mov_no]);
+        movie(VER_MPEG_NAME(play_mov_no));
     }
-#else
-    movie(mpegName[play_mov_no]);
 #endif
 
     SetIopCmdSm(1, 1, 0, 0);
     SeSetMVol(opt_wrk.bgm_vol);
     SeSetSteMono(opt_wrk.sound_mode);
-#ifdef BUILD_EU_VERSION
-    sceGsResetGraph(1, SCE_GS_INTERLACE, sys_wrk.pal_disp_mode == 0 ? SCE_GS_PAL: SCE_GS_NTSC, SCE_GS_FRAME);
-#else
-    sceGsResetGraph(1, SCE_GS_INTERLACE, SCE_GS_NTSC, SCE_GS_FRAME);
-#endif
+
+    sceGsResetGraph(1, SCE_GS_INTERLACE, VER_GRAPH_OUTPUT_MODE, SCE_GS_FRAME);
     sceGsSetDefDBuff(&g_db, SCE_GS_PSMCT32, DISP_WIDTH, (DISP_HEIGHT/2), 2, 0x31, SCE_GS_CLEAR);
 
     pdrawenv = &g_db.draw0;
 
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
     if (sys_wrk.pal_disp_mode == 0)
     {
         g_db.disp[1].display.DX = 656;
@@ -733,7 +768,9 @@ int MoviePlay(int scene_no)
 #endif
 
     sceGsSyncPath(0, 0);
+
     SgInit3D();
+
     sceGsSyncPath(0, 0);
 
     if (scene_no != 0x5f)
@@ -748,7 +785,9 @@ int MoviePlay(int scene_no)
     }
 
     vfunc();
+
     AdpcmReturnFromMovie();
+
     EiMain();
 
     *(int *)REG_DMAC_CTRL &= ~D_CTRL_RELE_M; // yeah ...
@@ -767,41 +806,42 @@ void MovieTest(int scene_no)
 
     for (i = 0; i < 99; i++)
     {
+#if defined(MATCHING_DECOMP)
         u_char *smn = scene_movie_no; // HACK: regswap fix
+#endif
         if (scene_movie_no[i] == movie_wrk.play_event_no)
         {
             play_mov_no = i;
             break;
         }
+#if defined(MATCHING_DECOMP)
         smn = scene_movie_no; // HACK: regswap fix
+#endif
     }
 
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_JP_VERSION) || defined(BUILD_US_VERSION)
+    movie(VER_MPEG_NAME(play_mov_no));
+#elif defined(BUILD_EU_VERSION)
     if (scene_no == 0x60)
     {
         movie(mpegStaff[sys_wrk.pal_disp_mode][sys_wrk.language]);
     }
     else
     {
-        movie(mpegName[sys_wrk.pal_disp_mode][play_mov_no]);
+        movie(VER_MPEG_NAME(play_mov_no));
     }
-#else
-    movie(mpegName[play_mov_no]);
 #endif
 
     SetIopCmdSm(1, 1, 0, 0);
     SeSetMVol(opt_wrk.bgm_vol);
     SeSetSteMono(opt_wrk.sound_mode);
-#ifdef BUILD_EU_VERSION
-    sceGsResetGraph(1, SCE_GS_INTERLACE, sys_wrk.pal_disp_mode == 0 ? SCE_GS_PAL: SCE_GS_NTSC, SCE_GS_FRAME);
-#else
-    sceGsResetGraph(1, SCE_GS_INTERLACE, SCE_GS_NTSC, SCE_GS_FRAME);
-#endif
+
+    sceGsResetGraph(1, SCE_GS_INTERLACE, VER_GRAPH_OUTPUT_MODE, SCE_GS_FRAME);
     sceGsSetDefDBuff(&g_db, SCE_GS_PSMCT32, DISP_WIDTH, (DISP_HEIGHT/2), 2, 0x31, SCE_GS_CLEAR);
 
     pdrawenv = &g_db.draw0;
 
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
     if (sys_wrk.pal_disp_mode == 0)
     {
         g_db.disp[1].display.DX = 656;
@@ -819,11 +859,15 @@ void MovieTest(int scene_no)
 #endif
 
     sceGsSyncPath(0, 0);
+
     SgInit3D();
+
     sceGsSyncPath(0, 0);
 
     vfunc();
+
     AdpcmReturnFromMovie();
+
     EiMain();
 
     *(int *)REG_DMAC_CTRL &= ~D_CTRL_RELE_M;
@@ -851,13 +895,16 @@ int PadSyncCallback2()
 
         if (state == scePadStateDiscon)
         {
-            psp->flags = psp->flags & ~1;
+            psp->flags &= ~0x1;
             psp->step = 0;
+
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
             PadClearCount(p_id);
+#endif
         }
         else
         {
-            psp->flags = psp->flags | 1;
+            psp->flags |= 0x1;
         }
 
         if (state == scePadStateFindPad)
@@ -916,6 +963,34 @@ int PadSyncCallback2()
                     psp->step = 1;
                 }
             break;
+#if defined(BUILD_JP_VERSION)
+            case 1:
+                if (scePadGetState(psp->port, psp->slot) == scePadStateExecCmd)
+                {
+                    break;
+                }
+
+                id = scePadInfoMode(psp->port, psp->slot, InfoModeCurID, 0);
+
+                if (id == 0)
+                {
+                    break;
+                }
+
+                exid = scePadInfoMode(psp->port, psp->slot, InfoModeCurExID, 0);
+
+                id = (exid > 0) ? exid : id;
+
+                if (id != 7)
+                {
+                    psp->step = 99;
+                }
+                else
+                {
+                    psp->step = 10;
+                }
+            break;
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
             case 1:
                 if (scePadGetState(psp->port, psp->slot) != scePadStateExecCmd)
                 {
@@ -964,6 +1039,7 @@ int PadSyncCallback2()
                     psp->step = 10;
                 }
             break;
+#endif
             case 10:
                 if (scePadInfoPressMode(psp->port, psp->slot) != 1)
                 {
@@ -1030,6 +1106,7 @@ void movVblankPad()
 
 void ReqLogoMovie(void) {
     movie_wrk.play_event_sta = 0x4 | 0x2 | 0x1;
+
     play_mov_no = 37;
 
     vfunc();
@@ -1040,27 +1117,19 @@ void ReqLogoMovie(void) {
     FlushModel(1);
     ClearTextureCache();
 
-#ifdef BUILD_EU_VERSION
-    movie(mpegName[sys_wrk.pal_disp_mode][play_mov_no]);
-#else
-    movie(mpegName[play_mov_no]);
-#endif
+    movie(VER_MPEG_NAME(play_mov_no));
 
     SetIopCmdSm(1, 1, 0, 0);
 
     SeSetMVol(opt_wrk.bgm_vol);
     SeSetSteMono(opt_wrk.sound_mode);
 
-#ifdef BUILD_EU_VERSION
-    sceGsResetGraph(1, SCE_GS_INTERLACE, sys_wrk.pal_disp_mode == 0 ? SCE_GS_PAL: SCE_GS_NTSC, SCE_GS_FRAME);
-#else
-    sceGsResetGraph(1, SCE_GS_INTERLACE, SCE_GS_NTSC, SCE_GS_FRAME);
-#endif
+    sceGsResetGraph(1, SCE_GS_INTERLACE, VER_GRAPH_OUTPUT_MODE, SCE_GS_FRAME);
     sceGsSetDefDBuff(&g_db, SCE_GS_PSMCT32, DISP_WIDTH, (DISP_HEIGHT/2), 2, 0x31, SCE_GS_CLEAR);
 
     pdrawenv = &g_db.draw0;
 
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
     if (sys_wrk.pal_disp_mode == 0)
     {
         g_db.disp[1].display.DX = 0x290;
@@ -1078,7 +1147,9 @@ void ReqLogoMovie(void) {
 #endif
 
     sceGsSyncPath(0, 0);
+
     SgInit3D();
+
     sceGsSyncPath(0, 0);
 
     AdpcmReturnFromMovie();
@@ -1110,7 +1181,7 @@ int audioDecCreate(AudioDec *ad, u_char *buff, int buffSize, int iopBuffSize)
         return 0;
     }
 
-    ad->iopZero = (int)sceSifAllocIopHeap(0x800);
+    ad->iopZero = (int)sceSifAllocIopHeap(ZERO_BUFF_SIZE);
 
     if (ad->iopZero < 0)
     {
@@ -1119,7 +1190,7 @@ int audioDecCreate(AudioDec *ad, u_char *buff, int buffSize, int iopBuffSize)
 
     memset(_0_buf, 0, sizeof(_0_buf));
 
-    sendToIOP(ad->iopZero, (u_char *)_0_buf, 0x800);
+    sendToIOP(ad->iopZero, (u_char *)_0_buf, ZERO_BUFF_SIZE);
     changeMasterVolume(((opt_wrk.bgm_vol * VOLUME_MASTER_MAX) / 4096) * mpeg_vol_rate[play_mov_no] / 100);
 
     return 1;
@@ -1141,16 +1212,16 @@ void audioDecPause(AudioDec* ad)
 
     changeInputVolume(0);
 
-    ad->iopPausePos = (sceSdRemote(1, rSdBlockTrans, AUTODMA_CH, SD_TRANS_MODE_STOP, NULL, 0) & 0x00FFFFFF) - ad->iopBuff;
+    ad->iopPausePos = (sceSdRemote(1, rSdBlockTrans, AUTODMA_CH, SD_TRANS_MODE_STOP, NULL, 0) & 0x00ffffff) - ad->iopBuff;
 
-    sceSdRemote(1, rSdVoiceTrans, AUTODMA_CH, SD_TRANS_MODE_WRITE | SD_TRANS_BY_DMA, ad->iopZero, 0x4000, 0x800);
+    sceSdRemote(1, rSdVoiceTrans, AUTODMA_CH, SD_TRANS_MODE_WRITE | SD_TRANS_BY_DMA, ad->iopZero, 0x4000, ZERO_BUFF_SIZE);
 }
 
 void audioDecResume(AudioDec* ad)
 {
-    changeInputVolume(0x7FFF);
+    changeInputVolume(0x7fff);
 
-    sceSdRemote(1, rSdBlockTrans, AUTODMA_CH, (SD_TRANS_MODE_WRITE_FROM | SD_BLOCK_LOOP), ad->iopBuff, (ad->iopBuffSize/UNIT_SIZE)*UNIT_SIZE, ad->iopBuff + ad->iopPausePos);
+    sceSdRemote(1, rSdBlockTrans, AUTODMA_CH, SD_TRANS_MODE_WRITE_FROM | SD_BLOCK_LOOP, ad->iopBuff, (ad->iopBuffSize / UNIT_SIZE) * UNIT_SIZE, ad->iopBuff + ad->iopPausePos);
 
     ad->state = AU_STATE_PLAY;
 }
@@ -1181,7 +1252,7 @@ void audioDecBeginPut(AudioDec *ad, u_char **ptr0, int *len0, u_char **ptr1, int
     if (ad->state == AU_STATE_INIT)
     {
         *ptr0 = (u_char*)ad + (ad->hdrCount + 4);
-        *len0 = 0x28 - ad->hdrCount;
+        *len0 = 40 - ad->hdrCount;
         *ptr1 = ad->data;
         *len1 = ad->size;
 
@@ -1212,11 +1283,11 @@ void audioDecEndPut(AudioDec *ad, int size)
 
     if (ad->state == AU_STATE_INIT)
     {
-        hdr_add = size <= 40U - ad->hdrCount ? size : 40U - ad->hdrCount;
+        hdr_add = min(size, AU_HDR_SIZE - ad->hdrCount);
 
         ad->hdrCount += hdr_add;
 
-        if (ad->hdrCount < 0 || ad->hdrCount >= 40)
+        if (ad->hdrCount >= AU_HDR_SIZE)
         {
             ad->state = AU_STATE_PRESET;
         }
@@ -1225,8 +1296,8 @@ void audioDecEndPut(AudioDec *ad, int size)
     }
 
     ad->put = (ad->put + size) % ad->size;
-    ad->count = ad->count + size;
-    ad->totalBytes = ad->totalBytes + size;
+    ad->count += size;
+    ad->totalBytes += size;
 }
 
 int audioDecIsPreset(AudioDec *ad)
@@ -1254,27 +1325,28 @@ int audioDecSendToIOP(AudioDec *ad)
 
     switch (ad->state)
     {
-    case 0:
+    case AU_STATE_INIT:
         return 0;
     break;
-    case 1:
+    case AU_STATE_PRESET:
         pd0 = ad->iopBuff + ad->totalBytesSent % ad->iopBuffSize;
         d0 = ad->iopBuffSize - ad->totalBytesSent;
         pd1 = 0;
         d1 = 0;
     break;
-    case 2:
-        pos = (sceSdRemote(1, 0x8100, 0) & 0x00ffffff)  - ad->iopBuff;
+    case AU_STATE_PLAY:
+        pos = (sceSdRemote(1, rSdBlockTransStatus, 0) & 0x00ffffff)  - ad->iopBuff;
+
         iopGetArea(&pd0, &d0, &pd1, &d1, ad, pos);
     break;
-    case 3:
+    case AU_STATE_PAUSE:
         return 0;
     break;
     }
 
 
     offset = ((ad->put - ad->count) + ad->size) % ad->size;
-    len = (ad->count / 1024) * 1024;
+    len = (ad->count / UNIT_SIZE) * UNIT_SIZE;
 
     s0 = len < ad->size - offset ? len : ad->size - offset;
     s1 = len - s0;
@@ -1282,7 +1354,7 @@ int audioDecSendToIOP(AudioDec *ad)
     ps0 = &ad->data[offset];
     ps1 = &ad->data[0];
 
-    if (d0 + d1 >= 1024 && s0 + s1 >= 1024)
+    if (d0 + d1 >= UNIT_SIZE && s0 + s1 >= UNIT_SIZE)
     {
         count_sent = sendToIOP2area(pd0, d0, pd1, d1, ps0, s0, ps1, s1);
     }
@@ -1299,8 +1371,8 @@ static void iopGetArea(int *pd0, int *d0, int *pd1, int *d1, AudioDec *ad, int p
 {
     int len;
 
-    len = (((pos + ad->iopBuffSize) - ad->iopLastPos) - 1024) % ad->iopBuffSize;
-    len = (len / 1024) * 1024;
+    len = (((pos + ad->iopBuffSize) - ad->iopLastPos) - UNIT_SIZE) % ad->iopBuffSize;
+    len = (len / UNIT_SIZE) * UNIT_SIZE;
 
     if (len <= ad->iopBuffSize - ad->iopLastPos)
     {
@@ -1387,15 +1459,15 @@ static void changeMasterVolume(u_int val)
 
     for (i = 0; i < 2; i++)
     {
-        sceSdRemote(1, 0x8010, i | 0x980, val);
-        sceSdRemote(1, 0x8010, i | 0xa80, val);
+        sceSdRemote(1, rSdSetParam, i | SD_P_MVOLL, val);
+        sceSdRemote(1, rSdSetParam, i | SD_P_MVOLR, val);
     }
 }
 
 static void changeInputVolume(u_int val)
 {
-    sceSdRemote(1, 0x8010, 0xf80, val);
-    sceSdRemote(1, 0x8010, 0x1080, val);
+    sceSdRemote(1, rSdSetParam, AUTODMA_CH | SD_P_BVOLL, val);
+    sceSdRemote(1, rSdSetParam, AUTODMA_CH | SD_P_BVOLR, val);
 }
 
 void clearGsMem(int r, int g, int b, int disp_width, int disp_height)
@@ -1551,7 +1623,7 @@ int vblankHandlerM(int val)
     sceDmaChan *dmaGif_loadimage;
     VoTag *tag;
 
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
     DIntr();
 #endif
 
@@ -1559,10 +1631,10 @@ int vblankHandlerM(int val)
     {
         dmaGif_loadimage = sceDmaGetChan(SCE_DMA_GIF);
 
-#if BUILD_EU_VERSION
-#else
+#if defined(BUILD_JP_VERSION) || defined(BUILD_US_VERSION)
         vblankCount++;
 #endif
+
         oddeven = ((*GS_CSR) >> 13) & 1;
 
         handler_error = sceGsSyncPath(1, 0);
@@ -1575,14 +1647,14 @@ int vblankHandlerM(int val)
             {
                 frd++;
 
-#if BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
                 SetSubtitles(0, movie_wrk.play_event_no, vblankCount);
                 MakeMovMes();
 #endif
 
                 ExitHandler();
 
-#if BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
                 EIntr();
 #endif
 
@@ -1612,12 +1684,12 @@ int vblankHandlerM(int val)
 
                 tag->status = VOBUF_STATUS_;
                 isFrameEnd = 1;
-#if BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
                 vblankCount++;
 #endif
             }
 
-#if BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
             SetSubtitles(0, movie_wrk.play_event_no, vblankCount);
             MakeMovMes();
 #endif
@@ -1626,7 +1698,7 @@ int vblankHandlerM(int val)
 
     ExitHandler();
 
-#if BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
     EIntr();
 #endif
 
@@ -1853,7 +1925,7 @@ int strFileOpen(StrFile *file, char *filename)
 
         body += 1;
 
-        if (!strcmp(devname, "cdrom0"))
+        if (strcmp(devname, "cdrom0") == 0)
         {
             len = strlen(body);
 
@@ -2637,7 +2709,7 @@ int videoDecFlush(VideoDec *vd)
 {
     u_char *pd0;
     u_char *pd1;
-    u_char seq_end_code[4] = {0x00, 0x00, 0x01, 0xb7};
+    u_char seq_end_code[4] = { 0x00, 0x00, 0x01, 0xb7 };
     int d0;
     int d1;
     u_char *pd0_unc;

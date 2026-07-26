@@ -12,8 +12,8 @@
 #include "sce/libcdvd.h"
 
 typedef struct {
-	int play_event_no;
-	int play_event_sta;
+    int play_event_no;
+    int play_event_sta;
 } MOVIE_WRK;
 
 typedef union {
