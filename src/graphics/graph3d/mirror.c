@@ -2,6 +2,9 @@
 #include "typedefs.h"
 #include "mirror.h"
 
+// gcc/src/newlib/libm/math/wf_acos.c
+float acosf(float x);
+
 #include "ee/eestruct.h"
 #include "sce/libvu0.h"
 
@@ -30,107 +33,233 @@ static float mzmin;
 
 #define SCRATCHPAD ((u_char *)0x70000000)
 
-static inline void inline_asm__mirror_c_line_38(sceVu0FMATRIX m0) {
-    asm volatile("\n\
-        lqc2    $vf25, 0(%0)       \n\
-        lqc2    $vf26, 0x10(%0)    \n\
-        lqc2    $vf27, 0x20(%0)    \n\
-        lqc2    $vf28, 0x30(%0)    \n\
-        ": :"r"(m0)
-    );
+static inline void _LoadMirrorMatrix(sceVu0FMATRIX m0)
+{
+    /*
+     * Loads a 4x4 matrix into the VU registers vf25-vf28.
+     *
+     * The matrix is subsequently used by _TransformMirrorVertex() and
+     * _TransformMirrorNode() as a globally shared VU-register transformation
+     * matrix.
+     *
+     * Equivalent C:
+     *
+     *     vf25 = m0[0];
+     *     vf26 = m0[1];
+     *     vf27 = m0[2];
+     *     vf28 = m0[3];
+     */
+    asm volatile("              \n\
+        lqc2    $vf25, 0x00(%0) \n\
+        lqc2    $vf26, 0x10(%0) \n\
+        lqc2    $vf27, 0x20(%0) \n\
+        lqc2    $vf28, 0x30(%0) \n\
+    ": :"r"(m0));
 }
 
-static inline void inline_asm__mirror_c_line_47(sceVu0FVECTOR v0, sceVu0FVECTOR v1) {
-    asm volatile("                            \n\
-        lqc2            $vf13, 0(%1)          \n\
-        vmulax.xyzw     ACC,   $vf25, $vf13x  \n\
-        vmadday.xyzw    ACC,   $vf26, $vf13y  \n\
-        vmaddaz.xyzw    ACC,   $vf27, $vf13z  \n\
-        vmaddw.xyzw     $vf12, $vf28, $vf0w   \n\
-        sqc2            $vf12, 0(%0)          \n\
-        ": :"r"(v0),"r"(v1)
-    );
+static inline void _TransformMirrorVertex(sceVu0FVECTOR v0, sceVu0FVECTOR v1)
+{
+    /*
+     * Transforms a vector using the matrix previously loaded into the globally
+     * shared VU registers vf25-vf28 and stores the resulting homogeneous vector
+     * in v0. The VU accumulator (ACC) is used to accumulate the matrix-vector
+     * multiplication before the result is written to vf12.
+     *
+     * Equivalent C:
+     *
+     *     v0 = (vf25 * v1.x) + (vf26 * v1.y) + (vf27 * v1.z) + (vf28 * v1.w);
+     */
+    asm volatile("                           \n\
+        lqc2            $vf13, 0(%1)         \n\
+        vmulax.xyzw     ACC,   $vf25, $vf13x \n\
+        vmadday.xyzw    ACC,   $vf26, $vf13y \n\
+        vmaddaz.xyzw    ACC,   $vf27, $vf13z \n\
+        vmaddw.xyzw     $vf12, $vf28, $vf0w  \n\
+        sqc2            $vf12, 0(%0)         \n\
+    ": :"r"(v0),"r"(v1));
 }
 
-static inline void inline_asm__mirror_c_line_62(MNODE *nm, sceVu0FVECTOR vp) {
-    asm volatile("                            \n\
-        lqc2            $vf13, 0(%1)          \n\
-        vmulax.xyzw     ACC,   $vf25, $vf13x  \n\
-        vmadday.xyzw    ACC,   $vf26, $vf13y  \n\
-        vmaddaz.xyzw    ACC,   $vf27, $vf13z  \n\
-        vmaddw.xyzw     $vf12, $vf28, $vf0w   \n\
-        sqc2            $vf13, 0(%0)          \n\
-        sqc2            $vf12, 0x10(%0)       \n\
-        ": :"r"(nm),"r"(vp)
-    );
+static inline void _TransformMirrorNode(MNODE *nm, sceVu0FVECTOR vp)
+{
+    /*
+     * Transforms vp using the matrix previously loaded into the globally
+     * shared VU registers vf25-vf28 and stores both the original and
+     * transformed vectors in an MNODE. The VU accumulator (ACC) is used to
+     * accumulate the matrix-vector multiplication before the transformed
+     * vector is written to nm->clip.
+     *
+     * Equivalent C:
+     *
+     *     nm->vp   = vp;
+     *     nm->clip = (vf25 * vp.x) + (vf26 * vp.y) + (vf27 * vp.z) + (vf28 * vp.w);
+     *
+     */
+    asm volatile("                           \n\
+        lqc2            $vf13, 0(%1)         \n\
+        vmulax.xyzw     ACC,   $vf25, $vf13x \n\
+        vmadday.xyzw    ACC,   $vf26, $vf13y \n\
+        vmaddaz.xyzw    ACC,   $vf27, $vf13z \n\
+        vmaddw.xyzw     $vf12, $vf28, $vf0w  \n\
+        sqc2            $vf13, 0x00(%0)      \n\
+        sqc2            $vf12, 0x10(%0)      \n\
+    ": :"r"(nm),"r"(vp));
 }
 
 static int MirrorLineClip(float *v0, float *v1)
 {
+    /*
+     * Clips two homogeneous vectors against the VU clipping planes and
+     * returns the accumulated clip flags.
+     *
+     * The VU clip instructions update the VU clip flag register vi18.
+     * After the required pipeline delay, cfc2 reads vi18 into the integer
+     * return value.
+     *
+     * Equivalent C:
+     *
+     *     int ClipVectorAgainstW(sceVu0FVECTOR v)
+     *     {
+     *         int clip = 0;
+     *
+     *         if (v[0] < -v[3]) clip |= 0x01;
+     *         if (v[0] >  v[3]) clip |= 0x02;
+     *         if (v[1] < -v[3]) clip |= 0x04;
+     *         if (v[1] >  v[3]) clip |= 0x08;
+     *         if (v[2] < -v[3]) clip |= 0x10;
+     *         if (v[2] >  v[3]) clip |= 0x20;
+     *
+     *         VUClipFlags |= clip;
+     *     }
+     *
+     *     ClipVectorAgainstW(v0);
+     *     ClipVectorAgainstW(v1);
+     *
+     *     return GetClipValue();
+     */
     int ret;
 
-    asm volatile("                     \n\
-        lqc2          $vf13, 0(%1)     \n\
-        lqc2          $vf14, 0(%2)     \n\
-        vclipw.xyz    $vf13, $vf13w    \n\
-        vclipw.xyz    $vf14, $vf14w    \n\
-        vnop                           \n\
-        vnop                           \n\
-        vnop                           \n\
-        vnop                           \n\
-        vnop                           \n\
-        cfc2          %0,    $vi18     \n\
-        ":"=r"(ret):"r"(v0),"r"(v1)
-    );
+    asm volatile("                  \n\
+        lqc2          $vf13, 0(%1)  \n\
+        lqc2          $vf14, 0(%2)  \n\
+        vclipw.xyz    $vf13, $vf13w \n\
+        vclipw.xyz    $vf14, $vf14w \n\
+        vnop                        \n\
+        vnop                        \n\
+        vnop                        \n\
+        vnop                        \n\
+        vnop                        \n\
+        cfc2          %0,    $vi18  \n\
+    ":"=r"(ret):"r"(v0),"r"(v1));
 
     return ret;
 }
 
-static inline void inline_asm__mirror_c_line_96(sceVu0FVECTOR v0) {
-    asm volatile("                     \n\
-        lqc2          $vf13, 0(%0)     \n\
-        vclipw.xyz    $vf13, $vf13w    \n\
-        ": :"r"(v0)
-    );
+static inline void _ClipMirrorVertex(sceVu0FVECTOR v0)
+{
+    /*
+     * Clips a homogeneous vector against the VU clipping planes.
+     *
+     * The vclipw instruction updates the VU clip flag register vi18.
+     * The resulting flags can subsequently be retrieved with GetClipValue().
+     *
+     * Equivalent C:
+     *
+     *     int ClipVectorAgainstW(sceVu0FVECTOR v)
+     *     {
+     *         int clip = 0;
+     *
+     *         if (v[0] < -v[3]) clip |= 0x01;
+     *         if (v[0] >  v[3]) clip |= 0x02;
+     *         if (v[1] < -v[3]) clip |= 0x04;
+     *         if (v[1] >  v[3]) clip |= 0x08;
+     *         if (v[2] < -v[3]) clip |= 0x10;
+     *         if (v[2] >  v[3]) clip |= 0x20;
+     *
+     *         VUClipFlags |= clip;
+     *     }
+     *
+     *     ClipVectorAgainstW(v0);
+     */
+    asm volatile("                  \n\
+        lqc2          $vf13, 0(%0)  \n\
+        vclipw.xyz    $vf13, $vf13w \n\
+    ": :"r"(v0));
 }
 
 static int GetClipValue()
 {
+    /*
+     * Returns the current VU clip flags.
+     *
+     * The clip flags are maintained by the VU in the special integer register
+     * vi18. The vnop instructions provide the required pipeline delay before
+     * cfc2 transfers the value of vi18 to the EE integer register ret.
+     *
+     * Equivalent C:
+     *
+     *     return VUClipFlags;
+     */
     int ret;
 
-    asm volatile("           \n\
-        vnop                 \n\
-        vnop                 \n\
-        vnop                 \n\
-        vnop                 \n\
-        vnop                 \n\
-        cfc2    %0, $vi18    \n\
-        ":"=r"(ret)
-    );
+    asm volatile("        \n\
+        vnop              \n\
+        vnop              \n\
+        vnop              \n\
+        vnop              \n\
+        vnop              \n\
+        cfc2    %0, $vi18 \n\
+    ":"=r"(ret));
 
     return ret;
 }
 
-static inline void inline_asm__mirror_c_line_120(qword base, sceVu0FVECTOR vp) {
-    asm volatile("\n\
-        lqc2            $vf12, 0(%1)             \n\
-        vmulax.xyzw     ACC,   $vf8,     $vf12x  \n\
-        vmadday.xyzw    ACC,   $vf9,     $vf12y  \n\
-        vmaddaz.xyzw    ACC,   $vf10,    $vf12z  \n\
-        vmaddw.xyzw     $vf14, $vf11,    $vf0w   \n\
-        vdiv            Q,     $vf0w,    $vf14w  \n\
-        vmulax.xyzw     ACC,   $vf4,     $vf12x  \n\
-        vmadday.xyzw    ACC,   $vf5,     $vf12y  \n\
-        vmaddaz.xyzw    ACC,   $vf6,     $vf12z  \n\
-        vmaddw.xyzw     $vf13, $vf7,     $vf12w  \n\
-        vwaitq                                   \n\
-        vmulq.xyz       $vf14, $vf14,    Q       \n\
-        vftoi4.xyz      $vf31, $vf14             \n\
-        sqc2            $vf13, 0x10(%0)          \n\
-        sqc2            $vf31, 0(%0)             \n\
-        sqc2            $vf14, 0x20(%0)          \n\
-        ": :"r"(base),"r"(vp)
-    );
+static inline void _ProjectMirrorVertex(qword base, sceVu0FVECTOR vp)
+{
+    /*
+     * Transforms and projects a vertex into screen-space integer coordinates.
+     *
+     * The matrix in the globally shared VU registers vf8-vf11 transforms vp
+     * into clip space. The matrix in vf4-vf7 then transforms the same vertex
+     * into the coordinate space used for screen projection.
+     *
+     * The VU accumulator (ACC) is used for both matrix-vector
+     * multiplications. The VU division result is written to the special Q
+     * register by vdiv and subsequently consumed by vmulq after vwaitq.
+     *
+     * The resulting values are stored in base as:
+     *
+     *     base[0] = projected X/Y/Z coordinates converted with vftoi4
+     *     base[1] = transformed vector
+     *     base[2] = perspective-divided vector
+     *
+     * Equivalent C:
+     *
+     *     clip = vf8-vf11 * vp;
+     *     projected = vf4-vf7 * vp;
+     *     projected.xyz /= clip.w;
+     *
+     *     base[0] = float_to_int4(projected);
+     *     base[1] = clip;
+     *     base[2] = projected;
+     */
+    asm volatile("                             \n\
+        lqc2            $vf12, 0(%1)           \n\
+        vmulax.xyzw     ACC,   $vf8,    $vf12x \n\
+        vmadday.xyzw    ACC,   $vf9,    $vf12y \n\
+        vmaddaz.xyzw    ACC,   $vf10,   $vf12z \n\
+        vmaddw.xyzw     $vf14, $vf11,   $vf0w  \n\
+        vdiv            Q,     $vf0w,   $vf14w \n\
+        vmulax.xyzw     ACC,   $vf4,    $vf12x \n\
+        vmadday.xyzw    ACC,   $vf5,    $vf12y \n\
+        vmaddaz.xyzw    ACC,   $vf6,    $vf12z \n\
+        vmaddw.xyzw     $vf13, $vf7,    $vf12w \n\
+        vwaitq                                 \n\
+        vmulq.xyz       $vf14, $vf14,   Q      \n\
+        vftoi4.xyz      $vf31, $vf14           \n\
+        sqc2            $vf13, 0x10(%0)        \n\
+        sqc2            $vf31, 0x00(%0)        \n\
+        sqc2            $vf14, 0x20(%0)        \n\
+    ": :"r"(base),"r"(vp));
 }
 
 int CheckMirrorModel(void *sgd_top)
@@ -158,9 +287,11 @@ int CheckMirrorModel(void *sgd_top)
     }
 }
 
-
-
-static inline void inline_asm__mirror_c_line_207(MNODE *dst, MNODE *src) {
+static inline void _CopyMirrorNode(MNODE *dst, MNODE *src)
+{
+    /*
+     * Copies both the vertex position and clip-space position from src to dst.
+     */
     Vu0CopyVector(dst->vp, src->vp);
     Vu0CopyVector(dst->clip, src->clip);
 }
@@ -183,7 +314,7 @@ void MirrorInterPNode(MNODE *dst, MNODE *inner, MNODE *outer, ClipData *cldata)
     dst->vp[2] = inner->vp[2] * ialpha + outer->vp[2] * alpha;
     dst->vp[3] = 1.0f;
 
-    inline_asm__mirror_c_line_47(dst->clip, dst->vp);
+    _TransformMirrorVertex(dst->clip, dst->vp);
 }
 
 void SliceMirrorPolygon(MFlipNode *fn, ClipData *cldata)
@@ -211,11 +342,11 @@ void SliceMirrorPolygon(MFlipNode *fn, ClipData *cldata)
 
         if ((clip & (nextmask | currmask)) == 0)
         {
-            inline_asm__mirror_c_line_207(&fn->out[newnodes++], currN);
+            _CopyMirrorNode(&fn->out[newnodes++], currN);
         }
         else if ((clip & currmask) == 0 && (clip & nextmask) != 0)
         {
-            inline_asm__mirror_c_line_207(&fn->out[newnodes++], currN);
+            _CopyMirrorNode(&fn->out[newnodes++], currN);
             MirrorInterPNode(&fn->out[newnodes++], currN, nextN, cldata);
         }
         else if ((clip & currmask) != 0 && (clip & nextmask) == 0)
@@ -224,7 +355,7 @@ void SliceMirrorPolygon(MFlipNode *fn, ClipData *cldata)
         }
     }
 
-    inline_asm__mirror_c_line_207(&fn->out[newnodes], &fn->out[0]);
+    _CopyMirrorNode(&fn->out[newnodes], &fn->out[0]);
 
     fn->nodes = newnodes;
 
@@ -233,27 +364,66 @@ void SliceMirrorPolygon(MFlipNode *fn, ClipData *cldata)
     fn->out = swap;
 }
 
-static void CalcOuterProduct(float *out, int *p0)
+static void CalcOuterProduct(sceVu0FVECTOR out, qword p0)
 {
-    asm volatile("                              \n\
-        lqc2           $vf12, 0(%1)             \n\
-        lqc2           $vf13, 0x30(%1)          \n\
-        lqc2           $vf14, 0x60(%1)          \n\
-        vitof4.xy      $vf12, $vf12             \n\
-        vmove.zw       $vf12, $vf0              \n\
-        vitof4.xy      $vf13, $vf13             \n\
-        vmove.zw       $vf13, $vf0              \n\
-        vitof4.xy      $vf14, $vf14             \n\
-        vmove.zw       $vf14, $vf0              \n\
-        vsub.xyzw      $vf12, $vf12,    $vf13   \n\
-        vsub.xyzw      $vf13, $vf13,    $vf14   \n\
-        vopmula.xyz    ACC,   $vf12,    $vf13   \n\
-        vopmsub.xyz    $vf12, $vf13,    $vf12   \n\
-        lqc2           $vf13, 0(%0)             \n\
-        vmulz.xyz      $vf12, $vf12,    $vf13z  \n\
-        sqc2           $vf12, 0(%0)             \n\
-        ": :"r"(out),"r"(p0)
-    );
+    /*
+     * Calculates the cross product of the two edge vectors formed from the
+     * three screen-space vertices in p0 and scales the result by the Z
+     * component of out.
+     *
+     * The VU accumulator (ACC) is used by the VOPMULA/VOPMSUB sequence to
+     * calculate the vector cross product.
+     *
+     * Equivalent C:
+     *
+     *     sceVu0FVECTOR v0;
+     *     sceVu0FVECTOR v1;
+     *     sceVu0FVECTOR v2;
+     *     sceVu0FVECTOR edge0;
+     *     sceVu0FVECTOR edge1;
+     *
+     *     v0[0] = (float)((int)p0[0]);
+     *     v0[1] = (float)((int)p0[1]);
+     *     v0[2] = 0.0f;
+     *     v0[3] = 0.0f;
+     *
+     *     v1[0] = (float)((int)p0[4]);
+     *     v1[1] = (float)((int)p0[5]);
+     *     v1[2] = 0.0f;
+     *     v1[3] = 0.0f;
+     *
+     *     v2[0] = (float)((int)p0[8]);
+     *     v2[1] = (float)((int)p0[9]);
+     *     v2[2] = 0.0f;
+     *     v2[3] = 0.0f;
+     *
+     *     edge0 = v0 - v1;
+     *     edge1 = v1 - v2;
+     *
+     *     out = edge0 × edge1;
+     *
+     *     out[0] *= out[2];
+     *     out[1] *= out[2];
+     *     out[2] *= out[2];
+     */
+    asm volatile("                            \n\
+        lqc2           $vf12, 0x00(%1)        \n\
+        lqc2           $vf13, 0x30(%1)        \n\
+        lqc2           $vf14, 0x60(%1)        \n\
+        vitof4.xy      $vf12, $vf12           \n\
+        vmove.zw       $vf12, $vf0            \n\
+        vitof4.xy      $vf13, $vf13           \n\
+        vmove.zw       $vf13, $vf0            \n\
+        vitof4.xy      $vf14, $vf14           \n\
+        vmove.zw       $vf14, $vf0            \n\
+        vsub.xyzw      $vf12, $vf12,   $vf13  \n\
+        vsub.xyzw      $vf13, $vf13,   $vf14  \n\
+        vopmula.xyz    ACC,   $vf12,   $vf13  \n\
+        vopmsub.xyz    $vf12, $vf13,   $vf12  \n\
+        lqc2           $vf13, 0(%0)           \n\
+        vmulz.xyz      $vf12, $vf12,   $vf13z \n\
+        sqc2           $vf12, 0(%0)           \n\
+    ": :"r"(out),"r"(p0));
 }
 
 void CalcScreenMirror(sceVu0FVECTOR vp0, sceVu0FVECTOR vp1, sceVu0FVECTOR vp2, float sgn)
@@ -268,8 +438,8 @@ void CalcScreenMirror(sceVu0FVECTOR vp0, sceVu0FVECTOR vp1, sceVu0FVECTOR vp2, f
     sceVu0FVECTOR v1;
     sceVu0FVECTOR v2;
     static ClipData cldata[6] = {
-        {16, 2, 1.0f}, {32, 2, -1.0f}, {1, 0, 1.0f},
-        {2, 0, -1.0f}, {4, 1, 1.0f}, {8, 1, -1.0f},
+        {16, 2, +1.0f}, {32, 2, -1.0f}, {1, 0, +1.0f},
+        { 2, 0, -1.0f}, { 4, 1, +1.0f}, {8, 1, -1.0f},
     };
 
     fn = (MFlipNode *)&SCRATCHPAD[0x6c0];
@@ -292,20 +462,20 @@ void CalcScreenMirror(sceVu0FVECTOR vp0, sceVu0FVECTOR vp1, sceVu0FVECTOR vp2, f
     v2[2] = vp2[2];
     v2[3] = 1.0f;
 
-    inline_asm__mirror_c_line_62(&fn->in[0], v0);
-    inline_asm__mirror_c_line_62(&fn->in[1], v1);
-    inline_asm__mirror_c_line_62(&fn->in[2], v2);
-    inline_asm__mirror_c_line_62(&fn->in[3], v0);
+    _TransformMirrorNode(&fn->in[0], v0);
+    _TransformMirrorNode(&fn->in[1], v1);
+    _TransformMirrorNode(&fn->in[2], v2);
+    _TransformMirrorNode(&fn->in[3], v0);
 
     fn->nodes = 3;
 
-    inline_asm__mirror_c_line_96(fn->in[0].clip);
+    _ClipMirrorVertex(fn->in[0].clip);
     allclip = GetClipValue() & 0x3f;
 
-    inline_asm__mirror_c_line_96(fn->in[1].clip);
+    _ClipMirrorVertex(fn->in[1].clip);
     allclip |= GetClipValue() & 0x3f;
 
-    inline_asm__mirror_c_line_96(fn->in[2].clip);
+    _ClipMirrorVertex(fn->in[2].clip);
     allclip |= GetClipValue() & 0x3f;
 
     if (allclip & (0x20 | 0x10))
@@ -322,7 +492,7 @@ void CalcScreenMirror(sceVu0FVECTOR vp0, sceVu0FVECTOR vp1, sceVu0FVECTOR vp2, f
 
         for (i = 0; i < fn->nodes; i++)
         {
-            inline_asm__mirror_c_line_96(fn->in[i].clip);
+            _ClipMirrorVertex(fn->in[i].clip);
             allclip |= GetClipValue() & 0x3f;
         }
     }
@@ -340,7 +510,7 @@ void CalcScreenMirror(sceVu0FVECTOR vp0, sceVu0FVECTOR vp1, sceVu0FVECTOR vp2, f
         pbase = screen_xyz;
 
         for (i = 0; i < 3; i++) {
-            inline_asm__mirror_c_line_120(*pbase, fn->in[i].vp);
+            _ProjectMirrorVertex(*pbase, fn->in[i].vp);
             pbase += 3;
         }
 
@@ -358,7 +528,7 @@ void CalcScreenMirror(sceVu0FVECTOR vp0, sceVu0FVECTOR vp1, sceVu0FVECTOR vp2, f
 
             for (i = 0; i < fn->nodes; i++)
             {
-                inline_asm__mirror_c_line_120(*pbase, fn->in[i].vp);
+                _ProjectMirrorVertex(*pbase, fn->in[i].vp);
 
                 if (mxmax < pbase[0][0])
                 {
@@ -406,7 +576,7 @@ void AppendLocalMPos(sceVu0FVECTOR vp)
 
     Vu0CopyVector(mirror_lpos[mirror_points], vp);
 
-    inline_asm__mirror_c_line_47(mirror_cval[mirror_points], vp);
+    _TransformMirrorVertex(mirror_cval[mirror_points], vp);
 
     mirror_points++;
 }
@@ -549,17 +719,17 @@ int MakeMirrorEnvironment(u_int *prim)
     mymax += 16;
     mymin -= 16;
 
-    if (0x280 < (mxmax / 16) - 0x6c0)
+    if ((mxmax / 16) - 0x6c0 > 640)
     {
         mxmax = 0x9400;
     }
 
-    if ((mxmin / 16) + -0x6c0 < 0)
+    if ((mxmin / 16) - 0x6c0 < 0)
     {
         mxmin = 0x6c00;
     }
 
-    if (0xe0 < (mymax / 16) - 0x790)
+    if ((mymax / 16) - 0x790 > 224)
     {
         mymax = 0x8700;
     }
@@ -636,7 +806,7 @@ int PreMirrorPrim(SgCAMERA *camera, u_int *prim)
             _MulMatrix(tmpmat, camera->wv, *(sceVu0FMATRIX *)&SCRATCHPAD[0x430]);
             Vu0LoadMatrix(tmpmat);
 
-            inline_asm__mirror_c_line_38(*(sceVu0FMATRIX *)&SCRATCHPAD[0xd0]);
+            _LoadMirrorMatrix(*(sceVu0FMATRIX *)&SCRATCHPAD[0xd0]);
             _SetRotTransPersMatrix(*(sceVu0FMATRIX *)&SCRATCHPAD[0x90]);
 
             return MakeMirrorEnvironment(prim);
@@ -673,18 +843,33 @@ void MirrorBufferFlush(int tlen)
     FlushModel(0);
 }
 
-static inline void inline_asm__mirror_c_line_639(sceVu0FVECTOR v0, sceVu0FVECTOR v1, sceVu0FVECTOR v2, sceVu0FVECTOR v3) {
-    asm volatile("                          \n\
-        lqc2           $vf12, 0(%1)         \n\
-        lqc2           $vf13, 0(%2)         \n\
-        lqc2           $vf14, 0(%3)         \n\
-        vsub.xyz       $vf12, $vf13, $vf12  \n\
-        vsub.xyz       $vf13, $vf14, $vf13  \n\
-        vopmula.xyz    ACC,   $vf12, $vf13  \n\
-        vopmsub.xyz    $vf12, $vf13, $vf12  \n\
-        sqc2           $vf12, 0(%0)         \n\
-        ": :"r"(v0),"r"(v1),"r"(v2),"r"(v3)
-    );
+static inline void _CalcMirrorNormal(sceVu0FVECTOR v0, sceVu0FVECTOR v1, sceVu0FVECTOR v2, sceVu0FVECTOR v3)
+{
+    /*
+     * Calculates the normal of the triangle formed by v1, v2, and v3 and
+     * stores the resulting cross product in v0. The W component is not
+     * modified.
+     *
+     * The VU accumulator (ACC) is used by the VOPMULA/VOPMSUB sequence to
+     * calculate the vector cross product.
+     *
+     * Equivalent C:
+     *
+     *     vec3 a = p1 - p0;
+     *     vec3 b = p2 - p1;
+     *
+     *     out = CrossProduct(a, b);
+     */
+    asm volatile("                         \n\
+        lqc2           $vf12, 0(%1)        \n\
+        lqc2           $vf13, 0(%2)        \n\
+        lqc2           $vf14, 0(%3)        \n\
+        vsub.xyz       $vf12, $vf13, $vf12 \n\
+        vsub.xyz       $vf13, $vf14, $vf13 \n\
+        vopmula.xyz    ACC,   $vf12, $vf13 \n\
+        vopmsub.xyz    $vf12, $vf13, $vf12 \n\
+        sqc2           $vf12, 0(%0)        \n\
+    ": :"r"(v0),"r"(v1),"r"(v2),"r"(v3));
 }
 
 void CalcMirrorMatrix(SgCAMERA *camera)
@@ -701,6 +886,7 @@ void CalcMirrorMatrix(SgCAMERA *camera)
     sceVu0FVECTOR vaxis;
     sceVu0FVECTOR qvert;
     sceVu0FVECTOR eye;
+    float inner;
     float qrot;
 
     Vu0SubVector(eye, camera->i, camera->p);
@@ -717,7 +903,7 @@ void CalcMirrorMatrix(SgCAMERA *camera)
 
     Vu0ApplyVectorInline(centerpos, centerpos);
 
-    inline_asm__mirror_c_line_639(norm, mirror_lpos[0], mirror_lpos[1], mirror_lpos[2]);
+    _CalcMirrorNormal(norm, mirror_lpos[0], mirror_lpos[1], mirror_lpos[2]);
 
     _ApplyRotMatrix(norm, norm);
     _NormalizeVector(norm, norm);
@@ -745,9 +931,11 @@ void CalcMirrorMatrix(SgCAMERA *camera)
     tmpvec[1] = -eye[1];
     tmpvec[2] = -eye[2];
 
-    qrot = SgACosf(sceVu0InnerProduct(tmpvec, norm));
+    inner = sceVu0InnerProduct(tmpvec, norm);
+    qrot = VER_ACOSF(inner);
 
     GetMatrixRotateAxis(quat, vaxis, qrot);
+
     Vu0LoadMatrix(quat);
     Vu0ApplyVectorInline(tmpvec, norm);
 
@@ -784,9 +972,9 @@ void CalcMirrorMatrix(SgCAMERA *camera)
     Vu0CopyMatrix(mir_mtx, tmpmat);
 }
 
-void MirrorDraw(SgCAMERA *camera, void *sgd_top, void (*render_func)(/* parameters unknown */))
+void MirrorDraw(SgCAMERA *camera, void *sgd_top, void (*render_func)())
 {
-    static sceVu0IVECTOR miccolor = {0x80, 0x80, 0x80, 0x80};
+    static sceVu0IVECTOR miccolor = { 0x80, 0x80, 0x80, 0x80 };
     qword *pedraw_buf;
     int i;
     int num;
@@ -924,7 +1112,7 @@ sceVu0FVECTOR mir_center = {0};
 sceVu0FVECTOR mirror_lpos[5] = {0};
 sceVu0FVECTOR mirror_cval[5] = {0};
 
-void MirrorRender(SgCAMERA *camera, void (*render_func)(/* parameters unknown */))
+void MirrorRender(SgCAMERA *camera, void (*render_func)())
 {
     sceVu0FVECTOR rreg;
     SgCAMERA mir_camera;

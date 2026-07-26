@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 43.31188982108284,
+    "fuzzy_match_percent": 43.83539072047455,
     "total_code": "1165232",
-    "matched_code": "504684",
-    "matched_code_percent": 43.31188982108284,
+    "matched_code": "510784",
+    "matched_code_percent": 43.83539072047455,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 1436,
-    "matched_functions_percent": 42.30995875073659,
+    "matched_functions": 1451,
+    "matched_functions_percent": 42.751915144372425,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -11751,9 +11751,14 @@
     {
       "name": "graphics/graph3d/mirror",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "6100",
+        "matched_code": "6100",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 15,
+        "matched_functions": 15,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -11761,14 +11766,17 @@
         {
           "name": ".text",
           "size": "6128",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -11776,76 +11784,91 @@
         {
           "name": "MirrorLineClip",
           "size": "48",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetClipValue",
           "size": "32",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CheckMirrorModel",
           "size": "76",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MirrorInterPNode",
           "size": "196",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SliceMirrorPolygon",
           "size": "444",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CalcOuterProduct",
           "size": "72",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CalcScreenMirror",
           "size": "1100",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "AppendLocalMPos",
           "size": "92",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MakeMirrorEnvironment",
           "size": "984",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MirrorPrim",
           "size": "296",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PreMirrorPrim",
           "size": "408",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MirrorBufferFlush",
           "size": "76",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CalcMirrorMatrix",
           "size": "860",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MirrorDraw",
           "size": "1064",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MirrorRender",
           "size": "352",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -23977,14 +24000,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 43.31188982108284,
+        "fuzzy_match_percent": 43.83539072047455,
         "total_code": "1165232",
-        "matched_code": "504684",
-        "matched_code_percent": 43.31188982108284,
+        "matched_code": "510784",
+        "matched_code_percent": 43.83539072047455,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 1436,
-        "matched_functions_percent": 42.30995875073659,
+        "matched_functions": 1451,
+        "matched_functions_percent": 42.751915144372425,
         "complete_data_percent": 100.0,
         "total_units": 154
       }
