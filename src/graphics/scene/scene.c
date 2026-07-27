@@ -266,7 +266,7 @@ void SceneGetHeaderData(SCENE_CTRL *sc, u_int *hdr_top)
 
 void SceneInitEnvironment(SCENE_FILE *sf, SCENE_CTRL *sc)
 {
-    SceneGetHeaderData(sc,sf->hdr_addr);
+    SceneGetHeaderData(sc, sf->hdr_addr);
 
     sc->tmp_cam = camera;
     sc->cam = &camera;
@@ -277,11 +277,11 @@ void SceneInitEnvironment(SCENE_FILE *sf, SCENE_CTRL *sc)
     sc->fog.far = 10000.0f;
     sc->fog.r = sc->fog.g = sc->fog.b = 0x10;
 
-    FodInit(&sc->fod_ctrl,sf->cam_fod_addr,sf->lit_fod_addr,sf->eff_fod_addr);
+    FodInit(&sc->fod_ctrl, sf->cam_fod_addr, sf->lit_fod_addr, sf->eff_fod_addr);
 
     SceneLightRevision(sc);
 
-    FodGetFirstCam(sc->cam,&sc->fod_ctrl);
+    FodGetFirstCam(sc->cam, &sc->fod_ctrl);
 
     scn_vib_time0 = scn_vib_time1 = 0;
 }
@@ -578,7 +578,7 @@ void SceneDraw(int scene_no)
 #ifdef BUILD_EU_VERSION
     SendFontTex();
 
-    SetSubtitles(0,scene_no,sys_wrk.pal_disp_mode == 0 ? (fc->now_frame * 5) / 6 : fc->now_frame);
+    SetSubtitles(0, scene_no, sys_wrk.pal_disp_mode == 0 ? (fc->now_frame * 5) / 6 : fc->now_frame);
 
     MakeMovMes();
 
@@ -812,7 +812,7 @@ void SceneLightClear(SCENE_CTRL *sc)
 {
     sceVu0FVECTOR zd = {0.0f, 0.0f, 0.0f, 0.0f};
 
-    SgSetInfiniteLights(zd,sc->fod_ctrl.fod_light.all_lit, 0);
+    SgSetInfiniteLights(zd, sc->fod_ctrl.fod_light.all_lit, 0);
     SgSetPointLights(sc->fod_ctrl.fod_light.all_lit, 0);
     FodSetSpotLights(sc->fod_ctrl.fod_light.all_lit, 0);
 }
@@ -1478,7 +1478,7 @@ u_int* SceneGetMimAddr(u_int *pak_top, char *pfx)
     int no;
     char *pfx_top;
 
-    pfx_top = (char *)GetADRTBL(pak_top,0);
+    pfx_top = (char *)GetADRTBL(pak_top, 0);
 
     no = -1;
 

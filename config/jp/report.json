@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 45.26652203166408,
+    "fuzzy_match_percent": 45.842544660634104,
     "total_code": "1165232",
-    "matched_code": "527460",
-    "matched_code_percent": 45.26652203166408,
+    "matched_code": "534172",
+    "matched_code_percent": 45.842544660634104,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 1552,
-    "matched_functions_percent": 45.72775486152033,
+    "matched_functions": 1569,
+    "matched_functions_percent": 46.228638774307605,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -12527,9 +12527,14 @@
     {
       "name": "graphics/scene/fod",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "6712",
+        "matched_code": "6712",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 17,
+        "matched_functions": 17,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -12537,14 +12542,17 @@
         {
           "name": ".text",
           "size": "6736",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -12552,86 +12560,103 @@
         {
           "name": "FodInit",
           "size": "288",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FodGetFixEffect",
           "size": "184",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FodGetLightNum",
           "size": "48",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FodGetLightSerial",
           "size": "256",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FodGetFirstLight",
           "size": "688",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FodNextFrame",
           "size": "200",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FodSetFrame",
           "size": "204",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FodGetLightType",
           "size": "60",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FodSetMyLight",
           "size": "1092",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FodSetSpotLights",
           "size": "156",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FodGetToSgLight",
           "size": "584",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FodGetHandSpotPos",
           "size": "52",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FodGetDropSpotPos",
           "size": "228",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FodGetFirstCam",
           "size": "328",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FodGetCamData",
           "size": "400",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FodSetEffect",
           "size": "648",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FodSetEffectParam",
           "size": "1296",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -24109,14 +24134,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 45.26652203166408,
+        "fuzzy_match_percent": 45.842544660634104,
         "total_code": "1165232",
-        "matched_code": "527460",
-        "matched_code_percent": 45.26652203166408,
+        "matched_code": "534172",
+        "matched_code_percent": 45.842544660634104,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 1552,
-        "matched_functions_percent": 45.72775486152033,
+        "matched_functions": 1569,
+        "matched_functions_percent": 46.228638774307605,
         "complete_data_percent": 100.0,
         "total_units": 154
       }

@@ -3,6 +3,12 @@
 #include "enums.h"
 #include "fod.h"
 
+// gcc/src/newlib/libm/math/sf_cos.c
+float cosf(float x);
+
+// gcc/src/newlib/libm/math/wf_sqrt.c
+float sqrtf(float x);
+
 #include "sce/libvu0.h"
 
 #include "common/utility.h"
@@ -38,7 +44,7 @@ void FodInit(FOD_CTRL *fc, u_int *tcp, u_int *tlp, u_int *tep)
 
     fc->now_frame = 1;
     fc->now_reso = 0;
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
     fc->check_cnt = 0;
 #endif
     fc->total_frame = 2;
@@ -112,7 +118,7 @@ int FodNextFrame(FOD_CTRL *fc)
         return NULL;
     }
 
-    // no return ...
+    // missing return ...
 }
 
 void FodSetFrame(FOD_CTRL *fc, u_int frame)
@@ -262,7 +268,7 @@ u_int* FodGetFirstLight(FOD_LIGHT *fl)
 
             cone_deg = *(float *)&lit_addr[16];
 
-            cc = SgCosf(DEG2RAD(cone_deg));
+            cc = VER_COSF(DEG2RAD(cone_deg));
 
             fl->all_lit[i].intens = cc * cc;
 
@@ -304,7 +310,7 @@ u_int* FodGetFirstLight(FOD_LIGHT *fl)
     return lit_addr;
 }
 
-void FodSetMyLight(FOD_LIGHT *fl, char *pfx, float *eye)
+void FodSetMyLight(FOD_LIGHT *fl, char *pfx, sceVu0FVECTOR eye)
 {
     static SgLIGHT ilight[3];
     static SgLIGHT slight[3];
@@ -518,7 +524,7 @@ void FodGetToSgLight(FOD_CTRL *fc)
                 if (((u_char *)lit_addr)[11] != 0)
                 {
                     cone_deg = *(float *)data;
-                    cc = SgCosf(DEG2RAD(cone_deg));
+                    cc = VER_COSF(DEG2RAD(cone_deg));
 
                     sl->intens = cc * cc;
                     sl->ambient[0] = 25.0f;
@@ -552,7 +558,7 @@ void FodGetToSgLight(FOD_CTRL *fc)
     }
 }
 
-void FodGetHandSpotPos(FOD_LIGHT *fl, float *p, float *i)
+void FodGetHandSpotPos(FOD_LIGHT *fl, sceVu0FVECTOR p, sceVu0FVECTOR i)
 {
     SgLIGHT *sl;
 
@@ -562,7 +568,7 @@ void FodGetHandSpotPos(FOD_LIGHT *fl, float *p, float *i)
     Vu0CopyVector(i, sl->direction);
 }
 
-void FodGetDropSpotPos(FOD_LIGHT *fl, char *pfx, float *lp, float *li)
+void FodGetDropSpotPos(FOD_LIGHT *fl, char *pfx, sceVu0FVECTOR lp, sceVu0FVECTOR li)
 {
     SgLIGHT *sl;
     int i;
@@ -664,36 +670,44 @@ void FodGetCamData(SgCAMERA *cam, FOD_CTRL *fc)
             {
             case 0:
                 Vu0CopyVector(cam->p, fdat);
-                sceVu0ApplyMatrix(cam->p,fod_cmn_mtx,cam->p);
+                sceVu0ApplyMatrix(cam->p, fod_cmn_mtx, cam->p);
+
                 fdat += 4;
             break;
             case 1:
                 Vu0CopyVector(cam->i, fdat);
-                sceVu0ApplyMatrix(cam->i,fod_cmn_mtx,cam->i);
+                sceVu0ApplyMatrix(cam->i, fod_cmn_mtx, cam->i);
+
                 fdat += 4;
             break;
             case 2:
                 cam->roll = DEG2RAD(fdat[0]) + PI;
+
                 if (cam->roll > PI)
                 {
                     cam->roll -= PI * 2;
                 }
+
                 fdat += 1;
             break;
             case 3:
                 cam->fov = DEG2RAD(fdat[0]);
+
                 if (cam->fov > PI)
                 {
                     cam->fov -= 2 * PI;
                 }
+
                 fdat += 1;
             break;
             case 4:
                 cam->nearz = fdat[0];
+
                 fdat += 1;
             break;
             case 5:
                 cam->farz = fdat[0];
+
                 fdat += 1;
             break;
             }
@@ -767,17 +781,20 @@ void FodSetEffect(FOD_CTRL *fc)
     if (fef->mono == 1 && eff_param.mono_flg == 0)
     {
         eff_param.mono_flg = 1;
+
         ChangeMonochrome(1);
     }
     else if (fef->mono == 0 && eff_param.mono_flg != 0)
     {
         eff_param.mono_flg = 0;
+
         ChangeMonochrome(0);
     }
 
     while ((char *)fed < end_addr)
     {
         FodSetEffectParam(fed);
+
         fed++;
     }
 
@@ -800,9 +817,9 @@ void FodSetEffect(FOD_CTRL *fc)
 
                 sceVu0ApplyMatrix(eff_param.pdf_pos, fod_cmn_mtx, eff_param.pdf_pos);
 
-                eff_param.pdf_p = SetEffects(27, 2,
-                    (u_long)(fed->dither).alpmax,
-                    (u_long)(fed->dither).colmax,
+                eff_param.pdf_p = SetEffects(EF_PDEFORM, 2,
+                    fed->pdf1.type,
+                    fed->pdf1.alpha,
                     *(float *)(&((char *)fed)[36]),
                     *(float *)(&((char *)fed)[40]),
                     eff_param.pdf_pos,
@@ -899,10 +916,10 @@ void FodSetEffectParam(FOD_EFF_DATA *fed)
             y = mtx[2][1];
             z = mtx[2][2];
 
-            l = SgSqrtf(x * x + z * z);
+            l = VER_SQRTF(x * x + z * z);
 
-            eff_param.lenz_rot[0] = SgAtan2f(y, l);
-            eff_param.lenz_rot[1] = SgAtan2f(x, z);
+            eff_param.lenz_rot[0] = VER_ATAN2F(y, l);
+            eff_param.lenz_rot[1] = VER_ATAN2F(x, z);
 
             eff_param.lenz_rot[0] = -eff_param.lenz_rot[0];
             eff_param.lenz_rot[1] = -eff_param.lenz_rot[1];
@@ -983,7 +1000,8 @@ void FodSetEffectParam(FOD_EFF_DATA *fed)
             }
         }
     break;
-    case FOD_EFF_SHIBATA: // ??
+    case FOD_EFF_SHIBATA:
+        // do nothing ...
     break;
     }
 }
