@@ -1043,11 +1043,11 @@ void CheckHintTex()
 
     if (num != num_old)
     {
-        g2d_load_flg.hint = LoadReq(hint_tbl[num], LOAD_ADDRESS_41);
+        g2d_load_flg.hint = LoadReq(hint_tbl[num], LOAD_ADDRESS_42);
     }
 
-    MakeTim2ClutDirect4(LOAD_ADDRESS_41, 0, -1, -1, 0);
-    MakeTim2ClutDirect4(LOAD_ADDRESS_41, 1, -1, -1, 0);
+    MakeTim2ClutDirect4(LOAD_ADDRESS_42, 0, -1, -1, 0);
+    MakeTim2ClutDirect4(LOAD_ADDRESS_42, 1, -1, -1, 0);
 
     if (*key_now[9] != 0)
     {

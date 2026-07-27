@@ -4059,7 +4059,7 @@ int SetNowLoading()
     }
 
     SetPanel(0x80000, 0.0f, 0.0f, 640.0f, 448.0f, 0, 0, 0, 0x80);
-    SetSprFile3(LOAD_ADDRESS_44, 0);
+    SetSprFile3(LOAD_ADDRESS_45, 0);
 
     CopySprDToSpr(&ds, test);
 
@@ -4428,7 +4428,7 @@ int SetGameOver()
 
         if (cnt >= sec5)
         {
-            cnt = LoadReq(G_OVER_PK2, LOAD_ADDRESS_41);
+            cnt = LoadReq(G_OVER_PK2, LOAD_ADDRESS_42);
 
             gameover_flow = 2;
         }
@@ -4561,7 +4561,7 @@ int SetGameOver()
 
     if (gameover_flow > 2)
     {
-        SetSprFile3(LOAD_ADDRESS_41, 0);
+        SetSprFile3(LOAD_ADDRESS_42, 0);
 
         if (gameover_flow > 2)
         {

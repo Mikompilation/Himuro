@@ -129,7 +129,7 @@ static void DmaTransReq()
 {
     sceSifDmaData dma;
 
-    dma.data = LOAD_ADDRESS_22;
+    dma.data = LOAD_ADDRESS_23;
     dma.addr = rcv_stat.cdvd.ld_addr;
     dma.size = st_ctrl.size;
     dma.mode = 0;

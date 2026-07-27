@@ -63,8 +63,8 @@ static u_long128 *bufz;
 
 void InitEffectSub()
 {
-    buf = (u_long128 *)LOAD_ADDRESS_41;
-    buf2 = (u_long128 *)LOAD_ADDRESS_44;
+    buf = (u_long128 *)LOAD_ADDRESS_42;
+    buf2 = (u_long128 *)LOAD_ADDRESS_45;
     bufz = (u_long128 *)0x05000000;
 
     vib1_time = 0;
@@ -3004,7 +3004,7 @@ int SetTecmoLogo()
     break;
     }
 
-    SetSprFile3(LOAD_ADDRESS_41, 0);
+    SetSprFile3(LOAD_ADDRESS_42, 0);
     CopySprDToSpr(&ds, logotex);
 
     ds.zbuf = SCE_GS_SET_ZBUF_1(0x8c, SCE_GS_PSMCT24, 1);

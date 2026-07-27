@@ -243,7 +243,7 @@ int SetCamFont(int no, int fl)
         return 0xff;
     }
 
-    SetSprFile2(LOAD_ADDRESS_45, 0);
+    SetSprFile2(LOAD_ADDRESS_46, 0);
 
     switch (flow[no][0])
     {
@@ -697,7 +697,7 @@ void RunCamSearch()
         SetCamFont(4, 1);
     }
 
-    SetSprFile2(LOAD_ADDRESS_45, 0);
+    SetSprFile2(LOAD_ADDRESS_46, 0);
 
     for (o = 0; o < 3; o++)
     {
@@ -1040,7 +1040,7 @@ void RunCamView()
         SetCamFont(2, 1);
     }
 
-    SetSprFile2(LOAD_ADDRESS_45, 0);
+    SetSprFile2(LOAD_ADDRESS_46, 0);
 
     Get2PosRot(camera.p, camera.i, &rot_x, &rot_y);
 
@@ -1397,7 +1397,7 @@ void RunCamPush()
         SetCamFont(0, 1);
     }
 
-    SetSprFile2(LOAD_ADDRESS_45, 0);
+    SetSprFile2(LOAD_ADDRESS_46, 0);
 
     for (o = 0; o < 3; o++)
     {
@@ -1872,7 +1872,7 @@ void RunCamSlow()
         SetCamFont(1, 1);
     }
 
-    SetSprFile2(LOAD_ADDRESS_45, 0);
+    SetSprFile2(LOAD_ADDRESS_46, 0);
 
     for (o = 0; o < 3; o++)
     {
@@ -2239,7 +2239,7 @@ void RunCamStop()
         SetCamFont(3, 1);
     }
 
-    SetSprFile2(LOAD_ADDRESS_45, 0);
+    SetSprFile2(LOAD_ADDRESS_46, 0);
 
     for (o = 0; o < 3; o++)
     {
@@ -4285,7 +4285,7 @@ void SetEneDmgEffect1_Sub2(int num)
     break;
     }
 
-    SetSprFile2(LOAD_ADDRESS_45, 0);
+    SetSprFile2(LOAD_ADDRESS_46, 0);
 
     Vu0CopyVector(cpos, camera.p);
     cpos[3] = 1.0f;

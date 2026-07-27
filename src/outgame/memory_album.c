@@ -2379,10 +2379,10 @@ void DspOgAlbumTop1(u_char alp, u_char alp0, u_char alp1)
         switch (dm_albm.side)
         {
         case 0:
-            SetSprFile(LOAD_ADDRESS_33);
+            SetSprFile(LOAD_ADDRESS_34);
         break;
         case 1:
-            SetSprFile(LOAD_ADDRESS_34);
+            SetSprFile(LOAD_ADDRESS_35);
         break;
         }
     break;
@@ -2390,10 +2390,10 @@ void DspOgAlbumTop1(u_char alp, u_char alp0, u_char alp1)
         switch (dm_albm.side)
         {
         case 0:
-            SetSprFile(LOAD_ADDRESS_33);
+            SetSprFile(LOAD_ADDRESS_34);
         break;
         case 1:
-            SetSprFile(LOAD_ADDRESS_35);
+            SetSprFile(LOAD_ADDRESS_36);
         break;
         }
     break;
@@ -2507,10 +2507,10 @@ void DspOgAlbumBig(u_char alp)
             switch (side)
             {
             case 0:
-                SetSprFile(LOAD_ADDRESS_33);
+                SetSprFile(LOAD_ADDRESS_34);
             break;
             case 1:
-                SetSprFile(LOAD_ADDRESS_34);
+                SetSprFile(LOAD_ADDRESS_35);
             break;
             }
         break;
@@ -2518,10 +2518,10 @@ void DspOgAlbumBig(u_char alp)
             switch (side)
             {
             case 0:
-                SetSprFile(LOAD_ADDRESS_33);
+                SetSprFile(LOAD_ADDRESS_34);
             break;
             case 1:
-                SetSprFile(LOAD_ADDRESS_35);
+                SetSprFile(LOAD_ADDRESS_36);
             break;
             }
         break;
@@ -2906,7 +2906,7 @@ void Navion(u_char type, u_char sw, u_char alp)
         }
     }
 
-    SetSprFile(LOAD_ADDRESS_26);
+    SetSprFile(LOAD_ADDRESS_27);
 
     switch (type)
     {
@@ -3318,7 +3318,7 @@ void BtnExt(u_char mode, u_char alp)
         PutSpriteYW(OA_TP_FNT_ZOM, OA_TP_FNT_ZOM, -6.0f, 0.0f, 0.0f, 0x808080, alp, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
         PutSpriteYW(OA_TP_FNT_MOV, OA_TP_FNT_MOV, 0.0f, 0.0f, 0.0f, 0x808080, alp, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
 #elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
-        SetSprFile(LOAD_ADDRESS_26);
+        SetSprFile(LOAD_ADDRESS_27);
 
         DispCaption(22, alp);
 #endif
@@ -3333,7 +3333,7 @@ void BtnExt(u_char mode, u_char alp)
         PutSpriteYW(OA_TP_FNT_ZOM, OA_TP_FNT_ZOM, -6.0f, 288.0f, 0.0f, 0x808080, alp, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
         PutSpriteYW(OA_TP_FNT_MOV, OA_TP_FNT_MOV, 0.0f, 288.0f, 0.0f, 0x808080, alp, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
 #elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
-        SetSprFile(LOAD_ADDRESS_26);
+        SetSprFile(LOAD_ADDRESS_27);
 
         DispCaption(22, alp);
 #endif

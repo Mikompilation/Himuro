@@ -962,9 +962,9 @@ char ModeSlctPad(u_char mode)
         {
             BgFusumaYW(0x606060, 0.0f, GetCamDispAlpha(), 0x7d000);
 
-            SetSprFile(LOAD_ADDRESS_41);
-            SetSprFile(LOAD_ADDRESS_26);
-            SetSprFile(LOAD_ADDRESS_28);
+            SetSprFile(LOAD_ADDRESS_42);
+            SetSprFile(LOAD_ADDRESS_27);
+            SetSprFile(LOAD_ADDRESS_29);
 
             CameraCustomMain();
         }
@@ -983,9 +983,9 @@ char ModeSlctPad(u_char mode)
         {
             BgFusumaYW(0x606060, 0.0f, GetPhtDispAlpha(), 0x7d000);
 
-            SetSprFile(LOAD_ADDRESS_31);
-            SetSprFile(LOAD_ADDRESS_26);
-            SetSprFile(LOAD_ADDRESS_28);
+            SetSprFile(LOAD_ADDRESS_32);
+            SetSprFile(LOAD_ADDRESS_27);
+            SetSprFile(LOAD_ADDRESS_29);
 
             IngameMenuAlbum(1);
         }
@@ -1093,7 +1093,7 @@ void ModeSlctDspChr(u_char alp, u_char mode)
         DspBattleMode(alp, flsh);
     break;
     case MS_OPTION:
-        SetSprFile(LOAD_ADDRESS_26);
+        SetSprFile(LOAD_ADDRESS_27);
         SetSprFile(LOAD_ADDRESS_16);
 
         DspOptCtrl(dsp_ms.csr[2], dsp_ms.opt_mode, alp, 0);
@@ -1136,7 +1136,7 @@ void DspModeSlect(u_char alp)
     PutChrOne(TM_MS_EXIT, 0, 0, dsp_rgb[4], dsp_alp[4], 0);
 
 #if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
-    SetSprFile(LOAD_ADDRESS_26);
+    SetSprFile(LOAD_ADDRESS_27);
 
     DispCaption(3, alp);
 #endif
@@ -1404,7 +1404,7 @@ void DspStoryMode(u_char alp, float flsh)
     }
 
 #if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
-    SetSprFile(LOAD_ADDRESS_26);
+    SetSprFile(LOAD_ADDRESS_27);
 
     DispCaption(3, alp);
 #endif
@@ -1539,7 +1539,7 @@ void DspBattleMode(u_char alp, float flsh)
     }
 
 #if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
-    SetSprFile(LOAD_ADDRESS_26);
+    SetSprFile(LOAD_ADDRESS_27);
 
     DispCaption(3, alp);
 #endif
@@ -1678,7 +1678,7 @@ void DspMissionSelect(u_char alp)
     }
 
 #if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
-    SetSprFile(LOAD_ADDRESS_26);
+    SetSprFile(LOAD_ADDRESS_27);
 
     DispCaption(4, alp);
 #endif
@@ -1868,7 +1868,7 @@ void MsLoadCtrl(u_char mode)
     switch(mode)
     {
     case MS_MODE_SLCT:
-        ms_load_id = LoadReq(EFF001_PK2, LOAD_ADDRESS_41);
+        ms_load_id = LoadReq(EFF001_PK2, LOAD_ADDRESS_42);
         ms_load_id = VER_LOAD_REQ_LANG(M_SLCT_FSM_PK2, LOAD_ADDRESS_11);
     break;
     case MS_STORY_MODE:
@@ -1890,7 +1890,7 @@ void MsLoadCtrl(u_char mode)
     case MS_OPTION:
         ms_load_id = VER_LOAD_REQ_LANG(M_SLCT_OPT_PK2, LOAD_ADDRESS_11);
         ms_load_id = VER_LOAD_REQ_LANG(PL_OPTI_PK2, LOAD_ADDRESS_16);
-        ms_load_id = VER_LOAD_REQ_LANG(PL_STTS_PK2, LOAD_ADDRESS_26);
+        ms_load_id = VER_LOAD_REQ_LANG(PL_STTS_PK2, LOAD_ADDRESS_27);
     break;
     case MS_SOUND_TEST:
         ms_load_id = VER_LOAD_REQ_LANG(M_SLCT_SND_PK2, LOAD_ADDRESS_11);
@@ -1907,17 +1907,17 @@ void MsLoadCtrl(u_char mode)
         CameraCustomInit();
         OutGameInitCamera();
 
-        ms_load_id = LoadReq(PL_BGBG_PK2, LOAD_ADDRESS_27);
-        ms_load_id = VER_LOAD_REQ_LANG(PL_MTOP_PK2, LOAD_ADDRESS_28);
-        ms_load_id = VER_LOAD_REQ_LANG(PL_STTS_PK2, LOAD_ADDRESS_26);
-        ms_load_id = VER_LOAD_REQ_LANG(PL_CAME_PK2, LOAD_ADDRESS_41);
+        ms_load_id = LoadReq(PL_BGBG_PK2, LOAD_ADDRESS_28);
+        ms_load_id = VER_LOAD_REQ_LANG(PL_MTOP_PK2, LOAD_ADDRESS_29);
+        ms_load_id = VER_LOAD_REQ_LANG(PL_STTS_PK2, LOAD_ADDRESS_27);
+        ms_load_id = VER_LOAD_REQ_LANG(PL_CAME_PK2, LOAD_ADDRESS_42);
     break;
 #if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     case MS_PHOT:
-        ms_load_id = LoadReq(PL_BGBG_PK2, LOAD_ADDRESS_27);
-        ms_load_id = VER_LOAD_REQ_LANG(PL_MTOP_PK2, LOAD_ADDRESS_28);
-        ms_load_id = VER_LOAD_REQ_LANG(PL_STTS_PK2, LOAD_ADDRESS_26);
-        ms_load_id = VER_LOAD_REQ_LANG(PL_PHOT_PK2, LOAD_ADDRESS_31);
+        ms_load_id = LoadReq(PL_BGBG_PK2, LOAD_ADDRESS_28);
+        ms_load_id = VER_LOAD_REQ_LANG(PL_MTOP_PK2, LOAD_ADDRESS_29);
+        ms_load_id = VER_LOAD_REQ_LANG(PL_STTS_PK2, LOAD_ADDRESS_27);
+        ms_load_id = VER_LOAD_REQ_LANG(PL_PHOT_PK2, LOAD_ADDRESS_32);
 
         StartAlbumModeInit();
         OutGameInitPhoto();
@@ -1925,7 +1925,7 @@ void MsLoadCtrl(u_char mode)
     case MS_SAVE:
         motInitMsn();
 
-        ms_load_id = LoadReq(PL_BGBG_PK2, LOAD_ADDRESS_27);
+        ms_load_id = LoadReq(PL_BGBG_PK2, LOAD_ADDRESS_28);
 
         BtlModSaveInit();
     break;
