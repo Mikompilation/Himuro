@@ -7,56 +7,55 @@
 #include "graphics/scene/fod.h"
 #include "graphics/scene/scene_dat.h"
 
-
 typedef struct {
-	float min;
-	float max;
-	float near;
-	float far;
-	int r;
-	int g;
-	int b;
-	int pad;
+    float min;
+    float max;
+    float near;
+    float far;
+    int r;
+    int g;
+    int b;
+    int pad;
 } SCENE_FOG;
 
 typedef struct {
-	SCN_ANM_MDL man_mdl[4];
-	SCN_ANM_MDL furn_mdl[14];
-	SCN_ANM_MDL item_mdl[8];
-	SCN_ANM_MDL door_mdl[8];
-	int man_mdl_tex[4];
-	FOD_CTRL fod_ctrl;
-	SCENE_FOG fog;
-	SgCAMERA tmp_cam;
-	SgCAMERA *cam;
-	int man_mdl_num;
-	int door_num;
-	int furn_num;
-	int item_num;
-	u_int *scn_data_addr;
-	u_int *light_rev_addr;
-	int scene_no;
-	int chapter_no;
-	int room_no;
-	int hero_mdl_no;
-	int count_flg;
-	int mirror_flg;
-	int init_flg;
+    SCN_ANM_MDL man_mdl[4];
+    SCN_ANM_MDL furn_mdl[14];
+    SCN_ANM_MDL item_mdl[8];
+    SCN_ANM_MDL door_mdl[8];
+    int man_mdl_tex[4];
+    FOD_CTRL fod_ctrl;
+    SCENE_FOG fog;
+    SgCAMERA tmp_cam;
+    SgCAMERA *cam;
+    int man_mdl_num;
+    int door_num;
+    int furn_num;
+    int item_num;
+    u_int *scn_data_addr;
+    u_int *light_rev_addr;
+    int scene_no;
+    int chapter_no;
+    int room_no;
+    int hero_mdl_no;
+    int count_flg;
+    int mirror_flg;
+    int init_flg;
 } SCENE_CTRL;
 
 typedef struct {
-	u_int *scn_file_addr;
-	u_int file_num;
-	u_int *ofs_top_addr;
-	u_int *hdr_addr;
-	u_int *cam_fod_addr;
-	u_int *lit_fod_addr;
-	u_int *eff_fod_addr;
-	u_int *man_mot_addr;
-	u_int *man_mim_addr;
-	u_int *furn_mot_addr;
-	u_int *door_mot_addr;
-	u_int *item_mot_addr;
+    u_int *scn_file_addr;
+    u_int file_num;
+    u_int *ofs_top_addr;
+    u_int *hdr_addr;
+    u_int *cam_fod_addr;
+    u_int *lit_fod_addr;
+    u_int *eff_fod_addr;
+    u_int *man_mot_addr;
+    u_int *man_mim_addr;
+    u_int *furn_mot_addr;
+    u_int *door_mot_addr;
+    u_int *item_mot_addr;
 } SCENE_FILE;
 
 extern SCENE_CTRL scene_ctrl[2];
@@ -103,6 +102,8 @@ void SceneSetManMdlTexOffset(SCENE_CTRL *sc);
 int SceneGetChapterNo(int scene_no);
 void SceneSetSquare(int pri, float x, float y, float w, float h, u_char r, u_char g, u_char b, u_char a);
 void SceneCheckModelEntry(SCENE_CTRL *sc);
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 void InitSceneWork();
+#endif
 
 #endif // GRAPHICS_SCENE_SCENE_H

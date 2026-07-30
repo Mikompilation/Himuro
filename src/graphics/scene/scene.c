@@ -1,5 +1,6 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "enums.h"
 #include "scene.h"
 
@@ -16,7 +17,7 @@
 #include "graphics/graph2d/effect_scr.h"
 #include "graphics/graph2d/effect_sub.h"
 #include "graphics/graph2d/effect_sub2.h"
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
 #include "graphics/graph2d/subtitles.h"
 #include "graphics/graph2d/tim2_new.h"
 #endif
@@ -51,8 +52,6 @@ int scn_vib_time1 = 0;
 
 static int scn_load_id[2];
 
-#define MIM_BUF_BASE_ADDR 0x1310000
-
 #define PI 3.1415927f
 
 int SceneAllLoad(int scene_no, u_int *load_addr)
@@ -65,6 +64,7 @@ int SceneAllLoad(int scene_no, u_int *load_addr)
     {
     case 0:
         SceneDataLoadReq(scene_no, load_addr);
+
         scn_load_status = 1;
     break;
     case 1:
@@ -75,12 +75,14 @@ int SceneAllLoad(int scene_no, u_int *load_addr)
     break;
     case 2:
         AdpcmScenePreLoadReq(scene_no);
+
         scn_load_status = 3;
     break;
     case 3:
         if (IsAdpcmScenePreLoadEnd() == 1 || IsAdpcmScenePreLoadEnd() == -1)
         {
             scn_load_status = 0;
+
             ret = 1;
         }
     break;
@@ -146,6 +148,7 @@ u_int* SceneDataLoadReq(int scene_no, u_int *load_addr)
     if (next_addr == NULL)
     {
         sc->light_rev_addr = NULL;
+
         next_addr = (int)scn_addr;
     }
     else
@@ -163,7 +166,10 @@ int SceneDataLoadWait()
     SCENE_CTRL *sc;
     int i;
 
-    if (scn_load_num == 0) return; // missing return value??
+    if (scn_load_num == 0)
+    {
+        return; // missing return value
+    }
 
     if (IsLoadEnd(scn_load_id[scn_load_num - 1]) == 0)
     {
@@ -174,25 +180,25 @@ int SceneDataLoadWait()
 
     for (i = 0; i < 4; i++)
     {
-        memset(&sc->man_mdl[i], 0, sizeof(SCN_ANM_MDL));
+        sc->man_mdl[i] = (SCN_ANM_MDL){0};
         sc->man_mdl[i].disp_flg = 1;
     }
 
     for (i = 0; i < 14; i++)
     {
-        memset(&sc->furn_mdl[i], 0, sizeof(SCN_ANM_MDL));
+        sc->furn_mdl[i] = (SCN_ANM_MDL){0};
         sc->furn_mdl[i].disp_flg = 1;
     }
 
     for (i = 0; i < 8; i++)
     {
-        memset(&sc->door_mdl[i], 0, sizeof(SCN_ANM_MDL));
+        sc->door_mdl[i] = (SCN_ANM_MDL){0};
         sc->door_mdl[i].disp_flg = 1;
     }
 
     for (i = 0; i < 8; i++)
     {
-        memset(&sc->item_mdl[i], 0, sizeof(SCN_ANM_MDL));
+        sc->item_mdl[i] = (SCN_ANM_MDL){0};
         sc->item_mdl[i].disp_flg = 1;
     }
 
@@ -218,7 +224,7 @@ int SceneDataLoadWait()
     sc->init_flg = 1;
     scn_load_num = 0;
 
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
     InitSubtitlesSys();
 #endif
 
@@ -294,7 +300,9 @@ void SceneLightRevision(SCENE_CTRL *sc)
     int i;
     int err_flg;
 
-    lit_addr = (u_int *)((char *)lit_addr + sizeof(SgLIGHT)); // this forces proper instruction ordering ... why??
+#if defined(MATCHING_DECOMP)
+    lit_addr = (u_int *)((char *)lit_addr + sizeof(SgLIGHT)); // HACK: fixes codegen
+#endif
     lit_addr = sc->light_rev_addr;
 
     fl = &sc->fod_ctrl.fod_light;
@@ -400,7 +408,7 @@ void SceneInitManMdl(SCN_ANM_MDL *sam, u_int *mot_addr, u_int *mim_addr, u_int m
     sam->mot_addr = SceneGetMotAddr(mot_addr, mdl_id, pfx);
     sam->mim_addr = SceneGetMimAddr(mim_addr, pfx);
 
-    sam->mim_buf_addr = (u_int *)(MIM_BUF_BASE_ADDR + mdl_id * 0x10000);
+    sam->mim_buf_addr = (u_int *)(LOAD_ADDRESS_20 + mdl_id * 0x10000);
 
     if (sam->mdl_no == 1 && sc->chapter_no == 0)
     {
@@ -569,13 +577,19 @@ void SceneDraw(int scene_no)
             StopFallenEffect();
 
             mpos = SceneGetMdlWaistPos(&sc->man_mdl[0].mdl_anm, 0);
+
             CallFallenEffect(mpos[0], 2000, 160, 2);
         }
 
         FallenObjects();
     }
 
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_JP_VERSION) || defined(BUILD_US_VERSION)
+    if (sc->count_flg == 1)
+    {
+        FodNextFrame(fc);
+    }
+#elif defined(BUILD_EU_VERSION)
     SendFontTex();
 
     SetSubtitles(0, scene_no, sys_wrk.pal_disp_mode == 0 ? (fc->now_frame * 5) / 6 : fc->now_frame);
@@ -591,6 +605,7 @@ void SceneDraw(int scene_no)
             if (fc->check_cnt >= 5)
             {
                 fc->check_cnt = 0;
+
                 FodSetFrame(fc, fc->now_frame + 1);
             }
             else
@@ -607,11 +622,6 @@ void SceneDraw(int scene_no)
     if (SceneIsEnd() != 0)
     {
         FinishSubtitlesSys();
-    }
-#else
-    if (sc->count_flg == 1)
-    {
-        FodNextFrame(fc);
     }
 #endif
 }
@@ -761,6 +771,7 @@ int SceneIsEnd()
         if (pad[0].one & 0x800)
         {
             sc->fod_ctrl.end_flg = 1;
+
             AdpcmSceneStop();
         }
     }
@@ -791,6 +802,7 @@ int SceneIsEnd()
         if (eff_param.mono_flg != 0)
         {
             eff_param.mono_flg = 0;
+
             ChangeMonochrome(0);
         }
 
@@ -800,6 +812,7 @@ int SceneIsEnd()
         *sc->cam = sc->tmp_cam;
 
         sc->init_flg = 0;
+
         realtime_scene_flg = 0;
 
         ret = 1;
@@ -810,7 +823,7 @@ int SceneIsEnd()
 
 void SceneLightClear(SCENE_CTRL *sc)
 {
-    sceVu0FVECTOR zd = {0.0f, 0.0f, 0.0f, 0.0f};
+    sceVu0FVECTOR zd = { 0.0f, 0.0f, 0.0f, 0.0f };
 
     SgSetInfiniteLights(zd, sc->fod_ctrl.fod_light.all_lit, 0);
     SgSetPointLights(sc->fod_ctrl.fod_light.all_lit, 0);
@@ -819,10 +832,17 @@ void SceneLightClear(SCENE_CTRL *sc)
 
 void SceneScenePrerender()
 {
+#if defined(BUILD_JP_VERSION)
+    SgLIGHT lights;
+    SgLIGHT ilights[3];
+    SgLIGHT plights[16];
+    SgLIGHT slights[16];
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     static SgLIGHT lights;
     static SgLIGHT ilights[3];
     static SgLIGHT plights[16];
     static SgLIGHT slights[16];
+#endif
     sceVu0FVECTOR ambient;
     SCENE_CTRL *sc;
     SCN_ANM_MDL *sam;
@@ -903,7 +923,7 @@ void SceneSetEneEffect(SCN_ANM_MDL *sam)
     static sceVu0FVECTOR pos;
     static sceVu0FVECTOR pos2;
     static float spd;
-    sceVu0FVECTOR tv = {0.0f, 0.0f, 0.0f, 0.0f};
+    sceVu0FVECTOR tv = { 0.0f, 0.0f, 0.0f, 0.0f };
     sceVu0FVECTOR tr;
     int i;
 
@@ -922,6 +942,7 @@ void SceneSetEneEffect(SCN_ANM_MDL *sam)
             if (sam->efct_addr[i] != NULL)
             {
                 ResetEffects(sam->efct_addr[i]);
+
                 sam->efct_addr[i] = NULL;
             }
         }
@@ -1103,20 +1124,26 @@ void SceneSetVibrate(int scene_no, int frame)
         {
             if (vib_datp[i].type != 1)
             {
-                if (vib_datp[i].start == frame) {
+                if (vib_datp[i].start == frame)
+                {
                     scn_vib_time0 = scn_vib_type[vib_datp[i].type].time0;
                     scn_vib_time1 = scn_vib_type[vib_datp[i].type].time1;
                 }
-                if (scn_vib_time1 != 0) {
+
+                if (scn_vib_time1 != 0)
+                {
                     scn_vib_time1--;
+
                     VibrateRequest2(0, scn_vib_type[vib_datp[i].type].val);
-                } else {
-                    if (scn_vib_time0 == 0) {
-                        scn_vib_time0 = scn_vib_type[vib_datp[i].type].time0;
-                        scn_vib_time1 = scn_vib_type[vib_datp[i].type].time1;
-                    } else {
-                        scn_vib_time0--;
-                    }
+                }
+                else if (scn_vib_time0 == 0)
+                {
+                    scn_vib_time0 = scn_vib_type[vib_datp[i].type].time0;
+                    scn_vib_time1 = scn_vib_type[vib_datp[i].type].time1;
+                }
+                else
+                {
+                    scn_vib_time0--;
                 }
             }
             else
@@ -1549,12 +1576,12 @@ u_int GetPrefixNo(char *pfx)
 
 u_int* GetADRTBL(u_int *top, u_int no)
 {
-    return (u_int *)((u_char *)top + *(&top[no + 2] + 2)); // needs the double sum to prevent incorrect addu operand order
+    return (u_int *)((u_char *)top + *(&top[no + 2] + 2));
 }
 
 void SceneSetManMdlTexOffset(SCENE_CTRL *sc)
 {
-    int vram_offset[2] = { 0x2D00, 0x3160 };
+    int vram_offset[2] = { 0x2d00, 0x3160 };
     int i;
     int ofs_cnt;
     u_int hero_mdl_no;
@@ -1706,6 +1733,7 @@ void SceneCheckModelEntry(SCENE_CTRL *sc)
     }
 }
 
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 void InitSceneWork()
 {
     int i;
@@ -1720,3 +1748,4 @@ void InitSceneWork()
     scn_vib_time0 = 0;
     scn_vib_time1 = 0;
 }
+#endif

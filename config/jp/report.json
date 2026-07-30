@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 45.842544660634104,
+    "fuzzy_match_percent": 46.85212901808395,
     "total_code": "1165232",
-    "matched_code": "534172",
-    "matched_code_percent": 45.842544660634104,
+    "matched_code": "545936",
+    "matched_code_percent": 46.85212901808395,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 1569,
-    "matched_functions_percent": 46.228638774307605,
+    "matched_functions": 1606,
+    "matched_functions_percent": 47.31879787860931,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -12669,9 +12669,14 @@
     {
       "name": "graphics/scene/scene",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "11764",
+        "matched_code": "11764",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 37,
+        "matched_functions": 37,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -12679,14 +12684,17 @@
         {
           "name": ".text",
           "size": "11864",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -12694,186 +12702,223 @@
         {
           "name": "SceneAllLoad",
           "size": "212",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SceneDataLoadReq",
           "size": "416",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SceneDataLoadWait",
           "size": "444",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SceneGetChapterNo",
           "size": "96",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SceneDataAnalyze",
           "size": "208",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SceneInitEnvironment",
           "size": "260",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SceneCheckModelEntry",
           "size": "388",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SceneAllMdlInit",
           "size": "396",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetADRTBL",
           "size": "20",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SceneGetHeaderData",
           "size": "140",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetHeaderMdlNo",
           "size": "212",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SceneLightRevision",
           "size": "724",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SceneSetManMdlTexOffset",
           "size": "220",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SceneInitManMdl",
           "size": "336",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SceneInitOtherMdl",
           "size": "300",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SceneSpecialManage",
           "size": "188",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SceneGetMotAddr",
           "size": "100",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SceneGetMimAddr",
           "size": "160",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SceneGetEneEfctAddr",
           "size": "148",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SceneDraw",
           "size": "816",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SceneRenewEnvironment",
           "size": "220",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SceneLightClear",
           "size": "92",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SceneMirrorMdlDraw",
           "size": "716",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SceneDrawRoom",
           "size": "320",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SceneDrawOtherMdl",
           "size": "292",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SceneDrawManMdl",
           "size": "508",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SceneGetMdlWaistPos",
           "size": "56",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SceneSetFadeMdlEffect",
           "size": "240",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SceneSetVibrate",
           "size": "392",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SceneIsEnd",
           "size": "512",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SceneReleaseEffect",
           "size": "176",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SceneScenePrerender",
           "size": "564",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SceneSetEneEffect",
           "size": "748",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SceneDrawManShadow",
           "size": "932",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SceneDecisionMovie",
           "size": "52",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetPrefixNo",
           "size": "92",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SceneSetSquare",
           "size": "68",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -24134,14 +24179,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 45.842544660634104,
+        "fuzzy_match_percent": 46.85212901808395,
         "total_code": "1165232",
-        "matched_code": "534172",
-        "matched_code_percent": 45.842544660634104,
+        "matched_code": "545936",
+        "matched_code_percent": 46.85212901808395,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 1569,
-        "matched_functions_percent": 46.228638774307605,
+        "matched_functions": 1606,
+        "matched_functions_percent": 47.31879787860931,
         "complete_data_percent": 100.0,
         "total_units": 154
       }
