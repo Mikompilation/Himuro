@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 46.85212901808395,
+    "fuzzy_match_percent": 47.14288656679528,
     "total_code": "1165232",
-    "matched_code": "545936",
-    "matched_code_percent": 46.85212901808395,
+    "matched_code": "549324",
+    "matched_code_percent": 47.14288656679528,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 1606,
-    "matched_functions_percent": 47.31879787860931,
+    "matched_functions": 1612,
+    "matched_functions_percent": 47.49558043606364,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -12931,9 +12931,14 @@
     {
       "name": "ingame/ingame",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "3388",
+        "matched_code": "3388",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 6,
+        "matched_functions": 6,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -12941,14 +12946,17 @@
         {
           "name": ".text",
           "size": "3408",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -12956,31 +12964,37 @@
         {
           "name": "InGameCtrl",
           "size": "400",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "InGameFirstLoad",
           "size": "660",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "InGameInit",
           "size": "644",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "InGameMain",
           "size": "1316",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "InGameInit2",
           "size": "316",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "TmpPadOff",
           "size": "52",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -24179,14 +24193,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 46.85212901808395,
+        "fuzzy_match_percent": 47.14288656679528,
         "total_code": "1165232",
-        "matched_code": "545936",
-        "matched_code_percent": 46.85212901808395,
+        "matched_code": "549324",
+        "matched_code_percent": 47.14288656679528,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 1606,
-        "matched_functions_percent": 47.31879787860931,
+        "matched_functions": 1612,
+        "matched_functions_percent": 47.49558043606364,
         "complete_data_percent": 100.0,
         "total_units": 154
       }

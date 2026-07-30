@@ -2551,6 +2551,7 @@ FurnHintDeformCtrl                       = 0x001c6438;
 MapItemInit                              = 0x001c65f8;
 MissionStartMapItemInit                  = 0x001c6660;
 FileDateInit                             = 0x001c6890;
+ItemGetMain                              = 0x001c6978;
 ItemGetMain__local_2                     = 0x001c6978;
 ItemCtrl                                 = 0x001c6a28;
 ItemDispCtrl                             = 0x001c6a70;
