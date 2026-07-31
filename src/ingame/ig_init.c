@@ -1,5 +1,6 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "enums.h"
 #include "ig_init.h"
 
@@ -16,13 +17,13 @@
 #include "os/eeiop/cdvd/eecdvd.h"
 #include "os/fileload.h"
 
-#define PI 3.1415928f
+#define PI 3.1415927f
 
 typedef struct {
-	u_char mode;
-	u_char count;
-	u_char lock;
-	int load_id;
+    u_char mode;
+    u_char count;
+    u_char lock;
+    int load_id;
 } LOAD_START_WRK;
 
 LOAD_START_WRK load_start_wrk = {0};
@@ -31,7 +32,7 @@ void InitCamera()
 {
     u_char i;
 
-    memset(&camera, 0, sizeof(SgCAMERA));
+    camera = (SgCAMERA){0};
 
     camera.roll = PI;
     camera.fov = 0.7683708f;
@@ -52,7 +53,7 @@ void InitCamera()
 
 void InitPlyr()
 {
-    memset(&plyr_wrk, 0, sizeof(PLYR_WRK));
+    plyr_wrk = (PLYR_WRK){0};
 
     plyr_wrk.hp = 500;
     plyr_wrk.spd = 5.5f;
@@ -67,7 +68,7 @@ void InitPlyr()
 
 void InitPlyr2(int film_no)
 {
-    memset(&plyr_wrk, 0, sizeof(PLYR_WRK));
+    plyr_wrk = (PLYR_WRK){0};
 
     plyr_wrk.hp = 500;
     plyr_wrk.spd = 5.5f;
@@ -87,7 +88,7 @@ void InitPlyrAfterLoad(void)
 
 void InitEnemy(void)
 {
-    memset(ene_wrk , 0, 4 * sizeof(ENE_WRK));
+    memset(ene_wrk , 0, sizeof(ene_wrk));
 
     InitRequestSpirit();
     InitRequestFly();
@@ -97,12 +98,12 @@ void EnemyActDataLoad()
 {
     int eadat_tbl[3] = {ENE_ACT1_OBJ, ENE_ACT1_OBJ, ENE_ACT1_OBJ};
 
-    FileLoadB(eadat_tbl[ingame_wrk.msn_no], 0x7e0000);
+    FileLoadB(eadat_tbl[ingame_wrk.msn_no], ENE_ACT_OBJ_ADDRESS);
 }
 
 void InitFlyWrk()
 {
-    memset(&fly_wrk, 0, 10 * sizeof(FLY_WRK));
+    memset(&fly_wrk, 0, sizeof(fly_wrk));
 }
 
 void InitFilm()
@@ -112,23 +113,13 @@ void InitFilm()
 
 void LoadStartDataInit()
 {
-    // THIS SHOULD BE:
-    // memset(&load_start_wrk, 0, sizeof(LOAD_START_WRK));
-    // BUT DUES NOT MATCH.
-    // EXPLANATION:
-    // `load_start_wrk` resides in `.sdata`, so it must be initialized at
-    // the point of declaration. The structure is being 'reset' to its
-    // initial state here. Interestingly, if we use memset, the compiler
-    // optimizes it away in favor of a simpler `sd` instruction, as
-    // `LOAD_START_WRK` is exactly 8 bytes long. To ensure the memset
-    // is executed, explicit structure initialization is necessary.
     load_start_wrk = (LOAD_START_WRK){0};
 
-    ingame_wrk.stts |= 0x28;
+    ingame_wrk.stts |= (0x20 | 0x8);
 
     SortLoadDataAddr();
 
-    load_start_wrk.mode = 0;
+    load_start_wrk.mode = LOAD_START_MODE_PREQ;
 
     InitNowLoading();
     SetNowLoadingON();
@@ -142,41 +133,44 @@ int LoadStartDataSet()
 
     ret = SetNowLoading();
 
-    if (load_start_wrk.mode == 0)
+    if (load_start_wrk.mode == LOAD_START_MODE_PREQ)
     {
-        load_start_wrk.mode = 1;
+        load_start_wrk.mode = LOAD_START_MODE_PLYR;
 
         ReqMsnInitPlyr(ingame_wrk.msn_no);
     }
-    else if (load_start_wrk.mode == 1)
+    else if (load_start_wrk.mode == LOAD_START_MODE_PLYR)
     {
         if (MsnInitPlyr())
         {
-            load_start_wrk.mode = 2;
+            load_start_wrk.mode = LOAD_START_MODE_DREQ;
         }
     }
 
-    if (load_start_wrk.mode == 3)
+    if (load_start_wrk.mode == LOAD_START_MODE_DATA)
     {
         if (IsLoadEnd(load_start_wrk.load_id))
         {
             MissionDataLoadAfterInit(&load_dat_wrk[load_start_wrk.count]);
 
-            load_start_wrk.mode = 2;
-            load_start_wrk.count += 1;
+            load_start_wrk.mode = LOAD_START_MODE_DREQ;
+
+            load_start_wrk.count++;
         }
     }
-    else if (load_start_wrk.mode == 2)
+    else if (load_start_wrk.mode == LOAD_START_MODE_DREQ)
     {
         while (load_start_wrk.count < 40)
         {
             if (load_dat_wrk[load_start_wrk.count].file_no != 0xffff)
             {
                 load_start_wrk.load_id = MissionDataLoadReq(&load_dat_wrk[load_start_wrk.count]);
-                load_start_wrk.mode = 3;
+
+                load_start_wrk.mode = LOAD_START_MODE_DATA;
 
                 return 0;
             }
+
             load_start_wrk.count++;
         }
 
@@ -185,66 +179,68 @@ int LoadStartDataSet()
 
         area_wrk.room[0] = plyr_wrk.pr_info.room_no;
         area_wrk.room[1] = 0xff;
-        load_start_wrk.mode = 4;
+
+        load_start_wrk.mode = LOAD_START_MODE_ROOM;
     }
-    else if (load_start_wrk.mode == 4)
+    else if (load_start_wrk.mode == LOAD_START_MODE_ROOM)
     {
         if (RoomMdlLoadWait())
         {
-            load_start_wrk.mode = 5;
+            load_start_wrk.mode = LOAD_START_MODE_RGRQ;
         }
     }
-    else if (load_start_wrk.mode == 5)
+    else if (load_start_wrk.mode == LOAD_START_MODE_RGRQ)
     {
         RareGhostLoadGameLoadReq();
 
-        load_start_wrk.mode = 6;
+        load_start_wrk.mode = LOAD_START_MODE_RGST;
     }
-    else if (load_start_wrk.mode == 6)
+    else if (load_start_wrk.mode == LOAD_START_MODE_RGST)
     {
         if (IsLoadEndAll())
         {
             FloatGhostLoadReq();
 
             ap_wrk.fgst_no = 0xff;
-            load_start_wrk.mode = 7;
+
+            load_start_wrk.mode = LOAD_START_MODE_FGST;
         }
     }
-    else if (load_start_wrk.mode == 7)
+    else if (load_start_wrk.mode == LOAD_START_MODE_FGST)
     {
         if (FloatGhostLoadMain())
         {
             GuardGhostLoadReq();
 
-            load_start_wrk.mode = 8;
+            load_start_wrk.mode = LOAD_START_MODE_GGST;
         }
     }
-    else if (load_start_wrk.mode == 8)
+    else if (load_start_wrk.mode == LOAD_START_MODE_GGST)
     {
         if (GuardGhostLoad())
         {
             printf("GuardGhostLoadend\n");
 
-            load_start_wrk.mode = 0x9;
+            load_start_wrk.mode = LOAD_START_MODE_FADEIN;
         }
     }
-    else if (load_start_wrk.mode == 9)
+    else if (load_start_wrk.mode == LOAD_START_MODE_FADEIN)
     {
         SetNowLoadingOFF();
 
-        load_start_wrk.mode = 10;
+        load_start_wrk.mode = LOAD_START_MODE_END;
     }
-    else if (load_start_wrk.mode == 10)
+    else if (load_start_wrk.mode == LOAD_START_MODE_END)
     {
         if (ret != 0xff)
         {
             return 0;
         }
 
-        SetBlackIn2(0x3c);
+        SetBlackIn2(60);
 
-        ingame_wrk.mode = 6;
-        ingame_wrk.stts &= 0xd7;
+        ingame_wrk.mode = INGAME_MODE_NOMAL;
+        ingame_wrk.stts &= ~(0x20 | 0x8);
 
         return 1;
     }

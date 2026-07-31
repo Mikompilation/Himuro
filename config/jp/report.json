@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 47.14288656679528,
+    "fuzzy_match_percent": 47.259944800692054,
     "total_code": "1165232",
-    "matched_code": "549324",
-    "matched_code_percent": 47.14288656679528,
+    "matched_code": "550688",
+    "matched_code_percent": 47.259944800692054,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 1612,
-    "matched_functions_percent": 47.49558043606364,
+    "matched_functions": 1624,
+    "matched_functions_percent": 47.8491455509723,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -13007,9 +13007,14 @@
     {
       "name": "ingame/ig_init",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "1364",
+        "matched_code": "1364",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 12,
+        "matched_functions": 12,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -13017,14 +13022,17 @@
         {
           "name": ".text",
           "size": "1384",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -13032,61 +13040,73 @@
         {
           "name": "InitCamera",
           "size": "180",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "InitPlyr",
           "size": "120",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "InitPlyr2",
           "size": "128",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "InitPlyrAfterLoad",
           "size": "16",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "InitEnemy",
           "size": "48",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EnemyActDataLoad",
           "size": "80",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "InitFlyWrk",
           "size": "20",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "InitFilm",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "LoadStartDataInit",
           "size": "84",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "LoadStartDataSet",
           "size": "656",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "InitLoadStartLock",
           "size": "12",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetLoadStartLock",
           "size": "12",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -24193,14 +24213,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 47.14288656679528,
+        "fuzzy_match_percent": 47.259944800692054,
         "total_code": "1165232",
-        "matched_code": "549324",
-        "matched_code_percent": 47.14288656679528,
+        "matched_code": "550688",
+        "matched_code_percent": 47.259944800692054,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 1612,
-        "matched_functions_percent": 47.49558043606364,
+        "matched_functions": 1624,
+        "matched_functions_percent": 47.8491455509723,
         "complete_data_percent": 100.0,
         "total_units": 154
       }
