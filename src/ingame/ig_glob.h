@@ -12,7 +12,9 @@ extern FURN_ATTR_FLG furn_attr_flg[500];
 extern DOOR_STTS_KEEP door_keep[300];
 extern FLY_WRK fly_wrk[10];
 extern u_char ep_sensor[3];
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 extern int disp3d_room_req;
 extern int disp3d_furn_req;
+#endif
 
 #endif // INGAME_IG_GLOB_H
