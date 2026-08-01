@@ -231,12 +231,10 @@ u_char SetMapCamDat3(MAP_CAM_DAT *mcd, u_char id);
 u_char SetMapCamDat4(MAP_CAM_DAT *mcd, u_char id);
 u_char SetMapCamDat5(MAP_CAM_DAT *mcd);
 void SaveCamDat(u_char kind, u_char mn);
-
+#if !defined(INCLUDING_FROM_ENE_CTL_C)
 // fix for `ReqFinderInOverRap` needing to be undeclared in `ene_ctl.h`
-#ifndef INCLUDING_FROM_ENE_CTL_C
 void ReqFinderInOverRap(u_short time);
 #endif
-
 void FinderInOverRapCtrl();
 void PlyrDmgCameraCtrl();
 void ReqDramaCamera(u_char req, u_short no, u_short time);

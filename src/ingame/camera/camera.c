@@ -3,6 +3,9 @@
 #include "enums.h"
 #include "camera.h"
 
+// gcc/src/newlib/libm/math/sf_sin.c
+float sinf(float x);
+
 #include "sce/sifdev.h"
 #include "sce/libvu0.h"
 
@@ -201,13 +204,13 @@
 #include "data/dc_no_tbl3.h" // u_short *dc_no_tbl3[];
 
 u_short drm_cam_no[12] = {
-    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
-    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
+    0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff,
+    0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff,
 };
 # include "data/adj_cam_pos.h" // sceVu0FVECTOR adj_cam_pos;
 
 static u_short cam_no_save = 0;
-static u_short compling = 0xFFFF;
+static u_short compling = 0xffff;
 static u_char cam_mode_old = 0;
 static u_char req_rc_fade = 0;
 static u_char drm_cam_req = 0;
@@ -286,6 +289,7 @@ void CameraMain()
     {
     case PMODE_FINDER_IN:
         FinderInCameraCtrl();
+
         cam_mode_old = 6;
     break;
     case PMODE_FIN_CAM:
@@ -302,23 +306,28 @@ void CameraMain()
           {
               camera.fov = fov;
           }
+
           FinderModeCameraCtrl();
+
           cam_mode_old = 1;
     break;
     case PMODE_DMG:
     case PMODE_PRE_DMG:
         PlyrDmgCameraCtrl();
+
         cam_mode_old = 2;
     break;
     default:
         if (plyr_wrk.cond == 2)
         {
             KonwakuCamCtrl();
+
             cam_mode_old = 0;
         }
         else
         {
             NormalCameraCtrl();
+
             cam_mode_old = 0;
         }
     break;
@@ -365,7 +374,7 @@ void FinderInCameraCtrl()
     static sceVu0FVECTOR iv;
     static u_char time = 0;
 
-    if ((plyr_wrk.sta & 4) != 0)
+    if ((plyr_wrk.sta & 0x4) != 0)
     {
         plyr_wrk.sta &= ~0x4;
 
@@ -425,6 +434,7 @@ void NormalCameraCtrl()
         tc.p[3] = plyr_wrk.move_box.pos[3];
 
         sceVu0AddVector(tc.p, tc.p, adj_cam_pos);
+
         tc.roll = PI;
         tc.fov = DEG2RAD(44.0f);
     }
@@ -501,7 +511,7 @@ int GetCameraInfo(MAP_CAM_INFO *mci)
         (kind_old != 2 && drm_cam_req != 0) ||
         (
             (kind_old == 2 && drm_cam_req == 0) ||
-             plyr_wrk.pr_info.camera_door != 0xffff ||
+            plyr_wrk.pr_info.camera_door != 0xffff ||
             mci->no != mci->no_old
         )
     )
@@ -550,6 +560,7 @@ int GetCameraInfo(MAP_CAM_INFO *mci)
         if (mci->kind != kind_old)
         {
             compling = 0xffff;
+
             GetCameraData(mci->kind, mci);
         }
 
@@ -595,9 +606,6 @@ void GetCameraData(u_char kind, MAP_CAM_INFO *mci)
         break;
     }
 }
-
-
-float GetMCLocalPosPer(u_short cn, u_char kind, u_char id);
 
 void SetCamPos0(SgCAMERA *tc, MAP_CAM_INFO *mci)
 {
@@ -859,7 +867,7 @@ void SetCamPos5(SgCAMERA *tc, MAP_CAM_INFO *mci)
     sceVu0FVECTOR tv2;
     static sceVu0FVECTOR tv = { 0.0f, 0.0f, 0.0f, 0.0f };
 
-    GetMCLocalPosPer(0, 0x0, 0xff);
+    GetMCLocalPosPer(0, 0, 0xff);
 
     if (mci->change != 0x0)
     {
@@ -898,8 +906,8 @@ float GetMCLocalPosPer(u_short cn, u_char kind, u_char id)
     u_char kind_tbl[4] = { 1, 2, 3, 4 };
     static float min;
     static float max;
-    static u_short req_cam_no_save = 0xFFFF;
-    static u_char req_cam_kind_save = 0xFF;
+    static u_short req_cam_no_save = 0xffff;
+    static u_char req_cam_kind_save = 0xff;
 
     if (id == 0xff)
     {
@@ -1132,6 +1140,7 @@ void CompleCameraPos(SgCAMERA *tc, SgCAMERA *oc, MAP_CAM_INFO *mci)
                     tc1[3] = comple_adjr[3];
 
                     tca0 = GetDistV(tc0, tc1);
+
                     sceVu0SubVector(tc1, tc->i, camera.i);
 
                     tc0[0] = 0.0f;
@@ -1140,6 +1149,7 @@ void CompleCameraPos(SgCAMERA *tc, SgCAMERA *oc, MAP_CAM_INFO *mci)
                     tc0[3] = 0.0f;
 
                     tca1 = GetDistV(tc0, tc1);
+
                     sceVu0DivVector(comple_adjr, tc1, tca1 / tca0);
                 }
             }
@@ -1191,6 +1201,7 @@ void CompleCameraPos(SgCAMERA *tc, SgCAMERA *oc, MAP_CAM_INFO *mci)
                 comple_adjr[1] = 0.0f;
                 comple_adjr[2] = 0.0f;
                 comple_adjr[3] = 0.0f;
+
                 break;
             }
 
@@ -1213,6 +1224,7 @@ void CompleCameraPos(SgCAMERA *tc, SgCAMERA *oc, MAP_CAM_INFO *mci)
                     comple_adjr[1] = 0.0f;
                     comple_adjr[2] = 0.0f;
                     comple_adjr[3] = 0.0f;
+
                     break;
                 }
 
@@ -1243,6 +1255,7 @@ void CompleCameraPos(SgCAMERA *tc, SgCAMERA *oc, MAP_CAM_INFO *mci)
                 comple_adjp[1] = 0.0f;
                 comple_adjp[2] = 0.0f;
                 comple_adjp[3] = 0.0f;
+
                 break;
             }
 
@@ -1265,6 +1278,7 @@ void CompleCameraPos(SgCAMERA *tc, SgCAMERA *oc, MAP_CAM_INFO *mci)
                     comple_adjp[1] = 0.0f;
                     comple_adjp[2] = 0.0f;
                     comple_adjp[3] = 0.0f;
+
                     break;
                 }
                 chk = 1;
@@ -1316,19 +1330,19 @@ u_char CompleReqChk(MAP_CAM_INFO *mci)
         return 0;
     }
 
-    if (compling != 0xFFFF)
+    if (compling != 0xffff)
     {
         if (compling != mci->no)
         {
-            compling = 0xFFFF;
+            compling = 0xffff;
         }
     }
 
-    if (compling == 0xFFFF)
+    if (compling == 0xffff)
     {
         if (mci->change != 0)
         {
-            if (mci->no_old != 0xFFFF)
+            if (mci->no_old != 0xffff)
             {
                 req = 1;
             }
@@ -1376,6 +1390,7 @@ void FinderModeCameraCtrl()
 
         camera.roll = PI;
         compling = -1;
+
         return;
     }
     else if (plyr_wrk.sta & 0x400)
@@ -1397,12 +1412,15 @@ void FinderModeCameraCtrl()
         {
             plyr_wrk.sta &= ~0x400;
 
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
             plyr_wrk.move_box.rspd[0] = 0.0f;
             plyr_wrk.move_box.rspd[1] = 0.0f;
             plyr_wrk.move_box.rspd[2] = 0.0f;
             plyr_wrk.move_box.rspd[3] = 0.0f;
+#endif
         }
     }
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     else if (plyr_wrk.sta & 0x8000000)
     {
         if (plyr_wrk.move_box.loop == 0)
@@ -1422,6 +1440,7 @@ void FinderModeCameraCtrl()
             RotLimitChk(&mb->rot[1]);
         }
     }
+#endif
     else
     {
         PlyrCamCondChk();
@@ -1508,7 +1527,7 @@ void PconTebureCameraCtrl()
     if (FinderModePadChk(&pad_x, &pad_y, &ax, &ay, &jpad_on) != 0)
     {
         spd = GetDist(ax, ay) * 0.0003f;
-        rot = SgAtan2f(ax, -ay);
+        rot = VER_ATAN2F(ax, -ay);
 
         flag = 1;
     }
@@ -1518,11 +1537,11 @@ void PconTebureCameraCtrl()
         {
             if (rot >= 0.0f)
             {
-                rot_adj = rot_adj + DEG2RAD(0.1f);
+                rot_adj += DEG2RAD(0.1f);
             }
             else
             {
-                rot_adj = rot_adj - DEG2RAD(0.1f);
+                rot_adj -= DEG2RAD(0.1f);
             }
 
             rot += rot_adj;
@@ -1532,8 +1551,8 @@ void PconTebureCameraCtrl()
         }
     }
 
-    ax = spd * SgSinf(rot);
-    ay = spd * SgCosf(rot);
+    ax = spd * VER_SINF(rot);
+    ay = spd * VER_COSF(rot);
 
     mb->rot[1] += ax;
 
@@ -1574,35 +1593,35 @@ int FinderModePadChk(char *pad_x, char *pad_y, float *ax, float *ay, u_char *jpa
 
     *ax = *ay = 0.0f;
 
-    if (*key_now[0] != 0 || *key_now[1] != 0 || *key_now[3] != 0 || *key_now[2] != 0)
+    if (PAD_BTN_HELD(PAD_DPAD_UP) || PAD_BTN_HELD(PAD_DPAD_DOWN) || PAD_BTN_HELD(PAD_DPAD_RIGHT) || PAD_BTN_HELD(PAD_DPAD_LEFT))
     {
         *jpad_on = 1;
     }
 
     if (pad[0].id == 0x79 || *jpad_on != 0)
     {
-        if (*key_now[0] != 0)
+        if (PAD_BTN_HELD(PAD_DPAD_UP))
         {
             *ay = -40.0f;
         }
-        else if (*key_now[1] != 0)
+        else if (PAD_BTN_HELD(PAD_DPAD_DOWN))
         {
             *ay = 40.0f;
         }
 
-        if (*key_now[3] != 0)
+        if (PAD_BTN_HELD(PAD_DPAD_RIGHT))
         {
             *ax = 40.0f;
         }
-        else if (*key_now[2] != 0)
+        else if (PAD_BTN_HELD(PAD_DPAD_LEFT))
         {
             *ax = -40.0f;
         }
 
         if (*ax == 0.0f && *ay == 0.0f)
         {
-            *ax = pad[0].analog[2] - 128.0f;
-            *ay = pad[0].analog[3] - 128.0f;
+            *ax = pad[0].analog[PAD_LANA_DOWN] - 128.0f;
+            *ay = pad[0].analog[PAD_LANA_LEFT] - 128.0f;
         }
 
         if (*ax >= 40.0f)
@@ -1623,10 +1642,12 @@ int FinderModePadChk(char *pad_x, char *pad_y, float *ax, float *ay, u_char *jpa
             *pad_y = -1;
         }
 
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         if (*pad_y != 0 && (opt_wrk.key_type == 4 || opt_wrk.key_type == 5 || opt_wrk.key_type == 6 || opt_wrk.key_type  == 7))
         {
             *pad_y = -*pad_y;
         }
+#endif
     }
 
     return *pad_x != 0 || *pad_y != 0;
@@ -1656,23 +1677,23 @@ void SetFinderRot()
 
     if (FinderModePadChk(&pad_x, &pad_y, &ax, &ay, &jpad_on))
     {
-        rot = SgAtan2f(ax, ay);
+        rot = VER_ATAN2F(ax, ay);
         dist = GetDist(ax, ay);
         spd = 2.0f;
     }
     else
     {
-        if (plyr_wrk.fp[0] != 0x140 || plyr_wrk.fp[1] != 0xd1)
+        if (plyr_wrk.fp[0] != 320 || plyr_wrk.fp[1] != 209)
         {
-            rot = SgAtan2f(0x140 - plyr_wrk.fp[0], 0xd1 - plyr_wrk.fp[1]);
+            rot = VER_ATAN2F(320 - plyr_wrk.fp[0], 209 - plyr_wrk.fp[1]);
             spd = 1.9f;
         }
     }
 
     if (rot != 10.0f)
     {
-        ax = spd * SgSinf(rot);
-        ay = spd * SgCosf(rot);
+        ax = spd * VER_SINF(rot);
+        ay = spd * VER_COSF(rot);
 
         plyr_wrk.fp[0] += (short)ax;
 
@@ -1682,21 +1703,21 @@ void SetFinderRot()
             {
                 plyr_wrk.fp[0] = 300;
             }
-            else if (0x154 < plyr_wrk.fp[0])
+            else if (340 < plyr_wrk.fp[0])
             {
-                plyr_wrk.fp[0] = 0x154;
+                plyr_wrk.fp[0] = 340;
             }
         }
         else
         {
-            if (ax > 0.0f && plyr_wrk.fp[0] >= 0x141)
+            if (ax > 0.0f && plyr_wrk.fp[0] > 320)
             {
-                plyr_wrk.fp[0] = 0x140;
+                plyr_wrk.fp[0] = 320;
 
             }
-            else if (ax < 0.0f && plyr_wrk.fp[0] < 0x140)
+            else if (ax < 0.0f && plyr_wrk.fp[0] < 320)
             {
-                plyr_wrk.fp[0] = 0x140;
+                plyr_wrk.fp[0] = 320;
             }
         }
 
@@ -1704,32 +1725,32 @@ void SetFinderRot()
 
         if (spd == 2.0f)
         {
-            if (plyr_wrk.fp[1] < 0xc2)
+            if (plyr_wrk.fp[1] < 194)
             {
-                plyr_wrk.fp[1] = 0xc2;
+                plyr_wrk.fp[1] = 194;
             }
-            else if (0xe0 < plyr_wrk.fp[1])
+            else if (224 < plyr_wrk.fp[1])
             {
-                plyr_wrk.fp[1] = 0xe0;
+                plyr_wrk.fp[1] = 224;
             }
         }
         else
         {
-            if (ay > 0.0f && plyr_wrk.fp[1] >= 0xd2)
+            if (ay > 0.0f && plyr_wrk.fp[1] > 209)
             {
-                plyr_wrk.fp[1] = 0xd1;
+                plyr_wrk.fp[1] = 209;
 
             }
-            else if (ay < 0.0f && plyr_wrk.fp[1] < 0xd1)
+            else if (ay < 0.0f && plyr_wrk.fp[1] < 209)
             {
-                plyr_wrk.fp[1] = 0xd1;
+                plyr_wrk.fp[1] = 209;
             }
         }
     }
 
     if (cam_custom_wrk.set_spe == 2)
     {
-        if (*key_now[9] != 0)
+        if (PAD_BTN_HELD(PAD_L2))
         {
             camera.fov -= 0.01f;
 
@@ -1738,18 +1759,18 @@ void SetFinderRot()
                 camera.fov = 0.45f;
             }
         }
-        else if (*key_now[0xb] != 0)
+        else if (PAD_BTN_HELD(PAD_R2))
         {
             camera.fov += 0.01f;
 
-            if ((PI / 2) < camera.fov)
+            if (camera.fov > PI / 2)
             {
-                camera.fov = (PI / 2);
+                camera.fov = PI / 2;
             }
         }
     }
 
-    if (*key_now[6] != 0)
+    if (PAD_BTN_HELD(PAD_SQUARE))
     {
         delta = DEG2RAD(1.8f);
     }
@@ -1765,22 +1786,34 @@ void SetFinderRot()
         }
     }
 
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
     delta *= sys_wrk.move_conv;
 #endif
 
+#if defined(BUILD_JP_VERSION)
+    if (PAD_BTN_HELD(PAD_DPAD_LEFT) || pad_x < 0)
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     if (pad_x < 0)
+#endif
     {
         mb->rot[1] -= delta;
     }
+#if defined(BUILD_JP_VERSION)
+    else if (PAD_BTN_HELD(PAD_DPAD_RIGHT) || pad_x > 0)
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     else if (pad_x > 0)
+#endif
     {
         mb->rot[1] += delta;
     }
 
     RotLimitChk(&mb->rot[1]);
 
+#if defined(BUILD_JP_VERSION)
+    if (PAD_BTN_HELD(PAD_DPAD_UP) || pad_y < 0)
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     if (pad_y < 0)
+#endif
     {
         plyr_wrk.frot_x += delta;
 
@@ -1789,7 +1822,11 @@ void SetFinderRot()
             plyr_wrk.frot_x = DEG2RAD(60.0f);
         }
     }
+#if defined(BUILD_JP_VERSION)
+    else if (PAD_BTN_HELD(PAD_DPAD_DOWN) || pad_y > 0)
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     else if (pad_y > 0)
+#endif
     {
         plyr_wrk.frot_x -= delta;
 
@@ -1822,7 +1859,7 @@ void CameraIdMoveCtrl()
     char *str_renewal = "RENEWAL DATA!!";
     char *str_norenewal = "NO RENEWAL DATA";
 
-    if (*key_now[15] == 1)
+    if (PAD_BTN_PRESSED(PAD_R3))
     {
         cam_info_disp ^= 1;
     }
@@ -1893,7 +1930,7 @@ void CameraIdMoveCtrl()
         }
     }
 
-    if (*key_now[8] != 0 && *key_now[10] != 0 && *key_now[11] == 1)
+    if (PAD_BTN_HELD(PAD_L1) && PAD_BTN_HELD(PAD_R1) && PAD_BTN_PRESSED(PAD_R2))
     {
         switch (cdcopy[0])
         {
@@ -1914,7 +1951,7 @@ void CameraIdMoveCtrl()
         renewal_data_chk = 1;
     }
 
-    if (*key_now[9] == 1 && *key_now[8] != 0)
+    if (PAD_BTN_PRESSED(PAD_L2) && PAD_BTN_HELD(PAD_L1))
     {
         cam_kind++;
 
@@ -1930,7 +1967,7 @@ void CameraIdMoveCtrl()
     {
         if (cd_step == 0)
         {
-            if (*key_now[9] == 1 && *key_now[8] == 0)
+            if (PAD_BTN_PRESSED(PAD_L2) && PAD_BTN_NOT_HELD(PAD_L1))
             {
                 if (cam_type > 5)
                 {
@@ -1950,19 +1987,19 @@ void CameraIdMoveCtrl()
         }
         else
         {
-            if (*key_now[9] == 1 && *key_now[8] == 0)
+            if (PAD_BTN_PRESSED(PAD_L2) && PAD_BTN_NOT_HELD(PAD_L1))
             {
                 cam_id ^= 1;
             }
         }
     }
 
-    if (*key_now[8] != 0 && *key_now[14] == 1)
+    if (PAD_BTN_HELD(PAD_L1)&& PAD_BTN_PRESSED(PAD_L3))
     {
         cd_step = 0;
     }
 
-    if (*key_now[13] == 1)
+    if (PAD_BTN_PRESSED(PAD_SELECT))
     {
         switch(cam_type)
         {
@@ -2000,8 +2037,10 @@ void CameraIdMoveCtrl()
         if (cam_type < 6)
         {
             SetASCIIString2(0, 430.0f, 90.0f, 1, 0xff, 0x32, 0x32, str3);
+
             renewal_data_chk = 1;
             renewal_data_chk_cnt = 0;
+
             GetMCLocalPosPer(0, 0x0, 0xff);
         }
         else
@@ -2030,41 +2069,41 @@ void CameraIdMoveCtrl()
 
     if (dbg_wrk.mode_on == 0)
     {
-        if (*key_now[10] != 0)
+        if (PAD_BTN_HELD(PAD_R1))
         {
             tv[2] = 20.0f;
         }
         else
         {
-            if (*key_now[11] != 0)
+            if (PAD_BTN_HELD(PAD_R2))
             {
                 tv[2] = -20.0f;
             }
         }
 
-        if (*key_now[8] != 0)
+        if (PAD_BTN_HELD(PAD_L1))
         {
-            if (*key_now[3] != 0)
+            if (PAD_BTN_HELD(PAD_DPAD_RIGHT))
             {
                 tv[0] = 20.0f;
             }
-            else if (*key_now[2] != 0)
+            else if (PAD_BTN_HELD(PAD_DPAD_LEFT))
             {
                 tv[0] = -20.0f;
             }
 
-            if (*key_now[0] != 0)
+            if (PAD_BTN_HELD(PAD_DPAD_UP))
             {
                 tv[1] = -20.0f;
             }
-            else if (*key_now[1] != 0)
+            else if (PAD_BTN_HELD(PAD_DPAD_DOWN))
             {
                 tv[1] = 20.0f;
             }
         }
-        else if (*key_now[5] != 0)
+        else if (PAD_BTN_HELD(PAD_CROSS))
         {
-            if (*key_now[3] != 0)
+            if (PAD_BTN_HELD(PAD_DPAD_RIGHT))
             {
                 camera.roll -= delta;
 
@@ -2073,23 +2112,23 @@ void CameraIdMoveCtrl()
                     camera.roll += PI * 2;
                 }
             }
-            else if (*key_now[2] != 0)
+            else if (PAD_BTN_HELD(PAD_DPAD_LEFT))
             {
                 camera.roll += delta;
 
-                if (PI < camera.roll)
+                if (camera.roll > PI)
                 {
                     camera.roll -= PI * 2;
                 }
             }
-            else if (*key_now[4] != 0)
+            else if (PAD_BTN_HELD(PAD_TRIANGLE))
             {
                 camera.roll = PI;
             }
         }
-        else if (*key_now[6] != 0)
+        else if (PAD_BTN_HELD(PAD_SQUARE))
         {
-            if (*key_now[0] != 0)
+            if (PAD_BTN_HELD(PAD_DPAD_UP))
             {
                 camera.fov -= 0.01f;
 
@@ -2098,7 +2137,7 @@ void CameraIdMoveCtrl()
                     camera.fov = 0.1f;
                 }
             }
-            else if (*key_now[1] != 0)
+            else if (PAD_BTN_HELD(PAD_DPAD_DOWN))
             {
                 camera.fov += 0.01f;
 
@@ -2107,14 +2146,14 @@ void CameraIdMoveCtrl()
                     camera.fov = PI;
                 }
             }
-            else if (*key_now[4] != 0)
+            else if (PAD_BTN_HELD(PAD_TRIANGLE))
             {
                 camera.fov = DEG2RAD(60.0f);
             }
         }
         else
         {
-            if (*key_now[3] != 0)
+            if (PAD_BTN_HELD(PAD_DPAD_RIGHT))
             {
                 cam_id_move.rot_y[1] += delta;
 
@@ -2125,7 +2164,7 @@ void CameraIdMoveCtrl()
 
                 cd_edit_end = 0x0;
             }
-            else if (*key_now[2] != 0)
+            else if (PAD_BTN_HELD(PAD_DPAD_LEFT))
             {
                 cam_id_move.rot_y[1] -= delta;
 
@@ -2137,7 +2176,7 @@ void CameraIdMoveCtrl()
                 cd_edit_end = 0x0;
             }
 
-            if (*key_now[0] != 0)
+            if (PAD_BTN_HELD(PAD_DPAD_UP))
             {
                 cam_id_move.rot_x[0] += delta;
 
@@ -2148,7 +2187,7 @@ void CameraIdMoveCtrl()
 
                 cd_edit_end = 0;
             }
-            else if (*key_now[1] != 0)
+            else if (PAD_BTN_HELD(PAD_DPAD_DOWN))
             {
                 cam_id_move.rot_x[0] -= delta;
 
@@ -2269,30 +2308,30 @@ u_char SetMapCamDat2(MAP_CAM_DAT *mcd, u_char id)
     switch (cd_step)
     {
     case 0:
-            tmpd = (MAP_CAM_DAT){0};
+        tmpd = (MAP_CAM_DAT){0};
 
-            mcd->type = 2;
+        mcd->type = 2;
 
-            if (*key_now[8] == 0)
+        if (PAD_BTN_NOT_HELD(PAD_L1))
+        {
+            for (i = 0; i < 3; i++)
             {
-                for (i = 0; i < 3; i++)
-                {
-                    tmpd.p0[i] = (u_short)(int)camera.i[i];
-                }
-
-                for (i = 0; i < 3; i++)
-                {
-                    tmpd.p1[i] = camera.p[i];
-                }
-
-                mcd->roll[0] = camera.roll;
-                mcd->fov[0] = camera.fov;
+                tmpd.p0[i] = (u_short)(int)camera.i[i];
             }
 
-            cd_step++;
+            for (i = 0; i < 3; i++)
+            {
+                tmpd.p1[i] = camera.p[i];
+            }
+
+            mcd->roll[0] = camera.roll;
+            mcd->fov[0] = camera.fov;
+        }
+
+        cd_step++;
     break;
     case 1:
-        if (*key_now[8] == 0)
+        if (PAD_BTN_NOT_HELD(PAD_L1))
         {
             for (i = 0; i < 3; i++)
             {
@@ -2373,25 +2412,25 @@ u_char SetMapCamDat3(MAP_CAM_DAT *mcd, u_char id)
     switch (cd_step)
     {
     case 0:
-            tmpd = (MAP_CAM_DAT){0};
+        tmpd = (MAP_CAM_DAT){0};
 
-            mcd->type = 3;
+        mcd->type = 3;
 
-            if (*key_now[8] == 0)
+        if (PAD_BTN_NOT_HELD(PAD_L1))
+        {
+            for (i = 0; i < 3; i++)
             {
-                for (i = 0; i < 3; i++)
-                {
-                    tmpd.p0[i] = camera.p[i];
-                }
-
-                mcd->roll[0] = camera.roll;
-                mcd->fov[0] = camera.fov;
+                tmpd.p0[i] = camera.p[i];
             }
 
-            cd_step++;
+            mcd->roll[0] = camera.roll;
+            mcd->fov[0] = camera.fov;
+        }
+
+        cd_step++;
     break;
     case 1:
-        if (*key_now[8] == 0)
+        if (PAD_BTN_NOT_HELD(PAD_L1))
         {
             for (i = 0; i < 3; i++)
             {
@@ -2469,30 +2508,30 @@ u_char SetMapCamDat4(MAP_CAM_DAT *mcd, u_char id)
     switch (cd_step)
     {
     case 0:
-            tmpd = (MAP_CAM_DAT){0};
+        tmpd = (MAP_CAM_DAT){0};
 
-            mcd->type = 4;
+        mcd->type = 4;
 
-            if (*key_now[8] == 0)
+        if (PAD_BTN_NOT_HELD(PAD_L1))
+        {
+            for (i = 0; i < 3; i++)
             {
-                for (i = 0; i < 3; i++)
-                {
-                    tmpd.p0[i] = camera.i[i];
-                }
-
-                for (i = 0; i < 3; i++)
-                {
-                    tmpd.p2[i] = camera.p[i];
-                }
-
-                mcd->roll[0] = camera.roll;
-                mcd->fov[0] = camera.fov;
+                tmpd.p0[i] = camera.i[i];
             }
 
-            cd_step++;
+            for (i = 0; i < 3; i++)
+            {
+                tmpd.p2[i] = camera.p[i];
+            }
+
+            mcd->roll[0] = camera.roll;
+            mcd->fov[0] = camera.fov;
+        }
+
+        cd_step++;
     break;
     case 1:
-        if (*key_now[8] == 0)
+        if (PAD_BTN_NOT_HELD(PAD_L1))
         {
             for (i = 0; i < 3; i++)
             {
@@ -2617,28 +2656,28 @@ void SaveCamDat(u_char kind, u_char mn)
     switch (kind)
     {
     case 0:
-        fname[32] = '1' + mn; // replace the '1' map_cam1 with 'mn + 1'
-        fd = sceOpen(fname, 0x202);
+        fname[32] = '1' + mn; // replace the '1' in map_cam1 with 'mn + 1'
+        fd = sceOpen(fname, SCE_CREAT | SCE_WRONLY);
         sceLseek(fd, 0, 0);
-        sceWrite(fd, map_cam_dat, 22000);
+        sceWrite(fd, map_cam_dat, sizeof(map_cam_dat));
     break;
     case 1:
-        fname2[33] = '1' + mn; // replace the '1' bmap_cam1 with 'mn + 1'
-        fd = sceOpen(fname2, 0x202);
+        fname2[33] = '1' + mn; // replace the '1' in bmap_cam1 with 'mn + 1'
+        fd = sceOpen(fname2, SCE_CREAT | SCE_WRONLY);
         sceLseek(fd, 0, 0);
-        sceWrite(fd, map_cam_dat2, 22000);
+        sceWrite(fd, map_cam_dat2, sizeof(map_cam_dat2));
     break;
     case 2:
-        fname3[33] = '1' + mn; // replace the '1' dmap_cam1 with 'mn + 1'
-        fd = sceOpen(fname3, 0x202);
+        fname3[33] = '1' + mn; // replace the '1' in dmap_cam1 with 'mn + 1'
+        fd = sceOpen(fname3, SCE_CREAT | SCE_WRONLY);
         sceLseek(fd, 0, 0);
-        sceWrite(fd, map_cam_dat3, 0x3390);
+        sceWrite(fd, map_cam_dat3, sizeof(map_cam_dat3));
     break;
     case 3:
-        fname4[33] = '1' + mn; // replace the '1' tmap_cam1 with 'mn + 1'
-        fd = sceOpen(fname4, 0x202);
+        fname4[33] = '1' + mn; // replace the '1' in tmap_cam1 with 'mn + 1'
+        fd = sceOpen(fname4, SCE_CREAT | SCE_WRONLY);
         sceLseek(fd, 0, 0);
-        sceWrite(fd, map_cam_dat4, 0x3390);
+        sceWrite(fd, map_cam_dat4, sizeof(map_cam_dat4));
     break;
     }
 

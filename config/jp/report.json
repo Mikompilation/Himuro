@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 47.259944800692054,
+    "fuzzy_match_percent": 48.89738695813366,
     "total_code": "1165232",
-    "matched_code": "550688",
-    "matched_code_percent": 47.259944800692054,
+    "matched_code": "569768",
+    "matched_code_percent": 48.89738695813366,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 1624,
-    "matched_functions_percent": 47.8491455509723,
+    "matched_functions": 1659,
+    "matched_functions_percent": 48.88037713612257,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -13119,9 +13119,14 @@
     {
       "name": "ingame/camera/camera",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "19080",
+        "matched_code": "19080",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 35,
+        "matched_functions": 35,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -13129,14 +13134,17 @@
         {
           "name": ".text",
           "size": "19144",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -13144,176 +13152,211 @@
         {
           "name": "CameraMain",
           "size": "760",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CameraIdMoveCtrl",
           "size": "3204",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FinderInCameraCtrl",
           "size": "240",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FinderModeCameraCtrl",
           "size": "548",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PlyrDmgCameraCtrl",
           "size": "372",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "KonwakuCamCtrl",
           "size": "212",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "NormalCameraCtrl",
           "size": "788",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FinderInOverRapCtrl",
           "size": "40",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ReqFinderInOverRap",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DramaCameraReqCtrl",
           "size": "188",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetCameraInfo",
           "size": "336",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetCamPos0",
           "size": "208",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetCamPos1",
           "size": "320",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetCamPos2",
           "size": "464",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetCamPos3",
           "size": "564",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetCamPos4",
           "size": "544",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetCamPos5",
           "size": "332",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CompleCameraPos",
           "size": "2852",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetCameraData",
           "size": "256",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetMCLocalPosPer",
           "size": "260",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CompleReqChk",
           "size": "108",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PlyrCamCondChk",
           "size": "80",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetFinderRot",
           "size": "1072",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PconMahiCameraCtrl",
           "size": "92",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PconTebureCameraCtrl",
           "size": "400",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FinderModePadChk",
           "size": "488",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetMapCamDat0",
           "size": "272",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetMapCamDat1",
           "size": "268",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetMapCamDat2",
           "size": "784",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetMapCamDat3",
           "size": "704",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetMapCamDat4",
           "size": "908",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetMapCamDat5",
           "size": "284",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SaveCamDat",
           "size": "800",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ReqDramaCamera",
           "size": "260",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ClearDramaCamReq",
           "size": "64",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -24213,14 +24256,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 47.259944800692054,
+        "fuzzy_match_percent": 48.89738695813366,
         "total_code": "1165232",
-        "matched_code": "550688",
-        "matched_code_percent": 47.259944800692054,
+        "matched_code": "569768",
+        "matched_code_percent": 48.89738695813366,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 1624,
-        "matched_functions_percent": 47.8491455509723,
+        "matched_functions": 1659,
+        "matched_functions_percent": 48.88037713612257,
         "complete_data_percent": 100.0,
         "total_units": 154
       }
