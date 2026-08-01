@@ -1,5 +1,6 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "enums.h"
 #include "ene_ctl.h"
 
@@ -54,16 +55,13 @@ int erootd0[20][3] = {0};
 int erootd1[20][3] = {0};
 int erootd2[20][3] = {0};
 
-u_char req_dmg_ef[3] = {0, 0, 0};
+u_char req_dmg_ef[3] = {0};
 static u_short es_adpcm_tm = 0;
 
 #define SCREEN_WIDTH   640
 #define SCREEN_HEIGHT  224
 
 #define PI 3.1415927f
-#define PI_HALF 1.5707964f
-
-#define ADDRESS 0x7e0000
 
 void EneCtrlMain()
 {
@@ -280,7 +278,7 @@ void FEneEntry(u_char wrk_no, u_char dat_no)
     ew->nee_size = 10000.0f;
     ew->nee_col = ew->dat->aura_alp | 0x40404500;
     ew->nee_rate = 1.0f;
-    ew->nee = SetEffects(0x1c, 2, 1, ew->move_box.pos, ew->mpos, &ew->nee_col, &ew->nee_size, 0xa0, &ew->nee_rate);
+    ew->nee = SetEffects(EF_ENEFIRE, 2, 1, ew->move_box.pos, ew->mpos, &ew->nee_col, &ew->nee_size, 0xa0, &ew->nee_rate);
     ew->se_area_no = SeGetGhostPos(ew->dat->se_no, ew->type);
 
     AdpcmPlayGhost(ene_wrk[wrk_no].dat->adpcm_no, &ew->move_box.pos, MAX_VOLUME, wrk_no, 200);
@@ -364,13 +362,13 @@ void EneRule(ENE_WRK *ew)
         switch (ew->type)
         {
             case 0:
-                SetASCIIString2( 0x10, 430.0, ew->move_box.idx * 10 + 10, 1, 0xdc, 0x32, 0x32, str1);
+                SetASCIIString2(0x10, 430.0f, ew->move_box.idx * 10 + 10, 1, 0xdc, 0x32, 0x32, str1);
             break;
             case 1:
-                SetASCIIString2(0x10, 430.0, ew->move_box.idx * 10 + 10, 1, 0x32, 0xdc, 0x32, str2);
+                SetASCIIString2(0x10, 430.0f, ew->move_box.idx * 10 + 10, 1, 0x32, 0xdc, 0x32, str2);
             break;
             case 2:
-                SetASCIIString2(0x10, 430.0, ew->move_box.idx * 10 + 10, 1, 0xdc, 0xdc, 0x32, str3);
+                SetASCIIString2(0x10, 430.0f, ew->move_box.idx * 10 + 10, 1, 0xdc, 0xdc, 0x32, str3);
             break;
         }
 
@@ -379,7 +377,7 @@ void EneRule(ENE_WRK *ew)
     else
     {
 
-        SetASCIIString2(0x10, 430.0, ew->move_box.idx * 10 + 10, 1, 0xdc, 0xdc, 0x32, str_clr);
+        SetASCIIString2(0x10, 430.0f, ew->move_box.idx * 10 + 10, 1, 0xdc, 0xdc, 0x32, str_clr);
     }
 
     if (plyr_wrk.ap_timer == 0 || ew->dmg != 0)
@@ -433,17 +431,17 @@ void EneCondCtrl(ENE_WRK *ew)
 {
     if (ew->stm_slow != 0)
     {
-        ew->stm_slow -= 1;
+        ew->stm_slow--;
     }
 
     if (ew->stm_view != 0)
     {
-        ew->stm_view -=1;
+        ew->stm_view--;
     }
 
     if (ew->stm_stop != 0)
     {
-        ew->stm_stop -= 1;
+        ew->stm_stop--;
 
         if (!ew->stm_stop)
         {
@@ -454,7 +452,7 @@ void EneCondCtrl(ENE_WRK *ew)
 
 void EneAuraCtrl(ENE_WRK *ew)
 {
-    if (plyr_wrk.mode == 0x2)
+    if (plyr_wrk.mode == PMODE_DMG)
     {
         ew->tr_rate = 50;
         ew->tr_rate2 = 50;
@@ -462,7 +460,7 @@ void EneAuraCtrl(ENE_WRK *ew)
 
     if ((ew->dat->attr1 & 0x10 || (ingame_wrk.difficult != 0 && ingame_wrk.game == 0)) && ew->sta & 0x2000000)
     {
-        if (plyr_wrk.mode != 1 && plyr_wrk.mode != 2 && ew->act_no != 8)
+        if (plyr_wrk.mode != PMODE_FINDER && plyr_wrk.mode != PMODE_DMG && ew->act_no != 8)
         {
             ew->tr_rate = 0;
         }
@@ -472,7 +470,7 @@ void EneAuraCtrl(ENE_WRK *ew)
         }
     }
 
-    if (plyr_wrk.mode == 1 || efcnt[12].dat.uc8[0] != 0 || ew->sta & 0x8000 || ew->hp == 0)
+    if (plyr_wrk.mode == PMODE_FINDER || efcnt[12].dat.uc8[0] != 0 || ew->sta & 0x8000 || ew->hp == 0)
     {
         ew->d_pd2 = 0.0f;
     }
@@ -533,9 +531,7 @@ void InitEneWrk(u_char wrk_no)
     }
 
     ew->nee = NULL;
-
     ew->pdf = NULL;
-
     ew->pdf2 = NULL;
 }
 
@@ -544,11 +540,13 @@ int EneWrkReleaseChk(ENE_WRK *ew)
     int result;
 
     result = 0;
+
     if (map_wrk.mirror_flg != 0 || EnemyUseJudge(0) >= 2)
     {
         if (ew->pdf2 != NULL)
         {
             ResetEffects(ew->pdf2);
+
             ew->pdf2 = NULL;
         }
     }
@@ -573,78 +571,93 @@ int EneWrkReleaseChk(ENE_WRK *ew)
         result = 1;
         switch (ew->type)
         {
-            case 0:
-                BattleEndEventOpenJudge(ew->dat_no);
-                AdpcmStopGhost(0x14);
-                if (ingame_wrk.msn_no == 1 && ew->dat_no == 0)
+        case 0:
+            BattleEndEventOpenJudge(ew->dat_no);
+            AdpcmStopGhost(20);
+
+            if (ingame_wrk.msn_no == 1 && ew->dat_no == 0)
+            {
+                OpenCameraMenu();
+            }
+        break;
+        case 1:
+            if (EnemyNoDeadGhostJudge(ew->dat_no) != 0)
+            {
+                if (ew->hp != 0)
                 {
-                    OpenCameraMenu();
+                    FloatGhostEscapeEnd();
                 }
-                break;
-            case 1:
-                if (EnemyNoDeadGhostJudge(ew->dat_no) != 0)
+                else
                 {
-                    if (ew->hp != 0)
-                    {
-                        FloatGhostEscapeEnd();
-                    }
-                    else
-                    {
-                        DeadGhostBattleEnd();
-                    }
+                    DeadGhostBattleEnd();
                 }
-                else if (ew->dat_no != ap_wrk.ggst_no)
+            }
+            else if (ew->dat_no != ap_wrk.ggst_no)
+            {
+                if (ew->hp != 0)
                 {
-                    if (ew->hp != 0)
-                    {
-                        FloatGhostEscapeEnd();
-                    }
-                    else
-                    {
-                        FloatGhostBattleEnd();
-                    }
+                    FloatGhostEscapeEnd();
                 }
-                AdpcmStopGhost(0x14);
-                break;
-            case 2:
-                BattleEndEventOpenJudge(ew->dat_no);
-                if (ew->aie->soul_no != 0xFF)
+                else
                 {
-                    CallWanderSoul(ew->aie->soul_no, ew->mpos.p1);
+                    FloatGhostBattleEnd();
                 }
-                es_adpcm_tm = 0;
-                AdpcmStopAutoGhost(0xA);
-                break;
+            }
+
+            AdpcmStopGhost(20);
+        break;
+        case 2:
+            BattleEndEventOpenJudge(ew->dat_no);
+
+            if (ew->aie->soul_no != 0xff)
+            {
+                CallWanderSoul(ew->aie->soul_no, ew->mpos.p1);
+            }
+
+            es_adpcm_tm = 0;
+
+            AdpcmStopAutoGhost(10);
+        break;
         }
+
         if (ew->nee != NULL)
         {
             ResetEffects(ew->nee);
         }
+
         if (ew->pdf != NULL)
         {
             ResetEffects(ew->pdf);
         }
+
         if (ew->pdf2 != NULL)
         {
             ResetEffects(ew->pdf2);
         }
+
         if (ew->plight_svm != NULL)
         {
-            room_wrk.mylight[0].point_num -= 1;
+            room_wrk.mylight[0].point_num--;
         }
+
         EneSeOmenChk(ew, 0);
+
         if (ew->hp != 0)
         {
             RequestSpirit(ew->move_box.idx, 0);
             ReleaseEneTexture(ew->move_box.idx);
             motReleaseAnmPacket(ew->move_box.idx);
         }
-        memset(ew, 0, 0x430);
-        if (ap_wrk.zh_mode != 0)
+
+        *ew = (ENE_WRK){0};
+
+        if (ap_wrk.zh_mode != ZH_NO_REQ)
         {
             ZeroHourOutReq();
         }
+
         DoorLockBattleAfter();
+
         if (ingame_wrk.game == 1)
         {
             BattleModeClear();
@@ -680,12 +693,12 @@ void EnePosInfoSet(ENE_WRK *ew)
 
 void EneSeOmenChk(ENE_WRK *ew, u_char id)
 {
-    float dist_tbl[2] = {4000.0f, 1250.0f};
-    u_short se_tbl[2] = {54, 55};
+    float dist_tbl[2] = { 4000.0f, 1250.0f };
+    u_short se_tbl[2] = { 54, 55 };
     float dist;
     int i;
 
-    if (ew->type != 0x2)
+    if (ew->type != 2)
     {
         if (id == 0)
         {
@@ -733,13 +746,13 @@ void EneMoveCtrl(ENE_WRK *ew)
 
     if (dbg_wrk.param_enestop == 0 && (ew->sta & (0x8000000 | 0x30000000)) == 0)
     {
-#ifdef BUILD_EU_VERSION
-        sceVu0ScaleVector(tv, ew->move_box.spd, sys_wrk.move_conv);
-#else
+#if defined(BUILD_JP_VERSION) || defined(BUILD_US_VERSION)
         tv[0] = mb->spd[0];
         tv[1] = mb->spd[1];
         tv[2] = mb->spd[2];
         tv[3] = mb->spd[3];
+#elif defined(BUILD_EU_VERSION)
+        sceVu0ScaleVector(tv, ew->move_box.spd, sys_wrk.move_conv);
 #endif
 
         if (ew->stm_slow != 0)
@@ -846,10 +859,12 @@ u_char EnePRecogChk(ENE_WRK *ew, u_char *act_no)
     {
         new_act = 4;
 
-        if (HitChkSegment2All(
-            plyr_wrk.move_box.pos,
-            ew->move_box.pos,
-            GetDistV(plyr_wrk.move_box.pos, ew->move_box.pos) / 50.0f))
+        if (
+            HitChkSegment2All(
+                plyr_wrk.move_box.pos,
+                ew->move_box.pos,
+                GetDistV(plyr_wrk.move_box.pos, ew->move_box.pos) / 50.0f) != 0
+        )
         {
             new_act = 3;
         }
@@ -968,7 +983,7 @@ u_char CaptureOnChk2(ENE_WRK *ew)
                 rot[1] = -rot[1];
             }
 
-            if (rot[1] <= PI_HALF)
+            if (rot[1] <= PI / 2)
             {
                 chk = 1;
             }
@@ -1032,12 +1047,12 @@ void EneActSet(ENE_WRK *ew, u_char act_no)
     mb = &ew->move_box;
 
     ew->act_no = act_no;
-    mb->comm_add_top = ADDRESS;
+    mb->comm_add_top = ENE_ACT_OBJ_ADDRESS;
 
-    v1 = (u_int)((u_long)(ew->type) * 2 + ADDRESS);
-    v0 = ((ADDRESS | (((u_char *)(u_int)v1)[0] | (((u_char *)(u_int)v1)[1] << 8)))) + (u_long)(ew->dat_no * 2);
-    v1 = ((ADDRESS | (((u_char *)(u_int)v0)[0] | (((u_char *)(u_int)v0)[1] << 8)))) + (u_long)(    act_no * 2);
-    t3 = ((ADDRESS | (((u_char *)(u_int)v1)[0] | (((u_char *)(u_int)v1)[1] << 8))));
+    v1 = (u_int)((u_long)(ew->type) * 2 + ENE_ACT_OBJ_ADDRESS);
+    v0 = ((ENE_ACT_OBJ_ADDRESS | (((u_char *)(u_int)v1)[0] | (((u_char *)(u_int)v1)[1] << 8)))) + (u_long)(ew->dat_no * 2);
+    v1 = ((ENE_ACT_OBJ_ADDRESS | (((u_char *)(u_int)v0)[0] | (((u_char *)(u_int)v0)[1] << 8)))) + (u_long)(    act_no * 2);
+    t3 = ((ENE_ACT_OBJ_ADDRESS | (((u_char *)(u_int)v1)[0] | (((u_char *)(u_int)v1)[1] << 8))));
 
     mb->comm_add.wrk = t3;
     mb->pos_no = 0;
@@ -1055,13 +1070,13 @@ void EneActSet(ENE_WRK *ew, u_char act_no)
 
     mb->rot[2] = 0.0f;
 
-    ene_wrk[mb->idx].sta &= 0xfeffffff;
-    ene_wrk[mb->idx].sta &= 0xffbfffff;
-    ene_wrk[mb->idx].sta &= 0xff7fffff;
-    ene_wrk[mb->idx].sta &= 0xfdffffff;
-    ene_wrk[mb->idx].sta &= 0xfff7ffff;
-    ene_wrk[mb->idx].sta &= 0xfffeffff;
-    ene_wrk[mb->idx].sta &= 0xfffdffff;
+    ene_wrk[mb->idx].sta &= ~0x1000000;
+    ene_wrk[mb->idx].sta &= ~0x400000;
+    ene_wrk[mb->idx].sta &= ~0x800000;
+    ene_wrk[mb->idx].sta &= ~0x2000000;
+    ene_wrk[mb->idx].sta &= ~0x80000;
+    ene_wrk[mb->idx].sta &= ~0x10000;
+    ene_wrk[mb->idx].sta &= ~0x20000;
 }
 
 void EneBlinkDataSet(ENE_WRK *ew)
@@ -1069,12 +1084,12 @@ void EneBlinkDataSet(ENE_WRK *ew)
     u_long v0, v1; // not in STAB
     u_long a3;     // not in STAB but trivial to remove (keeping it for symmetry)
 
-    ew->bcomm_add_top = ADDRESS;
+    ew->bcomm_add_top = ENE_ACT_OBJ_ADDRESS;
 
-    v1 = (u_int)((u_long)(ew->type) * 2 + ADDRESS);
-    v0 = ((ADDRESS | (((u_char *)(u_int)v1)[0] | (((u_char *)(u_int)v1)[1] << 8)))) + (u_long)(ew->dat_no * 2);
-    v1 = ((ADDRESS | (((u_char *)(u_int)v0)[0] | (((u_char *)(u_int)v0)[1] << 8))));
-    a3 = ((ADDRESS | (((u_char *)(u_int)v1)[0] | (((u_char *)(u_int)v1)[1] << 8))));
+    v1 = (u_int)((u_long)(ew->type) * 2 + ENE_ACT_OBJ_ADDRESS);
+    v0 = ((ENE_ACT_OBJ_ADDRESS | (((u_char *)(u_int)v1)[0] | (((u_char *)(u_int)v1)[1] << 8)))) + (u_long)(ew->dat_no * 2);
+    v1 = ((ENE_ACT_OBJ_ADDRESS | (((u_char *)(u_int)v0)[0] | (((u_char *)(u_int)v0)[1] << 8))));
+    a3 = ((ENE_ACT_OBJ_ADDRESS | (((u_char *)(u_int)v1)[0] | (((u_char *)(u_int)v1)[1] << 8))));
 
     ew->bcomm_add.wrk = a3;
     ew->bpos_no = 0;
@@ -1086,13 +1101,13 @@ void EneARatioDataSet(ENE_WRK *ew, u_char anime_no)
     u_long v0, v1, v2; // not in STAB
     u_long a3;         // not in STAB but trivial to remove (keeping it for symmetry)
 
-    ew->acomm_add_top = ADDRESS;
+    ew->acomm_add_top = ENE_ACT_OBJ_ADDRESS;
 
-    v0 = (u_int)((u_long)(ew->type) * 2 + ADDRESS);
-    v1 = ((ADDRESS | (((u_char *)(u_int)v0)[0] | (((u_char *)(u_int)v0)[1] << 8)))) + (u_long)(ew->dat_no * 2);
-    v2 = ((ADDRESS | (((u_char *)(u_int)v1)[0] | (((u_char *)(u_int)v1)[1] << 8)))) + (u_long)(             2);
-    v0 = ((ADDRESS | (((u_char *)(u_int)v2)[0] | (((u_char *)(u_int)v2)[1] << 8)))) + (u_long)(  anime_no * 2);
-    a3 = ((ADDRESS | (((u_char *)(u_int)v0)[0] | (((u_char *)(u_int)v0)[1] << 8))));
+    v0 = (u_int)((u_long)(ew->type) * 2 + ENE_ACT_OBJ_ADDRESS);
+    v1 = ((ENE_ACT_OBJ_ADDRESS | (((u_char *)(u_int)v0)[0] | (((u_char *)(u_int)v0)[1] << 8)))) + (u_long)(ew->dat_no * 2);
+    v2 = ((ENE_ACT_OBJ_ADDRESS | (((u_char *)(u_int)v1)[0] | (((u_char *)(u_int)v1)[1] << 8)))) + (u_long)(             2);
+    v0 = ((ENE_ACT_OBJ_ADDRESS | (((u_char *)(u_int)v2)[0] | (((u_char *)(u_int)v2)[1] << 8)))) + (u_long)(  anime_no * 2);
+    a3 = ((ENE_ACT_OBJ_ADDRESS | (((u_char *)(u_int)v0)[0] | (((u_char *)(u_int)v0)[1] << 8))));
 
     ew->acomm_add.wrk = a3;
     ew->apos_no = 0;
@@ -1139,8 +1154,10 @@ void EneActRule(ENE_WRK *ew)
                 {
                     dist = GetDistV2(plyr_wrk.move_box.pos, ew->move_box.pos);
 
-                    if (dist <= ew->dat->atk_rng && ((ew->sta & 0x480000) == 0)
-                    && HitChkSegment2AllChk(plyr_wrk.move_box.pos, ew->move_box.pos, dist / 50.0f) == 0)
+                    if (
+                        dist <= ew->dat->atk_rng && (ew->sta & 0x480000) == 0 &&
+                        HitChkSegment2AllChk(plyr_wrk.move_box.pos, ew->move_box.pos, dist / 50.0f) == 0
+                    )
                     {
                         act_no = 5;
                     }
@@ -1177,7 +1194,6 @@ int EneActPreferChk(ENE_WRK *ew, u_char *act_no)
         case 2:
             n = 3;
         break;
-
         }
     }
 
@@ -1190,10 +1206,10 @@ void EneAniResolutionCtrl(ENE_WRK *ew)
 {
     u_char no;
     static u_char reso[4][2] = {
-        {0xff, 0xff},
-        {0xff, 0xff},
-        {0xff, 0xff},
-        {0xff, 0xff},
+        { 0xff, 0xff },
+        { 0xff, 0xff },
+        { 0xff, 0xff },
+        { 0xff, 0xff },
     };
 
     u_char bVar3;
@@ -1208,18 +1224,21 @@ void EneAniResolutionCtrl(ENE_WRK *ew)
     {
         ew->ani_reso = 0;
         ew->ani_reso_tm = 0;
+
         reso[no][0] = reso[no][1] = 0xff;
     }
     else if (ew->sta & 0x20000000 && ew->hp != 0)
     {
         ew->ani_reso = 5;
         ew->ani_reso_tm = 0;
+
         reso[no][0] = reso[no][1] = 0xff;
     }
     else if (ew->stm_slow != 0)
     {
         ew->ani_reso = 3;
         ew->ani_reso_tm = 0;
+
         reso[no][0] = reso[no][1] = 0xff;
     }
     else if ((ew->act_no == 3 || ew->act_no == 4) && ew->anime_no == 2)
@@ -1303,7 +1322,7 @@ u_char EneDmgChk(ENE_WRK *ew)
     {
         ClrEneStaDmg(ew);
 
-        if ((ew->sta & 0x80000000) && !(ew->sta & 0x800))
+        if (ew->sta & 0x80000000 && (ew->sta & 0x800) == 0)
         {
             ew->dmg = 0;
             return result;
@@ -1312,8 +1331,10 @@ u_char EneDmgChk(ENE_WRK *ew)
         if (ew->hp <= ew->dmg)
         {
             result = 2;
+
             ew->hp = 0;
             ew->bwait_time = 0;
+
             plyr_wrk.cond_tm = 0;
         }
         else
@@ -1553,7 +1574,6 @@ void EneInDispChk(ENE_WRK *ew)
     float tx;
     float ty;
 
-
     rot = GetTrgtRotY(camera.p, camera.i);
 
     GetCamI2DPos(ew->mpos.p0, &tx, &ty);
@@ -1653,6 +1673,7 @@ void FlyRule(FLY_WRK *fw)
     if (mb->trot[3] != 0)
     {
         tv[1] = mb->trot[1] - mb->rot[1];
+
         RotLimitChk(&tv[1]);
 
         if (tv[1] > 0)
@@ -1660,6 +1681,7 @@ void FlyRule(FLY_WRK *fw)
             if ((mb->trot[3] > tv[1]) == 0)
             {
                 mb->rot[1] += mb->trot[3];
+
                 RotLimitChk(&mb->rot[1]);
             }
             else
@@ -1676,6 +1698,7 @@ void FlyRule(FLY_WRK *fw)
         else
         {
             mb->rot[1] -= mb->trot[3];
+
             RotLimitChk(&mb->rot[1]);
         }
     }
@@ -1765,7 +1788,7 @@ void FlyAtkHit(FLY_WRK *fw)
 
     plyr_wrk.dmg += fw->dat->dmg;
 
-    SeStartFix(0x21, 0, 0x1000, 0x1000, 0x0);
+    SeStartFix(33, 0, 0x1000, 0x1000, 0x0);
 
     fw->sta |= 0x2;
 
@@ -1783,9 +1806,9 @@ void FlyAtkHit(FLY_WRK *fw)
     if ((plyr_wrk.mvsta & 0x200000) == 0 && (plyr_wrk.sta & 0x8) == 0 && plyr_wrk.mode != 2)
     {
         plyr_wrk.dmg_type = 1;
-        plyr_wrk.mvsta &= ~0x8 & ~0x4 & ~0x2 & ~0x1;
+        plyr_wrk.mvsta &= ~(0x8 | 0x4 | 0x2 | 0x1);
 
-        GetTrgtRot(plyr_wrk.move_box.pos, (fw->move_box).pos, rv, 2);
+        GetTrgtRot(plyr_wrk.move_box.pos, fw->move_box.pos, rv, 2);
 
         rv[1] -= plyr_wrk.move_box.rot[1];
 
@@ -1808,6 +1831,7 @@ void EneMinDmgCtrl(ENE_WRK *ew)
     switch(req_dmg_ef[no])
     {
     case 0:
+        // do nothing ...
     break;
     case 1:
         if (ew->sta & 0x800)
@@ -1875,6 +1899,7 @@ void EneNormalEffectCtrl(ENE_WRK *ew)
         if (ne_job[no] >= 2)
         {
             ResetEffects(dp[no]);
+
             ne_job[no] = 0;
         }
 
@@ -1885,6 +1910,7 @@ void EneNormalEffectCtrl(ENE_WRK *ew)
     {
     case 0:
         time[no] = GetRndSP(60, 120);
+
         ne_job[no]++;
     break;
     case 1:
@@ -1908,7 +1934,7 @@ void EneNormalEffectCtrl(ENE_WRK *ew)
         ew->mpos.p9[2] = ew->bep[2];
         ew->mpos.p9[3] = ew->bep[3];
 
-        dp[0] = SetEffects(0x1b, 4, 5, 0x28, 0.3f, 1.1f, ew->mpos.p9, 50, 0, 50, 0, &spd[no], &rate[no], &trate[no]);
+        dp[0] = SetEffects(EF_PDEFORM, 4, 5, 40, 0.3f, 1.1f, ew->mpos.p9, 50, 0, 50, 0, &spd[no], &rate[no], &trate[no]);
 
         ne_job[no]++;
 
@@ -1926,6 +1952,7 @@ void EneNormalEffectCtrl(ENE_WRK *ew)
         else
         {
             time[no]--;
+
             sceVu0AddVector(ew->mpos.p9, ew->mpos.p9, padj[no]);
         }
     break;
@@ -2036,12 +2063,14 @@ void GhostDeadMain()
     switch(ene_dead_mode)
     {
     case 0:
-        ingame_wrk.mode = 6;
+        ingame_wrk.mode = INGAME_MODE_NOMAL;
         ene_dead_load = 0;
     break;
     case 1:
         Mission03BindGhost01Delete();
+
         gd_load_id = SeFileLoadAndSet(SGY000_BD, 1);
+
         ene_dead_mode = 2;
     break;
     case 2:
@@ -2053,7 +2082,7 @@ void GhostDeadMain()
     case 3:
         if (BindGhostLoad() != 0)
         {
-            ingame_wrk.mode = 6;
+            ingame_wrk.mode = INGAME_MODE_NOMAL;
             ene_dead_load = 0;
             ene_dead_mode = 0;
         }
@@ -2061,7 +2090,7 @@ void GhostDeadMain()
     case 4:
         if (DeadGhostLoad() != 0)
         {
-            ingame_wrk.mode = 6;
+            ingame_wrk.mode = INGAME_MODE_NOMAL;
             ene_dead_load = 0;
             ene_dead_mode = 0;
         }
@@ -2069,7 +2098,7 @@ void GhostDeadMain()
     case 5:
         if (FloatGhostLoadMain() != 0)
         {
-            ingame_wrk.mode = 6;
+            ingame_wrk.mode = INGAME_MODE_NOMAL;
             ene_dead_load = 0;
             ene_dead_mode = 0;
         }

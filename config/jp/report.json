@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 48.89738695813366,
+    "fuzzy_match_percent": 50.1325058014198,
     "total_code": "1165232",
-    "matched_code": "569768",
-    "matched_code_percent": 48.89738695813366,
+    "matched_code": "584160",
+    "matched_code_percent": 50.1325058014198,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 1659,
-    "matched_functions_percent": 48.88037713612257,
+    "matched_functions": 1711,
+    "matched_functions_percent": 50.41249263406011,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -13369,9 +13369,14 @@
     {
       "name": "ingame/enemy/ene_ctl",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "14392",
+        "matched_code": "14392",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 52,
+        "matched_functions": 52,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -13379,14 +13384,17 @@
         {
           "name": ".text",
           "size": "14480",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -13394,261 +13402,313 @@
         {
           "name": "EneCtrlMain",
           "size": "400",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EneWrkReleaseChk",
           "size": "696",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EneRule",
           "size": "708",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EneEntryChk",
           "size": "184",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FlyRule",
           "size": "612",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "JEneEntry",
           "size": "848",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FEneEntry",
           "size": "420",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "AEneEntry",
           "size": "420",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "InitEneWrk",
           "size": "268",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EnePosInfoSet",
           "size": "120",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EneBlinkDataSet",
           "size": "140",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EneActSet",
           "size": "448",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ZeroGhostBattleJudge",
           "size": "240",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EneInDispChk",
           "size": "384",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EneLightCtrl",
           "size": "852",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EneBlinkPosSet",
           "size": "196",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EneSpeakAdpcmCtrl",
           "size": "72",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EneAdpcmPlayChk",
           "size": "48",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EneCondCtrl",
           "size": "108",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EneNormalEffectCtrl",
           "size": "756",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EneSeOmenChk",
           "size": "376",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EneMoveCtrl",
           "size": "444",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EnePRecogChkChk",
           "size": "144",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EnePRecogChk",
           "size": "416",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EneActIniChk",
           "size": "88",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EneActRule",
           "size": "476",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EneAuraCtrl",
           "size": "364",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EneMinDmgCtrl",
           "size": "372",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EneAniResolutionCtrl",
           "size": "456",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EnemyUseJudge",
           "size": "80",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FuyuEneRelease",
           "size": "136",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "HitDmgChk",
           "size": "72",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CaptureOnChk1",
           "size": "108",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CaptureOnChk2",
           "size": "232",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CaptureOnChk3",
           "size": "56",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CaptureOnChk4",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PlyrOutAreaChk",
           "size": "136",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PlyrSeFootChk",
           "size": "136",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EneActIniSet",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EneARatioDataSet",
           "size": "184",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EneActPreferChk",
           "size": "168",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EneAtkCtrl",
           "size": "68",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EneDmgChk",
           "size": "268",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ClrEneStaDmg",
           "size": "124",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EneTrtryChk",
           "size": "232",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FlyPlyrHitChk",
           "size": "372",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FlyAtkHit",
           "size": "312",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EndAutoEne",
           "size": "88",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ReqEneSpeakAdpcmCnt",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GhostDeadInit",
           "size": "324",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GhostDeadMain",
           "size": "204",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GhostDeadLoadEndJudge",
           "size": "12",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -24256,14 +24316,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 48.89738695813366,
+        "fuzzy_match_percent": 50.1325058014198,
         "total_code": "1165232",
-        "matched_code": "569768",
-        "matched_code_percent": 48.89738695813366,
+        "matched_code": "584160",
+        "matched_code_percent": 50.1325058014198,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 1659,
-        "matched_functions_percent": 48.88037713612257,
+        "matched_functions": 1711,
+        "matched_functions_percent": 50.41249263406011,
         "complete_data_percent": 100.0,
         "total_units": 154
       }
