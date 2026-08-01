@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 50.1325058014198,
+    "fuzzy_match_percent": 52.747264064152034,
     "total_code": "1165232",
-    "matched_code": "584160",
-    "matched_code_percent": 50.1325058014198,
+    "matched_code": "614628",
+    "matched_code_percent": 52.747264064152034,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 1711,
-    "matched_functions_percent": 50.41249263406011,
+    "matched_functions": 1845,
+    "matched_functions_percent": 54.360636417206834,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -13721,9 +13721,14 @@
     {
       "name": "ingame/enemy/move_ctl",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "30468",
+        "matched_code": "30468",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 134,
+        "matched_functions": 134,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -13731,14 +13736,17 @@
         {
           "name": ".text",
           "size": "30696",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -13746,671 +13754,805 @@
         {
           "name": "InitMoveBox",
           "size": "52",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MoveCtrl",
           "size": "168",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EneBlinkCtrl",
           "size": "204",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob000",
           "size": "136",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob001",
           "size": "196",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob002",
           "size": "128",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob003",
           "size": "444",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob004",
           "size": "1592",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetEneRootData",
           "size": "100",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetEneRootMax",
           "size": "24",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob005",
           "size": "212",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob006",
           "size": "52",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob007",
           "size": "292",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob008",
           "size": "184",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob009",
           "size": "208",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob00A",
           "size": "332",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob00B",
           "size": "132",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob00C",
           "size": "272",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob00D",
           "size": "684",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob00E",
           "size": "532",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob00F",
           "size": "2016",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob010",
           "size": "112",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob011",
           "size": "48",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob012",
           "size": "328",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob013",
           "size": "80",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob014",
           "size": "172",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob015",
           "size": "924",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob016",
           "size": "132",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob017",
           "size": "44",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob018",
           "size": "76",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob019",
           "size": "216",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob01A",
           "size": "96",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob01B",
           "size": "660",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob01C",
           "size": "76",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob01D",
           "size": "72",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob01E",
           "size": "108",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob01F",
           "size": "132",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob020",
           "size": "124",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob021",
           "size": "184",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob022",
           "size": "448",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob023",
           "size": "244",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob024",
           "size": "24",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob025",
           "size": "148",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob026",
           "size": "148",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob027",
           "size": "120",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob028",
           "size": "560",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob029",
           "size": "92",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob02A",
           "size": "52",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FlyDataEnd",
           "size": "72",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob02B",
           "size": "184",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob02C",
           "size": "116",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob02D",
           "size": "292",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob02E",
           "size": "136",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob02F",
           "size": "120",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob030",
           "size": "476",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob031",
           "size": "136",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob032",
           "size": "160",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob033",
           "size": "120",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob034",
           "size": "120",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob035",
           "size": "116",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob036",
           "size": "176",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob037",
           "size": "328",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob038",
           "size": "656",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob039",
           "size": "296",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob03A",
           "size": "92",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob03B",
           "size": "192",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob03C",
           "size": "92",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob03D",
           "size": "76",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob03E",
           "size": "92",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob03F",
           "size": "40",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob040",
           "size": "364",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob041",
           "size": "368",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob042",
           "size": "200",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob043",
           "size": "120",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob044",
           "size": "72",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob045",
           "size": "56",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob046",
           "size": "208",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob047",
           "size": "296",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob048",
           "size": "312",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob049",
           "size": "384",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob04A",
           "size": "160",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob04B",
           "size": "192",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob04C",
           "size": "192",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob04D",
           "size": "104",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob04E",
           "size": "140",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob04F",
           "size": "120",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob050",
           "size": "212",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob051",
           "size": "56",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob052",
           "size": "80",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob053",
           "size": "240",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob054",
           "size": "60",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob055",
           "size": "104",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob056",
           "size": "220",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob057",
           "size": "180",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob058",
           "size": "80",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob059",
           "size": "72",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob05A",
           "size": "120",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob05B",
           "size": "356",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob05C",
           "size": "100",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob05D",
           "size": "76",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob05E",
           "size": "56",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob05F",
           "size": "212",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob060",
           "size": "68",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob061",
           "size": "212",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob062",
           "size": "864",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob063",
           "size": "144",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob064",
           "size": "440",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob065",
           "size": "140",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob066",
           "size": "92",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob067",
           "size": "304",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob068",
           "size": "96",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob069",
           "size": "168",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob06A",
           "size": "72",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob06B",
           "size": "584",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob06C",
           "size": "104",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob06D",
           "size": "120",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob06E",
           "size": "116",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob06F",
           "size": "92",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob070",
           "size": "64",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob071",
           "size": "76",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob072",
           "size": "216",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EJob073",
           "size": "108",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "BJobDammy",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "BJob000",
           "size": "128",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "BJob001",
           "size": "52",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "BJob009",
           "size": "284",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "BJob00A",
           "size": "680",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "BJob00B",
           "size": "844",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "BJob00C",
           "size": "192",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "BJob010",
           "size": "92",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "BJob011",
           "size": "112",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "BJob012",
           "size": "792",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "BJob013",
           "size": "32",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "BJob014",
           "size": "192",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -24316,14 +24458,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 50.1325058014198,
+        "fuzzy_match_percent": 52.747264064152034,
         "total_code": "1165232",
-        "matched_code": "584160",
-        "matched_code_percent": 50.1325058014198,
+        "matched_code": "614628",
+        "matched_code_percent": 52.747264064152034,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 1711,
-        "matched_functions_percent": 50.41249263406011,
+        "matched_functions": 1845,
+        "matched_functions_percent": 54.360636417206834,
         "complete_data_percent": 100.0,
         "total_units": 154
       }

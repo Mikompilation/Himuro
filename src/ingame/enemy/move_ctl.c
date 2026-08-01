@@ -1,5 +1,6 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "enums.h"
 #include "move_ctl.h"
 
@@ -49,7 +50,7 @@ void (*BCommJmpTbl[])(ENE_WRK *ew) = {
     BJobDammy, BJobDammy, BJob010,   BJob011,   BJob012,   BJob013,   BJob014,
 };
 
-/* sdata 356fa8 */u_char er_max_tbl[3] = {0, 0, 0};
+u_char er_max_tbl[3] = {0};
 
 #define PI 3.1415927f
 #define DEG2RAD(x) ((float)(x)*PI/180.0f)
@@ -66,8 +67,6 @@ void (*BCommJmpTbl[])(ENE_WRK *ew) = {
 // add an index where each entry is 2 bytes (16-bit)
 #define INDEX16(base, no) \
     ((u_long)(base) + ((no) * 2))
-
-#define COMM_ADD_TOP_ADDRESS 0x7e0000
 
 void InitMoveBox(MOVE_BOX *mb)
 {
@@ -793,8 +792,8 @@ void EJob00D(MOVE_BOX *mb)
         }
         else
         {
-            mb->wait_time = 0x0;
-            mb->pos_no = 0x0;
+            mb->wait_time = 0;
+            mb->pos_no = 0;
         }
     break;
     case 1:
@@ -1228,7 +1227,7 @@ void EJob015(MOVE_BOX *mb)
 
         ene_wrk[mb->idx].sta |= 0x800000;
 
-        mb->loop = GetRndSP(time[mb->idx], 0x1e);
+        mb->loop = GetRndSP(time[mb->idx], 30);
 
         GetTrgtRot(mb->pos, plyr_wrk.move_box.pos, rot, 1);
 
@@ -1240,7 +1239,7 @@ void EJob015(MOVE_BOX *mb)
         }
         else
         {
-            rot[1] = (GetRndSP(0, 0xe) - 7.0f) * 0.1f;
+            rot[1] = (GetRndSP(0, 14) - 7.0f) * 0.1f;
 
             RotLimitChk(&rot[1]);
 
@@ -1288,7 +1287,7 @@ void EJob015(MOVE_BOX *mb)
         {
             GetTrgtRot(mb->pos, plyr_wrk.move_box.pos, rot, 1);
 
-            mb->loop = GetRndSP(time[mb->idx], 0x1e);
+            mb->loop = GetRndSP(time[mb->idx], 30);
 
             rot[1] = GetRndSP(0, 14) * 0.1f;
 
@@ -1510,7 +1509,7 @@ void EJob01E(MOVE_BOX *mb)
     no = mb->comm_add.pu8[0] + (mb->comm_add.pu8[1] << 8); mb->comm_add.pu16++;
     time = mb->comm_add.pu8[0] + (mb->comm_add.pu8[1] << 8); mb->comm_add.pu16++;
 
-    ReqDramaCamera(req,no,time);
+    ReqDramaCamera(req, no, time);
 
     mb->wait_time = 0;
     mb->pos_no = 0;
@@ -1551,7 +1550,7 @@ void EJob020(MOVE_BOX *mb)
     door_id = mb->comm_add.pu8[0] + (mb->comm_add.pu8[1] << 8); mb->comm_add.pu16++;
     id = *mb->comm_add.pu8++;
 
-    DoorSttsChange(door_id,door_id_tbl[id]);
+    DoorSttsChange(door_id, door_id_tbl[id]);
 
     mb->wait_time = 0;
     mb->pos_no = 0;
@@ -1778,17 +1777,17 @@ void EJob028(MOVE_BOX *mb)
         fmb->pos[2] = ene_wrk[mb->idx].bep[2];
         fmb->pos[3] = ene_wrk[mb->idx].bep[3];
 
-        fmb->comm_add_top = COMM_ADD_TOP_ADDRESS;
-        
-        // addr = ((u_short *)COMM_ADD_TOP_ADDRESS)[3] + COMM_ADD_TOP_ADDRESS;
-        addr = INDEX16(COMM_ADD_TOP_ADDRESS, 3);
-        adj = READ_LE16(addr);
-        addr = SEGMENT_ADDR(COMM_ADD_TOP_ADDRESS, adj);
+        fmb->comm_add_top = ENE_ACT_OBJ_ADDRESS;
 
-        // fmb->comm_add.wrk = ((u_short *)addr)[no] + COMM_ADD_TOP_ADDRESS;
+        // addr = ((u_short *)ENE_ACT_OBJ_ADDRESS)[3] + ENE_ACT_OBJ_ADDRESS;
+        addr = INDEX16(ENE_ACT_OBJ_ADDRESS, 3);
+        adj = READ_LE16(addr);
+        addr = SEGMENT_ADDR(ENE_ACT_OBJ_ADDRESS, adj);
+
+        // fmb->comm_add.wrk = ((u_short *)addr)[no] + ENE_ACT_OBJ_ADDRESS;
         addr = INDEX16(addr, no);
         adj = READ_LE16(addr);
-        fmb->comm_add.wrk = SEGMENT_ADDR(COMM_ADD_TOP_ADDRESS, adj);
+        fmb->comm_add.wrk = SEGMENT_ADDR(ENE_ACT_OBJ_ADDRESS, adj);
 
         fmb->pos_no = 0;
         fmb->wait_time = 1;
@@ -2058,7 +2057,7 @@ void EJob032(MOVE_BOX *mb)
     val = mb->comm_add.pu8[0] + (mb->comm_add.pu8[1] << 8); mb->comm_add.pu16++;
     adj = mb->comm_add.pu8[0] + (mb->comm_add.pu8[1] << 8); mb->comm_add.pu16++;
 
-    if (val <= GetDistV(plyr_wrk.move_box.pos,mb->pos))
+    if (val <= GetDistV(plyr_wrk.move_box.pos, mb->pos))
     {
         (mb->comm_add).wrk = adj + mb->comm_add_top;
     }
@@ -2345,7 +2344,7 @@ void EJob03B(MOVE_BOX *mb)
                 plyr_wrk.mode = 3;
             }
 
-            plyr_wrk.cond_tm = GetDistV(mb->pos,plyr_wrk.move_box.pos) / 2.6f;
+            plyr_wrk.cond_tm = GetDistV(mb->pos, plyr_wrk.move_box.pos) / 2.6f;
         }
     }
 
@@ -2694,7 +2693,7 @@ void EJob049(MOVE_BOX *mb)
     f = mb->comm_add.pu8[0] | (mb->comm_add.pu8[1] << 8); mb->comm_add.pu16++;
     g = mb->comm_add.pu8[0] | (mb->comm_add.pu8[1] << 8); mb->comm_add.pu16++;
 
-    SetEffects(2, 4, a, b, spd, c, d, e, f, g);
+    SetEffects(EF_DITHER, 4, a, b, spd, c, d, e, f, g);
 
     mb->wait_time = 0;
     mb->pos_no = 0;
@@ -2916,7 +2915,7 @@ void EJob053(MOVE_BOX *mb)
 
     vt[1] -= 300.0f;
 
-    if (HitChkSegment2AllChk(vb,vt,GetDistV(vb,vt) / 50.0f) == 0)
+    if (HitChkSegment2AllChk(vb, vt, GetDistV(vb, vt) / 50.0f) == 0)
     {
         (mb->comm_add).wrk = adj + mb->comm_add_top;
     }
@@ -3227,6 +3226,7 @@ void EJob062(MOVE_BOX *mb)
         disp3d_room_req = 1;
         disp3d_furn_req = 1;
 
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         for (i = 0; i < 3; i++)
         {
             if (ene_wrk[i].sta & 0x1 && ene_wrk[i].hp != 0 && ene_wrk[i].room_no == plyr_wrk.pr_info.room_no)
@@ -3241,6 +3241,7 @@ void EJob062(MOVE_BOX *mb)
                 break;
             }
         }
+#endif
     break;
     case 1:
         plyr_wrk.mode = 1;
@@ -3742,9 +3743,6 @@ void BJob000(ENE_WRK *ew)
     }
 }
 
-
-/* ingame/enemy/move_ctl.h - BJob001 */
-
 void BJob001(ENE_WRK *ew)
 {
     u_short adj;
@@ -4096,6 +4094,7 @@ void BJob012(ENE_WRK *ew)
         r_adj[n] = (float)ew->tr_max / ew->bloop;
 
         ew->bpos_no++;
+    // case fall-through
     case 1:
         if (plyr_wrk.mode == 2 || ew->sta & 0x2000000 || ew->sta & 0x4000)
         {
@@ -4142,6 +4141,7 @@ void BJob012(ENE_WRK *ew)
             r_adj[n] = -((float)ew->tr_max / ew->tr_time);
 
             ew->bpos_no++;
+    // case fall-through
     case 3:
         if (plyr_wrk.mode == 2 || ew->sta & 0x2000000 || ew->sta & 0x4000)
         {
