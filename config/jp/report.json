@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 52.747264064152034,
+    "fuzzy_match_percent": 52.78845757754679,
     "total_code": "1165232",
-    "matched_code": "614628",
-    "matched_code_percent": 52.747264064152034,
+    "matched_code": "615108",
+    "matched_code_percent": 52.78845757754679,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 1845,
-    "matched_functions_percent": 54.360636417206834,
+    "matched_functions": 1849,
+    "matched_functions_percent": 54.478491455509726,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -14565,9 +14565,14 @@
     {
       "name": "ingame/entry/entry",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "480",
+        "matched_code": "480",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 4,
+        "matched_functions": 4,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -14575,14 +14580,17 @@
         {
           "name": ".text",
           "size": "488",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -14590,21 +14598,25 @@
         {
           "name": "EntryInit",
           "size": "132",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ClearAppearWrkInfo",
           "size": "80",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EntryMain",
           "size": "260",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "AreaEntrySet",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -24458,14 +24470,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 52.747264064152034,
+        "fuzzy_match_percent": 52.78845757754679,
         "total_code": "1165232",
-        "matched_code": "614628",
-        "matched_code_percent": 52.747264064152034,
+        "matched_code": "615108",
+        "matched_code_percent": 52.78845757754679,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 1845,
-        "matched_functions_percent": 54.360636417206834,
+        "matched_functions": 1849,
+        "matched_functions_percent": 54.478491455509726,
         "complete_data_percent": 100.0,
         "total_units": 154
       }
