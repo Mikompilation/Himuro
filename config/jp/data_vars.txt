@@ -1165,3 +1165,6 @@ aene_info_dat                  = 0x3216f8; // type:AENE_INFO_DAT* numel:5 nosize
 0x321068                       = jene_dat4;
 0x3212a8                       = fene_dat4;
 0x3216a8                       = aene_info_dat4;
+
+// ingame/entry/ap_dgost.c
+dgst_load                      = 0x321c88; // type:MSN_LOAD_DAT numel:3

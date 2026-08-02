@@ -1,24 +1,25 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "enums.h"
 #include "ap_dgost.h"
 
-#include "main/glob.h"
 #include "common/ul_math.h"
+#include "graphics/graph2d/effect_ene.h"
+// #include "graphics/motion/motion.h"
+#include "ingame/enemy/ene_ctl.h"
+#include "ingame/entry/ap_fgost.h"
+#include "ingame/entry/entry.h"
+#include "ingame/event/ev_load.h"
+#include "ingame/event/ev_main.h"
+#include "ingame/map/door_ctl.h"
+#include "ingame/plyr/unit_ctl.h"
+#include "main/glob.h"
 #include "os/eeiop/cdvd/eecdvd.h"
 #include "os/eeiop/eese.h"
-#include "graphics/graph2d/effect_ene.h"
-#include "ingame/event/ev_main.h"
-#include "ingame/event/ev_load.h"
-#include "ingame/plyr/unit_ctl.h"
-#include "ingame/enemy/ene_ctl.h"
-#include "ingame/map/door_ctl.h"
-#include "ingame/entry/entry.h"
-#include "ingame/entry/ap_fgost.h"
-// #include "graphics/motion/motion.h"
 
 u_char dgst_room[] = {
-    3, 7, 16, 21, 22, 23, 25, 27, 28, 0xFF,
+    3, 7, 16, 21, 22, 23, 25, 27, 28, 0xff,
 };
 #include "data/dgst_load.h" // MSN_LOAD_DAT dgst_load[3];
 
@@ -27,10 +28,10 @@ DGST_WRK dgst_wrk = {0};
 void DeadGhostAppearReq()
 {
     sceVu0FVECTOR pos;
-    sceVu0FVECTOR tv0 = {0.0f, 0.0f, 1400.0f, 0.0f};
-    sceVu0FVECTOR tv1 = {0.0f, 0.0f, 1800.0f, 0.0f};
-    sceVu0FVECTOR tv2 = {0.0f, 0.0f, 2200.0f, 0.0f};
-    sceVu0FVECTOR rv = {0.0f, 0.0f, 0.0f, 0.0f};
+    sceVu0FVECTOR tv0 = { 0.0f, 0.0f, 1400.0f, 0.0f };
+    sceVu0FVECTOR tv1 = { 0.0f, 0.0f, 1800.0f, 0.0f };
+    sceVu0FVECTOR tv2 = { 0.0f, 0.0f, 2200.0f, 0.0f };
+    sceVu0FVECTOR rv = { 0.0f, 0.0f, 0.0f, 0.0f };
 
     if (ingame_wrk.msn_no == 3)
     {
@@ -112,7 +113,7 @@ int DeadGhostAppearJudge()
         return 0;
     }
 
-    ap_wrk.dgst_cnt += 1;
+    ap_wrk.dgst_cnt++;
 
     return 1;
 }
@@ -120,6 +121,7 @@ int DeadGhostAppearJudge()
 void DeadGhostLoadReq()
 {
     dgst_wrk.load_mode = DGLOAD_MODE_REQ;
+
     return;
 }
 
@@ -136,16 +138,16 @@ int DeadGhostLoad()
         dgst_wrk.load_mode = DGLOAD_MODE_START;
     break;
     case DGLOAD_MODE_START:
-        LoadReq(M055_SYOUALL_MDL, 0xc80000);
+        LoadReq(M055_SYOUALL_MDL, LOAD_ADDRESS_10);
 
         dgst_wrk.load_mode = DGLOAD_MODE_MDL;
     break;
     case DGLOAD_MODE_MDL:
         if (IsLoadEndAll() != 0)
         {
-            motInitEnemyMdl((u_int *)0xc80000, M055_SYOUALL);
-            LoadEneDmgTex(42, (u_int *)0xac8000);
-            LoadReq(M042_SYOUKI2_ANM, 0xa30000);
+            motInitEnemyMdl((u_int *)LOAD_ADDRESS_10, M055_SYOUALL);
+            LoadEneDmgTex(42, (u_int *)LOAD_ADDRESS_05);
+            LoadReq(M042_SYOUKI2_ANM, LOAD_ADDRESS_04);
 
             dgst_wrk.load_mode = DGLOAD_MODE_MOT;
         }
@@ -153,7 +155,7 @@ int DeadGhostLoad()
     case DGLOAD_MODE_MOT:
         if (IsLoadEndAll() != 0)
         {
-            motInitEnemyAnm((u_int *)0xa30000, M055_SYOUALL, A042_SYOUKIA);
+            motInitEnemyAnm((u_int *)LOAD_ADDRESS_04, M055_SYOUALL, A042_SYOUKIA);
             SeFileLoadAndSetFGhost(SG046_SYOUKI1_BD, 16);
 
             ap_wrk.fg_se_empty[0] = 1;
@@ -229,7 +231,7 @@ void DeadGhostSetLoad()
 {
     int i;
 
-    for (i = 0; i <= 2; i++)
+    for (i = 0; i < 3; i++)
     {
         SetDataLoadWrk(&dgst_load[i]);
     }
@@ -239,7 +241,7 @@ void DeadGhostLoadDel()
 {
     int i;
 
-    for (i = 0; i <= 2; i++)
+    for (i = 0; i < 3; i++)
     {
         DelDataLoadWrk(dgst_load[i].file_no);
     }

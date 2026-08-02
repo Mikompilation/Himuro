@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 52.93606766721134,
+    "fuzzy_match_percent": 53.0466035948206,
     "total_code": "1165232",
-    "matched_code": "616828",
-    "matched_code_percent": 52.93606766721134,
+    "matched_code": "618116",
+    "matched_code_percent": 53.0466035948206,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 1860,
-    "matched_functions_percent": 54.80259281084266,
+    "matched_functions": 1869,
+    "matched_functions_percent": 55.06776664702416,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -14775,9 +14775,14 @@
     {
       "name": "ingame/entry/ap_dgost",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "1288",
+        "matched_code": "1288",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 9,
+        "matched_functions": 9,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -14785,14 +14790,17 @@
         {
           "name": ".text",
           "size": "1296",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -14800,46 +14808,55 @@
         {
           "name": "DeadGhostAppearReq",
           "size": "472",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DeadGhostAppearMain",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DeadGhostAppearJudge",
           "size": "216",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DeadGhostLoadReq",
           "size": "12",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DeadGhostLoad",
           "size": "292",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DeadGhostSetLoad",
           "size": "72",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DeadGhostBattleEnd",
           "size": "40",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EnemyNoDeadGhostJudge",
           "size": "104",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DeadGhostLoadDel",
           "size": "72",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -24497,14 +24514,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 52.93606766721134,
+        "fuzzy_match_percent": 53.0466035948206,
         "total_code": "1165232",
-        "matched_code": "616828",
-        "matched_code_percent": 52.93606766721134,
+        "matched_code": "618116",
+        "matched_code_percent": 53.0466035948206,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 1860,
-        "matched_functions_percent": 54.80259281084266,
+        "matched_functions": 1869,
+        "matched_functions_percent": 55.06776664702416,
         "complete_data_percent": 100.0,
         "total_units": 154
       }
