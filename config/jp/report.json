@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 52.868441649388274,
+    "fuzzy_match_percent": 52.93606766721134,
     "total_code": "1165232",
-    "matched_code": "616040",
-    "matched_code_percent": 52.868441649388274,
+    "matched_code": "616828",
+    "matched_code_percent": 52.93606766721134,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 1855,
-    "matched_functions_percent": 54.65527401296406,
+    "matched_functions": 1860,
+    "matched_functions_percent": 54.80259281084266,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -14705,9 +14705,14 @@
     {
       "name": "ingame/entry/ap_bgost",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "788",
+        "matched_code": "788",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 5,
+        "matched_functions": 5,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -14715,14 +14720,17 @@
         {
           "name": ".text",
           "size": "792",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -14730,26 +14738,31 @@
         {
           "name": "Mission03BindGhost01Delete",
           "size": "56",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "Mission04BindGhostLoad01Req",
           "size": "56",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "Mission04BindGhostLoad02Req",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "BindGhostBattleEnd",
           "size": "112",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "BindGhostLoad",
           "size": "556",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -24484,14 +24497,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 52.868441649388274,
+        "fuzzy_match_percent": 52.93606766721134,
         "total_code": "1165232",
-        "matched_code": "616040",
-        "matched_code_percent": 52.868441649388274,
+        "matched_code": "616828",
+        "matched_code_percent": 52.93606766721134,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 1855,
-        "matched_functions_percent": 54.65527401296406,
+        "matched_functions": 1860,
+        "matched_functions_percent": 54.80259281084266,
         "complete_data_percent": 100.0,
         "total_units": 154
       }

@@ -1,16 +1,17 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "enums.h"
 #include "ap_bgost.h"
 
+// #include "graphics/graph2d/effect_ene.h"
+#include "graphics/motion/mdlwork.h"
+// #include "graphics/motion/motion.h"
+#include "ingame/enemy/ene_ctl.h"
+#include "ingame/event/ev_load.h"
 #include "main/glob.h"
 #include "os/eeiop/cdvd/eecdvd.h"
 #include "os/eeiop/eese.h"
-#include "ingame/event/ev_load.h"
-#include "ingame/enemy/ene_ctl.h"
-#include "graphics/motion/mdlwork.h"
-// #include "graphics/graph2d/effect_ene.h" // LoadEneDmgTex should be undeclared
-// #include "graphics/motion/motion.h" // motInitEnemyAnm, motInitEnemyMdl should be undeclared
 
 BGST_WRK bgst_wrk = {0};
 
@@ -28,9 +29,9 @@ void Mission04BindGhostLoad01Req()
     bgst_wrk.load_mode = 0;
     bgst_wrk.rel_mot = 17;
     bgst_wrk.bg_no = 6;
-    bgst_wrk.mdl_adr = 0xd80000;
-    bgst_wrk.mot_adr = 0xb90000;
-    bgst_wrk.se_adr = 0x12;
+    bgst_wrk.mdl_adr = LOAD_ADDRESS_14;
+    bgst_wrk.mot_adr = LOAD_ADDRESS_08;
+    bgst_wrk.se_adr = 18;
 }
 
 void Mission04BindGhostLoad02Req()
@@ -82,7 +83,7 @@ int BindGhostLoad(void)
             motInitEnemyMdl((u_int *)bgst_wrk.mdl_adr, jene_dat[ingame_wrk.msn_no][bgst_wrk.bg_no].mdl_no);
             LoadEneDmgTex(jene_dat[ingame_wrk.msn_no][bgst_wrk.bg_no].mdl_no, (u_int *)(bgst_wrk.mot_adr + 0x98000));
 
-            LoadReq((jene_dat[ingame_wrk.msn_no][bgst_wrk.bg_no].anm_no + M000_MIKU_ANM), bgst_wrk.mot_adr);
+            LoadReq(M000_MIKU_ANM + jene_dat[ingame_wrk.msn_no][bgst_wrk.bg_no].anm_no, bgst_wrk.mot_adr);
 
             bgst_wrk.load_mode = BGLOAD_MODE_MOT;
         }
@@ -91,7 +92,7 @@ int BindGhostLoad(void)
         if (IsLoadEndAll() != 0)
         {
             motInitEnemyAnm((u_int *)bgst_wrk.mot_adr, jene_dat[ingame_wrk.msn_no][bgst_wrk.bg_no].mdl_no, jene_dat[ingame_wrk.msn_no][bgst_wrk.bg_no].anm_no);
-            SeFileLoadAndSet((jene_dat[ingame_wrk.msn_no][bgst_wrk.bg_no].se_no), bgst_wrk.se_adr);
+            SeFileLoadAndSet(jene_dat[ingame_wrk.msn_no][bgst_wrk.bg_no].se_no, bgst_wrk.se_adr);
 
             bgst_wrk.load_mode = BGLOAD_MODE_SE;
         }
