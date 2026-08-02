@@ -576,7 +576,7 @@ void initMov(char *bsfilename)
 
     if (movie_wrk.play_event_sta == 6 || movie_wrk.play_event_sta == 7)
     {
-        mpegWork = (u_char *)LOAD_ADDRESS_24;
+        mpegWork = (u_char *)LOAD_ADDRESS_25;
     }
     else
     {

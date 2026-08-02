@@ -2267,9 +2267,9 @@ int CallMissionClear()
 
         alpha_res[now_pos] = 80;
 
-        DispSprt2(&btl_rslt[10], LOAD_ADDRESS_42, 1, NULL, NULL, alpha_res[0]);
-        DispSprt2(&btl_rslt[11], LOAD_ADDRESS_42, 1, NULL, NULL, alpha_res[1]);
-        DispSprt2(&btl_rslt[12], LOAD_ADDRESS_42, 1, NULL, NULL, alpha_res[2]);
+        DispSprt2(&btl_rslt[10], LOAD_ADDRESS_43, 1, NULL, NULL, alpha_res[0]);
+        DispSprt2(&btl_rslt[11], LOAD_ADDRESS_43, 1, NULL, NULL, alpha_res[1]);
+        DispSprt2(&btl_rslt[12], LOAD_ADDRESS_43, 1, NULL, NULL, alpha_res[2]);
 
 #if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         if (btl_clear_disp == 2)
@@ -2417,9 +2417,9 @@ int CallMissionFailed()
 
         alpha_res[now_pos] = 100;
 
-        DispSprt2(&btl_rslt[10], LOAD_ADDRESS_42, 1, NULL, NULL, alpha_res[0]);
-        DispSprt2(&btl_rslt[11], LOAD_ADDRESS_42, 1, NULL, NULL, alpha_res[1]);
-        DispSprt2(&btl_rslt[12], LOAD_ADDRESS_42, 1, NULL, NULL, alpha_res[2]);
+        DispSprt2(&btl_rslt[10], LOAD_ADDRESS_43, 1, NULL, NULL, alpha_res[0]);
+        DispSprt2(&btl_rslt[11], LOAD_ADDRESS_43, 1, NULL, NULL, alpha_res[1]);
+        DispSprt2(&btl_rslt[12], LOAD_ADDRESS_43, 1, NULL, NULL, alpha_res[2]);
     break;
     case 6:
         if (IsEndAdpcmBtlmode() != 0)
@@ -2533,7 +2533,7 @@ int CallMissionAllClear()
         }
     break;
     case 8:
-        SetSprFile(LOAD_ADDRESS_44);
+        SetSprFile(LOAD_ADDRESS_45);
 
         for (i = 0; i < 11; i++)
         {
@@ -2569,8 +2569,8 @@ int CallMissionAllClear()
 
         alpha_res[now_pos] = 100;
 
-        DispSprt2(&btl_rslt[11], LOAD_ADDRESS_42, 1, NULL, NULL, alpha_res[0]);
-        DispSprt2(&btl_rslt[12], LOAD_ADDRESS_42, 1, NULL, NULL, alpha_res[1]);
+        DispSprt2(&btl_rslt[11], LOAD_ADDRESS_43, 1, NULL, NULL, alpha_res[0]);
+        DispSprt2(&btl_rslt[12], LOAD_ADDRESS_43, 1, NULL, NULL, alpha_res[1]);
 
 #if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         if (clear_anime_timer != 0)
@@ -2860,35 +2860,35 @@ int BtlAnmInit(int anm_no)
         switch (anm_no)
         {
         case 0:
-            VER_LOAD_REQ_LANG(TX_BTL_DMY_PK2, LOAD_ADDRESS_42);
+            VER_LOAD_REQ_LANG(TX_BTL_DMY_PK2, LOAD_ADDRESS_43);
 
             anm_load_id = 1;
         break;
         case 1:
         case 2:
-            VER_LOAD_REQ_LANG(M_SLCT_STY_DMY_PK2, LOAD_ADDRESS_42);
+            VER_LOAD_REQ_LANG(M_SLCT_STY_DMY_PK2, LOAD_ADDRESS_43);
 
             anm_load_id = 1;
         break;
         case 3:
-            VER_LOAD_REQ_LANG(TX_BTL_DMY_PK2, LOAD_ADDRESS_42);
-            LoadReq(TX_BTL_RES_PK2, LOAD_ADDRESS_44);
+            VER_LOAD_REQ_LANG(TX_BTL_DMY_PK2, LOAD_ADDRESS_43);
+            LoadReq(TX_BTL_RES_PK2, LOAD_ADDRESS_45);
 
             anm_load_id = 1;
         break;
         case 4:
-            VER_LOAD_REQ_LANG(M_SLCT_BTL_CHR_PK2, LOAD_ADDRESS_42);
+            VER_LOAD_REQ_LANG(M_SLCT_BTL_CHR_PK2, LOAD_ADDRESS_43);
 
             anm_load_id = 1;
         break;
         case 5:
-            VER_LOAD_REQ_LANG(M_SLCT_STY_DMY_PK2, LOAD_ADDRESS_42);
-            LoadReq(S_MODE_CLEARBG_PK2, LOAD_ADDRESS_24);
+            VER_LOAD_REQ_LANG(M_SLCT_STY_DMY_PK2, LOAD_ADDRESS_43);
+            LoadReq(S_MODE_CLEARBG_PK2, LOAD_ADDRESS_25);
 
             anm_load_id = 1;
         break;
         default:
-            VER_LOAD_REQ_LANG(TX_BTL_DMY_PK2, LOAD_ADDRESS_42);
+            VER_LOAD_REQ_LANG(TX_BTL_DMY_PK2, LOAD_ADDRESS_43);
 
             anm_load_id = 1;
         break;
@@ -2900,15 +2900,15 @@ int BtlAnmInit(int anm_no)
         switch (anm_no)
         {
         case 3:
-            SetSprFile(LOAD_ADDRESS_42);
-            SetSprFile(LOAD_ADDRESS_44);
+            SetSprFile(LOAD_ADDRESS_43);
+            SetSprFile(LOAD_ADDRESS_45);
         break;
         case 5:
-            SetSprFile(LOAD_ADDRESS_42);
-            SetSprFile(LOAD_ADDRESS_24);
+            SetSprFile(LOAD_ADDRESS_43);
+            SetSprFile(LOAD_ADDRESS_25);
         break;
         default:
-            SetSprFile(LOAD_ADDRESS_42);
+            SetSprFile(LOAD_ADDRESS_43);
         break;
         }
 
@@ -3318,7 +3318,7 @@ void ZanzouEffect(ANM2D_WRK_TABLE *w_table, SPRT_SDAT *ssd_p, void *p_table)
 void BtlReadyDisp(ANM2D_WRK_TABLE *w_table)
 {
     int i;
-    u_long addr = LOAD_ADDRESS_42;
+    u_long addr = LOAD_ADDRESS_43;
 
     SetSprFile(addr);
 

@@ -1,5 +1,6 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "enums.h"
 #include "ap_fgost.h"
 
@@ -17,15 +18,10 @@
 #include "graphics/motion/motion.h"
 #include "graphics/graph2d/effect_ene.h"
 
-int load_mdl_addr[] = { 0xC80000, 0xD00000, 0xD80000, 0 };
-int load_mot_addr[] = { 0xA30000, 0xAE0000, 0xB90000, 0 };
-int load_se_addr[] = { 0x10, 0x11, 0x12, 0 };
+int load_mdl_addr[] = { LOAD_ADDRESS_10, LOAD_ADDRESS_12, LOAD_ADDRESS_14, 0 };
+int load_mot_addr[] = { LOAD_ADDRESS_04, LOAD_ADDRESS_06, LOAD_ADDRESS_08, 0 };
+int load_se_addr[] = { 16, 17, 18, 0 };
 FG_LOAD_WRK fg_load_wrk = {0};
-
-#define ENEMY_ANM_ADDR 0x1330000
-#define ENEMY_DMG_TEX_ADDR 0x13c8000
-#define ENEMY_MDL_ADDR 0x13e0000
-#define FLOAT_GHOST_SE_LOAD_ADDR 0x1460000
 
 void FloatGhostAppearInit()
 {
@@ -57,6 +53,16 @@ int FloatGhostAppearMain()
     case FG_COUNT:
         if (ap_wrk.fg_set_num != 0)
         {
+#if defined(BUILD_JP_VERSION)
+            if (ingame_wrk.msn_no == 3)
+            {
+                ap_wrk.fg_ap += ap_wrk.ptime * 350;
+            }
+            else
+            {
+                ap_wrk.fg_ap += ap_wrk.ptime * 200;
+            }
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
             if (ingame_wrk.msn_no == 3)
             {
                 ap_wrk.fg_ap += ap_wrk.ptime * 500;
@@ -65,19 +71,22 @@ int FloatGhostAppearMain()
             {
                 ap_wrk.fg_ap += ap_wrk.ptime * 350;
             }
+#endif
         }
 
-        if (EnemyUseJudge(ET_FUYU))
+        if (EnemyUseJudge(ET_FUYU) != 0)
         {
             if (ap_wrk.fg_ap < 950)
             {
                 break;
             }
+
             ap_wrk.fg_ap = 950;
+
             break;
         }
 
-        if (!FloatGhostAppearJudge())
+        if (FloatGhostAppearJudge() == 0)
         {
             break;
         }
@@ -85,20 +94,26 @@ int FloatGhostAppearMain()
         if (DeadGhostAppearJudge())
         {
             DeadGhostAppearReq();
+
             ap_wrk.fg_ap = 700;
             ap_wrk.fg_mode = FG_ENTRY;
+
             break;
         }
+
         ap_wrk.fg_mode = FG_WAIT;
+
         if (GetFloatGhostAppearPosType(&type) == 0 && plyr_wrk.mode != PMODE_FINDER)
         {
             break;
         }
 
         FloatGhostAppearPosSet(0xff, ene_wrk[EWRK_GHOST2].move_box.pos, ene_wrk[EWRK_GHOST2].move_box.rot);
+
         ene_wrk[EWRK_GHOST2].dat_no = fgst_ap_no[0][ap_wrk.fgst_cnt % 20 + ingame_wrk.msn_no * 20];
-        ene_wrk[EWRK_GHOST2].sta = 2;
+        ene_wrk[EWRK_GHOST2].sta = 0x2;
         ene_wrk[EWRK_GHOST2].type = ET_FUYU;
+
         ap_wrk.fg_mode = FG_ENTRY;
     break;
     case FG_WAIT:
@@ -106,6 +121,7 @@ int FloatGhostAppearMain()
         {
             ap_wrk.fg_mode = FG_COUNT;
             ap_wrk.fg_ap = 950;
+
             break;
         }
 
@@ -115,10 +131,12 @@ int FloatGhostAppearMain()
         }
 
         FloatGhostAppearPosSet(type, ene_wrk[EWRK_GHOST2].move_box.pos, ene_wrk[EWRK_GHOST2].move_box.rot);
+
         ene_wrk[EWRK_GHOST2].dat_no = fgst_ap_no[0][ap_wrk.fgst_cnt % 20 + ingame_wrk.msn_no * 20];
-        ap_wrk.fg_mode = FG_ENTRY;
-        ene_wrk[EWRK_GHOST2].sta = 2;
+        ene_wrk[EWRK_GHOST2].sta = 0x2;
         ene_wrk[EWRK_GHOST2].type = ET_FUYU;
+
+        ap_wrk.fg_mode = FG_ENTRY;
     break;
     }
 
@@ -140,6 +158,7 @@ int FloatGhostAppearJudge()
     if (ap_wrk.fg_ap >= 1000)
     {
         ap_wrk.fg_ap = 950;
+
         return 1;
     }
 
@@ -153,7 +172,7 @@ int FloatGhostAppearTypeSet(u_char fg_no, u_char wrk_no, u_char room)
 
     ret = 0;
 
-    for (i = 0; i <= 2; i++)
+    for (i = 0; i < 3; i++)
     {
         ap_wrk.fg_pos[wrk_no][i] = -1;
     }
@@ -168,6 +187,7 @@ int FloatGhostAppearTypeSet(u_char fg_no, u_char wrk_no, u_char room)
         )
         {
             ap_wrk.fg_pos[wrk_no][ret] = i;
+
             ret++;
         }
 
@@ -189,6 +209,7 @@ int GetFloatGhostAppearPosType(u_char *type)
             if (ap_wrk.fg_pos[i][0] == 0xff)
             {
                 *type = 0xff;
+
                 return 1;
             }
 
@@ -199,6 +220,7 @@ int GetFloatGhostAppearPosType(u_char *type)
                     if (fg_ap_dat[ingame_wrk.msn_no][ap_wrk.fg_pos[i][j]].cmr_no == plyr_wrk.pr_info.camera_no)
                     {
                         *type = 0xff;
+
                         return 1;
                     }
                 }
@@ -210,6 +232,7 @@ int GetFloatGhostAppearPosType(u_char *type)
                     if (fg_ap_dat[ingame_wrk.msn_no][ap_wrk.fg_pos[i][j]].cmr_no == plyr_wrk.pr_info.camera_no)
                     {
                         *type = ap_wrk.fg_pos[i][j];
+
                         return 1;
                     }
                 }
@@ -222,14 +245,14 @@ int GetFloatGhostAppearPosType(u_char *type)
     return 0;
 }
 
-void FloatGhostAppearPosSet(u_char dat_no, float *set_pos, float *set_rot)
+void FloatGhostAppearPosSet(u_char dat_no, sceVu0FVECTOR set_pos, sceVu0FVECTOR set_rot)
 {
     int i;
     float dist;
     float dist_bak;
     sceVu0FVECTOR pos;
-    sceVu0FVECTOR tv = {0.0f, 0.0f, 3000.0f, 0.0f};
-    sceVu0FVECTOR rv = {0.0f, 0.0f, 0.0f, 0.0f};
+    sceVu0FVECTOR tv = { 0.0f, 0.0f, 3000.0f, 0.0f };
+    sceVu0FVECTOR rv = { 0.0f, 0.0f, 0.0f, 0.0f };
 
     set_rot[0] = 0.0f;
     set_rot[1] = 0.0f;
@@ -277,7 +300,7 @@ int FloatGhostBattleEnd()
     ap_wrk.fg_mode = 1;
     ap_wrk.fg_ap = 0;
 
-    // missing return!!
+    // missing return
 }
 
 int FloatGhostEscapeEnd()
@@ -285,12 +308,13 @@ int FloatGhostEscapeEnd()
     ap_wrk.fg_mode = 1;
     ap_wrk.fg_ap = 700;
 
-    // missing return!!
+    // missing return
 }
 
 void FloatGhostLoadReq()
 {
     fg_load_wrk = (FG_LOAD_WRK){0};
+
     fg_load_wrk.mode = FG_NO_REQ;
 }
 
@@ -310,6 +334,7 @@ int FloatGhostLoadMain()
     break;
     case FG_LOAD_MDL_LOAD:
         GetFloatGhostModelLoad();
+
         fg_load_wrk.mode = FG_LOAD_MDL_WAIT;
     break;
     case FG_LOAD_MDL_WAIT:
@@ -317,10 +342,13 @@ int FloatGhostLoadMain()
         {
             return 0;
         }
+
         GetFloatGhostModelLoadAfter();
+
         fg_load_wrk.mode = FG_LOAD_MOT_LOAD;
     case FG_LOAD_MOT_LOAD:
         GetFloatGhostMotionLoad();
+
         fg_load_wrk.mode = FG_LOAD_MOT_WAIT;
     break;
     case FG_LOAD_MOT_WAIT:
@@ -328,10 +356,13 @@ int FloatGhostLoadMain()
         {
             return 0;
         }
+
         GetFloatGhostMotionLoadAfter();
+
         fg_load_wrk.mode = FG_LOAD_SE_LOAD;
     case FG_LOAD_SE_LOAD:
         GetFloatGhostSELoad();
+
         fg_load_wrk.mode = FG_LOAD_SE_WAIT;
     break;
     case FG_LOAD_SE_WAIT:
@@ -339,14 +370,18 @@ int FloatGhostLoadMain()
         {
             return 0;
         }
+
         fg_load_wrk.mode = FG_LOAD_SE_TRANS;
+
         FGTransInit();
     case FG_LOAD_SE_TRANS:
         SeFGhostTransCtrl();
+
         if (IsEndFgTrans() == 0)
         {
             break;
         }
+
         fg_load_wrk.mode = FG_LOAD_MODE_END;
     case FG_LOAD_MODE_END:
         return 1;
@@ -374,7 +409,7 @@ int FloatGhostLoadSet()
 
     if (ap_wrk.fgst_no != 0xff)
     {
-        motReleaseAniMdlBuf(fene_dat[ingame_wrk.msn_no][ap_wrk.fgst_no].anm_no, (u_int *)ENEMY_ANM_ADDR);
+        motReleaseAniMdlBuf(fene_dat[ingame_wrk.msn_no][ap_wrk.fgst_no].anm_no, (u_int *)LOAD_ADDRESS_21);
     }
 
     return 1;
@@ -392,33 +427,33 @@ void GetLoadFloatGhost(u_char set_num, u_char *set_fgst)
 
 void GetFloatGhostModelLoad()
 {
-    LoadReq(fene_dat[ingame_wrk.msn_no][fg_load_wrk.load_no].mdl_no + M000_MIKU_MDL, ENEMY_MDL_ADDR);
+    LoadReq(fene_dat[ingame_wrk.msn_no][fg_load_wrk.load_no].mdl_no + M000_MIKU_MDL, LOAD_ADDRESS_23);
 
     ap_wrk.fgst_no = fg_load_wrk.load_no;
 }
 
 void GetFloatGhostModelLoadAfter()
 {
-    motInitEnemyMdl((u_int *)ENEMY_MDL_ADDR, fene_dat[ingame_wrk.msn_no][fg_load_wrk.load_no].mdl_no);
+    motInitEnemyMdl((u_int *)LOAD_ADDRESS_23, fene_dat[ingame_wrk.msn_no][fg_load_wrk.load_no].mdl_no);
 }
 
 void GetFloatGhostMotionLoad()
 {
-    LoadEneDmgTex(fene_dat[ingame_wrk.msn_no][fg_load_wrk.load_no].mdl_no, (u_int *)ENEMY_DMG_TEX_ADDR);
-    LoadReq(fene_dat[ingame_wrk.msn_no][fg_load_wrk.load_no].anm_no + M000_MIKU_ANM, ENEMY_ANM_ADDR);
+    LoadEneDmgTex(fene_dat[ingame_wrk.msn_no][fg_load_wrk.load_no].mdl_no, (u_int *)LOAD_ADDRESS_22);
+    LoadReq(fene_dat[ingame_wrk.msn_no][fg_load_wrk.load_no].anm_no + M000_MIKU_ANM, LOAD_ADDRESS_21);
 }
 
 void GetFloatGhostMotionLoadAfter()
 {
   motInitEnemyAnm(
-    (u_int *)ENEMY_ANM_ADDR,
+    (u_int *)LOAD_ADDRESS_21,
     fene_dat[ingame_wrk.msn_no][fg_load_wrk.load_no].mdl_no,
     fene_dat[ingame_wrk.msn_no][fg_load_wrk.load_no].anm_no);
 }
 
 void GetFloatGhostSELoad()
 {
-    LoadReq(fene_dat[ingame_wrk.msn_no][fg_load_wrk.load_no].se_no, FLOAT_GHOST_SE_LOAD_ADDR);
+    LoadReq(fene_dat[ingame_wrk.msn_no][fg_load_wrk.load_no].se_no, LOAD_ADDRESS_24);
 }
 
 void FloatGhostAppearStop()

@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 53.0466035948206,
+    "fuzzy_match_percent": 53.32088373817403,
     "total_code": "1165232",
-    "matched_code": "618116",
-    "matched_code_percent": 53.0466035948206,
+    "matched_code": "621312",
+    "matched_code_percent": 53.32088373817403,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 1869,
-    "matched_functions_percent": 55.06776664702416,
+    "matched_functions": 1890,
+    "matched_functions_percent": 55.68650559811432,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -14869,9 +14869,14 @@
     {
       "name": "ingame/entry/ap_fgost",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "3196",
+        "matched_code": "3196",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 21,
+        "matched_functions": 21,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -14879,14 +14884,17 @@
         {
           "name": ".text",
           "size": "3240",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -14894,106 +14902,127 @@
         {
           "name": "FloatGhostAppearInit",
           "size": "76",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FloatGhostEntrySet",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FloatGhostAppearMain",
           "size": "556",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FloatGhostAppearJudge",
           "size": "84",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetFloatGhostAppearPosType",
           "size": "368",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FloatGhostAppearPosSet",
           "size": "632",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FloatGhostAppearTypeSet",
           "size": "332",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FloatGhostBattleEnd",
           "size": "24",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FloatGhostEscapeEnd",
           "size": "28",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FloatGhostLoadReq",
           "size": "40",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FloatGhostLoadMain",
           "size": "284",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FloatGhostLoadSet",
           "size": "192",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetFloatGhostModelLoad",
           "size": "88",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetFloatGhostModelLoadAfter",
           "size": "52",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetFloatGhostMotionLoad",
           "size": "136",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetFloatGhostMotionLoadAfter",
           "size": "56",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetFloatGhostSELoad",
           "size": "52",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FloatGhostSetJudge",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetLoadFloatGhost",
           "size": "68",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FloatGhostAppearStop",
           "size": "52",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FloatGhostAppearStart",
           "size": "60",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -24514,14 +24543,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 53.0466035948206,
+        "fuzzy_match_percent": 53.32088373817403,
         "total_code": "1165232",
-        "matched_code": "618116",
-        "matched_code_percent": 53.0466035948206,
+        "matched_code": "621312",
+        "matched_code_percent": 53.32088373817403,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 1869,
-        "matched_functions_percent": 55.06776664702416,
+        "matched_functions": 1890,
+        "matched_functions_percent": 55.68650559811432,
         "complete_data_percent": 100.0,
         "total_units": 154
       }

@@ -21,7 +21,7 @@ int FloatGhostAppearMain();
 int FloatGhostAppearJudge();
 int FloatGhostAppearTypeSet(u_char fg_no, u_char wrk_no, u_char room);
 int GetFloatGhostAppearPosType(u_char *type);
-void FloatGhostAppearPosSet(u_char dat_no, float *set_pos, float *set_rot);
+void FloatGhostAppearPosSet(u_char dat_no, sceVu0FVECTOR set_pos, sceVu0FVECTOR set_rot);
 int FloatGhostBattleEnd();
 int FloatGhostEscapeEnd();
 void FloatGhostLoadReq();

@@ -58,7 +58,7 @@ u_int* RoomMdlLoadReq(u_int *addr, u_char blk_no, u_char msn_no, u_char room_no,
 
     if (addr == NULL)
     {
-        addr = (u_int *)(LOAD_ADDRESS_24 + blk_no * ROOM_BLOCK_SIZE);
+        addr = (u_int *)(LOAD_ADDRESS_25 + blk_no * ROOM_BLOCK_SIZE);
     }
 
     next_addr = (u_int)addr;
