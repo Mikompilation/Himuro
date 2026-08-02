@@ -90,7 +90,7 @@ void PlyrTimerCtrl()
         {
             if (time_wrk.fwalk < 0xffffffffffffffff)
             {
-                time_wrk.fwalk = time_wrk.fwalk + 1;
+                time_wrk.fwalk++;
             }
         }
         else

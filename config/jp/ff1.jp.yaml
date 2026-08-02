@@ -142,7 +142,7 @@ segments:
           - [0x8cef8,  c,   ingame/enemy/ene_ctl]
           - [0x90788,  c,   ingame/enemy/move_ctl]
           - [0x97f70,  c,   ingame/entry/entry]
-          - [0x98158,  asm, ingame/plyr/time_ctl]
+          - [0x98158,  c,   ingame/plyr/time_ctl]
           - [0x98508,  asm, ingame/entry/ap_bgost]
           - [0x98820,  asm, ingame/entry/ap_dgost]
           - [0x98d30,  asm, ingame/entry/ap_fgost]

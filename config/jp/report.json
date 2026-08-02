@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 52.78845757754679,
+    "fuzzy_match_percent": 52.868441649388274,
     "total_code": "1165232",
-    "matched_code": "615108",
-    "matched_code_percent": 52.78845757754679,
+    "matched_code": "616040",
+    "matched_code_percent": 52.868441649388274,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 1849,
-    "matched_functions_percent": 54.478491455509726,
+    "matched_functions": 1855,
+    "matched_functions_percent": 54.65527401296406,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -14629,9 +14629,14 @@
     {
       "name": "ingame/plyr/time_ctl",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "932",
+        "matched_code": "932",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 6,
+        "matched_functions": 6,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -14639,14 +14644,17 @@
         {
           "name": ".text",
           "size": "944",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -14654,31 +14662,37 @@
         {
           "name": "TimeCtrlInit",
           "size": "64",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GameTimeCtrl",
           "size": "108",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetNowClock",
           "size": "72",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PlyrTimerCtrl",
           "size": "476",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EntryTimeCtrl",
           "size": "200",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetRealTime",
           "size": "12",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -24470,14 +24484,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 52.78845757754679,
+        "fuzzy_match_percent": 52.868441649388274,
         "total_code": "1165232",
-        "matched_code": "615108",
-        "matched_code_percent": 52.78845757754679,
+        "matched_code": "616040",
+        "matched_code_percent": 52.868441649388274,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 1849,
-        "matched_functions_percent": 54.478491455509726,
+        "matched_functions": 1855,
+        "matched_functions_percent": 54.65527401296406,
         "complete_data_percent": 100.0,
         "total_units": 154
       }
