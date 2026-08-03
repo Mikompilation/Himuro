@@ -118,13 +118,13 @@ int InGameFirstLoad(void)
         InitSeGhost();
     // case fall-through
     case INGAME_INIT_LOAD_MENU:
-        init_load_id = VER_LOAD_REQ_LANG(PL_SMAP_PK2, LOAD_ADDRESS_39);
-        init_load_id = LoadReq(PL_PLAY_PK2, LOAD_ADDRESS_40);
-        init_load_id = VER_LOAD_REQ_LANG(PL_STTS_PK2, LOAD_ADDRESS_28);
-        init_load_id = LoadReq(PL_BGBG_PK2, LOAD_ADDRESS_29);
-        init_load_id = VER_LOAD_REQ_LANG(PL_PLDT_PK2, LOAD_ADDRESS_31);
-        init_load_id = VER_LOAD_REQ_LANG(PL_MTOP_PK2, LOAD_ADDRESS_30);
-        init_load_id = VER_LOAD_REQ_LANG(N_LOAD_PK2, LOAD_ADDRESS_46);
+        init_load_id = VER_LOAD_REQ_LANG(PL_SMAP_PK2, LOAD_ADDRESS_40);
+        init_load_id = LoadReq(PL_PLAY_PK2, LOAD_ADDRESS_41);
+        init_load_id = VER_LOAD_REQ_LANG(PL_STTS_PK2, LOAD_ADDRESS_29);
+        init_load_id = LoadReq(PL_BGBG_PK2, LOAD_ADDRESS_30);
+        init_load_id = VER_LOAD_REQ_LANG(PL_PLDT_PK2, LOAD_ADDRESS_32);
+        init_load_id = VER_LOAD_REQ_LANG(PL_MTOP_PK2, LOAD_ADDRESS_31);
+        init_load_id = VER_LOAD_REQ_LANG(N_LOAD_PK2, LOAD_ADDRESS_47);
 
         sys_wrk.load_mode = INGAME_INIT_WAIT_MENU;
     break;
@@ -137,8 +137,8 @@ int InGameFirstLoad(void)
         sys_wrk.load_mode = INGAME_INIT_LOAD_EFCT;
     // case fall-through
     case INGAME_INIT_LOAD_EFCT:
-        init_load_id = LoadReq(HAND_PK2, LOAD_ADDRESS_48);
-        init_load_id = LoadReq(EFF001_PK2, LOAD_ADDRESS_43);
+        init_load_id = LoadReq(HAND_PK2, LOAD_ADDRESS_49);
+        init_load_id = LoadReq(EFF001_PK2, LOAD_ADDRESS_44);
 
         sys_wrk.load_mode = INGAME_INIT_WAIT_EFCT;
     break;
@@ -148,12 +148,12 @@ int InGameFirstLoad(void)
             return 0;
         }
 
-        SetETIM2File(LOAD_ADDRESS_43);
+        SetETIM2File(LOAD_ADDRESS_44);
 
         sys_wrk.load_mode = INGAME_INIT_LOAD_CAME;
     // case fall-through
     case INGAME_INIT_LOAD_CAME:
-        init_load_id = LoadReq(ENEDMG_PK2, LOAD_ADDRESS_47);
+        init_load_id = LoadReq(ENEDMG_PK2, LOAD_ADDRESS_48);
 
         sys_wrk.load_mode = INGAME_INIT_WAIT_CAME;
     break;
@@ -166,7 +166,7 @@ int InGameFirstLoad(void)
         sys_wrk.load_mode = INGAME_INIT_LOAD_PHOTO;
     // case fall-through
     case INGAME_INIT_LOAD_PHOTO:
-        init_load_id = LoadReq(PHOTO001_PK2, LOAD_ADDRESS_42);
+        init_load_id = LoadReq(PHOTO001_PK2, LOAD_ADDRESS_43);
 
         sys_wrk.load_mode = INGAME_INIT_WAIT_PHOTO;
     break;
@@ -179,8 +179,8 @@ int InGameFirstLoad(void)
         sys_wrk.load_mode = INGAME_INIT_LOAD_FNDR;
     // case fall-through
     case INGAME_INIT_LOAD_FNDR:
-        init_load_id = VER_LOAD_REQ_LANG(PL_FNDR_PK2, LOAD_ADDRESS_35);
-        init_load_id = VER_LOAD_REQ_LANG(PL_LIFE_PK2, LOAD_ADDRESS_38);
+        init_load_id = VER_LOAD_REQ_LANG(PL_FNDR_PK2, LOAD_ADDRESS_36);
+        init_load_id = VER_LOAD_REQ_LANG(PL_LIFE_PK2, LOAD_ADDRESS_39);
 
         sys_wrk.load_mode = INGAME_INIT_WAIT_FNDR;
     break;

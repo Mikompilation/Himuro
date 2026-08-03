@@ -98,7 +98,7 @@ void EnemyActDataLoad()
 {
     int eadat_tbl[3] = {ENE_ACT1_OBJ, ENE_ACT1_OBJ, ENE_ACT1_OBJ};
 
-    FileLoadB(eadat_tbl[ingame_wrk.msn_no], ENE_ACT_OBJ_ADDRESS);
+    FileLoadB(eadat_tbl[ingame_wrk.msn_no], LOAD_ADDRESS_00);
 }
 
 void InitFlyWrk()

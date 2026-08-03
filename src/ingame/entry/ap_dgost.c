@@ -138,16 +138,16 @@ int DeadGhostLoad()
         dgst_wrk.load_mode = DGLOAD_MODE_START;
     break;
     case DGLOAD_MODE_START:
-        LoadReq(M055_SYOUALL_MDL, LOAD_ADDRESS_10);
+        LoadReq(M055_SYOUALL_MDL, LOAD_ADDRESS_11);
 
         dgst_wrk.load_mode = DGLOAD_MODE_MDL;
     break;
     case DGLOAD_MODE_MDL:
         if (IsLoadEndAll() != 0)
         {
-            motInitEnemyMdl((u_int *)LOAD_ADDRESS_10, M055_SYOUALL);
-            LoadEneDmgTex(42, (u_int *)LOAD_ADDRESS_05);
-            LoadReq(M042_SYOUKI2_ANM, LOAD_ADDRESS_04);
+            motInitEnemyMdl((u_int *)LOAD_ADDRESS_11, M055_SYOUALL);
+            LoadEneDmgTex(42, (u_int *)LOAD_ADDRESS_06);
+            LoadReq(M042_SYOUKI2_ANM, LOAD_ADDRESS_05);
 
             dgst_wrk.load_mode = DGLOAD_MODE_MOT;
         }
@@ -155,7 +155,7 @@ int DeadGhostLoad()
     case DGLOAD_MODE_MOT:
         if (IsLoadEndAll() != 0)
         {
-            motInitEnemyAnm((u_int *)LOAD_ADDRESS_04, M055_SYOUALL, A042_SYOUKIA);
+            motInitEnemyAnm((u_int *)LOAD_ADDRESS_05, M055_SYOUALL, A042_SYOUKIA);
             SeFileLoadAndSetFGhost(SG046_SYOUKI1_BD, 16);
 
             ap_wrk.fg_se_empty[0] = 1;

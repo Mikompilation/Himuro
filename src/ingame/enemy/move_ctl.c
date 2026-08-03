@@ -1777,17 +1777,17 @@ void EJob028(MOVE_BOX *mb)
         fmb->pos[2] = ene_wrk[mb->idx].bep[2];
         fmb->pos[3] = ene_wrk[mb->idx].bep[3];
 
-        fmb->comm_add_top = ENE_ACT_OBJ_ADDRESS;
+        fmb->comm_add_top = LOAD_ADDRESS_00;
 
-        // addr = ((u_short *)ENE_ACT_OBJ_ADDRESS)[3] + ENE_ACT_OBJ_ADDRESS;
-        addr = INDEX16(ENE_ACT_OBJ_ADDRESS, 3);
+        // addr = ((u_short *)LOAD_ADDRESS_00)[3] + LOAD_ADDRESS_00;
+        addr = INDEX16(LOAD_ADDRESS_00, 3);
         adj = READ_LE16(addr);
-        addr = SEGMENT_ADDR(ENE_ACT_OBJ_ADDRESS, adj);
+        addr = SEGMENT_ADDR(LOAD_ADDRESS_00, adj);
 
-        // fmb->comm_add.wrk = ((u_short *)addr)[no] + ENE_ACT_OBJ_ADDRESS;
+        // fmb->comm_add.wrk = ((u_short *)addr)[no] + LOAD_ADDRESS_00;
         addr = INDEX16(addr, no);
         adj = READ_LE16(addr);
-        fmb->comm_add.wrk = SEGMENT_ADDR(ENE_ACT_OBJ_ADDRESS, adj);
+        fmb->comm_add.wrk = SEGMENT_ADDR(LOAD_ADDRESS_00, adj);
 
         fmb->pos_no = 0;
         fmb->wait_time = 1;

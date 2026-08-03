@@ -643,7 +643,7 @@ void SetRoomDirecPazzEne()
         // do nothing ...
     break;
     case 1:
-        g2d_load_flg.pazz = LoadReq(pazz_textbl[7], LOAD_ADDRESS_27);
+        g2d_load_flg.pazz = LoadReq(pazz_textbl[7], LOAD_ADDRESS_28);
 
         ef_pazz_ene_flow = 2;
     case 2:

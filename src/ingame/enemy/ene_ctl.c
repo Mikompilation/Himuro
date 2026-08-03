@@ -1047,12 +1047,12 @@ void EneActSet(ENE_WRK *ew, u_char act_no)
     mb = &ew->move_box;
 
     ew->act_no = act_no;
-    mb->comm_add_top = ENE_ACT_OBJ_ADDRESS;
+    mb->comm_add_top = LOAD_ADDRESS_00;
 
-    v1 = (u_int)((u_long)(ew->type) * 2 + ENE_ACT_OBJ_ADDRESS);
-    v0 = ((ENE_ACT_OBJ_ADDRESS | (((u_char *)(u_int)v1)[0] | (((u_char *)(u_int)v1)[1] << 8)))) + (u_long)(ew->dat_no * 2);
-    v1 = ((ENE_ACT_OBJ_ADDRESS | (((u_char *)(u_int)v0)[0] | (((u_char *)(u_int)v0)[1] << 8)))) + (u_long)(    act_no * 2);
-    t3 = ((ENE_ACT_OBJ_ADDRESS | (((u_char *)(u_int)v1)[0] | (((u_char *)(u_int)v1)[1] << 8))));
+    v1 = (u_int)((u_long)(ew->type) * 2 + LOAD_ADDRESS_00);
+    v0 = ((LOAD_ADDRESS_00 | (((u_char *)(u_int)v1)[0] | (((u_char *)(u_int)v1)[1] << 8)))) + (u_long)(ew->dat_no * 2);
+    v1 = ((LOAD_ADDRESS_00 | (((u_char *)(u_int)v0)[0] | (((u_char *)(u_int)v0)[1] << 8)))) + (u_long)(    act_no * 2);
+    t3 = ((LOAD_ADDRESS_00 | (((u_char *)(u_int)v1)[0] | (((u_char *)(u_int)v1)[1] << 8))));
 
     mb->comm_add.wrk = t3;
     mb->pos_no = 0;
@@ -1084,12 +1084,12 @@ void EneBlinkDataSet(ENE_WRK *ew)
     u_long v0, v1; // not in STAB
     u_long a3;     // not in STAB but trivial to remove (keeping it for symmetry)
 
-    ew->bcomm_add_top = ENE_ACT_OBJ_ADDRESS;
+    ew->bcomm_add_top = LOAD_ADDRESS_00;
 
-    v1 = (u_int)((u_long)(ew->type) * 2 + ENE_ACT_OBJ_ADDRESS);
-    v0 = ((ENE_ACT_OBJ_ADDRESS | (((u_char *)(u_int)v1)[0] | (((u_char *)(u_int)v1)[1] << 8)))) + (u_long)(ew->dat_no * 2);
-    v1 = ((ENE_ACT_OBJ_ADDRESS | (((u_char *)(u_int)v0)[0] | (((u_char *)(u_int)v0)[1] << 8))));
-    a3 = ((ENE_ACT_OBJ_ADDRESS | (((u_char *)(u_int)v1)[0] | (((u_char *)(u_int)v1)[1] << 8))));
+    v1 = (u_int)((u_long)(ew->type) * 2 + LOAD_ADDRESS_00);
+    v0 = ((LOAD_ADDRESS_00 | (((u_char *)(u_int)v1)[0] | (((u_char *)(u_int)v1)[1] << 8)))) + (u_long)(ew->dat_no * 2);
+    v1 = ((LOAD_ADDRESS_00 | (((u_char *)(u_int)v0)[0] | (((u_char *)(u_int)v0)[1] << 8))));
+    a3 = ((LOAD_ADDRESS_00 | (((u_char *)(u_int)v1)[0] | (((u_char *)(u_int)v1)[1] << 8))));
 
     ew->bcomm_add.wrk = a3;
     ew->bpos_no = 0;
@@ -1101,13 +1101,13 @@ void EneARatioDataSet(ENE_WRK *ew, u_char anime_no)
     u_long v0, v1, v2; // not in STAB
     u_long a3;         // not in STAB but trivial to remove (keeping it for symmetry)
 
-    ew->acomm_add_top = ENE_ACT_OBJ_ADDRESS;
+    ew->acomm_add_top = LOAD_ADDRESS_00;
 
-    v0 = (u_int)((u_long)(ew->type) * 2 + ENE_ACT_OBJ_ADDRESS);
-    v1 = ((ENE_ACT_OBJ_ADDRESS | (((u_char *)(u_int)v0)[0] | (((u_char *)(u_int)v0)[1] << 8)))) + (u_long)(ew->dat_no * 2);
-    v2 = ((ENE_ACT_OBJ_ADDRESS | (((u_char *)(u_int)v1)[0] | (((u_char *)(u_int)v1)[1] << 8)))) + (u_long)(             2);
-    v0 = ((ENE_ACT_OBJ_ADDRESS | (((u_char *)(u_int)v2)[0] | (((u_char *)(u_int)v2)[1] << 8)))) + (u_long)(  anime_no * 2);
-    a3 = ((ENE_ACT_OBJ_ADDRESS | (((u_char *)(u_int)v0)[0] | (((u_char *)(u_int)v0)[1] << 8))));
+    v0 = (u_int)((u_long)(ew->type) * 2 + LOAD_ADDRESS_00);
+    v1 = ((LOAD_ADDRESS_00 | (((u_char *)(u_int)v0)[0] | (((u_char *)(u_int)v0)[1] << 8)))) + (u_long)(ew->dat_no * 2);
+    v2 = ((LOAD_ADDRESS_00 | (((u_char *)(u_int)v1)[0] | (((u_char *)(u_int)v1)[1] << 8)))) + (u_long)(             2);
+    v0 = ((LOAD_ADDRESS_00 | (((u_char *)(u_int)v2)[0] | (((u_char *)(u_int)v2)[1] << 8)))) + (u_long)(  anime_no * 2);
+    a3 = ((LOAD_ADDRESS_00 | (((u_char *)(u_int)v0)[0] | (((u_char *)(u_int)v0)[1] << 8))));
 
     ew->acomm_add.wrk = a3;
     ew->apos_no = 0;

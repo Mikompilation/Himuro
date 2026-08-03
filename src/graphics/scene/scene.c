@@ -408,7 +408,7 @@ void SceneInitManMdl(SCN_ANM_MDL *sam, u_int *mot_addr, u_int *mim_addr, u_int m
     sam->mot_addr = SceneGetMotAddr(mot_addr, mdl_id, pfx);
     sam->mim_addr = SceneGetMimAddr(mim_addr, pfx);
 
-    sam->mim_buf_addr = (u_int *)(LOAD_ADDRESS_20 + mdl_id * 0x10000);
+    sam->mim_buf_addr = (u_int *)(LOAD_ADDRESS_21 + mdl_id * 0x10000);
 
     if (sam->mdl_no == 1 && sc->chapter_no == 0)
     {

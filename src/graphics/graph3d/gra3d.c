@@ -887,7 +887,7 @@ u_int PlayerModelInit()
     u_int *tmpp;
     u_int *p;
 
-    tmpp = (u_int *)LOAD_ADDRESS_03;
+    tmpp = (u_int *)LOAD_ADDRESS_04;
 
     pmanmodel[0] = &tmpp[0];
     pmanmpk[0] = &tmpp[0];
