@@ -1,24 +1,25 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "enums.h"
 #include "ap_ggost.h"
 
 #include "sce/libvu0.h"
 
-#include "main/glob.h"
-#include "os/eeiop/eese.h"
-#include "os/eeiop/cdvd/eecdvd.h"
+// #include "graphics/graph2d/effect_ene.h"
+#include "graphics/motion/mdlwork.h"
+// #include "graphics/motion/motion.h"
 #include "ingame/enemy/ene_ctl.h"
 #include "ingame/entry/entry.h"
 #include "ingame/event/ev_main.h"
 #include "ingame/map/door_ctl.h"
-// #include "graphics/motion/motion.h" // motInitEnemyAnm and motInitEnemyMdl
-#include "graphics/motion/mdlwork.h"
-// #include "graphics/graph2d/effect_ene.h" // LoadEneDmgTex
+#include "main/glob.h"
+#include "os/eeiop/cdvd/eecdvd.h"
+#include "os/eeiop/eese.h"
 
 GGOST_DAT msn03ggst_dat = {
-    .ggst = {  4,  0,  4, 0xff, 0xff },
-    .room = {  3, 23, 27, 0xff, 0xff },
+    .ggst = { 4,  0,  4, 0xff, 0xff },
+    .room = { 3, 23, 27, 0xff, 0xff },
     .pos = {
         {  2500, 65476, 1600 },
         {  2000,     0, 3000 },
@@ -42,9 +43,7 @@ GGOST_DAT *ggst_dat[] = { &msn03ggst_dat, &msn04ggst_dat };
 int gg_load_ = 0;
 int gg_room_ = 0;
 
-#define MODEL_ADDRESS 0xd80000
-#define ANIM_ADDRESS 0xb90000
-#define ENE_DMG_ADDRESS 0xc28000
+#define GGOST_KIND_MAX 5
 
 int GuardGhostAppearSet(void) {
     int i;
@@ -76,7 +75,7 @@ void GuardGhostLoadInit()
     gg_load_mode = 0;
 }
 
-int GuardGhostAppearMain(void)
+int GuardGhostAppearMain()
 {
     if (ingame_wrk.msn_no != 3)
     {
@@ -106,7 +105,7 @@ int GuardGhostReloadReq()
 
     dat_no = ingame_wrk.msn_no - 3;
 
-    if (ap_wrk.ggst_cnt == 5)
+    if (ap_wrk.ggst_cnt == GGOST_KIND_MAX)
     {
         ene_dead_load = 0;
 
@@ -128,43 +127,57 @@ int GuardGhostReloadReq()
 void GuardGhostLoadReq()
 {
     int dat_no;
+
     if (ingame_wrk.msn_no != 3)
     {
         ap_wrk.ggst_no = 0xff;
         ap_wrk.gg_mode = 0;
 
         ene_dead_load = 0;
-
-        return;
     }
-
-    dat_no = ingame_wrk.msn_no - 3;
-
-    if (ap_wrk.ggst_cnt == 5)
+    else
     {
-        ap_wrk.ggst_no = 0xff;
-        ap_wrk.gg_mode = 0;
+        dat_no = ingame_wrk.msn_no - 3;
 
-        ene_dead_load = 0;
+        if (ap_wrk.ggst_cnt == GGOST_KIND_MAX)
+        {
+#if defined(BUILD_JP_VERSION)
+            printf("ap_wrk.ggst_cnt == GGOST_KIND_MAX\n");
+#endif
 
-        return;
+            ap_wrk.ggst_no = 0xff;
+            ap_wrk.gg_mode = 0;
+
+            ene_dead_load = 0;
+        }
+        else if (ggst_dat[dat_no]->ggst[ap_wrk.ggst_cnt] == 0xff)
+        {
+#if defined(BUILD_JP_VERSION)
+            printf("(ggst_dat[dat_no])->ggst[ap_wrk.ggst_cnt] == 0xFF\n");
+#endif
+
+#if defined(BUILD_JP_VERSION)
+            ap_wrk.ggst_no = 0xff;
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+            ap_wrk.ggst_no = ggst_dat[dat_no]->ggst[ap_wrk.ggst_cnt];
+#endif
+            ap_wrk.gg_mode = 0;
+
+            ene_dead_load = 0;
+        }
+        else
+        {
+#if defined(BUILD_JP_VERSION)
+            printf("             else\n");
+#endif
+
+            ap_wrk.gg_mode = 1;
+
+            gg_load_mode = 0;
+
+            ene_dead_load = 1;
+        }
     }
-
-    if (ggst_dat[dat_no]->ggst[ap_wrk.ggst_cnt] == 0xff)
-    {
-        ap_wrk.ggst_no = ggst_dat[dat_no]->ggst[ap_wrk.ggst_cnt];
-        ap_wrk.gg_mode = 0;
-
-        ene_dead_load = 0;
-
-        return;
-    }
-
-    ap_wrk.gg_mode = 1;
-
-    gg_load_mode = 0;
-
-    ene_dead_load = 1;
 }
 
 int GuardGhostLoad()
@@ -196,26 +209,26 @@ int GuardGhostLoad()
     case 2:
         if (ap_wrk.ggst_cnt != 0)
         {
-            motReleaseAniMdlBuf(fene_dat[ingame_wrk.msn_no][ap_wrk.ggst_no].anm_no, (u_int *)ANIM_ADDRESS);
+            motReleaseAniMdlBuf(fene_dat[ingame_wrk.msn_no][ap_wrk.ggst_no].anm_no, (u_int *)LOAD_ADDRESS_09);
 
             ap_wrk.ggst_no = ggst_dat[dat_no]->ggst[ap_wrk.ggst_cnt];
         }
 
-        LoadReq(fene_dat[ingame_wrk.msn_no][ap_wrk.ggst_no].mdl_no + M000_MIKU_MDL, MODEL_ADDRESS);
+        LoadReq(M000_MIKU_MDL + fene_dat[ingame_wrk.msn_no][ap_wrk.ggst_no].mdl_no, LOAD_ADDRESS_15);
 
         gg_load_mode = 4;
     break;
     case 3:
-        LoadReq(fene_dat[ingame_wrk.msn_no][ap_wrk.ggst_no].mdl_no + M000_MIKU_MDL, MODEL_ADDRESS);
+        LoadReq(M000_MIKU_MDL + fene_dat[ingame_wrk.msn_no][ap_wrk.ggst_no].mdl_no, LOAD_ADDRESS_15);
 
         gg_load_mode = 4;
     break;
     case 4:
         if (IsLoadEndAll() != 0)
         {
-            motInitEnemyMdl((u_int *)MODEL_ADDRESS, fene_dat[ingame_wrk.msn_no][gg_no].mdl_no);
-            LoadEneDmgTex(fene_dat[ingame_wrk.msn_no][gg_no].mdl_no, (u_int *)ENE_DMG_ADDRESS);
-            LoadReq(fene_dat[ingame_wrk.msn_no][gg_no].anm_no + M000_MIKU_ANM, ANIM_ADDRESS);
+            motInitEnemyMdl((u_int *)LOAD_ADDRESS_15, fene_dat[ingame_wrk.msn_no][gg_no].mdl_no);
+            LoadEneDmgTex(fene_dat[ingame_wrk.msn_no][gg_no].mdl_no, (u_int *)LOAD_ADDRESS_10);
+            LoadReq(M000_MIKU_ANM + fene_dat[ingame_wrk.msn_no][gg_no].anm_no, LOAD_ADDRESS_09);
 
             gg_load_mode = 5;
         }
@@ -223,7 +236,11 @@ int GuardGhostLoad()
     case 5:
         if (IsLoadEndAll() != 0)
         {
-            motInitEnemyAnm((u_int *)ANIM_ADDRESS, fene_dat[ingame_wrk.msn_no][gg_no].mdl_no, fene_dat[ingame_wrk.msn_no][gg_no].anm_no);
+#if defined(BUILD_JP_VERSION)
+            printf("IsLoadEndAllMotend\n");
+#endif
+
+            motInitEnemyAnm((u_int *)LOAD_ADDRESS_09, fene_dat[ingame_wrk.msn_no][gg_no].mdl_no, fene_dat[ingame_wrk.msn_no][gg_no].anm_no);
             SeFileLoadAndSetFGhost(fene_dat[ingame_wrk.msn_no][gg_no].se_no, 18);
 
             gg_load_mode = 6;
@@ -232,6 +249,10 @@ int GuardGhostLoad()
     case 6:
         if (IsLoadEndAll() != 0)
         {
+#if defined(BUILD_JP_VERSION)
+            printf("IsLoadEndAllSeEnd\n");
+#endif
+
             gg_load_mode = 7;
             ene_dead_load = 0;
             ap_wrk.gg_mode = 2;
@@ -240,6 +261,7 @@ int GuardGhostLoad()
         }
     break;
     }
+
     return 0;
 }
 

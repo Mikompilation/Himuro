@@ -146,7 +146,7 @@ segments:
           - [0x98508,  c,   ingame/entry/ap_bgost]
           - [0x98820,  c,   ingame/entry/ap_dgost]
           - [0x98d30,  c,   ingame/entry/ap_fgost]
-          - [0x999d8,  asm, ingame/entry/ap_ggost]
+          - [0x999d8,  c,   ingame/entry/ap_ggost]
           - [0x9a128,  asm, ingame/entry/ap_pgost]
           - [0x9a6f8,  asm, ingame/entry/ap_rgost]
           - [0x9b5f8,  asm, ingame/entry/ap_sgost]
@@ -276,7 +276,7 @@ segments:
           - { start: 0x222c68, type: .data,   vram: 0x321c68, name: ingame/entry/ap_bgost         }
           - { start: 0x222c78, type: .data,   vram: 0x321c78, name: ingame/entry/ap_dgost         }
           - { start: 0x222ca0, type: .data,   vram: 0x321ca0, name: ingame/entry/ap_fgost         }
-          - { start: 0x222cd0, type:  data,   vram: 0x321cd0, name: ingame/entry/ap_ggost         }
+          - { start: 0x222cd0, type: .data,   vram: 0x321cd0, name: ingame/entry/ap_ggost         }
           - { start: 0x222d28, type:  data,   vram: 0x321d28, name: ingame/entry/ap_pgost         }
           - { start: 0x222d70, type:  data,   vram: 0x321d70, name: ingame/entry/ap_rgost         }
           - { start: 0x2230f0, type:  data,   vram: 0x3220f0, name: ingame/entry/ap_sgost         }
@@ -394,7 +394,7 @@ segments:
           - { start: 0x24e4b0, type: .rodata, vram: 0x34d4b0, name: ingame/entry/ap_bgost         }
           - { start: 0x24e4d0, type: .rodata, vram: 0x34d4d0, name: ingame/entry/ap_dgost         }
           - { start: 0x24e4f0, type: .rodata, vram: 0x34d4f0, name: ingame/entry/ap_fgost         }
-          - { start: 0x24e520, type:  rodata, vram: 0x34d520, name: ingame/entry/ap_ggost         }
+          - { start: 0x24e520, type: .rodata, vram: 0x34d520, name: ingame/entry/ap_ggost         }
           - { start: 0x24e5f0, type:  rodata, vram: 0x34d5f0, name: ingame/entry/ap_sgost         }
           - { start: 0x24e6d0, type:  rodata, vram: 0x34d6d0, name: ingame/entry/ap_zgost         }
           - { start: 0x24e700, type:  rodata, vram: 0x34d700, name: ingame/event/ev_main          }
@@ -567,7 +567,7 @@ segments:
           - { start: 0x256f78, type: .sdata,  vram: 0x355f78, name: ingame/enemy/move_ctl         }
           - { start: 0x256f90, type: .sdata,  vram: 0x355f90, name: ingame/entry/ap_dgost         }
           - { start: 0x256f98, type: .sdata,  vram: 0x355f98, name: ingame/entry/ap_fgost         }
-          - { start: 0x256f9c, type:  sdata,  vram: 0x355f9c, name: ingame/entry/ap_ggost         }
+          - { start: 0x256f9c, type: .sdata,  vram: 0x355f9c, name: ingame/entry/ap_ggost         }
           - { start: 0x256fa8, type:  sdata,  vram: 0x355fa8, name: ingame/entry/ap_pgost         }
           - { start: 0x256fb8, type:  sdata,  vram: 0x355fb8, name: ingame/entry/ap_sgost         }
           - { start: 0x256fc0, type:  sdata,  vram: 0x355fc0, name: ingame/entry/ap_zgost         }

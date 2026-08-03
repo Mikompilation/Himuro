@@ -3,10 +3,10 @@
 
 #include "typedefs.h"
 
-typedef struct { // 0x28
-	/* 0x00 */ u_char ggst[5];
-	/* 0x05 */ u_char room[5];
-	/* 0x0a */ short int pos[5][3];
+typedef struct {
+    u_char ggst[5];
+    u_char room[5];
+    short int pos[5][3];
 } GGOST_DAT;
 
 // extern GGOST_DAT msn03ggst_dat;
