@@ -1,5 +1,6 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "enums.h"
 #include "sp_menu.h"
 
@@ -64,27 +65,8 @@ static BOOK book[6];
 
 #define PI 3.1415927f
 
-#ifdef BUILD_EU_VERSION
-#define SIDE_0_ADDRESS 0x1d83000;
-#define SIDE_1_ADDRESS 0x1d93470;
-#else
-#define SIDE_0_ADDRESS 0x1d88100;
-#define SIDE_1_ADDRESS 0x1d98570;
-#endif
-
-#ifdef BUILD_EU_VERSION
-#define LOAD_ADDRESS_1 0x1d54030
-#define LOAD_ADDRESS_2 0x1d10000
-#define LOAD_ADDRESS_3 0x1d23680
-#define LOAD_ADDRESS_4 0x1d210c0
-#define LOAD_ADDRESS_5 0x1d83000
-#else
-#define LOAD_ADDRESS_1 0x1d59630
-#define LOAD_ADDRESS_2 0x1d15600
-#define LOAD_ADDRESS_3 0x1d28c80
-#define LOAD_ADDRESS_4 0x1d266c0
-#define LOAD_ADDRESS_5 0x1d88100
-#endif
+#define SIDE_0_ADDRESS LOAD_ADDRESS_36
+#define SIDE_1_ADDRESS LOAD_ADDRESS_37
 
 void SavePointMenuInit()
 {
@@ -247,9 +229,9 @@ char SavePointMenuMain(u_char msn)
             SeStartFix(1, 0, 0x1000, 0x1000, 0);
 
 #ifdef BUILD_EU_VERSION
-            sp_load_id = LoadReqLanguage(PL_PSVP_E_PK2, LOAD_ADDRESS_1);
+            sp_load_id = LoadReqLanguage(PL_PSVP_E_PK2, LOAD_ADDRESS_35);
 #else
-            sp_load_id = LoadReq(PL_PSVP_PK2, LOAD_ADDRESS_1);
+            sp_load_id = LoadReq(PL_PSVP_PK2, LOAD_ADDRESS_35);
 #endif
 
             spmenu_wrk.mode = 3;
@@ -279,7 +261,7 @@ char SavePointMenuMain(u_char msn)
         }
     break;
     case 4:
-        SetSprFile(LOAD_ADDRESS_1);
+        SetSprFile(LOAD_ADDRESS_35);
 
         if (dsp_svp.top_alp + 8 < 0x80)
         {
@@ -298,11 +280,11 @@ char SavePointMenuMain(u_char msn)
         }
     break;
     case 5:
-        SetSprFile(LOAD_ADDRESS_1);
+        SetSprFile(LOAD_ADDRESS_35);
         SavePointMenuModeSlct(msn, mode);
     break;
     case 6:
-        SetSprFile(LOAD_ADDRESS_1);
+        SetSprFile(LOAD_ADDRESS_35);
 
         if (sp_load_id == -1)
         {
@@ -318,15 +300,15 @@ char SavePointMenuMain(u_char msn)
 
                 if (is_btlmode)
                 {
-                    mcInit(0, (u_int *)0x420000, mc_header.game.msn_flg);
+                    mcInit(0, (u_int *)MC_WORK_ADDRESS, mc_header.game.msn_flg);
                 }
                 else if (msn == 0)
                 {
-                    mcInit(0, (u_int *)0x420000, 0);
+                    mcInit(0, (u_int *)MC_WORK_ADDRESS, 0);
                 }
                 else
                 {
-                    mcInit(0, (u_int *)0x420000, 1);
+                    mcInit(0, (u_int *)MC_WORK_ADDRESS, 1);
                 }
 
                 spmenu_wrk.mode = 7;
@@ -336,9 +318,9 @@ char SavePointMenuMain(u_char msn)
         }
     break;
     case 7:
-        SetSprFile(LOAD_ADDRESS_2);
-        SetSprFile(LOAD_ADDRESS_1);
-        SetSprFile(LOAD_ADDRESS_3);
+        SetSprFile(LOAD_ADDRESS_31);
+        SetSprFile(LOAD_ADDRESS_35);
+        SetSprFile(LOAD_ADDRESS_33);
 
         if (McAtSaveChk() != 0)
         {
@@ -348,7 +330,7 @@ char SavePointMenuMain(u_char msn)
         }
     break;
     case 8:
-        SetSprFile(LOAD_ADDRESS_1);
+        SetSprFile(LOAD_ADDRESS_35);
 
         if (sp_load_id == -1)
         {
@@ -368,7 +350,7 @@ char SavePointMenuMain(u_char msn)
         }
     break;
     case 9:
-        SetSprFile(LOAD_ADDRESS_1);
+        SetSprFile(LOAD_ADDRESS_35);
 
         if (sp_load_id == -1)
         {
@@ -376,7 +358,7 @@ char SavePointMenuMain(u_char msn)
         }
     break;
     case 10:
-        SetSprFile(LOAD_ADDRESS_1);
+        SetSprFile(LOAD_ADDRESS_35);
 
         dsp_svp.bak_alp = 0x80;
 
@@ -392,20 +374,20 @@ char SavePointMenuMain(u_char msn)
 
             if (dsp_svp.in_album != 0)
             {
-                mcInit(4, (u_int *)0x420000, 0);
+                mcInit(4, (u_int *)MC_WORK_ADDRESS, 0);
             }
             else
             {
-                mcInit(3, (u_int *)0x420000, 0);
+                mcInit(3, (u_int *)MC_WORK_ADDRESS, 0);
             }
 
             spmenu_wrk.mode = 11;
         }
     break;
     case 11:
-        SetSprFile(LOAD_ADDRESS_1);
-        SetSprFile(LOAD_ADDRESS_2);
-        SetSprFile(LOAD_ADDRESS_3);
+        SetSprFile(LOAD_ADDRESS_35);
+        SetSprFile(LOAD_ADDRESS_31);
+        SetSprFile(LOAD_ADDRESS_33);
 
         switch (McAtLoadChk(2))
         {
@@ -424,9 +406,9 @@ char SavePointMenuMain(u_char msn)
                 sp_load_id = AlbmDesignLoadInGame(0, 5);
                 sp_load_id = AlbmDesignLoadInGame(1, mc_album_type);
 #ifdef BUILD_EU_VERSION
-                sp_load_id = LoadReqLanguage(PL_ALBM_E_PK2, LOAD_ADDRESS_2);
+                sp_load_id = LoadReqLanguage(PL_ALBM_E_PK2, LOAD_ADDRESS_31);
 #else
-                sp_load_id = LoadReq(PL_ALBM_PK2, LOAD_ADDRESS_2);
+                sp_load_id = LoadReq(PL_ALBM_PK2, LOAD_ADDRESS_31);
 #endif
 
                 spmenu_wrk.mode = 12;
@@ -444,9 +426,9 @@ char SavePointMenuMain(u_char msn)
                 sp_load_id = AlbmDesignLoadInGame(0, 5);
                 sp_load_id = AlbmDesignLoadInGame(1, mc_album_type);
 #ifdef BUILD_EU_VERSION
-                sp_load_id = LoadReqLanguage(PL_ALBM_E_PK2, LOAD_ADDRESS_2);
+                sp_load_id = LoadReqLanguage(PL_ALBM_E_PK2, LOAD_ADDRESS_31);
 #else
-                sp_load_id = LoadReq(PL_ALBM_PK2, LOAD_ADDRESS_2);
+                sp_load_id = LoadReq(PL_ALBM_PK2, LOAD_ADDRESS_31);
 #endif
 
                 spmenu_wrk.mode = 12;
@@ -460,9 +442,9 @@ char SavePointMenuMain(u_char msn)
                 sp_load_id = AlbmDesignLoadInGame(0, dsp_svp.atype_buf[0]);
                 sp_load_id = AlbmDesignLoadInGame(1, dsp_svp.atype_buf[1]);
 #ifdef BUILD_EU_VERSION
-                sp_load_id = LoadReqLanguage(PL_ALBM_E_PK2, LOAD_ADDRESS_2);
+                sp_load_id = LoadReqLanguage(PL_ALBM_E_PK2, LOAD_ADDRESS_31);
 #else
-                sp_load_id = LoadReq(PL_ALBM_PK2, LOAD_ADDRESS_2);
+                sp_load_id = LoadReq(PL_ALBM_PK2, LOAD_ADDRESS_31);
 #endif
 
                 spmenu_wrk.mode = 12;
@@ -470,11 +452,11 @@ char SavePointMenuMain(u_char msn)
             else
             {
 #ifdef BUILD_EU_VERSION
-                sp_load_id = LoadReqLanguage(PL_PLDT_E_PK2, LOAD_ADDRESS_4);
-                sp_load_id = LoadReqLanguage(PL_MTOP_E_PK2, LOAD_ADDRESS_2);
+                sp_load_id = LoadReqLanguage(PL_PLDT_E_PK2, LOAD_ADDRESS_32);
+                sp_load_id = LoadReqLanguage(PL_MTOP_E_PK2, LOAD_ADDRESS_31);
 #else
-                sp_load_id = LoadReq(PL_PLDT_PK2, LOAD_ADDRESS_4);
-                sp_load_id = LoadReq(PL_MTOP_PK2, LOAD_ADDRESS_2);
+                sp_load_id = LoadReq(PL_PLDT_PK2, LOAD_ADDRESS_32);
+                sp_load_id = LoadReq(PL_MTOP_PK2, LOAD_ADDRESS_31);
 #endif
 
                 spmenu_wrk.mode = 0x10;
@@ -490,9 +472,9 @@ char SavePointMenuMain(u_char msn)
                 sp_load_id = AlbmDesignLoadInGame(0, 5);
                 sp_load_id = AlbmDesignLoadInGame(1, 5);
 #ifdef BUILD_EU_VERSION
-                sp_load_id = LoadReqLanguage(PL_ALBM_E_PK2, LOAD_ADDRESS_2);
+                sp_load_id = LoadReqLanguage(PL_ALBM_E_PK2, LOAD_ADDRESS_31);
 #else
-                sp_load_id = LoadReq(PL_ALBM_PK2, LOAD_ADDRESS_2);
+                sp_load_id = LoadReq(PL_ALBM_PK2, LOAD_ADDRESS_31);
 #endif
 
                 spmenu_wrk.mode = 12;
@@ -515,9 +497,9 @@ char SavePointMenuMain(u_char msn)
                 spmenu_wrk.mode = 12;
 
 #ifdef BUILD_EU_VERSION
-                sp_load_id = LoadReqLanguage(PL_ALBM_E_PK2, LOAD_ADDRESS_2);
+                sp_load_id = LoadReqLanguage(PL_ALBM_E_PK2, LOAD_ADDRESS_31);
 #else
-                sp_load_id = LoadReq(PL_ALBM_PK2, LOAD_ADDRESS_2);
+                sp_load_id = LoadReq(PL_ALBM_PK2, LOAD_ADDRESS_31);
 #endif
             }
         break;
@@ -530,7 +512,7 @@ char SavePointMenuMain(u_char msn)
         }
     break;
     case 13:
-        SetSprFile(LOAD_ADDRESS_2);
+        SetSprFile(LOAD_ADDRESS_31);
 
         switch(SweetMemories(0, 0x80))
         {
@@ -540,25 +522,25 @@ char SavePointMenuMain(u_char msn)
         case 1:
             if (is_btlmode)
             {
-                mcInit(2, (u_int *)0x420000, mc_header.game.msn_flg);
+                mcInit(2, (u_int *)MC_WORK_ADDRESS, mc_header.game.msn_flg);
             }
             else if (msn == 0)
             {
-                mcInit(2, (u_int *)0x420000, 0);
+                mcInit(2, (u_int *)MC_WORK_ADDRESS, 0);
             }
             else
             {
-                mcInit(2, (u_int *)0x420000, 1);
+                mcInit(2, (u_int *)MC_WORK_ADDRESS, 1);
             }
 
             dsp_svp.load_side = 0;
 
 #ifdef BUILD_EU_VERSION
-            sp_load_id = LoadReq(PL_SAVE_E_PK2, LOAD_ADDRESS_2);
-            sp_load_id = LoadReqLanguage(PL_ALBM_SAVE_E_PK2, LOAD_ADDRESS_3);
+            sp_load_id = LoadReq(PL_SAVE_E_PK2, LOAD_ADDRESS_31);
+            sp_load_id = LoadReqLanguage(PL_ALBM_SAVE_E_PK2, LOAD_ADDRESS_33);
 #else
-            sp_load_id = LoadReq(PL_SAVE_PK2, LOAD_ADDRESS_2);
-            sp_load_id = LoadReq(PL_ALBM_SAVE_PK2, LOAD_ADDRESS_3);
+            sp_load_id = LoadReq(PL_SAVE_PK2, LOAD_ADDRESS_31);
+            sp_load_id = LoadReq(PL_ALBM_SAVE_PK2, LOAD_ADDRESS_33);
 #endif
 
             spmenu_wrk.mode = 14;
@@ -568,25 +550,25 @@ char SavePointMenuMain(u_char msn)
         case 2:
             if (is_btlmode)
             {
-                mcInit(2, (u_int *)0x420000, mc_header.game.msn_flg);
+                mcInit(2, (u_int *)MC_WORK_ADDRESS, mc_header.game.msn_flg);
             }
             else if (msn == 0)
             {
-                mcInit(2, (u_int *)0x420000, 0);
+                mcInit(2, (u_int *)MC_WORK_ADDRESS, 0);
             }
             else
             {
-                mcInit(2, (u_int *)0x420000, 1);
+                mcInit(2, (u_int *)MC_WORK_ADDRESS, 1);
             }
 
             dsp_svp.load_side = 1;
 
 #ifdef BUILD_EU_VERSION
-            sp_load_id = LoadReqLanguage(PL_SAVE_E_PK2, LOAD_ADDRESS_2);
-            sp_load_id = LoadReqLanguage(PL_ALBM_SAVE_E_PK2, LOAD_ADDRESS_3);
+            sp_load_id = LoadReqLanguage(PL_SAVE_E_PK2, LOAD_ADDRESS_31);
+            sp_load_id = LoadReqLanguage(PL_ALBM_SAVE_E_PK2, LOAD_ADDRESS_33);
 #else
-            sp_load_id = LoadReq(PL_SAVE_PK2, LOAD_ADDRESS_2);
-            sp_load_id = LoadReq(PL_ALBM_SAVE_PK2, LOAD_ADDRESS_3);
+            sp_load_id = LoadReq(PL_SAVE_PK2, LOAD_ADDRESS_31);
+            sp_load_id = LoadReq(PL_ALBM_SAVE_PK2, LOAD_ADDRESS_33);
 #endif
 
             dsp_svp.in_album = 1;
@@ -597,11 +579,11 @@ char SavePointMenuMain(u_char msn)
             dsp_svp.load_side = 0;
 
 #ifdef BUILD_EU_VERSION
-            sp_load_id = LoadReqLanguage(PL_SAVE_E_PK2, LOAD_ADDRESS_2);
-            sp_load_id = LoadReqLanguage(PL_ALBM_SAVE_E_PK2, LOAD_ADDRESS_3);
+            sp_load_id = LoadReqLanguage(PL_SAVE_E_PK2, LOAD_ADDRESS_31);
+            sp_load_id = LoadReqLanguage(PL_ALBM_SAVE_E_PK2, LOAD_ADDRESS_33);
 #else
-            sp_load_id = LoadReq(PL_SAVE_PK2, LOAD_ADDRESS_2);
-            sp_load_id = LoadReq(PL_ALBM_SAVE_PK2, LOAD_ADDRESS_3);
+            sp_load_id = LoadReq(PL_SAVE_PK2, LOAD_ADDRESS_31);
+            sp_load_id = LoadReq(PL_ALBM_SAVE_PK2, LOAD_ADDRESS_33);
 #endif
 
             spmenu_wrk.mode = 9;
@@ -612,11 +594,11 @@ char SavePointMenuMain(u_char msn)
             dsp_svp.load_side = 1;
 
 #ifdef BUILD_EU_VERSION
-            sp_load_id = LoadReqLanguage(PL_SAVE_E_PK2, LOAD_ADDRESS_2);
-            sp_load_id = LoadReqLanguage(PL_ALBM_SAVE_E_PK2, LOAD_ADDRESS_3);
+            sp_load_id = LoadReqLanguage(PL_SAVE_E_PK2, LOAD_ADDRESS_31);
+            sp_load_id = LoadReqLanguage(PL_ALBM_SAVE_E_PK2, LOAD_ADDRESS_33);
 #else
-            sp_load_id = LoadReq(PL_SAVE_PK2, LOAD_ADDRESS_2);
-            sp_load_id = LoadReq(PL_ALBM_SAVE_PK2, LOAD_ADDRESS_3);
+            sp_load_id = LoadReq(PL_SAVE_PK2, LOAD_ADDRESS_31);
+            sp_load_id = LoadReq(PL_ALBM_SAVE_PK2, LOAD_ADDRESS_33);
 #endif
 
             dsp_svp.in_album = 1;
@@ -625,9 +607,9 @@ char SavePointMenuMain(u_char msn)
         break;
         case 5:
 #ifdef BUILD_EU_VERSION
-            sp_load_id = LoadReqLanguage(PL_FNDR_E_PK2, LOAD_ADDRESS_5);
+            sp_load_id = LoadReqLanguage(PL_FNDR_E_PK2, LOAD_ADDRESS_36);
 #else
-            sp_load_id = LoadReq(PL_FNDR_PK2, LOAD_ADDRESS_5);
+            sp_load_id = LoadReq(PL_FNDR_PK2, LOAD_ADDRESS_36);
 #endif
 
             spmenu_wrk.mode = 16;
@@ -635,7 +617,7 @@ char SavePointMenuMain(u_char msn)
         }
     break;
     case 14:
-        SetSprFile(LOAD_ADDRESS_1);
+        SetSprFile(LOAD_ADDRESS_35);
 
         if (sp_load_id == -1)
         {
@@ -643,9 +625,9 @@ char SavePointMenuMain(u_char msn)
         }
     break;
     case 15:
-        SetSprFile(LOAD_ADDRESS_1);
-        SetSprFile(LOAD_ADDRESS_2);
-        SetSprFile(LOAD_ADDRESS_3);
+        SetSprFile(LOAD_ADDRESS_35);
+        SetSprFile(LOAD_ADDRESS_31);
+        SetSprFile(LOAD_ADDRESS_33);
 
         switch (McAtAlbmChk())
         {
@@ -662,9 +644,9 @@ char SavePointMenuMain(u_char msn)
                 sp_load_id = AlbmDesignLoadInGame(0, dsp_svp.atype_buf[0]);
                 sp_load_id = AlbmDesignLoadInGame(1, dsp_svp.atype_buf[1]);
 #ifdef BUILD_EU_VERSION
-                sp_load_id = LoadReqLanguage(PL_ALBM_E_PK2, LOAD_ADDRESS_2);
+                sp_load_id = LoadReqLanguage(PL_ALBM_E_PK2, LOAD_ADDRESS_31);
 #else
-                sp_load_id = LoadReq(PL_ALBM_PK2, LOAD_ADDRESS_2);
+                sp_load_id = LoadReq(PL_ALBM_PK2, LOAD_ADDRESS_31);
 #endif
 
                 spmenu_wrk.mode = 12;
@@ -682,9 +664,9 @@ char SavePointMenuMain(u_char msn)
                 sp_load_id = AlbmDesignLoadInGame(0, dsp_svp.atype_buf[0]);
                 sp_load_id = AlbmDesignLoadInGame(1, dsp_svp.atype_buf[1]);
 #ifdef BUILD_EU_VERSION
-                sp_load_id = LoadReqLanguage(PL_ALBM_E_PK2, LOAD_ADDRESS_2);
+                sp_load_id = LoadReqLanguage(PL_ALBM_E_PK2, LOAD_ADDRESS_31);
 #else
-                sp_load_id = LoadReq(PL_ALBM_PK2, LOAD_ADDRESS_2);
+                sp_load_id = LoadReq(PL_ALBM_PK2, LOAD_ADDRESS_31);
 #endif
 
                 spmenu_wrk.mode = 12;
@@ -698,16 +680,16 @@ char SavePointMenuMain(u_char msn)
                 sp_load_id = AlbmDesignLoadInGame(0, dsp_svp.atype_buf[0]);
                 sp_load_id = AlbmDesignLoadInGame(1, dsp_svp.atype_buf[1]);
 #ifdef BUILD_EU_VERSION
-                sp_load_id = LoadReqLanguage(PL_ALBM_E_PK2, LOAD_ADDRESS_2);
+                sp_load_id = LoadReqLanguage(PL_ALBM_E_PK2, LOAD_ADDRESS_31);
 #else
-                sp_load_id = LoadReq(PL_ALBM_PK2, LOAD_ADDRESS_2);
+                sp_load_id = LoadReq(PL_ALBM_PK2, LOAD_ADDRESS_31);
 #endif
 
                 spmenu_wrk.mode = 12;
             }
             else
             {
-                mcInit(3, (u_int *)0x420000, 0);
+                mcInit(3, (u_int *)MC_WORK_ADDRESS, 0);
 
                 spmenu_wrk.mode = 11;
             }
@@ -718,7 +700,7 @@ char SavePointMenuMain(u_char msn)
         }
     break;
     case 16:
-        SetSprFile(LOAD_ADDRESS_1);
+        SetSprFile(LOAD_ADDRESS_35);
 
         if (sp_load_id == -1)
         {
@@ -744,7 +726,7 @@ char SavePointMenuMain(u_char msn)
         // do nothing ...
     break;
     case 18:
-        SetSprFile(LOAD_ADDRESS_1);
+        SetSprFile(LOAD_ADDRESS_35);
 
         if (sp_load_id == -1)
         {
@@ -775,9 +757,9 @@ char SavePointMenuMain(u_char msn)
     break;
     case 19:
 #ifdef BUILD_EU_VERSION
-        sp_load_id = LoadReqLanguage(PL_PSVP_E_PK2, LOAD_ADDRESS_1);
+        sp_load_id = LoadReqLanguage(PL_PSVP_E_PK2, LOAD_ADDRESS_35);
 #else
-        sp_load_id = LoadReq(PL_PSVP_PK2, LOAD_ADDRESS_1);
+        sp_load_id = LoadReq(PL_PSVP_PK2, LOAD_ADDRESS_35);
 #endif
 
         spmenu_wrk.mode = 3;
@@ -921,11 +903,11 @@ void SavePointMenuModeSlct(u_char msn, u_char mode)
                 SeStartFix(1, 0, 0x1000, 0x1000, 0);
 
 #ifdef BUILD_EU_VERSION
-                sp_load_id = LoadReqLanguage(PL_SAVE_E_PK2, LOAD_ADDRESS_2);
+                sp_load_id = LoadReqLanguage(PL_SAVE_E_PK2, LOAD_ADDRESS_31);
 #else
-                sp_load_id = LoadReq(PL_SAVE_PK2, LOAD_ADDRESS_2);
+                sp_load_id = LoadReq(PL_SAVE_PK2, LOAD_ADDRESS_31);
 #endif
-                sp_load_id = LoadReq(SV_PHT_PK2, LOAD_ADDRESS_3);
+                sp_load_id = LoadReq(SV_PHT_PK2, LOAD_ADDRESS_33);
 
                 spmenu_wrk.mode = SPMODE_SAVE_INN;
             break;
@@ -933,11 +915,11 @@ void SavePointMenuModeSlct(u_char msn, u_char mode)
                 SeStartFix(1, 0, 0x1000, 0x1000, 0);
 
 #ifdef BUILD_EU_VERSION
-                sp_load_id = LoadReqLanguage(PL_SAVE_E_PK2, LOAD_ADDRESS_2);
-                sp_load_id = LoadReqLanguage(PL_ALBM_SAVE_E_PK2, LOAD_ADDRESS_3);
+                sp_load_id = LoadReqLanguage(PL_SAVE_E_PK2, LOAD_ADDRESS_31);
+                sp_load_id = LoadReqLanguage(PL_ALBM_SAVE_E_PK2, LOAD_ADDRESS_33);
 #else
-                sp_load_id = LoadReq(PL_SAVE_PK2, LOAD_ADDRESS_2);
-                sp_load_id = LoadReq(PL_ALBM_SAVE_PK2, LOAD_ADDRESS_3);
+                sp_load_id = LoadReq(PL_SAVE_PK2, LOAD_ADDRESS_31);
+                sp_load_id = LoadReq(PL_ALBM_SAVE_PK2, LOAD_ADDRESS_33);
 #endif
 
                 dsp_svp.atype_buf[0] = 5;
@@ -957,11 +939,11 @@ void SavePointMenuModeSlct(u_char msn, u_char mode)
                 SeStartFix(1, 0, 0x1000, 0x1000, 0);
 
 #ifdef BUILD_EU_VERSION
-                sp_load_id = LoadReqLanguage(PL_PLDT_E_PK2, LOAD_ADDRESS_4);
-                sp_load_id = LoadReqLanguage(PL_MTOP_E_PK2, LOAD_ADDRESS_2);
+                sp_load_id = LoadReqLanguage(PL_PLDT_E_PK2, LOAD_ADDRESS_32);
+                sp_load_id = LoadReqLanguage(PL_MTOP_E_PK2, LOAD_ADDRESS_31);
 #else
-                sp_load_id = LoadReq(PL_PLDT_PK2, LOAD_ADDRESS_4);
-                sp_load_id = LoadReq(PL_MTOP_PK2, LOAD_ADDRESS_2);
+                sp_load_id = LoadReq(PL_PLDT_PK2, LOAD_ADDRESS_32);
+                sp_load_id = LoadReq(PL_MTOP_PK2, LOAD_ADDRESS_31);
 #endif
 
                 spmenu_wrk.mode = SPMENU_EXIT;
@@ -1186,11 +1168,11 @@ void SavePointMenuSave()
     if (SaveConte() != 0)
     {
 #ifdef BUILD_EU_VERSION
-        sp_load_id = LoadReqLanguage(PL_PLDT_E_PK2, LOAD_ADDRESS_4);
-        sp_load_id = LoadReqLanguage(PL_MTOP_E_PK2, LOAD_ADDRESS_2);
+        sp_load_id = LoadReqLanguage(PL_PLDT_E_PK2, LOAD_ADDRESS_32);
+        sp_load_id = LoadReqLanguage(PL_MTOP_E_PK2, LOAD_ADDRESS_31);
 #else
-        sp_load_id = LoadReq(PL_PLDT_PK2, LOAD_ADDRESS_4);
-        sp_load_id = LoadReq(PL_MTOP_PK2, LOAD_ADDRESS_2);
+        sp_load_id = LoadReq(PL_PLDT_PK2, LOAD_ADDRESS_32);
+        sp_load_id = LoadReq(PL_MTOP_PK2, LOAD_ADDRESS_31);
 #endif
 
         spmenu_wrk.mode = SPMODE_SAVE_OUT;
@@ -2389,7 +2371,7 @@ static void DspSpInfo(u_char file_no, u_char pos_y, u_char alp, u_char type)
 
             if (sv_pht != 0xff)
             {
-                SetSprFile(LOAD_ADDRESS_3);
+                SetSprFile(LOAD_ADDRESS_33);
 
 #ifdef BUILD_EU_VERSION
                 PutSpriteYW(SP_R000 + sv_pht, SP_R000 + sv_pht, 471.0f, pos_y + 50, 0.0f, 0x808080, alp, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
@@ -2459,7 +2441,7 @@ static void DspSpInfo(u_char file_no, u_char pos_y, u_char alp, u_char type)
 
             if (sv_pht != 0xff)
             {
-                SetSprFile(LOAD_ADDRESS_3);
+                SetSprFile(LOAD_ADDRESS_33);
 
 #ifdef BUILD_EU_VERSION
                 PutSpriteYW(SP_R042 + sv_pht, SP_R042 + sv_pht, 471.0f, pos_y + 50, 0.0f, 0x808080, alp, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
@@ -2854,13 +2836,13 @@ char AlbumModeInGameOver()
         albm_mode.in_album = 0;
         albm_mode.type[0] = albm_mode.type[1] = 5;
 #ifdef BUILD_EU_VERSION
-        albm_mode.load_id = LoadReqLanguage(PL_PSVP_E_PK2, LOAD_ADDRESS_1);
-        albm_mode.load_id = LoadReqLanguage(PL_SAVE_E_PK2, LOAD_ADDRESS_2);
-        albm_mode.load_id = LoadReqLanguage(PL_ALBM_SAVE_E_PK2, LOAD_ADDRESS_3);
+        albm_mode.load_id = LoadReqLanguage(PL_PSVP_E_PK2, LOAD_ADDRESS_35);
+        albm_mode.load_id = LoadReqLanguage(PL_SAVE_E_PK2, LOAD_ADDRESS_31);
+        albm_mode.load_id = LoadReqLanguage(PL_ALBM_SAVE_E_PK2, LOAD_ADDRESS_33);
 #else
-        albm_mode.load_id = LoadReq(PL_PSVP_PK2, LOAD_ADDRESS_1);
-        albm_mode.load_id = LoadReq(PL_SAVE_PK2, LOAD_ADDRESS_2);
-        albm_mode.load_id = LoadReq(PL_ALBM_SAVE_PK2, LOAD_ADDRESS_3);
+        albm_mode.load_id = LoadReq(PL_PSVP_PK2, LOAD_ADDRESS_35);
+        albm_mode.load_id = LoadReq(PL_SAVE_PK2, LOAD_ADDRESS_31);
+        albm_mode.load_id = LoadReq(PL_ALBM_SAVE_PK2, LOAD_ADDRESS_33);
 #endif
         albm_mode.step = ALBM_MODE_LOAD_FOR_INN;
     break;
@@ -2871,20 +2853,20 @@ char AlbumModeInGameOver()
 
             if (albm_mode.in_album != 0)
             {
-                mcInit(MC_MODE_ALBUMLOAD_GAME2, (u_int *)0x420000, 0);
+                mcInit(MC_MODE_ALBUMLOAD_GAME2, (u_int *)MC_WORK_ADDRESS, 0);
             }
             else
             {
-                mcInit(MC_MODE_ALBUMLOAD_GAME1, (u_int *)0x420000, 0);
+                mcInit(MC_MODE_ALBUMLOAD_GAME1, (u_int *)MC_WORK_ADDRESS, 0);
             }
 
             albm_mode.step = ALBM_MODE_DATA_LOAD;
         }
     break;
     case ALBM_MODE_DATA_LOAD:
-        SetSprFile(LOAD_ADDRESS_1);
-        SetSprFile(LOAD_ADDRESS_2);
-        SetSprFile(LOAD_ADDRESS_3);
+        SetSprFile(LOAD_ADDRESS_35);
+        SetSprFile(LOAD_ADDRESS_31);
+        SetSprFile(LOAD_ADDRESS_33);
 
         switch (McAtLoadChk(2))
         {
@@ -2899,9 +2881,9 @@ char AlbumModeInGameOver()
                 albm_mode.load_id = AlbmDesignLoadInGame(0, albm_mode.type[0]);
                 albm_mode.load_id = AlbmDesignLoadInGame(1, mc_album_type);
 #ifdef BUILD_EU_VERSION
-                albm_mode.load_id = LoadReqLanguage(PL_ALBM_E_PK2, LOAD_ADDRESS_2);
+                albm_mode.load_id = LoadReqLanguage(PL_ALBM_E_PK2, LOAD_ADDRESS_31);
 #else
-                albm_mode.load_id = LoadReq(PL_ALBM_PK2, LOAD_ADDRESS_2);
+                albm_mode.load_id = LoadReq(PL_ALBM_PK2, LOAD_ADDRESS_31);
 #endif
                 albm_mode.step = ALBM_MODE_PRE;
 
@@ -2914,9 +2896,9 @@ char AlbumModeInGameOver()
                 albm_mode.load_id = AlbmDesignLoadInGame(0, 5);
                 albm_mode.load_id = AlbmDesignLoadInGame(1, mc_album_type);
 #ifdef BUILD_EU_VERSION
-                albm_mode.load_id = LoadReqLanguage(PL_ALBM_E_PK2, LOAD_ADDRESS_2);
+                albm_mode.load_id = LoadReqLanguage(PL_ALBM_E_PK2, LOAD_ADDRESS_31);
 #else
-                albm_mode.load_id = LoadReq(PL_ALBM_PK2, LOAD_ADDRESS_2);
+                albm_mode.load_id = LoadReq(PL_ALBM_PK2, LOAD_ADDRESS_31);
 #endif
                 albm_mode.step = ALBM_MODE_PRE;
             }
@@ -2929,9 +2911,9 @@ char AlbumModeInGameOver()
                 albm_mode.load_id = AlbmDesignLoadInGame(0, 5);
                 albm_mode.load_id = AlbmDesignLoadInGame(1, mc_album_type);
 #ifdef BUILD_EU_VERSION
-                albm_mode.load_id = LoadReqLanguage(PL_ALBM_E_PK2, LOAD_ADDRESS_2);
+                albm_mode.load_id = LoadReqLanguage(PL_ALBM_E_PK2, LOAD_ADDRESS_31);
 #else
-                albm_mode.load_id = LoadReq(PL_ALBM_PK2, LOAD_ADDRESS_2);
+                albm_mode.load_id = LoadReq(PL_ALBM_PK2, LOAD_ADDRESS_31);
 #endif
                 albm_mode.step = ALBM_MODE_PRE;
             }
@@ -2950,9 +2932,9 @@ char AlbumModeInGameOver()
                 albm_mode.load_id = AlbmDesignLoadInGame(0, albm_mode.type[0]);
                 albm_mode.load_id = AlbmDesignLoadInGame(1, 5);
 #ifdef BUILD_EU_VERSION
-                albm_mode.load_id = LoadReqLanguage(PL_ALBM_E_PK2, LOAD_ADDRESS_2);
+                albm_mode.load_id = LoadReqLanguage(PL_ALBM_E_PK2, LOAD_ADDRESS_31);
 #else
-                albm_mode.load_id = LoadReq(PL_ALBM_PK2, LOAD_ADDRESS_2);
+                albm_mode.load_id = LoadReq(PL_ALBM_PK2, LOAD_ADDRESS_31);
 #endif
                 albm_mode.step = ALBM_MODE_PRE;
             } else {
@@ -2970,9 +2952,9 @@ char AlbumModeInGameOver()
                 albm_mode.load_id = AlbmDesignLoadInGame(1, 5);
                 albm_mode.step = ALBM_MODE_PRE;
 #ifdef BUILD_EU_VERSION
-                albm_mode.load_id = LoadReqLanguage(PL_ALBM_E_PK2, LOAD_ADDRESS_2);
+                albm_mode.load_id = LoadReqLanguage(PL_ALBM_E_PK2, LOAD_ADDRESS_31);
 #else
-                albm_mode.load_id = LoadReq(PL_ALBM_PK2, LOAD_ADDRESS_2);
+                albm_mode.load_id = LoadReq(PL_ALBM_PK2, LOAD_ADDRESS_31);
 #endif
             }
         break;
@@ -2986,7 +2968,7 @@ char AlbumModeInGameOver()
     break;
     case ALBM_MODE_BODY:
         BgFusumaYW(0x606060, 0.0f, 128.0f, 0x7d000);
-        SetSprFile(LOAD_ADDRESS_2);
+        SetSprFile(LOAD_ADDRESS_31);
 
         switch(SweetMemories(0, 0x80))
         {
@@ -2994,29 +2976,29 @@ char AlbumModeInGameOver()
             // do nothing ...
         break;
         case 1:
-            mcInit(MC_MODE_ALBUMSAVE, (u_int *)0x420000, 1);
+            mcInit(MC_MODE_ALBUMSAVE, (u_int *)MC_WORK_ADDRESS, 1);
 
             albm_mode.load_side = 0;
 #ifdef BUILD_EU_VERSION
-            albm_mode.load_id = LoadReqLanguage(PL_SAVE_E_PK2, LOAD_ADDRESS_2);
-            albm_mode.load_id = LoadReqLanguage(PL_ALBM_SAVE_E_PK2, LOAD_ADDRESS_3);
+            albm_mode.load_id = LoadReqLanguage(PL_SAVE_E_PK2, LOAD_ADDRESS_31);
+            albm_mode.load_id = LoadReqLanguage(PL_ALBM_SAVE_E_PK2, LOAD_ADDRESS_33);
 #else
-            albm_mode.load_id = LoadReq(PL_SAVE_PK2, LOAD_ADDRESS_2);
-            albm_mode.load_id = LoadReq(PL_ALBM_SAVE_PK2, LOAD_ADDRESS_3);
+            albm_mode.load_id = LoadReq(PL_SAVE_PK2, LOAD_ADDRESS_31);
+            albm_mode.load_id = LoadReq(PL_ALBM_SAVE_PK2, LOAD_ADDRESS_33);
 #endif
             albm_mode.in_album = 1;
             albm_mode.step = ALBM_MODE_AFT;
         break;
         case 2:
-            mcInit(MC_MODE_ALBUMSAVE, (u_int *)0x420000, 1);
+            mcInit(MC_MODE_ALBUMSAVE, (u_int *)MC_WORK_ADDRESS, 1);
 
             albm_mode.load_side = 1;
 #ifdef BUILD_EU_VERSION
-            albm_mode.load_id = LoadReqLanguage(PL_SAVE_E_PK2, LOAD_ADDRESS_2);
-            albm_mode.load_id = LoadReqLanguage(PL_ALBM_SAVE_E_PK2, LOAD_ADDRESS_3);
+            albm_mode.load_id = LoadReqLanguage(PL_SAVE_E_PK2, LOAD_ADDRESS_31);
+            albm_mode.load_id = LoadReqLanguage(PL_ALBM_SAVE_E_PK2, LOAD_ADDRESS_33);
 #else
-            albm_mode.load_id = LoadReq(PL_SAVE_PK2, LOAD_ADDRESS_2);
-            albm_mode.load_id = LoadReq(PL_ALBM_SAVE_PK2, LOAD_ADDRESS_3);
+            albm_mode.load_id = LoadReq(PL_SAVE_PK2, LOAD_ADDRESS_31);
+            albm_mode.load_id = LoadReq(PL_ALBM_SAVE_PK2, LOAD_ADDRESS_33);
 #endif
             albm_mode.in_album = 1;
             albm_mode.step = ALBM_MODE_AFT;
@@ -3024,11 +3006,11 @@ char AlbumModeInGameOver()
         case 3:
             albm_mode.load_side = 0;
 #ifdef BUILD_EU_VERSION
-            albm_mode.load_id = LoadReqLanguage(PL_SAVE_E_PK2, LOAD_ADDRESS_2);
-            albm_mode.load_id = LoadReqLanguage(PL_ALBM_SAVE_E_PK2, LOAD_ADDRESS_3);
+            albm_mode.load_id = LoadReqLanguage(PL_SAVE_E_PK2, LOAD_ADDRESS_31);
+            albm_mode.load_id = LoadReqLanguage(PL_ALBM_SAVE_E_PK2, LOAD_ADDRESS_33);
 #else
-            albm_mode.load_id = LoadReq(PL_SAVE_PK2, LOAD_ADDRESS_2);
-            albm_mode.load_id = LoadReq(PL_ALBM_SAVE_PK2, LOAD_ADDRESS_3);
+            albm_mode.load_id = LoadReq(PL_SAVE_PK2, LOAD_ADDRESS_31);
+            albm_mode.load_id = LoadReq(PL_ALBM_SAVE_PK2, LOAD_ADDRESS_33);
 #endif
             albm_mode.in_album = 1;
             albm_mode.step = ALBM_MODE_LOAD_FOR_INN;
@@ -3036,11 +3018,11 @@ char AlbumModeInGameOver()
         case 4:
             albm_mode.load_side = 1;
 #ifdef BUILD_EU_VERSION
-            albm_mode.load_id = LoadReqLanguage(PL_SAVE_E_PK2, LOAD_ADDRESS_2);
-            albm_mode.load_id = LoadReqLanguage(PL_ALBM_SAVE_E_PK2, LOAD_ADDRESS_3);
+            albm_mode.load_id = LoadReqLanguage(PL_SAVE_E_PK2, LOAD_ADDRESS_31);
+            albm_mode.load_id = LoadReqLanguage(PL_ALBM_SAVE_E_PK2, LOAD_ADDRESS_33);
 #else
-            albm_mode.load_id = LoadReq(PL_SAVE_PK2, LOAD_ADDRESS_2);
-            albm_mode.load_id = LoadReq(PL_ALBM_SAVE_PK2, LOAD_ADDRESS_3);
+            albm_mode.load_id = LoadReq(PL_SAVE_PK2, LOAD_ADDRESS_31);
+            albm_mode.load_id = LoadReq(PL_ALBM_SAVE_PK2, LOAD_ADDRESS_33);
 #endif
             albm_mode.in_album = 1;
             albm_mode.step = ALBM_MODE_LOAD_FOR_INN;
@@ -3057,9 +3039,9 @@ char AlbumModeInGameOver()
         }
     break;
     case ALBM_MODE_DATA_SAVE:
-        SetSprFile(LOAD_ADDRESS_1);
-        SetSprFile(LOAD_ADDRESS_2);
-        SetSprFile(LOAD_ADDRESS_3);
+        SetSprFile(LOAD_ADDRESS_35);
+        SetSprFile(LOAD_ADDRESS_31);
+        SetSprFile(LOAD_ADDRESS_33);
 
         switch (McAtAlbmChk())
         {
@@ -3076,9 +3058,9 @@ char AlbumModeInGameOver()
                 albm_mode.load_id = AlbmDesignLoadInGame(0, albm_mode.type[0]);
                 albm_mode.load_id = AlbmDesignLoadInGame(1, albm_mode.type[1]);
 #ifdef BUILD_EU_VERSION
-                albm_mode.load_id = LoadReqLanguage(PL_ALBM_E_PK2, LOAD_ADDRESS_2);
+                albm_mode.load_id = LoadReqLanguage(PL_ALBM_E_PK2, LOAD_ADDRESS_31);
 #else
-                albm_mode.load_id = LoadReq(PL_ALBM_PK2, LOAD_ADDRESS_2);
+                albm_mode.load_id = LoadReq(PL_ALBM_PK2, LOAD_ADDRESS_31);
 #endif
                 albm_mode.step = ALBM_MODE_PRE;
             }
@@ -3095,9 +3077,9 @@ char AlbumModeInGameOver()
                 albm_mode.load_id = AlbmDesignLoadInGame(0, albm_mode.type[0]);
                 albm_mode.load_id = AlbmDesignLoadInGame(1, albm_mode.type[1]);
 #ifdef BUILD_EU_VERSION
-                albm_mode.load_id = LoadReqLanguage(PL_ALBM_E_PK2, LOAD_ADDRESS_2);
+                albm_mode.load_id = LoadReqLanguage(PL_ALBM_E_PK2, LOAD_ADDRESS_31);
 #else
-                albm_mode.load_id = LoadReq(PL_ALBM_PK2, LOAD_ADDRESS_2);
+                albm_mode.load_id = LoadReq(PL_ALBM_PK2, LOAD_ADDRESS_31);
 #endif
                 albm_mode.step = ALBM_MODE_PRE;
             }
@@ -3110,15 +3092,15 @@ char AlbumModeInGameOver()
                 albm_mode.load_id = AlbmDesignLoadInGame(0, albm_mode.type[0]);
                 albm_mode.load_id = AlbmDesignLoadInGame(1, albm_mode.type[1]);
 #ifdef BUILD_EU_VERSION
-                albm_mode.load_id = LoadReqLanguage(PL_ALBM_E_PK2, LOAD_ADDRESS_2);
+                albm_mode.load_id = LoadReqLanguage(PL_ALBM_E_PK2, LOAD_ADDRESS_31);
 #else
-                albm_mode.load_id = LoadReq(PL_ALBM_PK2, LOAD_ADDRESS_2);
+                albm_mode.load_id = LoadReq(PL_ALBM_PK2, LOAD_ADDRESS_31);
 #endif
                 albm_mode.step = ALBM_MODE_PRE;
             }
             else
             {
-                mcInit(MC_MODE_ALBUMLOAD_GAME1, (u_int *)0x420000, 0);
+                mcInit(MC_MODE_ALBUMLOAD_GAME1, (u_int *)MC_WORK_ADDRESS, 0);
 
                 albm_mode.step = ALBM_MODE_DATA_LOAD;
             }
