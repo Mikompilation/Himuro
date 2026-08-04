@@ -1,21 +1,21 @@
 #include "common.h"
+#include "addresses.h"
 #include "typedefs.h"
 #include "enums.h"
 #include "ap_rgost.h"
 
-#include "os/eeiop/cdvd/eecdvd.h"
-#include "main/glob.h"
 #include "common/ul_math.h"
 #include "ingame/entry/entry.h"
 #include "ingame/entry/rgst_dat.h"
 #include "ingame/map/door_ctl.h"
 #include "ingame/map/map_area.h"
 #include "ingame/map/map_ctrl.h"
+#include "main/glob.h"
+#include "os/eeiop/cdvd/eecdvd.h"
 
 RGOST_DSP_WRK rg_dsp_wrk[3] = {0};
 RGOST_WRK rg_wrk[200] = {0};
 
-#define ENE_START_ADDRESS 0x1c90000
 #define ENE_BLOCK_SIZE 0x10000
 
 void RareGhostInit()
@@ -95,11 +95,11 @@ int RareGhostLoadReq()
         {
             if (area_read_wrk.rgst[i] & 0x80)
             {
-                ret = LoadReq((area_read_wrk.rgst[i] & ~0x80) + PAZ_ENE001_PK2, ENE_START_ADDRESS + i * ENE_BLOCK_SIZE);
+                ret = LoadReq(PAZ_ENE001_PK2 + (area_read_wrk.rgst[i] & ~0x80), LOAD_ADDRESS_27 + i * ENE_BLOCK_SIZE);
             }
             else
             {
-                ret = LoadReq(area_read_wrk.rgst[i] + RARE_ENE001_PK2, ENE_START_ADDRESS + i * ENE_BLOCK_SIZE);
+                ret = LoadReq(RARE_ENE001_PK2 + area_read_wrk.rgst[i], LOAD_ADDRESS_27 + i * ENE_BLOCK_SIZE);
             }
 
             area_wrk.rgst[i] = area_read_wrk.rgst[i];
@@ -117,17 +117,17 @@ int RareGhostLoadGameLoadReq()
 
     ret = 0xffff;
 
-    for (addr = ENE_START_ADDRESS, i = 0; i < 5; addr += ENE_BLOCK_SIZE, i++)
+    for (addr = LOAD_ADDRESS_27, i = 0; i < 5; addr += ENE_BLOCK_SIZE, i++)
     {
         if (area_wrk.rgst[i] != 0xff)
         {
             if (area_wrk.rgst[i] & 0x80)
             {
-                ret = LoadReq((area_wrk.rgst[i] & ~0x80) + PAZ_ENE001_PK2, addr);
+                ret = LoadReq(PAZ_ENE001_PK2 + (area_wrk.rgst[i] & ~0x80), addr);
 
             } else
             {
-                ret = LoadReq(area_wrk.rgst[i] + RARE_ENE001_PK2, addr);
+                ret = LoadReq(RARE_ENE001_PK2 + area_wrk.rgst[i], addr);
             }
 
             area_wrk.rgst[i] = area_wrk.rgst[i];
@@ -154,9 +154,9 @@ void RareGhostAppearCtrl()
             {
                 case 0:
                 if (rg_ap_dat[i].ap_step1[0] >= ingame_wrk.clear_count &&
-                    rg_ap_dat[i].ap_step1[1] * 0xA >= ingame_wrk.ghost_cnt &&
+                    rg_ap_dat[i].ap_step1[1] * 10 >= ingame_wrk.ghost_cnt &&
                     rg_ap_dat[i].ap_step1[2] >= ingame_wrk.rg_pht_cnt &&
-                    rg_ap_dat[i].ap_step1[3] * 0x64 >= ingame_wrk.high_score)
+                    rg_ap_dat[i].ap_step1[3] * 100 >= ingame_wrk.high_score)
                 {
                     rg_wrk[i].stts = 1;
                 }
@@ -175,10 +175,11 @@ void RareGhostAppearCtrl()
                 rg_wrk[i].ap_cnt += rg_ap_dat[i].ap_step2[4] * ap_wrk.pic_num;
                 rg_wrk[i].ap_cnt += rg_ap_dat[i].ap_step2[5] * ap_wrk.raze;
 
-                if ((rg_wrk[i].ap_cnt >= 1000) && (rg_wrk[i].stts == 2))
+                if (rg_wrk[i].ap_cnt >= 1000 && rg_wrk[i].stts == 0x2)
                 {
                     rg_wrk[i].stts = 3;
                 }
+
                 break;
             }
         }
@@ -205,7 +206,7 @@ void RareGhostDispCtrl()
     {
         for (i = 0; i < 5; i++)
         {
-            if (rg_wrk[area_wrk.rgst[i]].stts == 0x3)
+            if (rg_wrk[area_wrk.rgst[i]].stts == (0x2 | 0x1))
             {
                 if (RareGhostDispStartJudge(area_wrk.rgst[i]) != 0)
                 {

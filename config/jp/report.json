@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 53.6068353769893,
+    "fuzzy_match_percent": 53.93329397064276,
     "total_code": "1165232",
-    "matched_code": "624644",
-    "matched_code_percent": 53.6068353769893,
+    "matched_code": "628448",
+    "matched_code_percent": 53.93329397064276,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 1907,
-    "matched_functions_percent": 56.18738951090159,
+    "matched_functions": 1922,
+    "matched_functions_percent": 56.629345904537416,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -15217,9 +15217,14 @@
     {
       "name": "ingame/entry/ap_rgost",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "3804",
+        "matched_code": "3804",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 15,
+        "matched_functions": 15,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -15227,14 +15232,17 @@
         {
           "name": ".text",
           "size": "3840",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -15242,76 +15250,91 @@
         {
           "name": "RareGhostInit",
           "size": "108",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RareGhostEntrySet",
           "size": "396",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RareGhostLoadReq",
           "size": "212",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RareGhostLoadGameLoadReq",
           "size": "184",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RareGhostMain",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RareGhostAppearCtrl",
           "size": "484",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RareGhostDispCtrl",
           "size": "560",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RareGhostDispStartJudge",
           "size": "404",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RareGhostDispWrkSet",
           "size": "276",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RareGhostDispEndJudge",
           "size": "272",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetRareGhostDispAlpha",
           "size": "476",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetRareGhostDispAnimation",
           "size": "24",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RareGhostDispTimeCtrl",
           "size": "272",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RareGhostDispEndSet",
           "size": "116",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetRareGhostDispRate",
           "size": "12",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -24576,14 +24599,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 53.6068353769893,
+        "fuzzy_match_percent": 53.93329397064276,
         "total_code": "1165232",
-        "matched_code": "624644",
-        "matched_code_percent": 53.6068353769893,
+        "matched_code": "628448",
+        "matched_code_percent": 53.93329397064276,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 1907,
-        "matched_functions_percent": 56.18738951090159,
+        "matched_functions": 1922,
+        "matched_functions_percent": 56.629345904537416,
         "complete_data_percent": 100.0,
         "total_units": 154
       }

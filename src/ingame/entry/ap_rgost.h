@@ -4,21 +4,21 @@
 #include "typedefs.h"
 
 typedef struct {
-	u_char mode;
-	u_char rg_no;
-	u_char dsp_no;
-	u_char alpha;
-	u_char alp_bak;
-	u_char se_wrk_no;
-	u_short count;
-	u_short time;
-	sceVu0FVECTOR pos;
+    u_char mode;
+    u_char rg_no;
+    u_char dsp_no;
+    u_char alpha;
+    u_char alp_bak;
+    u_char se_wrk_no;
+    u_short count;
+    u_short time;
+    sceVu0FVECTOR pos;
 } RGOST_DSP_WRK;
 
 typedef struct {
-	u_char stts;
-	u_char ap_num;
-	u_short ap_cnt;
+    u_char stts;
+    u_char ap_num;
+    u_short ap_cnt;
 } RGOST_WRK;
 
 extern RGOST_DSP_WRK rg_dsp_wrk[3];
