@@ -1168,3 +1168,6 @@ aene_info_dat                  = 0x3216f8; // type:AENE_INFO_DAT* numel:5 nosize
 
 // ingame/entry/ap_dgost.c
 dgst_load                      = 0x321c88; // type:MSN_LOAD_DAT numel:3
+
+// ingame/entry/ap_pgost.c
+pg_dat                         = 0x321d28; // type:PGOST_DAT numel:7 nosize

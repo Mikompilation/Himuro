@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 53.480165323300426,
+    "fuzzy_match_percent": 53.6068353769893,
     "total_code": "1165232",
-    "matched_code": "623168",
-    "matched_code_percent": 53.480165323300426,
+    "matched_code": "624644",
+    "matched_code_percent": 53.6068353769893,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 1899,
-    "matched_functions_percent": 55.95167943429582,
+    "matched_functions": 1907,
+    "matched_functions_percent": 56.18738951090159,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -15129,9 +15129,14 @@
     {
       "name": "ingame/entry/ap_pgost",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "1476",
+        "matched_code": "1476",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 8,
+        "matched_functions": 8,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -15139,14 +15144,17 @@
         {
           "name": ".text",
           "size": "1488",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -15154,41 +15162,49 @@
         {
           "name": "PuzzleGhostInit",
           "size": "48",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PuzzleGhostLoadReq",
           "size": "96",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PuzzleGhostReq",
           "size": "116",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PuzzleGhostContinue",
           "size": "56",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PuzzleGhostPhotoReq",
           "size": "268",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PuzzleGhostMain",
           "size": "44",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PuzzleGhostDispSet",
           "size": "368",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PuzzleGhostDispMain",
           "size": "480",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -24560,14 +24576,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 53.480165323300426,
+        "fuzzy_match_percent": 53.6068353769893,
         "total_code": "1165232",
-        "matched_code": "623168",
-        "matched_code_percent": 53.480165323300426,
+        "matched_code": "624644",
+        "matched_code_percent": 53.6068353769893,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 1899,
-        "matched_functions_percent": 55.95167943429582,
+        "matched_functions": 1907,
+        "matched_functions_percent": 56.18738951090159,
         "complete_data_percent": 100.0,
         "total_units": 154
       }

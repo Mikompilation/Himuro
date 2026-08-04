@@ -4,18 +4,18 @@
 #include "typedefs.h"
 
 typedef struct {
-	u_short score;
-	u_char efct_no;
-	u_char room;
-	short pos[3];
+    u_short score;
+    u_char efct_no;
+    u_char room;
+    short pos[3];
 } PGOST_DAT;
 
 typedef struct {
-	u_char req_no;
-	u_char pgst_no;
-	u_char ev_no;
-	u_char stts;
-	u_char time;
+    u_char req_no;
+    u_char pgst_no;
+    u_char ev_no;
+    u_char stts;
+    u_char time;
 } PGOST_WRK;
 
 extern PGOST_DAT pg_dat[];
