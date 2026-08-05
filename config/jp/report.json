@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 53.93329397064276,
+    "fuzzy_match_percent": 54.25700633006989,
     "total_code": "1165232",
-    "matched_code": "628448",
-    "matched_code_percent": 53.93329397064276,
+    "matched_code": "632220",
+    "matched_code_percent": 54.25700633006989,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 1922,
-    "matched_functions_percent": 56.629345904537416,
+    "matched_functions": 1931,
+    "matched_functions_percent": 56.89451974071891,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -15347,9 +15347,14 @@
     {
       "name": "ingame/entry/ap_sgost",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "3772",
+        "matched_code": "3772",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 9,
+        "matched_functions": 9,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -15357,14 +15362,17 @@
         {
           "name": ".text",
           "size": "3784",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -15372,46 +15380,55 @@
         {
           "name": "SettleGhostInit",
           "size": "16",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SettleGhostAppearReq",
           "size": "48",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SettleGhostMain",
           "size": "432",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SettleGhostLoadTwoSize",
           "size": "348",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SettleGhostLoadOneSize",
           "size": "588",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SettleGhostStartDisp",
           "size": "1824",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SettleGhostBattleSet",
           "size": "208",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SettleGhostBattleEnd",
           "size": "44",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SettleGhostDispEffect",
           "size": "264",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -24599,14 +24616,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 53.93329397064276,
+        "fuzzy_match_percent": 54.25700633006989,
         "total_code": "1165232",
-        "matched_code": "628448",
-        "matched_code_percent": 53.93329397064276,
+        "matched_code": "632220",
+        "matched_code_percent": 54.25700633006989,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 1922,
-        "matched_functions_percent": 56.629345904537416,
+        "matched_functions": 1931,
+        "matched_functions_percent": 56.89451974071891,
         "complete_data_percent": 100.0,
         "total_units": 154
       }

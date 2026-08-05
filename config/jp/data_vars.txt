@@ -1171,3 +1171,7 @@ dgst_load                      = 0x321c88; // type:MSN_LOAD_DAT numel:3
 
 // ingame/entry/ap_pgost.c
 pg_dat                         = 0x321d28; // type:PGOST_DAT numel:7 nosize
+
+// ingame/entry/ap_sgost.c
+sgef_dat                       = 0x3220f0; // type:SGEF_DAT numel:6 nosize
+sgef_adpcm_dat                 = 0x322180; // type:u_short numel:6 nosize
