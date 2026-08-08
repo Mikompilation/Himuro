@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 54.25700633006989,
+    "fuzzy_match_percent": 54.4523322394167,
     "total_code": "1165232",
-    "matched_code": "632220",
-    "matched_code_percent": 54.25700633006989,
+    "matched_code": "634496",
+    "matched_code_percent": 54.4523322394167,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 1931,
-    "matched_functions_percent": 56.89451974071891,
+    "matched_functions": 1939,
+    "matched_functions_percent": 57.13022981732469,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -15441,9 +15441,14 @@
     {
       "name": "ingame/entry/ap_zgost",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "2276",
+        "matched_code": "2276",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 8,
+        "matched_functions": 8,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -15451,14 +15456,17 @@
         {
           "name": ".text",
           "size": "2288",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -15466,41 +15474,49 @@
         {
           "name": "ZeroHourAppearMain",
           "size": "912",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ZeroHourAppearJudge",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ZeroHourDataBackUp",
           "size": "488",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ZeroHourEnemyReLoad",
           "size": "192",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ZeroHourAfterRoomLoadReq",
           "size": "332",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ZeroHourEnemyReLoadAfter",
           "size": "148",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ZeroHourAfterPosReset",
           "size": "112",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ZeroHourOutReq",
           "size": "84",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -24616,14 +24632,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 54.25700633006989,
+        "fuzzy_match_percent": 54.4523322394167,
         "total_code": "1165232",
-        "matched_code": "632220",
-        "matched_code_percent": 54.25700633006989,
+        "matched_code": "634496",
+        "matched_code_percent": 54.4523322394167,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 1931,
-        "matched_functions_percent": 56.89451974071891,
+        "matched_functions": 1939,
+        "matched_functions_percent": 57.13022981732469,
         "complete_data_percent": 100.0,
         "total_units": 154
       }

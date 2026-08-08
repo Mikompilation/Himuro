@@ -1,13 +1,16 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "enums.h"
 #include "ap_zgost.h"
 
-#include "os/eeiop/adpcm/ea_magatoki.h"
-#include "os/eeiop/cdvd/eecdvd.h"
 #include "common/ul_math.h"
-#include "main/glob.h"
-// #include "ingame/entry/ap_fgost.h" // FloatGhostAppearTypeSet
+// #include "graphics/graph2d/effect_ene.h"
+#include "graphics/graph2d/effect.h"
+#include "graphics/graph3d/load3d.h"
+#include "graphics/motion/mdlwork.h"
+#include "graphics/motion/motion.h"
+// #include "ingame/entry/ap_fgost.h"
 #include "ingame/entry/entry.h"
 #include "ingame/event/ev_load.h"
 #include "ingame/ig_glob.h"
@@ -16,29 +19,21 @@
 #include "ingame/map/map_area.h"
 #include "ingame/map/map_ctrl.h"
 #include "ingame/plyr/plyr_ctl.h"
-#include "graphics/motion/mdlwork.h"
-#include "graphics/motion/motion.h"
-// #include "graphics/graph2d/effect_ene.h" // LoadEneDmgTex
-#include "graphics/graph2d/effect.h"
-#include "graphics/graph3d/load3d.h"
+#include "main/glob.h"
+#include "os/eeiop/adpcm/ea_magatoki.h"
+#include "os/eeiop/cdvd/eecdvd.h"
 
 ZHOUR_WRK zh_wrk = {0};
 
-#define ANIM_MODEL_TYPE_8_ADDRESS_0 0xc80000
-#define ANIM_MODEL_TYPE_8_ADDRESS_1 0xd00000
-
-#define ANIM_MODEL_TYPE_9_ADDRESS_0 0xa30000
-#define ENE_DMG_TEX_TYPE_9_ADDRESS_0 0xac8000
-
-#define ANIM_MODEL_TYPE_9_ADDRESS_1 0xae0000
-#define ENE_DMG_TEX_TYPE_9_ADDRESS_1 0xb78000
-
-#ifdef BUILD_EU_VERSION
-#define TYPE_8_MDL_FILE_NO_OFFSET 47
-#define TYPE_9_MDL_FILE_NO_OFFSET 115
-#else
+#if defined(BUILD_JP_VERSION)
+#define TYPE_8_MDL_FILE_NO_OFFSET -16
+#define TYPE_9_MDL_FILE_NO_OFFSET 52
+#elif defined(BUILD_US_VERSION)
 #define TYPE_8_MDL_FILE_NO_OFFSET 31
 #define TYPE_9_MDL_FILE_NO_OFFSET 99
+#elif defined(BUILD_EU_VERSION)
+#define TYPE_8_MDL_FILE_NO_OFFSET 47
+#define TYPE_9_MDL_FILE_NO_OFFSET 115
 #endif
 
 int ZeroHourAppearMain()
@@ -58,14 +53,14 @@ int ZeroHourAppearMain()
         {
             ap_wrk.zh_efct = 0;
 
-            SetEffects(16, 8, 180, 60, &ap_wrk.zh_efct);
+            SetEffects(EF_MAGATOKI, 8, 180, 60, &ap_wrk.zh_efct);
 
             ZeroHourDataBackUp();
 
-            LoadReq(M040_MAGATOKI_MDL, ANIM_MODEL_TYPE_8_ADDRESS_0);
-            LoadReq(M040_MAGATOKI_ANM, ANIM_MODEL_TYPE_9_ADDRESS_0);
+            LoadReq(M040_MAGATOKI_MDL, LOAD_ADDRESS_11);
+            LoadReq(M040_MAGATOKI_ANM, LOAD_ADDRESS_05);
 
-            LoadEneDmgTex(40, (u_int *)ENE_DMG_TEX_TYPE_9_ADDRESS_0);
+            LoadEneDmgTex(40, (u_int *)LOAD_ADDRESS_06);
 
             if (plyr_wrk.mode == 1)
             {
@@ -82,8 +77,8 @@ int ZeroHourAppearMain()
     case ZH_READY:
         if (IsLoadEndAll() != 0)
         {
-            motInitEnemyMdl((u_int *)ANIM_MODEL_TYPE_8_ADDRESS_0, 40);
-            motInitEnemyAnm((u_int *)ANIM_MODEL_TYPE_9_ADDRESS_0, 40, 28);
+            motInitEnemyMdl((u_int *)LOAD_ADDRESS_11, M040_MAGATOKI);
+            motInitEnemyAnm((u_int *)LOAD_ADDRESS_05, M040_MAGATOKI, A040_MAGATOKI);
 
             ap_wrk.zh_mode = ZH_READY2;
         }
@@ -132,7 +127,9 @@ int ZeroHourAppearMain()
         // do nothing ...
     break;
     case ZH_OUT_WAIT:
-        if (--zh_wrk.time == 0xffff)
+        zh_wrk.time--;
+
+        if (zh_wrk.time == 0xffff)
         {
             ap_wrk.zh_mode = ZH_OUT_LOAD0;
         }
@@ -215,30 +212,30 @@ void ZeroHourDataBackUp()
         {
             if (mld->file_type == 8)
             {
-                if (mld->addr == ANIM_MODEL_TYPE_8_ADDRESS_0)
+                if (mld->addr == LOAD_ADDRESS_11)
                 {
                     zh_wrk.zh_mdl_bak[0] = mld->file_no - TYPE_8_MDL_FILE_NO_OFFSET;
                 }
-                else if (mld->addr == ANIM_MODEL_TYPE_8_ADDRESS_1)
+                else if (mld->addr == LOAD_ADDRESS_13)
                 {
                     zh_wrk.zh_mdl_bak[1] = mld->file_no - TYPE_8_MDL_FILE_NO_OFFSET;
                 }
             }
             else if (mld->file_type == 9)
             {
-                if (mld->addr == ANIM_MODEL_TYPE_9_ADDRESS_0)
+                if (mld->addr == LOAD_ADDRESS_05)
                 {
                     zh_wrk.zh_mmt_bak[0] = mld->tmp_no;
                     zh_wrk.zh_mot_bak[0] = mld->file_no - TYPE_9_MDL_FILE_NO_OFFSET;
 
-                    motReleaseAniMdlBuf(zh_wrk.zh_mot_bak[0], (u_int *)ANIM_MODEL_TYPE_9_ADDRESS_0);
+                    motReleaseAniMdlBuf(zh_wrk.zh_mot_bak[0], (u_int *)LOAD_ADDRESS_05);
                 }
-                else if (mld->addr == ANIM_MODEL_TYPE_9_ADDRESS_1)
+                else if (mld->addr == LOAD_ADDRESS_07)
                 {
                     zh_wrk.zh_mmt_bak[1] = mld->tmp_no;
                     zh_wrk.zh_mot_bak[1] = mld->file_no - TYPE_9_MDL_FILE_NO_OFFSET;
 
-                    motReleaseAniMdlBuf(zh_wrk.zh_mot_bak[1], (u_int *)ANIM_MODEL_TYPE_9_ADDRESS_1);
+                    motReleaseAniMdlBuf(zh_wrk.zh_mot_bak[1], (u_int *)LOAD_ADDRESS_07);
                 }
             }
         }
@@ -265,24 +262,24 @@ void ZeroHourEnemyReLoad()
 {
     if (zh_wrk.zh_mdl_bak[0] != 0xff)
     {
-        LoadReq(zh_wrk.zh_mdl_bak[0] + M000_MIKU_MDL, ANIM_MODEL_TYPE_8_ADDRESS_0);
+        LoadReq(M000_MIKU_MDL + zh_wrk.zh_mdl_bak[0], LOAD_ADDRESS_11);
     }
 
     if (zh_wrk.zh_mdl_bak[1] != 0xff)
     {
-        LoadReq(zh_wrk.zh_mdl_bak[1] + M000_MIKU_MDL, ANIM_MODEL_TYPE_8_ADDRESS_1);
+        LoadReq(M000_MIKU_MDL + zh_wrk.zh_mdl_bak[1], LOAD_ADDRESS_13);
     }
 
     if (zh_wrk.zh_mot_bak[0] != 0xff)
     {
-        LoadReq(zh_wrk.zh_mot_bak[0] + M000_MIKU_ANM, ANIM_MODEL_TYPE_9_ADDRESS_0);
-        LoadEneDmgTex((u_int)zh_wrk.zh_mdl_bak[0], (u_int *)ENE_DMG_TEX_TYPE_9_ADDRESS_0);
+        LoadReq(M000_MIKU_ANM + zh_wrk.zh_mot_bak[0], LOAD_ADDRESS_05);
+        LoadEneDmgTex((u_int)zh_wrk.zh_mdl_bak[0], (u_int *)LOAD_ADDRESS_06);
     }
 
     if (zh_wrk.zh_mot_bak[1] != 0xff)
     {
-        LoadReq(zh_wrk.zh_mot_bak[1] + M000_MIKU_ANM, ANIM_MODEL_TYPE_9_ADDRESS_1);
-        LoadEneDmgTex((u_int)zh_wrk.zh_mdl_bak[1], (u_int *)ENE_DMG_TEX_TYPE_9_ADDRESS_1);
+        LoadReq(M000_MIKU_ANM + zh_wrk.zh_mot_bak[1], LOAD_ADDRESS_07);
+        LoadEneDmgTex((u_int)zh_wrk.zh_mdl_bak[1], (u_int *)LOAD_ADDRESS_08);
     }
 }
 
@@ -290,22 +287,22 @@ void ZeroHourEnemyReLoadAfter()
 {
     if (zh_wrk.zh_mdl_bak[0] != 0xff)
     {
-        motInitEnemyMdl((u_int *)ANIM_MODEL_TYPE_8_ADDRESS_0, zh_wrk.zh_mdl_bak[0]);
+        motInitEnemyMdl((u_int *)LOAD_ADDRESS_11, zh_wrk.zh_mdl_bak[0]);
     }
 
     if (zh_wrk.zh_mdl_bak[1] != 0xff)
     {
-        motInitEnemyMdl((u_int *)ANIM_MODEL_TYPE_8_ADDRESS_1, zh_wrk.zh_mdl_bak[1]);
+        motInitEnemyMdl((u_int *)LOAD_ADDRESS_13, zh_wrk.zh_mdl_bak[1]);
     }
 
     if (zh_wrk.zh_mot_bak[0] != 0xff)
     {
-        motInitEnemyAnm((u_int *)ANIM_MODEL_TYPE_9_ADDRESS_0, zh_wrk.zh_mmt_bak[0], zh_wrk.zh_mot_bak[0]);
+        motInitEnemyAnm((u_int *)LOAD_ADDRESS_05, zh_wrk.zh_mmt_bak[0], zh_wrk.zh_mot_bak[0]);
     }
 
     if (zh_wrk.zh_mot_bak[1] != 0xff)
     {
-        motInitEnemyAnm((u_int *)ANIM_MODEL_TYPE_9_ADDRESS_1, zh_wrk.zh_mmt_bak[1], zh_wrk.zh_mot_bak[1]);
+        motInitEnemyAnm((u_int *)LOAD_ADDRESS_07, zh_wrk.zh_mmt_bak[1], zh_wrk.zh_mot_bak[1]);
     }
 }
 
@@ -329,7 +326,7 @@ void ZeroHourAfterPosReset()
 
 void ZeroHourOutReq()
 {
-    motReleaseAniMdlBuf(28, (u_int *)ANIM_MODEL_TYPE_9_ADDRESS_0);
+    motReleaseAniMdlBuf(28, (u_int *)LOAD_ADDRESS_05);
 
     ap_wrk.zh_efct = 0;
 
