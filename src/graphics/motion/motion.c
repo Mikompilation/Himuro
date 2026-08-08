@@ -68,9 +68,9 @@ void motInitPlayerAnm(char mdl_no)
 {
     u_int *pkt_p;
 
-    pkt_p = (u_int *)GetPakTaleAddr((void *)LOAD_ADDRESS_03);
+    pkt_p = (u_int *)GetPakTaleAddr((void *)LOAD_ADDRESS_04);
 
-    motInitAniCtrl(ani_mdl, (u_int *)LOAD_ADDRESS_03, pmanmpk[0], pkt_p, mdl_no, A000_MIKU);
+    motInitAniCtrl(ani_mdl, (u_int *)LOAD_ADDRESS_04, pmanmpk[0], pkt_p, mdl_no, A000_MIKU);
     mimLNigiriReq(M001_MIM_LHAND_NIGIRI, 0);
 
     ani_mdl[0].mot.reso = 1;

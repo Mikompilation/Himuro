@@ -209,26 +209,26 @@ int GuardGhostLoad()
     case 2:
         if (ap_wrk.ggst_cnt != 0)
         {
-            motReleaseAniMdlBuf(fene_dat[ingame_wrk.msn_no][ap_wrk.ggst_no].anm_no, (u_int *)LOAD_ADDRESS_09);
+            motReleaseAniMdlBuf(fene_dat[ingame_wrk.msn_no][ap_wrk.ggst_no].anm_no, (u_int *)LOAD_ADDRESS_10);
 
             ap_wrk.ggst_no = ggst_dat[dat_no]->ggst[ap_wrk.ggst_cnt];
         }
 
-        LoadReq(M000_MIKU_MDL + fene_dat[ingame_wrk.msn_no][ap_wrk.ggst_no].mdl_no, LOAD_ADDRESS_15);
+        LoadReq(M000_MIKU_MDL + fene_dat[ingame_wrk.msn_no][ap_wrk.ggst_no].mdl_no, LOAD_ADDRESS_16);
 
         gg_load_mode = 4;
     break;
     case 3:
-        LoadReq(M000_MIKU_MDL + fene_dat[ingame_wrk.msn_no][ap_wrk.ggst_no].mdl_no, LOAD_ADDRESS_15);
+        LoadReq(M000_MIKU_MDL + fene_dat[ingame_wrk.msn_no][ap_wrk.ggst_no].mdl_no, LOAD_ADDRESS_16);
 
         gg_load_mode = 4;
     break;
     case 4:
         if (IsLoadEndAll() != 0)
         {
-            motInitEnemyMdl((u_int *)LOAD_ADDRESS_15, fene_dat[ingame_wrk.msn_no][gg_no].mdl_no);
-            LoadEneDmgTex(fene_dat[ingame_wrk.msn_no][gg_no].mdl_no, (u_int *)LOAD_ADDRESS_10);
-            LoadReq(M000_MIKU_ANM + fene_dat[ingame_wrk.msn_no][gg_no].anm_no, LOAD_ADDRESS_09);
+            motInitEnemyMdl((u_int *)LOAD_ADDRESS_16, fene_dat[ingame_wrk.msn_no][gg_no].mdl_no);
+            LoadEneDmgTex(fene_dat[ingame_wrk.msn_no][gg_no].mdl_no, (u_int *)LOAD_ADDRESS_11);
+            LoadReq(M000_MIKU_ANM + fene_dat[ingame_wrk.msn_no][gg_no].anm_no, LOAD_ADDRESS_10);
 
             gg_load_mode = 5;
         }
@@ -240,7 +240,7 @@ int GuardGhostLoad()
             printf("IsLoadEndAllMotend\n");
 #endif
 
-            motInitEnemyAnm((u_int *)LOAD_ADDRESS_09, fene_dat[ingame_wrk.msn_no][gg_no].mdl_no, fene_dat[ingame_wrk.msn_no][gg_no].anm_no);
+            motInitEnemyAnm((u_int *)LOAD_ADDRESS_10, fene_dat[ingame_wrk.msn_no][gg_no].mdl_no, fene_dat[ingame_wrk.msn_no][gg_no].anm_no);
             SeFileLoadAndSetFGhost(fene_dat[ingame_wrk.msn_no][gg_no].se_no, 18);
 
             gg_load_mode = 6;

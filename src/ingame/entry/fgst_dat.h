@@ -4,12 +4,12 @@
 #include "typedefs.h"
 
 typedef struct {
-	u_char room_no;
-	u_char ene_type;
-	u_char pos_num;
-	u_short cmr_no;
-	u_short rot[3];
-	int pos[3][3];
+    u_char room_no;
+    u_char ene_type;
+    u_char pos_num;
+    u_short cmr_no;
+    u_short rot[3];
+    int pos[3][3];
 } FGST_AP_DAT;
 
 extern u_char fgst_ap_no[5][20];

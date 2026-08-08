@@ -42,13 +42,13 @@ int SeReqFootStep(sceVu0FVECTOR pos)
         if (PosInAreaJudge1(8, room_no, i, pz, px) != 0)
         {
             addr = (u_int *)(map_wrk.dat_adr + 32);
-            addr = (u_int *)(addr[0] + LOAD_ADDRESS_01);
+            addr = (u_int *)(addr[0] + LOAD_ADDRESS_02);
             addr = &addr[room_no] + 1;
-            addr = (u_int *)(addr[0] + LOAD_ADDRESS_01);
+            addr = (u_int *)(addr[0] + LOAD_ADDRESS_02);
             addr = &addr[i] + 1;
-            addr = (u_int *)(addr[0] + LOAD_ADDRESS_01);
+            addr = (u_int *)(addr[0] + LOAD_ADDRESS_02);
 
-            call_no = ((u_short *)(addr[0] + LOAD_ADDRESS_01))[0];
+            call_no = ((u_short *)(addr[0] + LOAD_ADDRESS_02))[0];
 
             break;
         }
@@ -162,13 +162,13 @@ u_char IsKarehaZone(sceVu0FVECTOR pos)
         if (PosInAreaJudge1(8, room_no, i, px, pz) != 0)
         {
             addr = (u_int *)(map_wrk.dat_adr + 32);
-            addr = (u_int *)(addr[0] + LOAD_ADDRESS_01);
+            addr = (u_int *)(addr[0] + LOAD_ADDRESS_02);
             addr = &addr[room_no] + 1;
-            addr = (u_int *)(addr[0] + LOAD_ADDRESS_01);
+            addr = (u_int *)(addr[0] + LOAD_ADDRESS_02);
             addr = &addr[i] + 1;
-            addr = (u_int *)(addr[0] + LOAD_ADDRESS_01);
+            addr = (u_int *)(addr[0] + LOAD_ADDRESS_02);
 
-            call_no = ((u_short *)(addr[0] + LOAD_ADDRESS_01))[0];
+            call_no = ((u_short *)(addr[0] + LOAD_ADDRESS_02))[0];
 
             break;
         }
@@ -197,13 +197,13 @@ u_char IsTakenohaZone(sceVu0FVECTOR pos)
         if (PosInAreaJudge1(8, room_no, i, px, pz))
         {
             addr = (u_int *)(map_wrk.dat_adr + 32);
-            addr = (u_int *)(addr[0] + LOAD_ADDRESS_01);
+            addr = (u_int *)(addr[0] + LOAD_ADDRESS_02);
             addr = &addr[room_no] + 1;
-            addr = (u_int *)(addr[0] + LOAD_ADDRESS_01);
+            addr = (u_int *)(addr[0] + LOAD_ADDRESS_02);
             addr = &addr[i] + 1;
-            addr = (u_int *)(addr[0] + LOAD_ADDRESS_01);
+            addr = (u_int *)(addr[0] + LOAD_ADDRESS_02);
 
-            call_no = ((u_short *)(addr[0] + LOAD_ADDRESS_01))[0];
+            call_no = ((u_short *)(addr[0] + LOAD_ADDRESS_02))[0];
 
             break;
         }

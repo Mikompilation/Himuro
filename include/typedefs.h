@@ -126,6 +126,7 @@ typedef union {
     (((cnt) == 1) || ((cnt) > PAD_REPEAT_DELAY && ((cnt) % PAD_REPEAT_RATE) == 1))
 
 #define PAD_BTN_PRESSED(pad)   (*key_now[(pad)] == 1)
+#define PAD_BTN_NOT_PRESSED(pad)   (*key_now[(pad)] != 1)
 #define PAD_BTN_REPEAT(pad)    PAD_REPEAT(*key_now[(pad)])
 #define PAD_BTN_NOT_HELD(pad)  (*key_now[(pad)] == 0)
 #define PAD_BTN_HELD(pad)      (*key_now[(pad)] != 0)

@@ -7,4 +7,10 @@
 #include "data/fg_ap_dat2.h" // FGST_AP_DAT fg_ap_dat2[];
 #include "data/fg_ap_dat3.h" // FGST_AP_DAT fg_ap_dat3[];
 #include "data/fg_ap_dat4.h" // FGST_AP_DAT fg_ap_dat4[];
-#include "data/fg_ap_dat.h"  // FGST_AP_DAT *fg_ap_dat[];
+FGST_AP_DAT *fg_ap_dat[] = {
+    fg_ap_dat1,
+    fg_ap_dat1,
+    fg_ap_dat2,
+    fg_ap_dat3,
+    fg_ap_dat3,
+};

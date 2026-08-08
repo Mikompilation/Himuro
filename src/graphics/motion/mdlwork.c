@@ -701,7 +701,7 @@ char MsnInitPlyr()
         plyr_init_ctrl.step = 2;
     // case fall-through
     case 2:
-        init_load_id = LoadReq(plyr_file_id[pk2_id].pk2, LOAD_ADDRESS_04);
+        init_load_id = LoadReq(plyr_file_id[pk2_id].pk2, LOAD_ADDRESS_05);
 
         plyr_init_ctrl.step = 3;
 
@@ -712,7 +712,7 @@ char MsnInitPlyr()
             break;
         }
 
-        SetManmdlTm2((u_int*)LOAD_ADDRESS_04, 0, 1);
+        SetManmdlTm2((u_int*)LOAD_ADDRESS_05, 0, 1);
 
         plyr_init_ctrl.step = 4;
 
@@ -725,7 +725,7 @@ char MsnInitPlyr()
             break;
         }
 
-        init_load_id = LoadReq(plyr_file_id[pk2_id].mpk, LOAD_ADDRESS_04);
+        init_load_id = LoadReq(plyr_file_id[pk2_id].mpk, LOAD_ADDRESS_05);
 
         plyr_init_ctrl.step = 5;
     break;
@@ -788,7 +788,7 @@ char MsnInitPlyr()
     case 12:
         plyr_init_ctrl.step = 13;
 
-        init_load_id = LoadReq(plyr_file_id[pk2_id].anm, LOAD_ADDRESS_03);
+        init_load_id = LoadReq(plyr_file_id[pk2_id].anm, LOAD_ADDRESS_04);
     break;
     case 13:
         if (IsLoadEnd(init_load_id) == 0)

@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 54.4523322394167,
+    "fuzzy_match_percent": 55.20548697598418,
     "total_code": "1165232",
-    "matched_code": "634496",
-    "matched_code_percent": 54.4523322394167,
+    "matched_code": "643272",
+    "matched_code_percent": 55.20548697598418,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 1939,
-    "matched_functions_percent": 57.13022981732469,
+    "matched_functions": 1963,
+    "matched_functions_percent": 57.83736004714201,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -15529,9 +15529,14 @@
     {
       "name": "ingame/event/ev_main",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "8776",
+        "matched_code": "8776",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 24,
+        "matched_functions": 24,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -15539,14 +15544,17 @@
         {
           "name": ".text",
           "size": "8824",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -15554,121 +15562,145 @@
         {
           "name": "EventWrkInit",
           "size": "68",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EventInit",
           "size": "172",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EventMain",
           "size": "3752",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetEventMessageAddr",
           "size": "80",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EventSceneCtrl",
           "size": "696",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetRot360",
           "size": "80",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EventEnemySet",
           "size": "224",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorLockBattleSet",
           "size": "72",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EndingInit",
           "size": "172",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "InterMissionInit",
           "size": "116",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "InterMissionEnd",
           "size": "96",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EventOpenMain",
           "size": "124",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EventOpenCtrl",
           "size": "196",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EventOpenJudge",
           "size": "900",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "BattleEndEventOpenJudge",
           "size": "192",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PhotoEventOpenJudge",
           "size": "312",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SceneFadeOut",
           "size": "348",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "InterMissionMain",
           "size": "56",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorLockBattleAfter",
           "size": "168",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "LockBattleDoorOpen",
           "size": "84",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "LockBattleAfterJudge",
           "size": "20",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "LockBattleDoorOpenMSGDisp",
           "size": "508",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ScenePlay",
           "size": "40",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EndingMain",
           "size": "300",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -24632,14 +24664,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 54.4523322394167,
+        "fuzzy_match_percent": 55.20548697598418,
         "total_code": "1165232",
-        "matched_code": "634496",
-        "matched_code_percent": 54.4523322394167,
+        "matched_code": "643272",
+        "matched_code_percent": 55.20548697598418,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 1939,
-        "matched_functions_percent": 57.13022981732469,
+        "matched_functions": 1963,
+        "matched_functions_percent": 57.83736004714201,
         "complete_data_percent": 100.0,
         "total_units": 154
       }

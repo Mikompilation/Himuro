@@ -142,7 +142,7 @@ void DrawRareEne_Sub(int mno, int dno, sceVu0FVECTOR pos, int tblno, int ani, in
 
     offset = dno * 256;
 
-    SetSprFile2(LOAD_ADDRESS_27 + mno * 0x10000, offset); // what's 0x10000 ?
+    SetSprFile2(LOAD_ADDRESS_28 + mno * 0x10000, offset); // what's 0x10000 ?
 
     sceVu0UnitMatrix(wlm);
 

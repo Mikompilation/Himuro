@@ -4,23 +4,23 @@
 #include "typedefs.h"
 
 typedef struct {
-	u_char mode;
-	u_char evt_no;
-	u_char movie_on;
-	u_char next_msn;
-	u_char msg_init;
-	u_char use_item;
-	u_char get_item;
-	u_char btl_ene;
-	u_char end_ev;
-	u_char btl_lock;
-	u_char pht_2d;
-	u_char pht_furn;
-	u_char pht_ev[10];
-	u_char pos_req[16];
-	u_char spev_tmp[4];
-	u_char gst_door[2];
-	u_char face_stts[4];
+    u_char mode;
+    u_char evt_no;
+    u_char movie_on;
+    u_char next_msn;
+    u_char msg_init;
+    u_char use_item;
+    u_char get_item;
+    u_char btl_ene;
+    u_char end_ev;
+    u_char btl_lock;
+    u_char pht_2d;
+    u_char pht_furn;
+    u_char pht_ev[10];
+    u_char pos_req[16];
+    u_char spev_tmp[4];
+    u_char gst_door[2];
+    u_char face_stts[4];
 } EVENT_WRK;
 
 extern u_char event_stts[250];

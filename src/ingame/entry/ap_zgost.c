@@ -46,10 +46,10 @@ int ZeroHourAppearMain()
 
             ZeroHourDataBackUp();
 
-            LoadReq(M040_MAGATOKI_MDL, LOAD_ADDRESS_11);
-            LoadReq(M040_MAGATOKI_ANM, LOAD_ADDRESS_05);
+            LoadReq(M040_MAGATOKI_MDL, LOAD_ADDRESS_12);
+            LoadReq(M040_MAGATOKI_ANM, LOAD_ADDRESS_06);
 
-            LoadEneDmgTex(40, (u_int *)LOAD_ADDRESS_06);
+            LoadEneDmgTex(40, (u_int *)LOAD_ADDRESS_07);
 
             if (plyr_wrk.mode == 1)
             {
@@ -66,8 +66,8 @@ int ZeroHourAppearMain()
     case ZH_READY:
         if (IsLoadEndAll() != 0)
         {
-            motInitEnemyMdl((u_int *)LOAD_ADDRESS_11, M040_MAGATOKI);
-            motInitEnemyAnm((u_int *)LOAD_ADDRESS_05, M040_MAGATOKI, A040_MAGATOKI);
+            motInitEnemyMdl((u_int *)LOAD_ADDRESS_12, M040_MAGATOKI);
+            motInitEnemyAnm((u_int *)LOAD_ADDRESS_06, M040_MAGATOKI, A040_MAGATOKI);
 
             ap_wrk.zh_mode = ZH_READY2;
         }
@@ -201,30 +201,30 @@ void ZeroHourDataBackUp()
         {
             if (mld->file_type == FILE_TYPE_ENE_MDL)
             {
-                if (mld->addr == LOAD_ADDRESS_11)
+                if (mld->addr == LOAD_ADDRESS_12)
                 {
                     zh_wrk.zh_mdl_bak[0] = mld->file_no - M000_MIKU_MDL;
                 }
-                else if (mld->addr == LOAD_ADDRESS_13)
+                else if (mld->addr == LOAD_ADDRESS_14)
                 {
                     zh_wrk.zh_mdl_bak[1] = mld->file_no - M000_MIKU_MDL;
                 }
             }
             else if (mld->file_type == FILE_TYPE_BENE_MOT)
             {
-                if (mld->addr == LOAD_ADDRESS_05)
+                if (mld->addr == LOAD_ADDRESS_06)
                 {
                     zh_wrk.zh_mmt_bak[0] = mld->tmp_no;
                     zh_wrk.zh_mot_bak[0] = mld->file_no - M000_MIKU_ANM;
 
-                    motReleaseAniMdlBuf(zh_wrk.zh_mot_bak[0], (u_int *)LOAD_ADDRESS_05);
+                    motReleaseAniMdlBuf(zh_wrk.zh_mot_bak[0], (u_int *)LOAD_ADDRESS_06);
                 }
-                else if (mld->addr == LOAD_ADDRESS_07)
+                else if (mld->addr == LOAD_ADDRESS_08)
                 {
                     zh_wrk.zh_mmt_bak[1] = mld->tmp_no;
                     zh_wrk.zh_mot_bak[1] = mld->file_no - M000_MIKU_ANM;
 
-                    motReleaseAniMdlBuf(zh_wrk.zh_mot_bak[1], (u_int *)LOAD_ADDRESS_07);
+                    motReleaseAniMdlBuf(zh_wrk.zh_mot_bak[1], (u_int *)LOAD_ADDRESS_08);
                 }
             }
         }
@@ -251,24 +251,24 @@ void ZeroHourEnemyReLoad()
 {
     if (zh_wrk.zh_mdl_bak[0] != 0xff)
     {
-        LoadReq(M000_MIKU_MDL + zh_wrk.zh_mdl_bak[0], LOAD_ADDRESS_11);
+        LoadReq(M000_MIKU_MDL + zh_wrk.zh_mdl_bak[0], LOAD_ADDRESS_12);
     }
 
     if (zh_wrk.zh_mdl_bak[1] != 0xff)
     {
-        LoadReq(M000_MIKU_MDL + zh_wrk.zh_mdl_bak[1], LOAD_ADDRESS_13);
+        LoadReq(M000_MIKU_MDL + zh_wrk.zh_mdl_bak[1], LOAD_ADDRESS_14);
     }
 
     if (zh_wrk.zh_mot_bak[0] != 0xff)
     {
-        LoadReq(M000_MIKU_ANM + zh_wrk.zh_mot_bak[0], LOAD_ADDRESS_05);
-        LoadEneDmgTex((u_int)zh_wrk.zh_mdl_bak[0], (u_int *)LOAD_ADDRESS_06);
+        LoadReq(M000_MIKU_ANM + zh_wrk.zh_mot_bak[0], LOAD_ADDRESS_06);
+        LoadEneDmgTex((u_int)zh_wrk.zh_mdl_bak[0], (u_int *)LOAD_ADDRESS_07);
     }
 
     if (zh_wrk.zh_mot_bak[1] != 0xff)
     {
-        LoadReq(M000_MIKU_ANM + zh_wrk.zh_mot_bak[1], LOAD_ADDRESS_07);
-        LoadEneDmgTex((u_int)zh_wrk.zh_mdl_bak[1], (u_int *)LOAD_ADDRESS_08);
+        LoadReq(M000_MIKU_ANM + zh_wrk.zh_mot_bak[1], LOAD_ADDRESS_08);
+        LoadEneDmgTex((u_int)zh_wrk.zh_mdl_bak[1], (u_int *)LOAD_ADDRESS_09);
     }
 }
 
@@ -276,22 +276,22 @@ void ZeroHourEnemyReLoadAfter()
 {
     if (zh_wrk.zh_mdl_bak[0] != 0xff)
     {
-        motInitEnemyMdl((u_int *)LOAD_ADDRESS_11, zh_wrk.zh_mdl_bak[0]);
+        motInitEnemyMdl((u_int *)LOAD_ADDRESS_12, zh_wrk.zh_mdl_bak[0]);
     }
 
     if (zh_wrk.zh_mdl_bak[1] != 0xff)
     {
-        motInitEnemyMdl((u_int *)LOAD_ADDRESS_13, zh_wrk.zh_mdl_bak[1]);
+        motInitEnemyMdl((u_int *)LOAD_ADDRESS_14, zh_wrk.zh_mdl_bak[1]);
     }
 
     if (zh_wrk.zh_mot_bak[0] != 0xff)
     {
-        motInitEnemyAnm((u_int *)LOAD_ADDRESS_05, zh_wrk.zh_mmt_bak[0], zh_wrk.zh_mot_bak[0]);
+        motInitEnemyAnm((u_int *)LOAD_ADDRESS_06, zh_wrk.zh_mmt_bak[0], zh_wrk.zh_mot_bak[0]);
     }
 
     if (zh_wrk.zh_mot_bak[1] != 0xff)
     {
-        motInitEnemyAnm((u_int *)LOAD_ADDRESS_07, zh_wrk.zh_mmt_bak[1], zh_wrk.zh_mot_bak[1]);
+        motInitEnemyAnm((u_int *)LOAD_ADDRESS_08, zh_wrk.zh_mmt_bak[1], zh_wrk.zh_mot_bak[1]);
     }
 }
 
@@ -315,7 +315,7 @@ void ZeroHourAfterPosReset()
 
 void ZeroHourOutReq()
 {
-    motReleaseAniMdlBuf(28, (u_int *)LOAD_ADDRESS_05);
+    motReleaseAniMdlBuf(28, (u_int *)LOAD_ADDRESS_06);
 
     ap_wrk.zh_efct = 0;
 

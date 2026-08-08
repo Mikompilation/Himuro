@@ -95,11 +95,11 @@ int RareGhostLoadReq()
         {
             if (area_read_wrk.rgst[i] & 0x80)
             {
-                ret = LoadReq(PAZ_ENE001_PK2 + (area_read_wrk.rgst[i] & ~0x80), LOAD_ADDRESS_27 + i * ENE_BLOCK_SIZE);
+                ret = LoadReq(PAZ_ENE001_PK2 + (area_read_wrk.rgst[i] & ~0x80), LOAD_ADDRESS_28 + i * ENE_BLOCK_SIZE);
             }
             else
             {
-                ret = LoadReq(RARE_ENE001_PK2 + area_read_wrk.rgst[i], LOAD_ADDRESS_27 + i * ENE_BLOCK_SIZE);
+                ret = LoadReq(RARE_ENE001_PK2 + area_read_wrk.rgst[i], LOAD_ADDRESS_28 + i * ENE_BLOCK_SIZE);
             }
 
             area_wrk.rgst[i] = area_read_wrk.rgst[i];
@@ -117,7 +117,7 @@ int RareGhostLoadGameLoadReq()
 
     ret = 0xffff;
 
-    for (addr = LOAD_ADDRESS_27, i = 0; i < 5; addr += ENE_BLOCK_SIZE, i++)
+    for (addr = LOAD_ADDRESS_28, i = 0; i < 5; addr += ENE_BLOCK_SIZE, i++)
     {
         if (area_wrk.rgst[i] != 0xff)
         {

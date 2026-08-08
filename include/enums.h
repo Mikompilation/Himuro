@@ -3951,8 +3951,7 @@ enum {
     GAME_INIT_LOAD_END = 7
 };
 
-enum
-{
+enum {
     EV_OFF = 0,
     EV_ON = 1,
     PAD_RL1 = 10,

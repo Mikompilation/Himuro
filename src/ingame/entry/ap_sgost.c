@@ -101,7 +101,7 @@ void SettleGhostMain()
         {
             if (GuardGhostReloadReq() != 0)
             {
-                motReleaseAniMdlBuf(jene_dat[ingame_wrk.msn_no][sgst_wrk.sg_no].anm_no, (u_int *)LOAD_ADDRESS_09);
+                motReleaseAniMdlBuf(jene_dat[ingame_wrk.msn_no][sgst_wrk.sg_no].anm_no, (u_int *)LOAD_ADDRESS_10);
 
                 sgst_wrk.mode = SGST_MODE_DD_LOAD;
             }
@@ -157,19 +157,19 @@ int SettleGhostLoadOneSize()
     case SGLOAD_MODE_START:
         if (ap_wrk.ggst_no != 0xff)
         {
-            motReleaseAniMdlBuf(fene_dat[ingame_wrk.msn_no][ap_wrk.ggst_no].anm_no, (u_int *)LOAD_ADDRESS_09);
+            motReleaseAniMdlBuf(fene_dat[ingame_wrk.msn_no][ap_wrk.ggst_no].anm_no, (u_int *)LOAD_ADDRESS_10);
         }
 
-        LoadReq(M000_MIKU_MDL + (u_short)jene_dat[ingame_wrk.msn_no][sgst_wrk.sg_no].mdl_no, LOAD_ADDRESS_15);
+        LoadReq(M000_MIKU_MDL + (u_short)jene_dat[ingame_wrk.msn_no][sgst_wrk.sg_no].mdl_no, LOAD_ADDRESS_16);
 
         sgst_wrk.load_mode = SGLOAD_MODE_MDL;
     break;
     case SGLOAD_MODE_MDL:
         if (IsLoadEndAll() != 0)
         {
-            motInitEnemyMdl((u_int *)LOAD_ADDRESS_15, jene_dat[ingame_wrk.msn_no][sgst_wrk.sg_no].mdl_no);
-            LoadEneDmgTex(jene_dat[ingame_wrk.msn_no][sgst_wrk.sg_no].mdl_no, (u_int *)LOAD_ADDRESS_10);
-            LoadReq(M000_MIKU_ANM + jene_dat[ingame_wrk.msn_no][sgst_wrk.sg_no].anm_no, LOAD_ADDRESS_09);
+            motInitEnemyMdl((u_int *)LOAD_ADDRESS_16, jene_dat[ingame_wrk.msn_no][sgst_wrk.sg_no].mdl_no);
+            LoadEneDmgTex(jene_dat[ingame_wrk.msn_no][sgst_wrk.sg_no].mdl_no, (u_int *)LOAD_ADDRESS_11);
+            LoadReq(M000_MIKU_ANM + jene_dat[ingame_wrk.msn_no][sgst_wrk.sg_no].anm_no, LOAD_ADDRESS_10);
 
             sgst_wrk.load_mode = SGLOAD_MODE_MOT;
         }
@@ -177,7 +177,7 @@ int SettleGhostLoadOneSize()
     case SGLOAD_MODE_MOT:
         if (IsLoadEndAll() != 0)
         {
-            motInitEnemyAnm((u_int *)LOAD_ADDRESS_09, jene_dat[ingame_wrk.msn_no][sgst_wrk.sg_no].mdl_no, jene_dat[ingame_wrk.msn_no][sgst_wrk.sg_no].anm_no);
+            motInitEnemyAnm((u_int *)LOAD_ADDRESS_10, jene_dat[ingame_wrk.msn_no][sgst_wrk.sg_no].mdl_no, jene_dat[ingame_wrk.msn_no][sgst_wrk.sg_no].anm_no);
             SeFileLoadAndSet(jene_dat[ingame_wrk.msn_no][sgst_wrk.sg_no].se_no, 18);
 
             sgst_wrk.load_mode = SGLOAD_MODE_SE;
@@ -208,19 +208,19 @@ int SettleGhostLoadTwoSize()
     break;
     case SGLOAD_MODE_START:
         DeadGhostLoadDel();
-        motReleaseAniMdlBuf(30, (u_int *)LOAD_ADDRESS_05);
-        LoadReq(M037_TOUSHU_MDL, LOAD_ADDRESS_11);
-        LoadReq(M900_ONNRYOU_MPK, LOAD_ADDRESS_13);
+        motReleaseAniMdlBuf(30, (u_int *)LOAD_ADDRESS_06);
+        LoadReq(M037_TOUSHU_MDL, LOAD_ADDRESS_12);
+        LoadReq(M900_ONNRYOU_MPK, LOAD_ADDRESS_14);
 
         sgst_wrk.load_mode = SGLOAD_MODE_MDL;
     break;
     case SGLOAD_MODE_MDL:
         if (IsLoadEndAll() != 0)
         {
-            motInitEnemyMdl((u_int *)LOAD_ADDRESS_11, 37);
-            motInitEnemyMdl((u_int *)LOAD_ADDRESS_13, 67);
-            LoadEneDmgTex(37, (u_int *)LOAD_ADDRESS_06);
-            LoadReq(M037_TOUSHU_ANM, LOAD_ADDRESS_05);
+            motInitEnemyMdl((u_int *)LOAD_ADDRESS_12, 37);
+            motInitEnemyMdl((u_int *)LOAD_ADDRESS_14, 67);
+            LoadEneDmgTex(37, (u_int *)LOAD_ADDRESS_07);
+            LoadReq(M037_TOUSHU_ANM, LOAD_ADDRESS_06);
 
             sgst_wrk.load_mode = SGLOAD_MODE_MOT;
         }
@@ -228,7 +228,7 @@ int SettleGhostLoadTwoSize()
     case SGLOAD_MODE_MOT:
         if (IsLoadEndAll() != 0)
         {
-            motInitEnemyAnm((u_int *)LOAD_ADDRESS_05, 37, 25);
+            motInitEnemyAnm((u_int *)LOAD_ADDRESS_06, 37, 25);
             SeFileLoadAndSet(SG037_TOUSHU_BD, 16);
 
             sgst_wrk.load_mode = SGLOAD_MODE_SE;
