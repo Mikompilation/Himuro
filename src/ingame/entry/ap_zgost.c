@@ -25,17 +25,6 @@
 
 ZHOUR_WRK zh_wrk = {0};
 
-#if defined(BUILD_JP_VERSION)
-#define TYPE_8_MDL_FILE_NO_OFFSET -16
-#define TYPE_9_MDL_FILE_NO_OFFSET 52
-#elif defined(BUILD_US_VERSION)
-#define TYPE_8_MDL_FILE_NO_OFFSET 31
-#define TYPE_9_MDL_FILE_NO_OFFSET 99
-#elif defined(BUILD_EU_VERSION)
-#define TYPE_8_MDL_FILE_NO_OFFSET 47
-#define TYPE_9_MDL_FILE_NO_OFFSET 115
-#endif
-
 int ZeroHourAppearMain()
 {
     sceVu0FVECTOR tv;
@@ -210,30 +199,30 @@ void ZeroHourDataBackUp()
 
         if (load_dat_wrk[i].file_no != 0xffff)
         {
-            if (mld->file_type == 8)
+            if (mld->file_type == FILE_TYPE_ENE_MDL)
             {
                 if (mld->addr == LOAD_ADDRESS_11)
                 {
-                    zh_wrk.zh_mdl_bak[0] = mld->file_no - TYPE_8_MDL_FILE_NO_OFFSET;
+                    zh_wrk.zh_mdl_bak[0] = mld->file_no - M000_MIKU_MDL;
                 }
                 else if (mld->addr == LOAD_ADDRESS_13)
                 {
-                    zh_wrk.zh_mdl_bak[1] = mld->file_no - TYPE_8_MDL_FILE_NO_OFFSET;
+                    zh_wrk.zh_mdl_bak[1] = mld->file_no - M000_MIKU_MDL;
                 }
             }
-            else if (mld->file_type == 9)
+            else if (mld->file_type == FILE_TYPE_BENE_MOT)
             {
                 if (mld->addr == LOAD_ADDRESS_05)
                 {
                     zh_wrk.zh_mmt_bak[0] = mld->tmp_no;
-                    zh_wrk.zh_mot_bak[0] = mld->file_no - TYPE_9_MDL_FILE_NO_OFFSET;
+                    zh_wrk.zh_mot_bak[0] = mld->file_no - M000_MIKU_ANM;
 
                     motReleaseAniMdlBuf(zh_wrk.zh_mot_bak[0], (u_int *)LOAD_ADDRESS_05);
                 }
                 else if (mld->addr == LOAD_ADDRESS_07)
                 {
                     zh_wrk.zh_mmt_bak[1] = mld->tmp_no;
-                    zh_wrk.zh_mot_bak[1] = mld->file_no - TYPE_9_MDL_FILE_NO_OFFSET;
+                    zh_wrk.zh_mot_bak[1] = mld->file_no - M000_MIKU_ANM;
 
                     motReleaseAniMdlBuf(zh_wrk.zh_mot_bak[1], (u_int *)LOAD_ADDRESS_07);
                 }
