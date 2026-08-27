@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 55.20548697598418,
+    "fuzzy_match_percent": 61.14421849039505,
     "total_code": "1165232",
-    "matched_code": "643272",
-    "matched_code_percent": 55.20548697598418,
+    "matched_code": "712472",
+    "matched_code_percent": 61.14421849039505,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 1963,
-    "matched_functions_percent": 57.83736004714201,
+    "matched_functions": 2243,
+    "matched_functions_percent": 66.08721272834414,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -15713,9 +15713,14 @@
     {
       "name": "ingame/event/ev_spcl",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "69200",
+        "matched_code": "69200",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 280,
+        "matched_functions": 280,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -15723,14 +15728,17 @@
         {
           "name": ".text",
           "size": "69440",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -15738,1401 +15746,1681 @@
         {
           "name": "SpecialEventInit",
           "size": "80",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain",
           "size": "92",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetSpecialEventMessageAddr",
           "size": "80",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SimpleDispSprt",
           "size": "408",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SimpleDispAlphaSprt",
           "size": "208",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SimpleDispSprtRGB",
           "size": "424",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SimpleDispSprtLNR",
           "size": "436",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SimpleDispSprtDatCopy",
           "size": "68",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "TestPk2Data",
           "size": "188",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ButtonMarkNext",
           "size": "296",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ButtonMarkWait",
           "size": "28",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ButtonMarkTimeClear",
           "size": "20",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CsrInclease",
           "size": "64",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CsrDeclease",
           "size": "60",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CsrBlink",
           "size": "140",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CsrClear",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CsrClearAll",
           "size": "20",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpevStrInit",
           "size": "32",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpevWrkInit",
           "size": "28",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpevSelectYesNoCsr",
           "size": "36",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DeadlySeStopWait",
           "size": "104",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DummyProg",
           "size": "16",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "StarPuzzleInit",
           "size": "396",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "StarPuzzleDataSet",
           "size": "628",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "StarPuzzleMain",
           "size": "2996",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "StarPuzzleClearJudge",
           "size": "56",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "StarPuzzleDisp",
           "size": "5136",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "StarPuzzleMSGMain",
           "size": "728",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "StarPuzzleMSGDisp",
           "size": "1240",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DialKeyDoorInit",
           "size": "196",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DialKeyDoorDataSet",
           "size": "92",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DialKeyDoorMain",
           "size": "2076",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DialKeyDoorDisp",
           "size": "2020",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DialKeyMSGDoorInit",
           "size": "56",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DialKeyMSGDoorMain",
           "size": "448",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DialKeyMSGDoorDisp",
           "size": "572",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GhostDoorInit",
           "size": "228",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GhostDoorSet",
           "size": "164",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GhostDoorMain",
           "size": "452",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GhostDoorDisp",
           "size": "472",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DollPzlInit",
           "size": "164",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DollPzlMain",
           "size": "3680",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventDisp003",
           "size": "2020",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CursorManagerEvent003",
           "size": "324",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ButsuzoPzlInit",
           "size": "224",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ButsuzoPzlMain",
           "size": "3592",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventDisp004",
           "size": "3136",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "BldAlpRetern",
           "size": "128",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ButsuzoMSGInit",
           "size": "60",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ButsuzoMSGMain",
           "size": "640",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ButsuzoMSGDisp",
           "size": "600",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "LightsOutInit",
           "size": "188",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "LightsOutMain",
           "size": "1892",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventDisp014",
           "size": "1664",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FaceDoorInit",
           "size": "332",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FaceDoorMain",
           "size": "3628",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "NisUseCheck",
           "size": "128",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "NisUseUnSet",
           "size": "128",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FaceDoorOkSet",
           "size": "260",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "NisUseSet",
           "size": "128",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FaceDoorDisp",
           "size": "3212",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FaceDoorAimSet",
           "size": "128",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SurpriseDoorInit",
           "size": "128",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SimenCheck",
           "size": "72",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SurpriseDoorMain",
           "size": "756",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SurpriseDoorDisp",
           "size": "540",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SimenPillarInit",
           "size": "116",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SimenPillarMain",
           "size": "2660",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SimenPillarDisp",
           "size": "2088",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IkariMenInit",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IkariMenComeOn",
           "size": "172",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "HanyouKaitenInit",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "HanyouKaitenMain",
           "size": "380",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ZushiBonjiInit",
           "size": "236",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ZushiBonjiMain",
           "size": "1572",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ZushiBonjiDisp",
           "size": "1140",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ZushiBonjiMSGInit",
           "size": "68",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ZushiBonjiMSGMain",
           "size": "552",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ZushiBonjiMSGDisp",
           "size": "432",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ZushiBonjiAfterInit",
           "size": "140",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ZushiBonjiAfterMain",
           "size": "516",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ZushiBonjiAfterDisp",
           "size": "604",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "KakejikuDoorInit",
           "size": "16",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "KakejikuDoorMain",
           "size": "80",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IdoFirstIntoInit",
           "size": "68",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IdoFirstIntoMain",
           "size": "232",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IdoIntoInit",
           "size": "16",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IdoIntoMain",
           "size": "1148",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IdoInOutDisp",
           "size": "484",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IdoFirstOutInit",
           "size": "68",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IdoFirstOutMain",
           "size": "216",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IdoOutInit",
           "size": "12",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IdoOutMain",
           "size": "1152",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ItemEventInit",
           "size": "496",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ItemEventMain",
           "size": "1468",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ItemEventDisp",
           "size": "556",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "NawakakeFalseMain",
           "size": "1192",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "NawakakeFalseDisp",
           "size": "772",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit000",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain000",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit001",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain001",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit002",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain002",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit003",
           "size": "84",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain003",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit004",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain004",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit005",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain005",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit006",
           "size": "84",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain006",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit007",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain007",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit008",
           "size": "84",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain008",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit009",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain009",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit010",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain010",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit011",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain011",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit012",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain012",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit013",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain013",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit014",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain014",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit015",
           "size": "84",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain015",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit016",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain016",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit017",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain017",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit018",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain018",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit019",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain019",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit020",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain020",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit021",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain021",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit022",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain022",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit023",
           "size": "84",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain023",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit024",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain024",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit025",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain025",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit026",
           "size": "84",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain026",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit027",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain027",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit028",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain028",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit029",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain029",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit030",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain030",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit031",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain031",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit032",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain032",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit033",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain033",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit034",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain034",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit035",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain035",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit036",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain036",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit037",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain037",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit038",
           "size": "84",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain038",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit039",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain039",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit040",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain040",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit041",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain041",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit042",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain042",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit043",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain043",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit044",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain044",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit045",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain045",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit046",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain046",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit047",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain047",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit048",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain048",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit049",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain049",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit050",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain050",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit051",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain051",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit052",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain052",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit053",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain053",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit054",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain054",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit055",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain055",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit056",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain056",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit057",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain057",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit058",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain058",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit059",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain059",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit060",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain060",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit061",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain061",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit062",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain062",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit063",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain063",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit064",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain064",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit065",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain065",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit066",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain066",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit067",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain067",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit068",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain068",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit069",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain069",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit070",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain070",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit071",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain071",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit072",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain072",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit073",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain073",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit074",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain074",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit075",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain075",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit076",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain076",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit077",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain077",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit078",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain078",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit079",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain079",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit080",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain080",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit081",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain081",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit082",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain082",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit083",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain083",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit084",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain084",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit085",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain085",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit086",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain086",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit087",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain087",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit088",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain088",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit089",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain089",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventInit090",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpecialEventMain090",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -24664,14 +24952,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 55.20548697598418,
+        "fuzzy_match_percent": 61.14421849039505,
         "total_code": "1165232",
-        "matched_code": "643272",
-        "matched_code_percent": 55.20548697598418,
+        "matched_code": "712472",
+        "matched_code_percent": 61.14421849039505,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 1963,
-        "matched_functions_percent": 57.83736004714201,
+        "matched_functions": 2243,
+        "matched_functions_percent": 66.08721272834414,
         "complete_data_percent": 100.0,
         "total_units": 154
       }
