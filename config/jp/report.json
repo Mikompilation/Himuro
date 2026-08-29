@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 61.14421849039505,
+    "fuzzy_match_percent": 61.580183173822896,
     "total_code": "1165232",
-    "matched_code": "712472",
-    "matched_code_percent": 61.14421849039505,
+    "matched_code": "717552",
+    "matched_code_percent": 61.580183173822896,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 2243,
-    "matched_functions_percent": 66.08721272834414,
+    "matched_functions": 2260,
+    "matched_functions_percent": 66.58809664113141,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -17433,9 +17433,14 @@
     {
       "name": "ingame/event/ev_load",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "5080",
+        "matched_code": "5080",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 17,
+        "matched_functions": 17,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -17443,14 +17448,17 @@
         {
           "name": ".text",
           "size": "5112",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -17458,86 +17466,103 @@
         {
           "name": "MissionTitleInit",
           "size": "160",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DataLoadWrkInit",
           "size": "92",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MissionTitleMain",
           "size": "444",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MissionTitleLoad",
           "size": "628",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MissionTitleDisp",
           "size": "540",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "StageTitleDisp",
           "size": "228",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MissionDataLoadAfterInit",
           "size": "1024",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetDataLoadWrk",
           "size": "84",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MissionDataLoadReq",
           "size": "228",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DelDataLoadWrk",
           "size": "200",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetLoadDataAddr",
           "size": "56",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SortLoadDataAddr",
           "size": "232",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EventLoadDataInit",
           "size": "16",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EventLoadData",
           "size": "592",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RoomLoadReq",
           "size": "324",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetLoadGhostInfo",
           "size": "136",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MikuCGDisp",
           "size": "96",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -24952,14 +24977,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 61.14421849039505,
+        "fuzzy_match_percent": 61.580183173822896,
         "total_code": "1165232",
-        "matched_code": "712472",
-        "matched_code_percent": 61.14421849039505,
+        "matched_code": "717552",
+        "matched_code_percent": 61.580183173822896,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 2243,
-        "matched_functions_percent": 66.08721272834414,
+        "matched_functions": 2260,
+        "matched_functions_percent": 66.58809664113141,
         "complete_data_percent": 100.0,
         "total_units": 154
       }
