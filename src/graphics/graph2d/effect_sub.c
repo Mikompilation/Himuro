@@ -65,7 +65,7 @@ void InitEffectSub()
 {
     buf = (u_long128 *)LOAD_ADDRESS_46;
     buf2 = (u_long128 *)LOAD_ADDRESS_49;
-    bufz = (u_long128 *)0x05000000;
+    bufz = (u_long128 *)LOAD_ADDRESS_54;
 
     vib1_time = 0;
     vib2_time = 0;

@@ -4,6 +4,11 @@
 #include "typedefs.h"
 #include "graphics/graph2d/sprt.h"
 
+#define SMALL_PHOTO_WIDTH 64 // stored thumbnail width in pixels
+#define SMALL_PHOTO_HEIGHT 20 // stored thumbnail height after interlacing halves the 40-line capture
+#define SMALL_PHOTO_SIZE (SMALL_PHOTO_WIDTH * SMALL_PHOTO_HEIGHT * sizeof(short int)) // thumbnail size using 16-bit PSMCT16 (A1R5G5B5) pixels
+#define COMPRESSED_PHOTO_SIZE 0xd350 // fixed slot size for compressed photos accepted below the 0.549 raw-size ratio
+
 extern SPRT_DAT hintdat[];
 // extern SPRT_DAT hintreadat[];
 extern int pazene_load_tbl[];

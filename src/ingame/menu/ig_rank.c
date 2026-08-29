@@ -1,5 +1,6 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "enums.h"
 #include "ig_rank.h"
 
@@ -840,7 +841,7 @@ static void DspRankBigSTR(u_char rank, u_char alpha)
         .g = 0xff,
         .b = 0xff,
         .alpha = 0x80,
-        .pri = 2,
+        .pri = 0x2,
     };
 
 #ifdef BUILD_EU_VERSION
@@ -1078,9 +1079,9 @@ void RankingChkMem(PICTURE_WRK new_pic)
         save_rank.pic_inf[j] = new_pic;
         save_rank.pic_inf[j].adr_no = del_pic_id;
 
-        CopySPhoto(0x1a90000, new_pic.adr_no, 0x1a90000, save_rank.pic_inf[j].adr_no + 24);
+        CopySPhoto(MEM_ALBUM_SRC_ADDRESS_0, new_pic.adr_no, MEM_ALBUM_SRC_ADDRESS_0, save_rank.pic_inf[j].adr_no + 24);
 
-        CopyPhoto(0x1aa5400, new_pic.adr_no, 0x1aa5400, save_rank.pic_inf[j].adr_no + 24);
+        CopyPhoto(MEM_ALBUM_SRC_ADDRESS_0 + SMALL_PHOTO_SIZE * ARRAY_COUNT(pfile_wrk.pic), new_pic.adr_no, MEM_ALBUM_SRC_ADDRESS_0 + SMALL_PHOTO_SIZE * ARRAY_COUNT(pfile_wrk.pic), save_rank.pic_inf[j].adr_no + 24);
 
         if (save_rank.pic_num < 10 && copy_flg)
         {

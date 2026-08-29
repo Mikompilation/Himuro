@@ -68,8 +68,8 @@ void TakeSnapshot(char *data_i, char *data_o, int size_w, int size_h, int type)
     bx = (-size_w / 2) + (SCREEN_WIDTH / 2);
     by = (-size_h / 2) + (SCREEN_HEIGHT / 2);
 
-    oneli = 2560;
-    onelo = (((size_w - 1) / 64) + 1) * 192;
+    oneli = SCREEN_WIDTH * 4; // 4 bytes per pixel for the 32-bit RGBA input format.
+    onelo = (((size_w - 1) / 64) + 1) * 64 * ch;
 
     bfhp2.bfSize = nBytes;
     bfhp2.bfReserved1 = 0;

@@ -218,7 +218,7 @@ void CompressData(int addri, int addro, int n)
     u_int *addr;
     float value;
 
-    one_size = 0xd350;
+    one_size = COMPRESSED_PHOTO_SIZE;
 
     value = SlideEncode((u_char *)addri, (u_char *)addri + 0x18010, 0x18010);
 
@@ -258,7 +258,7 @@ void UncompressData(int addri, int n, int addro)
     u_int type;
     u_char *base;
 
-    one_size = 0xd350;
+    one_size = COMPRESSED_PHOTO_SIZE;
 
     base = (u_char *)(addri + n * one_size);
     type = *(int *)(base + 4);
@@ -292,24 +292,24 @@ void MakeSPhotoFromWorkArea(int n)
 {
     int addr;
 
-    addr = 0x01a90000 + n * 0xa00;
+    addr = MEM_ALBUM_SRC_ADDRESS_0 + n * SMALL_PHOTO_SIZE;
 
     DrawPhotoBuffer(0x440, LOAD_ADDRESS_46, 1, 0, 0, 66, 42, 384, 128, 0, 0x80, 0);
 
-    CopyScreenToBuffer(addr, 0, 1, 1, 64, 40);
+    CopyScreenToBuffer(addr, 0, 1, 1, SMALL_PHOTO_WIDTH, SMALL_PHOTO_HEIGHT * 2);
 }
 
 void MakeSPhotoFromCompress(int ni, int no)
 {
     int addr;
 
-    addr = 0x01a90000 + no * 0xa00;
+    addr = MEM_ALBUM_SRC_ADDRESS_0 + no * SMALL_PHOTO_SIZE;
 
-    UncompressData(0x1aa5400, ni, LOAD_ADDRESS_46);
+    UncompressData(MEM_ALBUM_SRC_ADDRESS_0 + SMALL_PHOTO_SIZE * ARRAY_COUNT(pfile_wrk.pic), ni, LOAD_ADDRESS_46);
 
-    DrawPhotoBuffer(0x440, LOAD_ADDRESS_46, 1, 0, 0, 64, 40, 384, 128, 0, 0x80, 0);
+    DrawPhotoBuffer(0x440, LOAD_ADDRESS_46, 1, 0, 0, SMALL_PHOTO_WIDTH, SMALL_PHOTO_HEIGHT * 2, 384, 128, 0, 0x80, 0);
 
-    CopyScreenToBuffer(addr, 0, 0, 0, 64, 40);
+    CopyScreenToBuffer(addr, 0, 0, 0, SMALL_PHOTO_WIDTH, SMALL_PHOTO_HEIGHT * 2);
 }
 
 void DrawSPhotoFromSmallPhotoArea(int n, int pri, int ftype, int x, int y, u_char alp)
@@ -317,42 +317,42 @@ void DrawSPhotoFromSmallPhotoArea(int n, int pri, int ftype, int x, int y, u_cha
     int addr;
     int addr2;
 
-    addr = 0x01a90000;
-    addr2 = addr + n * 2560;
+    addr = MEM_ALBUM_SRC_ADDRESS_0;
+    addr2 = addr + n * SMALL_PHOTO_SIZE;
 
-    DrawPhotoBuffer(pri, addr2, 0, x, y, 64, 40, 64, 20, ftype, alp, 1);
+    DrawPhotoBuffer(pri, addr2, 0, x, y, SMALL_PHOTO_WIDTH, SMALL_PHOTO_HEIGHT * 2, SMALL_PHOTO_WIDTH, SMALL_PHOTO_HEIGHT, ftype, alp, 1);
 }
 
 void DrawSPhotoFromSmallPhotoAreaAD(int addr, int n, int pri, int ftype, int x, int y, u_char alp)
 {
     int addr2;
 
-    addr2 = addr + n * 0xa00;
+    addr2 = addr + n * SMALL_PHOTO_SIZE;
 
-    DrawPhotoBuffer(pri, addr2, 0, x, y, 64, 40, 64, 20, ftype, alp, 1);
+    DrawPhotoBuffer(pri, addr2, 0, x, y, SMALL_PHOTO_WIDTH, SMALL_PHOTO_HEIGHT * 2, SMALL_PHOTO_WIDTH, SMALL_PHOTO_HEIGHT, ftype, alp, 1);
 }
 
 void DrawSPhotoFromSmallPhotoArea2(int n, int pri, int ftype, int x, int y, int szw, int szh, u_char alp)
 {
     int addr;
 
-    addr = 0x01a90000 + n * 0xa00;
+    addr = MEM_ALBUM_SRC_ADDRESS_0 + n * SMALL_PHOTO_SIZE;
 
-    DrawPhotoBuffer(pri, addr, 0, x, y, szw, szh, 64, 20, ftype, alp, 1);
+    DrawPhotoBuffer(pri, addr, 0, x, y, szw, szh, SMALL_PHOTO_WIDTH, SMALL_PHOTO_HEIGHT, ftype, alp, 1);
 }
 
 void DrawSPhotoFromSmallPhotoArea2AD(int addr, int n, int pri, int ftype, int x, int y, int szw, int szh, u_char alp)
 {
     int addr2;
 
-    addr2 = addr + n * 0xa00;
+    addr2 = addr + n * SMALL_PHOTO_SIZE;
 
-    DrawPhotoBuffer(pri, addr2, 0, x, y, szw, szh, 64, 20, ftype, alp, 1);
+    DrawPhotoBuffer(pri, addr2, 0, x, y, szw, szh, SMALL_PHOTO_WIDTH, SMALL_PHOTO_HEIGHT, ftype, alp, 1);
 }
 
 void CompPhotoFromWorkArea(int n)
 {
-    CompressData(LOAD_ADDRESS_46, 0x1AA5400, n);
+    CompressData(LOAD_ADDRESS_46, MEM_ALBUM_SRC_ADDRESS_0 + SMALL_PHOTO_SIZE * ARRAY_COUNT(pfile_wrk.pic), n);
 }
 
 void DrawPhotoFromWorkArea(int pri, int ftype, int x, int y, int szw, int szh, u_char alp)
@@ -367,7 +367,7 @@ void DrawPhotoFromCompress(int n, u_int pri, int ftype, int x, int y, int szw, i
 
 void UncompressPhoto(int n)
 {
-    UncompressData(0x1AA5400, n, LOAD_ADDRESS_46);
+    UncompressData(MEM_ALBUM_SRC_ADDRESS_0 + SMALL_PHOTO_SIZE * ARRAY_COUNT(pfile_wrk.pic), n, LOAD_ADDRESS_46);
 }
 
 void UncompressPhotoAD(int addr, int n)
@@ -387,7 +387,7 @@ void CopyPhoto(int addri, int ni, int addro, int no)
     short int *data_i; // not in STAB
     int one_size;
 
-    one_size = 54096;
+    one_size = COMPRESSED_PHOTO_SIZE;
 
     data_i = (short int*)((ni * one_size) + addri);
     data_o = (short int*)((no * one_size) + addro);
@@ -405,7 +405,7 @@ void CopySPhoto(int addri, int ni, int addro, int no)
     short int *data_i; // not in STAB
     int one_size;
 
-    one_size = 2560;
+    one_size = SMALL_PHOTO_SIZE;
 
     data_i = (short int*)((ni * one_size) + addri);
     data_o = (short int*)((no * one_size) + addro);

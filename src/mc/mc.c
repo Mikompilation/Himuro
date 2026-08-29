@@ -1,6 +1,7 @@
 
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "mc.h"
 
 #include "main/glob.h"
@@ -17,6 +18,7 @@
 #include "ingame/map/map_ctrl.h"
 #include "ingame/menu/ig_glst.h"
 #include "ingame/menu/ig_rank.h"
+#include "ingame/photo/pht_make.h"
 #include "outgame/btl_mode/btl_mode.h"
 #include "outgame/memory_album.h"
 #include "outgame/mode_slct.h"
@@ -51,20 +53,38 @@ MC_DATA_STR mc_gamedata_str[] = {
     { .addr = (char *)&cribo,           .size = sizeof(cribo)           },
     { .addr = (char *)stage_wrk,        .size = sizeof(stage_wrk)       },
     { .addr = (char *)&save_rank,       .size = sizeof(save_rank)       },
-    { .addr = (char *)0x01a9f000,       .size = 0x6400                  },
-    { .addr = (char *)0x01be2380,       .size = 0x84120                 },
+    {
+        .addr = (char *)(MEM_ALBUM_SRC_ADDRESS_0 + SMALL_PHOTO_SIZE * ARRAY_COUNT(mc_album_save.pic)), // ranking thumbnails start after the album thumbnails
+        .size = SMALL_PHOTO_SIZE * ARRAY_COUNT(save_rank.pic_inf), // 10 ranking thumbnails
+    },
+    {
+        .addr = (char *)(MEM_ALBUM_SRC_ADDRESS_0 + SMALL_PHOTO_SIZE * ARRAY_COUNT(pfile_wrk.pic) + COMPRESSED_PHOTO_SIZE * ARRAY_COUNT(mc_album_save.pic)), // ranking compressed-photo buffer after the 24 album slots
+        .size = COMPRESSED_PHOTO_SIZE * ARRAY_COUNT(save_rank.pic_inf), // 10 compressed ranking-photo slots
+    },
 };
 MC_DATA_STR mc_albumdata_str[] = {
     { .addr = (char *)&mc_header,     .size = sizeof(mc_header)     },
     { .addr = (char *)&mc_album_save, .size = sizeof(mc_album_save) },
-    { .addr = (char *)0x005a0000,     .size = 0xF000                },
-    { .addr = (char *)0x005b5400,     .size = 0x13CF80              },
+    {
+        .addr = (char *)MEM_ALBUM_CPY_ADDRESS_0, // copy-side album thumbnail buffer
+        .size = SMALL_PHOTO_SIZE * ARRAY_COUNT(mc_album_save.pic), // 24 album thumbnails
+    },
+    {
+        .addr = (char *)(MEM_ALBUM_CPY_ADDRESS_0 + SMALL_PHOTO_SIZE * ARRAY_COUNT(pfile_wrk.pic)), // copy-side compressed-photo buffer after all thumbnail slots
+        .size = COMPRESSED_PHOTO_SIZE * ARRAY_COUNT(mc_album_save.pic), // 24 compressed album-photo slots
+    },
 };
 MC_DATA_STR mc_albumdata2_str[] = {
     { .addr = (char *)&mc_header,     .size = sizeof(mc_header)     },
     { .addr = (char *)&mc_album_save, .size = sizeof(mc_album_save) },
-    { .addr = (char *)0x01a90000,     .size = 0xF000                },
-    { .addr = (char *)0x01aa5400,     .size = 0x13CF80              },
+    {
+        .addr = (char *)MEM_ALBUM_SRC_ADDRESS_0, // source-side album thumbnail buffer
+        .size = SMALL_PHOTO_SIZE * ARRAY_COUNT(mc_album_save.pic), // 24 album thumbnails
+    },
+    {
+        .addr = (char *)(MEM_ALBUM_SRC_ADDRESS_0 + SMALL_PHOTO_SIZE * ARRAY_COUNT(pfile_wrk.pic)), // source-side compressed-photo buffer after all thumbnail slots
+        .size = COMPRESSED_PHOTO_SIZE * ARRAY_COUNT(mc_album_save.pic), // 24 compressed album-photo slots
+    },
 };
 u_long mc_gamedata_str_num = 30;
 u_long mc_albumdata_str_num = 4;

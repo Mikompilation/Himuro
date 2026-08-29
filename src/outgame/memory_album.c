@@ -1253,11 +1253,11 @@ char AbnPadInBigPage(u_char alp)
 
         if (dm_albm.buf_sid[dm_albm.csr[2]] == 0)
         {
-            UncompressPhotoAD(dm_albm.src_addr + 0x15400, target);
+            UncompressPhotoAD(dm_albm.src_addr + SMALL_PHOTO_SIZE * ARRAY_COUNT(pfile_wrk.pic), target);
         }
         else
         {
-            UncompressPhotoAD(dm_albm.cpy_addr + 0x15400, target);
+            UncompressPhotoAD(dm_albm.cpy_addr + SMALL_PHOTO_SIZE * ARRAY_COUNT(pfile_wrk.pic), target);
         }
     }
     else
@@ -1266,11 +1266,11 @@ char AbnPadInBigPage(u_char alp)
 
         if (dm_albm.side == 0)
         {
-            UncompressPhotoAD(dm_albm.src_addr + 0x15400, target);
+            UncompressPhotoAD(dm_albm.src_addr + SMALL_PHOTO_SIZE * ARRAY_COUNT(pfile_wrk.pic), target);
         }
         else
         {
-            UncompressPhotoAD(dm_albm.cpy_addr + 0x15400, target);
+            UncompressPhotoAD(dm_albm.cpy_addr + SMALL_PHOTO_SIZE * ARRAY_COUNT(pfile_wrk.pic), target);
         }
     }
 
@@ -2279,24 +2279,24 @@ void CopyToOsugi(u_char from, u_char no1, u_char to, u_char no2)
             if (to == 0)
             {
                 CopySPhoto(dm_albm.src_addr, pht_adr1, dm_albm.src_addr, pht_adr2);
-                CopyPhoto(dm_albm.src_addr + 0x15400, pht_adr1, dm_albm.src_addr + 0x15400, pht_adr2);
+                CopyPhoto(dm_albm.src_addr + SMALL_PHOTO_SIZE * ARRAY_COUNT(pfile_wrk.pic), pht_adr1, dm_albm.src_addr + SMALL_PHOTO_SIZE * ARRAY_COUNT(pfile_wrk.pic), pht_adr2);
             }
             else
             {
                 CopySPhoto(dm_albm.src_addr, pht_adr1, dm_albm.cpy_addr, pht_adr2);
-                CopyPhoto(dm_albm.src_addr + 0x15400, pht_adr1, dm_albm.cpy_addr + 0x15400, pht_adr2);
+                CopyPhoto(dm_albm.src_addr + SMALL_PHOTO_SIZE * ARRAY_COUNT(pfile_wrk.pic), pht_adr1, dm_albm.cpy_addr + SMALL_PHOTO_SIZE * ARRAY_COUNT(pfile_wrk.pic), pht_adr2);
             }
         break;
         case 1:
             if (to == 0)
             {
                 CopySPhoto(dm_albm.cpy_addr, pht_adr1, dm_albm.src_addr, pht_adr2);
-                CopyPhoto(dm_albm.cpy_addr + 0x15400, pht_adr1, dm_albm.src_addr + 0x15400, pht_adr2);
+                CopyPhoto(dm_albm.cpy_addr + SMALL_PHOTO_SIZE * ARRAY_COUNT(pfile_wrk.pic), pht_adr1, dm_albm.src_addr + SMALL_PHOTO_SIZE * ARRAY_COUNT(pfile_wrk.pic), pht_adr2);
             }
             else
             {
                 CopySPhoto(dm_albm.cpy_addr, pht_adr1, dm_albm.cpy_addr, pht_adr2);
-                CopyPhoto(dm_albm.cpy_addr + 0x15400, pht_adr1, dm_albm.cpy_addr + 0x15400, pht_adr2);
+                CopyPhoto(dm_albm.cpy_addr + SMALL_PHOTO_SIZE * ARRAY_COUNT(pfile_wrk.pic), pht_adr1, dm_albm.cpy_addr + SMALL_PHOTO_SIZE * ARRAY_COUNT(pfile_wrk.pic), pht_adr2);
             }
         break;
     }
@@ -3079,11 +3079,11 @@ void DtlWin(u_char mode, u_char type, u_char alp)
 
         if (dm_albm.side == 0)
         {
-            UncompressPhotoAD(dm_albm.src_addr + 0x15400, target);
+            UncompressPhotoAD(dm_albm.src_addr + SMALL_PHOTO_SIZE * ARRAY_COUNT(pfile_wrk.pic), target);
         }
         else
         {
-            UncompressPhotoAD(dm_albm.cpy_addr + 0x15400, target);
+            UncompressPhotoAD(dm_albm.cpy_addr + SMALL_PHOTO_SIZE * ARRAY_COUNT(pfile_wrk.pic), target);
         }
 
         switch (type)
