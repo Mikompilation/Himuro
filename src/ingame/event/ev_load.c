@@ -1,5 +1,6 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "enums.h"
 #define INCLUDING_FROM_EV_LOAD_C
 #include "ev_load.h"
@@ -12,10 +13,10 @@
 #include "os/eeiop/eese.h"
 #include "ingame/ig_glob.h"
 #include "ingame/entry/ap_dgost.h"
-// #include "ingame/entry/ap_fgost.h" // FloatGhostAppearTypeSet
+// #include "ingame/entry/ap_fgost.h"
 #include "ingame/entry/ap_ggost.h"
 #include "ingame/entry/entry.h"
-#include "ingame/event/ev_spcl.h" // SimpleDispSprt
+#include "ingame/event/ev_spcl.h"
 #include "ingame/map/door_ctl.h"
 #include "ingame/map/furn_ctl.h"
 #include "ingame/map/furn_spe/fspe_acs.h"
@@ -182,10 +183,7 @@ MSN_LOAD_DAT load_dat_wrk[40] = {0};
 MSN_TITLE_WRK mttl_wrk = {0};
 EVENT_LOAD_WRK ev_load_wrk = {0};
 
-#define ENE_DMG_TEX_ADDRESS 0x98000
-#define SPRT_ADDRESS 0xb30000
-#define TITLE_PK2_ADDRESS 0x1e90000
-#define SPR_FILE_ADDRESS 0x1e90000
+#define ENE_DMG_TEX_OFFSET 0x98000
 
 void MissionTitleInit(int msn_no)
 {
@@ -193,19 +191,16 @@ void MissionTitleInit(int msn_no)
 
     mttl_wrk = (MSN_TITLE_WRK){0};
 
-    mttl_wrk.mode = 0;
-    mttl_wrk.load_mode = 0;
+    mttl_wrk.mode = MSN_TITLE_MODE_READY;
+    mttl_wrk.load_mode = MT_LOAD_MODE_PREQ;
 
     ingame_wrk.stts |= 0x20 | 0x8;
 
     if (ingame_wrk.game == 0)
     {
         map_wrk.floor = msn_start_floor[msn_no];
-#ifdef BUILD_EU_VERSION
-        mttl_wrk.load_id = LoadReqLanguage(MSN00TTL_E_PK2 + msn_no * 5, TITLE_PK2_ADDRESS);
-#else
-        mttl_wrk.load_id = LoadReq(msn_no + MSN00TTL_PK2, TITLE_PK2_ADDRESS);
-#endif
+
+        mttl_wrk.load_id = VER_LOAD_REQ_LANG(MSN00TTL_PK2 + msn_no * VER_LANG_NUM, LOAD_ADDRESS_46);
     }
     else if (ingame_wrk.game == 1)
     {
@@ -213,7 +208,10 @@ void MissionTitleInit(int msn_no)
     }
 
     MissionStartMapItemInit(msn_no);
+
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     AdpcmMapNoUse();
+#endif
 }
 
 int MissionTitleMain(int msn_no)
@@ -225,6 +223,7 @@ int MissionTitleMain(int msn_no)
         {
             mttl_wrk.mode = MSN_TITLE_MODE_IN;
             mttl_wrk.time = 30;
+
             EAdpcmCmdPlay(0, 0, AO002_SHOU_TITLE_STR, 0, 0x3fff, 0x280, 0xfff, 0);
         }
     break;
@@ -236,13 +235,13 @@ int MissionTitleMain(int msn_no)
         }
         else
         {
-            mttl_wrk.time -= 1;
+            mttl_wrk.time--;
         }
     break;
     case MSN_TITLE_MODE_LOAD:
         if (mttl_wrk.time != 0)
         {
-            mttl_wrk.time -= 1;
+            mttl_wrk.time--;
         }
 
         if (ingame_wrk.game == 0)
@@ -270,6 +269,7 @@ int MissionTitleMain(int msn_no)
         else
         {
             mttl_wrk.mode = MSN_TITLE_MODE_END_PRE;
+
             EAdpcmFadeOut(30);
         }
     break;
@@ -281,6 +281,7 @@ int MissionTitleMain(int msn_no)
     break;
     case MSN_TITLE_MODE_END:
         ingame_wrk.stts &= 0x80 | 0x40 | 0x10 | 0x4 | 0x2 | 0x1;
+
         return 1;
     break;
     }
@@ -302,57 +303,57 @@ int MissionTitleMain(int msn_no)
 
 int MissionTitleLoad(int msn_no)
 {
-    if (mttl_wrk.load_mode == 9)
+    if (mttl_wrk.load_mode == MT_LOAD_MODE_END)
     {
         return 1;
     }
 
-    if (mttl_wrk.load_mode == 0)
+    if (mttl_wrk.load_mode == MT_LOAD_MODE_PREQ)
     {
-        mttl_wrk.load_mode = 1;
+        mttl_wrk.load_mode = MT_LOAD_MODE_PLYR;
 
         ReqMsnInitPlyr(msn_no);
 
         return 0;
     }
-    else if (mttl_wrk.load_mode == 1)
+    else if (mttl_wrk.load_mode == MT_LOAD_MODE_PLYR)
     {
-        if (MsnInitPlyr())
+        if (MsnInitPlyr() != 0)
         {
-            mttl_wrk.load_mode = 2;
+            mttl_wrk.load_mode = MT_LOAD_MODE_DREQ;
         }
 
         return 0;
     }
 
-    if (msn_title_load_dat[msn_no][mttl_wrk.load_count].file_no == 0xFFFF)
+    if (msn_title_load_dat[msn_no][mttl_wrk.load_count].file_no == 0xffff)
     {
-        mttl_wrk.load_mode = 4;
+        mttl_wrk.load_mode = MT_LOAD_MODE_RREQ;
         mttl_wrk.load_count = 0;
     }
-    else if (mttl_wrk.load_mode == 3)
+    else if (mttl_wrk.load_mode == MT_LOAD_MODE_DATA)
     {
-        if (IsLoadEnd(mttl_wrk.load_id))
+        if (IsLoadEnd(mttl_wrk.load_id) != 0)
         {
             MissionDataLoadAfterInit(msn_title_load_dat[msn_no] + mttl_wrk.load_count);
             SetDataLoadWrk(msn_title_load_dat[msn_no] + mttl_wrk.load_count);
 
-            mttl_wrk.load_mode = 2;
+            mttl_wrk.load_mode = MT_LOAD_MODE_DREQ;
             mttl_wrk.load_count++;
         }
     }
-    else if (mttl_wrk.load_mode == 2)
+    else if (mttl_wrk.load_mode == MT_LOAD_MODE_DREQ)
     {
         mttl_wrk.load_id = MissionDataLoadReq(&msn_title_load_dat[msn_no][mttl_wrk.load_count]);
-        mttl_wrk.load_mode = 3;
+        mttl_wrk.load_mode = MT_LOAD_MODE_DATA;
     }
-    else if (mttl_wrk.load_mode == 4)
+    else if (mttl_wrk.load_mode == MT_LOAD_MODE_RREQ)
     {
         if (mttl_wrk.load_count != 0)
         {
             FloatGhostLoadReq();
 
-            mttl_wrk.load_mode = 6;
+            mttl_wrk.load_mode = MT_LOAD_MODE_FGST;
 
             return 0;
         }
@@ -361,19 +362,19 @@ int MissionTitleLoad(int msn_no)
 
         area_wrk.room[mttl_wrk.load_count] = msn_start_room[msn_no];
 
-        mttl_wrk.load_mode = 5;
+        mttl_wrk.load_mode = MT_LOAD_MODE_ROOM;
     }
-    else if (mttl_wrk.load_mode == 5)
+    else if (mttl_wrk.load_mode == MT_LOAD_MODE_ROOM)
     {
         if (RoomMdlLoadWait() == 0)
         {
             return 0;
         }
 
-        mttl_wrk.load_mode = 4;
+        mttl_wrk.load_mode = MT_LOAD_MODE_RREQ;
         mttl_wrk.load_count++;
     }
-    else if (mttl_wrk.load_mode == 6)
+    else if (mttl_wrk.load_mode == MT_LOAD_MODE_FGST)
     {
         if (FloatGhostLoadMain() == 0)
         {
@@ -384,14 +385,14 @@ int MissionTitleLoad(int msn_no)
 
         if (GuardGhostAppearSet() == 0)
         {
-            mttl_wrk.load_mode = 9;
+            mttl_wrk.load_mode = MT_LOAD_MODE_END;
         }
         else
         {
-            mttl_wrk.load_mode = 8;
+            mttl_wrk.load_mode = MT_LOAD_MODE_GGST;
         }
     }
-    else if (mttl_wrk.load_mode == 7)
+    else if (mttl_wrk.load_mode == MT_LOAD_MODE_DGST)
     {
         if (DeadGhostLoad() == 0)
         {
@@ -400,23 +401,23 @@ int MissionTitleLoad(int msn_no)
 
         if (GuardGhostAppearSet() == 0)
         {
-            mttl_wrk.load_mode = 9;
+            mttl_wrk.load_mode = MT_LOAD_MODE_END;
         }
         else
         {
-            mttl_wrk.load_mode = 8;
+            mttl_wrk.load_mode = MT_LOAD_MODE_GGST;
         }
     }
     else
     {
-        if (mttl_wrk.load_mode != 8)
+        if (mttl_wrk.load_mode != MT_LOAD_MODE_GGST)
         {
             return 0;
         }
 
         if (GuardGhostLoad() != 0)
         {
-            mttl_wrk.load_mode = 9;
+            mttl_wrk.load_mode = MT_LOAD_MODE_END;
         }
     }
 
@@ -427,17 +428,17 @@ int MissionDataLoadReq(MSN_LOAD_DAT *dat)
 {
     int ret;
 
-    if (dat->file_type == 2)
+    if (dat->file_type == FILE_TYPE_SE)
     {
-        if (dat->addr == 16)
+        if (dat->addr == SE_ADDRNO_GHOST0)
         {
             ap_wrk.fg_se_empty[0] = 1;
         }
-        else if (dat->addr == 17)
+        else if (dat->addr == SE_ADDRNO_GHOST1)
         {
             ap_wrk.fg_se_empty[1] = 1;
         }
-        else if (dat->addr == 18)
+        else if (dat->addr == SE_ADDRNO_GHOST2)
         {
             ap_wrk.fg_se_empty[2] = 1;
         }
@@ -453,16 +454,16 @@ int MissionDataLoadReq(MSN_LOAD_DAT *dat)
     }
     else
     {
-        if (dat->file_type == 9)
+        if (dat->file_type == FILE_TYPE_BENE_MOT)
         {
-            LoadEneDmgTex(dat->tmp_no, (u_int *)(dat->addr + ENE_DMG_TEX_ADDRESS));
+            LoadEneDmgTex(dat->tmp_no, (u_int *)(dat->addr + ENE_DMG_TEX_OFFSET));
 
             ret = LoadReq(dat->file_no, dat->addr);
         }
-#ifdef BUILD_EU_VERSION
-        else if (dat->file_type == 14)
+#if defined(BUILD_EU_VERSION)
+        else if (dat->file_type == FILE_TYPE_EV_DAT)
         {
-            ret = LoadReqLanguage(dat->file_no,dat->addr);
+            ret = LoadReqLanguage(dat->file_no, dat->addr);
         }
 #endif
         else
@@ -478,36 +479,38 @@ void MissionDataLoadAfterInit(MSN_LOAD_DAT *dat)
 {
     switch (dat->file_type)
     {
-    case 3:
+    case FILE_TYPE_CAM_DAT:
         memcpy(&map_cam_dat, (void *)dat->addr, sizeof(map_cam_dat));
     break;
-    case 4:
+    case FILE_TYPE_CAM_DAT2:
         memcpy(&map_cam_dat2, (void *)dat->addr, sizeof(map_cam_dat2));
     break;
-    case 5:
+    case FILE_TYPE_CAM_DAT3:
         memcpy(&map_cam_dat3, (void *)dat->addr, sizeof(map_cam_dat3));
     break;
-    case 6:
+    case FILE_TYPE_CAM_DAT4:
         memcpy(&map_cam_dat4, (void *)dat->addr, sizeof(map_cam_dat4));
     break;
-    case 7:
+    case FILE_TYPE_MAP_DAT:
         FSpeMapDataMapping();
+
         map_wrk.dat_adr = GetFloorTopAddr(map_wrk.floor);
     break;
-    case 8:
+    case FILE_TYPE_ENE_MDL:
         motInitEnemyMdl((u_int *)dat->addr, dat->file_no - M000_MIKU_MDL);
     break;
-    case 9:
-    case 10:
+    case FILE_TYPE_BENE_MOT:
+    case FILE_TYPE_ENE_MOT:
         motInitEnemyAnm((u_int *)dat->addr, dat->tmp_no, dat->file_no - M000_MIKU_ANM);
     break;
-    case 11:
+    case FILE_TYPE_ITM_MDL:
         ItemLoadAfterInit(dat->file_no - I000_PLAY_CAMERA1_SGD, dat->addr);
     break;
     }
 }
 
-void DataLoadWrkInit() {
+void DataLoadWrkInit()
+{
     int i;
 
     memset(&load_dat_wrk, 0, sizeof(load_dat_wrk));
@@ -524,18 +527,20 @@ void SetDataLoadWrk(MSN_LOAD_DAT *dat)
 
     for (i = 0; i < 40; i++)
     {
-        if (load_dat_wrk[i].file_no == 0xFFFF)
+        if (load_dat_wrk[i].file_no == 0xffff)
         {
             load_dat_wrk[i].file_no = dat->file_no;
             load_dat_wrk[i].file_type = dat->file_type;
             load_dat_wrk[i].tmp_no = dat->tmp_no;
             load_dat_wrk[i].addr = dat->addr;
+
             return;
         }
     }
 }
 
-void DelDataLoadWrk(u_short file_no) {
+void DelDataLoadWrk(u_short file_no)
+{
     int i;
 
     for (i = 0; i < 40; i++)
@@ -546,17 +551,17 @@ void DelDataLoadWrk(u_short file_no) {
             {
                 motReleaseAniMdlBuf((u_short)file_no - M000_MIKU_ANM, (u_int *)load_dat_wrk[i].addr);
             }
-            else if (load_dat_wrk[i].file_type == 2)
+            else if (load_dat_wrk[i].file_type == FILE_TYPE_SE)
             {
-                if (load_dat_wrk[i].addr == 16)
+                if (load_dat_wrk[i].addr == SE_ADDRNO_GHOST0)
                 {
                     ap_wrk.fg_se_empty[0] = 0;
                 }
-                else if (load_dat_wrk[i].addr == 17)
+                else if (load_dat_wrk[i].addr == SE_ADDRNO_GHOST1)
                 {
                     ap_wrk.fg_se_empty[1] = 0;
                 }
-                else if (load_dat_wrk[i].addr == 18)
+                else if (load_dat_wrk[i].addr == SE_ADDRNO_GHOST2)
                 {
                     ap_wrk.fg_se_empty[2] = 0;
                 }
@@ -592,11 +597,11 @@ void SortLoadDataAddr()
 
     for (i = 0; i < 40; i++)
     {
-        if (load_dat_wrk[i].file_type == 9 || load_dat_wrk[i].file_type == 10)
+        if (load_dat_wrk[i].file_type == FILE_TYPE_BENE_MOT || load_dat_wrk[i].file_type == FILE_TYPE_ENE_MOT)
         {
             for (j = i + 1; j < 40; j++)
             {
-                if (load_dat_wrk[j].file_type != 9 && load_dat_wrk[j].file_type != 10)
+                if (load_dat_wrk[j].file_type != FILE_TYPE_BENE_MOT && load_dat_wrk[j].file_type != FILE_TYPE_ENE_MOT)
                 {
                     tmp.file_no = load_dat_wrk[i].file_no;
                     tmp.file_type = load_dat_wrk[i].file_type;
@@ -624,13 +629,13 @@ void MissionTitleDisp(int msn_no)
     u_char alp_rate;
     SPRT_SDAT ssd;
 
-    SetSprFile(SPR_FILE_ADDRESS);
+    SetSprFile(LOAD_ADDRESS_46);
 
-    if (mttl_wrk.mode == 1)
+    if (mttl_wrk.mode == MSN_TITLE_MODE_IN)
     {
         alp_rate = (30 - mttl_wrk.time) * 100 / 30;
     }
-    else if (mttl_wrk.mode == 3 || mttl_wrk.mode == 4)
+    else if (mttl_wrk.mode == MSN_TITLE_MODE_OUT || mttl_wrk.mode == MSN_TITLE_MODE_END_PRE)
     {
         alp_rate = mttl_wrk.time * 100 / 30;
     }
@@ -641,17 +646,17 @@ void MissionTitleDisp(int msn_no)
 
     for (i = 0; i < 11; i++)
     {
-        SimpleDispSprt(&msn_title_sp_bak[i], SPR_FILE_ADDRESS, i, NULL, NULL, alp_rate);
+        SimpleDispSprt(&msn_title_sp_bak[i], LOAD_ADDRESS_46, i, NULL, NULL, alp_rate);
     }
 
     for (i = 0; i < msn_title_flr_sp_num[msn_no]; i++)
     {
-        SimpleDispAlphaSprt(&msn_title_sp_flr[msn_no][i], SPR_FILE_ADDRESS, msn_title_sp_flr_no[msn_no], alp_rate * 70 / 100, 0);
+        SimpleDispAlphaSprt(&msn_title_sp_flr[msn_no][i], LOAD_ADDRESS_46, msn_title_sp_flr_no[msn_no], alp_rate * 70 / 100, 0);
     }
 
     for (i = 0; i < msn_title_ttl_sp_num[msn_no]; i++)
     {
-        SimpleDispSprt(&msn_title_sp_ttl[msn_no][i], SPR_FILE_ADDRESS, msn_title_sp_ttl_no[msn_no], NULL, NULL, alp_rate);
+        SimpleDispSprt(&msn_title_sp_ttl[msn_no][i], LOAD_ADDRESS_46, msn_title_sp_ttl_no[msn_no], NULL, NULL, alp_rate);
     }
 }
 
@@ -661,14 +666,14 @@ void StageTitleDisp(int msn_no)
     u_char alp_rate;
     SPRT_SDAT ssd;
 
-    SetSprFile(SPR_FILE_ADDRESS);
+    SetSprFile(LOAD_ADDRESS_46);
 
-    if (mttl_wrk.mode == 1)
+    if (mttl_wrk.mode == MSN_TITLE_MODE_IN)
     {
         alp_rate = (30 - mttl_wrk.time) * 100 / 30;
     }
 
-    else if (mttl_wrk.mode == 3 || mttl_wrk.mode == 4)
+    else if (mttl_wrk.mode == MSN_TITLE_MODE_OUT || mttl_wrk.mode == MSN_TITLE_MODE_END_PRE)
     {
         alp_rate = mttl_wrk.time * 100 / 30;
     }
@@ -679,7 +684,7 @@ void StageTitleDisp(int msn_no)
 
     for (i = 0; i < 11; i++)
     {
-        SimpleDispSprt(&stg_title_sp_bak[i], SPR_FILE_ADDRESS, i, NULL, NULL, alp_rate);
+        SimpleDispSprt(&stg_title_sp_bak[i], LOAD_ADDRESS_46, i, NULL, NULL, alp_rate);
     }
 
     return;
@@ -710,12 +715,14 @@ int EventLoadData(u_char load_no)
         if (sld[i].scn_no == 0xff)
         {
             ev_load_wrk.mode = EV_LOAD_MODE_END;
+
             return 1;
         }
 
         if (load_no == sld[i].scn_no)
         {
             load_no = i;
+
             break;
         }
 
@@ -724,15 +731,16 @@ int EventLoadData(u_char load_no)
 
     mld = &sld[load_no].load_dat[ev_load_wrk.count];
 
-    if (mld->file_type == 0 && ev_load_wrk.mode != 0)
+    if (mld->file_type == FILE_TYPE_END && ev_load_wrk.mode != 0)
     {
         ev_load_wrk.mode = EV_LOAD_MODE_END;
+
         return 1;
     }
 
     if (ev_load_wrk.mode == EV_LOAD_MODE_REQ)
     {
-        if (mld->file_type == 13)
+        if (mld->file_type == FILE_TYPE_SCENE)
         {
             SceneDataLoadReq(mld->file_no, (u_int *)mld->addr);
 
@@ -740,7 +748,7 @@ int EventLoadData(u_char load_no)
 
             return 0;
         }
-        else if (mld->file_type == 12)
+        else if (mld->file_type == FILE_TYPE_ROOM)
         {
             RoomLoadReq(mld->file_no);
 
@@ -804,19 +812,19 @@ int GetLoadGhostInfo(u_char *load_inf)
 
     for (i = 0; i < 40; i++)
     {
-        if (load_dat_wrk[i].file_type == 8)
+        if (load_dat_wrk[i].file_type == FILE_TYPE_ENE_MDL)
         {
             switch (load_dat_wrk[i].addr)
             {
-            case 0xc80000:
+            case LOAD_ADDRESS_13:
                 load_inf[0] = 1;
                 count++;
             break;
-            case 0xd00000:
+            case LOAD_ADDRESS_15:
                 load_inf[1] = 1;
                 count++;
             break;
-            case 0xd80000:
+            case LOAD_ADDRESS_17:
                 load_inf[2] = 1;
                 count++;
             break;
@@ -834,7 +842,7 @@ void MikuCGDisp()
 
     for (i = 0; i < 11; i ++)
     {
-        SimpleDispSprt(&msn_title_sp_bak[i], SPRT_ADDRESS,i, NULL, NULL, 0x64);
+        SimpleDispSprt(&msn_title_sp_bak[i], LOAD_ADDRESS_09, i, NULL, NULL, 0x64);
     }
 }
 

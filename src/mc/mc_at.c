@@ -1,5 +1,6 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "enums.h"
 #include "mc_at.h"
 
@@ -418,7 +419,7 @@ static char McAtAlbmMainLoop()
         }
     }
 
-    SetSprFile(0x1ce0000);
+    SetSprFile(LOAD_ADDRESS_31);
 
     BgFusumaYW(0x606060, 0.0f, 128.0f, 0x7d000);
 

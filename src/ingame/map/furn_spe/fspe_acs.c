@@ -1,8 +1,7 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "furn_spe.h"
-
- #define BASE_ADDRESS 0x7f8000
 
 void FSpeMapDataMapping()
 {
@@ -11,10 +10,10 @@ void FSpeMapDataMapping()
     int i;
     u_short data_num;
 
-    addr_top = (u_int *)(BASE_ADDRESS + 4 * 4);
-    addr_top = (u_int *)(*addr_top + BASE_ADDRESS);
+    addr_top = (u_int *)(LOAD_ADDRESS_02 + 4 * 4);
+    addr_top = (u_int *)(*addr_top + LOAD_ADDRESS_02);
 
-    addr_data = (u_int *)(*addr_top + BASE_ADDRESS);
+    addr_data = (u_int *)(*addr_top + LOAD_ADDRESS_02);
 
     data_num = ((u_int)addr_data - (u_int)addr_top) / 4;
 
@@ -22,7 +21,7 @@ void FSpeMapDataMapping()
 
     for (i = 0; i < data_num; i++)
     {
-        *addr_data += BASE_ADDRESS;
+        *addr_data += LOAD_ADDRESS_02;
 
         addr_data++;
     }
@@ -37,8 +36,8 @@ u_char* FSpeGetTopAddr(u_short fact_no)
         return 0;
     }
 
-    addr = (u_int *)(BASE_ADDRESS + 4 * 4);
-    addr = (u_int *)(*addr + BASE_ADDRESS);
+    addr = (u_int *)(LOAD_ADDRESS_02 + 4 * 4);
+    addr = (u_int *)(*addr + LOAD_ADDRESS_02);
 
     return (u_char *)addr[fact_no];
 }

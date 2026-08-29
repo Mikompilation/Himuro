@@ -1,5 +1,6 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "enums.h"
 #include "wan_soul.h"
 
@@ -43,8 +44,6 @@ static sceVu0FVECTOR cam_move_speed;
 static sceVu0FVECTOR cam_ref_adjust_val;
 
 #define PI 3.1415927f
-#define WANDER_SOUL_FACE_ADDRESS 0x1080000
-
 static inline float get_i(sceVu0FVECTOR v, int i) // HACK: fixes while loop in SetFirstDestination
 {
     return v[i];
@@ -813,7 +812,7 @@ void OneSoulCtrl(WANDER_SOUL_WRK *wswrk, float *srate, float *arate)
 
             if (wswrk->face_id != 0xffff)
             {
-                ene_face_load_id = LoadReq(wswrk->face_id, WANDER_SOUL_FACE_ADDRESS);
+                ene_face_load_id = LoadReq(wswrk->face_id, LOAD_ADDRESS_21);
 
                 face_load_end = 0;
             }

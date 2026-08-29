@@ -93,7 +93,7 @@ void SettleGhostMain()
         {
             DeadGhostLoadReq();
 
-            sg_load_id = SeFileLoadAndSet(SGY000_BD, 1);
+            sg_load_id = SeFileLoadAndSet(SGY000_BD, SE_ADDRNO_BTLHIT);
 
             sgst_wrk.mode = SGST_MODE_BHSE_WAIT;
         }
@@ -101,7 +101,7 @@ void SettleGhostMain()
         {
             if (GuardGhostReloadReq() != 0)
             {
-                motReleaseAniMdlBuf(jene_dat[ingame_wrk.msn_no][sgst_wrk.sg_no].anm_no, (u_int *)LOAD_ADDRESS_10);
+                motReleaseAniMdlBuf(jene_dat[ingame_wrk.msn_no][sgst_wrk.sg_no].anm_no, (u_int *)LOAD_ADDRESS_11);
 
                 sgst_wrk.mode = SGST_MODE_DD_LOAD;
             }
@@ -157,19 +157,19 @@ int SettleGhostLoadOneSize()
     case SGLOAD_MODE_START:
         if (ap_wrk.ggst_no != 0xff)
         {
-            motReleaseAniMdlBuf(fene_dat[ingame_wrk.msn_no][ap_wrk.ggst_no].anm_no, (u_int *)LOAD_ADDRESS_10);
+            motReleaseAniMdlBuf(fene_dat[ingame_wrk.msn_no][ap_wrk.ggst_no].anm_no, (u_int *)LOAD_ADDRESS_11);
         }
 
-        LoadReq(M000_MIKU_MDL + (u_short)jene_dat[ingame_wrk.msn_no][sgst_wrk.sg_no].mdl_no, LOAD_ADDRESS_16);
+        LoadReq(M000_MIKU_MDL + (u_short)jene_dat[ingame_wrk.msn_no][sgst_wrk.sg_no].mdl_no, LOAD_ADDRESS_17);
 
         sgst_wrk.load_mode = SGLOAD_MODE_MDL;
     break;
     case SGLOAD_MODE_MDL:
         if (IsLoadEndAll() != 0)
         {
-            motInitEnemyMdl((u_int *)LOAD_ADDRESS_16, jene_dat[ingame_wrk.msn_no][sgst_wrk.sg_no].mdl_no);
-            LoadEneDmgTex(jene_dat[ingame_wrk.msn_no][sgst_wrk.sg_no].mdl_no, (u_int *)LOAD_ADDRESS_11);
-            LoadReq(M000_MIKU_ANM + jene_dat[ingame_wrk.msn_no][sgst_wrk.sg_no].anm_no, LOAD_ADDRESS_10);
+            motInitEnemyMdl((u_int *)LOAD_ADDRESS_17, jene_dat[ingame_wrk.msn_no][sgst_wrk.sg_no].mdl_no);
+            LoadEneDmgTex(jene_dat[ingame_wrk.msn_no][sgst_wrk.sg_no].mdl_no, (u_int *)LOAD_ADDRESS_12);
+            LoadReq(M000_MIKU_ANM + jene_dat[ingame_wrk.msn_no][sgst_wrk.sg_no].anm_no, LOAD_ADDRESS_11);
 
             sgst_wrk.load_mode = SGLOAD_MODE_MOT;
         }
@@ -177,8 +177,8 @@ int SettleGhostLoadOneSize()
     case SGLOAD_MODE_MOT:
         if (IsLoadEndAll() != 0)
         {
-            motInitEnemyAnm((u_int *)LOAD_ADDRESS_10, jene_dat[ingame_wrk.msn_no][sgst_wrk.sg_no].mdl_no, jene_dat[ingame_wrk.msn_no][sgst_wrk.sg_no].anm_no);
-            SeFileLoadAndSet(jene_dat[ingame_wrk.msn_no][sgst_wrk.sg_no].se_no, 18);
+            motInitEnemyAnm((u_int *)LOAD_ADDRESS_11, jene_dat[ingame_wrk.msn_no][sgst_wrk.sg_no].mdl_no, jene_dat[ingame_wrk.msn_no][sgst_wrk.sg_no].anm_no);
+            SeFileLoadAndSet(jene_dat[ingame_wrk.msn_no][sgst_wrk.sg_no].se_no, SE_ADDRNO_GHOST2);
 
             sgst_wrk.load_mode = SGLOAD_MODE_SE;
         }
@@ -209,16 +209,16 @@ int SettleGhostLoadTwoSize()
     case SGLOAD_MODE_START:
         DeadGhostLoadDel();
         motReleaseAniMdlBuf(30, (u_int *)LOAD_ADDRESS_06);
-        LoadReq(M037_TOUSHU_MDL, LOAD_ADDRESS_12);
-        LoadReq(M900_ONNRYOU_MPK, LOAD_ADDRESS_14);
+        LoadReq(M037_TOUSHU_MDL, LOAD_ADDRESS_13);
+        LoadReq(M900_ONNRYOU_MPK, LOAD_ADDRESS_15);
 
         sgst_wrk.load_mode = SGLOAD_MODE_MDL;
     break;
     case SGLOAD_MODE_MDL:
         if (IsLoadEndAll() != 0)
         {
-            motInitEnemyMdl((u_int *)LOAD_ADDRESS_12, 37);
-            motInitEnemyMdl((u_int *)LOAD_ADDRESS_14, 67);
+            motInitEnemyMdl((u_int *)LOAD_ADDRESS_13, 37);
+            motInitEnemyMdl((u_int *)LOAD_ADDRESS_15, 67);
             LoadEneDmgTex(37, (u_int *)LOAD_ADDRESS_07);
             LoadReq(M037_TOUSHU_ANM, LOAD_ADDRESS_06);
 
@@ -229,7 +229,7 @@ int SettleGhostLoadTwoSize()
         if (IsLoadEndAll() != 0)
         {
             motInitEnemyAnm((u_int *)LOAD_ADDRESS_06, 37, 25);
-            SeFileLoadAndSet(SG037_TOUSHU_BD, 16);
+            SeFileLoadAndSet(SG037_TOUSHU_BD, SE_ADDRNO_GHOST0);
 
             sgst_wrk.load_mode = SGLOAD_MODE_SE;
         }
@@ -237,7 +237,7 @@ int SettleGhostLoadTwoSize()
     case SGLOAD_MODE_SE:
         if (IsLoadEndAll() != 0)
         {
-            sg_load_id = SeFileLoadAndSet(SGY001_BD, 1);
+            sg_load_id = SeFileLoadAndSet(SGY001_BD, SE_ADDRNO_BTLHIT);
 
             sgst_wrk.load_mode = SGLOAD_MODE_SE2;
         }

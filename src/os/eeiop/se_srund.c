@@ -106,7 +106,7 @@ int SSrundLoadReqAndSetSub(int load_id, u_char room_from, u_char room_to)
         {
             if (empty_tbl[j] == 0)
             {
-                load_id = SeFileLoadAndSet(load_file_no, j + 14);
+                load_id = SeFileLoadAndSet(load_file_no, j + SE_ADDRNO_SRUND0);
 
                 empty_tbl[j] = 1;
 

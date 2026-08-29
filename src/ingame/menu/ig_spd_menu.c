@@ -1,5 +1,6 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "enums.h"
 #include "ig_spd_menu.h"
 
@@ -109,12 +110,8 @@ void SpdMapMain()
 
     if (yw2d.io_a[4] != 0.0f)
     {
-        SetSprFile(0x1ce0000);
-#ifdef BUILD_EU_VERSION
-        SetSprFile(0x1e04000);
-#else
-        SetSprFile(0x1e05b00);
-#endif
+        SetSprFile(LOAD_ADDRESS_31);
+        SetSprFile(LOAD_ADDRESS_42);
     }
 
     if (spd_mnu.smap != 0)
@@ -256,11 +253,7 @@ void SpdOptStart()
 
     SpdOptInit();
 
-#ifdef BUILD_EU_VERSION
-    sopt_load_id = LoadReqLanguage(PL_OPTI_E_PK2, 0x1e90000);
-#else
-    sopt_load_id = LoadReq(PL_OPTI_PK2, 0x1e90000);
-#endif
+    sopt_load_id = VER_LOAD_REQ_LANG(PL_OPTI_PK2, LOAD_ADDRESS_46);
 
     ingame_wrk.mode = INGAME_MODE_SPD_OPT;
 }
@@ -296,8 +289,8 @@ void SpdOptMain()
 
     if (yw2d.io_a[4] != 0.0f)
     {
-        SetSprFile(0x1ce0000);
-        SetSprFile(0x1e90000);
+        SetSprFile(LOAD_ADDRESS_31);
+        SetSprFile(LOAD_ADDRESS_46);
     }
 
     if (spd_mnu.sopt != 0x0)

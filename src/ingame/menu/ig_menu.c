@@ -1,5 +1,6 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "enums.h"
 #include "ig_menu.h"
 
@@ -49,24 +50,6 @@ static FLSH_CORE flsh;
 static int menu_load_id;
 static int fndr_load_id;
 static int mode_load_id;
-
-#ifdef BUILD_EU_VERSION
-#define SPR_ADDRESS_1 0x1ce0000
-#define SPR_ADDRESS_2 0x1d10000
-#define SPR_ADDRESS_3 0x1d210c0
-#define SPR_ADDRESS_4 0x1e04000
-#define SPR_ADDRESS_5 0x1e90000
-#define SPR_ADDRESS_6 0x1d51db0
-#else
-#define SPR_ADDRESS_1 0x1ce0000
-#define SPR_ADDRESS_2 0x1d15600
-#define SPR_ADDRESS_3 0x1d266c0
-#define SPR_ADDRESS_4 0x1e05b00
-#define SPR_ADDRESS_5 0x1e90000
-#define SPR_ADDRESS_6 0x1d573b0
-#endif
-
-#define MSN_FILE_ADDRESS 0x84a000
 
 void NewgameMenuInit()
 {
@@ -141,9 +124,9 @@ void IngameMenuMain()
 {
     u_char ret;
 
-    SetSprFile(SPR_ADDRESS_1);
-    SetSprFile(SPR_ADDRESS_2);
-    SetSprFile(SPR_ADDRESS_3);
+    SetSprFile(LOAD_ADDRESS_31);
+    SetSprFile(LOAD_ADDRESS_33);
+    SetSprFile(LOAD_ADDRESS_34);
 
     if (yw2d.inn_mode_cnt != 0)
     {
@@ -180,42 +163,42 @@ void IngameMenuMain()
         IngameMenuModeSlct();
     break;
     case IGMENU_MODE_MAP:
-        SetSprFile(SPR_ADDRESS_4);
+        SetSprFile(LOAD_ADDRESS_42);
 
         IngameMenuMap();
     break;
     case IGMENU_MODE_ITEM:
-        SetSprFile(SPR_ADDRESS_5);
+        SetSprFile(LOAD_ADDRESS_46);
 
         IngameMenuItem();
     break;
     case IGMENU_MODE_ALBM:
-        SetSprFile(SPR_ADDRESS_6);
+        SetSprFile(LOAD_ADDRESS_36);
 
         IngameMenuAlbum(0);
     break;
     case IGMENU_MODE_FILE:
-        SetSprFile(SPR_ADDRESS_5);
+        SetSprFile(LOAD_ADDRESS_46);
 
         IngameMenuFile();
     break;
     case IGMENU_MODE_GHOST:
-        SetSprFile(SPR_ADDRESS_5);
+        SetSprFile(LOAD_ADDRESS_46);
 
         IngameMenuGlst();
     break;
     case IGMENU_MODE_RANKING:
-        SetSprFile(SPR_ADDRESS_6);
+        SetSprFile(LOAD_ADDRESS_36);
 
         IngameMenuRank();
     break;
     case IGMENU_MODE_CAMERA:
-        SetSprFile(SPR_ADDRESS_5);
+        SetSprFile(LOAD_ADDRESS_46);
 
         CameraCustomMain();
     break;
     case IGMENU_MODE_OPTN:
-        SetSprFile(SPR_ADDRESS_5);
+        SetSprFile(LOAD_ADDRESS_46);
 
         IngameMenuOption();
     break;
@@ -282,7 +265,7 @@ void IngameMenuModeSlct()
 
                 ig_menu_wrk.mode = IGMENU_MODE_ITEM;
 
-                mode_load_id = LoadReq(PL_ITEM_PK2, SPR_ADDRESS_5);
+                mode_load_id = LoadReq(PL_ITEM_PK2, LOAD_ADDRESS_46);
 
                 StartItemModeInit();
             break;
@@ -291,11 +274,7 @@ void IngameMenuModeSlct()
 
                 ig_menu_wrk.mode = IGMENU_MODE_ALBM;
 
-#ifdef BUILD_EU_VERSION
-                mode_load_id = LoadReqLanguage(PL_PHOT_E_PK2, SPR_ADDRESS_6);
-#else
-                mode_load_id = LoadReq(PL_PHOT_PK2, SPR_ADDRESS_6);
-#endif
+                mode_load_id = VER_LOAD_REQ_LANG(PL_PHOT_PK2, LOAD_ADDRESS_36);
 
                 StartAlbumModeInit();
             break;
@@ -304,11 +283,7 @@ void IngameMenuModeSlct()
 
                 ig_menu_wrk.mode = IGMENU_MODE_FILE;
 
-#ifdef BUILD_EU_VERSION
-                mode_load_id = LoadReqLanguage(PL_FILE_E_PK2, SPR_ADDRESS_5);
-#else
-                mode_load_id = LoadReq(PL_FILE_PK2, SPR_ADDRESS_5);
-#endif
+                mode_load_id = VER_LOAD_REQ_LANG(PL_FILE_PK2, LOAD_ADDRESS_46);
 
                 StartFileModeInit();
             break;
@@ -319,11 +294,7 @@ void IngameMenuModeSlct()
 
                     ig_menu_wrk.mode = IGMENU_MODE_GHOST;
 
-#ifdef BUILD_EU_VERSION
-                    mode_load_id = LoadReqLanguage(PL_GLST_E_PK2, SPR_ADDRESS_5);
-#else
-                    mode_load_id = LoadReq(PL_GLST_PK2, SPR_ADDRESS_5);
-#endif
+                    mode_load_id = VER_LOAD_REQ_LANG(PL_GLST_PK2, LOAD_ADDRESS_46);
 
                     StartGlstModeInit();
                 }
@@ -333,11 +304,7 @@ void IngameMenuModeSlct()
 
                     ig_menu_wrk.mode = IGMENU_MODE_CAMERA;
 
-#ifdef BUILD_EU_VERSION
-                    mode_load_id = LoadReqLanguage(PL_CAME_E_PK2, SPR_ADDRESS_5);
-#else
-                    mode_load_id = LoadReq(PL_CAME_PK2, SPR_ADDRESS_5);
-#endif
+                    mode_load_id = VER_LOAD_REQ_LANG(PL_CAME_PK2, LOAD_ADDRESS_46);
 
                     CameraCustomInit();
                 }
@@ -347,11 +314,7 @@ void IngameMenuModeSlct()
 
                 ig_menu_wrk.mode = IGMENU_MODE_RANKING;
 
-#ifdef BUILD_EU_VERSION
-                mode_load_id = LoadReqLanguage(PL_RANK_E_PK2, SPR_ADDRESS_6);
-#else
-                mode_load_id = LoadReq(PL_RANK_PK2, SPR_ADDRESS_6);
-#endif
+                mode_load_id = VER_LOAD_REQ_LANG(PL_RANK_PK2, LOAD_ADDRESS_36);
 
                 StartRankModeInit();
             break;
@@ -360,11 +323,7 @@ void IngameMenuModeSlct()
 
                 ig_menu_wrk.mode = IGMENU_MODE_CAMERA;
 
-#ifdef BUILD_EU_VERSION
-                mode_load_id = LoadReqLanguage(PL_CAME_E_PK2, SPR_ADDRESS_5);
-#else
-                mode_load_id = LoadReq(PL_CAME_PK2, SPR_ADDRESS_5);
-#endif
+                mode_load_id = VER_LOAD_REQ_LANG(PL_CAME_PK2, LOAD_ADDRESS_46);
 
                 CameraCustomInit();
             break;
@@ -373,11 +332,7 @@ void IngameMenuModeSlct()
 
                 ig_menu_wrk.mode = IGMENU_MODE_OPTN;
 
-#ifdef BUILD_EU_VERSION
-                mode_load_id = LoadReqLanguage(PL_OPTI_E_PK2, SPR_ADDRESS_5);
-#else
-                mode_load_id = LoadReq(PL_OPTI_PK2, SPR_ADDRESS_5);
-#endif
+                mode_load_id = VER_LOAD_REQ_LANG(PL_OPTI_PK2, LOAD_ADDRESS_46);
 
                 StartOptionModeInit(0);
             break;
@@ -431,11 +386,11 @@ int GetIngameMSGAddr(u_char type, int msg_no)
 {
     int addr;
 
-    addr = MSN_FILE_ADDRESS + type * 4;
-    addr = MSN_FILE_ADDRESS + Get4Byte((u_char *)addr) + msg_no * 4;
+    addr = LOAD_ADDRESS_03 + type * 4;
+    addr = LOAD_ADDRESS_03 + Get4Byte((u_char *)addr) + msg_no * 4;
     addr = Get4Byte((u_char *)addr);
 
-    return MSN_FILE_ADDRESS + addr;
+    return LOAD_ADDRESS_03 + addr;
 }
 
 void IngameMenuModeSlctDispInit()
@@ -1179,7 +1134,7 @@ static void CmnWakuForWin(short int pos_x, short int pos_y, u_short siz_x, u_sho
     short int put_u;
     short int put_v;
 
-    SetSprFile(0x1ce0000);
+    SetSprFile(LOAD_ADDRESS_31);
 
     if (msk_sw != 0)
     {

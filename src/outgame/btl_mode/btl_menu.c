@@ -1,5 +1,6 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "enums.h"
 #include "common.h"
 
@@ -65,10 +66,6 @@ BTL_SAVE_STR btl_save_str[] = {
 };
 
 #define ENE_DMG_TEX_BASE_ADDRESS 0x98000
-#define FLY_MDL_ADDRESS 0xd80000
-#define MSN00TTL_PK2_ADDRESS 0x1e90000
-#define STORY_WORK_SAVE_ADDRESS 0x1090000
-
 void FreeModeMain()
 {
     char *str0 = "FREE MODE";
@@ -277,11 +274,7 @@ int StageTitleInit()
 
     btl_wrk.load_mode = 0;
 
-#ifdef BUILD_EU_VERSION
-    ret = LoadReqLanguage((btl_wrk.stage_no % 5) * 5 + MSN00TTL_E_PK2, MSN00TTL_PK2_ADDRESS);
-#else
-    ret = LoadReq(btl_wrk.stage_no % 5 + MSN00TTL_PK2, MSN00TTL_PK2_ADDRESS);
-#endif
+    ret = VER_LOAD_REQ_LANG(MSN00TTL_PK2 + (btl_wrk.stage_no % 5) * VER_LANG_NUM, LOAD_ADDRESS_46);
 
     map_wrk.floor = stage_dat[btl_wrk.stage_no].floor;
 
@@ -403,7 +396,7 @@ void StageGhostLoadReq()
 
         if (stage_dat[btl_wrk.stage_no].fly_mdl_no != 0xffff)
         {
-            SeFileLoadAndSet(SGY001_BD, 1);
+            SeFileLoadAndSet(SGY001_BD, SE_ADDRNO_BTLHIT);
         }
 
         SeFileLoadAndSet(edp[ene_no].se_no, load_se_addr[i]);
@@ -411,7 +404,7 @@ void StageGhostLoadReq()
 
     if (stage_dat[btl_wrk.stage_no].fly_mdl_no != 0xffff)
     {
-        LoadReq(stage_dat[btl_wrk.stage_no].fly_mdl_no + M000_MIKU_MDL, FLY_MDL_ADDRESS);
+        LoadReq(stage_dat[btl_wrk.stage_no].fly_mdl_no + M000_MIKU_MDL, LOAD_ADDRESS_17);
     }
 }
 
@@ -438,7 +431,7 @@ void StageGhostLoadAfter()
 
     if (stage_dat[btl_wrk.stage_no].fly_mdl_no != 0xffff)
     {
-        motInitEnemyMdl((u_int *)FLY_MDL_ADDRESS, stage_dat[btl_wrk.stage_no].fly_mdl_no);
+        motInitEnemyMdl((u_int *)LOAD_ADDRESS_17, stage_dat[btl_wrk.stage_no].fly_mdl_no);
     }
 }
 
@@ -451,7 +444,7 @@ void SaveStoryWrk()
     int i;
     int j;
 
-    dstp = (u_char *)STORY_WORK_SAVE_ADDRESS;
+    dstp = (u_char *)LOAD_ADDRESS_22;
 
     for (i = 0; i < btl_save_str_num; i++)
     {
@@ -476,7 +469,7 @@ void LoadStoryWrk()
     int i;
     int j;
 
-    srcp = (u_char *)STORY_WORK_SAVE_ADDRESS;
+    srcp = (u_char *)LOAD_ADDRESS_22;
 
     for (i = 0; i < btl_save_str_num; i++)
     {

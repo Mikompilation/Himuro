@@ -687,7 +687,7 @@ char MsnInitPlyr()
     switch (plyr_init_ctrl.step)
     {
     case 0:
-        init_load_id = SeFileLoadAndSet(SV000_MIKU_BD + plyr_mdl_no, 2);
+        init_load_id = SeFileLoadAndSet(SV000_MIKU_BD + plyr_mdl_no, SE_ADDRNO_VOICE);
 
         plyr_init_ctrl.step = 1;
 

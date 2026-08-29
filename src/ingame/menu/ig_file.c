@@ -1,5 +1,6 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "enums.h"
 #include "ig_file.h"
 
@@ -40,16 +41,6 @@ static void DspBack2D(short int pht_no, u_char rt, short int px, short int py, s
 static void DspFileCmmn(short int pos_x, short int pos_y, short int alpha);
 static char TateizFreeSpace();
 
-
-#ifdef BUILD_EU_VERSION
-#define LOAD_ADDRESS 0x1d51db0
-#define SPRT_ADDRESS 0x1d83000
-#define SPRT_ADDRESS_2 0x1e04000
-#else
-#define LOAD_ADDRESS 0x1d573b0
-#define SPRT_ADDRESS 0x1d88100
-#define SPRT_ADDRESS_2 0x1e05b00
-#endif
 
 u_char file_kind[] = { 0,  2,  1, 0xff };
 #include "data/name_plate.h" // static RELATION_NAME_PLATE name_plate[];
@@ -1371,7 +1362,7 @@ static void PhotDispCtrl(u_char alp)
         mem_ofs = dsp_box[i].mem_no * 0x10440;
         tim_offset = dsp_box[i].mem_no * 0x204 + 0x3080;
 
-        mem_box[dsp_box[i].mem_no].tx = LoadTIM2Sub(&dmy, (char *)(LOAD_ADDRESS + mem_ofs), 0, tim_offset);
+        mem_box[dsp_box[i].mem_no].tx = LoadTIM2Sub(&dmy, (char *)(LOAD_ADDRESS_36 + mem_ofs), 0, tim_offset);
     }
 
     if (AllVramTensoOK(3, dsp_box) != 0)
@@ -1483,13 +1474,13 @@ static void PhotDispCtrl(u_char alp)
                 {
                     wk_no = mem_box[j].lod_no;
 
-                    mem_box[j].lod_id = LoadReq(wk_no + HINT_00_TM2, LOAD_ADDRESS + mem_ofs);
+                    mem_box[j].lod_id = LoadReq(wk_no + HINT_00_TM2, LOAD_ADDRESS_36 + mem_ofs);
                 }
                 else
                 {
                     wk_no = mem_box[j].lod_no - 50;
 
-                    mem_box[j].lod_id = LoadReq(file2phot[wk_no] + IPHT_00_TM2, LOAD_ADDRESS + mem_ofs);
+                    mem_box[j].lod_id = LoadReq(file2phot[wk_no] + IPHT_00_TM2, LOAD_ADDRESS_36 + mem_ofs);
                 }
 
                 break;
@@ -1690,13 +1681,8 @@ void RelationShip()
     switch(file_rel.step)
     {
     case 0:
-#ifdef BUILD_EU_VERSION
-        file_rel.load_id = LoadReqLanguage(PL_FILE_REL_E_PK2, SPRT_ADDRESS);
-        file_rel.load_id = LoadReqLanguage(PL_GLST_E_PK2, 0x1e90000);
-#else
-        file_rel.load_id = LoadReq(PL_FILE_REL_PK2, SPRT_ADDRESS);
-        file_rel.load_id = LoadReq(PL_GLST_PK2, 0x1e90000);
-#endif
+        file_rel.load_id = VER_LOAD_REQ_LANG(PL_FILE_REL_PK2, LOAD_ADDRESS_38);
+        file_rel.load_id = VER_LOAD_REQ_LANG(PL_GLST_PK2, LOAD_ADDRESS_46);
         file_rel.step = 1;
     break;
     case 1:
@@ -1706,17 +1692,12 @@ void RelationShip()
         }
     break;
     case 2:
-        SetSprFile(SPRT_ADDRESS);
+        SetSprFile(LOAD_ADDRESS_38);
         if (TateizFreeSpace() != 0)
         {
             file_rel.step = 3;
-#ifdef BUILD_EU_VERSION
-            file_rel.load_id = LoadReqLanguage(PL_FILE_E_PK2, 0x1e90000);
-            file_rel.load_id = LoadReqLanguage(PL_FNDR_E_PK2, SPRT_ADDRESS);
-#else
-            file_rel.load_id = LoadReq(PL_FILE_PK2, 0x1e90000);
-            file_rel.load_id = LoadReq(PL_FNDR_PK2, SPRT_ADDRESS);
-#endif
+            file_rel.load_id = VER_LOAD_REQ_LANG(PL_FILE_PK2, LOAD_ADDRESS_46);
+            file_rel.load_id = VER_LOAD_REQ_LANG(PL_FNDR_PK2, LOAD_ADDRESS_38);
         }
     break;
     case 3:
@@ -2727,9 +2708,9 @@ void RelDspBackGrd()
 
     DispSprD(&ds);
 
-    SetSprFile(0x1e90000);
+    SetSprFile(LOAD_ADDRESS_46);
 
-    SetSprFile(SPRT_ADDRESS_2);
+    SetSprFile(LOAD_ADDRESS_42);
 
     for (i = 0; i < 10; i++)
     {
@@ -2807,7 +2788,7 @@ void RelDspBackGrd()
 
     DispSprD(&ds);
 
-    SetSprFile(SPRT_ADDRESS_2);
+    SetSprFile(LOAD_ADDRESS_42);
 
     DrawButtonTex(0x14000, 3, spr_dat[MAP_DIRECTION].x - 45, spr_dat[MAP_DIRECTION].y + rel_csr.offy + 69, 0x64);
 
@@ -2851,7 +2832,7 @@ void RelDspBackGrd()
 
     DspMenuTitle(yw2d.io_x[1], yw2d.io_y[1] + rel_csr.offy - 22.0f, 128.0f, 30, 4);
 
-    SetSprFile(SPRT_ADDRESS);
+    SetSprFile(LOAD_ADDRESS_38);
 }
 
 void RelationDispMsg(RELATION_DAT *r_dat)
@@ -2905,7 +2886,7 @@ void RelationDispMsg(RELATION_DAT *r_dat)
     case 0:
         if (r_dat->tm2_id != -1)
         {
-            rel_csr.load_id = LoadReq(r_dat->tm2_id, LOAD_ADDRESS);
+            rel_csr.load_id = LoadReq(r_dat->tm2_id, LOAD_ADDRESS_36);
             rel_csr.mode = 1;
         }
     break;
@@ -2926,7 +2907,7 @@ void RelationDispMsg(RELATION_DAT *r_dat)
     break;
     }
 
-    SetSprFile(0x1e90000);
+    SetSprFile(LOAD_ADDRESS_46);
 
 #ifdef BUILD_EU_VERSION
     Sheet(814, 20, dsp_offy + 20, 600, 180, 0xf, 0x80);
@@ -2936,7 +2917,7 @@ void RelationDispMsg(RELATION_DAT *r_dat)
     Fuchidori(815, 20, dsp_offy + 20, 600, 180, 0xe, 0x80);
 #endif
 
-    SetSprFile(SPRT_ADDRESS);
+    SetSprFile(LOAD_ADDRESS_38);
 }
 
 void SimpleDispSprtDS(SPRT_DAT *ssd, u_int addr, int sp_no, SPRT_SROT *srot, SPRT_SSCL *sscl, u_char alp_rate)

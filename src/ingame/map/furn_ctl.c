@@ -1,5 +1,6 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "furn_ctl.h"
 
 #include "graphics/graph3d/gra3d.h"
@@ -19,8 +20,6 @@
 int furn_disp_flg = 0;
 
 #define PI 3.1415927f
-
-#define BASE_ADDRESS 0x7f8000
 
 void FurnCtrlMain()
 {
@@ -224,9 +223,9 @@ int GetRoomFurnID(u_char room_id, u_short *furn_id, u_char msn_no)
         }
 
         addr_si0 = (int *)GetFloorTopAddr(k);
-        addr_si0 = (int *)(addr_si0[11] + BASE_ADDRESS);
+        addr_si0 = (int *)(addr_si0[11] + LOAD_ADDRESS_02);
 
-        addr_uc0 = (u_char *)(*addr_si0 + BASE_ADDRESS);
+        addr_uc0 = (u_char *)(*addr_si0 + LOAD_ADDRESS_02);
 
         room_num = *addr_uc0;
         addr_uc0++;
@@ -238,16 +237,16 @@ int GetRoomFurnID(u_char room_id, u_short *furn_id, u_char msn_no)
             if (*addr_uc0 == room_id)
             {
                 addr_si1 = (int *)&addr_si1[i];
-                addr_si1 = (int *)(*addr_si1 + BASE_ADDRESS);
+                addr_si1 = (int *)(*addr_si1 + LOAD_ADDRESS_02);
 
-                addr_uc1 = (u_char *)(*addr_si1 + BASE_ADDRESS);
+                addr_uc1 = (u_char *)(*addr_si1 + LOAD_ADDRESS_02);
                 addr_si1++;
 
                 for (j = 0 ; j < *addr_uc1; j++)
                 {
-                    addr_si2 = (int *)(addr_si1[j] + BASE_ADDRESS);
+                    addr_si2 = (int *)(addr_si1[j] + LOAD_ADDRESS_02);
 
-                    fdpp = (FURN_DATA_POP *)(*addr_si2 + BASE_ADDRESS);
+                    fdpp = (FURN_DATA_POP *)(*addr_si2 + LOAD_ADDRESS_02);
 
                     if (room_id == 3)
                     {
@@ -557,9 +556,9 @@ void FurnDataInit()
     InitFActWrk();
 
     addr_si = (int *)(map_wrk.dat_adr + 11 * 4);
-    addr_si = (int *)(*addr_si + BASE_ADDRESS);
+    addr_si = (int *)(*addr_si + LOAD_ADDRESS_02);
 
-    r_id_p = (u_char *)(*addr_si + BASE_ADDRESS);
+    r_id_p = (u_char *)(*addr_si + LOAD_ADDRESS_02);
 
     rm_num = *r_id_p;
     r_id_p++;
@@ -580,18 +579,18 @@ void FurnDataInit()
     SetUpRoomCoordinate(*r_id_p, room_wrk.pos[0]);
 
     addr_si = (int *)(map_wrk.dat_adr + 11 * 4);
-    addr_si = (int *)(*addr_si + BASE_ADDRESS);
-    addr_si = (int *)(addr_si[i+1] + BASE_ADDRESS);
+    addr_si = (int *)(*addr_si + LOAD_ADDRESS_02);
+    addr_si = (int *)(addr_si[i+1] + LOAD_ADDRESS_02);
 
-    dt_num = *(int *)(*addr_si + BASE_ADDRESS);
+    dt_num = *(int *)(*addr_si + LOAD_ADDRESS_02);
 
     no_use_fw = 0;
 
     for (i = 0; i < dt_num; i++)
     {
-        addr_fdt = (int *)(addr_si[i+1] + BASE_ADDRESS);
+        addr_fdt = (int *)(addr_si[i+1] + LOAD_ADDRESS_02);
 
-        fdpp = (FURN_DATA_POP *)(*addr_fdt + BASE_ADDRESS);
+        fdpp = (FURN_DATA_POP *)(*addr_fdt + LOAD_ADDRESS_02);
 
         while(FurnIsWrkUse(&furn_wrk[no_use_fw]) != 0)
         {
@@ -632,9 +631,9 @@ void FurnDataRenewNext(u_char room_id)
     }
 
     addr_si = (int *)(map_wrk.dat_adr + 11 * 4);
-    addr_si = (int *)(*addr_si + BASE_ADDRESS);
+    addr_si = (int *)(*addr_si + LOAD_ADDRESS_02);
 
-    r_id_p = (u_char *)(*addr_si + BASE_ADDRESS);
+    r_id_p = (u_char *)(*addr_si + LOAD_ADDRESS_02);
 
     rm_num = *r_id_p;
     r_id_p++;
@@ -655,18 +654,18 @@ void FurnDataRenewNext(u_char room_id)
     SetUpRoomCoordinate(*r_id_p, room_wrk.pos[1]);
 
     addr_si = (int *)(map_wrk.dat_adr + 11 * 4);
-    addr_si = (int *)(*addr_si + BASE_ADDRESS);
-    addr_si = (int *)(addr_si[i+1] + BASE_ADDRESS);
+    addr_si = (int *)(*addr_si + LOAD_ADDRESS_02);
+    addr_si = (int *)(addr_si[i+1] + LOAD_ADDRESS_02);
 
-    dt_num = *(int *)(*addr_si + BASE_ADDRESS);
+    dt_num = *(int *)(*addr_si + LOAD_ADDRESS_02);
 
     no_use_fw = 0;
 
     for (i = 0; i < dt_num; i++)
     {
-        addr_fdt = (int *)(addr_si[i+1] + BASE_ADDRESS);
+        addr_fdt = (int *)(addr_si[i+1] + LOAD_ADDRESS_02);
 
-        fdpp = (FURN_DATA_POP *)(*addr_fdt + BASE_ADDRESS);
+        fdpp = (FURN_DATA_POP *)(*addr_fdt + LOAD_ADDRESS_02);
 
         while(FurnIsWrkUse(&furn_wrk[no_use_fw]) != 0)
         {
@@ -776,28 +775,28 @@ void InitFurnAttrFlg()
     {
         if (floor_exist[ingame_wrk.msn_no][k] != 0)
         {
-            addr_si0 = (int *)(k * 4 + BASE_ADDRESS);
-            addr_map = (int)(*addr_si0 + BASE_ADDRESS);
+            addr_si0 = (int *)(k * 4 + LOAD_ADDRESS_02);
+            addr_map = (int)(*addr_si0 + LOAD_ADDRESS_02);
 
             addr_si0 = (int *)(addr_map + 11 * 4);
-            addr_si0 = (int *)(*addr_si0 + BASE_ADDRESS);
+            addr_si0 = (int *)(*addr_si0 + LOAD_ADDRESS_02);
 
-            addr_si1 = (int *)(*addr_si0 + BASE_ADDRESS);
+            addr_si1 = (int *)(*addr_si0 + LOAD_ADDRESS_02);
 
             room_num = *addr_si1;
 
             for (i = 0; i < room_num; i++)
             {
-                addr_si1 = (int *)(addr_si0[i+1] + BASE_ADDRESS);
+                addr_si1 = (int *)(addr_si0[i+1] + LOAD_ADDRESS_02);
 
-                addr_map = (int)(*addr_si1 + BASE_ADDRESS);
+                addr_map = (int)(*addr_si1 + LOAD_ADDRESS_02);
 
                 dat_num = *(u_char *)addr_map;
 
                 for (j = 0; j < dat_num; j++)
                 {
-                    addr_si2 = (int *)(addr_si1[j+1] + BASE_ADDRESS);
-                    addr_si2 = (int *)(*addr_si2 + BASE_ADDRESS);
+                    addr_si2 = (int *)(addr_si1[j+1] + LOAD_ADDRESS_02);
+                    addr_si2 = (int *)(*addr_si2 + LOAD_ADDRESS_02);
 
                     furn_no_addr = &((u_short *)addr_si2)[9];
 
@@ -961,7 +960,7 @@ u_char FurnHitCheck(u_char *dx_max, u_char *dz_max, sceVu0FVECTOR pos, sceVu0FVE
     div_z = *dz_max;
 
     addr = (int *)(map_wrk.dat_adr + 11 * 4);
-    addr = (int *)(*addr + BASE_ADDRESS);
+    addr = (int *)(*addr + LOAD_ADDRESS_02);
 
     rm_no = GetDataRoom(11, room);
 
@@ -971,16 +970,16 @@ u_char FurnHitCheck(u_char *dx_max, u_char *dz_max, sceVu0FVECTOR pos, sceVu0FVE
     }
 
     v0_2 = (int *)&addr[rm_no];
-    addr_bak = addr = (int *)(v0_2[1] + BASE_ADDRESS);
+    addr_bak = addr = (int *)(v0_2[1] + LOAD_ADDRESS_02);
 
-    dt_num = (u_int)*(u_char *)(*addr_bak + BASE_ADDRESS);
+    dt_num = (u_int)*(u_char *)(*addr_bak + LOAD_ADDRESS_02);
 
     for (i = 0; i < dt_num; i++)
     {
         v0 = &addr_bak[i];
-        addr = (int *)(v0[1] + BASE_ADDRESS);
+        addr = (int *)(v0[1] + LOAD_ADDRESS_02);
 
-        fedp = (FURN_DATA_POP *)(*addr + BASE_ADDRESS);
+        fedp = (FURN_DATA_POP *)(*addr + LOAD_ADDRESS_02);
 
         if (FurnIsHit(fedp->id, ingame_wrk.msn_no) != 0)
         {
@@ -993,7 +992,7 @@ u_char FurnHitCheck(u_char *dx_max, u_char *dz_max, sceVu0FVECTOR pos, sceVu0FVE
             for (j = 1; j < sq_num; j++, sq_typep++)
             {
                 addr = &addr_bak2[j];
-                addr = (int *)(*addr + BASE_ADDRESS);
+                addr = (int *)(*addr + LOAD_ADDRESS_02);
 
                 for (k = 0; k < div_x; k++)
                 {
@@ -1027,9 +1026,9 @@ u_char FurnHitCheck(u_char *dx_max, u_char *dz_max, sceVu0FVECTOR pos, sceVu0FVE
     for (i = 0; i < dt_num; i++)
     {
         v1 = &addr_bak[i];
-        addr = (int *)(v1[1] + BASE_ADDRESS);
+        addr = (int *)(v1[1] + LOAD_ADDRESS_02);
 
-        fedp = (FURN_DATA_POP *)(*addr + BASE_ADDRESS);
+        fedp = (FURN_DATA_POP *)(*addr + LOAD_ADDRESS_02);
 
         if (FurnIsHit(fedp->id, ingame_wrk.msn_no) != 0)
         {
@@ -1042,7 +1041,7 @@ u_char FurnHitCheck(u_char *dx_max, u_char *dz_max, sceVu0FVECTOR pos, sceVu0FVE
             for (j = 1; j < sq_num; j++, sq_typep++)
             {
                 addr = &addr_bak2[j];
-                addr = (int *)(*addr + BASE_ADDRESS);
+                addr = (int *)(*addr + LOAD_ADDRESS_02);
 
                 pos_y = pos[0] + (dst[0] * div_x) / div;
                 pos_x = pos[2] + (dst[2] * div_z) / div;
@@ -1098,7 +1097,7 @@ u_char FurnHitCheck2(u_short pos_x, u_short pos_y, u_char room_id)
     int *v0, *v1; // not in STAB
 
     addr_si = (int *)(map_wrk.dat_adr + 11 * 4);
-    addr_si = (int *)(*addr_si + BASE_ADDRESS);
+    addr_si = (int *)(*addr_si + LOAD_ADDRESS_02);
     room_no = GetDataRoom(11, room_id);
 
     if (room_no == 0xff)
@@ -1107,15 +1106,15 @@ u_char FurnHitCheck2(u_short pos_x, u_short pos_y, u_char room_id)
     }
 
     v0 = &addr_si[room_no];
-    addr_bak_si = addr_si = (int *)(v0[1] + BASE_ADDRESS);
+    addr_bak_si = addr_si = (int *)(v0[1] + LOAD_ADDRESS_02);
 
-    dt_num = *(int *)(*addr_bak_si + BASE_ADDRESS);
+    dt_num = *(int *)(*addr_bak_si + LOAD_ADDRESS_02);
 
     for (i = 0; i < dt_num; i++)
     {
         v1 = &addr_bak_si[i];
-        addr_si = (int *)(v1[1] + BASE_ADDRESS);
-        fedp = (FURN_DATA_POP *)(*addr_si + BASE_ADDRESS);
+        addr_si = (int *)(v1[1] + LOAD_ADDRESS_02);
+        fedp = (FURN_DATA_POP *)(*addr_si + LOAD_ADDRESS_02);
 
         if (FurnIsHit(fedp->id, ingame_wrk.msn_no) == 0)
         {
@@ -1136,7 +1135,7 @@ u_char FurnHitCheck2(u_short pos_x, u_short pos_y, u_char room_id)
         for (j = 1; j < sq_num; j++, sq_typep++)
         {
             addr_si = &addr_bak2_si[j];
-            addr_si = (int *)(*addr_si + BASE_ADDRESS);
+            addr_si = (int *)(*addr_si + LOAD_ADDRESS_02);
 
             if (PosInAreaJudgeSub(addr_si, pos_x, pos_y, *sq_typep) != 0)
             {

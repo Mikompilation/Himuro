@@ -1,5 +1,6 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "enums.h"
 #include "item.h"
 
@@ -77,24 +78,6 @@ static FLSH_CORE dbg_flsh;
 static ITM_EFF_WRK iew;
 
 #define PI 3.1415927f
-
-#ifdef BUILD_EU_VERSION
-#define PL_BGBG_PK2_ADDRESS 0x1cfefc0
-#else
-#define PL_BGBG_PK2_ADDRESS 0x1d05140
-#endif
-
-#ifdef BUILD_EU_VERSION
-#define LOAD_ITEM_2D_ADDR 0x1d51db0
-#else
-#define LOAD_ITEM_2D_ADDR 0x01d573b0
-#endif
-
-#ifdef BUILD_EU_VERSION
-#define VRAM_ITEM_2D_ADDRESS 0x1d51db0
-#else
-#define VRAM_ITEM_2D_ADDRESS 0x1d573b0
-#endif
 
 void NewgameItemInit()
 {
@@ -1070,12 +1053,12 @@ static void PlaySM(u_char alp)
     alpha = alp * SgSinf((iew.tape_flsh * PI) / 90.0f);
 
 #ifdef BUILD_EU_VERSION
-    SetSprFile(0x1e2f000);
+    SetSprFile(LOAD_ADDRESS_43);
 
     PutSpriteYW(PLAYMATE, PLAYMATE, 130.0f, 104.0f, 0.0f, 0x303030, alp, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
     PutSpriteYW(PLAYMATE, PLAYMATE, 130.0f, 104.0f, 0.0f, 0x606060, (int)(alpha / 2), 1.0f, 1.0f, 0, 0xff, 1, 1, 0);
 #else
-    SetSprFile(0x1e2f700);
+    SetSprFile(LOAD_ADDRESS_43);
 
     PutSpriteYW(PLAYMATE, PLAYMATE, 100.0f, 180.0f, 0.0f, 0x303030, alp, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
     PutSpriteYW(PLAYMATE, PLAYMATE, 100.0f, 180.0f, 0.0f, 0x606060, (int)(alpha / 2), 1.0f, 1.0f, 0, 0xff, 1, 1, 0);
@@ -1151,19 +1134,19 @@ int LoadItem2D(u_char get_type, u_char get_no)
         switch(get_type)
         {
         case 0:
-            load_id = LoadReq(get_no + ITEM_00_TM2, LOAD_ITEM_2D_ADDR);
+            load_id = LoadReq(get_no + ITEM_00_TM2, LOAD_ADDRESS_36);
         break;
         case 1:
-            load_id = LoadReq(get_no + ITEM_00_TM2, LOAD_ITEM_2D_ADDR);
+            load_id = LoadReq(get_no + ITEM_00_TM2, LOAD_ADDRESS_36);
         break;
         case 2:
-            load_id = LoadReq(get_no + ITEM_00_TM2, LOAD_ITEM_2D_ADDR);
+            load_id = LoadReq(get_no + ITEM_00_TM2, LOAD_ADDRESS_36);
         break;
         case 3:
-            load_id = LoadReq(get_no + HINT_00_TM2, LOAD_ITEM_2D_ADDR);
+            load_id = LoadReq(get_no + HINT_00_TM2, LOAD_ADDRESS_36);
         break;
         case 4:
-            load_id = LoadReq(get_no + ITEM_00_TM2, LOAD_ITEM_2D_ADDR);
+            load_id = LoadReq(get_no + ITEM_00_TM2, LOAD_ADDRESS_36);
         break;
         }
     }
@@ -1217,9 +1200,9 @@ u_long VramItem2D(u_char mode, u_char type)
         }
     }
 
-    MakeTim2SendPacket(VRAM_ITEM_2D_ADDRESS, offset);
+    MakeTim2SendPacket(LOAD_ADDRESS_36, offset);
 
-    return GetTex0RegTM(VRAM_ITEM_2D_ADDRESS, offset);
+    return GetTex0RegTM(LOAD_ADDRESS_36, offset);
 }
 
 char DspItem2D(u_long tex_addr, float pos_x, float pos_y, int rgb, float alp, float scl_x, float scl_y, char pri)
@@ -2245,7 +2228,7 @@ void BgFusumaYW(int rgb, float pos_x, float alpha, int pri)
     float scl_x;
     float scl_y;
 
-    SetSprFile(PL_BGBG_PK2_ADDRESS);
+    SetSprFile(LOAD_ADDRESS_32);
 
     scl_x = 2.5396826f;
     scl_y = 2.516854f;
@@ -2301,106 +2284,58 @@ u_int FromPKZ(u_int pkz_addr, u_char pk2_no)
     switch(pk2_no)
     {
     case 0:
-        SetSprFile(0x1ce0000);
+        SetSprFile(LOAD_ADDRESS_31);
     break;
     case 1:
-#ifdef BUILD_EU_VERSION
-        SetSprFile(0x1cfefc0);
-#else
-        SetSprFile(0x1d05140);
-#endif
+        SetSprFile(LOAD_ADDRESS_32);
     break;
     case 2:
-#ifdef BUILD_EU_VERSION
-        SetSprFile(0x1d210c0);
-#else
-        SetSprFile(0x1d266c0);
-#endif
+        SetSprFile(LOAD_ADDRESS_34);
     break;
     case 3:
-#ifdef BUILD_EU_VERSION
-        SetSprFile(0x1d10000);
-#else
-        SetSprFile(0x1d15600);
-#endif
+        SetSprFile(LOAD_ADDRESS_33);
     break;
     case 5:
-#ifdef BUILD_EU_VERSION
-        SetSprFile(0x1d54030);
-#else
-        SetSprFile(0x1d59630);
-#endif
+        SetSprFile(LOAD_ADDRESS_37);
     break;
     case 4:
-#ifdef BUILD_EU_VERSION
-        SetSprFile(0x1d10000);
-#else
-        SetSprFile(0x1d15600);
-#endif
+        SetSprFile(LOAD_ADDRESS_33);
     break;
     case 7:
-#ifdef BUILD_EU_VERSION
-        SetSprFile(0x1d83000);
-#else
-        SetSprFile(0x1d88100);
-#endif
+        SetSprFile(LOAD_ADDRESS_38);
     break;
     case 8:
-#ifdef BUILD_EU_VERSION
-        SetSprFile(0x1ded000);
-#else
-        SetSprFile(0x1df2100);
-#endif
+        SetSprFile(LOAD_ADDRESS_41);
     break;
     case 9:
-#ifdef BUILD_EU_VERSION
-        SetSprFile(0x1e04000);
-#else
-        SetSprFile(0x1e05b00);
-#endif
+        SetSprFile(LOAD_ADDRESS_42);
     break;
     case 10:
-        SetSprFile(0x1e90000);
+        SetSprFile(LOAD_ADDRESS_46);
     break;
     case 11:
-#ifdef BUILD_EU_VERSION
-        SetSprFile(0x1d51db0);
-#else
-        SetSprFile(0x1d573b0);
-#endif
+        SetSprFile(LOAD_ADDRESS_36);
     break;
     case 12:
-        SetSprFile(0x1e90000);
+        SetSprFile(LOAD_ADDRESS_46);
     break;
     case 13:
-#ifdef BUILD_EU_VERSION
-        SetSprFile(0x1d51db0);
-#else
-        SetSprFile(0x1d573b0);
-#endif
+        SetSprFile(LOAD_ADDRESS_36);
     break;
     case 14:
-        SetSprFile(0x1e90000);
+        SetSprFile(LOAD_ADDRESS_46);
     break;
     case 15:
-        SetSprFile(0x1e90000);
+        SetSprFile(LOAD_ADDRESS_46);
     break;
     case 16:
-        SetSprFile(0x1e90000);
+        SetSprFile(LOAD_ADDRESS_46);
     break;
     case 18:
-#ifdef BUILD_EU_VERSION
-        SetSprFile(0x1d23680);
-#else
-        SetSprFile(0x1d28c80);
-#endif
+        SetSprFile(LOAD_ADDRESS_35);
     break;
     case 17:
-#ifdef BUILD_EU_VERSION
-        SetSprFile(0x1d10000);
-#else
-        SetSprFile(0x1d15600);
-#endif
+        SetSprFile(LOAD_ADDRESS_33);
     break;
     }
 

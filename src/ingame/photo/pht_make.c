@@ -1,5 +1,6 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "enums.h"
 #include "pht_make.h"
 
@@ -284,7 +285,7 @@ void UncompressData(int addri, int n, int addro)
 
 void TakePhotoFromScreen()
 {
-    CopyScreenToBuffer(0x1E90000, 1, 128, 80, 384, 256);
+    CopyScreenToBuffer(LOAD_ADDRESS_46, 1, 128, 80, 384, 256);
 }
 
 void MakeSPhotoFromWorkArea(int n)
@@ -293,7 +294,7 @@ void MakeSPhotoFromWorkArea(int n)
 
     addr = 0x01a90000 + n * 0xa00;
 
-    DrawPhotoBuffer(0x440, 0x01e90000, 1, 0, 0, 66, 42, 384, 128, 0, 0x80, 0);
+    DrawPhotoBuffer(0x440, LOAD_ADDRESS_46, 1, 0, 0, 66, 42, 384, 128, 0, 0x80, 0);
 
     CopyScreenToBuffer(addr, 0, 1, 1, 64, 40);
 }
@@ -304,9 +305,9 @@ void MakeSPhotoFromCompress(int ni, int no)
 
     addr = 0x01a90000 + no * 0xa00;
 
-    UncompressData(0x1aa5400, ni, 0x1e90000);
+    UncompressData(0x1aa5400, ni, LOAD_ADDRESS_46);
 
-    DrawPhotoBuffer(0x440, 0x1e90000, 1, 0, 0, 64, 40, 384, 128, 0, 0x80, 0);
+    DrawPhotoBuffer(0x440, LOAD_ADDRESS_46, 1, 0, 0, 64, 40, 384, 128, 0, 0x80, 0);
 
     CopyScreenToBuffer(addr, 0, 0, 0, 64, 40);
 }
@@ -351,12 +352,12 @@ void DrawSPhotoFromSmallPhotoArea2AD(int addr, int n, int pri, int ftype, int x,
 
 void CompPhotoFromWorkArea(int n)
 {
-    CompressData(0x1E90000, 0x1AA5400, n);
+    CompressData(LOAD_ADDRESS_46, 0x1AA5400, n);
 }
 
 void DrawPhotoFromWorkArea(int pri, int ftype, int x, int y, int szw, int szh, u_char alp)
 {
-    DrawPhotoBuffer(pri, 0x1e90000, 1, x, y, szw, szh, 384, 128, ftype, alp, 1);
+    DrawPhotoBuffer(pri, LOAD_ADDRESS_46, 1, x, y, szw, szh, 384, 128, ftype, alp, 1);
 }
 
 void DrawPhotoFromCompress(int n, u_int pri, int ftype, int x, int y, int szw, int szh, u_char alp)
@@ -366,17 +367,17 @@ void DrawPhotoFromCompress(int n, u_int pri, int ftype, int x, int y, int szw, i
 
 void UncompressPhoto(int n)
 {
-    UncompressData(0x1AA5400, n, 0x1E90000);
+    UncompressData(0x1AA5400, n, LOAD_ADDRESS_46);
 }
 
 void UncompressPhotoAD(int addr, int n)
 {
-    UncompressData(addr, n, 0x1E90000);
+    UncompressData(addr, n, LOAD_ADDRESS_46);
 }
 
 void DrawPhotoFromPhotoWrk(int n, u_int pri, int ftype, int x, int y, int szw, int szh, u_char alp)
 {
-    DrawPhotoBuffer(pri, 0x1e90000, 1, x, y, szw, szh, 384, 128, ftype, alp, 1);
+    DrawPhotoBuffer(pri, LOAD_ADDRESS_46, 1, x, y, szw, szh, 384, 128, ftype, alp, 1);
 }
 
 void CopyPhoto(int addri, int ni, int addro, int no)
@@ -549,8 +550,8 @@ void DrawPhotoHinttex2(u_int sw, u_int pri, int num)
     f = sd->alpha * 0.25f;
     pos = (f - alp) * 4.0f / f;
 
-    MakeTim2ClutDirect4(0x1e90000, 0, -1, -1, 0);
-    MakeTim2ClutDirect4(0x1e90000, 1, -1, -1, 0);
+    MakeTim2ClutDirect4(LOAD_ADDRESS_46, 0, -1, -1, 0);
+    MakeTim2ClutDirect4(LOAD_ADDRESS_46, 1, -1, -1, 0);
 
     CopySprDToSpr(&ds, sd);
 
@@ -758,7 +759,7 @@ void DispPhotoFrame0()
     int num1;
     int num2;
 
-    SetSprFile2(0x1e85000, 0);
+    SetSprFile2(LOAD_ADDRESS_45, 0);
 
     for (i = 0; i < 4; i++)
     {

@@ -29,9 +29,9 @@ void Mission04BindGhostLoad01Req()
     bgst_wrk.load_mode = 0;
     bgst_wrk.rel_mot = 17;
     bgst_wrk.bg_no = 6;
-    bgst_wrk.mdl_adr = LOAD_ADDRESS_16;
-    bgst_wrk.mot_adr = LOAD_ADDRESS_10;
-    bgst_wrk.se_adr = 18;
+    bgst_wrk.mdl_adr = LOAD_ADDRESS_17;
+    bgst_wrk.mot_adr = LOAD_ADDRESS_11;
+    bgst_wrk.se_adr = SE_ADDRNO_GHOST2;
 }
 
 void Mission04BindGhostLoad02Req()

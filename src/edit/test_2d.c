@@ -1,5 +1,6 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "enums.h"
 #include "test_2d.h"
 
@@ -13,16 +14,14 @@
 #include "data/test_tex0.h" // extern SPRT_DAT test_tex0[];
 #include "data/test_tex1.h" // extern SPRT_DAT test_tex1[];
 
-#define LOAD_ADDRESS 0x04300000
-
 void LayoutTestInit()
 {
-    FileLoadB(TEST2D_PK2, LOAD_ADDRESS);
+    FileLoadB(TEST2D_PK2, LOAD_ADDRESS_52);
 }
 
 void LayoutTestMain()
 {
-    SetSprFile(LOAD_ADDRESS);
+    SetSprFile(LOAD_ADDRESS_52);
     LayoutTestDisp();
 
     if (*key_now[5] != 0)

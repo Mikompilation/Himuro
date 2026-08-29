@@ -1,5 +1,6 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "enums.h"
 
 #ifdef MATCHING_DECOMP
@@ -46,8 +47,6 @@ static void AlbmCntRenew();
 static void AlbmModeInOut(char is_outgame);
 static void AlbmModeInOut2(char is_outgame);
 static u_char SealChk();
-
-#define BASE_ADDRESS 0x84a000
 
 static ALBM_WRK albm_wrk;
 static FLSH_CORE flsh[6];
@@ -1494,47 +1493,47 @@ u_char* GetSubjectNameAddr(u_short kind, u_short no, u_short show)
         return (u_char *)GetIngameMSGAddr(0x21, 3);
     break;
     case 1:
-        addr = (int *)(BASE_ADDRESS + 31 * 4);
-        addr = (int *)(Get4Byte((u_char *)addr) + BASE_ADDRESS + show * 4);
-        addr = (int *)(Get4Byte((u_char *)addr) + BASE_ADDRESS + no * 4);
-        addr = (int *)(Get4Byte((u_char *)addr) + BASE_ADDRESS);
+        addr = (int *)(LOAD_ADDRESS_03 + 31 * 4);
+        addr = (int *)(Get4Byte((u_char *)addr) + LOAD_ADDRESS_03 + show * 4);
+        addr = (int *)(Get4Byte((u_char *)addr) + LOAD_ADDRESS_03 + no * 4);
+        addr = (int *)(Get4Byte((u_char *)addr) + LOAD_ADDRESS_03);
 
         return (u_char *)addr;
     break;
     case 2:
-        addr = (int *)(BASE_ADDRESS + 31 * 4);
-        addr = (int *)(Get4Byte((u_char *)addr) + BASE_ADDRESS + (show + 5) * 4);
-        addr = (int *)(Get4Byte((u_char *)addr) + BASE_ADDRESS + no * 4);
-        addr = (int *)(Get4Byte((u_char *)addr) + BASE_ADDRESS);
+        addr = (int *)(LOAD_ADDRESS_03 + 31 * 4);
+        addr = (int *)(Get4Byte((u_char *)addr) + LOAD_ADDRESS_03 + (show + 5) * 4);
+        addr = (int *)(Get4Byte((u_char *)addr) + LOAD_ADDRESS_03 + no * 4);
+        addr = (int *)(Get4Byte((u_char *)addr) + LOAD_ADDRESS_03);
 
         return (u_char *)addr;
     break;
     case 3:
-        addr = (int *)(BASE_ADDRESS + 31 * 4);
-        addr = (int *)(Get4Byte((u_char *)addr) + BASE_ADDRESS + (show + 10) * 4);
-        addr = (int *)(Get4Byte((u_char *)addr) + BASE_ADDRESS + no * 4);
-        addr = (int *)(Get4Byte((u_char *)addr) + BASE_ADDRESS);
+        addr = (int *)(LOAD_ADDRESS_03 + 31 * 4);
+        addr = (int *)(Get4Byte((u_char *)addr) + LOAD_ADDRESS_03 + (show + 10) * 4);
+        addr = (int *)(Get4Byte((u_char *)addr) + LOAD_ADDRESS_03 + no * 4);
+        addr = (int *)(Get4Byte((u_char *)addr) + LOAD_ADDRESS_03);
 
         return (u_char *)addr;
     break;
     case 4:
-        addr = (int *)(BASE_ADDRESS + 32 * 4);
-        addr = (int *)(Get4Byte((u_char *)addr) + BASE_ADDRESS + no * 4);
-        addr = (int *)(Get4Byte((u_char *)addr) + BASE_ADDRESS);
+        addr = (int *)(LOAD_ADDRESS_03 + 32 * 4);
+        addr = (int *)(Get4Byte((u_char *)addr) + LOAD_ADDRESS_03 + no * 4);
+        addr = (int *)(Get4Byte((u_char *)addr) + LOAD_ADDRESS_03);
 
         return (u_char *)addr;
     break;
     case 5:
         if (no < 0x80) {
-            addr = (int *)(BASE_ADDRESS + 37 * 4);
-            addr = (int *)(Get4Byte((u_char *)addr) + BASE_ADDRESS + no * 4);
-            addr = (int *)(Get4Byte((u_char *)addr) + BASE_ADDRESS);
+            addr = (int *)(LOAD_ADDRESS_03 + 37 * 4);
+            addr = (int *)(Get4Byte((u_char *)addr) + LOAD_ADDRESS_03 + no * 4);
+            addr = (int *)(Get4Byte((u_char *)addr) + LOAD_ADDRESS_03);
         }
         else
         {
-            addr = (int *)(BASE_ADDRESS + 38 * 4);
-            addr = (int *)(Get4Byte((u_char *)addr) + BASE_ADDRESS + (no - 0x80) * 4);
-            addr = (int *)(Get4Byte((u_char *)addr) + BASE_ADDRESS);
+            addr = (int *)(LOAD_ADDRESS_03 + 38 * 4);
+            addr = (int *)(Get4Byte((u_char *)addr) + LOAD_ADDRESS_03 + (no - 0x80) * 4);
+            addr = (int *)(Get4Byte((u_char *)addr) + LOAD_ADDRESS_03);
         }
 
         return (u_char *)addr;

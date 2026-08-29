@@ -1152,74 +1152,74 @@ int SeFileLoadAndSet(u_int file_no, int type)
 
     ret = -1;
 
-    if (type >= 0 && type < 26)
+    if (type >= SE_ADDRNO_STATIC && type < SE_ADDRNO_SB0)
     {
         switch(type)
         {
-        case 0:
-            ret = LoadReqSe(SSYSTEM_BD, 0);
+        case SE_ADDRNO_STATIC:
+            ret = LoadReqSe(SSYSTEM_BD, SE_ADDRNO_STATIC);
         break;
-        case 1:
+        case SE_ADDRNO_BTLHIT:
             se_ctrl.btlhit_no = file_no;
 
             ret = LoadReqSe(file_no, type);
         break;
-        case 2:
+        case SE_ADDRNO_VOICE:
             se_ctrl.voice_no = file_no;
 
             ret = LoadReqSe(file_no, type);
         break;
-        case 3:
-        case 4:
-        case 5:
-            se_ctrl.door_no[type - 3] = file_no;
+        case SE_ADDRNO_DOOR0:
+        case SE_ADDRNO_DOOR1:
+        case SE_ADDRNO_DOOR2:
+            se_ctrl.door_no[type - SE_ADDRNO_DOOR0] = file_no;
 
             ret = LoadReqSe(file_no, type);
         break;
-        case 6:
-        case 7:
-        case 8:
-        case 9:
-        case 10:
-        case 11:
-        case 12:
-        case 13:
-            se_ctrl.foot_no[type - 6] = file_no;
+        case SE_ADDRNO_FOOT0:
+        case SE_ADDRNO_FOOT1:
+        case SE_ADDRNO_FOOT2:
+        case SE_ADDRNO_FOOT3:
+        case SE_ADDRNO_FOOT4:
+        case SE_ADDRNO_FOOT5:
+        case SE_ADDRNO_FOOT6:
+        case SE_ADDRNO_FOOT7:
+            se_ctrl.foot_no[type - SE_ADDRNO_FOOT0] = file_no;
 
             ret = LoadReqSe(file_no, type);
         break;
-        case 14:
-        case 15:
-            se_ctrl.srund_no[type - 14] = file_no;
+        case SE_ADDRNO_SRUND0:
+        case SE_ADDRNO_SRUND1:
+            se_ctrl.srund_no[type - SE_ADDRNO_SRUND0] = file_no;
 
             ret = LoadReqSe(file_no, type);
         break;
-        case 16:
-        case 17:
-        case 18:
-            se_ctrl.ghost_no[type - 16] = file_no;
-            se_ctrl.ghost_type[type - 16] = 0;
+        case SE_ADDRNO_GHOST0:
+        case SE_ADDRNO_GHOST1:
+        case SE_ADDRNO_GHOST2:
+            se_ctrl.ghost_no[type - SE_ADDRNO_GHOST0] = file_no;
+            se_ctrl.ghost_type[type - SE_ADDRNO_GHOST0] = 0;
 
             ret = LoadReqSe(file_no, type);
 
             FloatGhostSENotEmpty();
         break;
-        case 19:
-        case 20:
-            se_ctrl.event_no[type - 19] = file_no;
+        case SE_ADDRNO_EVENT0:
+        case SE_ADDRNO_EVENT1:
+            se_ctrl.event_no[type - SE_ADDRNO_EVENT0] = file_no;
 
             ret = LoadReqSe(file_no, type);
         break;
-        case 21:
+        case SE_ADDRNO_WIDE:
             se_ctrl.wide_no = file_no;
 
             ret = LoadReqSe(file_no, type);
         break;
-        case 22:
-        case 23:
-        case 24:
-        case 25:
-            se_ctrl.jidou_no[type - 22] = file_no;
+        case SE_ADDRNO_JIDOU0:
+        case SE_ADDRNO_JIDOU1:
+        case SE_ADDRNO_JIDOU2:
+        case SE_ADDRNO_JIDOU3:
+            se_ctrl.jidou_no[type - SE_ADDRNO_JIDOU0] = file_no;
 
             ret = LoadReqSe(file_no, type);
         break;
@@ -1233,12 +1233,12 @@ int SeFileLoadAndSetFGhost(u_int file_no, int type)
 {
     int ret;
 
-    if (type < 19)
+    if (type < SE_ADDRNO_EVENT0)
     {
-        if (type > 15)
+        if (type > SE_ADDRNO_SRUND1)
         {
-            se_ctrl.ghost_no[type - 16] = file_no;
-            se_ctrl.ghost_type[type - 16] = 1;
+            se_ctrl.ghost_no[type - SE_ADDRNO_GHOST0] = file_no;
+            se_ctrl.ghost_type[type - SE_ADDRNO_GHOST0] = 1;
 
             ret = LoadReqSe(file_no, type);
 
@@ -1289,7 +1289,7 @@ int SeFileLoadAndSetWide(u_short lbl_no)
     break;
     }
 
-    return SeFileLoadAndSet(file_no, 21);
+    return SeFileLoadAndSet(file_no, SE_ADDRNO_WIDE);
 }
 
 char SeGetGhostPos(u_int se_file_no, u_char type)

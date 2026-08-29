@@ -1,5 +1,6 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "enums.h"
 #include "inf_disp.h"
 
@@ -86,14 +87,6 @@ static u_char znz[12][6];
 #define DEG2RAD(x) ((float)(x)*PI/180.0f)
 
 
-#ifdef BUILD_EU_VERSION
-#define PL_FNDR_PK2_ADDRESS 0x1d83000
-#define PL_LIFE_PK2_ADDRESS 0x1ded000
-#else
-#define PL_FNDR_PK2_ADDRESS 0x1d88100
-#define PL_LIFE_PK2_ADDRESS 0x1df2100
-#endif
-
 void InformationDispInit()
 {
     info_wrk = (INFO_WRK){0};
@@ -142,7 +135,7 @@ void InformationDispMain()
             }
             else if (isDispLamp() != 0)
             {
-                SetSprFile(PL_LIFE_PK2_ADDRESS);
+                SetSprFile(LOAD_ADDRESS_41);
                 EdogawaLamp(230, 352, 1);
             }
             else
@@ -235,13 +228,13 @@ void InformationDispModeCtrl()
 
     if (inf_dsp.fndr_dsp_flg != 0)
     {
-        SetSprFile(PL_FNDR_PK2_ADDRESS);
-        SetSprFile(PL_LIFE_PK2_ADDRESS);
+        SetSprFile(LOAD_ADDRESS_38);
+        SetSprFile(LOAD_ADDRESS_41);
     }
 
     if (inf_dsp.stts_dsp_flg != 0)
     {
-        SetSprFile(PL_LIFE_PK2_ADDRESS);
+        SetSprFile(LOAD_ADDRESS_41);
     }
     else
     {
@@ -3110,7 +3103,7 @@ static void GekisyaBoyGeisyaGirl(short int px, short int py)
 
     i = 0;
 
-    SetSprFile(PL_LIFE_PK2_ADDRESS);
+    SetSprFile(LOAD_ADDRESS_41);
 
     while (y[i] != -1)
     {

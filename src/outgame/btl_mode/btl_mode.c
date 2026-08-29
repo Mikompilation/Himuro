@@ -1,5 +1,6 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "enums.h"
 #include "btl_mode.h"
 
@@ -45,20 +46,6 @@ long int msn_bonus = 0;
 int stage_all_clear_bak = 0;
 int btl_mode_bgm_init = 0;
 int btl_clear_disp = 0;
-
-#define MC_WORK_ADDRESS 0x420000
-
-#define PL_STTS_PK2_ADDRESS 0x1ce0000
-
-#ifdef BUILD_EU_VERSION
-#define PL_PSVP_PK2_ADDRESS 0x1d54030
-#define PL_SAVE_PK2_ADDRESS 0x1d10000
-#define SV_PHT_PK2_ADDRESS 0x1d23680
-#else
-#define PL_PSVP_PK2_ADDRESS 0x1d59630
-#define PL_SAVE_PK2_ADDRESS 0x1d15600
-#define SV_PHT_PK2_ADDRESS 0x1d28c80
-#endif
 
 void BattleModeStageInit()
 {
@@ -226,14 +213,9 @@ void BattleModeStageMain()
         {
             mcInit(0, (u_int *)MC_WORK_ADDRESS, mc_msn_flg);
 
-#ifdef BUILD_EU_VERSION
-            sp_load_id = LoadReqLanguage(PL_PSVP_E_PK2, PL_PSVP_PK2_ADDRESS);
-            sp_load_id = LoadReqLanguage(PL_SAVE_E_PK2, PL_SAVE_PK2_ADDRESS);
-#else
-            sp_load_id = LoadReq(PL_PSVP_PK2, PL_PSVP_PK2_ADDRESS);
-            sp_load_id = LoadReq(PL_SAVE_PK2, PL_SAVE_PK2_ADDRESS);
-#endif
-            sp_load_id = LoadReq(SV_PHT_PK2, SV_PHT_PK2_ADDRESS);
+            sp_load_id = VER_LOAD_REQ_LANG(PL_PSVP_PK2, LOAD_ADDRESS_37);
+            sp_load_id = VER_LOAD_REQ_LANG(PL_SAVE_PK2, LOAD_ADDRESS_33);
+            sp_load_id = LoadReq(SV_PHT_PK2, LOAD_ADDRESS_35);
 
             btl_wrk.mode = BTL_MODE_SAVE_WAIT;
 
@@ -253,10 +235,10 @@ void BattleModeStageMain()
         }
     break;
     case BTL_MODE_SAVE3:
-        SetSprFile(PL_STTS_PK2_ADDRESS);
-        SetSprFile(PL_PSVP_PK2_ADDRESS);
-        SetSprFile(PL_SAVE_PK2_ADDRESS);
-        SetSprFile(SV_PHT_PK2_ADDRESS);
+        SetSprFile(LOAD_ADDRESS_31);
+        SetSprFile(LOAD_ADDRESS_37);
+        SetSprFile(LOAD_ADDRESS_33);
+        SetSprFile(LOAD_ADDRESS_35);
 
         if (McAtSaveChk() != 0)
         {

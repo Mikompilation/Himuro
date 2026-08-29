@@ -81,7 +81,7 @@ void GameMain()
     case GAME_MODE_LANGUAGE:
         if (LanguageSelectMain())
         {
-            init_load_id = VER_LOAD_REQ_LANG(FNT001_E_PK2, LOAD_ADDRESS_43);
+            init_load_id = VER_LOAD_REQ_LANG(FNT001_E_PK2, LOAD_ADDRESS_44);
 
             sys_wrk.game_mode = GAME_MODE_FONT_LOAD_WAIT;
         }
@@ -118,7 +118,7 @@ void GameMain()
 
             sys_wrk.game_mode = GAME_MODE_MSG_LOAD;
 
-            init_load_id = VER_LOAD_REQ_LANG(FNT001_E_PK2, LOAD_ADDRESS_43);
+            init_load_id = VER_LOAD_REQ_LANG(FNT001_E_PK2, LOAD_ADDRESS_44);
             init_load_id = VER_LOAD_REQ_LANG(IG_MSG_E_OBJ, LOAD_ADDRESS_03);
 #endif
         }
@@ -164,8 +164,8 @@ int GameInitLoad()
 
         sys_wrk.load_mode = GAME_INIT_LOAD_FONT_TEX;
     case GAME_INIT_LOAD_FONT_TEX:
-        init_load_id = VER_LOAD_REQ_LANG(FNT001_PK2, LOAD_ADDRESS_43);
-        init_load_id = LoadReq(EFF001_PK2, LOAD_ADDRESS_45);
+        init_load_id = VER_LOAD_REQ_LANG(FNT001_PK2, LOAD_ADDRESS_44);
+        init_load_id = LoadReq(EFF001_PK2, LOAD_ADDRESS_46);
 
         sys_wrk.load_mode = GAME_INIT_WAIT_FONT_TEX;
     break;
@@ -176,12 +176,12 @@ int GameInitLoad()
         }
 
         MakeFontTexSendPacket();
-        SetETIM2File(LOAD_ADDRESS_45);
+        SetETIM2File(LOAD_ADDRESS_46);
 
         sys_wrk.load_mode = GAME_INIT_LOAD_SE_STAT;
     case GAME_INIT_LOAD_SE_STAT:
-        init_load_id = SeFileLoadAndSet(SSYSTEM_BD, 0);
-        init_load_id = SeFileLoadAndSet(SGY000_BD, 1);
+        init_load_id = SeFileLoadAndSet(SSYSTEM_BD, SE_ADDRNO_STATIC);
+        init_load_id = SeFileLoadAndSet(SGY000_BD, SE_ADDRNO_BTLHIT);
 
         sys_wrk.load_mode = GAME_INIT_WAIT_SE_STAT;
     break;

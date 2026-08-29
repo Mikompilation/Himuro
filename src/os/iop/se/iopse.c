@@ -421,82 +421,82 @@ static void GetPrimAndBufNo(short int* prm_no, u_char* buf_no, int v_no)
 {
     if (v_no >= 0 && v_no < 30) {
         *prm_no = v_no;
-        *buf_no = 0;
+        *buf_no = SE_ADDRNO_STATIC;
     } else if (v_no < 33) {
         *prm_no = v_no + se_start_point.btlhit * 3;
-        *buf_no = 1;
+        *buf_no = SE_ADDRNO_BTLHIT;
     } else if (v_no < 38) {
         *prm_no = v_no + 3 + se_start_point.voice * 5;
-        *buf_no = 2;
+        *buf_no = SE_ADDRNO_VOICE;
     } else if (v_no < 40) {
         *prm_no = v_no + 0x30 + se_start_point.door[0] * 2;
-        *buf_no = 3;
+        *buf_no = SE_ADDRNO_DOOR0;
     } else if (v_no < 42) {
         *prm_no = v_no + 0x2e + se_start_point.door[1] * 2;
-        *buf_no = 4;
+        *buf_no = SE_ADDRNO_DOOR1;
     } else if (v_no < 44) {
         *prm_no = v_no + 0x2c + se_start_point.door[2] * 2;
-        *buf_no = 5;
+        *buf_no = SE_ADDRNO_DOOR2;
     } else if (v_no < 45) {
         *prm_no = v_no + 0x38 + se_start_point.foot[0];
-        *buf_no = 6;
+        *buf_no = SE_ADDRNO_FOOT0;
     } else if (v_no < 46) {
         *prm_no = v_no + 0x37 + se_start_point.foot[1];
-        *buf_no = 7;
+        *buf_no = SE_ADDRNO_FOOT1;
     } else if (v_no < 47) {
         *prm_no = v_no + 0x36 + se_start_point.foot[2];
-        *buf_no = 8;
+        *buf_no = SE_ADDRNO_FOOT2;
     } else if (v_no < 48) {
         *prm_no = v_no + 0x35 + se_start_point.foot[3];
-        *buf_no = 9;
+        *buf_no = SE_ADDRNO_FOOT3;
     } else if (v_no < 49) {
         *prm_no = v_no + 0x34 + se_start_point.foot[4];
-        *buf_no = 10;
+        *buf_no = SE_ADDRNO_FOOT4;
     } else if (v_no < 50) {
         *prm_no = v_no + 0x33 + se_start_point.foot[5];
-        *buf_no = 0xb;
+        *buf_no = SE_ADDRNO_FOOT5;
     } else if (v_no < 51) {
         *prm_no = v_no + 0x32 + se_start_point.foot[6];
-        *buf_no = 0xc;
+        *buf_no = SE_ADDRNO_FOOT6;
     } else if (v_no < 52) {
         *prm_no = v_no + 0x31 + se_start_point.foot[7];
-        *buf_no = 0xd;
+        *buf_no = SE_ADDRNO_FOOT7;
     } else if (v_no < 53) {
         *prm_no = v_no + 0x4c + se_start_point.srund[0];
-        *buf_no = 0xe;
+        *buf_no = SE_ADDRNO_SRUND0;
     } else if (v_no < 54) {
         *prm_no = v_no + 0x4b + se_start_point.srund[1];
-        *buf_no = 0xf;
+        *buf_no = SE_ADDRNO_SRUND1;
     } else if (v_no < 65) {
         *prm_no = v_no + 0x5d + se_start_point.ghost[0] * 0xb;
-        *buf_no = 0x10;
+        *buf_no = SE_ADDRNO_GHOST0;
     } else if (v_no < 76) {
         *prm_no = v_no + 0x52 + se_start_point.ghost[1] * 0xb;
-        *buf_no = 0x11;
+        *buf_no = SE_ADDRNO_GHOST1;
     } else if (v_no < 87) {
         *prm_no = v_no + 0x47 + se_start_point.ghost[2] * 0xb;
-        *buf_no = 0x12;
+        *buf_no = SE_ADDRNO_GHOST2;
     } else if (v_no < 90) {
         *prm_no = v_no + 0x165 + se_start_point.event[0] * 3;
-        *buf_no = 0x13;
+        *buf_no = SE_ADDRNO_EVENT0;
     } else if (v_no < 93) {
         *prm_no = v_no + 0x162 + se_start_point.event[1] * 3;
-        *buf_no = 0x14;
+        *buf_no = SE_ADDRNO_EVENT1;
     } else if (v_no < 94) {
         *prm_no = v_no + 0x1aa + se_start_point.wide;
-        *buf_no = 0x15;
+        *buf_no = SE_ADDRNO_WIDE;
     } else if (v_no < 95) {
         *prm_no = v_no + 0x1b8 + se_start_point.jidou[0];
-        *buf_no = 0x16;
+        *buf_no = SE_ADDRNO_JIDOU0;
     } else if (v_no < 96) {
         *prm_no = v_no + 0x1b7 + se_start_point.jidou[1];
-        *buf_no = 0x17;
+        *buf_no = SE_ADDRNO_JIDOU1;
     } else if (v_no < 97) {
         *prm_no = v_no + 0x1b6 + se_start_point.jidou[2];
-        *buf_no = 0x18;
+        *buf_no = SE_ADDRNO_JIDOU2;
     } else if (v_no < 98) {
         *prm_no = v_no + 0x1b5 + se_start_point.jidou[3];
-        *buf_no = 0x19;
+        *buf_no = SE_ADDRNO_JIDOU3;
     } else if (v_no == 0xff) {
         return;
     }

@@ -1,6 +1,7 @@
 #include "common.h"
 #include "enums.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "effect_oth.h"
 
 #if defined(BUILD_JP_VERSION)
@@ -51,8 +52,6 @@ static HEAT_HAZE torch_particle[5];
 static HEAT_HAZE smoke_particle[4];
 static NEW_ITEM ni[24];
 static RIPPLE2 rip[8];
-
-#define ADDRESS 0x1080000
 
 #define PI 3.1415927f
 #define PI2 6.2831855f
@@ -2663,7 +2662,7 @@ int SetAmuletFire()
     case 0:
         cnt = 0;
 
-        load_id = SeFileLoadAndSet(ST012_OFUDA_BD, 21);
+        load_id = SeFileLoadAndSet(ST012_OFUDA_BD, SE_ADDRNO_WIDE);
 
         amulet_fire_flow++;
     break;
@@ -6513,7 +6512,7 @@ void SetEneFace(EFFECT_CONT *ec)
     clpy2 = 0xfd00;
     clpz2 = 0x00ffffff;
 
-    SetSprFile(ADDRESS);
+    SetSprFile(LOAD_ADDRESS_21);
 
     wpos[0] = ec->dat.fl32[1];
     wpos[1] = ec->dat.fl32[2];

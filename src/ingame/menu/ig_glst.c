@@ -1,5 +1,6 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "enums.h"
 #include "ig_glst.h"
 
@@ -32,12 +33,6 @@ GLIST_PHOTO glist_photo = {0};
 static FLSH_CORE flsh;
 
 static MENU_GLST menu_glist;
-
-#ifdef BUILD_EU_VERSION
-#define LOAD_ADDRESS 0x1d51db0
-#else
-#define LOAD_ADDRESS 0x1d573b0
-#endif
 
 void NewgameMenuGlstInit()
 {
@@ -954,7 +949,7 @@ void DispGlistPhoto(u_int line, u_char alpha)
     case 0:
         if (glist_photo.load_id == -1)
         {
-            glist_photo.load_id = LoadReq(id, LOAD_ADDRESS);
+            glist_photo.load_id = LoadReq(id, LOAD_ADDRESS_36);
             glist_photo.mode = 1;
         }
         else if (IsLoadEnd(glist_photo.load_id) != 0)

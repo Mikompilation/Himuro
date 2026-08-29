@@ -1,5 +1,6 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "enums.h"
 #include "sound_test.h"
 
@@ -702,7 +703,7 @@ void SoundTestForModeSlectDisp(u_char alp, float flsh)
         PutStringYW(52, stf.msg_no, 80, 357, 0x808080, alp, 0x1000, 0);
     }
 
-    SetSprFile(0x1ce0000);
+    SetSprFile(LOAD_ADDRESS_31);
     DispCaption(5, alp);
 }
 

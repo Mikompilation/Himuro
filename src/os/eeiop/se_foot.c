@@ -123,7 +123,7 @@ int SFootLoadReqAndSetSub(int load_id, u_char room_from, u_char room_to)
             {
                 if (empty_tbl[j] == 0)
                 {
-                    load_id = SeFileLoadAndSet(load_file_tbl[i], j + 6);
+                    load_id = SeFileLoadAndSet(load_file_tbl[i], j + SE_ADDRNO_FOOT0);
 
                     empty_tbl[j] = 1;
 

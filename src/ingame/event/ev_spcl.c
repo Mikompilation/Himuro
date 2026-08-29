@@ -715,31 +715,31 @@ void StarPuzzleInit(int pzl_no)
     {
         if (pzl_no == 4)
         {
-            LoadReq(EVTEX00G_PK2, LOAD_ADDRESS_45);
+            LoadReq(EVTEX00G_PK2, LOAD_ADDRESS_46);
         }
         else if (pzl_no == 9)
         {
-            LoadReq(EVTEX00F_PK2, LOAD_ADDRESS_45);
+            LoadReq(EVTEX00F_PK2, LOAD_ADDRESS_46);
         }
         else if (pzl_no == 12)
         {
-            VER_LOAD_REQ_LANG(EVTEX00_PK2, LOAD_ADDRESS_45);
+            VER_LOAD_REQ_LANG(EVTEX00_PK2, LOAD_ADDRESS_46);
         }
         else if (pzl_no == 18)
         {
-            VER_LOAD_REQ_LANG(EVTEX00B_PK2, LOAD_ADDRESS_45);
+            VER_LOAD_REQ_LANG(EVTEX00B_PK2, LOAD_ADDRESS_46);
         }
         else if (pzl_no == 20)
         {
-            VER_LOAD_REQ_LANG(EVTEX00D_PK2, LOAD_ADDRESS_45);
+            VER_LOAD_REQ_LANG(EVTEX00D_PK2, LOAD_ADDRESS_46);
         }
         else if (pzl_no == 36)
         {
-            VER_LOAD_REQ_LANG(EVTEX00C_PK2, LOAD_ADDRESS_45);
+            VER_LOAD_REQ_LANG(EVTEX00C_PK2, LOAD_ADDRESS_46);
         }
         else if (pzl_no == 41)
         {
-            VER_LOAD_REQ_LANG(EVTEX00E_PK2, LOAD_ADDRESS_45);
+            VER_LOAD_REQ_LANG(EVTEX00E_PK2, LOAD_ADDRESS_46);
         }
 
         star_pzl_wrk.mode = STAR_PZL_MODE_READY;
@@ -860,31 +860,31 @@ int StarPuzzleMain(int pzl_no)
         {
             if (pzl_no == 4)
             {
-                LoadReq(EVTEX00G_PK2, LOAD_ADDRESS_45);
+                LoadReq(EVTEX00G_PK2, LOAD_ADDRESS_46);
             }
             else if (pzl_no == 9)
             {
-                LoadReq(EVTEX00F_PK2, LOAD_ADDRESS_45);
+                LoadReq(EVTEX00F_PK2, LOAD_ADDRESS_46);
             }
             else if (pzl_no == 12)
             {
-                VER_LOAD_REQ_LANG(EVTEX00_PK2, LOAD_ADDRESS_45);
+                VER_LOAD_REQ_LANG(EVTEX00_PK2, LOAD_ADDRESS_46);
             }
             else if (pzl_no == 18)
             {
-                VER_LOAD_REQ_LANG(EVTEX00B_PK2, LOAD_ADDRESS_45);
+                VER_LOAD_REQ_LANG(EVTEX00B_PK2, LOAD_ADDRESS_46);
             }
             else if (pzl_no == 20)
             {
-                VER_LOAD_REQ_LANG(EVTEX00D_PK2, LOAD_ADDRESS_45);
+                VER_LOAD_REQ_LANG(EVTEX00D_PK2, LOAD_ADDRESS_46);
             }
             else if (pzl_no == 36)
             {
-                VER_LOAD_REQ_LANG(EVTEX00C_PK2, LOAD_ADDRESS_45);
+                VER_LOAD_REQ_LANG(EVTEX00C_PK2, LOAD_ADDRESS_46);
             }
             else if (pzl_no == 41)
             {
-                VER_LOAD_REQ_LANG(EVTEX00E_PK2, LOAD_ADDRESS_45);
+                VER_LOAD_REQ_LANG(EVTEX00E_PK2, LOAD_ADDRESS_46);
             }
 
             star_pzl_wrk.mode = STAR_PZL_MODE_READY;
@@ -900,11 +900,11 @@ int StarPuzzleMain(int pzl_no)
         {
             if (IsLoadEndAll() != 0)
             {
-                SetSprFile(LOAD_ADDRESS_45);
+                SetSprFile(LOAD_ADDRESS_46);
 
                 star_pzl_wrk.mode = STAR_PZL_MODE_SELOAD;
 
-                pzl_load_id = SeFileLoadAndSet(SP000_KAMON_BD, 2);
+                pzl_load_id = SeFileLoadAndSet(SP000_KAMON_BD, SE_ADDRNO_VOICE);
 
                 ingame_wrk.stts |= 0x20;
             }
@@ -922,7 +922,7 @@ int StarPuzzleMain(int pzl_no)
             {
                 pzl_load_id = -1;
 
-                SetSprFile(LOAD_ADDRESS_45);
+                SetSprFile(LOAD_ADDRESS_46);
 
                 star_pzl_wrk.mode = STAR_PZL_MODE_IN;
                 star_pzl_wrk.time = 40;
@@ -1331,7 +1331,7 @@ int StarPuzzleMain(int pzl_no)
     case STAR_PZL_MODE_END:
         if (pzl_load_id == -1)
         {
-            pzl_load_id = SeFileLoadAndSet(SV000_MIKU_BD, 2);
+            pzl_load_id = SeFileLoadAndSet(SV000_MIKU_BD, SE_ADDRNO_VOICE);
         }
         else
         {
@@ -1412,7 +1412,7 @@ void StarPuzzleDisp()
 
     for (i = 0; i < 11; i++)
     {
-        SimpleDispSprt(&spev00_sp_bak[i], LOAD_ADDRESS_45, i, NULL, NULL, alp_rate);
+        SimpleDispSprt(&spev00_sp_bak[i], LOAD_ADDRESS_46, i, NULL, NULL, alp_rate);
     }
 
     if (star_pzl_wrk.mode == STAR_PZL_MODE_MENU)
@@ -1441,7 +1441,7 @@ void StarPuzzleDisp()
                     ssd.alp = ssd.alp * (30 - star_pzl_wrk.time) / 30;
                 }
 
-                SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 14, &spev00_lin_rot[i], &spev00_lin_scl[i], alp_rate);
+                SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 14, &spev00_lin_rot[i], &spev00_lin_scl[i], alp_rate);
             }
         }
     }
@@ -1452,7 +1452,7 @@ void StarPuzzleDisp()
         {
             if (star_pzl_dat[star_pzl_wrk.pzl_no].line[i] != 0)
             {
-                SimpleDispSprt(spev00_sp_lia + i, LOAD_ADDRESS_45, 14, &spev00_lia_rot[i], &spev00_lia_scl[i], alp_rate);
+                SimpleDispSprt(spev00_sp_lia + i, LOAD_ADDRESS_46, 14, &spev00_lia_rot[i], &spev00_lia_scl[i], alp_rate);
             }
         }
     }
@@ -1466,7 +1466,7 @@ void StarPuzzleDisp()
             ssd.x = spev00_stn_pos[i][0];
             ssd.y = spev00_stn_pos[i][1];
 
-            SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 13, NULL, NULL, alp_rate);
+            SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 13, NULL, NULL, alp_rate);
 
             if (star_pzl_wrk.mode == STAR_PZL_MODE_GOOD)
             {
@@ -1481,7 +1481,7 @@ void StarPuzzleDisp()
                 ssd.y = spev00_sta_pos[star_pzl_wrk.empty][1];
                 ssd.alp = spev_wrk.csr[1];
 
-                SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 14, NULL, NULL, alp_rate);
+                SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 14, NULL, NULL, alp_rate);
             }
         }
         else if (i == star_pzl_wrk.slct_no)
@@ -1513,7 +1513,7 @@ void StarPuzzleDisp()
                     ssd.y = spev00_sta_pos[i][1];
                 }
 
-                SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 14, NULL, NULL, alp_rate);
+                SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 14, NULL, NULL, alp_rate);
             }
 
             SimpleDispSprtDatCopy(&spev00_sp_stn[star_pzl_wrk.stone[i]], &ssd);
@@ -1532,7 +1532,7 @@ void StarPuzzleDisp()
                 ssd.y = spev00_stn_pos[i][1];
             }
 
-            SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 13, NULL, NULL, alp_rate);
+            SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 13, NULL, NULL, alp_rate);
         }
         else if (i != star_pzl_wrk.empty)
         {
@@ -1541,32 +1541,32 @@ void StarPuzzleDisp()
             ssd.x = spev00_stn_pos[i][0];
             ssd.y = spev00_stn_pos[i][1];
 
-            SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 13, NULL, NULL, alp_rate);
+            SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 13, NULL, NULL, alp_rate);
         }
     }
 
     if (star_pzl_wrk.mode != STAR_PZL_MODE_BAD && star_pzl_wrk.line[star_pzl_wrk.slct_no][star_pzl_wrk.empty] != 0xff)
     {
-        SimpleDispSprt(&spev00_sp_lia[star_pzl_wrk.empty + 10], LOAD_ADDRESS_45, 14, NULL, NULL, alp_rate);
-        SimpleDispSprt(&spev00_sp_lia[star_pzl_wrk.slct_no + 10], LOAD_ADDRESS_45, 14, NULL, NULL, alp_rate);
+        SimpleDispSprt(&spev00_sp_lia[star_pzl_wrk.empty + 10], LOAD_ADDRESS_46, 14, NULL, NULL, alp_rate);
+        SimpleDispSprt(&spev00_sp_lia[star_pzl_wrk.slct_no + 10], LOAD_ADDRESS_46, 14, NULL, NULL, alp_rate);
     }
 
-    SimpleDispSprt(&spev00_sp_hln[star_pzl_wrk.empty], LOAD_ADDRESS_45, 16, NULL, NULL, alp_rate);
-    SimpleDispSprt(&spev00_sp_hln[star_pzl_wrk.slct_no], LOAD_ADDRESS_45, 16, NULL, NULL, alp_rate);
+    SimpleDispSprt(&spev00_sp_hln[star_pzl_wrk.empty], LOAD_ADDRESS_46, 16, NULL, NULL, alp_rate);
+    SimpleDispSprt(&spev00_sp_hln[star_pzl_wrk.slct_no], LOAD_ADDRESS_46, 16, NULL, NULL, alp_rate);
 
     if (star_pzl_wrk.mode == STAR_PZL_MODE_MOVE)
     {
         SimpleDispSprtDatCopy(&spev00_sp_num[star_pzl_wrk.count-1], &ssd);
         ssd.alp = ssd.alp * (30 - star_pzl_wrk.time) / 30;
-        SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 15, NULL, NULL, alp_rate);
+        SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 15, NULL, NULL, alp_rate);
 
         SimpleDispSprtDatCopy(&spev00_sp_num[star_pzl_wrk.count], &ssd);
         ssd.alp = ssd.alp * star_pzl_wrk.time / 30;
-        SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 15, NULL, NULL, alp_rate);
+        SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 15, NULL, NULL, alp_rate);
     }
     else
     {
-        SimpleDispSprt(&spev00_sp_num[star_pzl_wrk.count], LOAD_ADDRESS_45, 15, NULL, NULL, alp_rate);
+        SimpleDispSprt(&spev00_sp_num[star_pzl_wrk.count], LOAD_ADDRESS_46, 15, NULL, NULL, alp_rate);
     }
 
     if (star_pzl_wrk.mode == STAR_PZL_MODE_RESL)
@@ -1584,11 +1584,11 @@ void StarPuzzleDisp()
                 {
                     SimpleDispSprtDatCopy(&spev00_sp_bff[i], &ssd);
                     ssd.alp = ssd.alp * (40 - star_pzl_wrk.time) / 40;
-                    SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 11, NULL, NULL, alp_rate);
+                    SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 11, NULL, NULL, alp_rate);
                 }
                 else
                 {
-                    SimpleDispSprt(&spev00_sp_bff[i], LOAD_ADDRESS_45, 11, NULL, NULL, alp_rate);
+                    SimpleDispSprt(&spev00_sp_bff[i], LOAD_ADDRESS_46, 11, NULL, NULL, alp_rate);
                 }
             }
         }
@@ -1602,11 +1602,11 @@ void StarPuzzleDisp()
             {
                 SimpleDispSprtDatCopy(&spev00_sp_bft[i], &ssd);
                 ssd.alp = ssd.alp * (40 - star_pzl_wrk.time) / 40;
-                SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 12, NULL, NULL, alp_rate);
+                SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 12, NULL, NULL, alp_rate);
             }
             else
             {
-                SimpleDispSprt(&spev00_sp_bft[i], LOAD_ADDRESS_45, 12, NULL, NULL, alp_rate);
+                SimpleDispSprt(&spev00_sp_bft[i], LOAD_ADDRESS_46, 12, NULL, NULL, alp_rate);
             }
         }
     }
@@ -1652,11 +1652,11 @@ void StarPuzzleDisp()
 
                 if (i < 2)
                 {
-                    SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 17, NULL, NULL, 0x64);
+                    SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 17, NULL, NULL, 0x64);
                 }
                 else
                 {
-                    SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 17, NULL, &spev00_csr_scl[0], 0x64);
+                    SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 17, NULL, &spev00_csr_scl[0], 0x64);
                 }
             }
         }
@@ -1691,11 +1691,11 @@ void StarPuzzleDisp()
 
                 if (i < 5)
                 {
-                    SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 17, NULL, NULL, 0x64);
+                    SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 17, NULL, NULL, 0x64);
                 }
                 else
                 {
-                    SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 17, NULL, &spev00_csr_scl[star_pzl_wrk.menu_csr[1] + 1], 0x64);
+                    SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 17, NULL, &spev00_csr_scl[star_pzl_wrk.menu_csr[1] + 1], 0x64);
                 }
             }
         }
@@ -1730,11 +1730,11 @@ void StarPuzzleDisp()
 
                 if (i < 5)
                 {
-                    SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 17, NULL, NULL, 0x64);
+                    SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 17, NULL, NULL, 0x64);
                 }
                 else
                 {
-                    SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 17, NULL, &spev00_csr_scl[star_pzl_wrk.menu_csr[1] + 1], 0x64);
+                    SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 17, NULL, &spev00_csr_scl[star_pzl_wrk.menu_csr[1] + 1], 0x64);
                 }
             }
         }
@@ -1919,39 +1919,39 @@ void StarPuzzleDisp()
         alp_rate = 0;
     }
 
-    SimpleDispSprt(&spev00_sp_cpf[0], LOAD_ADDRESS_45, 18, NULL, NULL, alp_rate);
-    SimpleDispSprt(&spev00_sp_cpf[2], LOAD_ADDRESS_45, 18, NULL, NULL, alp_rate);
+    SimpleDispSprt(&spev00_sp_cpf[0], LOAD_ADDRESS_46, 18, NULL, NULL, alp_rate);
+    SimpleDispSprt(&spev00_sp_cpf[2], LOAD_ADDRESS_46, 18, NULL, NULL, alp_rate);
 #if defined(BUILD_EU_VERSION)
-    SimpleDispSprt(&spev00_sp_cpf[4], LOAD_ADDRESS_45, 18, NULL, NULL, alp_rate);
+    SimpleDispSprt(&spev00_sp_cpf[4], LOAD_ADDRESS_46, 18, NULL, NULL, alp_rate);
 #endif
 
     if (star_pzl_wrk.count < star_pzl_dat[star_pzl_wrk.pzl_no].move_num)
     {
-        SimpleDispSprt(&spev00_sp_cpf[1], LOAD_ADDRESS_45, 18, NULL, NULL, alp_rate);
+        SimpleDispSprt(&spev00_sp_cpf[1], LOAD_ADDRESS_46, 18, NULL, NULL, alp_rate);
     }
     else
     {
-        SimpleDispSprt(&spev00_sp_cpf[3], LOAD_ADDRESS_45, 18, NULL, NULL, alp_rate);
+        SimpleDispSprt(&spev00_sp_cpf[3], LOAD_ADDRESS_46, 18, NULL, NULL, alp_rate);
     }
 
     if (star_pzl_wrk.count != 0)
     {
 #if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
-        SimpleDispSprt(&spev00_sp_cpf2[8], LOAD_ADDRESS_45, 20, NULL, NULL, alp_rate);
+        SimpleDispSprt(&spev00_sp_cpf2[8], LOAD_ADDRESS_46, 20, NULL, NULL, alp_rate);
 #endif
-        SimpleDispSprt(&spev00_sp_cpf2[0], LOAD_ADDRESS_45, 20, NULL, NULL, alp_rate);
-        SimpleDispSprt(&spev00_sp_cpf2[star_pzl_wrk.count], LOAD_ADDRESS_45, 20, NULL, NULL, alp_rate);
+        SimpleDispSprt(&spev00_sp_cpf2[0], LOAD_ADDRESS_46, 20, NULL, NULL, alp_rate);
+        SimpleDispSprt(&spev00_sp_cpf2[star_pzl_wrk.count], LOAD_ADDRESS_46, 20, NULL, NULL, alp_rate);
     }
     else
     {
 #if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
-        SimpleDispSprt(&spev00_sp_cpf2[8], LOAD_ADDRESS_45, 20, NULL, NULL, alp_rate);
+        SimpleDispSprt(&spev00_sp_cpf2[8], LOAD_ADDRESS_46, 20, NULL, NULL, alp_rate);
 #endif
-        SimpleDispSprt(&spev00_sp_cpf2[0], LOAD_ADDRESS_45, 20, NULL, NULL, alp_rate);
-        SimpleDispSprt(&spev00_sp_cpf2[1], LOAD_ADDRESS_45, 20, NULL, NULL, alp_rate);
+        SimpleDispSprt(&spev00_sp_cpf2[0], LOAD_ADDRESS_46, 20, NULL, NULL, alp_rate);
+        SimpleDispSprt(&spev00_sp_cpf2[1], LOAD_ADDRESS_46, 20, NULL, NULL, alp_rate);
     }
 
-    SimpleDispSprt(spev00_sp_cap, LOAD_ADDRESS_45, 19, NULL, NULL, alp_rate);
+    SimpleDispSprt(spev00_sp_cap, LOAD_ADDRESS_46, 19, NULL, NULL, alp_rate);
 
 #if defined(BUILD_JP_VERSION)
     DrawButtonTex(0xa000, 2, spev00_cbt_pos[0][0], spev00_cbt_pos[0][1], alp_rate);
@@ -1979,31 +1979,31 @@ int StarPuzzleMSGMain(int pzl_no)
         {
             if (pzl_no == 4)
             {
-                LoadReq(EVTEX00G_PK2, LOAD_ADDRESS_45);
+                LoadReq(EVTEX00G_PK2, LOAD_ADDRESS_46);
             }
             else if (pzl_no == 9)
             {
-                LoadReq(EVTEX00F_PK2, LOAD_ADDRESS_45);
+                LoadReq(EVTEX00F_PK2, LOAD_ADDRESS_46);
             }
             else if (pzl_no == 12)
             {
-                VER_LOAD_REQ_LANG(EVTEX00_PK2, LOAD_ADDRESS_45);
+                VER_LOAD_REQ_LANG(EVTEX00_PK2, LOAD_ADDRESS_46);
             }
             else if (pzl_no == 18)
             {
-                VER_LOAD_REQ_LANG(EVTEX00B_PK2, LOAD_ADDRESS_45);
+                VER_LOAD_REQ_LANG(EVTEX00B_PK2, LOAD_ADDRESS_46);
             }
             else if (pzl_no == 20)
             {
-                VER_LOAD_REQ_LANG(EVTEX00D_PK2, LOAD_ADDRESS_45);
+                VER_LOAD_REQ_LANG(EVTEX00D_PK2, LOAD_ADDRESS_46);
             }
             else if (pzl_no == 36)
             {
-                VER_LOAD_REQ_LANG(EVTEX00C_PK2, LOAD_ADDRESS_45);
+                VER_LOAD_REQ_LANG(EVTEX00C_PK2, LOAD_ADDRESS_46);
             }
             else if (pzl_no == 41)
             {
-                VER_LOAD_REQ_LANG(EVTEX00E_PK2, LOAD_ADDRESS_45);
+                VER_LOAD_REQ_LANG(EVTEX00E_PK2, LOAD_ADDRESS_46);
             }
 
             star_pzl_wrk.mode = STAR_PZL_MODE_READY;
@@ -2019,7 +2019,7 @@ int StarPuzzleMSGMain(int pzl_no)
         {
             if (IsLoadEndAll() != 0)
             {
-                SetSprFile(LOAD_ADDRESS_45);
+                SetSprFile(LOAD_ADDRESS_46);
 
                 star_pzl_wrk.mode = STAR_PZL_MODE_IN;
                 star_pzl_wrk.time = 40;
@@ -2138,7 +2138,7 @@ void StarPuzzleMSGDisp()
 
     for (i = 0; i < 11; i++)
     {
-        SimpleDispSprt(&spev00_sp_bak[i], LOAD_ADDRESS_45, i, NULL, NULL, alp_rate);
+        SimpleDispSprt(&spev00_sp_bak[i], LOAD_ADDRESS_46, i, NULL, NULL, alp_rate);
     }
 
     if (star_pzl_wrk.pzl_no != STAR_PZL_MODE_SLCT && star_pzl_wrk.pzl_no != STAR_PZL_MODE_MSG0)
@@ -2152,17 +2152,17 @@ void StarPuzzleMSGDisp()
                 ssd.x = spev00_stn_pos[i][0];
                 ssd.y = spev00_stn_pos[i][1];
 
-                SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 13, NULL, NULL, alp_rate);
+                SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 13, NULL, NULL, alp_rate);
             }
         }
 
         if (star_pzl_wrk.mode != STAR_PZL_MODE_BAD && star_pzl_wrk.line[star_pzl_wrk.slct_no][star_pzl_wrk.empty] != 0xff)
         {
-            SimpleDispSprt((&spev00_sp_lia[star_pzl_wrk.slct_no+10]), LOAD_ADDRESS_45, 14, NULL, NULL, alp_rate);
+            SimpleDispSprt((&spev00_sp_lia[star_pzl_wrk.slct_no+10]), LOAD_ADDRESS_46, 14, NULL, NULL, alp_rate);
         }
 
-        SimpleDispSprt(&spev00_sp_hln[star_pzl_wrk.empty], LOAD_ADDRESS_45, 16, NULL, NULL, alp_rate);
-        SimpleDispSprt(&spev00_sp_hln[star_pzl_wrk.slct_no], LOAD_ADDRESS_45, 16, NULL, NULL, alp_rate);
+        SimpleDispSprt(&spev00_sp_hln[star_pzl_wrk.empty], LOAD_ADDRESS_46, 16, NULL, NULL, alp_rate);
+        SimpleDispSprt(&spev00_sp_hln[star_pzl_wrk.slct_no], LOAD_ADDRESS_46, 16, NULL, NULL, alp_rate);
     }
 
     if (star_pzl_wrk.mode == STAR_PZL_MODE_MSG0)
@@ -2261,7 +2261,7 @@ void DialKeyDoorInit(int door_no)
     }
     else
     {
-        VER_LOAD_REQ_LANG(EVTEX01_PK2, LOAD_ADDRESS_45);
+        VER_LOAD_REQ_LANG(EVTEX01_PK2, LOAD_ADDRESS_46);
 
         pzl_load_id = -1;
 
@@ -2302,7 +2302,7 @@ int DialKeyDoorMain()
         }
         else
         {
-            VER_LOAD_REQ_LANG(EVTEX01_PK2, LOAD_ADDRESS_45);
+            VER_LOAD_REQ_LANG(EVTEX01_PK2, LOAD_ADDRESS_46);
 
             pzl_load_id = -1;
 
@@ -2323,7 +2323,7 @@ int DialKeyDoorMain()
 
                 ingame_wrk.stts |= 0x20;
 
-                pzl_load_id = SeFileLoadAndSet(SP002_BANGOU_BD, 2);
+                pzl_load_id = SeFileLoadAndSet(SP002_BANGOU_BD, SE_ADDRNO_VOICE);
             }
         }
     break;
@@ -2549,7 +2549,7 @@ int DialKeyDoorMain()
         {
             if (pzl_load_id == -1)
             {
-                pzl_load_id = SeFileLoadAndSet(SV000_MIKU_BD, 2);
+                pzl_load_id = SeFileLoadAndSet(SV000_MIKU_BD, SE_ADDRNO_VOICE);
             }
             else if (IsLoadEnd(pzl_load_id) != 0)
             {
@@ -2672,7 +2672,7 @@ void DialKeyDoorDisp()
     };
     int msg_index;
 
-    SetSprFile(LOAD_ADDRESS_45);
+    SetSprFile(LOAD_ADDRESS_46);
 
     if (dkey_wrk.mode == DIAL_KEY_MODE_IN)
     {
@@ -2689,7 +2689,7 @@ void DialKeyDoorDisp()
 
     for (i = 0; i < 11; i++)
     {
-        SimpleDispSprt(&spev01_sp_bak[i], LOAD_ADDRESS_45, i, NULL, NULL, alp_rate);
+        SimpleDispSprt(&spev01_sp_bak[i], LOAD_ADDRESS_46, i, NULL, NULL, alp_rate);
     }
 
     sscl.cx = spev01_sp_btp[dkey_wrk.slct_no].x + spev01_sp_btp[i].w + 24;
@@ -2699,17 +2699,17 @@ void DialKeyDoorDisp()
 
     ssd.alp = spev_wrk.csr[2];
 
-    SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 16, NULL, &sscl, alp_rate);
+    SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 16, NULL, &sscl, alp_rate);
 
     for (i = 0; i < 10; i++)
     {
         if (dkey_wrk.slct_no == i && dkey_wrk.mode == DIAL_KEY_MODE_PUSH)
         {
-            SimpleDispSprt(&spev01_sp_btp[i], LOAD_ADDRESS_45, 17, NULL, NULL, alp_rate);
+            SimpleDispSprt(&spev01_sp_btp[i], LOAD_ADDRESS_46, 17, NULL, NULL, alp_rate);
         }
         else
         {
-            SimpleDispSprt(&spev01_sp_btn[i], LOAD_ADDRESS_45, 11, NULL, NULL, alp_rate);
+            SimpleDispSprt(&spev01_sp_btn[i], LOAD_ADDRESS_46, 11, NULL, NULL, alp_rate);
         }
     }
 
@@ -2725,7 +2725,7 @@ void DialKeyDoorDisp()
 
     ssd.alp = spev_wrk.csr[1];
 
-    SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 18, NULL, NULL, alp_rate);
+    SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 18, NULL, NULL, alp_rate);
 
     if (dkey_wrk.count == 0)
     {
@@ -2734,7 +2734,7 @@ void DialKeyDoorDisp()
         ssd.h = spev01_sp_cpf[1].h / 2;
         ssd.alp = spev_wrk.csr[1];
 
-        SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 18, NULL, NULL, alp_rate);
+        SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 18, NULL, NULL, alp_rate);
     }
     else
     {
@@ -2743,7 +2743,7 @@ void DialKeyDoorDisp()
         ssd.y = spev01_sp_cpf[1].y;
         ssd.alp = spev_wrk.csr[1];
 
-        SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 18, NULL, NULL, alp_rate);
+        SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 18, NULL, NULL, alp_rate);
     }
 
     SimpleDispSprtDatCopy(&spev01_sp_cpf[1], &ssd);
@@ -2753,13 +2753,13 @@ void DialKeyDoorDisp()
     ssd.y = spev01_sp_cpf[1].y + ssd.h;
     ssd.alp = spev_wrk.csr[1];
 
-    SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 18, NULL, NULL, alp_rate);
+    SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 18, NULL, NULL, alp_rate);
 
     SimpleDispSprtDatCopy(spev01_sp_cap, &ssd);
 
     ssd.alp = spev_wrk.csr[1];
 
-    SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 19, NULL, NULL, alp_rate);
+    SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 19, NULL, NULL, alp_rate);
 
 #if defined(BUILD_JP_VERSION)
     DrawButtonTex(0xa000, 2, spev01_cbt_pos[0][0], spev01_cbt_pos[0][1], spev_wrk.csr[1]);
@@ -2792,7 +2792,7 @@ void DialKeyDoorDisp()
                 ssd.alp = (ssd.alp * (40 - dkey_wrk.time)) / 40;
             }
 
-            SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 15, NULL, NULL, alp_rate);
+            SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 15, NULL, NULL, alp_rate);
         }
     }
 
@@ -2898,9 +2898,9 @@ void DialKeyDoorDisp()
 void DialKeyMSGDoorInit()
 {
 #if defined(BUILD_JP_VERSION) || defined(BUILD_US_VERSION)
-        FileLoadB(EVTEX01_PK2, LOAD_ADDRESS_45);
+        FileLoadB(EVTEX01_PK2, LOAD_ADDRESS_46);
 #elif defined(BUILD_EU_VERSION)
-        LoadReqLanguage(EVTEX01_E_PK2, LOAD_ADDRESS_45);
+        LoadReqLanguage(EVTEX01_E_PK2, LOAD_ADDRESS_46);
 #endif
 
     dkey_wrk.mode = DIAL_KEY_MODE_READY;
@@ -3004,7 +3004,7 @@ void DialKeyMSGDoorDisp(int msg_no)
         .alpha = 0x64
     };
 
-    SetSprFile(LOAD_ADDRESS_45);
+    SetSprFile(LOAD_ADDRESS_46);
 
     if (dkey_wrk.mode == DIAL_KEY_MODE_IN)
     {
@@ -3021,17 +3021,17 @@ void DialKeyMSGDoorDisp(int msg_no)
 
     for (i = 0; i < 11; i++)
     {
-        SimpleDispSprt(&spev01_sp_bak[i], LOAD_ADDRESS_45, i, NULL, NULL, alp_rate);
+        SimpleDispSprt(&spev01_sp_bak[i], LOAD_ADDRESS_46, i, NULL, NULL, alp_rate);
     }
 
     for (i = 0; i < 10; i++)
     {
-        SimpleDispSprt(&spev01_sp_btn[i], LOAD_ADDRESS_45, 11, NULL, NULL, alp_rate);
+        SimpleDispSprt(&spev01_sp_btn[i], LOAD_ADDRESS_46, 11, NULL, NULL, alp_rate);
     }
 
     for (i = 0; i < 2; i++)
     {
-        SimpleDispSprt(&spev01_sp_gl3[i], LOAD_ADDRESS_45, 12, NULL, NULL, alp_rate);
+        SimpleDispSprt(&spev01_sp_gl3[i], LOAD_ADDRESS_46, 12, NULL, NULL, alp_rate);
     }
 
     if (dkey_wrk.mode == DIAL_KEY_MODE_SLCT)
@@ -3078,15 +3078,15 @@ void GhostDoorInit(int door_no)
 
     if (door_no != 5)
     {
-        VER_LOAD_REQ_LANG(EVTEX02A_PK2, LOAD_ADDRESS_45);
+        VER_LOAD_REQ_LANG(EVTEX02A_PK2, LOAD_ADDRESS_46);
     }
     else if (spev_wrk.count == 0)
     {
-        VER_LOAD_REQ_LANG(EVTEX02B_PK2, LOAD_ADDRESS_45);
+        VER_LOAD_REQ_LANG(EVTEX02B_PK2, LOAD_ADDRESS_46);
     }
     else
     {
-        VER_LOAD_REQ_LANG(EVTEX02C_PK2, LOAD_ADDRESS_45);
+        VER_LOAD_REQ_LANG(EVTEX02C_PK2, LOAD_ADDRESS_46);
     }
 
     SpevStrInit();
@@ -3232,25 +3232,25 @@ void GhostDoorDisp(int door_no)
         .alpha = 0x3c,
     };
 
-    SetSprFile(LOAD_ADDRESS_45);
+    SetSprFile(LOAD_ADDRESS_46);
 
     if (door_no != 5)
     {
         for (i = 0; i < 11; i++)
         {
-            SimpleDispSprt(&spev02_sp_bak[i], LOAD_ADDRESS_45, i, NULL, NULL, 100);
+            SimpleDispSprt(&spev02_sp_bak[i], LOAD_ADDRESS_46, i, NULL, NULL, 100);
         }
 
         if (spev_wrk.count != 0)
         {
-            SimpleDispSprt(&spev02_sp_of1[0], LOAD_ADDRESS_45, 11, NULL, NULL, 100);
+            SimpleDispSprt(&spev02_sp_of1[0], LOAD_ADDRESS_46, 11, NULL, NULL, 100);
         }
     }
     else
     {
         for (i = 0; i < 11; i++)
         {
-            SimpleDispSprt(&spev02_sp_bak[i], LOAD_ADDRESS_45, i, NULL, NULL, 100);
+            SimpleDispSprt(&spev02_sp_bak[i], LOAD_ADDRESS_46, i, NULL, NULL, 100);
         }
     }
 
@@ -3303,7 +3303,7 @@ void DollPzlInit()
     }
     else
     {
-        VER_LOAD_REQ_LANG(EVTEX03_PK2, LOAD_ADDRESS_45);
+        VER_LOAD_REQ_LANG(EVTEX03_PK2, LOAD_ADDRESS_46);
 
         spev_wrk.mode = DOLL_PZL_MODE_READY;
         spev_wrk.time = 40;
@@ -3330,7 +3330,7 @@ void DollPzlMain()
     switch(spev_wrk.mode)
     {
     case DOLL_PZL_MODE_DEADWAIT:
-        VER_LOAD_REQ_LANG(EVTEX03_PK2, LOAD_ADDRESS_45);
+        VER_LOAD_REQ_LANG(EVTEX03_PK2, LOAD_ADDRESS_46);
 
         spev_wrk.mode = DOLL_PZL_MODE_READY;
         spev_wrk.time = 40;
@@ -3344,13 +3344,13 @@ void DollPzlMain()
         {
             if (IsLoadEndAll() != 0)
             {
-                SetSprFile(LOAD_ADDRESS_45);
+                SetSprFile(LOAD_ADDRESS_46);
 
                 spev_wrk.mode = DOLL_PZL_MODE_SELOAD;
 
                 ingame_wrk.stts |= 0x20;
 
-                pzl_load_id = SeFileLoadAndSet(SP001_NINGYOU_BD, 2);
+                pzl_load_id = SeFileLoadAndSet(SP001_NINGYOU_BD, SE_ADDRNO_VOICE);
             }
         }
     break;
@@ -3821,7 +3821,7 @@ void DollPzlMain()
     case DOLL_PZL_MODE_END:
         if (pzl_load_id == -1)
         {
-            pzl_load_id = SeFileLoadAndSet(SV000_MIKU_BD, 2);
+            pzl_load_id = SeFileLoadAndSet(SV000_MIKU_BD, SE_ADDRNO_VOICE);
         }
         else
         {
@@ -3941,11 +3941,11 @@ void SpecialEventDisp003(int no)
         .alpha = 0x3c,
     };
 
-    SetSprFile(LOAD_ADDRESS_45);
+    SetSprFile(LOAD_ADDRESS_46);
 
     for (i = 0; i < 11; i++)
     {
-        SimpleDispSprt(&spev03_sp_bak[i], LOAD_ADDRESS_45, i, NULL, NULL, 0x64);
+        SimpleDispSprt(&spev03_sp_bak[i], LOAD_ADDRESS_46, i, NULL, NULL, 0x64);
     }
 
     SimpleDispSprtDatCopy(&spev03_sp_dla[spev_wrk.csr[0]], &ssd_csr);
@@ -4022,33 +4022,33 @@ void SpecialEventDisp003(int no)
                     {
                         if (evdl_dat[no].order[i] == 1)
                         {
-                            SimpleDispSprt(&ssd_csr, LOAD_ADDRESS_45, 12, &spev03_dol_left, &spev03_dla_scl[i], 0x64);
+                            SimpleDispSprt(&ssd_csr, LOAD_ADDRESS_46, 12, &spev03_dol_left, &spev03_dla_scl[i], 0x64);
                         }
                         else
                         {
-                            SimpleDispSprt(&ssd_csr, LOAD_ADDRESS_45, 12, NULL, &spev03_dla_scl[i], 0x64);
+                            SimpleDispSprt(&ssd_csr, LOAD_ADDRESS_46, 12, NULL, &spev03_dla_scl[i], 0x64);
                         }
                     }
                     else
                     {
                         if (evdl_dat[no].order[i] == 1)
                         {
-                            SimpleDispSprt(&ssd_csr, LOAD_ADDRESS_45, 12, &spev03_dol_left, NULL, 0x64);
+                            SimpleDispSprt(&ssd_csr, LOAD_ADDRESS_46, 12, &spev03_dol_left, NULL, 0x64);
                         }
                         else
                         {
-                            SimpleDispSprt(&ssd_csr, LOAD_ADDRESS_45, 12, NULL, NULL, 0x64);
+                            SimpleDispSprt(&ssd_csr, LOAD_ADDRESS_46, 12, NULL, NULL, 0x64);
                         }
                     }
                 }
 
                 if (evdl_dat[no].order[i] == 1)
                 {
-                    SimpleDispSprtRGB(&ssd, LOAD_ADDRESS_45, 11, &spev03_dol_left, &spev03_dol_scl[i], 0x64, ssd_tmp_col, ssd_tmp_col, ssd_tmp_col);
+                    SimpleDispSprtRGB(&ssd, LOAD_ADDRESS_46, 11, &spev03_dol_left, &spev03_dol_scl[i], 0x64, ssd_tmp_col, ssd_tmp_col, ssd_tmp_col);
                 }
                 else
                 {
-                    SimpleDispSprtRGB(&ssd, LOAD_ADDRESS_45, 11, NULL, &spev03_dol_scl[i], 0x64, ssd_tmp_col, ssd_tmp_col, ssd_tmp_col);
+                    SimpleDispSprtRGB(&ssd, LOAD_ADDRESS_46, 11, NULL, &spev03_dol_scl[i], 0x64, ssd_tmp_col, ssd_tmp_col, ssd_tmp_col);
                 }
             }
             else
@@ -4059,11 +4059,11 @@ void SpecialEventDisp003(int no)
                     {
                         if (evdl_dat[no].order[i] == 1)
                         {
-                            SimpleDispSprt(&ssd_csr, LOAD_ADDRESS_45, 12, &spev03_dol_left, &spev03_dla_scl[i], 0x64);
+                            SimpleDispSprt(&ssd_csr, LOAD_ADDRESS_46, 12, &spev03_dol_left, &spev03_dla_scl[i], 0x64);
                         }
                         else
                         {
-                            SimpleDispSprt(&ssd_csr, LOAD_ADDRESS_45, 12, NULL, &spev03_dla_scl[i], 0x64);
+                            SimpleDispSprt(&ssd_csr, LOAD_ADDRESS_46, 12, NULL, &spev03_dla_scl[i], 0x64);
                         }
 
                     }
@@ -4071,22 +4071,22 @@ void SpecialEventDisp003(int no)
                     {
                         if (evdl_dat[no].order[i] == 1)
                         {
-                            SimpleDispSprt(&ssd_csr, LOAD_ADDRESS_45, 12, &spev03_dol_left, NULL, 0x64);
+                            SimpleDispSprt(&ssd_csr, LOAD_ADDRESS_46, 12, &spev03_dol_left, NULL, 0x64);
                         }
                         else
                         {
-                            SimpleDispSprt(&ssd_csr, LOAD_ADDRESS_45, 12, NULL, NULL, 0x64);
+                            SimpleDispSprt(&ssd_csr, LOAD_ADDRESS_46, 12, NULL, NULL, 0x64);
                         }
                     }
                 }
 
                 if (evdl_dat[no].order[i] == 1)
                 {
-                    SimpleDispSprtRGB(&ssd, LOAD_ADDRESS_45, 11, &spev03_dol_left, NULL, 0x64, ssd_tmp_col, ssd_tmp_col, ssd_tmp_col);
+                    SimpleDispSprtRGB(&ssd, LOAD_ADDRESS_46, 11, &spev03_dol_left, NULL, 0x64, ssd_tmp_col, ssd_tmp_col, ssd_tmp_col);
                 }
                 else
                 {
-                    SimpleDispSprtRGB(&ssd, LOAD_ADDRESS_45, 11, NULL, NULL, 0x64, ssd_tmp_col, ssd_tmp_col, ssd_tmp_col);
+                    SimpleDispSprtRGB(&ssd, LOAD_ADDRESS_46, 11, NULL, NULL, 0x64, ssd_tmp_col, ssd_tmp_col, ssd_tmp_col);
                 }
             }
         }
@@ -4282,17 +4282,17 @@ void SpecialEventDisp003(int no)
     }
 
 #if defined(BUILD_JP_VERSION)
-    SimpleDispSprt(&spev03_sp_cap[0], LOAD_ADDRESS_45, 11, NULL, NULL, 0x64);
+    SimpleDispSprt(&spev03_sp_cap[0], LOAD_ADDRESS_46, 11, NULL, NULL, 0x64);
 #elif defined(BUILD_US_VERSION)
-    SimpleDispSprt(&spev03_sp_cap[0], LOAD_ADDRESS_45, 11, NULL, NULL, 0x64);
+    SimpleDispSprt(&spev03_sp_cap[0], LOAD_ADDRESS_46, 11, NULL, NULL, 0x64);
 
     DrawButtonTex(0xa000, 3, spev04_cbt_pos[0][0] - 6, spev04_cbt_pos[0][1], 0x80);
     DrawButtonTex(0xa000, 1, spev04_cbt_pos[1][0] - 6, spev04_cbt_pos[1][1], 0x80);
 #elif defined(BUILD_EU_VERSION)
-    SimpleDispSprt(&spev03_sp_cap[0], LOAD_ADDRESS_45, 11, NULL, NULL, 0x64);
-    SimpleDispSprt(&spev03_sp_cap[1], LOAD_ADDRESS_45, 11, NULL, NULL, 0x64);
-    SimpleDispSprt(&spev03_sp_cap[2], LOAD_ADDRESS_45, 11, NULL, NULL, 0x64);
-    SimpleDispSprt(&spev03_sp_cap[3], LOAD_ADDRESS_45, 11, NULL, NULL, 0x64);
+    SimpleDispSprt(&spev03_sp_cap[0], LOAD_ADDRESS_46, 11, NULL, NULL, 0x64);
+    SimpleDispSprt(&spev03_sp_cap[1], LOAD_ADDRESS_46, 11, NULL, NULL, 0x64);
+    SimpleDispSprt(&spev03_sp_cap[2], LOAD_ADDRESS_46, 11, NULL, NULL, 0x64);
+    SimpleDispSprt(&spev03_sp_cap[3], LOAD_ADDRESS_46, 11, NULL, NULL, 0x64);
 
     DrawButtonTex(0xa000, 3, spev03_cbt_pos[0][0], spev03_cbt_pos[0][1], 0x80);
     DrawButtonTex(0xa000, 1, spev03_cbt_pos[1][0], spev03_cbt_pos[1][1], 0x80);
@@ -4314,7 +4314,7 @@ void ButsuzoPzlInit()
     }
     else
     {
-        VER_LOAD_REQ_LANG(EVTEX04_PK2, LOAD_ADDRESS_45);
+        VER_LOAD_REQ_LANG(EVTEX04_PK2, LOAD_ADDRESS_46);
 
         pzl_load_id = -1;
 
@@ -4352,9 +4352,9 @@ void ButsuzoPzlMain()
     switch(spev_wrk.mode)
     {
     case BTZ_PZL_MODE_DEADWAIT:
-        VER_LOAD_REQ_LANG(EVTEX04_PK2, LOAD_ADDRESS_45);
+        VER_LOAD_REQ_LANG(EVTEX04_PK2, LOAD_ADDRESS_46);
 
-        SeFileLoadAndSet(SP003_BUTUDAN_BD, 2);
+        SeFileLoadAndSet(SP003_BUTUDAN_BD, SE_ADDRNO_VOICE);
 
         pzl_load_id = -1;
 
@@ -4370,13 +4370,13 @@ void ButsuzoPzlMain()
         {
             if (IsLoadEndAll() != 0)
             {
-                SetSprFile(LOAD_ADDRESS_45);
+                SetSprFile(LOAD_ADDRESS_46);
 
                 spev_wrk.mode = BTZ_PZL_MODE_SELOAD;
 
                 ingame_wrk.stts |= 0x20;
 
-                pzl_load_id = SeFileLoadAndSet(SP003_BUTUDAN_BD, 2);
+                pzl_load_id = SeFileLoadAndSet(SP003_BUTUDAN_BD, SE_ADDRNO_VOICE);
             }
         }
     break;
@@ -4800,7 +4800,7 @@ void ButsuzoPzlMain()
     case BTZ_PZL_MODE_END:
         if (pzl_load_id == -1)
         {
-            pzl_load_id = SeFileLoadAndSet(SV000_MIKU_BD, 2);
+            pzl_load_id = SeFileLoadAndSet(SV000_MIKU_BD, SE_ADDRNO_VOICE);
 
             break;
         }
@@ -4873,33 +4873,33 @@ void SpecialEventDisp004()
         .alpha = 0x3c,
     };
 
-    SetSprFile(LOAD_ADDRESS_45);
+    SetSprFile(LOAD_ADDRESS_46);
 
     for (i = 0; i < 3; i++)
     {
-        SimpleDispSprt(&spev04_sp_bk0[i], LOAD_ADDRESS_45, i, NULL, NULL, 0x64);
+        SimpleDispSprt(&spev04_sp_bk0[i], LOAD_ADDRESS_46, i, NULL, NULL, 0x64);
     }
 
     for (i = 0; i < 3; i++)
     {
-        SimpleDispSprt(&spev04_sp_bk1[i], LOAD_ADDRESS_45, 3, NULL, NULL, 0x64);
+        SimpleDispSprt(&spev04_sp_bk1[i], LOAD_ADDRESS_46, 3, NULL, NULL, 0x64);
     }
 
     for (i = 0; i < 3; i++)
     {
-        SimpleDispSprt(&spev04_sp_bk2[i], LOAD_ADDRESS_45, 4, NULL, NULL, 0x64);
+        SimpleDispSprt(&spev04_sp_bk2[i], LOAD_ADDRESS_46, 4, NULL, NULL, 0x64);
     }
 
     for (i = 0; i < 3; i++)
     {
-        SimpleDispSprt(&spev04_sp_bk3[i], LOAD_ADDRESS_45, i + 5, NULL, NULL, 0x64);
+        SimpleDispSprt(&spev04_sp_bk3[i], LOAD_ADDRESS_46, i + 5, NULL, NULL, 0x64);
     }
 
     for (i = 0; i < 5; i++)
     {
         if (evbtz_dat[i].use_flg == 0)
         {
-            SimpleDispSprt(&spev04_sp_bd1[i], LOAD_ADDRESS_45, 8, NULL, &spev04_bd1_scl[i], 0x64);
+            SimpleDispSprt(&spev04_sp_bd1[i], LOAD_ADDRESS_46, 8, NULL, &spev04_bd1_scl[i], 0x64);
         }
         else
         {
@@ -4921,49 +4921,49 @@ void SpecialEventDisp004()
                 ssd.pri = 95;
             }
 
-            SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 8, NULL, &spev04_bz2_scl[evbtz_dat[i].set_place], 0x64);
+            SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 8, NULL, &spev04_bz2_scl[evbtz_dat[i].set_place], 0x64);
         }
     }
 
     SimpleDispSprtDatCopy(&spev04_sp_bld[6], &ssd);
     ssd.alp = BldAlpRetern(evbld_dat.t_counter, evbld_dat.bld_apr[6], evbld_dat.bld_end[6], spev04_sp_bld[6].alp);
-    SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 8, NULL, NULL, 0x64);
+    SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 8, NULL, NULL, 0x64);
 
     SimpleDispSprtDatCopy(&spev04_sp_bld[5], &ssd);
     ssd.alp = BldAlpRetern(evbld_dat.t_counter, evbld_dat.bld_apr[5], evbld_dat.bld_end[5], spev04_sp_bld[5].alp);
-    SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 8, &spev03_dol_left, NULL, 0x64);
+    SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 8, &spev03_dol_left, NULL, 0x64);
 
     SimpleDispSprtDatCopy(&spev04_sp_bld[4], &ssd);
     ssd.alp = BldAlpRetern(evbld_dat.t_counter, evbld_dat.bld_apr[4], evbld_dat.bld_end[4], spev04_sp_bld[4].alp);
-    SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 8, NULL, NULL, 0x64);
+    SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 8, NULL, NULL, 0x64);
 
     SimpleDispSprtDatCopy(&spev04_sp_bld[3], &ssd);
     ssd.alp = BldAlpRetern(evbld_dat.t_counter, evbld_dat.bld_apr[3], evbld_dat.bld_end[3], spev04_sp_bld[3].alp);
-    SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 8, &spev03_dol_left, NULL, 0x64);
+    SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 8, &spev03_dol_left, NULL, 0x64);
 
     SimpleDispSprtDatCopy(&spev04_sp_bld[2], &ssd);
     ssd.alp = BldAlpRetern(evbld_dat.t_counter, evbld_dat.bld_apr[2], evbld_dat.bld_end[2], spev04_sp_bld[2].alp);
-    SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 8, &spev03_dol_left, NULL, 0x64);
+    SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 8, &spev03_dol_left, NULL, 0x64);
 
     SimpleDispSprtDatCopy(&spev04_sp_bld[1], &ssd);
     ssd.alp = BldAlpRetern(evbld_dat.t_counter, evbld_dat.bld_apr[1], evbld_dat.bld_end[1], spev04_sp_bld[1].alp);
-    SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 8, NULL, NULL, 0x64);
+    SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 8, NULL, NULL, 0x64);
 
     SimpleDispSprtDatCopy(&spev04_sp_bld[0], &ssd);
     ssd.alp = BldAlpRetern(evbld_dat.t_counter, evbld_dat.bld_apr[0], evbld_dat.bld_end[0], spev04_sp_bld[0].alp);
-    SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 8, NULL, NULL, 0x64);
+    SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 8, NULL, NULL, 0x64);
 
     SimpleDispSprtDatCopy(&spev04_sp_bld[7], &ssd);
     ssd.alp = BldAlpRetern(evbld_dat.t_counter, evbld_dat.bld_apr[7], evbld_dat.bld_end[7], spev04_sp_bld[7].alp);
-    SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 8, NULL, NULL, 0x64);
+    SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 8, NULL, NULL, 0x64);
 
     SimpleDispSprtDatCopy(&spev04_sp_bld[8], &ssd);
     ssd.alp = BldAlpRetern(evbld_dat.t_counter, evbld_dat.bld_apr[8], evbld_dat.bld_end[8], spev04_sp_bld[8].alp);
-    SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 8, NULL, NULL, 0x64);
+    SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 8, NULL, NULL, 0x64);
 
     SimpleDispSprtDatCopy(&spev04_sp_bld[9], &ssd);
     ssd.alp = BldAlpRetern(evbld_dat.t_counter, evbld_dat.bld_apr[9], evbld_dat.bld_end[9], spev04_sp_bld[9].alp);
-    SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 8, NULL, NULL, 0x64);
+    SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 8, NULL, NULL, 0x64);
 
     if (spev_wrk.mode == BTZ_PZL_MODE_SLCT)
     {
@@ -4981,13 +4981,13 @@ void SpecialEventDisp004()
 
         if (spev_wrk.csr[1] < 12)
         {
-            SimpleDispSprt(&ssd3, LOAD_ADDRESS_45, 8, NULL, &spev04_sel_scl2[spev_wrk.csr[1] >> 1], 0x64);
-            SimpleDispSprt(&ssd4, LOAD_ADDRESS_45, 8, NULL, &spev04_sel_scl2[spev_wrk.csr[1] >> 1], 0x64);
+            SimpleDispSprt(&ssd3, LOAD_ADDRESS_46, 8, NULL, &spev04_sel_scl2[spev_wrk.csr[1] >> 1], 0x64);
+            SimpleDispSprt(&ssd4, LOAD_ADDRESS_46, 8, NULL, &spev04_sel_scl2[spev_wrk.csr[1] >> 1], 0x64);
         }
         else
         {
-            SimpleDispSprt(&ssd3, LOAD_ADDRESS_45, 8, &spev03_dol_left, &spev04_sel_scl2[spev_wrk.csr[1] >> 1], 0x64);
-            SimpleDispSprt(&ssd4, LOAD_ADDRESS_45, 8, &spev03_dol_left, &spev04_sel_scl2[spev_wrk.csr[1] >> 1], 0x64);
+            SimpleDispSprt(&ssd3, LOAD_ADDRESS_46, 8, &spev03_dol_left, &spev04_sel_scl2[spev_wrk.csr[1] >> 1], 0x64);
+            SimpleDispSprt(&ssd4, LOAD_ADDRESS_46, 8, &spev03_dol_left, &spev04_sel_scl2[spev_wrk.csr[1] >> 1], 0x64);
         }
     }
 
@@ -5008,7 +5008,7 @@ void SpecialEventDisp004()
             ssd.alp = 0;
         }
 
-        SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 8, NULL, NULL, 0x64);
+        SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 8, NULL, NULL, 0x64);
     }
 
     SimpleDispSprtDatCopy(&spev04_sp_bd1[spev_wrk.csr[0]], &ssd);
@@ -5017,11 +5017,11 @@ void SpecialEventDisp004()
     ssd.y = 28;
     ssd.pri = 20;
 
-    SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 8, NULL, NULL, 0x64);
+    SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 8, NULL, NULL, 0x64);
 
     for (i = 0; i < 3; i++)
     {
-        SimpleDispSprt(&spev04_sp_bd2[i], LOAD_ADDRESS_45, 9, NULL, NULL, 0x64);
+        SimpleDispSprt(&spev04_sp_bd2[i], LOAD_ADDRESS_46, 9, NULL, NULL, 0x64);
     }
 
     SimpleDispSprtDatCopy(&spev04_sp_cpt[0], &ssd);
@@ -5032,7 +5032,7 @@ void SpecialEventDisp004()
     ssd.x += 12;
 #endif
 
-    SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 10, NULL, NULL, 0x64);
+    SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 10, NULL, NULL, 0x64);
 
     SimpleDispSprtDatCopy(&spev04_sp_cap[0], &ssd);
 
@@ -5044,7 +5044,7 @@ void SpecialEventDisp004()
     ssd.y = 343;
 #endif
 
-    SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 11, NULL, NULL, 0x64);
+    SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 11, NULL, NULL, 0x64);
 
 #if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     if (spev_wrk.mode == BTZ_PZL_MODE_SLCT)
@@ -5070,7 +5070,7 @@ void SpecialEventDisp004()
         SimpleDispSprtDatCopy(&spev04_sp_cap[1], &ssd);
 #endif
 
-        SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 11, NULL, NULL, 0x64);
+        SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 11, NULL, NULL, 0x64);
 #if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     }
     else
@@ -5086,7 +5086,7 @@ void SpecialEventDisp004()
         SimpleDispSprtDatCopy(&spev04_sp_cap[4], &ssd);
 #endif
 
-        SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 11, NULL, NULL, 0x64);
+        SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 11, NULL, NULL, 0x64);
     }
 #endif
 
@@ -5103,7 +5103,7 @@ void SpecialEventDisp004()
         SimpleDispSprtDatCopy(&spev04_sp_cap[2], &ssd);
 #endif
 
-        SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 11, NULL, NULL, 0x64);
+        SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 11, NULL, NULL, 0x64);
     }
     else
     {
@@ -5125,7 +5125,7 @@ void SpecialEventDisp004()
         SimpleDispSprtDatCopy(&spev04_sp_cap[3], &ssd);
 #endif
 
-        SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 11, NULL, NULL, 0x64);
+        SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 11, NULL, NULL, 0x64);
     }
 
 #if defined(BUILD_JP_VERSION)
@@ -5309,7 +5309,7 @@ void SpecialEventDisp004()
 
 void ButsuzoMSGInit()
 {
-    VER_LOAD_REQ_LANG(EVTEX04_PK2, LOAD_ADDRESS_45);
+    VER_LOAD_REQ_LANG(EVTEX04_PK2, LOAD_ADDRESS_46);
 
     pzl_load_id = -1;
 
@@ -5334,7 +5334,7 @@ void ButsuzoMSGMain()
         {
             if (IsLoadEndAll() != 0)
             {
-                SetSprFile(LOAD_ADDRESS_45);
+                SetSprFile(LOAD_ADDRESS_46);
 
                 spev_wrk.mode = BTZ_PZL_MODE_SELOAD;
 
@@ -5342,7 +5342,7 @@ void ButsuzoMSGMain()
 
                 SetBlackIn();
 
-                pzl_load_id = SeFileLoadAndSet(ST000_ZOU_OKU_BD, 21);
+                pzl_load_id = SeFileLoadAndSet(ST000_ZOU_OKU_BD, SE_ADDRNO_WIDE);
             }
         }
     break;
@@ -5403,7 +5403,7 @@ void ButsuzoMSGMain()
     case BTZ_PZL_MODE_END:
         if (pzl_load_id == -1)
         {
-            pzl_load_id = SeFileLoadAndSet(SV000_MIKU_BD, 2);
+            pzl_load_id = SeFileLoadAndSet(SV000_MIKU_BD, SE_ADDRNO_VOICE);
         }
         else if (IsLoadEnd(pzl_load_id) != 0)
         {
@@ -5468,36 +5468,36 @@ void ButsuzoMSGDisp()
         .alpha = 0x3c,
     };
 
-    SetSprFile(LOAD_ADDRESS_45);
+    SetSprFile(LOAD_ADDRESS_46);
 
     for (i = 0; i < 3; i++)
     {
-        SimpleDispSprt(&spev04_sp_bk0[i], LOAD_ADDRESS_45, i, NULL, NULL, 0x64);
+        SimpleDispSprt(&spev04_sp_bk0[i], LOAD_ADDRESS_46, i, NULL, NULL, 0x64);
     }
 
     for (i = 0; i < 3; i++)
     {
-        SimpleDispSprt(&spev04_sp_bk1[i], LOAD_ADDRESS_45, 3, NULL, NULL, 0x64);
+        SimpleDispSprt(&spev04_sp_bk1[i], LOAD_ADDRESS_46, 3, NULL, NULL, 0x64);
     }
 
     for (i = 0; i < 3; i++)
     {
-        SimpleDispSprt(&spev04_sp_bk2[i], LOAD_ADDRESS_45, 4, NULL, NULL, 0x64);
+        SimpleDispSprt(&spev04_sp_bk2[i], LOAD_ADDRESS_46, 4, NULL, NULL, 0x64);
     }
 
     for (i = 0; i < 3; i++)
     {
-        SimpleDispSprt(&spev04_sp_bk3[i], LOAD_ADDRESS_45, i + 5, NULL, NULL, 0x64);
+        SimpleDispSprt(&spev04_sp_bk3[i], LOAD_ADDRESS_46, i + 5, NULL, NULL, 0x64);
     }
 
     for (i = 0; i < 3; i++)
     {
-        SimpleDispSprt(&spev04_sp_bd2[i], LOAD_ADDRESS_45, 9, NULL, NULL, 0x64);
+        SimpleDispSprt(&spev04_sp_bd2[i], LOAD_ADDRESS_46, 9, NULL, NULL, 0x64);
     }
 
     for (i = 0; i < 5; i++)
     {
-        SimpleDispSprt(&spev04_sp_bd1[i], LOAD_ADDRESS_45, 8, NULL, &spev04_bd1_scl[i], 0x64);
+        SimpleDispSprt(&spev04_sp_bd1[i], LOAD_ADDRESS_46, 8, NULL, &spev04_bd1_scl[i], 0x64);
     }
 
     DrawMessageBox(0x2000, 19.0f, 328.0f, 592.0f, 96.0f, butsuzo_alpha[1]);
@@ -5528,7 +5528,7 @@ void LightsOutInit()
     }
     else
     {
-        VER_LOAD_REQ_LANG(EVTEX20_PK2, LOAD_ADDRESS_45);
+        VER_LOAD_REQ_LANG(EVTEX20_PK2, LOAD_ADDRESS_46);
 
         spev_wrk.mode = CDL_PZL_MODE_READY;
         spev_wrk.time = 40;
@@ -5562,7 +5562,7 @@ void LightsOutMain()
     case CDL_PZL_MODE_DEADWAIT:
         if (spev_wrk.time == 0)
         {
-            VER_LOAD_REQ_LANG(EVTEX20_PK2, LOAD_ADDRESS_45);
+            VER_LOAD_REQ_LANG(EVTEX20_PK2, LOAD_ADDRESS_46);
 
             pzl_load_id = -1;
 
@@ -5583,13 +5583,13 @@ void LightsOutMain()
         {
             if (IsLoadEndAll() != 0)
             {
-                SetSprFile(LOAD_ADDRESS_45);
+                SetSprFile(LOAD_ADDRESS_46);
 
                 spev_wrk.mode = CDL_PZL_MODE_SELOAD;
 
                 ingame_wrk.stts |= 0x20;
 
-                pzl_load_id = SeFileLoadAndSet(SP004_ROUSOKU_BD, 2);
+                pzl_load_id = SeFileLoadAndSet(SP004_ROUSOKU_BD, SE_ADDRNO_VOICE);
             }
         }
     break;
@@ -5880,7 +5880,7 @@ void LightsOutMain()
     case CDL_PZL_MODE_END:
         if (pzl_load_id == -1)
         {
-            pzl_load_id = SeFileLoadAndSet(SV000_MIKU_BD, 2);
+            pzl_load_id = SeFileLoadAndSet(SV000_MIKU_BD, SE_ADDRNO_VOICE);
         }
         else if (IsLoadEnd(pzl_load_id) != 0)
         {
@@ -5921,7 +5921,7 @@ void SpecialEventDisp014(int no)
         .alpha = 0x80,
     };
 
-    SetSprFile(LOAD_ADDRESS_45);
+    SetSprFile(LOAD_ADDRESS_46);
 
     for (i = 0; i < 6; i++)
     {
@@ -6014,7 +6014,7 @@ void SpecialEventDisp014(int no)
 
     for (i = 0; i < 11; i++)
     {
-        SimpleDispSprt(&spev20_sp_bak[i], LOAD_ADDRESS_45, i, NULL, NULL, 0x64);
+        SimpleDispSprt(&spev20_sp_bak[i], LOAD_ADDRESS_46, i, NULL, NULL, 0x64);
     }
 
     for (i = 0; i < 6; i++)
@@ -6023,7 +6023,7 @@ void SpecialEventDisp014(int no)
 
         ssd.alp = evcdl_dat.flame_alpha[i];
 
-        SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 11, NULL, NULL, 0x64);
+        SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 11, NULL, NULL, 0x64);
     }
 
     for (i = 0; i < 6; i++)
@@ -6034,14 +6034,14 @@ void SpecialEventDisp014(int no)
 
             ssd.alp = spev_wrk.csr[1];
 
-            SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 12, NULL, NULL, 0x64);
+            SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 12, NULL, NULL, 0x64);
         }
     }
 
     for (i = 0; i < 6; i++)
     {
         SimpleDispSprtDatCopy(&spev20_sp_cdl[i], &ssd);
-        SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 11, NULL, NULL, 0x64);
+        SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 11, NULL, NULL, 0x64);
     }
 
     if (evcdl_dat.stflame_shape[0] != -1)
@@ -6055,7 +6055,7 @@ void SpecialEventDisp014(int no)
 
             ssd.alp = evcdl_dat.stflame_alpha[i];
 
-            SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 14, NULL, NULL, 0x64);
+            SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 14, NULL, NULL, 0x64);
         }
     }
 
@@ -6068,7 +6068,7 @@ void SpecialEventDisp014(int no)
 
         ssd.alp = evcdl_dat.flame_alpha[i];
 
-        SimpleDispSprt(&ssd, LOAD_ADDRESS_45, 13, NULL, NULL, 0x64);
+        SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 13, NULL, NULL, 0x64);
     }
 
     if (spev_wrk.mode == CDL_PZL_MODE_GOOD3)
@@ -6089,8 +6089,8 @@ void SpecialEventDisp014(int no)
         SetMessageV2(&ds);
     }
 
-    SimpleDispSprt(&spev20_sp_cpf[0], LOAD_ADDRESS_45, 11, NULL, NULL, 0x64);
-    SimpleDispSprt(&spev20_sp_cdl5[0], LOAD_ADDRESS_45, 15, NULL, NULL, 0x64);
+    SimpleDispSprt(&spev20_sp_cpf[0], LOAD_ADDRESS_46, 11, NULL, NULL, 0x64);
+    SimpleDispSprt(&spev20_sp_cdl5[0], LOAD_ADDRESS_46, 15, NULL, NULL, 0x64);
 
 #if defined(BUILD_JP_VERSION)
     DrawButtonTex(0xa000, 2, spev20_cbt_pos[0][0], spev20_cbt_pos[0][1], 0x64);
@@ -6235,22 +6235,22 @@ void FaceDoorMain(int face_no)
         {
             if (face_no == 0)
             {
-                LoadReq(TX_PZL_BG_KI_PK2, LOAD_ADDRESS_45);
+                LoadReq(TX_PZL_BG_KI_PK2, LOAD_ADDRESS_46);
             }
             else if (face_no == 1)
             {
-                LoadReq(TX_PZL_BG_DO_PK2, LOAD_ADDRESS_45);
+                LoadReq(TX_PZL_BG_DO_PK2, LOAD_ADDRESS_46);
             }
             else if (face_no == 2)
             {
-                LoadReq(TX_PZL_BG_AI_PK2, LOAD_ADDRESS_45);
+                LoadReq(TX_PZL_BG_AI_PK2, LOAD_ADDRESS_46);
             }
             else if (face_no == 3)
             {
-                LoadReq(TX_PZL_BG_RK_PK2, LOAD_ADDRESS_45);
+                LoadReq(TX_PZL_BG_RK_PK2, LOAD_ADDRESS_46);
             }
 
-            LoadReq(TX_PZL_MENZ_PK2, LOAD_ADDRESS_46);
+            LoadReq(TX_PZL_MENZ_PK2, LOAD_ADDRESS_47);
 
             spev_wrk.mode = OMN_PZL_MODE_READY;
         }
@@ -6264,13 +6264,13 @@ void FaceDoorMain(int face_no)
         {
             if (IsLoadEndAll() != 0)
             {
-                SetSprFile(LOAD_ADDRESS_45);
+                SetSprFile(LOAD_ADDRESS_46);
 
                 spev_wrk.mode = OMN_PZL_MODE_SELOAD;
 
                 ingame_wrk.stts |= 0x20;
 
-                pzl_load_id = SeFileLoadAndSet(ST001_MEN_KAKE_BD, 21);
+                pzl_load_id = SeFileLoadAndSet(ST001_MEN_KAKE_BD, SE_ADDRNO_WIDE);
             }
         }
     break;
@@ -6944,14 +6944,14 @@ void FaceDoorDisp(int face_no)
 
     spev_str.alpha = 0x80;
 
-    SetSprFile(LOAD_ADDRESS_45);
     SetSprFile(LOAD_ADDRESS_46);
+    SetSprFile(LOAD_ADDRESS_47);
 
     if (spev_wrk.mode != OMN_PZL_MODE_NONE && spev_wrk.mode != OMN_PZL_MODE_GETEND)
     {
         for (i = 0; i < 11; i++)
         {
-            SimpleDispSprt(&pzl_men_bg[i], LOAD_ADDRESS_45, i, NULL, NULL, 0x64);
+            SimpleDispSprt(&pzl_men_bg[i], LOAD_ADDRESS_46, i, NULL, NULL, 0x64);
         }
     }
 
@@ -6959,7 +6959,7 @@ void FaceDoorDisp(int face_no)
 
     ssd.alp = spev_wrk.csr[0];
 
-    SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 0, NULL, NULL, 0x64);
+    SimpleDispSprt(&ssd, LOAD_ADDRESS_47, 0, NULL, NULL, 0x64);
 
     if (face_no == 0)
     {
@@ -6967,7 +6967,7 @@ void FaceDoorDisp(int face_no)
 
         ssd.alp = spev_wrk.csr[1];
 
-        SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 1, NULL, NULL, 0x64);
+        SimpleDispSprt(&ssd, LOAD_ADDRESS_47, 1, NULL, NULL, 0x64);
     }
     else if (face_no == 1)
     {
@@ -6975,7 +6975,7 @@ void FaceDoorDisp(int face_no)
 
         ssd.alp = spev_wrk.csr[1];
 
-        SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 2, NULL, NULL, 0x64);
+        SimpleDispSprt(&ssd, LOAD_ADDRESS_47, 2, NULL, NULL, 0x64);
     }
     else if (face_no == 2)
     {
@@ -6983,7 +6983,7 @@ void FaceDoorDisp(int face_no)
 
         ssd.alp = spev_wrk.csr[1];
 
-        SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 3, NULL, NULL, 0x64);
+        SimpleDispSprt(&ssd, LOAD_ADDRESS_47, 3, NULL, NULL, 0x64);
     }
     else if (face_no == 3)
     {
@@ -6991,7 +6991,7 @@ void FaceDoorDisp(int face_no)
 
         ssd.alp = spev_wrk.csr[1];
 
-        SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 4, NULL, NULL, 0x64);
+        SimpleDispSprt(&ssd, LOAD_ADDRESS_47, 4, NULL, NULL, 0x64);
     }
 
     if (face_no == 0)
@@ -8171,8 +8171,8 @@ void SurpriseDoorMain()
         }
         else
         {
-            LoadReq(TX_PZL_BG_AI_PK2, LOAD_ADDRESS_45);
-            LoadReq(TX_PZL_MENZ_PK2, LOAD_ADDRESS_46);
+            LoadReq(TX_PZL_BG_AI_PK2, LOAD_ADDRESS_46);
+            LoadReq(TX_PZL_MENZ_PK2, LOAD_ADDRESS_47);
 
             spev_wrk.mode = OMN_PZL_MODE_READY;
         }
@@ -8186,14 +8186,14 @@ void SurpriseDoorMain()
         {
             if (IsLoadEndAll() != 0)
             {
-                SetSprFile(LOAD_ADDRESS_45);
                 SetSprFile(LOAD_ADDRESS_46);
+                SetSprFile(LOAD_ADDRESS_47);
 
                 spev_wrk.mode = OMN_PZL_MODE_SELOAD;
 
                 ingame_wrk.stts |= 0x20;
 
-                pzl_load_id = SeFileLoadAndSet(ST003_DBIG_AKANAI_BD, 21);
+                pzl_load_id = SeFileLoadAndSet(ST003_DBIG_AKANAI_BD, SE_ADDRNO_WIDE);
             }
         }
     break;
@@ -8329,21 +8329,21 @@ void SurpriseDoorDisp(int face_no)
         .alpha = 0x80,
     };
 
-    SetSprFile(LOAD_ADDRESS_45);
     SetSprFile(LOAD_ADDRESS_46);
+    SetSprFile(LOAD_ADDRESS_47);
 
     spev_str.alpha = 0x80;
 
     for (i = 0 ; i < 11; i++)
     {
-        SimpleDispSprt(&pzl_men_bg[i], LOAD_ADDRESS_45, i, NULL, NULL, 0x64);
+        SimpleDispSprt(&pzl_men_bg[i], LOAD_ADDRESS_46, i, NULL, NULL, 0x64);
     }
 
     SimpleDispSprtDatCopy(&spev21_sp_menz[5], &ssd);
 
     ssd.alp = spev_wrk.csr[1];
 
-    SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 5, NULL, NULL, 0x64);
+    SimpleDispSprt(&ssd, LOAD_ADDRESS_47, 5, NULL, NULL, 0x64);
 
     if (spev_wrk.mode == OMN_PZL_MODE_SIMENOK)
     {
@@ -8395,7 +8395,7 @@ void SimenPillarInit(int event_no)
 
     SpevWrkInit();
 
-    pzl_load_id = SeFileLoadAndSet(ST001_MEN_KAKE_BD, 21);
+    pzl_load_id = SeFileLoadAndSet(ST001_MEN_KAKE_BD, SE_ADDRNO_WIDE);
 
     spev_wrk.csr[1] = 0x80;
     spev_wrk.mode = OMN_PZL_MODE_NONE;
@@ -8412,8 +8412,8 @@ void SimenPillarMain(int event_no)
     switch(spev_wrk.mode)
     {
     case OMN_PZL_MODE_UNREADY:
-        LoadReq(TX_PZL_BG_AI_PK2, LOAD_ADDRESS_45);
-        LoadReq(TX_PZL_MENZ_PK2, LOAD_ADDRESS_46);
+        LoadReq(TX_PZL_BG_AI_PK2, LOAD_ADDRESS_46);
+        LoadReq(TX_PZL_MENZ_PK2, LOAD_ADDRESS_47);
 
         spev_wrk.mode = OMN_PZL_MODE_READY;
         spev_wrk.time = 40;
@@ -8432,8 +8432,8 @@ void SimenPillarMain(int event_no)
                 return;
             }
 
-            SetSprFile(LOAD_ADDRESS_45);
             SetSprFile(LOAD_ADDRESS_46);
+            SetSprFile(LOAD_ADDRESS_47);
 
             ingame_wrk.stts |= 0x20;
 
@@ -8896,18 +8896,18 @@ void SimenPillarDisp()
 
     if (spev_wrk.mode == OMN_PZL_MODE_IN || spev_wrk.mode == OMN_PZL_MODE_SIMENOK || spev_wrk.mode == OMN_PZL_MODE_UNSIMEN || spev_wrk.mode == OMN_PZL_MODE_OUT)
     {
-        SetSprFile(LOAD_ADDRESS_45);
+        SetSprFile(LOAD_ADDRESS_46);
 
         for (i = 0; i < 11; i++)
         {
-            SimpleDispSprt(&pzl_men_bg[i], LOAD_ADDRESS_45, i, NULL, NULL, 0x64);
+            SimpleDispSprt(&pzl_men_bg[i], LOAD_ADDRESS_46, i, NULL, NULL, 0x64);
         }
 
         SimpleDispSprtDatCopy(&spev21_sp_menz[5], &ssd);
 
         ssd.alp = spev_wrk.csr[1];
 
-        SimpleDispSprt(&ssd, LOAD_ADDRESS_46, 5, NULL, NULL, 0x64);
+        SimpleDispSprt(&ssd, LOAD_ADDRESS_47, 5, NULL, NULL, 0x64);
     }
 
     if (alpha_keep <= 0x76 && spev_wrk.mode != OMN_PZL_MODE_MSGEND)
@@ -10028,7 +10028,7 @@ void ZushiBonjiInit(int bonji_no)
     else
     {
 
-        VER_LOAD_REQ_LANG(EVTEX_ZUSI_PK2, LOAD_ADDRESS_45);
+        VER_LOAD_REQ_LANG(EVTEX_ZUSI_PK2, LOAD_ADDRESS_46);
 
         pzl_load_id = -1;
 
@@ -10076,7 +10076,7 @@ void ZushiBonjiMain(int bonji_no)
         }
         else
         {
-            VER_LOAD_REQ_LANG(EVTEX_ZUSI_PK2, LOAD_ADDRESS_45);
+            VER_LOAD_REQ_LANG(EVTEX_ZUSI_PK2, LOAD_ADDRESS_46);
 
             pzl_load_id = -1;
 
@@ -10093,13 +10093,13 @@ void ZushiBonjiMain(int bonji_no)
         {
             if (IsLoadEndAll() != 0)
             {
-                SetSprFile(LOAD_ADDRESS_45);
+                SetSprFile(LOAD_ADDRESS_46);
 
                 spev_wrk.mode = ZSI_PZL_MODE_SELOAD;
 
                 ingame_wrk.stts |= 0x20;
 
-                pzl_load_id = SeFileLoadAndSet(SP005_BONJI_BD, 2);
+                pzl_load_id = SeFileLoadAndSet(SP005_BONJI_BD, SE_ADDRNO_VOICE);
             }
         }
     break;
@@ -10261,7 +10261,7 @@ void ZushiBonjiMain(int bonji_no)
         {
             if (pzl_load_id == -1)
             {
-                pzl_load_id = SeFileLoadAndSet(SV000_MIKU_BD, 2);
+                pzl_load_id = SeFileLoadAndSet(SV000_MIKU_BD, SE_ADDRNO_VOICE);
             }
             else
             {
@@ -10285,7 +10285,7 @@ void ZushiBonjiMain(int bonji_no)
         {
             if (pzl_load_id == -1)
             {
-                pzl_load_id = SeFileLoadAndSet(SV000_MIKU_BD, 2);
+                pzl_load_id = SeFileLoadAndSet(SV000_MIKU_BD, SE_ADDRNO_VOICE);
             }
             else
             {
@@ -10396,11 +10396,11 @@ void ZushiBonjiDisp(int bonji_no)
 
     menu_sq0.alpha = zushi_alpha[1];
 
-    SetSprFile(LOAD_ADDRESS_45);
+    SetSprFile(LOAD_ADDRESS_46);
 
     for (i = 0; i < 11; i++)
     {
-        SimpleDispSprtLNR(&spev21_sp_bak[i], LOAD_ADDRESS_45, i, NULL, NULL, 0x64, 0);
+        SimpleDispSprtLNR(&spev21_sp_bak[i], LOAD_ADDRESS_46, i, NULL, NULL, 0x64, 0);
     }
 
     if (spev_wrk.mode == ZSI_PZL_MODE_PUSH || spev_wrk.mode == ZSI_PZL_MODE_MSG2 || spev_wrk.mode == ZSI_PZL_MODE_GOOD || spev_wrk.mode == ZSI_PZL_MODE_GOUT)
@@ -10409,7 +10409,7 @@ void ZushiBonjiDisp(int bonji_no)
         {
             if (i == spev_wrk.csr[0])
             {
-                SimpleDispSprtLNR(&spev21_sp_zbt[i], LOAD_ADDRESS_45, i + 13, NULL, NULL, 0x64, 1);
+                SimpleDispSprtLNR(&spev21_sp_zbt[i], LOAD_ADDRESS_46, i + 13, NULL, NULL, 0x64, 1);
             }
         }
     }
@@ -10422,7 +10422,7 @@ void ZushiBonjiDisp(int bonji_no)
 
             ssd.alp = zushi_alpha[0];
 
-            SimpleDispSprtLNR(&ssd, LOAD_ADDRESS_45, 12, NULL, NULL, 0x64, 0);
+            SimpleDispSprtLNR(&ssd, LOAD_ADDRESS_46, 12, NULL, NULL, 0x64, 0);
         }
     }
 
@@ -10433,11 +10433,11 @@ void ZushiBonjiDisp(int bonji_no)
             i == spev_wrk.csr[0]
         )
         {
-            SimpleDispSprtLNR(&spev21_sp_zft[i+4], LOAD_ADDRESS_45, 11, NULL, NULL, 0x64, 0);
+            SimpleDispSprtLNR(&spev21_sp_zft[i+4], LOAD_ADDRESS_46, 11, NULL, NULL, 0x64, 0);
         }
         else
         {
-            SimpleDispSprtLNR(&spev21_sp_zft[i], LOAD_ADDRESS_45, 11, NULL, NULL, 0x64, 0);
+            SimpleDispSprtLNR(&spev21_sp_zft[i], LOAD_ADDRESS_46, 11, NULL, NULL, 0x64, 0);
         }
     }
 
@@ -10490,10 +10490,10 @@ void ZushiBonjiDisp(int bonji_no)
 
     for (i = 0; i < 1; i++)
     {
-        SimpleDispSprtLNR(&spev21_sp_cpf[i], LOAD_ADDRESS_45, 17, NULL, NULL, 0x64, 0);
+        SimpleDispSprtLNR(&spev21_sp_cpf[i], LOAD_ADDRESS_46, 17, NULL, NULL, 0x64, 0);
     }
 
-    SimpleDispSprtLNR(spev21_sp_cap, LOAD_ADDRESS_45, 18, NULL, NULL, 0x64, 0);
+    SimpleDispSprtLNR(spev21_sp_cap, LOAD_ADDRESS_46, 18, NULL, NULL, 0x64, 0);
 
 #if defined(BUILD_JP_VERSION)
     DrawButtonTex(0xa000, 2, spev21_sp_cap[1].x, spev21_sp_cap[1].y, 0x64);
@@ -10506,7 +10506,7 @@ void ZushiBonjiDisp(int bonji_no)
 
 void ZushiBonjiMSGInit()
 {
-    VER_LOAD_REQ_LANG(EVTEX_ZUSI_PK2, LOAD_ADDRESS_45);
+    VER_LOAD_REQ_LANG(EVTEX_ZUSI_PK2, LOAD_ADDRESS_46);
 
     spev_wrk.mode = ZSI_PZL_MODE_READY;
     spev_wrk.time = 40;
@@ -10530,7 +10530,7 @@ void ZushiBonjiMSGMain()
         {
             if (IsLoadEndAll() != 0)
             {
-                SetSprFile(LOAD_ADDRESS_45);
+                SetSprFile(LOAD_ADDRESS_46);
 
                 spev_wrk.mode = ZSI_PZL_MODE_IN;
                 spev_wrk.time = 40;
@@ -10650,16 +10650,16 @@ void ZushiBonjiMSGDisp()
 
     menu_sq0.alpha = zushi_alpha[1];
 
-    SetSprFile(LOAD_ADDRESS_45);
+    SetSprFile(LOAD_ADDRESS_46);
 
     for (i = 0; i < 11; i++)
     {
-        SimpleDispSprtLNR(&spev21_sp_bak[i], LOAD_ADDRESS_45, i, NULL, NULL, 0x64, 0);
+        SimpleDispSprtLNR(&spev21_sp_bak[i], LOAD_ADDRESS_46, i, NULL, NULL, 0x64, 0);
     }
 
     for (i = 0; i < 4; i++)
     {
-        SimpleDispSprtLNR(&spev21_sp_zft[i], LOAD_ADDRESS_45, 11, NULL, NULL, 0x64, 0);
+        SimpleDispSprtLNR(&spev21_sp_zft[i], LOAD_ADDRESS_46, 11, NULL, NULL, 0x64, 0);
     }
 
     CopySqrDToSqr(&dsq, &menu_sq0);
@@ -10685,7 +10685,7 @@ void ZushiBonjiMSGDisp()
 
 void ZushiBonjiAfterInit(int bonji_no)
 {
-    VER_LOAD_REQ_LANG(EVTEX_ZUSI_PK2, LOAD_ADDRESS_45);
+    VER_LOAD_REQ_LANG(EVTEX_ZUSI_PK2, LOAD_ADDRESS_46);
 
     spev_wrk.mode = ZSI_PZL_MODE_READY;
     spev_wrk.time = 40;
@@ -10725,7 +10725,7 @@ void ZushiBonjiAfterMain(int bonji_no)
         {
             if (IsLoadEndAll() != 0)
             {
-                SetSprFile(LOAD_ADDRESS_45);
+                SetSprFile(LOAD_ADDRESS_46);
 
                 spev_wrk.mode = ZSI_PZL_MODE_IN;
                 spev_wrk.time = 40;
@@ -10833,23 +10833,23 @@ void ZushiBonjiAfterDisp(int bonji_no)
 
     menu_sq0.alpha = zushi_alpha[1];
 
-    SetSprFile(LOAD_ADDRESS_45);
+    SetSprFile(LOAD_ADDRESS_46);
 
     for (i = 0; i < 11; i++)
     {
-        SimpleDispSprtLNR(&spev21_sp_bak[i], LOAD_ADDRESS_45, i, NULL, NULL, 0x64, 0);
+        SimpleDispSprtLNR(&spev21_sp_bak[i], LOAD_ADDRESS_46, i, NULL, NULL, 0x64, 0);
     }
 
     for (i = 0; i < 4; i++)
     {
         if (i == spev_wrk.csr[1])
         {
-            SimpleDispSprtLNR(&spev21_sp_zbt[i], LOAD_ADDRESS_45, i + 13, NULL, NULL, 0x64, 0);
-            SimpleDispSprtLNR(&spev21_sp_zft[i+4], LOAD_ADDRESS_45, 11, NULL, NULL, 0x64, 0);
+            SimpleDispSprtLNR(&spev21_sp_zbt[i], LOAD_ADDRESS_46, i + 13, NULL, NULL, 0x64, 0);
+            SimpleDispSprtLNR(&spev21_sp_zft[i+4], LOAD_ADDRESS_46, 11, NULL, NULL, 0x64, 0);
         }
         else
         {
-            SimpleDispSprtLNR(&spev21_sp_zft[i], LOAD_ADDRESS_45, 11, NULL, NULL, 0x64, 0);
+            SimpleDispSprtLNR(&spev21_sp_zft[i], LOAD_ADDRESS_46, 11, NULL, NULL, 0x64, 0);
         }
     }
 
@@ -11661,11 +11661,11 @@ void ItemEventInit(int event_no)
 
     if (event_no == SPEV78_USE_IKARI)
     {
-        pzl_load_id = SeFileLoadAndSet(ST001_MEN_KAKE_BD, 21);
+        pzl_load_id = SeFileLoadAndSet(ST001_MEN_KAKE_BD, SE_ADDRNO_WIDE);
     }
     else
     {
-        pzl_load_id = SeFileLoadAndSet(ST011_NAWA_KAKE_BD, 21);
+        pzl_load_id = SeFileLoadAndSet(ST011_NAWA_KAKE_BD, SE_ADDRNO_WIDE);
     }
 
     spev_wrk.mode = ITM_PZL_MODE_READY;
@@ -12169,7 +12169,7 @@ void NawakakeFalseDisp()
     {
         DrawMessageBox(0x2000, 19.0f, 328.0f, 592.0f, 96.0f, spev_wrk.time);
 
-        spev_str.str = (u_char *)GetIngameMSGAddr(0x7, spev_wrk.csr[1]);
+        spev_str.str = (u_char *)GetIngameMSGAddr(IGMSG_SPEV_MSG, spev_wrk.csr[1]);
 
         spev_str.pos_x = 50;
 #if defined(BUILD_JP_VERSION) || defined(BUILD_US_VERSION)

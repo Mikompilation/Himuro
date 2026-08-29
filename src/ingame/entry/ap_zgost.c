@@ -46,7 +46,7 @@ int ZeroHourAppearMain()
 
             ZeroHourDataBackUp();
 
-            LoadReq(M040_MAGATOKI_MDL, LOAD_ADDRESS_12);
+            LoadReq(M040_MAGATOKI_MDL, LOAD_ADDRESS_13);
             LoadReq(M040_MAGATOKI_ANM, LOAD_ADDRESS_06);
 
             LoadEneDmgTex(40, (u_int *)LOAD_ADDRESS_07);
@@ -66,7 +66,7 @@ int ZeroHourAppearMain()
     case ZH_READY:
         if (IsLoadEndAll() != 0)
         {
-            motInitEnemyMdl((u_int *)LOAD_ADDRESS_12, M040_MAGATOKI);
+            motInitEnemyMdl((u_int *)LOAD_ADDRESS_13, M040_MAGATOKI);
             motInitEnemyAnm((u_int *)LOAD_ADDRESS_06, M040_MAGATOKI, A040_MAGATOKI);
 
             ap_wrk.zh_mode = ZH_READY2;
@@ -201,11 +201,11 @@ void ZeroHourDataBackUp()
         {
             if (mld->file_type == FILE_TYPE_ENE_MDL)
             {
-                if (mld->addr == LOAD_ADDRESS_12)
+                if (mld->addr == LOAD_ADDRESS_13)
                 {
                     zh_wrk.zh_mdl_bak[0] = mld->file_no - M000_MIKU_MDL;
                 }
-                else if (mld->addr == LOAD_ADDRESS_14)
+                else if (mld->addr == LOAD_ADDRESS_15)
                 {
                     zh_wrk.zh_mdl_bak[1] = mld->file_no - M000_MIKU_MDL;
                 }
@@ -251,12 +251,12 @@ void ZeroHourEnemyReLoad()
 {
     if (zh_wrk.zh_mdl_bak[0] != 0xff)
     {
-        LoadReq(M000_MIKU_MDL + zh_wrk.zh_mdl_bak[0], LOAD_ADDRESS_12);
+        LoadReq(M000_MIKU_MDL + zh_wrk.zh_mdl_bak[0], LOAD_ADDRESS_13);
     }
 
     if (zh_wrk.zh_mdl_bak[1] != 0xff)
     {
-        LoadReq(M000_MIKU_MDL + zh_wrk.zh_mdl_bak[1], LOAD_ADDRESS_14);
+        LoadReq(M000_MIKU_MDL + zh_wrk.zh_mdl_bak[1], LOAD_ADDRESS_15);
     }
 
     if (zh_wrk.zh_mot_bak[0] != 0xff)
@@ -268,7 +268,7 @@ void ZeroHourEnemyReLoad()
     if (zh_wrk.zh_mot_bak[1] != 0xff)
     {
         LoadReq(M000_MIKU_ANM + zh_wrk.zh_mot_bak[1], LOAD_ADDRESS_08);
-        LoadEneDmgTex((u_int)zh_wrk.zh_mdl_bak[1], (u_int *)LOAD_ADDRESS_09);
+        LoadEneDmgTex((u_int)zh_wrk.zh_mdl_bak[1], (u_int *)LOAD_ADDRESS_10);
     }
 }
 
@@ -276,12 +276,12 @@ void ZeroHourEnemyReLoadAfter()
 {
     if (zh_wrk.zh_mdl_bak[0] != 0xff)
     {
-        motInitEnemyMdl((u_int *)LOAD_ADDRESS_12, zh_wrk.zh_mdl_bak[0]);
+        motInitEnemyMdl((u_int *)LOAD_ADDRESS_13, zh_wrk.zh_mdl_bak[0]);
     }
 
     if (zh_wrk.zh_mdl_bak[1] != 0xff)
     {
-        motInitEnemyMdl((u_int *)LOAD_ADDRESS_14, zh_wrk.zh_mdl_bak[1]);
+        motInitEnemyMdl((u_int *)LOAD_ADDRESS_15, zh_wrk.zh_mdl_bak[1]);
     }
 
     if (zh_wrk.zh_mot_bak[0] != 0xff)

@@ -129,7 +129,7 @@ static void DmaTransReq()
 {
     sceSifDmaData dma;
 
-    dma.data = LOAD_ADDRESS_26;
+    dma.data = LOAD_ADDRESS_27;
     dma.addr = rcv_stat.cdvd.ld_addr;
     dma.size = st_ctrl.size;
     dma.mode = 0;
@@ -149,7 +149,7 @@ static u_char ChkDmaTransEndSe()
 
 static void TransReqIopCmd()
 {
-    SetIopCmdSm(IC_CDVD_SE_TRANS, st_ctrl.size, st_ctrl.trans_pos + 0x10, st_ctrl.file_no);
+    SetIopCmdSm(IC_CDVD_SE_TRANS, st_ctrl.size, st_ctrl.trans_pos + SE_ADDRNO_GHOST0, st_ctrl.file_no);
 }
 
 static u_char TransWaitIopCmd()

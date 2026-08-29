@@ -1,5 +1,6 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "enums.h"
 #include "common.h"
 
@@ -63,11 +64,9 @@ const u_char floor_exist[5][4] = {
 #define PI 3.1415927f
 #define RAD2DEG(x) ((float)(x)*180.0f/PI)
 
-#define BASE_ADDRESS 0x7f8000
-
 int MissonMapDataLoad(u_char msn_no)
 {
-    return LoadReq(MSN01MAP_OBJ, BASE_ADDRESS);
+    return LoadReq(MSN01MAP_OBJ, LOAD_ADDRESS_02);
 }
 
 void InitMapStatus(u_char msn_no)
@@ -136,9 +135,9 @@ void MapFloorChange(u_char new_floor)
 
 int GetFloorTopAddr(u_char floor)
 {
-    int *addr = (int *)BASE_ADDRESS;
+    int *addr = (int *)LOAD_ADDRESS_02;
 
-    return addr[floor] + BASE_ADDRESS;
+    return addr[floor] + LOAD_ADDRESS_02;
 }
 
 void InitMap()
@@ -418,10 +417,10 @@ static u_short CameraGetDoramaCameraNo(u_short now_cam_no)
     }
 
     dat_addr = (u_int *)map_wrk.dat_adr;
-    addr_ui0 = (u_int *)(dat_addr[3] + BASE_ADDRESS);
+    addr_ui0 = (u_int *)(dat_addr[3] + LOAD_ADDRESS_02);
     addr_ui0 = (u_int *)((u_int)&addr_ui0[1] + room_no * 4);
-    addr_ui0 = (u_int *)(addr_ui0[0] + BASE_ADDRESS);
-    data_num = *(u_char *)(addr_ui0[0] + BASE_ADDRESS);
+    addr_ui0 = (u_int *)(addr_ui0[0] + LOAD_ADDRESS_02);
+    data_num = *(u_char *)(addr_ui0[0] + LOAD_ADDRESS_02);
 
     addr_ui0++;
 
@@ -432,15 +431,15 @@ static u_short CameraGetDoramaCameraNo(u_short now_cam_no)
             continue;
         }
 
-        addr_ui1 = (u_int *)(*addr_ui0 + BASE_ADDRESS);
+        addr_ui1 = (u_int *)(*addr_ui0 + LOAD_ADDRESS_02);
 
         if (get_flg)
         {
-            cam_no[1] = *(u_short *)(*addr_ui1 + BASE_ADDRESS);
+            cam_no[1] = *(u_short *)(*addr_ui1 + LOAD_ADDRESS_02);
         }
         else
         {
-            cam_no[1] = cam_no[0] = *(u_short *)(*addr_ui1 + BASE_ADDRESS);
+            cam_no[1] = cam_no[0] = *(u_short *)(*addr_ui1 + LOAD_ADDRESS_02);
 
             get_flg = 1;
         }
@@ -511,18 +510,18 @@ u_short CameraGetDoorCameraNo(u_short door_id0, u_short door_id1)
     }
 
     dat_addr = (u_int *)map_wrk.dat_adr;
-    addr_ui0 = (u_int *)(dat_addr[4] + BASE_ADDRESS);
+    addr_ui0 = (u_int *)(dat_addr[4] + LOAD_ADDRESS_02);
     addr_ui0 = (u_int *)((u_int)&addr_ui0[1] + room_no * 4);
-    addr_ui0 = (u_int *)(addr_ui0[0] + BASE_ADDRESS);
+    addr_ui0 = (u_int *)(addr_ui0[0] + LOAD_ADDRESS_02);
 
-    data_num = *(u_char *)(addr_ui0[0] + BASE_ADDRESS);
+    data_num = *(u_char *)(addr_ui0[0] + LOAD_ADDRESS_02);
 
     addr_ui0++;
 
     for (i = 0; i < data_num; addr_ui0++, i++)
     {
-        addr_ui1 = (u_int *)(addr_ui0[0] + BASE_ADDRESS);
-        cdpp = (CAMERA4_DATA_POP *)(addr_ui1[0] + BASE_ADDRESS);
+        addr_ui1 = (u_int *)(addr_ui0[0] + LOAD_ADDRESS_02);
+        cdpp = (CAMERA4_DATA_POP *)(addr_ui1[0] + LOAD_ADDRESS_02);
 
         if (cdpp->room_id != plyr_wrk.pr_info.room_no)
         {
@@ -574,11 +573,11 @@ static u_short CameraCheckDoorCameraNo(u_short door_id, u_char room_id)
 
     dat_adr = &((int *)(map_wrk.dat_adr))[4];
 
-    addr_ui0 = (u_int *)(*dat_adr + BASE_ADDRESS);
+    addr_ui0 = (u_int *)(*dat_adr + LOAD_ADDRESS_02);
     addr_ui0 = &addr_ui0[room_no + 1];
-    addr_ui0 = (u_int *)((int *)(*addr_ui0 + BASE_ADDRESS));
+    addr_ui0 = (u_int *)((int *)(*addr_ui0 + LOAD_ADDRESS_02));
 
-    data_num = *(u_char *)(*addr_ui0 + BASE_ADDRESS);
+    data_num = *(u_char *)(*addr_ui0 + LOAD_ADDRESS_02);
 
     addr_ui0++;
 
@@ -586,8 +585,8 @@ static u_short CameraCheckDoorCameraNo(u_short door_id, u_char room_id)
 
     for (i = 0; i < data_num; i++)
     {
-        addr_ui1 = (u_int *)((int *)(*addr_ui0 + BASE_ADDRESS));
-        cdpp = (CAMERA4_DATA_POP *)(*addr_ui1 + BASE_ADDRESS);
+        addr_ui1 = (u_int *)((int *)(*addr_ui0 + LOAD_ADDRESS_02));
+        cdpp = (CAMERA4_DATA_POP *)(*addr_ui1 + LOAD_ADDRESS_02);
 
         if (cdpp->room_id == room_id)
         {
@@ -607,8 +606,8 @@ static u_short CameraCheckDoorCameraNo(u_short door_id, u_char room_id)
 
     for (i = 0; i < data_num; i++)
     {
-        addr_ui1 = (u_int *)(*addr_ui0 + BASE_ADDRESS);
-        cdpp = (CAMERA4_DATA_POP *)(*addr_ui1 + BASE_ADDRESS);
+        addr_ui1 = (u_int *)(*addr_ui0 + LOAD_ADDRESS_02);
+        cdpp = (CAMERA4_DATA_POP *)(*addr_ui1 + LOAD_ADDRESS_02);
 
         if (cdpp->room_id == room_id)
         {
@@ -640,8 +639,8 @@ static u_char GetRoomNum()
     int *addr;
 
     addr = (int *)(map_wrk.dat_adr);
-    addr = (int *)(*addr + BASE_ADDRESS);
-    addr = (int *)(*addr + BASE_ADDRESS);
+    addr = (int *)(*addr + LOAD_ADDRESS_02);
+    addr = (int *)(*addr + LOAD_ADDRESS_02);
 
     return *(u_char *)addr;
 }
@@ -651,8 +650,8 @@ static u_char GetRoomNumFloor(u_char floor)
     int *addr;
 
     addr = (int *)GetFloorTopAddr(floor);
-    addr = (int *)(*addr + BASE_ADDRESS);
-    addr = (int *)(*addr + BASE_ADDRESS);
+    addr = (int *)(*addr + LOAD_ADDRESS_02);
+    addr = (int *)(*addr + LOAD_ADDRESS_02);
 
     return *(u_char *)addr;
 }
@@ -670,9 +669,9 @@ static u_char GetDataNum(u_char map, u_char room)
     }
 
     addr = (int *)(map_wrk.dat_adr + map * 4);
-    addr = (int *)(addr[0] + BASE_ADDRESS + (data_room * 4));
-    addr = (int *)(addr[1] + BASE_ADDRESS);
-    addr = (int *)(addr[0] + BASE_ADDRESS);
+    addr = (int *)(addr[0] + LOAD_ADDRESS_02 + (data_room * 4));
+    addr = (int *)(addr[1] + LOAD_ADDRESS_02);
+    addr = (int *)(addr[0] + LOAD_ADDRESS_02);
 
     return *addr;
 }
@@ -739,9 +738,9 @@ u_char GetRoomIdFromRoomNo(u_char map, u_char room_no)
     }
 
     addr0 = (int *)(map_wrk.dat_adr + map * 4);
-    addr0 = (int *)(*addr0 + BASE_ADDRESS);
-    addr1 = (u_char *)(*addr0 + BASE_ADDRESS);
-    room_num = *(u_char *)(*addr0 + BASE_ADDRESS);
+    addr0 = (int *)(*addr0 + LOAD_ADDRESS_02);
+    addr1 = (u_char *)(*addr0 + LOAD_ADDRESS_02);
+    room_num = *(u_char *)(*addr0 + LOAD_ADDRESS_02);
 
     room_id = 0xff;
 
@@ -776,11 +775,11 @@ u_char GetRoomIdFromRoomNoFloor(u_char map, u_char room_no, u_char floor)
     }
 
     addr0 = (int *)(GetFloorTopAddr(floor) + map * 4);
-    addr0 = (int *)(*addr0 + BASE_ADDRESS);
+    addr0 = (int *)(*addr0 + LOAD_ADDRESS_02);
 
-    addr1 = (u_char *)(*addr0 + BASE_ADDRESS);
+    addr1 = (u_char *)(*addr0 + LOAD_ADDRESS_02);
 
-    room_num = *(u_char *)(*addr0 + BASE_ADDRESS);
+    room_num = *(u_char *)(*addr0 + LOAD_ADDRESS_02);
 
     room_id = 0xff;
 
@@ -874,8 +873,8 @@ u_char GetDataRoom(u_char map, u_char room_id)
     }
 
     addr0 = (int *)(map_wrk.dat_adr + map * 4);
-    addr0 = (int *)(*addr0 + BASE_ADDRESS);
-    addr1 = (u_char *)(*addr0 + BASE_ADDRESS);
+    addr0 = (int *)(*addr0 + LOAD_ADDRESS_02);
+    addr1 = (u_char *)(*addr0 + LOAD_ADDRESS_02);
 
     room_num = *addr1;
 
@@ -931,13 +930,13 @@ static u_short GetNowCameraEach(u_char cam_type, u_char cam_num, u_char *rm_cam_
             *rm_cam_no = i;
 
             addr = (int *)(map_wrk.dat_adr + (cam_type * 4));
-            addr = (int *)(*addr + BASE_ADDRESS);
+            addr = (int *)(*addr + LOAD_ADDRESS_02);
             addr = &addr[room] + 1;
-            addr = (int *)(*addr + BASE_ADDRESS);
+            addr = (int *)(*addr + LOAD_ADDRESS_02);
             addr = &addr[i] + 1;
-            addr = (int *)(*addr + BASE_ADDRESS);
+            addr = (int *)(*addr + LOAD_ADDRESS_02);
 
-            val = *(int *)(*addr + BASE_ADDRESS);
+            val = *(int *)(*addr + LOAD_ADDRESS_02);
 
             return val;
         }
@@ -964,13 +963,13 @@ static u_short GetNowCamera()
             room_wrk.camera_no = i;
 
             addr = (int *)(map_wrk.dat_adr + 4);
-            addr = (int *)(*addr + BASE_ADDRESS);
+            addr = (int *)(*addr + LOAD_ADDRESS_02);
             addr = &addr[room] + 1;
-            addr = (int *)(*addr + BASE_ADDRESS);
+            addr = (int *)(*addr + LOAD_ADDRESS_02);
             addr = &addr[i] + 1;
-            addr = (int *)(*addr + BASE_ADDRESS);
+            addr = (int *)(*addr + LOAD_ADDRESS_02);
 
-            val = *(int *)(*addr + BASE_ADDRESS);
+            val = *(int *)(*addr + LOAD_ADDRESS_02);
 
             return val;
         }
@@ -995,13 +994,13 @@ static float GetNowHeight()
             room_wrk.height_no = i;
 
             addr = (int *)(map_wrk.dat_adr + 5 * 4);
-            addr = (int *)(*addr + BASE_ADDRESS);
+            addr = (int *)(*addr + LOAD_ADDRESS_02);
             addr = &addr[room] + 1;
-            addr = (int *)(*addr + BASE_ADDRESS);
+            addr = (int *)(*addr + LOAD_ADDRESS_02);
             addr = &addr[i] + 1;
-            addr = (int *)(*addr + BASE_ADDRESS);
+            addr = (int *)(*addr + LOAD_ADDRESS_02);
 
-            val = *(short *)(*addr + BASE_ADDRESS);
+            val = *(short *)(*addr + LOAD_ADDRESS_02);
 
             return val;
         }
@@ -1050,9 +1049,9 @@ int GetPointRoom(u_short pos_x, u_short pos_z)
     int *addr;
 
     addr = (int *)(map_wrk.dat_adr);
-    addr = (int *)(*addr + BASE_ADDRESS);
+    addr = (int *)(*addr + LOAD_ADDRESS_02);
 
-    return *(u_char *)(*addr + GetPointRoomNo(pos_x, pos_z) + 1 + BASE_ADDRESS);
+    return *(u_char *)(*addr + GetPointRoomNo(pos_x, pos_z) + 1 + LOAD_ADDRESS_02);
 }
 
 float GetPointHeight(u_short pos_x, u_short pos_z)
@@ -1069,9 +1068,9 @@ float GetPointHeight(u_short pos_x, u_short pos_z)
     room = GetPointRoomNo(pos_x, pos_z);
 
     addr = (int *)(map_wrk.dat_adr);
-    addr = (int *)(*addr + BASE_ADDRESS);
+    addr = (int *)(*addr + LOAD_ADDRESS_02);
 
-    room_id = *(u_char *)(*addr + room + 1 + BASE_ADDRESS);
+    room_id = *(u_char *)(*addr + room + 1 + LOAD_ADDRESS_02);
 
     room = GetDataRoom(5, room_id);
 
@@ -1082,19 +1081,19 @@ float GetPointHeight(u_short pos_x, u_short pos_z)
             room_wrk.height_no = i;
 
             addr = (int *)(map_wrk.dat_adr + 5 * 4);
-            addr = (int *)(*addr + BASE_ADDRESS);
+            addr = (int *)(*addr + LOAD_ADDRESS_02);
             addr = &addr[room] + 1;
-            addr = (int *)(*addr + BASE_ADDRESS);
+            addr = (int *)(*addr + LOAD_ADDRESS_02);
             addr = &addr[i] + 1;
-            addr = (int *)(*addr + BASE_ADDRESS);
+            addr = (int *)(*addr + LOAD_ADDRESS_02);
 
-            val1 = *(short *)(*addr + BASE_ADDRESS);
+            val1 = *(short *)(*addr + LOAD_ADDRESS_02);
 
-            addr = (int *)(*(int *)map_wrk.dat_adr + BASE_ADDRESS);
+            addr = (int *)(*(int *)map_wrk.dat_adr + LOAD_ADDRESS_02);
             addr = &addr[room] + 1;
-            addr = (int *)(*addr + BASE_ADDRESS);
+            addr = (int *)(*addr + LOAD_ADDRESS_02);
 
-            val2 = *(short *)(*addr + 6 + BASE_ADDRESS);
+            val2 = *(short *)(*addr + 6 + LOAD_ADDRESS_02);
 
             return val1 + val2;
         }
@@ -1113,10 +1112,10 @@ static void GetPlayerRoom(u_char room)
     }
 
     addr = (int*)map_wrk.dat_adr;
-    addr = (int*)(*addr + BASE_ADDRESS);
+    addr = (int*)(*addr + LOAD_ADDRESS_02);
 
     plyr_wrk.pr_info.room_old = plyr_wrk.pr_info.room_no;
-    plyr_wrk.pr_info.room_no = *(int *)(*addr + room + 1 + BASE_ADDRESS);
+    plyr_wrk.pr_info.room_no = *(int *)(*addr + room + 1 + LOAD_ADDRESS_02);
 }
 
 static void GetRoomDispPos(u_char room)
@@ -1129,7 +1128,7 @@ static void GetRoomDispPos(u_char room)
     }
 
     addr = (int *)map_wrk.dat_adr;
-    addr = (int *)(*addr + BASE_ADDRESS);
+    addr = (int *)(*addr + LOAD_ADDRESS_02);
 
     room_wrk.disp_no[1] = room_wrk.disp_no[0];
 
@@ -1137,19 +1136,19 @@ static void GetRoomDispPos(u_char room)
     room_wrk.pos[1][1] = room_wrk.pos[0][1];
     room_wrk.pos[1][2] = room_wrk.pos[0][2];
 
-    room_wrk.disp_no[0] = *(u_char *)(*addr + room + 1 + BASE_ADDRESS);
+    room_wrk.disp_no[0] = *(u_char *)(*addr + room + 1 + LOAD_ADDRESS_02);
 
     map_wrk.now_room = room_wrk.disp_no[0];
     map_wrk.next_room = room_wrk.disp_no[1];
 
     addr = &addr[room] + 1;
-    addr = (int *)(*addr + BASE_ADDRESS);
+    addr = (int *)(*addr + LOAD_ADDRESS_02);
 
-    room_wrk.pos[0][0] = ((u_short *)(*addr + BASE_ADDRESS))[0];
-    room_wrk.pos[0][1] = ((short *)(*addr + BASE_ADDRESS))[1];
-    room_wrk.pos[0][2] = ((u_short *)(*addr + BASE_ADDRESS))[2];
+    room_wrk.pos[0][0] = ((u_short *)(*addr + LOAD_ADDRESS_02))[0];
+    room_wrk.pos[0][1] = ((short *)(*addr + LOAD_ADDRESS_02))[1];
+    room_wrk.pos[0][2] = ((u_short *)(*addr + LOAD_ADDRESS_02))[2];
 
-    room_wrk.room_height = ((short *)(*addr + BASE_ADDRESS))[3];
+    room_wrk.room_height = ((short *)(*addr + LOAD_ADDRESS_02))[3];
 }
 
 u_char PosInAreaJudge0(u_char room, u_short pos_x, u_short pos_y)
@@ -1166,20 +1165,20 @@ u_char PosInAreaJudge0(u_char room, u_short pos_x, u_short pos_y)
     }
 
     addr = (int *)map_wrk.dat_adr;
-    addr = (int *)(*addr + BASE_ADDRESS);
+    addr = (int *)(*addr + LOAD_ADDRESS_02);
     addr = &addr[room] + 1;
-    addr = (int *)(*addr + BASE_ADDRESS);
+    addr = (int *)(*addr + LOAD_ADDRESS_02);
 
-    sq_num = *(u_char *)(*addr + 8 + BASE_ADDRESS);
+    sq_num = *(u_char *)(*addr + 8 + LOAD_ADDRESS_02);
 
     addr_bak = addr;
 
     for (i = 0; i < sq_num; i++)
     {
-        type = *(char *)(*addr + i + 9 + BASE_ADDRESS);
+        type = *(char *)(*addr + i + 9 + LOAD_ADDRESS_02);
 
         addr = &addr[i] + 1;
-        addr = (int *)(*addr + BASE_ADDRESS);
+        addr = (int *)(*addr + LOAD_ADDRESS_02);
 
         if (PosInAreaJudgeSub(addr, pos_x, pos_y, type) != 0)
         {
@@ -1211,20 +1210,20 @@ static u_char PosInAreaJudge0Floor(u_char room, u_short pos_x, u_short pos_y, u_
     }
 
     addr = (int *)GetFloorTopAddr(floor);
-    addr = (int *)(*addr + BASE_ADDRESS);
+    addr = (int *)(*addr + LOAD_ADDRESS_02);
     addr = &addr[room] + 1;
-    addr = (int *)(*addr + BASE_ADDRESS);
+    addr = (int *)(*addr + LOAD_ADDRESS_02);
 
-    sq_num = *(u_char *)(*addr + 8 + BASE_ADDRESS);
+    sq_num = *(u_char *)(*addr + 8 + LOAD_ADDRESS_02);
 
     addr_bak = addr;
 
     for (i = 0; i < sq_num; i++)
     {
-        type = *(char *)(*addr + i + 9 + BASE_ADDRESS);
+        type = *(char *)(*addr + i + 9 + LOAD_ADDRESS_02);
 
         addr = &addr[i] + 1;
-        addr = (int *)(*addr + BASE_ADDRESS);
+        addr = (int *)(*addr + LOAD_ADDRESS_02);
 
         if (PosInAreaJudgeSub(addr, pos_x, pos_y, type) != 0)
         {
@@ -1252,22 +1251,22 @@ u_char PosInAreaJudge1(u_char map, u_char room, u_char data, u_short pos_x, u_sh
     }
 
     addr = (int *)map_wrk.dat_adr + map;
-    addr = (int *)(*addr + BASE_ADDRESS);
+    addr = (int *)(*addr + LOAD_ADDRESS_02);
     addr = &addr[room] + 1;
-    addr = (int *)(*addr + BASE_ADDRESS);
+    addr = (int *)(*addr + LOAD_ADDRESS_02);
     addr = &addr[data] + 1;
-    addr = (int *)(*addr + BASE_ADDRESS);
+    addr = (int *)(*addr + LOAD_ADDRESS_02);
 
-    sq_num = *(u_char *)(*addr + BASE_ADDRESS + ofs[map]);
+    sq_num = *(u_char *)(*addr + LOAD_ADDRESS_02 + ofs[map]);
 
     addr_bak = addr;
 
     for (i = 0; i < sq_num; i++)
     {
-        type = *(char *)(int)(*addr + i + 1 + (long)BASE_ADDRESS + ofs[map]); // cast to long?
+        type = *(char *)(int)(*addr + i + 1 + (long)LOAD_ADDRESS_02 + ofs[map]); // cast to long?
 
         addr = &addr[i] + 1;
-        addr = (int *)(*addr + BASE_ADDRESS);
+        addr = (int *)(*addr + LOAD_ADDRESS_02);
 
         if (PosInAreaJudgeSub(addr, pos_x, pos_y, type) != 0)
         {
@@ -1587,13 +1586,13 @@ static void GetNowOpenEvent()
     {
         if (PosInAreaJudge1(7, room, i, plyr_wrk.move_box.pos[2], plyr_wrk.move_box.pos[0]) != 0)
         {
-            addr = (int *)(*(int *)(map_wrk.dat_adr + 7 * 4) + BASE_ADDRESS);
+            addr = (int *)(*(int *)(map_wrk.dat_adr + 7 * 4) + LOAD_ADDRESS_02);
             addr = &addr[room] + 1;
-            addr = (int *)(*addr + BASE_ADDRESS);
+            addr = (int *)(*addr + LOAD_ADDRESS_02);
             addr = &addr[i] + 1;
-            addr = (int *)(*addr + BASE_ADDRESS);
+            addr = (int *)(*addr + LOAD_ADDRESS_02);
 
-            ev_wrk.pos_req[cnt] = *(u_char *)(*addr + BASE_ADDRESS);
+            ev_wrk.pos_req[cnt] = *(u_char *)(*addr + LOAD_ADDRESS_02);
 
             cnt++;
         }
@@ -1625,13 +1624,13 @@ static void GetNowOpenFindAct()
     {
         if (PosInAreaJudge1(9, room, i, plyr_wrk.move_box.pos[2], plyr_wrk.move_box.pos[0]))
         {
-            addr = (int *)(*(int *)(map_wrk.dat_adr + 9 * 4) + BASE_ADDRESS);
+            addr = (int *)(*(int *)(map_wrk.dat_adr + 9 * 4) + LOAD_ADDRESS_02);
             addr = &addr[room] + 1;
-            addr = (int *)(*addr + BASE_ADDRESS);
+            addr = (int *)(*addr + LOAD_ADDRESS_02);
             addr = &addr[i] + 1;
-            addr = (int *)(*addr + BASE_ADDRESS);
+            addr = (int *)(*addr + LOAD_ADDRESS_02);
 
-            find_wrk.pos_req[cnt] = *(u_short *)(*addr + BASE_ADDRESS);
+            find_wrk.pos_req[cnt] = *(u_short *)(*addr + LOAD_ADDRESS_02);
 
             cnt++;
         }
@@ -1658,13 +1657,13 @@ u_char GetPointMoveMotion(sceVu0FVECTOR p, u_char no)
     {
         if (PosInAreaJudge1(12, room, i, p[2], p[0]) != 0)
         {
-            addr = (int *)(*(int *)(map_wrk.dat_adr + 12 * 4) + BASE_ADDRESS);
+            addr = (int *)(*(int *)(map_wrk.dat_adr + 12 * 4) + LOAD_ADDRESS_02);
             addr = &addr[room] + 1;
-            addr = (int *)(*addr + BASE_ADDRESS);
+            addr = (int *)(*addr + LOAD_ADDRESS_02);
             addr = &addr[i] + 1;
-            addr = (int *)(*addr + BASE_ADDRESS);
+            addr = (int *)(*addr + LOAD_ADDRESS_02);
 
-            mot = *(u_char *)(*addr + BASE_ADDRESS);
+            mot = *(u_char *)(*addr + LOAD_ADDRESS_02);
         }
     }
 
@@ -1690,18 +1689,18 @@ u_char MapCameraCdivideAB(u_short data_no, u_short *xmin, u_short *xmax, u_short
     }
 
     addr = (int *)map_wrk.dat_adr + cam_type;
-    addr = (int *)(*addr + BASE_ADDRESS);
+    addr = (int *)(*addr + LOAD_ADDRESS_02);
     addr = &addr[room] + 1;
-    addr = (int *)(*addr + BASE_ADDRESS);
+    addr = (int *)(*addr + LOAD_ADDRESS_02);
 
     i = 0;
 
     while (1)
     {
         dat_addr = &addr[i] + 1;
-        dat_addr = (int *)(*dat_addr + BASE_ADDRESS);
+        dat_addr = (int *)(*dat_addr + LOAD_ADDRESS_02);
 
-        if (data_no == *(short *)(*dat_addr + BASE_ADDRESS))
+        if (data_no == *(short *)(*dat_addr + LOAD_ADDRESS_02))
         {
             break;
         }
@@ -1710,7 +1709,7 @@ u_char MapCameraCdivideAB(u_short data_no, u_short *xmin, u_short *xmax, u_short
     }
 
     dat_addr = &addr[i] + 1;
-    addr = (int *)(*dat_addr + BASE_ADDRESS);
+    addr = (int *)(*dat_addr + LOAD_ADDRESS_02);
     dat_addr2 = (int *)addr[1];
 
     x_cnt = 0;
@@ -1718,14 +1717,14 @@ u_char MapCameraCdivideAB(u_short data_no, u_short *xmin, u_short *xmax, u_short
 
     for (i = 0; i < 4; i++)
     {
-        if (((short *)((int)dat_addr2 + BASE_ADDRESS))[1] != 0)
+        if (((short *)((int)dat_addr2 + LOAD_ADDRESS_02))[1] != 0)
         {
             if (x_cnt > 1)
             {
                 return 0;
             }
 
-            cmpx[x_cnt] = ((int*)((int)dat_addr2 + BASE_ADDRESS))[1] / ((short *)((int)dat_addr2 + BASE_ADDRESS))[1];
+            cmpx[x_cnt] = ((int*)((int)dat_addr2 + LOAD_ADDRESS_02))[1] / ((short *)((int)dat_addr2 + LOAD_ADDRESS_02))[1];
 
             if (cmpx[x_cnt] < 0)
             {
@@ -1736,9 +1735,9 @@ u_char MapCameraCdivideAB(u_short data_no, u_short *xmin, u_short *xmax, u_short
         }
         else
         {
-            if (((short *)((int)dat_addr2 + BASE_ADDRESS))[0] != 0)
+            if (((short *)((int)dat_addr2 + LOAD_ADDRESS_02))[0] != 0)
             {
-                cmpy[y_cnt] = ((int *)((int)dat_addr2 + BASE_ADDRESS))[1] / ((short *)((int)dat_addr2 + BASE_ADDRESS))[0];
+                cmpy[y_cnt] = ((int *)((int)dat_addr2 + LOAD_ADDRESS_02))[1] / ((short *)((int)dat_addr2 + LOAD_ADDRESS_02))[0];
 
                 if (cmpy[y_cnt] < 0)
                 {
@@ -1845,12 +1844,12 @@ static void MapSetFloorSeNo()
     }
 
     addr_si = (int *)map_wrk.dat_adr + 2 * 4;
-    addr_si = (int *)(*addr_si + BASE_ADDRESS);
+    addr_si = (int *)(*addr_si + LOAD_ADDRESS_02);
     addr_si = &addr_si[room + 1];
-    addr_si = (int *)(*addr_si + BASE_ADDRESS);
+    addr_si = (int *)(*addr_si + LOAD_ADDRESS_02);
     addr_si = &addr_si[data_no + 1];
-    addr_si = (int *)(*addr_si + BASE_ADDRESS);
-    addr_si = (int *)(*addr_si + BASE_ADDRESS);
+    addr_si = (int *)(*addr_si + LOAD_ADDRESS_02);
+    addr_si = (int *)(*addr_si + LOAD_ADDRESS_02);
 
     switch (*(u_short *)addr_si)
     {
@@ -1881,13 +1880,13 @@ int GetRoomPos(u_char room_no, sceVu0FVECTOR room_pos)
     }
 
     addr = (int *)(map_wrk.dat_adr);
-    addr = (int *)(*addr + BASE_ADDRESS);
+    addr = (int *)(*addr + LOAD_ADDRESS_02);
     addr = &addr[dat_room] + 1;
-    addr = (int *)(*addr + BASE_ADDRESS);
+    addr = (int *)(*addr + LOAD_ADDRESS_02);
 
-    room_pos[0] = ((u_short*)(*addr + BASE_ADDRESS))[0];
-    room_pos[1] = ((short *)(*addr + BASE_ADDRESS))[1];
-    room_pos[2] = ((u_short *)(*addr + BASE_ADDRESS))[2];
+    room_pos[0] = ((u_short*)(*addr + LOAD_ADDRESS_02))[0];
+    room_pos[1] = ((short *)(*addr + LOAD_ADDRESS_02))[1];
+    room_pos[2] = ((u_short *)(*addr + LOAD_ADDRESS_02))[2];
 
     return 0;
 }

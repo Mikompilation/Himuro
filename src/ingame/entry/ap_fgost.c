@@ -18,9 +18,9 @@
 #include "graphics/motion/motion.h"
 #include "graphics/graph2d/effect_ene.h"
 
-int load_mdl_addr[] = { LOAD_ADDRESS_12, LOAD_ADDRESS_14, LOAD_ADDRESS_16, 0 };
-int load_mot_addr[] = { LOAD_ADDRESS_06, LOAD_ADDRESS_08, LOAD_ADDRESS_10, 0 };
-int load_se_addr[] = { 16, 17, 18, 0 };
+int load_mdl_addr[] = { LOAD_ADDRESS_13, LOAD_ADDRESS_15, LOAD_ADDRESS_17, 0 };
+int load_mot_addr[] = { LOAD_ADDRESS_06, LOAD_ADDRESS_08, LOAD_ADDRESS_11, 0 };
+int load_se_addr[] = { SE_ADDRNO_GHOST0, SE_ADDRNO_GHOST1, SE_ADDRNO_GHOST2, 0 };
 FG_LOAD_WRK fg_load_wrk = {0};
 
 void FloatGhostAppearInit()
@@ -409,7 +409,7 @@ int FloatGhostLoadSet()
 
     if (ap_wrk.fgst_no != 0xff)
     {
-        motReleaseAniMdlBuf(fene_dat[ingame_wrk.msn_no][ap_wrk.fgst_no].anm_no, (u_int *)LOAD_ADDRESS_23);
+        motReleaseAniMdlBuf(fene_dat[ingame_wrk.msn_no][ap_wrk.fgst_no].anm_no, (u_int *)LOAD_ADDRESS_24);
     }
 
     return 1;
@@ -427,33 +427,33 @@ void GetLoadFloatGhost(u_char set_num, u_char *set_fgst)
 
 void GetFloatGhostModelLoad()
 {
-    LoadReq(fene_dat[ingame_wrk.msn_no][fg_load_wrk.load_no].mdl_no + M000_MIKU_MDL, LOAD_ADDRESS_25);
+    LoadReq(fene_dat[ingame_wrk.msn_no][fg_load_wrk.load_no].mdl_no + M000_MIKU_MDL, LOAD_ADDRESS_26);
 
     ap_wrk.fgst_no = fg_load_wrk.load_no;
 }
 
 void GetFloatGhostModelLoadAfter()
 {
-    motInitEnemyMdl((u_int *)LOAD_ADDRESS_25, fene_dat[ingame_wrk.msn_no][fg_load_wrk.load_no].mdl_no);
+    motInitEnemyMdl((u_int *)LOAD_ADDRESS_26, fene_dat[ingame_wrk.msn_no][fg_load_wrk.load_no].mdl_no);
 }
 
 void GetFloatGhostMotionLoad()
 {
-    LoadEneDmgTex(fene_dat[ingame_wrk.msn_no][fg_load_wrk.load_no].mdl_no, (u_int *)LOAD_ADDRESS_24);
-    LoadReq(fene_dat[ingame_wrk.msn_no][fg_load_wrk.load_no].anm_no + M000_MIKU_ANM, LOAD_ADDRESS_23);
+    LoadEneDmgTex(fene_dat[ingame_wrk.msn_no][fg_load_wrk.load_no].mdl_no, (u_int *)LOAD_ADDRESS_25);
+    LoadReq(fene_dat[ingame_wrk.msn_no][fg_load_wrk.load_no].anm_no + M000_MIKU_ANM, LOAD_ADDRESS_24);
 }
 
 void GetFloatGhostMotionLoadAfter()
 {
   motInitEnemyAnm(
-    (u_int *)LOAD_ADDRESS_23,
+    (u_int *)LOAD_ADDRESS_24,
     fene_dat[ingame_wrk.msn_no][fg_load_wrk.load_no].mdl_no,
     fene_dat[ingame_wrk.msn_no][fg_load_wrk.load_no].anm_no);
 }
 
 void GetFloatGhostSELoad()
 {
-    LoadReq(fene_dat[ingame_wrk.msn_no][fg_load_wrk.load_no].se_no, LOAD_ADDRESS_26);
+    LoadReq(fene_dat[ingame_wrk.msn_no][fg_load_wrk.load_no].se_no, LOAD_ADDRESS_27);
 }
 
 void FloatGhostAppearStop()

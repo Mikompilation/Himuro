@@ -1,5 +1,6 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "enums.h"
 #include "outgame.h"
 
@@ -23,17 +24,13 @@ static int rsc_no[2] = {0, 0};
 
 static u_int load_size;
 
-#define LOAD_ADDRESS (u_int *)0x04610000
-#define REQ_ADDRESS_1 (u_int *)0x01e90000
-#define REQ_ADDRESS_2 (u_int *)0x007f8000
-
 void OutGameCtrl(void)
 {
     AnaPonChk();
     switch(outgame_wrk.mode)
     {
         case OUTGAME_MODE_INIT:
-            init_load_id = LoadReq(LOGO_PK2, (u_int)REQ_ADDRESS_1);
+            init_load_id = LoadReq(LOGO_PK2, (u_int)LOAD_ADDRESS_46);
             OutGameModeChange(OUTGAME_MODE_WAIT);
         break;
         case OUTGAME_MODE_WAIT:
@@ -172,13 +169,13 @@ void RoomSizeCheckCtrl()
 
         if (rsc_menu_csr == 2)
         {
-            LoadReq(rsc_no[0] + 10, (u_int)REQ_ADDRESS_2);
+            LoadReq(rsc_no[0] + 10, (u_int)LOAD_ADDRESS_02);
 
-            end_addr = RoomMdlLoadReq(LOAD_ADDRESS, 0, rsc_no[0], rsc_no[1], 0);
+            end_addr = RoomMdlLoadReq((u_int *)LOAD_ADDRESS_53, 0, rsc_no[0], rsc_no[1], 0);
 
             while (RoomMdlLoadWait() == 0) {}
 
-            load_size = (u_int)end_addr - (u_int)LOAD_ADDRESS;
+            load_size = (u_int)end_addr - (u_int)LOAD_ADDRESS_53;
         }
     }
 

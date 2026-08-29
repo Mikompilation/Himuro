@@ -1,5 +1,6 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "enums.h"
 #include "item_get.h"
 
@@ -96,7 +97,7 @@ void ItemGet(u_char get_type, u_char get_no, u_char msg0_no, u_char msg1_no)
 
 int ItemGetCtrl()
 {
-    SetSprFile(0x1ce0000);
+    SetSprFile(LOAD_ADDRESS_31);
 
     if (file_dsp.cnt < 60)
     {

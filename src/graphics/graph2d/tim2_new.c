@@ -224,7 +224,7 @@ void MakeFontTexSendPacket()
     int addr;
     int *offtop;
 
-    addr = LOAD_ADDRESS_43;
+    addr = LOAD_ADDRESS_44;
 
     texnum = ((int *)addr)[0];
     offtop = &((int *)addr)[4];

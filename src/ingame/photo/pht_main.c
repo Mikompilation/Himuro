@@ -1,5 +1,6 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "enums.h"
 #include "pht_main.h"
 
@@ -279,7 +280,7 @@ void PhotoCtrl()
                     {
                         i = pazene_load_buf[fl] & 0x7f;
 
-                        load_id2 = LoadReq(pazz_textbl[i], 0x1c90000 + fl * 0x10000);
+                        load_id2 = LoadReq(pazz_textbl[i], LOAD_ADDRESS_29 + fl * 0x10000);
                     }
                 }
             }

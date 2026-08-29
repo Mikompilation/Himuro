@@ -1263,7 +1263,7 @@ int EventSceneCtrl(short int scene_no)
 
             if(SceneDecisionMovie(scene_no) == 0)
             {
-                if (SceneAllLoad(scene_no, (u_int *)LOAD_ADDRESS_21) != 0)
+                if (SceneAllLoad(scene_no, (u_int *)LOAD_ADDRESS_22) != 0)
                 {
                     ev_wrk.movie_on = 4;
 
@@ -1294,7 +1294,7 @@ int EventSceneCtrl(short int scene_no)
         {
             if (SceneDecisionMovie(scene_no) == 0)
             {
-                SceneDataLoadReq(scene_no, (u_int *)LOAD_ADDRESS_21);
+                SceneDataLoadReq(scene_no, (u_int *)LOAD_ADDRESS_22);
 
                 change_efbank = 0;
 

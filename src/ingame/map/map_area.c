@@ -293,14 +293,14 @@ int GetEmptyRoomAddr()
 
     if (sys_wrk.game_mode != GAME_MODE_INGAME)
     {
-        return LOAD_ADDRESS_27;
+        return LOAD_ADDRESS_28;
     }
 
     for (i = 0; i < 2; i++)
     {
         if (plyr_wrk.pr_info.room_no != area_wrk.room[i])
         {
-            return LOAD_ADDRESS_27 + i * ROOM_BLOCK_SIZE;
+            return LOAD_ADDRESS_28 + i * ROOM_BLOCK_SIZE;
         }
     }
 

@@ -1,5 +1,6 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "enums.h"
 #include "photo.h"
 
@@ -188,11 +189,11 @@ int SpecialPhotoMakeJudge()
 
         if (no >= 150 && no < 200)
         {
-            ret = LoadReq(hint_rea_tbl[no - 150], 0x1e90000);
+            ret = LoadReq(hint_rea_tbl[no - 150], LOAD_ADDRESS_46);
         }
         else
         {
-            ret = LoadReq(hint_tbl[no], 0x1e90000);
+            ret = LoadReq(hint_tbl[no], LOAD_ADDRESS_46);
         }
 
         photo_wrk.spcl_pht_no[count][0] = 6;
@@ -211,11 +212,11 @@ int SpecialPhotoMakeJudge()
 
                 if (no >= 150 && no < 200)
                 {
-                    ret = LoadReq(hint_rea_tbl[no - 150], 0x1e90000);
+                    ret = LoadReq(hint_rea_tbl[no - 150], LOAD_ADDRESS_46);
                 }
                 else
                 {
-                    ret = LoadReq(hint_tbl[no], 0x1e90000);
+                    ret = LoadReq(hint_tbl[no], LOAD_ADDRESS_46);
                 }
 
                 photo_wrk.spcl_pht_no[count][0] = 6;

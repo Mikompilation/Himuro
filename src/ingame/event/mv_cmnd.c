@@ -1,13 +1,12 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "mv_cmnd.h"
 
 #include "graphics/graph2d/message.h"
 #include "ingame/menu/ig_menu.h"
 
 MOVIE_CMD_WRK mvcmd_wrk = {0};
-
-#define BASE_ADDRESS 0x7f0000
 
 void EventMovieCommandInit()
 {
@@ -73,8 +72,8 @@ int GetMovieMessageAddr(short int msg_no)
 {
     int addr;
 
-    addr = Get4Byte((u_char *)BASE_ADDRESS + 3 * 4);
-    addr = Get4Byte((u_char *)BASE_ADDRESS + addr + msg_no * 4);
+    addr = Get4Byte((u_char *)LOAD_ADDRESS_01 + 3 * 4);
+    addr = Get4Byte((u_char *)LOAD_ADDRESS_01 + addr + msg_no * 4);
 
-    return BASE_ADDRESS + addr;
+    return LOAD_ADDRESS_01 + addr;
 }

@@ -1,5 +1,6 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "enums.h"
 #include "pause.h"
 
@@ -266,7 +267,7 @@ static void PauseDraw(u_char alp)
 {
     int i;
 
-    SetSprFile(0x1ce0000);
+    SetSprFile(LOAD_ADDRESS_31);
 
     CmnWindow(20, 0, 0, alp, 0x80);
 

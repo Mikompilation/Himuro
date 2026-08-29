@@ -4059,7 +4059,7 @@ int SetNowLoading()
     }
 
     SetPanel(0x80000, 0.0f, 0.0f, 640.0f, 448.0f, 0, 0, 0, 0x80);
-    SetSprFile3(LOAD_ADDRESS_48, 0);
+    SetSprFile3(LOAD_ADDRESS_49, 0);
 
     CopySprDToSpr(&ds, test);
 
@@ -4428,7 +4428,7 @@ int SetGameOver()
 
         if (cnt >= sec5)
         {
-            cnt = LoadReq(G_OVER_PK2, LOAD_ADDRESS_45);
+            cnt = LoadReq(G_OVER_PK2, LOAD_ADDRESS_46);
 
             gameover_flow = 2;
         }
@@ -4561,7 +4561,7 @@ int SetGameOver()
 
     if (gameover_flow > 2)
     {
-        SetSprFile3(LOAD_ADDRESS_45, 0);
+        SetSprFile3(LOAD_ADDRESS_46, 0);
 
         if (gameover_flow > 2)
         {
@@ -4926,7 +4926,7 @@ void SetScreenSaver()
                 hand_wrk.top = (hand_wrk.top + 1) % 16;
             }
 
-            SetSprFile2(0x1fc8000, 0);
+            SetSprFile2(LOAD_ADDRESS_51, 0);
 
             for (i = 0; i < 16; i++)
             {

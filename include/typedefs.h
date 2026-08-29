@@ -49,6 +49,16 @@ typedef union {
 
 #if defined(BUILD_JP_VERSION)
     #define VER_LOAD_REQ_LANG LoadReq
+	#define VER_LANG_NUM 1
+#elif defined(BUILD_US_VERSION)
+    #define VER_LOAD_REQ_LANG LoadReq
+	#define VER_LANG_NUM 1
+#elif defined(BUILD_EU_VERSION)
+    #define VER_LOAD_REQ_LANG LoadReqLanguage
+	#define VER_LANG_NUM 5
+#endif
+
+#if defined(BUILD_JP_VERSION)
 	#define VER_ATANF atanf
 	#define VER_ATAN2F atan2f
 	#define VER_SINF sinf
@@ -59,7 +69,6 @@ typedef union {
 	#define VER_SINFD(d) sinf(((d) * PI) / 180.0f)
 	#define VER_COSFD(d) cosf(((d) * PI) / 180.0f)
 #elif defined(BUILD_US_VERSION)
-    #define VER_LOAD_REQ_LANG LoadReq
 	#define VER_ATANF SgAtanf
 	#define VER_ATAN2F SgAtan2f
 	#define VER_SINF SgSinf
@@ -70,7 +79,6 @@ typedef union {
 	#define VER_SINFD SgSinfd
 	#define VER_COSFD SgCosfd
 #elif defined(BUILD_EU_VERSION)
-    #define VER_LOAD_REQ_LANG LoadReqLanguage
 	#define VER_ATANF SgAtanf
 	#define VER_ATAN2F SgAtan2f
 	#define VER_SINF SgSinf

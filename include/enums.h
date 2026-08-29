@@ -4764,6 +4764,19 @@ typedef enum {
 } MSN_TITLE_MODE;
 
 typedef enum {
+    MT_LOAD_MODE_PREQ = 0,
+    MT_LOAD_MODE_PLYR = 1,
+    MT_LOAD_MODE_DREQ = 2,
+    MT_LOAD_MODE_DATA = 3,
+    MT_LOAD_MODE_RREQ = 4,
+    MT_LOAD_MODE_ROOM = 5,
+    MT_LOAD_MODE_FGST = 6,
+    MT_LOAD_MODE_DGST = 7,
+    MT_LOAD_MODE_GGST = 8,
+    MT_LOAD_MODE_END = 9
+} MT_LOAD_MODE;
+
+typedef enum {
     SGDISP_MODE_REQ = 0,
     SGDISP_MODE_START = 1,
     SGDISP_MODE_BLACK_OUT0 = 2,

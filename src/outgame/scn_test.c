@@ -1,5 +1,6 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "enums.h"
 #include "scn_test.h"
 
@@ -85,12 +86,6 @@ static void (*SceneTestDBMenu[])() = {
 #define PI 3.1415927f
 #define DEG2RAD(x) ((float)(x)*PI/180.0f)
 
-#define EFFECT_ADDRESS 0x1e90000
-#define SCENE_LOAD_ADDRESS 0x1090000
-#define MSN_MAP_OBG_ADDRESS 0x7f8000
-#define MODEL_DATA_ADDRESS 0x14b0000
-#define SCENE_TEST_MD_LOAD_ADDRESS 0xe00000
-
 void SceneTestCtrl()
 {
     if (scn_test_wrk.mode == 0)
@@ -122,7 +117,7 @@ int SceneTestInit()
 
         gra2dInitST();
 
-        load_id = LoadReq(EFF001_PK2, EFFECT_ADDRESS);
+        load_id = LoadReq(EFF001_PK2, LOAD_ADDRESS_46);
 
         load_st = 1;
     }
@@ -130,7 +125,7 @@ int SceneTestInit()
     {
         if (IsLoadEnd(load_id) != 0)
         {
-            SetETIM2File(EFFECT_ADDRESS);
+            SetETIM2File(LOAD_ADDRESS_46);
 
             load_st = 2;
         }
@@ -303,7 +298,7 @@ int SceneTestLoad()
     switch(scn_test_wrk.load_status)
     {
     case 0:
-        SceneDataLoadReq(scn_test_wrk.scene_no, (u_int *)SCENE_LOAD_ADDRESS);
+        SceneDataLoadReq(scn_test_wrk.scene_no, (u_int *)LOAD_ADDRESS_22);
 
         scn_test_wrk.load_status = 1;
     break;
@@ -312,11 +307,11 @@ int SceneTestLoad()
         {
             if (scn_p->chapter_no < 0)
             {
-                load_id = LoadReq(MSN03MAP_OBJ, MSN_MAP_OBG_ADDRESS);
+                load_id = LoadReq(MSN03MAP_OBJ, LOAD_ADDRESS_02);
             }
             else
             {
-                load_id = LoadReq(scn_p->chapter_no + MSN00MAP_OBJ, MSN_MAP_OBG_ADDRESS);
+                load_id = LoadReq(scn_p->chapter_no + MSN00MAP_OBJ, LOAD_ADDRESS_02);
             }
 
             InitModelLoad();
@@ -329,11 +324,11 @@ int SceneTestLoad()
         {
             if (scn_p->chapter_no < 0)
             {
-                RoomMdlLoadReq((u_int *)MODEL_DATA_ADDRESS, 0, 3, scn_p->room_no, 0);
+                RoomMdlLoadReq((u_int *)LOAD_ADDRESS_28, 0, 3, scn_p->room_no, 0);
             }
             else
             {
-                RoomMdlLoadReq((u_int *)MODEL_DATA_ADDRESS, 0, scn_p->chapter_no, scn_p->room_no, 0);
+                RoomMdlLoadReq((u_int *)LOAD_ADDRESS_28, 0, scn_p->chapter_no, scn_p->room_no, 0);
             }
 
             scn_test_wrk.load_status = 3;
@@ -349,7 +344,7 @@ int SceneTestLoad()
     case 4:
         if (MsnInitPlyr() != 0)
         {
-            ScnTestMdlLoadReq((u_int *)SCENE_TEST_MD_LOAD_ADDRESS);
+            ScnTestMdlLoadReq((u_int *)LOAD_ADDRESS_20);
 
 
             scn_test_wrk.load_status = 5;

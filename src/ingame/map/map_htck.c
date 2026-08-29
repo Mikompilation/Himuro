@@ -1,5 +1,6 @@
 #include "common.h"
 #include "typedefs.h"
+#include "addresses.h"
 #include "map_htck.h"
 
 #include "ingame/map/door_ctl.h" // DoorCoverCheck
@@ -8,8 +9,6 @@
 #include "main/glob.h"
 
 #define GET(t,o) (*((t *)(((u_char *)addr) + o)))
-
-#define BASE_ADDRESS 0x7f8000
 
 u_char PosInAreaJudgeSub(int *addr, u_short pos_x, u_short pos_y, u_char type)
 {
@@ -300,22 +299,22 @@ u_char FurnCoverCheck(u_short pos_x, short int pos_y, u_short pos_z, u_char room
     }
 
     addr = (u_int *)(map_wrk.dat_adr + 11 * 4);
-    addr = (u_int *)(*addr + BASE_ADDRESS);
+    addr = (u_int *)(*addr + LOAD_ADDRESS_02);
     addr = &addr[room_no] + 1;
-    addr_bak = addr = (u_int *)(*addr + BASE_ADDRESS);
+    addr_bak = addr = (u_int *)(*addr + LOAD_ADDRESS_02);
 
-    dt_num = *(u_char *)(*addr + BASE_ADDRESS);
+    dt_num = *(u_char *)(*addr + LOAD_ADDRESS_02);
 
     for (i = 0; i < dt_num; i++)
     {
         addr = &addr_bak[i] + 1;
-        addr = (u_int *)(*addr + BASE_ADDRESS);
+        addr = (u_int *)(*addr + LOAD_ADDRESS_02);
 
-        fedp = (FURN_DATA_POP *)(*addr + BASE_ADDRESS);
+        fedp = (FURN_DATA_POP *)(*addr + LOAD_ADDRESS_02);
 
         GetFurnAttr(fedp->id, ingame_wrk.msn_no);
 
-        addr = (u_int *)(addr[1] + BASE_ADDRESS);
+        addr = (u_int *)(addr[1] + LOAD_ADDRESS_02);
         type = ((u_char *)fedp)[25];
         if (PosInAreaJudgeSub((int *)addr, pos_z, pos_x, type) != 0)
         {
@@ -328,4 +327,3 @@ u_char FurnCoverCheck(u_short pos_x, short int pos_y, u_short pos_z, u_char room
 
     return 0;
 }
-
