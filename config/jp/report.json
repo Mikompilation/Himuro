@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 61.580183173822896,
+    "fuzzy_match_percent": 61.6100484710341,
     "total_code": "1165232",
-    "matched_code": "717552",
-    "matched_code_percent": 61.580183173822896,
+    "matched_code": "717900",
+    "matched_code_percent": 61.6100484710341,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 2260,
-    "matched_functions_percent": 66.58809664113141,
+    "matched_functions": 2263,
+    "matched_functions_percent": 66.67648791985857,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -17575,9 +17575,14 @@
     {
       "name": "ingame/event/mv_cmnd",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "348",
+        "matched_code": "348",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 3,
+        "matched_functions": 3,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -17585,14 +17590,17 @@
         {
           "name": ".text",
           "size": "352",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -17600,16 +17608,19 @@
         {
           "name": "EventMovieCommandInit",
           "size": "44",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EventMovieCommandMain",
           "size": "224",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetMovieMessageAddr",
           "size": "80",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -24977,14 +24988,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 61.580183173822896,
+        "fuzzy_match_percent": 61.6100484710341,
         "total_code": "1165232",
-        "matched_code": "717552",
-        "matched_code_percent": 61.580183173822896,
+        "matched_code": "717900",
+        "matched_code_percent": 61.6100484710341,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 2260,
-        "matched_functions_percent": 66.58809664113141,
+        "matched_functions": 2263,
+        "matched_functions_percent": 66.67648791985857,
         "complete_data_percent": 100.0,
         "total_units": 154
       }

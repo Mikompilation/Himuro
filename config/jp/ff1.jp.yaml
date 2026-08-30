@@ -156,7 +156,7 @@ segments:
           - [0x9cdb0,  c,   ingame/event/ev_main]
           - [0x9f028,  c,   ingame/event/ev_spcl]
           - [0xaff68,  c,   ingame/event/ev_load]
-          - [0xb1360,  asm, ingame/event/mv_cmnd]
+          - [0xb1360,  c,   ingame/event/mv_cmnd]
           - [0xb14c0,  asm, ingame/info/inf_disp]
           - [0xb8bb8,  asm, ingame/map/map_ctrl]
           - [0xbc4b8,  asm, ingame/map/map_area]
@@ -400,7 +400,7 @@ segments:
           - { start: 0x24e700, type: .rodata, vram: 0x34d700, name: ingame/event/ev_main          }
           - { start: 0x24eb20, type: .rodata, vram: 0x34db20, name: ingame/event/ev_spcl          }
           - { start: 0x24f1c0, type: .rodata, vram: 0x34e1c0, name: ingame/event/ev_load          }
-          - { start: 0x24f230, type:  rodata, vram: 0x34e230, name: ingame/event/mv_cmnd          }
+          - { start: 0x24f230, type: .rodata, vram: 0x34e230, name: ingame/event/mv_cmnd          }
           - { start: 0x24f260, type:  rodata, vram: 0x34e260, name: ingame/info/inf_disp          }
           - { start: 0x24f348, type:  rodata, vram: 0x34e348, name: ingame/map/map_ctrl           }
           - { start: 0x24f3a0, type:  rodata, vram: 0x34e3a0, name: ingame/map/map_area           }
@@ -574,7 +574,7 @@ segments:
           - { start: 0x256fc8, type: .sdata,  vram: 0x355fc8, name: ingame/event/ev_main          }
           - { start: 0x256fe0, type: .sdata,  vram: 0x355fe0, name: ingame/event/ev_spcl          }
           - { start: 0x257070, type: .sdata,  vram: 0x356070, name: ingame/event/ev_load          }
-          - { start: 0x257080, type:  sdata,  vram: 0x356080, name: ingame/event/mv_cmnd          }
+          - { start: 0x257080, type: .sdata,  vram: 0x356080, name: ingame/event/mv_cmnd          }
           - { start: 0x257088, type:  sdata,  vram: 0x356088, name: ingame/info/inf_disp          }
           - { start: 0x2570a8, type:  sdata,  vram: 0x3560a8, name: ingame/map/map_ctrl           }
           - { start: 0x2570b4, type:  sdata,  vram: 0x3560b4, name: ingame/map/map_area           }
