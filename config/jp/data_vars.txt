@@ -1466,3 +1466,8 @@ msn_title_sp_ttl               = 0x328af8; // type:SPRT_SDAT* numel:5  nosize
 stg_title_sp_bak               = 0x328b10; // type:SPRT_SDAT numel:11 nosize
 stg_title_sp_flr               = 0x328bb0; // type:SPRT_SDAT numel:1  nosize
 stg_title_sp_ttl               = 0x328bc0; // type:SPRT_SDAT numel:2  nosize
+
+// ingame/info/inf_disp.c
+spr_dat                        = 0x328d20; // type:SPRT_DAT numel:1004 nosize
+flip_table                     = 0x330aa0; // type:u_short numel:1004 nosize
+raze_sprt                      = 0x331278; // type:SPRT_DAT

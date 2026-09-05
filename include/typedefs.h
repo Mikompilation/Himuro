@@ -61,6 +61,7 @@ typedef union {
 #if defined(BUILD_JP_VERSION)
 	#define VER_ATANF atanf
 	#define VER_ATAN2F atan2f
+	#define VER_SIN sin
 	#define VER_SINF sinf
 	#define VER_COSF cosf
 	#define VER_ACOSF acosf
@@ -71,6 +72,7 @@ typedef union {
 #elif defined(BUILD_US_VERSION)
 	#define VER_ATANF SgAtanf
 	#define VER_ATAN2F SgAtan2f
+	#define VER_SIN SgSinf
 	#define VER_SINF SgSinf
 	#define VER_COSF SgCosf
 	#define VER_ACOSF SgACosf
@@ -81,6 +83,7 @@ typedef union {
 #elif defined(BUILD_EU_VERSION)
 	#define VER_ATANF SgAtanf
 	#define VER_ATAN2F SgAtan2f
+	#define VER_SIN SgSinf
 	#define VER_SINF SgSinf
 	#define VER_COSF SgCosf
 	#define VER_ACOSF SgACosf

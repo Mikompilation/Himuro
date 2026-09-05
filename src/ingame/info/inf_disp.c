@@ -4,12 +4,18 @@
 #include "enums.h"
 #include "inf_disp.h"
 
+// gcc/src/newlib/libm/math/s_sin.c
+double sin(double x);
+
+// gcc/src/newlib/libm/math/sf_sin.c
+float sinf(float x);
+
 #include "graphics/graph2d/effect.h"
 #include "graphics/graph2d/effect_ene.h"
 #include "graphics/graph2d/effect_sub.h"
 #include "graphics/graph2d/message.h"
 #include "graphics/graph2d/number.h"
-// #include "graphics/graph2d/tim2.h" // (miss) DispSprD
+// #include "graphics/graph2d/tim2.h"
 #include "graphics/graph3d/sglib.h"
 #include "ingame/event/ev_main.h"
 #include "ingame/info/inf_disp.h"
@@ -55,7 +61,11 @@ static void ZanzoSS(ZAN *zz);
 static void ZanzoSM(ZAN *zz, u_char num1, u_char num2, u_char num3, u_char num4, u_char mode);
 static void ZanzoLS(u_char *c);
 static void ZanzoLM(u_char *zz, u_char per);
+#if defined(BUILD_JP_VERSION)
+static void AhoBon(u_short chr, short int px, short int py, u_char rot, u_char rgb, u_char alp, u_char siz);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 static void AhoBon(u_short chr, short int px, short int py, u_char rot, u_char rgb, u_char alp, u_char siz, u_char now_num, u_char ini_num);
+#endif
 static void BakBon(u_short chr, short int px, short int py, u_char flr);
 static void PhotoScoreDisp(int count, int wait);
 static void BukiyouMan(short int px, short int py);
@@ -86,6 +96,9 @@ static u_char znz[12][6];
 #define PI 3.1415927f
 #define DEG2RAD(x) ((float)(x)*PI/180.0f)
 
+#define FIXED_ONE 65536
+#define INT_TO_FIXED(x) ((x) * FIXED_ONE)
+#define FIXED_TO_INT(x) ((x) / FIXED_ONE)
 
 void InformationDispInit()
 {
@@ -136,6 +149,7 @@ void InformationDispMain()
             else if (isDispLamp() != 0)
             {
                 SetSprFile(LOAD_ADDRESS_41);
+
                 EdogawaLamp(230, 352, 1);
             }
             else
@@ -249,7 +263,7 @@ static void FndrInit()
 
     for (i = 0; i < 5; i++)
     {
-        init = (2883584 + 983040 * i) / 65536; // same as "44 + 15 * i", but with a higher timer-related resolution?
+        init = FIXED_TO_INT(INT_TO_FIXED(44) + INT_TO_FIXED(15) * i);
 
         if (init < 0)
         {
@@ -295,6 +309,7 @@ static void FndrInit()
     new_inf.dmg_eff_alp = 0;
     new_inf.dmg_wait_tm = 0;
 
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     new_inf.tm_max = 0;
 
     for (i = 0; i < 12; i++)
@@ -304,6 +319,7 @@ static void FndrInit()
         new_inf.chrg_stp[i] = 0;
         new_inf.dray_tmr[i] = 0;
     }
+#endif
 }
 
 void InformationDispWrkSet()
@@ -345,10 +361,14 @@ void InformationDispWrkSet()
 
 void PlayerInformationDisp(short int pos_x, short int pos_y)
 {
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     if (ingame_wrk.mode != INGAME_MODE_SPD_OPT)
     {
+#endif
         ShowMikuPower2(pos_x, pos_y);
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     }
+#endif
 }
 
 void FinderDisp(short int pos_x, short int pos_y)
@@ -523,7 +543,7 @@ static void WeakPoint(short int pos_x, short int pos_y)
             }
         }
 
-        if (plyr_wrk.mode != 0x1)
+        if (plyr_wrk.mode != PMODE_FINDER)
         {
             if (alp < inf_dsp.weak5_alp[i])
             {
@@ -612,7 +632,7 @@ static void WeakPoint(short int pos_x, short int pos_y)
             }
         }
 
-        if (plyr_wrk.mode != 1)
+        if (plyr_wrk.mode != PMODE_FINDER)
         {
             if (inf_dsp.hint5_alp[i] > alp)
             {
@@ -1039,7 +1059,7 @@ static void EdogawaLamp(short int pos_x, short int pos_y, u_char out)
 
     tmp = 4.0f; if (cng_pow < 4.0f) tmp = (u_char)cng_pow;  // why the cast? maybe f_max is involved?
 
-    cmn_pow = tmp * (SgCosf((inf_dsp.rmp_f * (PI * 2)) / 120.0f) - 1.0f) * 0.5f;
+    cmn_pow = tmp * (VER_COSF((inf_dsp.rmp_f * (PI * 2)) / 120.0f) - 1.0f) * 0.5f;
 
     if (inf_dsp.rmp_f < 120)
     {
@@ -1099,7 +1119,7 @@ static void EdogawaLamp(short int pos_x, short int pos_y, u_char out)
         }
     }
 
-#ifdef MATCHING_DECOMP
+#if defined(MATCHING_DECOMP)
     {
         register int i asm("v1");
 
@@ -1220,8 +1240,7 @@ static void BigBon(u_char bon_num, short int sx, short int sy, short int ex, sho
                 if (znz[i][j] != 0xff)
                 {
                     pr1 = znz[i][j] / 100.0f;
-
-                    alp = SgSinf(pr1) * 320.0f * SgSinf(pr1) * (25 - j * j) / 25.0f;
+                    alp = VER_SIN(pr1) * 320.0f * VER_SIN(pr1) * (25 - j * j) / 25.0f;
 
                     pos_x = (msx - mex) * pr1 * pr1 + mex;
                     pos_y = (msy - mey) * pr1 * pr1 + mey;
@@ -1291,7 +1310,7 @@ static void BigBon2(u_char bon_num, short int sx, short int sy, short int ex, sh
                 if (znz[i][j] != 0xff)
                 {
                     rad = znz[i][j] * PI / 100.0f;
-                    alp = SgSinf(rad) * 160.0f * (25 - j * j) / 25.0f;
+                    alp = VER_SIN(rad) * 160.0f * (25 - j * j) / 25.0f;
 
                     if (znz[i][j] <= 70)
                     {
@@ -1494,12 +1513,16 @@ static u_char Mafuba(short int pos_x, short int pos_y, u_char stts, u_char t1, u
             new_inf.mfb_drain = t5;
         }
 
+#if defined(BUILD_JP_VERSION)
+        new_inf.mfb_nfl_alp = alp_max * sin(new_inf.mfb_effect * PI / t4);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         new_inf.mfb_nfl_alp = alp_max * SgSinf(new_inf.mfb_effect * PI / t4);
+#endif
     break;
     case 5:
         if (new_inf.mfb_drain > 0)
         {
-            new_inf.mfb_drain = new_inf.mfb_drain + -1;
+            new_inf.mfb_drain--;
         }
         else
         {
@@ -1946,7 +1969,7 @@ static char EneDamegeCtrl(short int pos_x, short int pos_y)
             new_inf.dsp_dmg_step2 = 6;
         }
 
-        new_inf.dmg_eff_alp = alp_max * SgSinf((new_inf.dmg_eff_tim * PI) / 10.0f);
+        new_inf.dmg_eff_alp = alp_max * VER_SINF((new_inf.dmg_eff_tim * PI) / 10.0f);
     break;
     case 6:
         if (new_inf.dmg_num_alp - 8 > 0)
@@ -2005,17 +2028,17 @@ static void ShowEnePower(u_char blu_bar, u_char red_bar, short int pos_x, short 
     {
         PutSpriteYW(65, 66, pos_x, pos_y, 0.0f, 0x808080, alp, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
 
-#ifdef BUILD_EU_VERSION
-        GayBar(143, pos_x, pos_y, alp, red_bar / 16.0f);
-#else
+#if defined(BUILD_JP_VERSION) || defined(BUILD_US_VERSION)
         GayBar(147, pos_x, pos_y, alp, red_bar / 16.0f);
+#elif defined(BUILD_EU_VERSION)
+        GayBar(143, pos_x, pos_y, alp, red_bar / 16.0f);
 #endif
         GayBar(67, pos_x, pos_y, alp, blu_bar / 16.0f);
 
         if (bar_over & 0xFF)
         {
             rgb_per = (new_inf.hit_hp_ovr_ene / 60.0f);
-            red0 = SgSinf(rgb_per * PI) * 32.0f;
+            red0 = VER_SINF(rgb_per * PI) * 32.0f;
 
             CLRtoRGB(&ovr_ene_rgb, red0 + 0x63, 0x4d, 0x43);
 
@@ -2105,8 +2128,8 @@ static void ShowMikuPower(short int pos_x, short int pos_y)
 
     CmnWindow(32, pos_x, pos_y, alp, 0x80);
 
-    PolySquareYW(pos_x + 594,      0 + 140 + pos_y, 10, bar_h2, 0x991e2d, alp, 1.0f, 1.0f, 0x3000, 0, 0, 0);
-    PolySquareYW(pos_x + 594, bar_h2 + 140 + pos_y, 10, bar_h1, 0x91bef0, alp, 1.0f, 1.0f, 0x3000, 0, 0, 0);
+    VER_POLY_SQUARE_YW(pos_x + 594,      0 + 140 + pos_y, 10, bar_h2, 0x991e2d, alp, 1.0f, 1.0f, 0x3000, 0, 0);
+    VER_POLY_SQUARE_YW(pos_x + 594, bar_h2 + 140 + pos_y, 10, bar_h1, 0x91bef0, alp, 1.0f, 1.0f, 0x3000, 0, 0);
 }
 
 static void ShowMikuPower2(short int pos_x, short int pos_y)
@@ -2155,12 +2178,12 @@ static void ShowMikuPower2(short int pos_x, short int pos_y)
 
     if (new_inf.fire_mask == 7)
     {
-#ifdef BUILD_EU_VERSION
-        JetCD(jet1, 20,  5, 10, 6, 141, 61, pos_x, pos_y - (short)(blu_bar - 243), pos_x + 596, pos_y - (short)(blu_bar - 243) + 174, alp);
-        JetCD(jet2, 20, 24,  2, 1, 140, 62, pos_x, pos_y - (short)(blu_bar - 243), pos_x + 596, pos_y - (short)(blu_bar - 243) + 174, alp);
-#else
+#if defined(BUILD_JP_VERSION) || defined(BUILD_US_VERSION)
         JetCD(jet1, 20,  5, 10, 6, 145, 61, pos_x, pos_y - (short)(blu_bar - 243), pos_x + 596, pos_y - (short)(blu_bar - 243) + 174, alp);
         JetCD(jet2, 20, 24,  2, 1, 144, 62, pos_x, pos_y - (short)(blu_bar - 243), pos_x + 596, pos_y - (short)(blu_bar - 243) + 174, alp);
+#elif defined(BUILD_EU_VERSION)
+        JetCD(jet1, 20,  5, 10, 6, 141, 61, pos_x, pos_y - (short)(blu_bar - 243), pos_x + 596, pos_y - (short)(blu_bar - 243) + 174, alp);
+        JetCD(jet2, 20, 24,  2, 1, 140, 62, pos_x, pos_y - (short)(blu_bar - 243), pos_x + 596, pos_y - (short)(blu_bar - 243) + 174, alp);
 #endif
     }
 
@@ -2168,10 +2191,10 @@ static void ShowMikuPower2(short int pos_x, short int pos_y)
 
     if (new_inf.fire_mask != 0)
     {
-#ifdef BUILD_EU_VERSION
-        SyonenJet(142, 35, pos_x, pos_y - (short)(blu_bar - 243), pos_x + 596, pos_y - (short)(blu_bar - 243) + 174, alp, 1.0f, new_inf.fire_mask / 10.0f);
-#else
+#if defined(BUILD_JP_VERSION) || defined(BUILD_US_VERSION)
         SyonenJet(146, 35, pos_x, pos_y - (short)(blu_bar - 243), pos_x + 596, pos_y - (short)(blu_bar - 243) + 174, alp, 1.0f, new_inf.fire_mask / 10.0f);
+#elif defined(BUILD_EU_VERSION)
+        SyonenJet(142, 35, pos_x, pos_y - (short)(blu_bar - 243), pos_x + 596, pos_y - (short)(blu_bar - 243) + 174, alp, 1.0f, new_inf.fire_mask / 10.0f);
 #endif
     }
 
@@ -2217,7 +2240,7 @@ static void ShowMikuPower2(short int pos_x, short int pos_y)
         return;
     }
 
-    scl_y = blu_bar * SgSinf((new_inf.liner_y * PI) / blu_bar) / 200.0f;
+    scl_y = blu_bar * VER_SIN((new_inf.liner_y * PI) / blu_bar) / 200.0f;
 
     PutSpriteYW(LIFEBAR_WAKU_FLA4, LIFEBAR_WAKU_FLA4, pos_x, pos_y - new_inf.liner_y, 0.0f, 0x808080, (int)(alp / 2), 4.0f / 23.0f, scl_y, 0, 0xff, 1, 0, 1);
 }
@@ -2367,7 +2390,9 @@ static void TameKin2(short int pos_x, short int pos_y)
     u_char chrg_siz;
     u_char chrg_rgb;
     u_char chrg_flr;
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     u_char init_alp;
+#endif
     float rad;
 
     alp = (inf_dsp.fndr_fade_alp * 128) / 100.0f;
@@ -2388,6 +2413,7 @@ static void TameKin2(short int pos_x, short int pos_y)
         new_inf.chrg_stp[i] = 3;
     }
 
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     if (ini_num != 0)
     {
         init_alp = (SgCosf((new_inf.tm_max * (PI * 2)) / 60.0f) + 1.0f) * 32.0f + 64.0f;
@@ -2396,6 +2422,7 @@ static void TameKin2(short int pos_x, short int pos_y)
     {
         init_alp = 0;
     }
+#endif
 
     for (i = top; i < top + charge_max; i++)
     {
@@ -2413,7 +2440,7 @@ static void TameKin2(short int pos_x, short int pos_y)
         {
             new_inf.chrg_stp[i] = 0;
 
-            ZanzoSS(zanzo + i);
+            ZanzoSS(&zanzo[i]);
         }
 
         switch (new_inf.chrg_stp[i])
@@ -2468,10 +2495,14 @@ static void TameKin2(short int pos_x, short int pos_y)
             }
 
             rad = (new_inf.chrg_flr[i] * PI) / 20.0f;
-            chrg_flr = SgSinf(rad) * 128.0f;
+            chrg_flr = VER_SIN(rad) * 128.0f;
         break;
         case 3:
+#if defined(BUILD_JP_VERSION)
+            if (new_inf.chrg_stp[ini_num + top + charge_max - 1] != 3)
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
             if (new_inf.chrg_stp[charge_max + top - 1] != 3)
+#endif
             {
                 chrg_rot = 0;
                 chrg_alp = 64;
@@ -2484,7 +2515,7 @@ static void TameKin2(short int pos_x, short int pos_y)
                 chrg_rot = 0;
                 chrg_siz = 100;
                 chrg_rgb = 128;
-                chrg_alp = (SgCosf((new_inf.tm_max * 6.2831855f) / 60.0f) + 1.0f) * 32.0f + 64.0f;
+                chrg_alp = (VER_COSF((new_inf.tm_max * 6.2831855f) / 60.0f) + 1.0f) * 32.0f + 64.0f;
                 chrg_flr = 0;
             }
         break;
@@ -2492,14 +2523,18 @@ static void TameKin2(short int pos_x, short int pos_y)
 
         if (new_inf.dray_tmr[i] == 0)
         {
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
             if (i - top < ini_num)
             {
                 ZanzoSM(zanzo + i, chrg_rot, init_alp, chrg_siz, 0xff, 0);
             }
             else
             {
+#endif
                 ZanzoSM(zanzo + i, chrg_rot, chrg_alp, chrg_siz, 0xff, 0);
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
             }
+#endif
 
             new_inf.dray_tmr[i] = 2;
         }
@@ -2510,13 +2545,21 @@ static void TameKin2(short int pos_x, short int pos_y)
 
         for (j = 0; j < 6; j++)
         {
+#if defined(BUILD_JP_VERSION)
+            AhoBon(i + 26, pos_x + 143, pos_y + 389, zanzo[i].num1[j], chrg_rgb, zanzo[i].num2[j], zanzo[i].num3[j]);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
             AhoBon(i + 26, pos_x + 143, pos_y + 389, zanzo[i].num1[j], chrg_rgb, zanzo[i].num2[j], zanzo[i].num3[j], i - top, ini_num);
+#endif
         }
 
         BakBon(i + 26, pos_x + 143, pos_y + 389, chrg_flr);
     }
 
+#if defined(BUILD_JP_VERSION)
+    if (new_inf.chrg_stp[ini_num + top + charge_max - 1] == 3)
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     if (new_inf.chrg_stp[charge_max + top - 1] == 3 || ini_num != 0)
+#endif
     {
         if (new_inf.tm_max < 60)
         {
@@ -2539,10 +2582,10 @@ static void ZanzoSS(ZAN *zz)
 
     for (i = 0; i < 6; i++)
     {
-        zz->num1[i] = 0xFF;
-        zz->num2[i] = 0xFF;
-        zz->num3[i] = 0xFF;
-        zz->num4[i] = 0xFF;
+        zz->num1[i] = 0xff;
+        zz->num2[i] = 0xff;
+        zz->num3[i] = 0xff;
+        zz->num4[i] = 0xff;
     }
 }
 
@@ -2608,7 +2651,7 @@ static void ZanzoLS(u_char *c)
 
     for (i = 0; i < 6; i++)
     {
-        c[i] = 0xFF;
+        c[i] = 0xff;
     }
 }
 
@@ -2634,59 +2677,67 @@ static void ZanzoLM(u_char *zz, u_char per)
     }
 }
 
+#if defined(BUILD_JP_VERSION)
+static void AhoBon(u_short chr, short int px, short int py, u_char rot, u_char rgb, u_char alp, u_char siz)
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 static void AhoBon(u_short chr, short int px, short int py, u_char rot, u_char rgb, u_char alp, u_char siz, u_char now_num, u_char ini_num)
+#endif
 {
     float xo;
     float yo;
     DISP_SPRT ds;
 
-    if (rot != 0xff && alp != 0xff && siz != 0xff)
+    if (rot == 0xff || alp == 0xff || siz == 0xff)
     {
-        CopySprDToSpr(&ds, &spr_dat[chr]);
-
-        ds.x += px;
-        ds.y += py;
-
-        xo = ds.x + ds.w * 0.5f;
-        yo = ds.y + ds.h * 0.5f;
-
-        ds.crx = xo;
-        ds.cry = yo;
-
-        ds.rot = -rot;
-
-        ds.csx = xo;
-        ds.csy = yo;
-
-        ds.scw = siz / 100.0f;
-        ds.sch = siz / 100.0f;
-
-        ds.alphar = SCE_GS_SET_ALPHA_1(SCE_GS_ALPHA_CS, SCE_GS_ALPHA_ZERO, SCE_GS_ALPHA_AS, SCE_GS_ALPHA_CD, 0);
-        ds.alpha = alp * 0.5f;
-
-        if (inf_dsp.lucky7 != 0)
-        {
-            ds.r = 0x80;
-            ds.g = 0;
-            ds.b = 0;
-        }
-        else if (now_num < ini_num)
-        {
-            ds.r = 0xff;
-            ds.g = 0x7f;
-            ds.b = 0;
-        }
-        else
-        {
-            ds.r = rgb;
-            ds.g = rgb;
-            ds.b = rgb;
-        }
-
-        ds.tex1 = SCE_GS_SET_TEX1_1(1, 0, SCE_GS_LINEAR, SCE_GS_LINEAR_MIPMAP_LINEAR, 0, 0, 0);
-
-        DispSprD(&ds);
+        return;
     }
+
+    CopySprDToSpr(&ds, &spr_dat[chr]);
+
+    ds.x += px;
+    ds.y += py;
+
+    xo = ds.x + ds.w * 0.5f;
+    yo = ds.y + ds.h * 0.5f;
+
+    ds.crx = xo;
+    ds.cry = yo;
+
+    ds.rot = -rot;
+
+    ds.csx = xo;
+    ds.csy = yo;
+
+    ds.scw = siz / 100.0f;
+    ds.sch = siz / 100.0f;
+
+    ds.alphar = SCE_GS_SET_ALPHA_1(SCE_GS_ALPHA_CS, SCE_GS_ALPHA_ZERO, SCE_GS_ALPHA_AS, SCE_GS_ALPHA_CD, 0);
+    ds.alpha = alp * 0.5f;
+
+    if (inf_dsp.lucky7 != 0)
+    {
+        ds.r = 0x80;
+        ds.g = 0;
+        ds.b = 0;
+    }
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+    else if (now_num < ini_num)
+    {
+        ds.r = 0xff;
+        ds.g = 0x7f;
+        ds.b = 0;
+    }
+#endif
+    else
+    {
+        ds.r = rgb;
+        ds.g = rgb;
+        ds.b = rgb;
+    }
+
+    ds.tex1 = SCE_GS_SET_TEX1_1(1, 0, SCE_GS_LINEAR, SCE_GS_LINEAR_MIPMAP_LINEAR, 0, 0, 0);
+
+    DispSprD(&ds);
 }
 
 static void BakBon(u_short chr, short int px, short int py, u_char flr)
@@ -2761,7 +2812,7 @@ static void PhotoScoreDisp(int count, int wait)
     switch (e_flow)
     {
     case 0:
-        fcnt = (1.0f - SgSinf(0.0f)) * fnum;
+        fcnt = (1.0f - VER_SINF(0.0f)) * fnum;
         e_flow++;
     break;
     case 1:
@@ -2807,7 +2858,7 @@ static void PhotoScoreDisp(int count, int wait)
         DispSprD(&ds);
     }
 
-    fcnt = (1.0f - SgSinf(DEG2RAD(cnt))) * fnum;
+    fcnt = (1.0f - VER_SINF(DEG2RAD(cnt))) * fnum;
 
     if (count < 2)
     {
@@ -2906,7 +2957,7 @@ static void BukiyouMan(short int px, short int py)
 
     if (new_inf.buki_use_alp == alp_max)
     {
-        alp = (int)((SgCosf(new_inf.buki_use_tmr * (PI * 2) / 60.0f) + 1.0f) * 50.0f * 0.5f) + 50;
+        alp = (int)((VER_COSF(new_inf.buki_use_tmr * (PI * 2) / 60.0f) + 1.0f) * 50.0f * 0.5f) + 50;
 
         buki_alp = new_inf.buki_use_alp * alp / 100.0f;
 
@@ -3044,7 +3095,7 @@ static void GekisyaBoyGeisyaGirl(short int px, short int py)
 
         mov = 100;
         alp1 = 0x80;
-        alp2 = alp_max * SgSinf((new_inf.shot_lgt * PI) / 20.0f);
+        alp2 = alp_max * VER_SINF((new_inf.shot_lgt * PI) / 20.0f);
     }
     else if (new_inf.shot_fad != 0)
     {
@@ -3090,7 +3141,7 @@ static void GekisyaBoyGeisyaGirl(short int px, short int py)
         y[2] = 345;
         y[3] = 361;
         y[4] = 377;
-    // forgot to break?
+    // missing break?
     case 6:
         y[0] = 313;
         y[1] = 329;
@@ -3239,39 +3290,59 @@ static char KanKinoSyogai(short int pos_x, short int pos_y)
 
     if (cam_custom_wrk.set_spe == 0xff)
     {
-        return;
+        return; // missing return value
     }
 
     if (cam_custom_wrk.set_spe != 0)
     {
-        return;
+        return; // missing return value
     }
 
     alp = (inf_dsp.fndr_fade_alp * 128) / 100.0f;
 
     for (i = 0; i < 4; i++)
     {
+#if defined(BUILD_JP_VERSION)
+        PutSpriteYW(KAN_BU + i, KAN_BU + i, pos_x, pos_y, 0.0f, 0x808080, alp, 1.0f, 1.0f, 0x0, 0xff, 0x1, 0x0, 0x0);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         PutSpriteYW(KAN_BU + i, KAN_BU + i, pos_x, pos_y, 0.0f, 0x808080, alp, 1.0f, 1.0f, 0x0, 0xff, 0x1, 0x0, 0x1);
+#endif
     }
 
     if (plyr_wrk.spe1_dir & 0x1)
     {
+#if defined(BUILD_JP_VERSION)
+        PutSpriteYW(KAN_FU, KAN_FU, pos_x, pos_y, 0.0f, 0x808080, alp, 1.0f, 1.0f, 0x0, 0xff, 0x1, 0x1, 0x0);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         PutSpriteYW(KAN_FU, KAN_FU, pos_x, pos_y, 0.0f, 0x808080, alp, 1.0f, 1.0f, 0x0, 0xff, 0x1, 0x1, 0x1);
+#endif
     }
 
     if (plyr_wrk.spe1_dir & 0x2)
     {
+#if defined(BUILD_JP_VERSION)
+        PutSpriteYW(KAN_FR, KAN_FR, pos_x, pos_y, 0.0f, 0x808080, alp, 1.0f, 1.0f, 0x0, 0xff, 0x1, 0x1, 0x0);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         PutSpriteYW(KAN_FR, KAN_FR, pos_x, pos_y, 0.0f, 0x808080, alp, 1.0f, 1.0f, 0x0, 0xff, 0x1, 0x1, 0x1);
+#endif
     }
 
     if (plyr_wrk.spe1_dir & 0x4)
     {
+#if defined(BUILD_JP_VERSION)
+        PutSpriteYW(KAN_FD, KAN_FD, pos_x, pos_y, 0.0f, 0x808080, alp, 1.0f, 1.0f, 0x0, 0xff, 0x1, 0x1, 0x0);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         PutSpriteYW(KAN_FD, KAN_FD, pos_x, pos_y, 0.0f, 0x808080, alp, 1.0f, 1.0f, 0x0, 0xff, 0x1, 0x1, 0x1);
+#endif
     }
 
     if (plyr_wrk.spe1_dir & 0x8)
     {
+#if defined(BUILD_JP_VERSION)
+        PutSpriteYW(KAN_FL, KAN_FL, pos_x, pos_y, 0.0f, 0x808080, alp, 1.0f, 1.0f, 0x0, 0xff, 0x1, 0x1, 0x0);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         PutSpriteYW(KAN_FL, KAN_FL, pos_x, pos_y, 0.0f, 0x808080, alp, 1.0f, 1.0f, 0x0, 0xff, 0x1, 0x1, 0x1);
+#endif
     }
 
     return dir;

@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 61.6100484710341,
+    "fuzzy_match_percent": 64.21141884191303,
     "total_code": "1165232",
-    "matched_code": "717900",
-    "matched_code_percent": 61.6100484710341,
+    "matched_code": "748212",
+    "matched_code_percent": 64.21141884191303,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 2263,
-    "matched_functions_percent": 66.67648791985857,
+    "matched_functions": 2316,
+    "matched_functions_percent": 68.23806717737183,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -17633,9 +17633,14 @@
     {
       "name": "ingame/info/inf_disp",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "30312",
+        "matched_code": "30312",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 53,
+        "matched_functions": 53,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -17643,14 +17648,17 @@
         {
           "name": ".text",
           "size": "30456",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -17658,266 +17666,319 @@
         {
           "name": "InformationDispInit",
           "size": "124",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "InformationDispMain",
           "size": "500",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "InformationDispModeCtrl",
           "size": "424",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "InformationDispWrkSet",
           "size": "208",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FndrInit",
           "size": "300",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FinderDisp",
           "size": "472",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EdogawaLamp",
           "size": "1768",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "isDispLamp",
           "size": "188",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PlayerInformationDisp",
           "size": "20",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PhotoScoreDisp",
           "size": "860",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SttsFade",
           "size": "140",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FndrFade",
           "size": "140",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ZanzoSS",
           "size": "76",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MafubaInit",
           "size": "140",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ShowMikuPower2",
           "size": "1548",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "NewFndrBase",
           "size": "352",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "WeakPoint",
           "size": "2076",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FilmZansu",
           "size": "748",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "Mafuba",
           "size": "1652",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MafubaFinish",
           "size": "472",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ShowEneCtrl",
           "size": "516",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GekisyaBoyGeisyaGirl",
           "size": "2820",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "BukiyouMan",
           "size": "996",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "KanKinoSyogai",
           "size": "600",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "TameKin2",
           "size": "1676",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "BigBon2",
           "size": "920",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PhotoScoreDispOnOff",
           "size": "32",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DspBigCircle",
           "size": "564",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PointerNP",
           "size": "244",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PointerEN",
           "size": "364",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "NumDisp",
           "size": "644",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "YVH_CUT",
           "size": "148",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "BigBon",
           "size": "892",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ZanzoLS",
           "size": "52",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ZanzoLM",
           "size": "100",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetEnePoint",
           "size": "288",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DameDameInit",
           "size": "372",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SndEffLoop",
           "size": "112",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ZanzoSM",
           "size": "328",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DameEffNumber",
           "size": "580",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "EneDamegeCtrl",
           "size": "1960",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ShowEnePower",
           "size": "628",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GayBar",
           "size": "232",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "Koutakun",
           "size": "244",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DspKotaku",
           "size": "244",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ShowMikuPower",
           "size": "376",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GayBar2",
           "size": "388",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "JetCD",
           "size": "536",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SyonenJet",
           "size": "372",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "AhoBon",
           "size": "484",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "BakBon",
           "size": "364",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "InfoDispPause",
           "size": "16",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "InfoDispRestart",
           "size": "12",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -24988,14 +25049,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 61.6100484710341,
+        "fuzzy_match_percent": 64.21141884191303,
         "total_code": "1165232",
-        "matched_code": "717900",
-        "matched_code_percent": 61.6100484710341,
+        "matched_code": "748212",
+        "matched_code_percent": 64.21141884191303,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 2263,
-        "matched_functions_percent": 66.67648791985857,
+        "matched_functions": 2316,
+        "matched_functions_percent": 68.23806717737183,
         "complete_data_percent": 100.0,
         "total_units": 154
       }
