@@ -87,7 +87,7 @@ static u_short lock_did[20];
 
 u_char IsUseDoor(u_char use)
 {
-    if (use == 1 || use == 3 || use == 4)
+    if (use == FURN_USER_DOOR_NOW_ROOM || use == FURN_USER_DOOR_NEXT_ROOM || use == FURN_USER_DOOR_JOINT)
     {
         return 1;
     }
@@ -215,14 +215,14 @@ void DoorPassRoom(u_char room_id)
     u_char dr_num;
     u_char room_no;
 
-    room_no = GetDataRoom(10, room_id);
+    room_no = GetDataRoom(MAP_DOOR_DAT, room_id);
 
     if (room_no == 0xff)
     {
         return;
     }
 
-    addr_si0 = (int *)(map_wrk.dat_adr + 0x28);
+    addr_si0 = (int *)(map_wrk.dat_adr + MAP_DOOR_DAT * 4);
     addr_si0 = (int *)(*addr_si0 + LOAD_ADDRESS_02);
     addr_si0 = (int *)(addr_si0[1] + LOAD_ADDRESS_02);
 
@@ -353,7 +353,7 @@ void DoorCtrlInit()
             {
                 door_wrk[j].door_id = 0xffff;
                 door_wrk[j].stts = 0x0;
-                door_wrk[j].use = 5;
+                door_wrk[j].use = FURN_USER_NOTHING;
             }
         }
     }
@@ -363,7 +363,7 @@ void DoorCtrlInit()
         nc_door_wrk[i].stts = 0x0;
     }
 
-    addr = (int *)(map_wrk.dat_adr + 10 * 4);
+    addr = (int *)(map_wrk.dat_adr + MAP_DOOR_DAT * 4);
     addr = (int *)(*addr + LOAD_ADDRESS_02);
     addr = (int *)(*addr + LOAD_ADDRESS_02);
 
@@ -425,12 +425,12 @@ void DoorDataInit()
         return;
     }
 
-    addr_si = (int *)(map_wrk.dat_adr + 10 * 4);
+    addr_si = (int *)(map_wrk.dat_adr + MAP_DOOR_DAT * 4);
     addr_si = (int *)(*addr_si + LOAD_ADDRESS_02);
     addr_si = (int *)(addr_si[1] + LOAD_ADDRESS_02);
 
-    room_id = GetRoomIdFromRoomNo(0, room_wrk.room_no);
-    room_no = GetDataRoom(10, room_id);
+    room_id = GetRoomIdFromRoomNo(MAP_ROOM_DAT, room_wrk.room_no);
+    room_no = GetDataRoom(MAP_DOOR_DAT, room_id);
 
     if (room_no == 0xff)
     {
@@ -482,7 +482,7 @@ void DoorDataInit()
             }
         }
 
-        while (door_wrk[no_use_dw].use != 5)
+        while (door_wrk[no_use_dw].use != FURN_USER_NOTHING)
         {
             no_use_dw++;
 
@@ -492,7 +492,7 @@ void DoorDataInit()
             }
         }
 
-        addr_si = (int *)(map_wrk.dat_adr + 10 * 4);
+        addr_si = (int *)(map_wrk.dat_adr + MAP_DOOR_DAT * 4);
         addr_si = (int *)(*addr_si + LOAD_ADDRESS_02);
         addr_si = (int *)(addr_si[2] + LOAD_ADDRESS_02);
         addr_si = (int *)(addr_si[dr_no] + LOAD_ADDRESS_02);
@@ -500,9 +500,9 @@ void DoorDataInit()
 
         SetDoorWrk(no_use_dw, (u_int*)addr_si, dr_id, no_use_fw);
 
-        door_wrk[no_use_dw].use = 1;
+        door_wrk[no_use_dw].use = FURN_USER_DOOR_NOW_ROOM;
 
-        DoorSetFurnWrk(no_use_dw, no_use_fw, 1, room_id);
+        DoorSetFurnWrk(no_use_dw, no_use_fw, FURN_USER_DOOR_NOW_ROOM, room_id);
     }
 }
 
@@ -680,7 +680,7 @@ u_char IsAllConnectDoorClose()
 
     for (i = 0; i < 20; i++)
     {
-        if (IsUseDoor(dwp->use) != 0 && dwp->use != 5)
+        if (IsUseDoor(dwp->use) != 0 && dwp->use != FURN_USER_NOTHING)
         {
             dscv_flg = 0;
 
@@ -733,7 +733,7 @@ void LockAllDoorInNowRoom()
 
     next_room_id = 0xff;
 
-    room_no = GetRoomIdFromRoomNo(0, room_wrk.room_no);
+    room_no = GetRoomIdFromRoomNo(MAP_ROOM_DAT, room_wrk.room_no);
 
     if (room_no == 0xff)
     {
@@ -772,7 +772,7 @@ void LockAllDoorInNowRoom()
 
             for (j = 0; j < 20; j++)
             {
-                if (door_wrk[j].use == 5)
+                if (door_wrk[j].use == FURN_USER_NOTHING)
                 {
                     continue;
                 }
@@ -840,7 +840,7 @@ void UnlockAllDoorInNowRoom()
 
             for (j = 0; j < 20; j++)
             {
-                if (dwp->use != 5 && dwp->door_id == lock_did[i])
+                if (dwp->use != FURN_USER_NOTHING && dwp->door_id == lock_did[i])
                 {
                     dwp->lock = 0;
                 }
@@ -1825,13 +1825,13 @@ void AllCloseConnectDoor()
     u_char now_rid;
     u_char room_no;
 
-    now_rid = GetRoomIdFromRoomNo(0, room_wrk.room_no);
+    now_rid = GetRoomIdFromRoomNo(MAP_ROOM_DAT, room_wrk.room_no);
 
     dwp = door_wrk;
 
     for (i = 0; i < 20; i++)
     {
-        if (dwp->use == 1 || dwp->use == 3 || dwp->use == 4)
+        if (dwp->use == FURN_USER_DOOR_NOW_ROOM || dwp->use == FURN_USER_DOOR_NEXT_ROOM || dwp->use == FURN_USER_DOOR_JOINT)
         {
             if (dwp->stts != 1 && dwp->stts != 5)
             {
@@ -2245,7 +2245,7 @@ int AreaReadCheck()
     u_char type;
     u_char dr_num;
 
-    area_read_wrk.rm_from = GetRoomIdFromRoomNo(0, room_wrk.room_no);
+    area_read_wrk.rm_from = GetRoomIdFromRoomNo(MAP_ROOM_DAT, room_wrk.room_no);
 
     if (doj_square_mtn.dojs[0].type != 0xff)
     {
@@ -2278,7 +2278,7 @@ int AreaReadCheck()
 
     if (IsDoorLoad(type) != 0)
     {
-        area_read_wrk.stat = 1;
+        area_read_wrk.stat = AR_STAT_READ_READY;
 
         ingame_wrk.mode = INGAME_MODE_AREA_MOVE;
 
@@ -2333,7 +2333,7 @@ static u_char DoorOpenCheck(u_char chk_stat)
             {
                 for (j = 0; j < 20; j++)
                 {
-                    if (door_wrk[dsmp->dojs[i].dwrk_no].use == 5)
+                    if (door_wrk[dsmp->dojs[i].dwrk_no].use == FURN_USER_NOTHING)
                     {
                         continue;
                     }
@@ -2699,7 +2699,7 @@ static void DoorOpenCheckSquareArea(DOJ_SQUARE_MTN *dsmp, u_char stat_chk, u_cha
     pos_x = plyr_wrk.move_box.pos[2];
     pos_y = plyr_wrk.move_box.pos[0];
 
-    rdp = GetDoorRoomConectDataP(GetRoomIdFromRoomNo(0, room_wrk.room_no));
+    rdp = GetDoorRoomConectDataP(GetRoomIdFromRoomNo(MAP_ROOM_DAT, room_wrk.room_no));
 
     if (rdp == NULL) {
         return;
@@ -3061,7 +3061,7 @@ u_char DoorHitCheck(u_char *dx_max, u_char *dz_max, float *dst, float *ppos, u_c
     pos[2] = ppos[2];
     pos[3] = ppos[3];
 
-    door_no = GetRoomIdFromRoomNo(0, room_wrk.room_no);
+    door_no = GetRoomIdFromRoomNo(MAP_ROOM_DAT, room_wrk.room_no);
     rdp = GetDoorRoomConectDataP(door_no);
 
     if (rdp == NULL)
@@ -3774,15 +3774,15 @@ void DoorDataRenewNow()
 
     for (i = 0; i < 20; i++)
     {
-        if (door_wrk[i].use == 3)
+        if (door_wrk[i].use == FURN_USER_DOOR_NEXT_ROOM)
         {
-            door_wrk[i].use = 1;
-            furn_wrk[door_wrk[i].fwrk_no].use = 1;
+            door_wrk[i].use = FURN_USER_DOOR_NOW_ROOM;
+            furn_wrk[door_wrk[i].fwrk_no].use = FURN_USER_DOOR_NOW_ROOM;
         }
-        else if (door_wrk[i].use == 1)
+        else if (door_wrk[i].use == FURN_USER_DOOR_NOW_ROOM)
         {
-            door_wrk[i].use = 3;
-            furn_wrk[door_wrk[i].fwrk_no].use = 3;
+            door_wrk[i].use = FURN_USER_DOOR_NEXT_ROOM;
+            furn_wrk[door_wrk[i].fwrk_no].use = FURN_USER_DOOR_NEXT_ROOM;
         }
     }
 }
@@ -3798,9 +3798,9 @@ void DoorFreeFurnWrk(u_char room_id)
 
     for (i = 0; i < 20; i++)
     {
-        if (door_wrk[i].use == 3)
+        if (door_wrk[i].use == FURN_USER_DOOR_NEXT_ROOM)
         {
-            door_wrk[i].use = 5;
+            door_wrk[i].use = FURN_USER_NOTHING;
             door_wrk[i].stts = DOOR_STTS_NO_USE;
 
             FurnSetWrkNoUse(&furn_wrk[door_wrk[i].fwrk_no], door_wrk[i].fwrk_no);
@@ -3809,11 +3809,11 @@ void DoorFreeFurnWrk(u_char room_id)
         }
         else
         {
-            if (door_wrk[i].use == 4)
+            if (door_wrk[i].use == FURN_USER_DOOR_JOINT)
             {
-                door_wrk[i].use = 1;
+                door_wrk[i].use = FURN_USER_DOOR_NOW_ROOM;
 
-                furn_wrk[door_wrk[i].fwrk_no].use = 1;
+                furn_wrk[door_wrk[i].fwrk_no].use = FURN_USER_DOOR_NOW_ROOM;
             }
         }
     }
@@ -3825,11 +3825,11 @@ void DoorJoint2Next()
 
     for (i = 0; i < 20; i++)
     {
-        if (door_wrk[i].use == 4)
+        if (door_wrk[i].use == FURN_USER_DOOR_JOINT)
         {
-            door_wrk[i].use = 3;
+            door_wrk[i].use = FURN_USER_DOOR_NEXT_ROOM;
 
-            furn_wrk[door_wrk[i].fwrk_no].use = 3;
+            furn_wrk[door_wrk[i].fwrk_no].use = FURN_USER_DOOR_NEXT_ROOM;
         }
     }
 }
@@ -3858,9 +3858,9 @@ void DoorDataRenewNext(u_char room_id)
 
     SetUpRoomCoordinate(room_id, room_wrk.pos[1]);
 
-    room_no = GetDataRoom(10, room_id);
+    room_no = GetDataRoom(MAP_DOOR_DAT, room_id);
 
-    addr_si = (int *)(map_wrk.dat_adr + 10 * 4);
+    addr_si = (int *)(map_wrk.dat_adr + MAP_DOOR_DAT * 4);
     addr_si = (int *)(*addr_si + LOAD_ADDRESS_02);
     addr_si = (int *)(addr_si[1] + LOAD_ADDRESS_02);
     addr_si = (int *)(addr_si[room_no] + LOAD_ADDRESS_02);
@@ -3885,9 +3885,9 @@ void DoorDataRenewNext(u_char room_id)
             {
                 if (door_wrk[j].door_id == dr_id)
                 {
-                    door_wrk[j].use = 4;
+                    door_wrk[j].use = FURN_USER_DOOR_JOINT;
 
-                    furn_wrk[door_wrk[j].fwrk_no].use = 4;
+                    furn_wrk[door_wrk[j].fwrk_no].use = FURN_USER_DOOR_JOINT;
 
                     if (furn_wrk[door_wrk[j].fwrk_no].furn_no != 0xffff && furn_wrk[door_wrk[j].fwrk_no].furn_no != 0)
                     {
@@ -3920,13 +3920,13 @@ void DoorDataRenewNext(u_char room_id)
                 return;
             }
 
-            addr_si = (int *)(map_wrk.dat_adr + 10 * 4);
+            addr_si = (int *)(map_wrk.dat_adr + MAP_DOOR_DAT * 4);
             addr_si = (int *)(*addr_si + LOAD_ADDRESS_02);
             addr_si = (int *)(addr_si[2] + LOAD_ADDRESS_02);
             addr_si = (int *)(addr_si[dr_no] + LOAD_ADDRESS_02);
             addr_si = (int *)(*addr_si + LOAD_ADDRESS_02);
 
-            while (door_wrk[no_use_dw].use != 5)
+            while (door_wrk[no_use_dw].use != FURN_USER_NOTHING)
             {
                 no_use_dw++;
 
@@ -3948,9 +3948,9 @@ void DoorDataRenewNext(u_char room_id)
 
             SetDoorWrk(no_use_dw, (u_int *)addr_si, dr_id, no_use_fw);
 
-            door_wrk[no_use_dw].use = 3;
+            door_wrk[no_use_dw].use = FURN_USER_DOOR_NEXT_ROOM;
 
-            DoorSetFurnWrk(no_use_dw, no_use_fw, 3, room_id);
+            DoorSetFurnWrk(no_use_dw, no_use_fw, FURN_USER_DOOR_NEXT_ROOM, room_id);
         }
     }
 }
@@ -3963,10 +3963,10 @@ u_char GetNextRIdFromRNoDId(u_char room_no, u_short door_id)
     u_char dr_num;
     u_char room_id;
 
-    room_id = GetRoomIdFromRoomNo(0, room_no);
-    room_no = GetDataRoom(10, room_id);
+    room_id = GetRoomIdFromRoomNo(MAP_ROOM_DAT, room_no);
+    room_no = GetDataRoom(MAP_DOOR_DAT, room_id);
 
-    addr_si = (int *)(map_wrk.dat_adr + 10 * 4);
+    addr_si = (int *)(map_wrk.dat_adr + MAP_DOOR_DAT * 4);
     addr_si = (int *)(*addr_si + LOAD_ADDRESS_02);
     addr_si = (int *)(addr_si[1] + LOAD_ADDRESS_02);
 
@@ -4004,7 +4004,7 @@ u_char NextRoomRenew()
             return 0xff;
         }
 
-        room_no = GetDataRoom(0, disp_no);
+        room_no = GetDataRoom(MAP_ROOM_DAT, disp_no);
 
         if (room_no != 0xff)
         {
@@ -4043,7 +4043,7 @@ u_char ChkNextRoomIsInsite()
     u_char i;
     u_char now_room_id;
 
-    now_room_id = GetRoomIdFromRoomNo(0, room_wrk.room_no);
+    now_room_id = GetRoomIdFromRoomNo(MAP_ROOM_DAT, room_wrk.room_no);
 
     addr_uc = GetDoorRoomConectDataP(now_room_id);
 
@@ -4122,7 +4122,7 @@ u_char* GetDoorRoomNumP()
 {
     int *addr;
 
-    addr = (int*)(((int*)map_wrk.dat_adr)[10] + LOAD_ADDRESS_02);
+    addr = (int*)(((int*)map_wrk.dat_adr)[MAP_DOOR_DAT] + LOAD_ADDRESS_02);
     addr = (int*)(addr[0] + LOAD_ADDRESS_02);
     addr = (int*)(addr[0] + LOAD_ADDRESS_02);
 
@@ -4145,7 +4145,7 @@ static u_short* GetDoorDoorNumP()
 {
     int *addr;
 
-    addr = (int*)(((int*)map_wrk.dat_adr)[10] + LOAD_ADDRESS_02);
+    addr = (int*)(((int*)map_wrk.dat_adr)[MAP_DOOR_DAT] + LOAD_ADDRESS_02);
     addr = (int*)(addr[0] + LOAD_ADDRESS_02);
     addr = (int*)(addr[1] + LOAD_ADDRESS_02);
 
@@ -4168,7 +4168,7 @@ u_char* GetDoorRoomConectDataP(u_char room_id)
     {
         if (*addr_uc == room_id)
         {
-            addr_si = (int *)(map_wrk.dat_adr + 10 * 4);
+            addr_si = (int *)(map_wrk.dat_adr + MAP_DOOR_DAT * 4);
             addr_si = (int *)(addr_si[0] + LOAD_ADDRESS_02);
             addr_si = (int *)(addr_si[1] + LOAD_ADDRESS_02);
             addr_si = (int *)(addr_si[i] + LOAD_ADDRESS_02);
@@ -4198,7 +4198,7 @@ static int* GetDoorDataTopP(u_short door_id)
     {
         if (*addr_us == door_id)
         {
-            addr_si = (int *)(map_wrk.dat_adr + 10 * 4);
+            addr_si = (int *)(map_wrk.dat_adr + MAP_DOOR_DAT * 4);
             addr_si = (int *)(addr_si[0] + LOAD_ADDRESS_02);
             addr_si = (int *)(addr_si[2] + LOAD_ADDRESS_02);
             addr_si = &addr_si[i];
@@ -4924,7 +4924,7 @@ void OneRoomLoadReq()
     {
         if (furn_wrk[i].room_id != room_wrk.disp_no[0])
         {
-            if (furn_wrk[i].use == 0 || furn_wrk[i].use == 2)
+            if (furn_wrk[i].use == FURN_USER_NOW_ROOM || furn_wrk[i].use == FURN_USER_NEXT_ROOM)
             {
                 FurnSetWrkNoUse(&furn_wrk[i], i);
             }

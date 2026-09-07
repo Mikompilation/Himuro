@@ -17,6 +17,7 @@ float sinf(float x);
 #include "ingame/event/wan_soul.h"
 #include "graphics/motion/mdlact.h"
 #include "graphics/graph2d/effect.h"
+#include "graphics/graph2d/g2d_debug.h"
 #include "graphics/graph2d/effect_scr.h"
 #include "graphics/graph2d/message.h"
 #include "graphics/graph3d/sglib.h"
@@ -230,7 +231,7 @@ void CameraMain()
 {
     float fov = DEG2RAD(51.0f);
 
-    if (dbg_wrk.cam_mode == 1 && DBG_cam_id_move_chk == 0)
+    if (dbg_wrk.cam_mode == DBG_CAM_MODE_FREE && DBG_cam_id_move_chk == 0)
     {
         cam_id_move.i[0] = camera.i[0];
         cam_id_move.i[1] = camera.i[1];
@@ -263,7 +264,7 @@ void CameraMain()
         cd_edit_end = 0;
     }
 
-    if (dbg_wrk.cam_mode == 1)
+    if (dbg_wrk.cam_mode == DBG_CAM_MODE_FREE)
     {
         DBG_cam_id_move_chk = 1;
     }
@@ -421,7 +422,7 @@ void NormalCameraCtrl()
     SgCAMERA tc2;
     static SgCAMERA oc;
 
-    if (dbg_wrk.cam_mode == 2)
+    if (dbg_wrk.cam_mode == DBG_CAM_MODE_TEMP)
     {
         tc.i[0] = plyr_wrk.move_box.pos[0];
         tc.i[1] = plyr_wrk.move_box.pos[1];
@@ -544,7 +545,7 @@ int GetCameraInfo(MAP_CAM_INFO *mci)
             }
         }
 
-        if (dbg_wrk.cam_mode == 0)
+        if (dbg_wrk.cam_mode == DBG_CAM_MODE_HOLD)
         {
             switch (dbg_wrk.cam_hold_mode)
             {
@@ -903,7 +904,7 @@ float GetMCLocalPosPer(u_short cn, u_char kind, u_char id)
     u_short xmax;
     u_short zmin;
     u_short zmax;
-    u_char kind_tbl[4] = { 1, 2, 3, 4 };
+    u_char kind_tbl[4] = { MAP_CAMERA, MAP_CAMERA_B, MAP_CAMERA_D, MAP_CAMERA_T };
     static float min;
     static float max;
     static u_short req_cam_no_save = 0xffff;

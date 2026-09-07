@@ -4,6 +4,7 @@
 #include "enums.h"
 #include "ingame.h"
 
+#include "graphics/graph2d/g2d_debug.h"
 #include "graphics/graph3d/gra3d.h"
 // #include "graphics/motion/mdlwork.h"
 #include "ingame/entry/entry.h"
@@ -497,7 +498,7 @@ void InGameMain()
             DoorOpenCheckMain();
 
             if (
-                dbg_wrk.mode_on == 0 && dbg_wrk.cam_mode != 1 &&
+                dbg_wrk.mode_on == 0 && dbg_wrk.cam_mode != DBG_CAM_MODE_FREE &&
                 PAD_BTN_PRESSED(PAD_ACTION_BACK) &&
 #if defined(BUILD_EU_VERSION)
                 pad[0].push[PAD_ACTION_BACK] > 6 &&

@@ -126,7 +126,7 @@ int SEventLoadReqAndSet(int load_id, u_short door_id)
     u_char room_to;
     u_char dr_num;
 
-    room_from = GetRoomIdFromRoomNo(0, room_wrk.room_no);
+    room_from = GetRoomIdFromRoomNo(MAP_ROOM_DAT, room_wrk.room_no);
     addr_uc = GetDoorRoomConectDataP(room_from);
 
     dr_num = addr_uc[0];

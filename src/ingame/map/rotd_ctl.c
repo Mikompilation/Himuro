@@ -1,5 +1,6 @@
 #include "common.h"
 #include "typedefs.h"
+#include "enums.h"
 #include "rotd_ctl.h"
 
 #include "graphics/graph3d/gra3d.h"
@@ -54,7 +55,7 @@ void ChangeRotDoorFace(u_short door_id)
 
     dkeepp = &door_keep[door_id];
 
-    room_no = GetDataRoom(0, dkeepp->room_id);
+    room_no = GetDataRoom(MAP_ROOM_DAT, dkeepp->room_id);
 
     next_room_id = GetNextRIdFromRNoDId(room_no, door_id);
 
@@ -86,7 +87,7 @@ void ChangeRotDoorFaceRoomId(u_short door_id, u_char room_id)
         return;
     }
 
-    room_no = GetDataRoom(0x0, dkeepp->room_id);
+    room_no = GetDataRoom(MAP_ROOM_DAT, dkeepp->room_id);
 
     next_room_id = GetNextRIdFromRNoDId(room_no, door_id);
 

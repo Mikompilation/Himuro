@@ -161,7 +161,7 @@ u_int* RoomMdlLoadReq(u_int *addr, u_char blk_no, u_char msn_no, u_char room_no,
         tmp_load_id = SEventLoadReqAndSetSub(tmp_load_id, 255, rlb->room_no);
     break;
     case 2:
-        room_from = GetRoomIdFromRoomNoFloor(0, room_wrk.room_no, map_wrk.floor);
+        room_from = GetRoomIdFromRoomNoFloor(MAP_ROOM_DAT, room_wrk.room_no, map_wrk.floor);
 
         tmp_load_id = SDoorLoadReqAndSetSub(tmp_load_id, room_from, rlb->room_no);
         tmp_load_id = SFootLoadReqAndSetSub(tmp_load_id, room_from, rlb->room_no);
@@ -239,7 +239,7 @@ int RoomMdlLoadWait()
 
         for (i = 0; i < 60; i++)
         {
-            if (fwp->use == 1 || fwp->use == 4 || fwp->use == 3)
+            if (fwp->use == FURN_USER_DOOR_NOW_ROOM || fwp->use == FURN_USER_DOOR_JOINT || fwp->use == FURN_USER_DOOR_NEXT_ROOM)
             {
                 if (fwp->furn_no != 0xffff)
                 {
@@ -690,7 +690,7 @@ int LoadInitDoorModel(ROOM_LOAD_BLOCK *rlb)
 
         for (i = 0; i < 60; i++)
         {
-            if (fwp->use == 1 || fwp->use == 4 || fwp->use == 3)
+            if (fwp->use == FURN_USER_DOOR_NOW_ROOM || fwp->use == FURN_USER_DOOR_JOINT || fwp->use == FURN_USER_DOOR_NEXT_ROOM)
             {
                 if (fwp->furn_no != 0xFFFF)
                 {

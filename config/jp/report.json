@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 64.21141884191303,
+    "fuzzy_match_percent": 65.45134359509522,
     "total_code": "1165232",
-    "matched_code": "748212",
-    "matched_code_percent": 64.21141884191303,
+    "matched_code": "762660",
+    "matched_code_percent": 65.45134359509522,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 2316,
-    "matched_functions_percent": 68.23806717737183,
+    "matched_functions": 2376,
+    "matched_functions_percent": 70.00589275191514,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -17991,9 +17991,14 @@
     {
       "name": "ingame/map/map_ctrl",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "14448",
+        "matched_code": "14448",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 60,
+        "matched_functions": 60,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -18001,14 +18006,17 @@
         {
           "name": ".text",
           "size": "14592",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -18016,301 +18024,361 @@
         {
           "name": "MissonMapDataLoad",
           "size": "32",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "InitMapStatus",
           "size": "96",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RoomPassInit",
           "size": "20",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MapDataInit",
           "size": "76",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MapFloorChange",
           "size": "64",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MapMissionChange",
           "size": "40",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RoomPass",
           "size": "44",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IsRoomPass",
           "size": "44",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetFloorTopAddr",
           "size": "28",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "InitMap",
           "size": "224",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RoomWrkRenew",
           "size": "76",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetRoomNum",
           "size": "36",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetNewRoomData",
           "size": "456",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MapCtrlMain",
           "size": "2144",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CameraNoRenewEach",
           "size": "344",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PlayerHeightRenew",
           "size": "72",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MapSetFloorSeNo",
           "size": "360",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetNowOpenEvent",
           "size": "372",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetNowOpenFindAct",
           "size": "376",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetNowPlayerMoveMotion",
           "size": "52",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetPointRoom",
           "size": "84",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetPointHeight",
           "size": "372",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetNowHeight",
           "size": "292",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetNowRoom",
           "size": "152",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetPlayerRoom",
           "size": "84",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetRoomDispPos",
           "size": "200",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetDataNum",
           "size": "120",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetNowCameraEach",
           "size": "308",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CameraGetDoramaCameraNo",
           "size": "588",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RoomChangeJudge",
           "size": "72",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CameraChangeJudgeEach",
           "size": "132",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CameraCheckDoorCameraNo",
           "size": "500",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CameraNoRenew",
           "size": "52",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CameraChangeJudge",
           "size": "100",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetNowCamera",
           "size": "280",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DbgGetDrmCamNo",
           "size": "60",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetDataRoom",
           "size": "148",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PosInAreaJudge1",
           "size": "368",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CameraGetDoorCameraNo",
           "size": "420",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "HeightChangeJudge",
           "size": "100",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetRoomNumFloor",
           "size": "52",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PosInAreaJudge0",
           "size": "260",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetRoomIdFromRoomNo",
           "size": "152",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetDoorRoomIdFromRoomNo",
           "size": "100",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetRoomIdFromRoomNoFloor",
           "size": "168",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetDoorRoomIdFromRoomNoFloor",
           "size": "108",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetDoorDataRoom",
           "size": "96",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetPointRoomNo",
           "size": "136",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetPointRoomNoFloor",
           "size": "160",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PosInAreaJudge0Floor",
           "size": "300",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MapHitCheck",
           "size": "164",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MapHitCheckAll",
           "size": "164",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PlyrHitRot",
           "size": "436",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PlyrMapHitCheck",
           "size": "1140",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PlyrMapHitMoveOfs",
           "size": "492",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetPointMoveMotion",
           "size": "276",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MapCameraCdivideAB",
           "size": "536",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "NakasuHazeSet",
           "size": "92",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DebugMemoryCheck",
           "size": "44",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetRoomPos",
           "size": "184",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -25049,14 +25117,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 64.21141884191303,
+        "fuzzy_match_percent": 65.45134359509522,
         "total_code": "1165232",
-        "matched_code": "748212",
-        "matched_code_percent": 64.21141884191303,
+        "matched_code": "762660",
+        "matched_code_percent": 65.45134359509522,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 2316,
-        "matched_functions_percent": 68.23806717737183,
+        "matched_functions": 2376,
+        "matched_functions_percent": 70.00589275191514,
         "complete_data_percent": 100.0,
         "total_units": 154
       }

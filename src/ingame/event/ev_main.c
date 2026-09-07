@@ -800,7 +800,7 @@ void EventMain()
 
 
 
-            CameraNoRenewEach(3); dat_adr += 6;
+            CameraNoRenewEach(MAP_CAMERA_D); dat_adr += 6;
         break;
         case BTL_LOCK:
             DoorLockBattleSet();

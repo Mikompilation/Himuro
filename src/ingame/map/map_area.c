@@ -54,25 +54,25 @@ void MapAreaMain()
 
     switch(area_read_wrk.stat)
     {
-    case 0:
+    case AR_STAT_NO:
         // do nothing ...
     break;
-    case 1:
+    case AR_STAT_READ_READY:
         area_read_wrk.next_area = GetRoomArea(area_read_wrk.rm_to);
-        area_read_wrk.stat = 0x4;
+        area_read_wrk.stat = AR_STAT_READ_MODE0;
     break;
-    case 5:
+    case AR_STAT_READ_MODE1:
         if (FloatGhostLoadMain() == 0)
         {
             break;
         }
-    case 4:
-        area_read_wrk.stat = 0x8;
+    case AR_STAT_READ_MODE0:
+        area_read_wrk.stat = AR_STAT_READ_END;
     break;
-    case 8:
+    case AR_STAT_READ_END:
         ingame_wrk.mode = INGAME_MODE_NOMAL;
 
-        area_read_wrk.stat = 0x0;
+        area_read_wrk.stat = AR_STAT_NO;
     break;
     }
 
@@ -317,7 +317,7 @@ void ClearDispRoom(int wrk_no)
 
     for (i = 0; i < 60; i++)
     {
-        if (furn_wrk[i].room_id != room_wrk.disp_no[wrk_no ^ 1] && (furn_wrk[i].use == 0 || furn_wrk[i].use == 2))
+        if (furn_wrk[i].room_id != room_wrk.disp_no[wrk_no ^ 1] && (furn_wrk[i].use == FURN_USER_NOW_ROOM || furn_wrk[i].use == FURN_USER_NEXT_ROOM))
         {
             FurnSetWrkNoUse(&furn_wrk[i], i);
         }
@@ -327,7 +327,7 @@ void ClearDispRoom(int wrk_no)
 
     for (i = 0; i < 20; i++, dwp++)
     {
-        if (dwp->use == 1 || dwp->use == 4 || dwp->use == 3)
+        if (dwp->use == FURN_USER_DOOR_NOW_ROOM || dwp->use == FURN_USER_DOOR_JOINT || dwp->use == FURN_USER_DOOR_NEXT_ROOM)
         {
             room_no = GetRoomIdBeyondDoor(dwp->door_id, room_wrk.disp_no[wrk_no ^ 1]);
 

@@ -4916,7 +4916,7 @@ int GetFurnHintPos(FURN_WRK *fw, sceVu0FVECTOR tv, u_int *fsta)
 
     result = 0;
 
-    if (fw->use != 0  && fw->use != 2)
+    if (fw->use != FURN_USER_NOW_ROOM  && fw->use != FURN_USER_NEXT_ROOM)
     {
         return 0;
     }
@@ -5121,7 +5121,7 @@ u_char NeckTargetDoorChk(sceVu0FVECTOR p)
 
     for (i = 0; i < 20; i++)
     {
-        if (door_wrk[i].use == 1 || door_wrk[i].use == 3 || door_wrk[i].use == 4)
+        if (door_wrk[i].use == FURN_USER_DOOR_NOW_ROOM || door_wrk[i].use == FURN_USER_DOOR_NEXT_ROOM || door_wrk[i].use == FURN_USER_DOOR_JOINT)
         {
             if ((door_keep[door_wrk[i].door_id].attr & 0x8000) == 0)
             {

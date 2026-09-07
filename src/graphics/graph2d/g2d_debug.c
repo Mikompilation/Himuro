@@ -276,7 +276,7 @@ void gra2dInitDbgMenu()
     dbg_wrk.lgt_spot = 0;
     dbg_wrk.lgt_point = 0;
     dbg_wrk.lgt_switch = 100;
-    dbg_wrk.cam_mode = 0;
+    dbg_wrk.cam_mode = DBG_CAM_MODE_HOLD;
     dbg_wrk.eff_z_dep = 0;
     dbg_wrk.eff_dither = 0;
     dbg_wrk.eff_dithsp = 8;

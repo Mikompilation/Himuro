@@ -3,6 +3,10 @@
 
 #include "typedefs.h"
 
+#define DBG_CAM_MODE_HOLD 0
+#define DBG_CAM_MODE_FREE 1
+#define DBG_CAM_MODE_TEMP 2
+
 typedef struct {
 	char *name;
 	int subnum;

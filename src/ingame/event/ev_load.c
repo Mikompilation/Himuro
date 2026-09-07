@@ -862,7 +862,7 @@ void RoomLoadReq(int load_room)
     {
         if (furn_wrk[i].room_id != room_wrk.disp_no[0])
         {
-            if(furn_wrk[i].use == 0 || furn_wrk[i].use == 2)
+            if(furn_wrk[i].use == FURN_USER_NOW_ROOM || furn_wrk[i].use == FURN_USER_NEXT_ROOM)
             {
                 FurnSetWrkNoUse(&furn_wrk[i], i);
             }

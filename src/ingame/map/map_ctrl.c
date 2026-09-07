@@ -4,7 +4,11 @@
 #include "enums.h"
 #include "common.h"
 
+// gcc/src/newlib/libm/math/sf_sin.c
+float sinf(float x);
+
 #include "common/ul_math.h"
+#include "graphics/graph2d/g2d_debug.h"
 #include "graphics/graph2d/effect_oth.h"
 #include "graphics/graph2d/message.h"
 #include "graphics/graph3d/sglib.h"
@@ -115,7 +119,7 @@ void RoomPass(u_char room_id)
 
 int IsRoomPass(u_char room_id)
 {
-    if (room_id < 42 && room_pass[room_id] & 1)
+    if (room_id < 42 && room_pass[room_id] & 0x1)
     {
         return 1;
     }
@@ -135,7 +139,9 @@ void MapFloorChange(u_char new_floor)
 
 int GetFloorTopAddr(u_char floor)
 {
-    int *addr = (int *)LOAD_ADDRESS_02;
+    int *addr;
+
+    addr = (int *)LOAD_ADDRESS_02;
 
     return addr[floor] + LOAD_ADDRESS_02;
 }
@@ -180,10 +186,10 @@ void MapCtrlMain()
     area_wrk.area_no = GetRoomArea(plyr_wrk.pr_info.room_no);
 
     RoomWrkRenew();
-    CameraNoRenewEach(1);
-    CameraNoRenewEach(2);
-    CameraNoRenewEach(3);
-    CameraNoRenewEach(4);
+    CameraNoRenewEach(MAP_CAMERA);
+    CameraNoRenewEach(MAP_CAMERA_B);
+    CameraNoRenewEach(MAP_CAMERA_D);
+    CameraNoRenewEach(MAP_CAMERA_T);
     PlayerHeightRenew();
     MapSetFloorSeNo();
 
@@ -267,32 +273,32 @@ void GetNewRoomData()
     GetPlayerRoom(room_wrk.room_no);
     GetRoomDispPos(room_wrk.room_no);
 
-    room_wrk.camera_num = GetDataNum(1, plyr_wrk.pr_info.room_no);
-    room_wrk.camera_bnum = GetDataNum(2, plyr_wrk.pr_info.room_no);
-    room_wrk.camera_tnum = GetDataNum(4, plyr_wrk.pr_info.room_no);
-    room_wrk.height_num = GetDataNum(5 ,plyr_wrk.pr_info.room_no);
+    room_wrk.camera_num = GetDataNum(MAP_CAMERA, plyr_wrk.pr_info.room_no);
+    room_wrk.camera_bnum = GetDataNum(MAP_CAMERA_B, plyr_wrk.pr_info.room_no);
+    room_wrk.camera_tnum = GetDataNum(MAP_CAMERA_T, plyr_wrk.pr_info.room_no);
+    room_wrk.height_num = GetDataNum(MAP_HEIGHT ,plyr_wrk.pr_info.room_no);
 
     room_wrk.hit_num_next = room_wrk.hit_num;
 
-    room_wrk.hit_num = GetDataNum(6, plyr_wrk.pr_info.room_no);
-    room_wrk.ev_num = GetDataNum(7, plyr_wrk.pr_info.room_no);
-    room_wrk.find_num = GetDataNum(9, plyr_wrk.pr_info.room_no);
-    room_wrk.mot_num = GetDataNum(12, plyr_wrk.pr_info.room_no);
-    room_wrk.se_num = GetDataNum(8, plyr_wrk.pr_info.room_no);
+    room_wrk.hit_num = GetDataNum(MAP_HIT_CHECK, plyr_wrk.pr_info.room_no);
+    room_wrk.ev_num = GetDataNum(MAP_REQ_EVENT, plyr_wrk.pr_info.room_no);
+    room_wrk.find_num = GetDataNum(MAP_FIND_DAT, plyr_wrk.pr_info.room_no);
+    room_wrk.mot_num = GetDataNum(MAP_MOVE_MOT, plyr_wrk.pr_info.room_no);
+    room_wrk.se_num = GetDataNum(MAP_REQ_SE, plyr_wrk.pr_info.room_no);
 
     RoomPass(room_wrk.disp_no[0]);
     RoomPass(room_wrk.disp_no[1]);
     DoorPassRoom(room_wrk.disp_no[0]);
     DoorPassRoom(room_wrk.disp_no[1]);
 
-    plyr_wrk.pr_info.camera_no = GetNowCameraEach(1, room_wrk.camera_num, &room_wrk.camera_no);
-    plyr_wrk.pr_info.camera_btl = GetNowCameraEach(2, room_wrk.camera_bnum, &room_wrk.camera_bno);
+    plyr_wrk.pr_info.camera_no = GetNowCameraEach(MAP_CAMERA, room_wrk.camera_num, &room_wrk.camera_no);
+    plyr_wrk.pr_info.camera_btl = GetNowCameraEach(MAP_CAMERA_B, room_wrk.camera_bnum, &room_wrk.camera_bno);
     plyr_wrk.pr_info.camera_drm = CameraGetDoramaCameraNo(plyr_wrk.pr_info.camera_drm);
     plyr_wrk.pr_info.hight = GetNowHeight() + room_wrk.room_height;
 
     for (i = 0; i < 60; i++)
     {
-        if (furn_wrk[i].use == 4)
+        if (furn_wrk[i].use == FURN_USER_DOOR_JOINT)
         {
             furn_wrk[i].room_id = room_wrk.disp_no[0];
         }
@@ -302,7 +308,7 @@ void GetNewRoomData()
     ItemDispDataRenew();
     SetRoomReverbVol(map_wrk.now_room);
 
-    if (area_read_wrk.stat == 0)
+    if (area_read_wrk.stat == AR_STAT_NO)
     {
         DoorDataRenewNow();
     }
@@ -326,32 +332,32 @@ u_char RoomWrkRenew()
 
 void CameraNoRenewEach(u_char cam_type)
 {
-    if (dbg_wrk.cam_mode == 2)
+    if (dbg_wrk.cam_mode == DBG_CAM_MODE_TEMP)
     {
         return;
     }
 
     switch (cam_type)
     {
-    case 1:
-        if (CameraChangeJudgeEach(1, room_wrk.camera_no) == 0)
+    case MAP_CAMERA:
+        if (CameraChangeJudgeEach(MAP_CAMERA, room_wrk.camera_no) == 0)
         {
-            plyr_wrk.pr_info.camera_no = GetNowCameraEach(1, room_wrk.camera_num, &room_wrk.camera_no);
+            plyr_wrk.pr_info.camera_no = GetNowCameraEach(MAP_CAMERA, room_wrk.camera_num, &room_wrk.camera_no);
         }
     break;
 
-    case 2:
-        if (CameraChangeJudgeEach(2, room_wrk.camera_bno) == 0)
+    case MAP_CAMERA_B:
+        if (CameraChangeJudgeEach(MAP_CAMERA_B, room_wrk.camera_bno) == 0)
         {
-            plyr_wrk.pr_info.camera_btl = GetNowCameraEach(2, room_wrk.camera_bnum, &room_wrk.camera_bno);
+            plyr_wrk.pr_info.camera_btl = GetNowCameraEach(MAP_CAMERA_B, room_wrk.camera_bnum, &room_wrk.camera_bno);
         }
     break;
 
-    case 3:
+    case MAP_CAMERA_D:
         plyr_wrk.pr_info.camera_drm = CameraGetDoramaCameraNo(plyr_wrk.pr_info.camera_drm);
     break;
 
-    case 4:
+    case MAP_CAMERA_T:
         if (plyr_wrk.pr_info.camera_door != 0xffff)
         {
             plyr_wrk.pr_info.camera_door = CameraCheckDoorCameraNo(plyr_wrk.pr_info.camera_door_did, plyr_wrk.pr_info.camera_door_rid);
@@ -377,7 +383,7 @@ void DbgGetDrmCamNo()
 {
     int j;
 
-    if (*key_now[5] == 1)
+    if (PAD_BTN_PRESSED(PAD_CROSS) == 1)
     {
         for (j = 0; j < 10; j++)
         {
@@ -394,7 +400,7 @@ static u_short CameraGetDoramaCameraNo(u_short now_cam_no)
     u_short *dcamp;
     int i;
     int j;
-    u_short cam_no[2] = {0xffff, 0xffff};
+    u_short cam_no[2] = { 0xffff, 0xffff };
     u_char room_no;
     u_char data_num;
     u_char get_flg;
@@ -408,16 +414,17 @@ static u_short CameraGetDoramaCameraNo(u_short now_cam_no)
     now_camera_get_flg = 0;
     drm_cam_no_get_flg = 0;
 
-    room_no = GetDataRoom(3, plyr_wrk.pr_info.room_no);
+    room_no = GetDataRoom(MAP_CAMERA_D, plyr_wrk.pr_info.room_no);
 
     if (room_no == 0xff)
     {
         now_cam_no = 0xffff;
+
         return 0xffff;
     }
 
     dat_addr = (u_int *)map_wrk.dat_adr;
-    addr_ui0 = (u_int *)(dat_addr[3] + LOAD_ADDRESS_02);
+    addr_ui0 = (u_int *)(dat_addr[MAP_CAMERA_D] + LOAD_ADDRESS_02);
     addr_ui0 = (u_int *)((u_int)&addr_ui0[1] + room_no * 4);
     addr_ui0 = (u_int *)(addr_ui0[0] + LOAD_ADDRESS_02);
     data_num = *(u_char *)(addr_ui0[0] + LOAD_ADDRESS_02);
@@ -426,7 +433,7 @@ static u_short CameraGetDoramaCameraNo(u_short now_cam_no)
 
     for (i = 0; i < data_num; addr_ui0++, i++)
     {
-        if (PosInAreaJudge1(3, room_no, i, plyr_wrk.move_box.pos[2], plyr_wrk.move_box.pos[0]) == 0)
+        if (PosInAreaJudge1(MAP_CAMERA_D, room_no, i, plyr_wrk.move_box.pos[2], plyr_wrk.move_box.pos[0]) == 0)
         {
             continue;
         }
@@ -451,7 +458,7 @@ static u_short CameraGetDoramaCameraNo(u_short now_cam_no)
                 continue;
             }
 
-            if (!drm_cam_no_get_flg)
+            if (drm_cam_no_get_flg == 0)
             {
                 cam_no[0] = cam_no[1];
 
@@ -462,7 +469,7 @@ static u_short CameraGetDoramaCameraNo(u_short now_cam_no)
             break;
         }
 
-        if (drm_cam_no_get_flg && j >= 10)
+        if (drm_cam_no_get_flg != 0 && j >= 10)
         {
             continue;
         }
@@ -472,9 +479,12 @@ static u_short CameraGetDoramaCameraNo(u_short now_cam_no)
             continue;
         }
 
-        if (!now_camera_get_flg)
+        if (now_camera_get_flg == 0)
         {
-            if (now_cam_no == cam_no[1]) now_camera_get_flg = 1;
+            if (now_cam_no == cam_no[1])
+            {
+                now_camera_get_flg = 1;
+            }
         }
     }
 
@@ -497,12 +507,12 @@ u_short CameraGetDoorCameraNo(u_short door_id0, u_short door_id1)
     u_int *addr_ui1;
     int i;
     int j;
-    u_short dr_id[2] = {door_id0, door_id1};
+    u_short dr_id[2] = { door_id0, door_id1 };
     u_char room_no;
     u_char data_num;
     u_int *dat_addr;
 
-    room_no = GetDataRoom(4, plyr_wrk.pr_info.room_no);
+    room_no = GetDataRoom(MAP_CAMERA_T, plyr_wrk.pr_info.room_no);
 
     if (room_no == 0xff)
     {
@@ -510,7 +520,7 @@ u_short CameraGetDoorCameraNo(u_short door_id0, u_short door_id1)
     }
 
     dat_addr = (u_int *)map_wrk.dat_adr;
-    addr_ui0 = (u_int *)(dat_addr[4] + LOAD_ADDRESS_02);
+    addr_ui0 = (u_int *)(dat_addr[MAP_CAMERA_T] + LOAD_ADDRESS_02);
     addr_ui0 = (u_int *)((u_int)&addr_ui0[1] + room_no * 4);
     addr_ui0 = (u_int *)(addr_ui0[0] + LOAD_ADDRESS_02);
 
@@ -537,7 +547,7 @@ u_short CameraGetDoorCameraNo(u_short door_id0, u_short door_id1)
 
             if (dr_id[j] == cdpp->door_id[0] || dr_id[j] == cdpp->door_id[1])
             {
-                if (PosInAreaJudge1(4, room_no, i, plyr_wrk.move_box.pos[2], plyr_wrk.move_box.pos[0]))
+                if (PosInAreaJudge1(MAP_CAMERA_T, room_no, i, plyr_wrk.move_box.pos[2], plyr_wrk.move_box.pos[0]) != 0)
                 {
                     return cdpp->camera_no;
                 }
@@ -559,7 +569,7 @@ static u_short CameraCheckDoorCameraNo(u_short door_id, u_char room_id)
     u_char data_num;
     int *dat_adr;
 
-    room_no = GetDataRoom(4, plyr_wrk.pr_info.room_no);
+    room_no = GetDataRoom(MAP_CAMERA_T, plyr_wrk.pr_info.room_no);
 
     if (room_no == 0xff)
     {
@@ -571,7 +581,7 @@ static u_short CameraCheckDoorCameraNo(u_short door_id, u_char room_id)
         return -1;
     }
 
-    dat_adr = &((int *)(map_wrk.dat_adr))[4];
+    dat_adr = &((int *)(map_wrk.dat_adr))[MAP_CAMERA_T];
 
     addr_ui0 = (u_int *)(*dat_adr + LOAD_ADDRESS_02);
     addr_ui0 = &addr_ui0[room_no + 1];
@@ -592,7 +602,7 @@ static u_short CameraCheckDoorCameraNo(u_short door_id, u_char room_id)
         {
             if (door_id == cdpp->door_id[0] || door_id == cdpp->door_id[1])
             {
-                if (PosInAreaJudge1(4, room_no, i, plyr_wrk.move_box.pos[2], plyr_wrk.move_box.pos[0]) != 0)
+                if (PosInAreaJudge1(MAP_CAMERA_T, room_no, i, plyr_wrk.move_box.pos[2], plyr_wrk.move_box.pos[0]) != 0)
                 {
                     return cdpp->camera_no;
                 }
@@ -613,7 +623,7 @@ static u_short CameraCheckDoorCameraNo(u_short door_id, u_char room_id)
         {
             if (door_id == cdpp->door_id[0] || door_id == cdpp->door_id[1])
             {
-                if (PosInAreaJudge1(4, room_no, i, plyr_wrk.move_box.pos[2], plyr_wrk.move_box.pos[0]) != 0)
+                if (PosInAreaJudge1(MAP_CAMERA_T, room_no, i, plyr_wrk.move_box.pos[2], plyr_wrk.move_box.pos[0]) != 0)
                 {
                     return cdpp->camera_no;
                 }
@@ -676,8 +686,6 @@ static u_char GetDataNum(u_char map, u_char room)
     return *addr;
 }
 
-/* /home/m_nagaura/reikoku/src/ingame/map/map_ctrl.c */
-
 static u_char RoomChangeJudge()
 {
     return PosInAreaJudge0(room_wrk.room_no, plyr_wrk.move_box.pos[2], plyr_wrk.move_box.pos[0]);
@@ -698,13 +706,13 @@ static u_char CameraChangeJudgeEach(u_char cam_type, u_short cam_no)
 
 static u_char CameraChangeJudge()
 {
-    return PosInAreaJudge1(1, GetDataRoom(1, plyr_wrk.pr_info.room_no), room_wrk.camera_no, plyr_wrk.move_box.pos[2], plyr_wrk.move_box.pos[0]);
+    return PosInAreaJudge1(MAP_CAMERA, GetDataRoom(MAP_CAMERA, plyr_wrk.pr_info.room_no), room_wrk.camera_no, plyr_wrk.move_box.pos[2], plyr_wrk.move_box.pos[0]);
 }
 
 static u_char HeightChangeJudge()
 {
     return PosInAreaJudge1(
-        5, GetDataRoom(5, plyr_wrk.pr_info.room_no),
+        MAP_HEIGHT, GetDataRoom(MAP_HEIGHT, plyr_wrk.pr_info.room_no),
         room_wrk.height_no, plyr_wrk.move_box.pos[2], plyr_wrk.move_box.pos[0]
     );
 }
@@ -732,7 +740,7 @@ u_char GetRoomIdFromRoomNo(u_char map, u_char room_no)
     u_char room_id;
     u_char room_num;
 
-    if (map == 10)
+    if (map == MAP_DOOR_DAT)
     {
         return GetDoorRoomIdFromRoomNo(room_no);
     }
@@ -769,7 +777,7 @@ u_char GetRoomIdFromRoomNoFloor(u_char map, u_char room_no, u_char floor)
     u_char room_id;
     u_char room_num;
 
-    if (map == 10)
+    if (map == MAP_DOOR_DAT)
     {
         return GetDoorRoomIdFromRoomNoFloor(room_no, floor);
     }
@@ -929,7 +937,7 @@ static u_short GetNowCameraEach(u_char cam_type, u_char cam_num, u_char *rm_cam_
         {
             *rm_cam_no = i;
 
-            addr = (int *)(map_wrk.dat_adr + (cam_type * 4));
+            addr = (int *)(map_wrk.dat_adr + cam_type * 4);
             addr = (int *)(*addr + LOAD_ADDRESS_02);
             addr = &addr[room] + 1;
             addr = (int *)(*addr + LOAD_ADDRESS_02);
@@ -954,15 +962,15 @@ static u_short GetNowCamera()
     int *addr;
     int val;
 
-    room = GetDataRoom(1, plyr_wrk.pr_info.room_no);
+    room = GetDataRoom(MAP_CAMERA, plyr_wrk.pr_info.room_no);
 
     for ( i = 0; i < room_wrk.camera_num; i++)
     {
-        if (PosInAreaJudge1(1, room, i, plyr_wrk.move_box.pos[2], plyr_wrk.move_box.pos[0]))
+        if (PosInAreaJudge1(MAP_CAMERA, room, i, plyr_wrk.move_box.pos[2], plyr_wrk.move_box.pos[0]))
         {
             room_wrk.camera_no = i;
 
-            addr = (int *)(map_wrk.dat_adr + 4);
+            addr = (int *)(map_wrk.dat_adr + MAP_CAMERA * 4);
             addr = (int *)(*addr + LOAD_ADDRESS_02);
             addr = &addr[room] + 1;
             addr = (int *)(*addr + LOAD_ADDRESS_02);
@@ -985,15 +993,15 @@ static float GetNowHeight()
     int *addr;
     short val;
 
-    room = GetDataRoom(5, plyr_wrk.pr_info.room_no);
+    room = GetDataRoom(MAP_HEIGHT, plyr_wrk.pr_info.room_no);
 
     for (i = 0; i < room_wrk.height_num; i++)
     {
-        if (PosInAreaJudge1(5, room, i, plyr_wrk.move_box.pos[2], plyr_wrk.move_box.pos[0]))
+        if (PosInAreaJudge1(MAP_HEIGHT, room, i, plyr_wrk.move_box.pos[2], plyr_wrk.move_box.pos[0]))
         {
             room_wrk.height_no = i;
 
-            addr = (int *)(map_wrk.dat_adr + 5 * 4);
+            addr = (int *)(map_wrk.dat_adr + MAP_HEIGHT * 4);
             addr = (int *)(*addr + LOAD_ADDRESS_02);
             addr = &addr[room] + 1;
             addr = (int *)(*addr + LOAD_ADDRESS_02);
@@ -1072,15 +1080,15 @@ float GetPointHeight(u_short pos_x, u_short pos_z)
 
     room_id = *(u_char *)(*addr + room + 1 + LOAD_ADDRESS_02);
 
-    room = GetDataRoom(5, room_id);
+    room = GetDataRoom(MAP_HEIGHT, room_id);
 
     for (i = 0; i < room_wrk.height_num; i++)
     {
-        if (PosInAreaJudge1(5, room, i, pos_z, pos_x) != 0)
+        if (PosInAreaJudge1(MAP_HEIGHT, room, i, pos_z, pos_x) != 0)
         {
             room_wrk.height_no = i;
 
-            addr = (int *)(map_wrk.dat_adr + 5 * 4);
+            addr = (int *)(map_wrk.dat_adr + MAP_HEIGHT * 4);
             addr = (int *)(*addr + LOAD_ADDRESS_02);
             addr = &addr[room] + 1;
             addr = (int *)(*addr + LOAD_ADDRESS_02);
@@ -1284,11 +1292,11 @@ u_char MapHitCheck(u_short pos_x, u_short pos_y, u_char room_id)
     int i;
     u_char room_no;
 
-    room_no = GetDataRoom(6, room_id);
+    room_no = GetDataRoom(MAP_HIT_CHECK, room_id);
 
     for (i = 0; i < room_wrk.hit_num; i++)
     {
-        if (PosInAreaJudge1(6, room_no, i, pos_x, pos_y) != 0)
+        if (PosInAreaJudge1(MAP_HIT_CHECK, room_no, i, pos_x, pos_y) != 0)
         {
             return 1;
         }
@@ -1348,8 +1356,8 @@ void PlyrHitRot(sceVu0FVECTOR pos, sceVu0FVECTOR dst, float *go_rot, float *no_r
 
     if (__builtin_fabs(*go_rot - *no_rot) >= 0.03490658476948738)
     {
-        rpos[0] = SgCosf(chk_rot) * (dst[0] * SgCosf(chk_rot) + dst[2] * SgSinf(chk_rot));
-        rpos[2] = SgCosf(chk_rot) * (-dst[0] * SgSinf(chk_rot) + dst[2] * SgCosf(chk_rot));
+        rpos[0] = VER_COSF(chk_rot) * (dst[0] * VER_COSF(chk_rot) + dst[2] * VER_SINF(chk_rot));
+        rpos[2] = VER_COSF(chk_rot) * (-dst[0] * VER_SINF(chk_rot) + dst[2] * VER_COSF(chk_rot));
 
         pos_y = rpos[0] + pos[0];
         pos_x = rpos[2] + pos[2];
@@ -1426,8 +1434,8 @@ u_char PlyrMapHitCheck(sceVu0FVECTOR dst, sceVu0FVECTOR pos, u_char div, u_char 
         chk_rotbk[0] = 0.0f;
         chk_rotbk[1] = chk_rot;
 
-        rpos[0] = +dst[0] * SgCosf(chk_rot) + dst[2] * SgSinf(chk_rot);
-        rpos[2] = -dst[0] * SgSinf(chk_rot) + dst[2] * SgCosf(chk_rot);
+        rpos[0] = +dst[0] * VER_COSF(chk_rot) + dst[2] * VER_SINF(chk_rot);
+        rpos[2] = -dst[0] * VER_SINF(chk_rot) + dst[2] * VER_COSF(chk_rot);
 
         pos_y = rpos[0] + pos[0];
         pos_x = rpos[2] + pos[2];
@@ -1443,8 +1451,8 @@ u_char PlyrMapHitCheck(sceVu0FVECTOR dst, sceVu0FVECTOR pos, u_char div, u_char 
             {
                 chk_rot = (chk_rotbk[0] + chk_rotbk[1]) * 0.5f;
 
-                rpos[0] =  dst[0] * SgCosf(chk_rot) + dst[2] * SgSinf(chk_rot);
-                rpos[2] = -dst[0] * SgSinf(chk_rot) + dst[2] * SgCosf(chk_rot);
+                rpos[0] =  dst[0] * VER_COSF(chk_rot) + dst[2] * VER_SINF(chk_rot);
+                rpos[2] = -dst[0] * VER_SINF(chk_rot) + dst[2] * VER_COSF(chk_rot);
 
                 pos_y = rpos[0] + pos[0];
                 pos_x = rpos[2] + pos[2];
@@ -1478,8 +1486,8 @@ u_char PlyrMapHitCheck(sceVu0FVECTOR dst, sceVu0FVECTOR pos, u_char div, u_char 
         }
     }
 
-    rpos[0] = SgCosf(ok_rot[0]) * ( dst[0] * SgCosf(ok_rot[0]) + dst[2] * SgSinf(ok_rot[0]));
-    rpos[2] = SgCosf(ok_rot[0]) * (-dst[0] * SgSinf(ok_rot[0]) + dst[2] * SgCosf(ok_rot[0]));
+    rpos[0] = VER_COSF(ok_rot[0]) * ( dst[0] * VER_COSF(ok_rot[0]) + dst[2] * VER_SINF(ok_rot[0]));
+    rpos[2] = VER_COSF(ok_rot[0]) * (-dst[0] * VER_SINF(ok_rot[0]) + dst[2] * VER_COSF(ok_rot[0]));
 
     pos_y = rpos[0] + pos[0];
     pos_x = rpos[2] + pos[2];
@@ -1531,7 +1539,7 @@ int PlyrMapHitMoveOfs(sceVu0FVECTOR dst, sceVu0FVECTOR pos, u_char room, u_char 
 
             for (k = 0; k < room_wrk.hit_num; k++)
             {
-                if (PosInAreaJudge1(6, flr_room, k, cpos[2], cpos[0]) != 0)
+                if (PosInAreaJudge1(MAP_HIT_CHECK, flr_room, k, cpos[2], cpos[0]) != 0)
                 {
                     break;
                 }
@@ -1580,13 +1588,13 @@ static void GetNowOpenEvent()
 
     cnt = 0;
 
-    room = GetDataRoom(7, plyr_wrk.pr_info.room_no);
+    room = GetDataRoom(MAP_REQ_EVENT, plyr_wrk.pr_info.room_no);
 
     for (i = 0; i < room_wrk.ev_num; i++)
     {
-        if (PosInAreaJudge1(7, room, i, plyr_wrk.move_box.pos[2], plyr_wrk.move_box.pos[0]) != 0)
+        if (PosInAreaJudge1(MAP_REQ_EVENT, room, i, plyr_wrk.move_box.pos[2], plyr_wrk.move_box.pos[0]) != 0)
         {
-            addr = (int *)(*(int *)(map_wrk.dat_adr + 7 * 4) + LOAD_ADDRESS_02);
+            addr = (int *)(*(int *)(map_wrk.dat_adr + MAP_REQ_EVENT * 4) + LOAD_ADDRESS_02);
             addr = &addr[room] + 1;
             addr = (int *)(*addr + LOAD_ADDRESS_02);
             addr = &addr[i] + 1;
@@ -1618,13 +1626,13 @@ static void GetNowOpenFindAct()
 
     cnt = 0;
 
-    room = GetDataRoom(9, plyr_wrk.pr_info.room_no);
+    room = GetDataRoom(MAP_FIND_DAT, plyr_wrk.pr_info.room_no);
 
     for (i = 0; i < room_wrk.find_num; i++)
     {
-        if (PosInAreaJudge1(9, room, i, plyr_wrk.move_box.pos[2], plyr_wrk.move_box.pos[0]))
+        if (PosInAreaJudge1(MAP_FIND_DAT, room, i, plyr_wrk.move_box.pos[2], plyr_wrk.move_box.pos[0]))
         {
-            addr = (int *)(*(int *)(map_wrk.dat_adr + 9 * 4) + LOAD_ADDRESS_02);
+            addr = (int *)(*(int *)(map_wrk.dat_adr + MAP_FIND_DAT * 4) + LOAD_ADDRESS_02);
             addr = &addr[room] + 1;
             addr = (int *)(*addr + LOAD_ADDRESS_02);
             addr = &addr[i] + 1;
@@ -1651,13 +1659,13 @@ u_char GetPointMoveMotion(sceVu0FVECTOR p, u_char no)
 
     mot = 0xff;
 
-    room = GetDataRoom(12, no);
+    room = GetDataRoom(MAP_MOVE_MOT, no);
 
     for (i = 0; i < room_wrk.mot_num; i++)
     {
-        if (PosInAreaJudge1(12, room, i, p[2], p[0]) != 0)
+        if (PosInAreaJudge1(MAP_MOVE_MOT, room, i, p[2], p[0]) != 0)
         {
-            addr = (int *)(*(int *)(map_wrk.dat_adr + 12 * 4) + LOAD_ADDRESS_02);
+            addr = (int *)(*(int *)(map_wrk.dat_adr + MAP_MOVE_MOT * 4) + LOAD_ADDRESS_02);
             addr = &addr[room] + 1;
             addr = (int *)(*addr + LOAD_ADDRESS_02);
             addr = &addr[i] + 1;
@@ -1824,13 +1832,13 @@ static void MapSetFloorSeNo()
     u_char room;
     u_char data_no;
 
-    room = GetDataRoom(8, plyr_wrk.pr_info.room_no);
+    room = GetDataRoom(MAP_REQ_SE, plyr_wrk.pr_info.room_no);
 
     data_no = 0xff;
 
     for (i = 0; i < room_wrk.se_num; i++)
     {
-        if (PosInAreaJudge1(8, room, i, plyr_wrk.move_box.pos[2], plyr_wrk.move_box.pos[0]) != 0)
+        if (PosInAreaJudge1(MAP_REQ_SE, room, i, plyr_wrk.move_box.pos[2], plyr_wrk.move_box.pos[0]) != 0)
         {
             data_no = i;
 
@@ -1843,7 +1851,7 @@ static void MapSetFloorSeNo()
         return;
     }
 
-    addr_si = (int *)map_wrk.dat_adr + 2 * 4;
+    addr_si = (int *)map_wrk.dat_adr + MAP_REQ_SE;
     addr_si = (int *)(*addr_si + LOAD_ADDRESS_02);
     addr_si = &addr_si[room + 1];
     addr_si = (int *)(*addr_si + LOAD_ADDRESS_02);
@@ -1872,9 +1880,9 @@ int GetRoomPos(u_char room_no, sceVu0FVECTOR room_pos)
     u_char dat_room;
     int *addr;
 
-    dat_room = GetDataRoom(0, room_no);
+    dat_room = GetDataRoom(MAP_ROOM_DAT, room_no);
 
-    if (GetRoomIdFromRoomNo(0, dat_room) != room_no)
+    if (GetRoomIdFromRoomNo(MAP_ROOM_DAT, dat_room) != room_no)
     {
         return 1;
     }

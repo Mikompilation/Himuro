@@ -34,14 +34,14 @@ int SeReqFootStep(sceVu0FVECTOR pos)
     px = pos[0];
     pz = pos[2];
 
-    room_no = GetDataRoom(8, plyr_wrk.pr_info.room_no);
+    room_no = GetDataRoom(MAP_REQ_SE, plyr_wrk.pr_info.room_no);
     call_no = 0;
 
     for (i = 0; i < room_wrk.se_num; i++)
     {
-        if (PosInAreaJudge1(8, room_no, i, pz, px) != 0)
+        if (PosInAreaJudge1(MAP_REQ_SE, room_no, i, pz, px) != 0)
         {
-            addr = (u_int *)(map_wrk.dat_adr + 32);
+            addr = (u_int *)(map_wrk.dat_adr + MAP_REQ_SE * 4);
             addr = (u_int *)(addr[0] + LOAD_ADDRESS_02);
             addr = &addr[room_no] + 1;
             addr = (u_int *)(addr[0] + LOAD_ADDRESS_02);
@@ -154,14 +154,14 @@ u_char IsKarehaZone(sceVu0FVECTOR pos)
     pz = pos[0];
     px = pos[2];
 
-    room_no = GetDataRoom(8, plyr_wrk.pr_info.room_no);
+    room_no = GetDataRoom(MAP_REQ_SE, plyr_wrk.pr_info.room_no);
     call_no = 0;
 
     for (i = 0; i < room_wrk.se_num; i++)
     {
-        if (PosInAreaJudge1(8, room_no, i, px, pz) != 0)
+        if (PosInAreaJudge1(MAP_REQ_SE, room_no, i, px, pz) != 0)
         {
-            addr = (u_int *)(map_wrk.dat_adr + 32);
+            addr = (u_int *)(map_wrk.dat_adr + MAP_REQ_SE * 4);
             addr = (u_int *)(addr[0] + LOAD_ADDRESS_02);
             addr = &addr[room_no] + 1;
             addr = (u_int *)(addr[0] + LOAD_ADDRESS_02);
@@ -189,14 +189,14 @@ u_char IsTakenohaZone(sceVu0FVECTOR pos)
     pz = pos[0];
     px = pos[2];
 
-    room_no = GetDataRoom(8, plyr_wrk.pr_info.room_no);
+    room_no = GetDataRoom(MAP_REQ_SE, plyr_wrk.pr_info.room_no);
     call_no = 0;
 
     for (i = 0; i < room_wrk.se_num; i++)
     {
-        if (PosInAreaJudge1(8, room_no, i, px, pz))
+        if (PosInAreaJudge1(MAP_REQ_SE, room_no, i, px, pz))
         {
-            addr = (u_int *)(map_wrk.dat_adr + 32);
+            addr = (u_int *)(map_wrk.dat_adr + MAP_REQ_SE * 4);
             addr = (u_int *)(addr[0] + LOAD_ADDRESS_02);
             addr = &addr[room_no] + 1;
             addr = (u_int *)(addr[0] + LOAD_ADDRESS_02);

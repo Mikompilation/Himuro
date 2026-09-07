@@ -529,9 +529,9 @@ static void MapInfo1(u_char alp)
 
     room_no = GetPointRoomNoFloor(plyr_wrk.move_box.pos[0] + 0.0f, plyr_wrk.move_box.pos[2] + 0.0f, map.flr);
 
-    map.plyr_id = GetRoomIdFromRoomNoFloor(0, room_no, map.flr);
+    map.plyr_id = GetRoomIdFromRoomNoFloor(MAP_ROOM_DAT, room_no, map.flr);
     map.here_no = GetPointRoomNoFloor(px - map.mvx * 100, py + map.mvy * 100, map.flr);
-    map.here_id = GetRoomIdFromRoomNoFloor(0, map.here_no, map.flr);
+    map.here_id = GetRoomIdFromRoomNoFloor(MAP_ROOM_DAT, map.here_no, map.flr);
 }
 
 static void MapInfo2(u_char alp)

@@ -1754,7 +1754,7 @@ static void GetSvpNo(u_char *no)
     u_char room_no;
 
     room_no = GetPointRoomNoFloor(plyr_wrk.move_box.pos[0], plyr_wrk.move_box.pos[2], map_wrk.floor);
-    room_from = GetRoomIdFromRoomNoFloor(0, room_no, map_wrk.floor);
+    room_from = GetRoomIdFromRoomNoFloor(MAP_ROOM_DAT, room_no, map_wrk.floor);
 
     svp_no = 0xff;
 
