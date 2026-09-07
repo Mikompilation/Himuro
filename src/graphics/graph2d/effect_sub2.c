@@ -80,8 +80,6 @@ enum T_LOAD_MODE {
     BANM_TEXDISP = 3
 };
 
-#define PI 3.1415927f
-
 #define ANM2D_DAT_TABLE_P(table_p) ((ANM2D_DAT_TABLE *)table_p)
 #define ANM2D_WRK_TABLE_P(table_p) ((ANM2D_WRK_TABLE *)table_p)
 

@@ -63,8 +63,6 @@ static int ef_rdfire3_call[6];
 static FURN_ACT_WRK *ef_rdfire3[6];
 static void *ef_smoke_addr[4];
 
-#define PI 3.1415927f
-
 void InitEffectRdr()
 {
     int i;

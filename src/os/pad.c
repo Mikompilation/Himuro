@@ -22,8 +22,6 @@ u_short sce_pad[16] = {
 #define DUALSHOCK_CONTROLLER 4
 #define DUALSHOCK2_CONTROLLER 7
 
-#define PI 3.1415927f
-
 int InitPad()
 {
     PAD_STRUCT *psp;

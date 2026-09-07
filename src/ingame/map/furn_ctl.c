@@ -20,8 +20,6 @@
 
 int furn_disp_flg = 0;
 
-#define PI 3.1415927f
-
 void FurnCtrlMain()
 {
     FurnHintDeformCtrl();

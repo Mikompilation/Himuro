@@ -52,8 +52,6 @@ int scn_vib_time1 = 0;
 
 static int scn_load_id[2];
 
-#define PI 3.1415927f
-
 int SceneAllLoad(int scene_no, u_int *load_addr)
 {
     int ret;

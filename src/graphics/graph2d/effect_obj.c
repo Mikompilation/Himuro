@@ -47,8 +47,6 @@ typedef struct {
     float *vol;
 } EFF_PARTSBLUR;
 
-#define PI 3.1415927f
-
 #define DISP_WIDTH 640
 #define DISP_HEIGHT 448
 

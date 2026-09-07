@@ -61,8 +61,6 @@ static u_short es_adpcm_tm = 0;
 #define SCREEN_WIDTH   640
 #define SCREEN_HEIGHT  224
 
-#define PI 3.1415927f
-
 void EneCtrlMain()
 {
     u_char i;

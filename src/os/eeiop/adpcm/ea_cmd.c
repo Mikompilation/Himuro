@@ -12,7 +12,6 @@ float sinf(float x);
 
 #define FLOAT_RES_X 640.0f
 #define US_MAX_PAN 0x4ff
-#define PI 3.1415927f
 #define FLOAT_MAX_SOUND_DISTANCE 10000.0f
 #define FLOAT_MIN_PITCH_SOUND_DISTANCE 2000.0f
 

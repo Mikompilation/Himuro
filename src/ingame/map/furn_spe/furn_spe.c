@@ -50,9 +50,6 @@ FURN_ACT_WRK f_act_wrk[20] = {0};
 TREMBLE_H_WRK tremble_h_wrk[5] = {0};
 sceVu0FVECTOR thunder_direction = { 0.0f, 0.0f, 0.0f, 0.0f };
 
-#define DEG2RAD(x) ((float)(x)*PI/180.0f)
-#define PI 3.1415927f
-
 void NewgameFActInit()
 {
     return;
@@ -1288,7 +1285,7 @@ void FActExecOccur(FURN_ACT_WRK *fawp, void *point)
             pointer += 2;
         break;
         case 8: {
-            float f1 = ((sp[0] * 3.1415927f) / 180.0f) / 60.0f;
+            float f1 = ((sp[0] * PI) / 180.0f) / 60.0f;
             sceVu0FVECTOR temp = { f1, 0.0f, 0.0f, 0.0f };
 
             RegisterAdjValG(fawp->rot_speed, temp, sp[1]);
@@ -1297,7 +1294,7 @@ void FActExecOccur(FURN_ACT_WRK *fawp, void *point)
         }
         break;
         case 7: {
-            float f1 = ((sp[0] * 3.1415927f) / 180.0f) / 60.0f;
+            float f1 = ((sp[0] * PI) / 180.0f) / 60.0f;
 
             fawp->rot_speed[0] = f1;
             fawp->rot_speed[1] = 0.0f;

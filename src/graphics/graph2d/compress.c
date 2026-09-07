@@ -19,8 +19,6 @@ float sqrtf(float x);
 #define COLS 384
 #define THRESHOLD 2   // encode string into position and length
 
-#define PI 3.1415927f
-
 // This macro is used to ensure correct rounding of integer values.
 #define ROUND(a) (((a) < 0) ? (int)((a) - 0.5f) : (int)((a) + 0.5f))
 

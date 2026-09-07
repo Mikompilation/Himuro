@@ -52,9 +52,6 @@ void (*BCommJmpTbl[])(ENE_WRK *ew) = {
 
 u_char er_max_tbl[3] = {0};
 
-#define PI 3.1415927f
-#define DEG2RAD(x) ((float)(x)*PI/180.0f)
-
 // read a 16-bit little-endian value from an arbitrary (and potentially unaligned) address
 #define READ_LE16(addr) \
     ( ((u_short)(*((u_char *)(int)(addr) + 1)) << 8) | \

@@ -43,8 +43,6 @@ static u_int next_clut_addr;
 static sceDmaChan *DmaGif;
 static sceDmaChan *DmaVif;
 
-#define PI 3.1415927f
-
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 224
 

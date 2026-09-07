@@ -48,9 +48,6 @@
 
 static int AlbmDesignLoad(u_char side, u_char type);
 
-#define PI 3.1415927f
-#define DEG2RAD(x) ((float)(x)*PI/180.0f)
-
 #include "data/title_sprt.h" // data 342c90 */ SPRT_DAT title_sprt[11];
 #include "data/font_sprt.h" // data 342df0 */ SPRT_DAT font_sprt[20];
 #ifdef BUILD_EU_VERSION

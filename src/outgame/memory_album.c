@@ -40,8 +40,6 @@ static DSP_MEM_ALBM dm_albm;
 #define PAD_ACTION_MOVE PAD_CIRCLE
 #endif
 
-#define PI 3.1415927f
-
 void MemAlbmInit(u_char h_type, u_char src_pht_max, u_char cpy_pht_max, u_char src_cl_type, u_char cpy_cl_type, u_char src_slot, u_char cpy_slot, u_char src_file, u_char cpy_file)
 {
     dm_albm = (DSP_MEM_ALBM){0};

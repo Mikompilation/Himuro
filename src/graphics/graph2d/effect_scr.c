@@ -120,8 +120,6 @@ float blur_x_offset = 0.0f;
 float blur_y_offset = 0.0f;
 #endif
 
-#define PI 3.1415927f
-
 #define INIT_TBP 0x1a40
 #define TBP_0x8c0 (INIT_TBP / 3)
 

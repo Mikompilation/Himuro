@@ -27,8 +27,6 @@ MAP_FILE_DAT *map_file_dat[4] = {
 };
 u_short item_ap[300][2] = {0};
 
-#define PI 3.1415927f
-
 void MapItemInit()
 {
     int i;

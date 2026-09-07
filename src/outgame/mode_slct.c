@@ -65,8 +65,6 @@ static int ms_load_id;
 #define PAD_ACTION_EXIT PAD_TRIANGLE
 #endif
 
-#define PI 3.1415927f
-
 void ModeSlctInit(u_char top,u_char end)
 {
     ms_load_id = VER_LOAD_REQ_LANG(M_SLCT_CMN_PK2, LOAD_ADDRESS_13);

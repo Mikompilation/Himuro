@@ -93,9 +93,6 @@ static JET_SET jet1[25];
 static JET_SET jet2[25];
 static u_char znz[12][6];
 
-#define PI 3.1415927f
-#define DEG2RAD(x) ((float)(x)*PI/180.0f)
-
 #define FIXED_ONE 65536
 #define INT_TO_FIXED(x) ((x) * FIXED_ONE)
 #define FIXED_TO_INT(x) ((x) / FIXED_ONE)
@@ -2515,7 +2512,7 @@ static void TameKin2(short int pos_x, short int pos_y)
                 chrg_rot = 0;
                 chrg_siz = 100;
                 chrg_rgb = 128;
-                chrg_alp = (VER_COSF((new_inf.tm_max * 6.2831855f) / 60.0f) + 1.0f) * 32.0f + 64.0f;
+                chrg_alp = (VER_COSF((new_inf.tm_max * (PI * 2)) / 60.0f) + 1.0f) * 32.0f + 64.0f;
                 chrg_flr = 0;
             }
         break;

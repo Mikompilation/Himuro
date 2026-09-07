@@ -65,8 +65,7 @@ const u_char floor_exist[5][4] = {
     { 1, 1, 1, 1 }, { 1, 1, 1, 1 },
 };
 
-#define PI 3.1415927f
-#define RAD2DEG(x) ((float)(x)*180.0f/PI)
+#define PLYR_HIT_MAX_ROT (PI / 2 - 0.01f)
 
 int MissonMapDataLoad(u_char msn_no)
 {
@@ -1424,11 +1423,11 @@ u_char PlyrMapHitCheck(sceVu0FVECTOR dst, sceVu0FVECTOR pos, u_char div, u_char 
 
         if (i != 0)
         {
-            chk_rot = -1.5607964f; // almost -PI / 2;
+            chk_rot = -PLYR_HIT_MAX_ROT;
         }
         else
         {
-            chk_rot = +1.5607964f; // almost +PI / 2;
+            chk_rot = +PLYR_HIT_MAX_ROT;
         }
 
         chk_rotbk[0] = 0.0f;

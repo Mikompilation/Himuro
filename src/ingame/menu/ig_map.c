@@ -59,8 +59,6 @@ static FLSH_CORE flsh[3];
 
 static MAP_CTRL map;
 
-#define PI 3.1415927f
-
 void NewgameMenuMapInit()
 {
     return;

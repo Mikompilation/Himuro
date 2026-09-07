@@ -26,8 +26,6 @@ int camera_spe_abi_point[5] = {
 
 static CAM_DSP cam_dsp;
 
-#define PI 3.1415927f
-
 extern FLSH_CORE flsh;
 extern FLSH_CORE flsh2;
 
@@ -1300,7 +1298,7 @@ void CameraDsp(short int pos_x, short int pos_y, u_char alp, u_char msg)
 
                     cam_dsp.pow_flr[i][j]--;
 
-                    alpha = alp * SgSinf((cam_dsp.pow_flr[i][j] * 3.1415927f) / 20.0f);
+                    alpha = alp * SgSinf((cam_dsp.pow_flr[i][j] * PI) / 20.0f);
 
                     PutSpriteYW(CAM_BALL_ONN, CAM_BALL_ONN, pos_x + j * 22, pos_y + i * 32, 0.0f, 0x808080, alpha, 1.0f, 1.0f, 0, 0xff, 1, 1, 0);
                     PutSpriteYW(CAM_BALL_FLR, CAM_BALL_FLR, pos_x + j * 22, pos_y + i * 32, 0.0f, 0x808080, alpha, 1.0f, 1.0f, 0, 0xff, 1, 1, 0);
@@ -1332,7 +1330,7 @@ void CameraDsp(short int pos_x, short int pos_y, u_char alp, u_char msg)
                 {
                     PutSpriteYW(CAM_FONT_00 + i, CAM_FONT_00 + i, pos_x, pos_y, 0.0f, 0x808080, alp, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
 
-                    use = alp * SgSinf((cam_dsp.sb_flsh[i] * 3.1415927f) / 20.0f);
+                    use = alp * SgSinf((cam_dsp.sb_flsh[i] * PI) / 20.0f);
 
                     PutSpriteYW(CAM_FONT_00 + i, CAM_FONT_00 + i, pos_x, pos_y, 0.0f, 0x808080, use, 1.0f, 1.0f, 0, 0xff, 1, 1, 0);
 
@@ -1370,7 +1368,7 @@ void CameraDsp(short int pos_x, short int pos_y, u_char alp, u_char msg)
                 {
                     PutSpriteYW(CAM_FONT_05 + i, CAM_FONT_05 + i, pos_x, pos_y, 0.0f, 0x808080, alp, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
 
-                    use = alp * SgSinf((cam_dsp.ex_flsh[i] * 3.1415927f) / 20.0f);
+                    use = alp * SgSinf((cam_dsp.ex_flsh[i] * PI) / 20.0f);
 
                     PutSpriteYW(CAM_FONT_05 + i, CAM_FONT_05 + i, pos_x, pos_y, 0.0f, 0x808080, use, 1.0f, 1.0f, 0, 0xff, 1, 1, 0);
 

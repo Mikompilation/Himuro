@@ -24,9 +24,6 @@ float sqrtf(float x);
 sceVu0FMATRIX fod_cmn_mtx = {0};
 FOD_EFF_PARAM eff_param = {0};
 
-#define PI 3.1415927f
-#define DEG2RAD(x) ((float)(x)*PI/180.0f)
-
 void FodInit(FOD_CTRL *fc, u_int *tcp, u_int *tlp, u_int *tep)
 {
     sceVu0UnitMatrix(fod_cmn_mtx);

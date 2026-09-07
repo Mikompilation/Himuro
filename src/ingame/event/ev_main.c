@@ -52,10 +52,6 @@
 u_char event_stts[250] = {0};
 EVENT_WRK ev_wrk = {0};
 
-#define PI 3.1415927f
-
-#define DEG2RAD(x) ((float)(x)*PI/180.0f)
-
 #if defined(BUILD_JP_VERSION)
 #define PAD_ACTION_CONFIRM PAD_CIRCLE
 #elif defined(BUILD_US_VERSION)

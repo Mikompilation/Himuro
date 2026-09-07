@@ -15,14 +15,12 @@ float sinf(float x);
 #include "graphics/graph3d/shadow.h"
 #include "graphics/graph3d/libsg.h"
 
-#define PI 3.1415925f
-
 sceVu0FVECTOR vf12reg[2] = {
     { 1.0f, 1.0f, 1.0f, -1.0f },
     { 1.0f, 0.0f, 0.0f,  0.0f },
 };
 #if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
-static sceVu0FVECTOR trad = { 0.0f, 1/(PI * 2), -2 * PI, PI/ 180.0f };
+static sceVu0FVECTOR trad = { 0.0f, 1/(SG_PI * 2), -2 * SG_PI, SG_PI/ 180.0f };
 static sceVu0FVECTOR tgsinf[2] = {
     {          0.0f,     -1.0f/6.0f, 1.0f/120.0f, 0.0f },
     { -1.0f/5040.0f, 1.0f/362880.0f,        1.0f, 0.0f },
@@ -362,7 +360,7 @@ static inline float _ReduceRadians(float rad)
 
     Equivalent C:
 
-        rad -= truncf(rad / (2.0f * PI)) * (2.0f * PI);
+        rad -= truncf(rad / (2.0f * SG_PI)) * (2.0f * SG_PI);
 */
 
     float ret;
@@ -447,8 +445,8 @@ static inline float _ReduceDegrees(float degree)
 
     Equivalent C:
 
-        float rad = deg * (PI / 180.0f);
-        rad -= truncf(rad / (2.0f * PI)) * (2.0f * PI);
+        float rad = deg * (SG_PI / 180.0f);
+        rad -= truncf(rad / (2.0f * SG_PI)) * (2.0f * SG_PI);
         return rad;
 */
     float ret;
@@ -480,16 +478,16 @@ float SgSinf(float rad)
 
     if (rad < 0.0f)
     {
-        rad += (PI * 2);
+        rad += (SG_PI * 2);
     }
 
-    if (((PI * 3) / 2) < rad)
+    if (((SG_PI * 3) / 2) < rad)
     {
-        rad -= (PI * 2);
+        rad -= (SG_PI * 2);
     }
-    else if ((PI / 2) < rad)
+    else if ((SG_PI / 2) < rad)
     {
-        rad = PI - rad;
+        rad = SG_PI - rad;
     }
 
     rad = _SinPoly(rad);
@@ -499,7 +497,7 @@ float SgSinf(float rad)
 
 float SgCosf(float rad)
 {
-    return SgSinf(rad + (PI / 2));
+    return SgSinf(rad + (SG_PI / 2));
 }
 
 float SgSinfd(float degree)
@@ -510,16 +508,16 @@ float SgSinfd(float degree)
 
     if (rad < 0.0f)
     {
-        rad += (PI * 2);
+        rad += (SG_PI * 2);
     }
 
-    if (((PI * 3) / 2) < rad)
+    if (((SG_PI * 3) / 2) < rad)
     {
-        rad -= (PI * 2);
+        rad -= (SG_PI * 2);
     }
-    else if ((PI / 2) < rad)
+    else if ((SG_PI / 2) < rad)
     {
-        rad = PI - rad;
+        rad = SG_PI - rad;
     }
 
     rad = _SinPoly(rad);
@@ -593,11 +591,11 @@ float SgAtanf(float x)
             tmpv[1][2] = -0.055909887f;
             tmpv[1][3] = +0.021861229f;
             tmpv[2][0] = -0.0040540579f;
-            tmpv[2][1] = +(PI / 4);
+            tmpv[2][1] = +(SG_PI / 4);
 
             GetATanf(tmpv);
 
-            return (PI / 2) - tmpv[0][0];
+            return (SG_PI / 2) - tmpv[0][0];
         }
         else
         {
@@ -610,7 +608,7 @@ float SgAtanf(float x)
             tmpv[1][2] = -0.055909887f;
             tmpv[1][3] = +0.021861229f;
             tmpv[2][0] = -0.0040540579f;
-            tmpv[2][1] = +(PI / 4);
+            tmpv[2][1] = +(SG_PI / 4);
 
             GetATanf(tmpv);
 
@@ -632,11 +630,11 @@ float SgAtan2f(float y, float x)
     {
         if (y < 0.0f)
         {
-            return -PI / 2;
+            return -SG_PI / 2;
         }
         else
         {
-            return +PI / 2;
+            return +SG_PI / 2;
         }
     }
 
@@ -644,11 +642,11 @@ float SgAtan2f(float y, float x)
 
     if (x < 0.0f)
     {
-        rad += PI;
+        rad += SG_PI;
 
-        if (PI < rad)
+        if (SG_PI < rad)
         {
-            rad -= PI * 2;
+            rad -= SG_PI * 2;
         }
     }
 

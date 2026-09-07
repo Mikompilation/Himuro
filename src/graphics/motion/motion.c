@@ -60,10 +60,6 @@ float now_frot_x = 0.0f;
 static sceVu0FMATRIX m_start[60];
 static sceVu0FMATRIX m_end[60];
 
-#define PI 3.1415927f
-
-#define DEG2RAD(x) ((float)(x)*PI/180.0f)
-
 void motInitPlayerAnm(char mdl_no)
 {
     u_int *pkt_p;

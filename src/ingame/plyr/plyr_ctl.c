@@ -80,9 +80,6 @@ static u_char dmg_step = 0;
 static u_char avoid_chk;
 static u_short hp_down_deg;
 
-#define PI 3.1415927f
-#define DEG2RAD(x) ((float)(x)*PI/180.0f)
-
 void PlyrCtrlMain()
 {
     if (dbg_wrk.high_speed_mode != 0 && *key_now[6] != 0)

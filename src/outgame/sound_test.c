@@ -110,8 +110,6 @@ static char playback_part2;
 
 static ST_F stf;
 
-#define PI 3.1415927f
-
 void SoundTestForModeSlectInit()
 {
     stf = (ST_F){0};

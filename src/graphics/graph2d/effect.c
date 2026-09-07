@@ -42,8 +42,6 @@ static void *r23_e1 = 0;
 static void *r23_e2 = 0;
 static u_char r28_torch_flag = 0;
 
-#define PI 3.1415927f
-
 void InitEffects()
 {
     eff_blur_off = 1;

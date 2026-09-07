@@ -84,8 +84,6 @@ static void MesKeyCheck();
 #define VER_SET_FONT_PAT(pri, fn, x, y, fw, r, g, b, a) SetFontPat(0, pri, fn, x, y, fw, r, g, b, a)
 #endif
 
-#define PI 3.1415927f
-
 #define SCR_WIDTH 640
 #define SCR_HEIGHT 224
 

@@ -16,8 +16,6 @@ float sinf(float x);
 
 #define SE_WRK_SIZE 24
 
-#define PI 3.141592741f
-#define HALF_PI 1.5707964f
 #define FLOAT_MAX_SOUND_DISTANCE 10000.0f
 #define FLOAT_RES_X 640.0f
 #define US_MAX_PAN 0x4ff
@@ -200,7 +198,7 @@ u_short SeCmdGetPan(float rot)
 
 u_short SeCmdGetPhase(float rot)
 {
-    if (rot > HALF_PI || HALF_PI > -rot)
+    if (rot > (PI / 2) || (PI / 2) > -rot)
     {
         return 1;
     }

@@ -13,8 +13,6 @@
 // #include "ingame/plyr/unit_ctl.h" // RotLimitChk
 #include "main/glob.h"
 
-#define PI 3.1415927f
-
 int CheckRotDoorOpenStatus(int dwrk_no, u_char type)
 {
     DOOR_TYPE_DAT *dtdp;

@@ -43,7 +43,6 @@ static sceVu0FVECTOR end_cam_pos;
 static sceVu0FVECTOR cam_move_speed;
 static sceVu0FVECTOR cam_ref_adjust_val;
 
-#define PI 3.1415927f
 static inline float get_i(sceVu0FVECTOR v, int i) // HACK: fixes while loop in SetFirstDestination
 {
     return v[i];

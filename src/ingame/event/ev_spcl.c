@@ -185,9 +185,6 @@ static char order_no;
 static u_char butsuzo_alpha[3];
 static u_char zushi_alpha[3];
 
-#define PI 3.1415927f
-#define DEG2RAD(x) ((float)(x)*PI/180.0f)
-
 #if defined(BUILD_JP_VERSION)
 #define PAD_ACTION_PUSH PAD_CIRCLE
 #define PAD_ACTION_LEAVE PAD_CROSS

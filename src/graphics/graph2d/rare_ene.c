@@ -79,8 +79,6 @@ u_int pazz_textbl[] = {
     PAZ_ENE003_PK2,
 };
 
-#define PI 3.1415927f
-
 void LoadRareEneTex()
 {
     return;
@@ -461,4 +459,3 @@ void DrawRareEne()
         }
     }
 }
-

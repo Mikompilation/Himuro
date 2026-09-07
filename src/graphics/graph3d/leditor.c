@@ -24,8 +24,6 @@ static SgLIGHT le_slights[16];
 
 static int fog_mode;
 
-#define PI 3.1415927f
-
 void ReadLights(ROOM_LIGHT *rdata, void *buf)
 {
     int num;

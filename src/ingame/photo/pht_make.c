@@ -36,8 +36,6 @@
 int frm_type = 2;
 int ers_type = 1;
 
-#define PI 3.1415927f
-
 void InitPhotoMake()
 {
     hint_2d = 0;

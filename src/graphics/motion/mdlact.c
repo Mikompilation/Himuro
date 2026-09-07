@@ -40,8 +40,6 @@ plyr_act_func_t plyr_act_func[] = {
 // RAND_MAX = (2**31-1)
 #define RAND_MAX 2147483647
 
-#define PI 3.1415927f
-
 char motPlayerActCtrl(SgCOORDUNIT *cp)
 {
     sceVu0FVECTOR p;

@@ -224,9 +224,6 @@ int renewal_data_chk_cnt = 0;
 u_short cdcopy[2] = {0};
 u_char cam_info_disp = 1;
 
-#define PI 3.1415927f
-#define DEG2RAD(x) ((float)(x)*PI/180.0f)
-
 void CameraMain()
 {
     float fov = DEG2RAD(51.0f);

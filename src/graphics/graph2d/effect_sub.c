@@ -47,10 +47,6 @@ static u_long128 *buf;
 static u_long128 *buf2;
 static u_long128 *bufz;
 
-#define PI_HALF 1.5707964f
-#define PI 3.1415927f
-#define TWO_PI 6.2831855f
-
 #define MIN(a,b) (((a)<(b))?(a):(b))
 #define MAX(a,b) (((a)>(b))?(a):(b))
 

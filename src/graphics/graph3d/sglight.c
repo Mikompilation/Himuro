@@ -44,8 +44,6 @@ static int stack_light_num[9];
 #define VER_VU0_SCALE_VECTOR Vu0ScaleVectorXYZ
 #endif
 
-#define PI 3.1415925f
-
 void SgPreRenderDbgOn()
 {
     dbg_flg = 1;
@@ -1360,7 +1358,7 @@ void SgReadLights(void *sgd_top, void *light_top, float *Ambient, SgLIGHT *Iligh
                             sceVu0SubVector(Slight[i].direction, pvec[1], pvec[2]);
                         }
 
-                        cc = VER_COSFD(pvec[1][3]);
+                        cc = VER_SG_COSFD(pvec[1][3]);
 
                         Slight[i].intens = cc * cc;
                         Slight[i].power = _TransSPower(scale);

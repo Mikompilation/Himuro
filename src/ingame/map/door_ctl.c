@@ -82,9 +82,6 @@ static char load_conte_flg;
 
 static u_short lock_did[20];
 
-#define PI 3.1415927f
-#define DEG2RAD(x) ((float)(x)*PI/180.0f)
-
 u_char IsUseDoor(u_char use)
 {
     if (use == FURN_USER_DOOR_NOW_ROOM || use == FURN_USER_DOOR_NEXT_ROOM || use == FURN_USER_DOOR_JOINT)

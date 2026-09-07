@@ -63,8 +63,6 @@ static DSP_SVP dsp_svp;
 static ALBM_MODE albm_mode;
 static BOOK book[6];
 
-#define PI 3.1415927f
-
 void SavePointMenuInit()
 {
     spmenu_wrk = (SAVE_POINT_MENU_WRK){0};

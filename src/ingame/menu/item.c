@@ -77,8 +77,6 @@ static FLSH_CORE dbg_flsh;
 
 static ITM_EFF_WRK iew;
 
-#define PI 3.1415927f
-
 void NewgameItemInit()
 {
     memset(poss_item, 0, sizeof(poss_item));

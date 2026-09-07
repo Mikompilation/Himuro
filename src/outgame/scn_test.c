@@ -83,9 +83,6 @@ static void (*SceneTestDBMenu[])() = {
     SceneTestEneEffOthers,
 };
 
-#define PI 3.1415927f
-#define DEG2RAD(x) ((float)(x)*PI/180.0f)
-
 void SceneTestCtrl()
 {
     if (scn_test_wrk.mode == 0)

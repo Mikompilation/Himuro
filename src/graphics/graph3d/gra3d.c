@@ -96,8 +96,6 @@ static SgSourceChainTag tag_buffer[2][6144];
 static SgLIGHT lights[16];
 static SgLIGHT slights[16];
 
-#define PI 3.1415927f
-
 u_int* LoadDataFromDVD(u_char *fname)
 {
     int rfd;

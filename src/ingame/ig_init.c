@@ -17,8 +17,6 @@
 #include "os/eeiop/cdvd/eecdvd.h"
 #include "os/fileload.h"
 
-#define PI 3.1415927f
-
 typedef struct {
     u_char mode;
     u_char count;

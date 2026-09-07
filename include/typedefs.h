@@ -58,6 +58,12 @@ typedef union {
 	#define VER_LANG_NUM 5
 #endif
 
+#define PI 3.1415927f
+#define SG_PI 3.1415925f // Lower approximation used by SG trigonometry and JP lighting.
+
+#define DEG2RAD(x) ((float)(x)*PI/180.0f)
+#define RAD2DEG(x) ((float)(x)*180.0f/PI)
+
 #if defined(BUILD_JP_VERSION)
 	#define VER_ATANF atanf
 	#define VER_ATAN2F atan2f
@@ -69,6 +75,7 @@ typedef union {
     #define VER_RSQRTF(x) 1.0f / sqrtf(x)
 	#define VER_SINFD(d) sinf(((d) * PI) / 180.0f)
 	#define VER_COSFD(d) cosf(((d) * PI) / 180.0f)
+	#define VER_SG_COSFD(d) cosf(((d) * SG_PI) / 180.0f)
 #elif defined(BUILD_US_VERSION)
 	#define VER_ATANF SgAtanf
 	#define VER_ATAN2F SgAtan2f
@@ -80,6 +87,7 @@ typedef union {
     #define VER_RSQRTF SgRSqrtf
 	#define VER_SINFD SgSinfd
 	#define VER_COSFD SgCosfd
+	#define VER_SG_COSFD SgCosfd
 #elif defined(BUILD_EU_VERSION)
 	#define VER_ATANF SgAtanf
 	#define VER_ATAN2F SgAtan2f
@@ -91,6 +99,7 @@ typedef union {
     #define VER_RSQRTF SgRSqrtf
 	#define VER_SINFD SgSinfd
 	#define VER_COSFD SgCosfd
+	#define VER_SG_COSFD SgCosfd
 #endif
 
 // #include <cstdlib.h>

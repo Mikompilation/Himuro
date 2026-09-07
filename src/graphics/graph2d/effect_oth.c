@@ -53,11 +53,6 @@ static HEAT_HAZE smoke_particle[4];
 static NEW_ITEM ni[24];
 static RIPPLE2 rip[8];
 
-#define PI 3.1415927f
-#define PI2 6.2831855f
-
-#define DEG2RAD(x) ((float)(x)*PI/180.0f)
-
 void InitEffectOth()
 {
     int i;
@@ -2027,7 +2022,7 @@ void SetNewItemEffect(NEW_ITEM *nip)
     {
         if (stop_effects == 0)
         {
-            rot_z = PI < rot_z + DEG2RAD(10.0f/3.0f) ? (rot_z + DEG2RAD(10.0f/3.0f)) - PI2 : rot_z + DEG2RAD(10.0f/3.0f);
+            rot_z = PI < rot_z + DEG2RAD(10.0f/3.0f) ? (rot_z + DEG2RAD(10.0f/3.0f)) - (PI * 2) : rot_z + DEG2RAD(10.0f/3.0f);
         }
 
         wait = 60.0f;
@@ -2050,7 +2045,7 @@ void SetNewItemEffect(NEW_ITEM *nip)
     {
         if (stop_effects == 0)
         {
-            rot_z = PI < rot_z + DEG2RAD(5) ? (rot_z + DEG2RAD(5)) - PI2 : rot_z + DEG2RAD(5);
+            rot_z = PI < rot_z + DEG2RAD(5) ? (rot_z + DEG2RAD(5)) - (PI * 2) : rot_z + DEG2RAD(5);
         }
 
         wait = 10.0f;

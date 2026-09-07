@@ -41,8 +41,6 @@ static sceVu0FVECTOR spos[96];
 static u_int enedmg_tex_addr[4];
 static NEW_PERTICLE new_perticle[44];
 
-#define PI 3.1415927f
-
 void InitEffectEne()
 {
     int i;

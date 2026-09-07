@@ -60,7 +60,6 @@ static FILE_GET_FADE fade_ctr;
 static FILE2D file2d;
 
 #define MAX_VOLUME 0x3fff
-#define PI 3.1415927f
 
 void ItemGet(u_char get_type, u_char get_no, u_char msg0_no, u_char msg1_no)
 {
