@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 65.45134359509522,
+    "fuzzy_match_percent": 65.65284853145124,
     "total_code": "1165232",
-    "matched_code": "762660",
-    "matched_code_percent": 65.45134359509522,
+    "matched_code": "765008",
+    "matched_code_percent": 65.65284853145124,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 2376,
-    "matched_functions_percent": 70.00589275191514,
+    "matched_functions": 2386,
+    "matched_functions_percent": 70.30053034767236,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -18391,9 +18391,14 @@
     {
       "name": "ingame/map/map_area",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "2348",
+        "matched_code": "2348",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 10,
+        "matched_functions": 10,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -18401,14 +18406,17 @@
         {
           "name": ".text",
           "size": "2376",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -18416,51 +18424,61 @@
         {
           "name": "MapAreaInit",
           "size": "164",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MapAreaMain",
           "size": "196",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetRoomArea",
           "size": "96",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MapAreaRoomLoadReq",
           "size": "212",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MapAreaLoadSet",
           "size": "64",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetAreaLoadRoom",
           "size": "748",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "AreaRoomAllLoadInit",
           "size": "60",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "AreaRoomAllLoad",
           "size": "244",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetEmptyRoomAddr",
           "size": "100",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ClearDispRoom",
           "size": "464",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -25117,14 +25135,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 65.45134359509522,
+        "fuzzy_match_percent": 65.65284853145124,
         "total_code": "1165232",
-        "matched_code": "762660",
-        "matched_code_percent": 65.45134359509522,
+        "matched_code": "765008",
+        "matched_code_percent": 65.65284853145124,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 2376,
-        "matched_functions_percent": 70.00589275191514,
+        "matched_functions": 2386,
+        "matched_functions_percent": 70.30053034767236,
         "complete_data_percent": 100.0,
         "total_units": 154
       }

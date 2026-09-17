@@ -250,7 +250,7 @@ void AreaRoomAllLoadInit()
 
     for (i = 0; i < 6; i++)
     {
-        area_wrk.room[i] = 0xFF;
+        area_wrk.room[i] = 0xff;
     }
 }
 
@@ -317,7 +317,7 @@ void ClearDispRoom(int wrk_no)
 
     for (i = 0; i < 60; i++)
     {
-        if (furn_wrk[i].room_id != room_wrk.disp_no[wrk_no ^ 1] && (furn_wrk[i].use == FURN_USER_NOW_ROOM || furn_wrk[i].use == FURN_USER_NEXT_ROOM))
+        if (furn_wrk[i].room_id != room_wrk.disp_no[wrk_no^1] && (furn_wrk[i].use == FURN_USER_NOW_ROOM || furn_wrk[i].use == FURN_USER_NEXT_ROOM))
         {
             FurnSetWrkNoUse(&furn_wrk[i], i);
         }
@@ -329,9 +329,9 @@ void ClearDispRoom(int wrk_no)
     {
         if (dwp->use == FURN_USER_DOOR_NOW_ROOM || dwp->use == FURN_USER_DOOR_JOINT || dwp->use == FURN_USER_DOOR_NEXT_ROOM)
         {
-            room_no = GetRoomIdBeyondDoor(dwp->door_id, room_wrk.disp_no[wrk_no ^ 1]);
+            room_no = GetRoomIdBeyondDoor(dwp->door_id, room_wrk.disp_no[wrk_no^1]);
 
-            if (room_no != 0xff && room_no != room_wrk.disp_no[wrk_no ^ 1] && (dwp->stts != 0 && dwp->stts != 1))
+            if (room_no != 0xff && room_no != room_wrk.disp_no[wrk_no^1] && (dwp->stts != 0x0 && dwp->stts != 0x1))
             {
                 DoorSttsChange(dwp->door_id, 1);
             }

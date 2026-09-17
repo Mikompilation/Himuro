@@ -4,29 +4,29 @@
 #include "typedefs.h"
 
 typedef struct {
-	u_int *sgd_room;
-	u_int *sgd_furn[30];
-	u_short mno_room;
-	u_short mno_furn[30];
-	u_char room_id;
+    u_int *sgd_room;
+    u_int *sgd_furn[30];
+    u_short mno_room;
+    u_short mno_furn[30];
+    u_char room_id;
 } ROOM_MDATA;
 
 typedef struct {
-	u_int *sgd_door;
-	u_short mno_door;
+    u_int *sgd_door;
+    u_short mno_door;
 } DOOR_MDATA;
 
 typedef struct {
-	ROOM_MDATA rmd[6];
-	DOOR_MDATA dmd[20];
-	sceVu0FVECTOR tmp_after_pos;
-	u_char area_no;
-	u_char area_bak;
-	u_char room[6];
-	u_char rgst[5];
-	u_char ev_se;
-	u_char fg_max;
-	u_int padding;
+    ROOM_MDATA rmd[6];
+    DOOR_MDATA dmd[20];
+    sceVu0FVECTOR tmp_after_pos;
+    u_char area_no;
+    u_char area_bak;
+    u_char room[6];
+    u_char rgst[5];
+    u_char ev_se;
+    u_char fg_max;
+    u_int padding;
 } AREA_WRK;
 
 // extern u_char area_dat[11][6];
