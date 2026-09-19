@@ -4,113 +4,113 @@
 #include "typedefs.h"
 
 typedef struct {
-	u_char stat;
-	u_char rm_from;
-	u_char rm_to;
-	u_char next_area;
-	u_char room[6];
-	u_char fgst[3];
-	u_char rgst[5];
-	u_char load_mode;
-	u_char load_count;
-	u_char load_id;
+    u_char stat;
+    u_char rm_from;
+    u_char rm_to;
+    u_char next_area;
+    u_char room[6];
+    u_char fgst[3];
+    u_char rgst[5];
+    u_char load_mode;
+    u_char load_count;
+    u_char load_id;
 } AREA_READ_WRK;
 
 typedef struct {
-	float rot;
-	u_short pos_x;
-	u_short pos_z;
-	u_char stts;
+    float rot;
+    u_short pos_x;
+    u_short pos_z;
+    u_char stts;
 } DOOR_STTS_MAP;
 
 typedef struct {
-	sceVu0FVECTOR spos;
-	sceVu0FVECTOR epos;
-	float srot;
-	float erot;
-	float door_pre;
-	u_char stts;
-	u_char mode;
-	u_short move_flame;
-	u_short mtn_flame;
-	u_short wait_flame;
-	u_short count;
-	u_char mtn_dat_no;
-	u_char open[2];
-	u_char chk_flg;
+    sceVu0FVECTOR spos;
+    sceVu0FVECTOR epos;
+    float srot;
+    float erot;
+    float door_pre;
+    u_char stts;
+    u_char mode;
+    u_short move_flame;
+    u_short mtn_flame;
+    u_short wait_flame;
+    u_short count;
+    u_char mtn_dat_no;
+    u_char open[2];
+    u_char chk_flg;
 } DOOR_OPEN_CTRL;
 
 typedef struct {
-	sceVu0FVECTOR pos;
-	sceVu0FVECTOR npos;
-	float rot;
-	float nrot;
-	float *open_tbl;
-	u_short door_id;
-	u_short count;
-	u_short mdl_no;
-	u_short type;
-	u_char fwrk_no;
-	u_char stts;
-	u_char use;
-	u_char dmd_no;
-	u_char hchk_mode;
-	u_char lock;
+    sceVu0FVECTOR pos;
+    sceVu0FVECTOR npos;
+    float rot;
+    float nrot;
+    float *open_tbl;
+    u_short door_id;
+    u_short count;
+    u_short mdl_no;
+    u_short type;
+    u_char fwrk_no;
+    u_char stts;
+    u_char use;
+    u_char dmd_no;
+    u_char hchk_mode;
+    u_char lock;
 } DOOR_WRK;
 
 typedef struct {
-	float *open_tbl;
-	sceVu0FVECTOR npos;
-	float nrot;
-	float inert;
-	u_char stts;
-	u_short type;
-	u_short door_id;
-	u_short count;
-	u_short dw_no;
-	u_short stop_cnt;
-	u_char dmd_no;
-	u_char opnmtn_flg;
-	u_char reopen;
+    float *open_tbl;
+    sceVu0FVECTOR npos;
+    float nrot;
+    float inert;
+    u_char stts;
+    u_short type;
+    u_short door_id;
+    u_short count;
+    u_short dw_no;
+    u_short stop_cnt;
+    u_char dmd_no;
+    u_char opnmtn_flg;
+    u_char reopen;
 } AUTO_CLOSE_DOOR_WRK;
 
 typedef struct {
-	float *open_tbl;
-	sceVu0FVECTOR npos;
-	float nrot;
-	float inert;
-	u_char stts;
-	u_short type;
-	u_short door_id;
-	u_short count;
-	u_short dw_no;
-	u_char dmd_no;
-	u_char opnmtn_flg;
+    float *open_tbl;
+    sceVu0FVECTOR npos;
+    float nrot;
+    float inert;
+    u_char stts;
+    u_short type;
+    u_short door_id;
+    u_short count;
+    u_short dw_no;
+    u_char dmd_no;
+    u_char opnmtn_flg;
 } NON_CLOSE_DOOR_WRK;
 
 typedef struct {
-	int dwrk_no;
-	u_char type;
-	u_char sq_no[2];
+    int dwrk_no;
+    u_char type;
+    u_char sq_no[2];
 } DOJ_SQUARE;
 
 typedef struct {
-	DOJ_SQUARE dojs[2];
-	int dwno_base;
-	u_char mtn_no;
-	u_char exc_flg;
-	u_char dbl_flg;
-	u_char dor_flg;
+    DOJ_SQUARE dojs[2];
+    int dwno_base;
+    u_char mtn_no;
+    u_char exc_flg;
+    u_char dbl_flg;
+    u_char dor_flg;
 } DOJ_SQUARE_MTN;
 
 typedef struct {
-	float rot;
-	u_short pos_x;
-	short int pos_y;
-	u_short pos_z;
-	short int pad_s;
-	u_short type;
-	u_short mdl_no;
+    float rot;
+    u_short pos_x;
+    short int pos_y;
+    u_short pos_z;
+    short int pad_s;
+    u_short type;
+    u_short mdl_no;
 } DOOR_DATA_POP;
 
 extern AREA_READ_WRK area_read_wrk;

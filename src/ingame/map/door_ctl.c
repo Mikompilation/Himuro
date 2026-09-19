@@ -6,6 +6,24 @@
 #include "door_ctl.h"
 #undef INCLUDING_FROM_DOOR_CTL_C
 
+// gcc/src/newlib/libm/math/sf_sin.c
+float sinf(float x);
+
+// gcc/src/newlib/libm/math/sf_atan.c
+float atanf(float x);
+
+// gcc/src/newlib/libm/math/s_cos.c
+double cos(double x);
+
+// gcc/src/newlib/libm/math/s_sin.c
+double sin(double x);
+
+// gcc/src/newlib/libm/math/sf_cos.c
+float cosf(float x);
+
+// gcc/src/newlib/libm/math/wf_atan2.c
+float atan2f(float y, float x);
+
 #include "common/ul_math.h"
 #include "graphics/graph3d/gra3d.h"
 #include "graphics/graph3d/load3d.h"
@@ -97,7 +115,7 @@ short int SearchDoorWrk(int door_id)
     DOOR_WRK *dwp;
     int i;
 
-    for (i = 0, dwp = door_wrk; i < 0x14; i++, dwp++)
+    for (i = 0, dwp = door_wrk; i < 20; i++, dwp++)
     {
         if (IsUseDoor(dwp->use) != 0)
         {
@@ -1087,12 +1105,12 @@ static void DoorCtrlOpen()
         }
 
         door_open_ctrl.epos[0] =
-             dmotionp->sx * SgCosf(tmp_rot) + dmotionp->sy * SgSinf(tmp_rot) + door_wrk[dsmtnp->dwno_base].pos[0];
+             dmotionp->sx * VER_COSF(tmp_rot) + dmotionp->sy * VER_SINF(tmp_rot) + door_wrk[dsmtnp->dwno_base].pos[0];
 
         door_open_ctrl.epos[1] = plyr_wrk.move_box.pos[1];
 
         door_open_ctrl.epos[2] =
-             (dmotionp->sy * SgCosf(tmp_rot) - dmotionp->sx * SgSinf(tmp_rot)) + door_wrk[dsmtnp->dwno_base].pos[2];
+             (dmotionp->sy * VER_COSF(tmp_rot) - dmotionp->sx * VER_SINF(tmp_rot)) + door_wrk[dsmtnp->dwno_base].pos[2];
 
         door_open_ctrl.door_pre = tmp_rot;
         door_open_ctrl.srot = plyr_wrk.move_box.rot[1] - tmp_rot;
@@ -1732,8 +1750,8 @@ static void DoorCtrlAutoClose()
             {
                 if (IsFusumaType(acp->type) != 0)
                 {
-                    dwp->npos[0] = dwp->pos[0] + acp->npos[0] * SgCosf(dwp->rot);
-                    dwp->npos[2] = dwp->pos[2] - acp->npos[0] * SgSinf(dwp->rot);
+                    dwp->npos[0] = dwp->pos[0] + acp->npos[0] * VER_COSF(dwp->rot);
+                    dwp->npos[2] = dwp->pos[2] - acp->npos[0] * VER_SINF(dwp->rot);
 
                     furn_wrk[dwp->fwrk_no].pos[0] = dwp->npos[0];
                     furn_wrk[dwp->fwrk_no].pos[2] = dwp->npos[2];
@@ -1856,8 +1874,8 @@ static int DoorReOpenCheck(sceVu0FVECTOR pos, int dwrk_no, u_short count, u_char
 
     GetDoorTypeDatP(type);
 
-    tmp_dpos[0] = dwp->pos[0] + SgCosf(dwp->rot) * 225.0f;
-    tmp_dpos[2] = dwp->pos[2] - SgSinf(dwp->rot) * 225.0f;
+    tmp_dpos[0] = dwp->pos[0] + VER_COSF(dwp->rot) * 225.0f;
+    tmp_dpos[2] = dwp->pos[2] - VER_SINF(dwp->rot) * 225.0f;
 
     x = pos[0] - tmp_dpos[0];
     z = pos[2] - tmp_dpos[2];
@@ -2069,8 +2087,8 @@ static void DoorCtrlNoClose()
             {
                 if (IsFusumaType(ncp->type) != 0)
                 {
-                    dwp->npos[0] = dwp->pos[0] + ncp->npos[0] * SgCosf(dwp->rot);
-                    dwp->npos[2] = dwp->pos[2] - ncp->npos[0] * SgSinf(dwp->rot);
+                    dwp->npos[0] = dwp->pos[0] + ncp->npos[0] * VER_COSF(dwp->rot);
+                    dwp->npos[2] = dwp->pos[2] - ncp->npos[0] * VER_SINF(dwp->rot);
 
                     furn_wrk[dwp->fwrk_no].pos[0] = dwp->npos[0];
                     furn_wrk[dwp->fwrk_no].pos[2] = dwp->npos[2];
@@ -2190,10 +2208,12 @@ u_char DoorOpenJudge()
     AllCloseConnectDoor();
     DoorCheckOff();
 
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     if (ev_wrk.btl_lock != 0)
     {
         ev_wrk.btl_lock = 0;
     }
+#endif
 
     return sq_no;
 }
@@ -2619,22 +2639,22 @@ static int GetDoorBaseRot(DOJ_SQUARE_MTN *dsmp, float *dbrot1, float *dbrot2, u_
             dbase1[1] = door_wrk[dwn[0]].pos[1];
             dbase1[2] = door_wrk[dwn[0]].pos[2];
 
-            dbase2[0] = door_wrk[dwn[0]].pos[0] + SgCosf(door_wrk[dwn[0]].rot) * 450.0f;
+            dbase2[0] = door_wrk[dwn[0]].pos[0] + VER_COSF(door_wrk[dwn[0]].rot) * 450.0f;
             dbase2[1] = door_wrk[dwn[0]].pos[1];
-            dbase2[2] = door_wrk[dwn[0]].pos[2] - SgSinf(door_wrk[dwn[0]].rot) * 450.0f;
+            dbase2[2] = door_wrk[dwn[0]].pos[2] - VER_SINF(door_wrk[dwn[0]].rot) * 450.0f;
         }
     }
     else
     {
         if (is_dbl != 0)
         {
-            dbase1[0] = door_wrk[dwn[0]].pos[0] + SgCosf(door_wrk[dwn[0]].rot) * 450.0f;
+            dbase1[0] = door_wrk[dwn[0]].pos[0] + VER_COSF(door_wrk[dwn[0]].rot) * 450.0f;
             dbase1[1] = door_wrk[dwn[0]].pos[1];
-            dbase1[2] = door_wrk[dwn[0]].pos[2] - SgSinf(door_wrk[dwn[0]].rot) * 450.0f;
+            dbase1[2] = door_wrk[dwn[0]].pos[2] - VER_SINF(door_wrk[dwn[0]].rot) * 450.0f;
 
-            dbase2[0] = door_wrk[dwn[1]].pos[0] + SgCosf(door_wrk[dwn[1]].rot) * 450.0f;
+            dbase2[0] = door_wrk[dwn[1]].pos[0] + VER_COSF(door_wrk[dwn[1]].rot) * 450.0f;
             dbase2[1] = door_wrk[dwn[1]].pos[1];
-            dbase2[2] = door_wrk[dwn[1]].pos[2] - SgSinf(door_wrk[dwn[1]].rot) * 450.0f;
+            dbase2[2] = door_wrk[dwn[1]].pos[2] - VER_SINF(door_wrk[dwn[1]].rot) * 450.0f;
         }
         else
         {
@@ -2642,9 +2662,9 @@ static int GetDoorBaseRot(DOJ_SQUARE_MTN *dsmp, float *dbrot1, float *dbrot2, u_
             dbase1[1] = door_wrk[dwn[0]].pos[1];
             dbase1[2] = door_wrk[dwn[0]].pos[2];
 
-            dbase2[0] = door_wrk[dwn[0]].pos[0] + SgCosf(door_wrk[dwn[0]].rot) * 450.0f;
+            dbase2[0] = door_wrk[dwn[0]].pos[0] + VER_COSF(door_wrk[dwn[0]].rot) * 450.0f;
             dbase2[1] = door_wrk[dwn[0]].pos[1];
-            dbase2[2] = door_wrk[dwn[0]].pos[2] - SgSinf(door_wrk[dwn[0]].rot) * 450.0f;
+            dbase2[2] = door_wrk[dwn[0]].pos[2] - VER_SINF(door_wrk[dwn[0]].rot) * 450.0f;
         }
     }
 
@@ -2653,8 +2673,8 @@ static int GetDoorBaseRot(DOJ_SQUARE_MTN *dsmp, float *dbrot1, float *dbrot2, u_
     area_wrk.tmp_after_pos[2] = (dbase1[2] + dbase2[2]) - plyr_wrk.move_box.pos[2];
     area_wrk.tmp_after_pos[3] = 1.0f;
 
-    *dbrot1 = SgAtan2f(dbase1[0] - plyr_wrk.move_box.pos[0],dbase1[2] - plyr_wrk.move_box.pos[2]);
-    *dbrot2 = SgAtan2f(dbase2[0] - plyr_wrk.move_box.pos[0],dbase2[2] - plyr_wrk.move_box.pos[2]);
+    *dbrot1 = VER_ATAN2F(dbase1[0] - plyr_wrk.move_box.pos[0],dbase1[2] - plyr_wrk.move_box.pos[2]);
+    *dbrot2 = VER_ATAN2F(dbase2[0] - plyr_wrk.move_box.pos[0],dbase2[2] - plyr_wrk.move_box.pos[2]);
 
     while (*dbrot1 < 0.0f)
     {
@@ -3182,7 +3202,7 @@ u_char DoorHitCheck(u_char *dx_max, u_char *dz_max, float *dst, float *ppos, u_c
                             sa = sb + DEG2RAD(dtdp[dr_type].move_max);
                         }
 
-                        p_rot = SgAtanf(mv_x / mv_z);
+                        p_rot = VER_ATANF(mv_x / mv_z);
 
                         if (mv_z < 0.0f)
                         {
@@ -3634,9 +3654,9 @@ static void GetDoorHitVertex(sceVu0FVECTOR axis, sceVu0FVECTOR v0, sceVu0FVECTOR
 
     if (dtdp[type].attribute & 0x1000)
     {
-        add_sld[2] = dtdp[type].move_max * SgSinf(pre_rot);
+        add_sld[2] = dtdp[type].move_max * VER_SINF(pre_rot);
         add_sld[1] = 0.0f;
-        add_sld[0] = dtdp[type].move_max * SgCosf(pre_rot);
+        add_sld[0] = dtdp[type].move_max * VER_COSF(pre_rot);
     }
     else
     {
@@ -4251,10 +4271,10 @@ int ChkDoorIsInsite(sceVu0FVECTOR dpos, float dpre_rot, u_short door_id)
     tvp[1] = 0.0f;
     tvp[2] = -200.0f;
 
-    cam_rot = SgAtan2f(camera.i[0] - camera.p[0], camera.i[2] - camera.p[2]);
+    cam_rot = VER_ATAN2F(camera.i[0] - camera.p[0], camera.i[2] - camera.p[2]);
 
-    vp[0] += tvp[0] * SgCosf(cam_rot);
-    vp[2] -= tvp[2] * SgSinf(cam_rot);
+    vp[0] += tvp[0] * VER_COSF(cam_rot);
+    vp[2] -= tvp[2] * VER_SINF(cam_rot);
 
     vr[0] = camera.i[0];
     vr[1] = camera.i[1];
@@ -4272,9 +4292,9 @@ int ChkDoorIsInsite(sceVu0FVECTOR dpos, float dpre_rot, u_short door_id)
         }
         else
         {
-            dp[0] = +(SgCosf(dpre_rot) * 450.0f) + dpos[0];
+            dp[0] = +(VER_COSF(dpre_rot) * 450.0f) + dpos[0];
             dp[1] = dpos[1];
-            dp[2] = -(SgSinf(dpre_rot) * 450.0f) + dpos[2];
+            dp[2] = -(VER_SINF(dpre_rot) * 450.0f) + dpos[2];
         }
 
         dist_obj = GetDistV(dp, vp);
@@ -4286,8 +4306,8 @@ int ChkDoorIsInsite(sceVu0FVECTOR dpos, float dpre_rot, u_short door_id)
 
         view_rad = (10000.0f - dist_obj) * (PI / 2) / 10000.0f;
 
-        rot_center = SgAtan2f(vr[0] - vp[0], vr[2] - vp[2]);
-        rot_door = SgAtan2f(dp[0] - vp[0], dp[2] - vp[2]);
+        rot_center = VER_ATAN2F(vr[0] - vp[0], vr[2] - vp[2]);
+        rot_door = VER_ATAN2F(dp[0] - vp[0], dp[2] - vp[2]);
 
         while (rot_center < 0.0f)
         {
@@ -4363,18 +4383,39 @@ int ChkDoorIsInsite2(sceVu0FVECTOR dpos, float dpre_rot, u_short door_id)
     tvr2[1] = camera.i[1];
     tvr2[2] = 50.0f;
 
+#if defined(BUILD_JP_VERSION)
+    tvr3[0] = 500.0f;
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     tvr3[0] = 0.0f;
-    tvr3[1] = 0;
+    tvr3[1] = 0.0f;
     tvr3[2] = 500.0f;
+#endif
 
     tvpb[0] = 0.0f;
     tvpb[1] = camera.i[1];
     tvpb[2] = -200.0f;
 
-    cam_rot = SgAtan2f(camera.i[0] - camera.p[0], camera.i[2] - camera.p[2]);
+    cam_rot = VER_ATAN2F(camera.i[0] - camera.p[0], camera.i[2] - camera.p[2]);
 
-    tmp_cos = SgCosf(cam_rot);
-    tmp_sin = SgSinf(cam_rot);
+#if defined(BUILD_JP_VERSION)
+    vr1[0] = tvr1[0] * VER_COS(cam_rot) + tvr1[2] * VER_SIN(cam_rot) + vp[0];
+    vr1[1] = vp[1];
+    vr1[2] = tvr1[2] * VER_COS(cam_rot) - tvr1[0] * VER_SIN(cam_rot) + vp[2];
+
+    vr2[0] = tvr2[0] * VER_COS(cam_rot) + tvr2[2] * VER_SIN(cam_rot) + vp[0];
+    vr2[1] = vp[1];
+    vr2[2] = tvr2[2] * VER_COS(cam_rot) - tvr2[0] * VER_SIN(cam_rot) + vp[2];
+
+    vr3[0] = tvr3[0] * VER_COS(cam_rot) + tvr3[2] * VER_SIN(cam_rot) + vp[0];
+    vr3[1] = vp[1];
+    vr3[2] = tvr3[2] * VER_COS(cam_rot) - tvr3[0] * VER_SIN(cam_rot) + vp[2];
+
+    vpb[0] = tvpb[0] * VER_COS(cam_rot) + tvpb[2] * VER_SIN(cam_rot) + vp[0];
+    vpb[1] = vp[1];
+    vpb[2] = tvpb[2] * VER_COS(cam_rot) - tvpb[0] * VER_SIN(cam_rot) + vp[2];
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+    tmp_cos = VER_COSF(cam_rot);
+    tmp_sin = VER_SINF(cam_rot);
 
     vr1[0] = tvr1[0] * tmp_cos + tvr1[2] * tmp_sin + vp[0];
     vr1[1] = vp[1];
@@ -4391,10 +4432,11 @@ int ChkDoorIsInsite2(sceVu0FVECTOR dpos, float dpre_rot, u_short door_id)
     vpb[0] = tvpb[0] * tmp_cos + tvpb[2] * tmp_sin + vp[0];
     vpb[1] = vp[1];
     vpb[2] = tvpb[2] * tmp_cos - tvpb[0] * tmp_sin + vp[2];
+#endif
 
-    dp2[0] = (SgCosf(dpre_rot) * 450.0f) + dpos[0];
+    dp2[0] = (VER_COSF(dpre_rot) * 450.0f) + dpos[0];
     dp2[1] = dpos[1];
-    dp2[2] = -(SgSinf(dpre_rot) * 450.0f) + dpos[2];
+    dp2[2] = -(VER_SINF(dpre_rot) * 450.0f) + dpos[2];
 
     if (ChkLineCross(vpb[0], vpb[2], vr1[0], vr1[2], dpos[0], dpos[2], dp2[0], dp2[2]) != 0)
     {
@@ -4561,9 +4603,18 @@ int GetDoorSttsForMap(DOOR_STTS_MAP *dsmp, u_short door_id, u_char floor)
 
     if (GetDoorStts(&dpp, door_id, floor) != 0)
     {
+#if defined(BUILD_JP_VERSION)
+        double c = +225.0;
+        double s = -225.0;
+
         dsmp->rot = dpp->rot;
-        dsmp->pos_x = SgCosf(dsmp->rot) * +225.0f + dpp->pos_x;
-        dsmp->pos_z = SgSinf(dsmp->rot) * -225.0f + dpp->pos_z;
+        dsmp->pos_x = (c * cos(dsmp->rot)) + dpp->pos_x;
+        dsmp->pos_z = (s * sin(dsmp->rot)) + dpp->pos_z;
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+        dsmp->rot = dpp->rot;
+        dsmp->pos_x = +225.0f * SgCosf(dsmp->rot) + dpp->pos_x;
+        dsmp->pos_z = -225.0f * SgSinf(dsmp->rot) + dpp->pos_z;
+#endif
         dsmp->stts = door_keep[door_id].stts_map;
 
         return 1;
@@ -4683,15 +4734,15 @@ void DoorOpenShiftForce(u_short door_id)
     {
         if (dwp->door_id == door_id)
         {
-            ref[0] = dwp->pos[0] + SgCosf(dwp->rot) * 225.0f;
+            ref[0] = dwp->pos[0] + VER_COS(dwp->rot) * 225.0f;
             ref[1] = dwp->pos[1];
-            ref[2] = dwp->pos[2] - SgSinf(dwp->rot) * 225.0f;
+            ref[2] = dwp->pos[2] - VER_SIN(dwp->rot) * 225.0f;
 
             ref[0] -= plyr_wrk.move_box.pos[0];
             ref[1] -= plyr_wrk.move_box.pos[1];
             ref[2] -= plyr_wrk.move_box.pos[2];
 
-            plyr_wrk.move_box.rot[1] = SgAtan2f(ref[0], ref[2]);
+            plyr_wrk.move_box.rot[1] = VER_ATAN2F(ref[0], ref[2]);
 
             break;
         }
@@ -4744,8 +4795,8 @@ void PlyrPosAdj(u_char mtn_no, u_char mtn_type)
         RotLimitChk(&tmp_rot);
     }
 
-    pos_x = dmotionp->sx * SgCosf(tmp_rot) + dmotionp->sy * SgSinf(tmp_rot) + door_wrk[dsmtnp->dwno_base].pos[0];
-    pos_y = dmotionp->sy * SgCosf(tmp_rot) - dmotionp->sx * SgSinf(tmp_rot) + door_wrk[dsmtnp->dwno_base].pos[2];
+    pos_x = dmotionp->sx * VER_COSF(tmp_rot) + dmotionp->sy * VER_SINF(tmp_rot) + door_wrk[dsmtnp->dwno_base].pos[0];
+    pos_y = dmotionp->sy * VER_COSF(tmp_rot) - dmotionp->sx * VER_SINF(tmp_rot) + door_wrk[dsmtnp->dwno_base].pos[2];
 
     plyr_wrk.move_box.pos[0] = pos_x;
     plyr_wrk.move_box.pos[2] = pos_y;

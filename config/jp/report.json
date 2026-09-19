@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 65.65284853145124,
+    "fuzzy_match_percent": 68.38123223529735,
     "total_code": "1165232",
-    "matched_code": "765008",
-    "matched_code_percent": 65.65284853145124,
+    "matched_code": "796800",
+    "matched_code_percent": 68.38123223529735,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 2386,
-    "matched_functions_percent": 70.30053034767236,
+    "matched_functions": 2485,
+    "matched_functions_percent": 73.21744254566883,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -18491,9 +18491,14 @@
     {
       "name": "ingame/map/door_ctl",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "31792",
+        "matched_code": "31792",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 99,
+        "matched_functions": 99,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -18501,14 +18506,17 @@
         {
           "name": ".text",
           "size": "31992",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -18516,496 +18524,595 @@
         {
           "name": "IsUseDoor",
           "size": "48",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SearchDoorWrk",
           "size": "120",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SearchAcDoor",
           "size": "60",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SearchNcDoor",
           "size": "60",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ClearDoorAttrFlg",
           "size": "20",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "InitDoorAttrFlg",
           "size": "436",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorPassRoom",
           "size": "232",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorPassSetSttsMap",
           "size": "88",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorRDoorSetRotOK",
           "size": "188",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorPassSetHide",
           "size": "68",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorPassSetTouch",
           "size": "88",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorAcInit",
           "size": "108",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorCtrlInit",
           "size": "348",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "InitDoorOpenCtrl",
           "size": "52",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "InitAreaReadWrk",
           "size": "20",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorDataInit",
           "size": "588",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetDoorDoorNumP",
           "size": "40",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetDoorWrk",
           "size": "296",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorSetFurnWrk",
           "size": "280",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetDoorSttsData",
           "size": "284",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetNcDwrk",
           "size": "168",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetAcDwrk",
           "size": "176",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetDoorSttsEve",
           "size": "92",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetDoorLockEve",
           "size": "84",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorSetAllLocked",
           "size": "100",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IsInDoorSpuare",
           "size": "80",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorInitDSM",
           "size": "48",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorOpenCheckSquareArea",
           "size": "556",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetRoomIdBeyondDoor2",
           "size": "60",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetRoomIdBeyondDoor",
           "size": "124",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetDoorRoomConectDataP",
           "size": "140",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IsAllConnectDoorClose",
           "size": "208",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "LockAllDoorInNowRoom",
           "size": "564",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "UnlockAllDoorInNowRoom",
           "size": "172",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IsDoorLoad",
           "size": "40",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetRoomDoorID",
           "size": "444",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorCtrlMain",
           "size": "36",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorCtrlOpen",
           "size": "2444",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorCtrlAutoClose",
           "size": "2532",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorCtrlNoClose",
           "size": "1604",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IsDoorOpenCtrlMode",
           "size": "16",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetDoorOpenCameraNo",
           "size": "176",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "OneRoomLoadReq",
           "size": "460",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetPlyrPosAfterDOpen",
           "size": "88",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorSttsChange",
           "size": "324",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorKeyLockOnly",
           "size": "32",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorOpenCtrlSlide",
           "size": "48",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorOpenCtrlRot",
           "size": "44",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorReOpenCheck",
           "size": "180",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "AllCloseAcDoor",
           "size": "48",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "AllCloseConnectDoor",
           "size": "244",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorOpenCheckMain",
           "size": "48",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorOpenJudge",
           "size": "168",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorCheckOff",
           "size": "12",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorCheckOn",
           "size": "148",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorOpenCheck",
           "size": "1388",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetDoorOpenPlyrPos",
           "size": "40",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "AreaReadCheck",
           "size": "304",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetDoorBaseRot",
           "size": "800",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetDoorDataTopP",
           "size": "132",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorOpenSttsPermissionCheck",
           "size": "240",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorSetDSM",
           "size": "144",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorGetOpenSquareNo",
           "size": "76",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorKeyLock",
           "size": "72",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorLockChange",
           "size": "136",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorKeyUnlock",
           "size": "72",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorKeyUnlockOnly",
           "size": "32",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorHitCheck",
           "size": "1664",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetDoorHitVertex",
           "size": "556",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ChkRotBetween",
           "size": "224",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorHitCheck2",
           "size": "780",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetFusumaHitVertex2",
           "size": "480",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetDoorHitVertex2",
           "size": "464",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorCoverCheck",
           "size": "952",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetFusumaHitVertex",
           "size": "600",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorDataRenewNow",
           "size": "120",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorFreeFurnWrk",
           "size": "236",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorJoint2Next",
           "size": "80",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorDataRenewNext",
           "size": "724",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetNextRIdFromRNoDId",
           "size": "156",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "NextRoomRenew",
           "size": "216",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ChkNextRoomIsInsite",
           "size": "440",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ChkDoorIsOpen",
           "size": "180",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetDoorDataHeader",
           "size": "60",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ChkDoorIsInsite",
           "size": "780",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ChkDoorIsInsite2",
           "size": "1500",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetDoorRoomNumP",
           "size": "40",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetDoorRoomNumPFloor",
           "size": "56",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "TmpMapHit",
           "size": "152",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetDoorIdFromDoorNo",
           "size": "104",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetDoorStts",
           "size": "236",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetDoorSttsForMap",
           "size": "272",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorChangeModel",
           "size": "184",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorDispOnOff",
           "size": "356",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorOpenShiftForce",
           "size": "320",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "TargetDoorKindChk",
           "size": "20",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PlyrPosAdj",
           "size": "388",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DoorMoveStart",
           "size": "876",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PrintDoorID",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -25135,14 +25242,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 65.65284853145124,
+        "fuzzy_match_percent": 68.38123223529735,
         "total_code": "1165232",
-        "matched_code": "765008",
-        "matched_code_percent": 65.65284853145124,
+        "matched_code": "796800",
+        "matched_code_percent": 68.38123223529735,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 2386,
-        "matched_functions_percent": 70.30053034767236,
+        "matched_functions": 2485,
+        "matched_functions_percent": 73.21744254566883,
         "complete_data_percent": 100.0,
         "total_units": 154
       }
