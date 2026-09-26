@@ -1,5 +1,6 @@
 #include "common.h"
 #include "typedefs.h"
+#include "enums.h"
 #include "doortype.h"
 
 #include "data/door_type_dat.h" // DOOR_TYPE_DAT door_type_dat[];
@@ -102,25 +103,25 @@ int MotionIsDouble(u_char motion_no)
 {
     switch(motion_no)
     {
-    case 0:
-    case 1:
-    case 2:
-    case 3:
-    case 4:
-    case 5:
-    case 6:
-    case 7:
-    case 11:
-    case 12:
-    case 13:
-    case 14:
-    case 16:
+    case DOORR_NEAR_PULL:
+    case DOORR_FAR_PULL:
+    case DOORR_LEFT_PULL:
+    case DOORR_PUSH:
+    case DOORL_NEAR_PULL:
+    case DOORL_FAR_PULL:
+    case DOORL_LEFT_PULL:
+    case DOORL_PUSH:
+    case FUSUMAR_NML:
+    case FUSUMAR_RIGHT:
+    case FUSUMAL_NML:
+    case FUSUMAL_LEFT:
+    case DOOR_ROT:
         return 0;
     break;
-    case 8:
-    case 9:
-    case 10:
-    case 15:
+    case DOORD_NEAR_PULL:
+    case DOORD_FAR_PULL:
+    case DOORD_PUSH:
+    case FUSUMAD_NML:
         return 1;
     break;
     }

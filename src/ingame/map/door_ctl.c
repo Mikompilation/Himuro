@@ -1335,7 +1335,7 @@ static void DoorCtrlOpen()
 
             door_open_ctrl.mode = DOCM_MOTION_ADD;
 
-            if (dsmtnp->mtn_no == 17 || dsmtnp->mtn_no == 18)
+            if (dsmtnp->mtn_no == DOOR_KUGURI_PUSH || dsmtnp->mtn_no == DOOR_KUGURI_PULL)
             {
                 plyr_wrk.pr_info.camera_door = -1;
 
@@ -1347,7 +1347,7 @@ static void DoorCtrlOpen()
     case DOCM_MOTION_ADD:
         if (plyr_wrk.sta & 0x20 && IsEndFgTrans() != 0)
         {
-            if (dsmtnp->mtn_no == 16)
+            if (dsmtnp->mtn_no == DOOR_ROT)
             {
                 plyr_wrk.pr_info.camera_door = 0xffff;
 
@@ -2393,7 +2393,7 @@ static u_char DoorOpenCheck(u_char chk_stat)
             dsmp->dwno_base = dsmp->dojs[0].dwrk_no;
 
             dsmp->dor_flg = 0;
-            dsmp->mtn_no = 16;
+            dsmp->mtn_no = DOOR_ROT;
 
             return 1;
         }
@@ -2471,16 +2471,16 @@ static u_char DoorOpenCheck(u_char chk_stat)
             {
                 if (dsmp->dojs[0].sq_no[0] == 1 || dsmp->dojs[1].sq_no[0] == 1)
                 {
-                    dsmp->mtn_no = 8;
+                    dsmp->mtn_no = DOORD_NEAR_PULL;
                 }
                 else if (dsmp->dojs[0].sq_no[0] == 3 || dsmp->dojs[1].sq_no[0] == 3)
                 {
-                    dsmp->mtn_no = 9;
+                    dsmp->mtn_no = DOORD_FAR_PULL;
                 }
             }
             else
             {
-                dsmp->mtn_no = 10;
+                dsmp->mtn_no = DOORD_PUSH;
             }
         }
         else
@@ -2494,7 +2494,7 @@ static u_char DoorOpenCheck(u_char chk_stat)
                 dsmp->dwno_base = dsmp->dojs[0].dwrk_no;
             }
 
-            dsmp->mtn_no = 15;
+            dsmp->mtn_no = FUSUMAD_NML;
         }
 
         return 1;
@@ -2512,11 +2512,11 @@ static u_char DoorOpenCheck(u_char chk_stat)
             {
                 if (exc_flg == 0)
                 {
-                    dsmp->mtn_no = 18;
+                    dsmp->mtn_no = DOOR_KUGURI_PULL;
                 }
                 else
                 {
-                    dsmp->mtn_no = 17;
+                    dsmp->mtn_no = DOOR_KUGURI_PUSH;
                 }
             }
             else if (exc_flg == 0)
@@ -2525,37 +2525,37 @@ static u_char DoorOpenCheck(u_char chk_stat)
                 {
                 case 1:
                 case 5:
-                    dsmp->mtn_no = 0;
+                    dsmp->mtn_no = DOORR_NEAR_PULL;
                 break;
                 case 3:
                 case 7:
-                    dsmp->mtn_no = 1;
+                    dsmp->mtn_no = DOORR_FAR_PULL;
                 break;
                 case 2:
                 case 6:
-                    dsmp->mtn_no = 2;
+                    dsmp->mtn_no = DOORR_LEFT_PULL;
                 break;
                 }
             }
             else
             {
-                dsmp->mtn_no = 7;
+                dsmp->mtn_no = DOORL_PUSH;
             }
         }
         else if (is_kuguri)
         {
             if (exc_flg == 0)
             {
-                dsmp->mtn_no = 17;
+                dsmp->mtn_no = DOOR_KUGURI_PUSH;
             }
             else
             {
-                dsmp->mtn_no = 18;
+                dsmp->mtn_no = DOOR_KUGURI_PULL;
             }
         }
         else if (exc_flg == 0)
         {
-            dsmp->mtn_no = 3;
+            dsmp->mtn_no = DOORR_PUSH;
         }
         else
         {
@@ -2563,15 +2563,15 @@ static u_char DoorOpenCheck(u_char chk_stat)
             {
             case 1:
             case 5:
-                dsmp->mtn_no = 4;
+                dsmp->mtn_no = DOORL_NEAR_PULL;
             break;
             case 3:
             case 7:
-                dsmp->mtn_no = 5;
+                dsmp->mtn_no = DOORL_FAR_PULL;
             break;
             case 2:
             case 6:
-                dsmp->mtn_no = 6;
+                dsmp->mtn_no = DOORL_LEFT_PULL;
             break;
             }
         }
@@ -2585,11 +2585,11 @@ static u_char DoorOpenCheck(u_char chk_stat)
         {
             case 1:
             case 5:
-                dsmp->mtn_no = 13;
+                dsmp->mtn_no = FUSUMAL_NML;
             break;
             case 2:
             case 6:
-                dsmp->mtn_no = 14;
+                dsmp->mtn_no = FUSUMAL_LEFT;
             break;
         }
     }
@@ -2599,11 +2599,11 @@ static u_char DoorOpenCheck(u_char chk_stat)
         {
             case 1:
             case 5:
-                dsmp->mtn_no = 11;
+                dsmp->mtn_no = FUSUMAR_NML;
             break;
             case 2:
             case 6:
-                dsmp->mtn_no = 12;
+                dsmp->mtn_no = FUSUMAR_RIGHT;
             break;
         }
     }

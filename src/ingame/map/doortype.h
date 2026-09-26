@@ -4,32 +4,32 @@
 #include "typedefs.h"
 
 typedef struct {
-	u_short attribute;
-	short int open_wait;
-	short int close_wait;
-	short int move_max;
-	int se_file;
-	u_char room_id;
-	u_short dbl_did;
+    u_short attribute;
+    short int open_wait;
+    short int close_wait;
+    short int move_max;
+    int se_file;
+    u_char room_id;
+    u_short dbl_did;
 } DOOR_TYPE_DAT;
 
 typedef struct {
-	float sx;
-	float sy;
-	u_char dmd_no1;
-	u_char dmd_no2;
-	u_char anm_no;
-	u_char anm_last_no;
-	u_char c_dmd_no1;
-	u_char c_dmd_no2;
-	u_char c_anm_no;
+    float sx;
+    float sy;
+    u_char dmd_no1;
+    u_char dmd_no2;
+    u_char anm_no;
+    u_char anm_last_no;
+    u_char c_dmd_no1;
+    u_char c_dmd_no2;
+    u_char c_anm_no;
 } DOOR_MTN_DAT;
 
 typedef struct {
-	u_short st_tbl_pos;
-	u_short start_cnt;
-	u_short end_cnt;
-	u_short sel_cnt;
+    u_short st_tbl_pos;
+    u_short start_cnt;
+    u_short end_cnt;
+    u_short sel_cnt;
 } DOOR_MOVE_DAT;
 
 // extern DOOR_TYPE_DAT door_type_dat[];

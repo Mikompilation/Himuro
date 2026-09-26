@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 68.38123223529735,
+    "fuzzy_match_percent": 68.40560506405592,
     "total_code": "1165232",
-    "matched_code": "796800",
-    "matched_code_percent": 68.38123223529735,
+    "matched_code": "797084",
+    "matched_code_percent": 68.40560506405592,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 2485,
-    "matched_functions_percent": 73.21744254566883,
+    "matched_functions": 2493,
+    "matched_functions_percent": 73.4531526222746,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -19125,9 +19125,14 @@
     {
       "name": "ingame/map/doortype",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "284",
+        "matched_code": "284",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 8,
+        "matched_functions": 8,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -19135,14 +19140,17 @@
         {
           "name": ".text",
           "size": "296",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -19150,41 +19158,49 @@
         {
           "name": "GetDoorMtnDat",
           "size": "24",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetDoorTypeDatP",
           "size": "20",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetDoorTypeDat",
           "size": "56",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetDoorMotionTblPos",
           "size": "28",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IsFusumaType",
           "size": "40",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IsRotType",
           "size": "40",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IsFusumaAttr",
           "size": "12",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MotionIsDouble",
           "size": "64",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -25242,14 +25258,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 68.38123223529735,
+        "fuzzy_match_percent": 68.40560506405592,
         "total_code": "1165232",
-        "matched_code": "796800",
-        "matched_code_percent": 68.38123223529735,
+        "matched_code": "797084",
+        "matched_code_percent": 68.40560506405592,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 2485,
-        "matched_functions_percent": 73.21744254566883,
+        "matched_functions": 2493,
+        "matched_functions_percent": 73.4531526222746,
         "complete_data_percent": 100.0,
         "total_units": 154
       }
