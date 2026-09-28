@@ -3,6 +3,15 @@
 #include "enums.h"
 #include "rotd_ctl.h"
 
+// gcc/src/newlib/libm/math/s_cos.c
+double cos(double x);
+
+// gcc/src/newlib/libm/math/s_sin.c
+double sin(double x);
+
+// gcc/src/newlib/libm/math/wf_atan2.c
+float atan2f(float y, float x);
+
 #include "graphics/graph3d/gra3d.h"
 #include "graphics/graph3d/sglib.h"
 #include "ingame/ig_glob.h"
@@ -10,7 +19,7 @@
 #include "ingame/map/doortype.h"
 #include "ingame/map/map_ctrl.h"
 #include "ingame/map/rotd_ctl.h"
-// #include "ingame/plyr/unit_ctl.h" // RotLimitChk
+// #include "ingame/plyr/unit_ctl.h"
 #include "main/glob.h"
 
 int CheckRotDoorOpenStatus(int dwrk_no, u_char type)
@@ -157,16 +166,16 @@ int JudgePlyrRotForRotDoor(int dwrk_no)
 
     dwp = &door_wrk[dwrk_no];
 
-    dedge_left[0] = dwp->pos[0] - SgCosf(dwp->rot) * 450.0f * 0.5f;
+    dedge_left[0] = dwp->pos[0] - VER_COS(dwp->rot) * 450.0f * 0.5f;
     dedge_left[1] = dwp->pos[1];
-    dedge_left[2] = dwp->pos[2] + (SgSinf(dwp->rot) * 450.0f * 0.5f);
+    dedge_left[2] = dwp->pos[2] + (VER_SIN(dwp->rot) * 450.0f * 0.5f);
 
-    dedge_right[0] = dwp->pos[0] + SgCosf(dwp->rot) * 450.0f * 0.5f;
+    dedge_right[0] = dwp->pos[0] + VER_COS(dwp->rot) * 450.0f * 0.5f;
     dedge_right[1] = dwp->pos[1];
-    dedge_right[2] = dwp->pos[2] - (SgSinf(dwp->rot) * 450.0f * 0.5f);
+    dedge_right[2] = dwp->pos[2] - (VER_SIN(dwp->rot) * 450.0f * 0.5f);
 
-    rd_left = SgAtan2f(dedge_left[0] - plyr_wrk.move_box.pos[0], dedge_left[2] - plyr_wrk.move_box.pos[2]);
-    rd_right = SgAtan2f(dedge_right[0] - plyr_wrk.move_box.pos[0], dedge_right[2] - plyr_wrk.move_box.pos[2]);
+    rd_left = VER_ATAN2F(dedge_left[0] - plyr_wrk.move_box.pos[0], dedge_left[2] - plyr_wrk.move_box.pos[2]);
+    rd_right = VER_ATAN2F(dedge_right[0] - plyr_wrk.move_box.pos[0], dedge_right[2] - plyr_wrk.move_box.pos[2]);
 
     p_rot = plyr_wrk.move_box.rot[1];
 
@@ -217,7 +226,7 @@ u_char ChkRotDoorRot(int dwrk_no)
 
     RotLimitChk(&dr_limit);
 
-    prot = SgAtan2f(plyr_wrk.move_box.pos[0] - dwp->pos[0], plyr_wrk.move_box.pos[2] - dwp->pos[2]);
+    prot = VER_ATAN2F(plyr_wrk.move_box.pos[0] - dwp->pos[0], plyr_wrk.move_box.pos[2] - dwp->pos[2]);
 
     RotLimitChk(&prot);
 

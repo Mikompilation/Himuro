@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 68.40560506405592,
+    "fuzzy_match_percent": 68.54085709970204,
     "total_code": "1165232",
-    "matched_code": "797084",
-    "matched_code_percent": 68.40560506405592,
+    "matched_code": "798660",
+    "matched_code_percent": 68.54085709970204,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 2493,
-    "matched_functions_percent": 73.4531526222746,
+    "matched_functions": 2499,
+    "matched_functions_percent": 73.62993517972893,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -19213,9 +19213,14 @@
     {
       "name": "ingame/map/rotd_ctl",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "1576",
+        "matched_code": "1576",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 6,
+        "matched_functions": 6,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -19223,14 +19228,17 @@
         {
           "name": ".text",
           "size": "1592",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -19238,31 +19246,37 @@
         {
           "name": "CheckRotDoorOpenStatus",
           "size": "148",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ChangeRotDoorFace",
           "size": "104",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ChangeRotDoorFace2Room",
           "size": "128",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ChangeRotDoorFaceRoomId",
           "size": "364",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "JudgePlyrRotForRotDoor",
           "size": "596",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ChkRotDoorRot",
           "size": "236",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -25258,14 +25272,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 68.40560506405592,
+        "fuzzy_match_percent": 68.54085709970204,
         "total_code": "1165232",
-        "matched_code": "797084",
-        "matched_code_percent": 68.40560506405592,
+        "matched_code": "798660",
+        "matched_code_percent": 68.54085709970204,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 2493,
-        "matched_functions_percent": 73.4531526222746,
+        "matched_functions": 2499,
+        "matched_functions_percent": 73.62993517972893,
         "complete_data_percent": 100.0,
         "total_units": 154
       }
