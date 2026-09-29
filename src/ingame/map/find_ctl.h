@@ -4,11 +4,11 @@
 #include "typedefs.h"
 
 typedef struct {
-	u_char mode;
-	u_char dummy;
-	u_short req_no;
-	u_short msg_no;
-	u_short pos_req[10];
+    u_char mode;
+    u_char dummy;
+    u_short req_no;
+    u_short msg_no;
+    u_short pos_req[10];
 } FIND_WRK;
 
 extern u_char find_stts[250];

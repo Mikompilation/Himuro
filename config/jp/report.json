@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 68.54085709970204,
+    "fuzzy_match_percent": 68.6215277301001,
     "total_code": "1165232",
-    "matched_code": "798660",
-    "matched_code_percent": 68.54085709970204,
+    "matched_code": "799600",
+    "matched_code_percent": 68.6215277301001,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 2499,
-    "matched_functions_percent": 73.62993517972893,
+    "matched_functions": 2503,
+    "matched_functions_percent": 73.74779021803182,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -19289,9 +19289,14 @@
     {
       "name": "ingame/map/find_ctl",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "940",
+        "matched_code": "940",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 4,
+        "matched_functions": 4,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -19299,14 +19304,17 @@
         {
           "name": ".text",
           "size": "952",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -19314,21 +19322,25 @@
         {
           "name": "InitFindStatus",
           "size": "20",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FindMapInit",
           "size": "104",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FindMapReqJudge",
           "size": "612",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FindMapCtrl",
           "size": "204",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -25272,14 +25284,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 68.54085709970204,
+        "fuzzy_match_percent": 68.6215277301001,
         "total_code": "1165232",
-        "matched_code": "798660",
-        "matched_code_percent": 68.54085709970204,
+        "matched_code": "799600",
+        "matched_code_percent": 68.6215277301001,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 2499,
-        "matched_functions_percent": 73.62993517972893,
+        "matched_functions": 2503,
+        "matched_functions_percent": 73.74779021803182,
         "complete_data_percent": 100.0,
         "total_units": 154
       }

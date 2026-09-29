@@ -10,6 +10,14 @@
 #include "ingame/plyr/unit_ctl.h"
 #include "main/glob.h"
 
+#if defined(BUILD_JP_VERSION)
+#define PAD_ACTION_CONFIRM PAD_CIRCLE
+#elif defined(BUILD_US_VERSION)
+#define PAD_ACTION_CONFIRM PAD_CROSS
+#elif defined(BUILD_EU_VERSION)
+#define PAD_ACTION_CONFIRM PAD_CROSS
+#endif
+
 u_char find_stts[250] = {0};
 FIND_WRK find_wrk = {0};
 
@@ -70,7 +78,7 @@ u_char FindMapReqJudge()
 
             if (find_dat[find_wrk.pos_req[i]].type & 0x20)
             {
-                if (*key_now[5] != 1)
+                if (PAD_BTN_NOT_PRESSED(PAD_ACTION_CONFIRM))
                 {
                     open = 0;
                 }
@@ -116,6 +124,7 @@ u_char FindMapReqJudge()
                         find_stts[find_dat[find_wrk.pos_req[i]].after] = 0x1;
                     }
                 }
+
                 GetIngameMSGAddr(IGMSG_FIND_MSG, find_wrk.msg_no);
 
                 return 1;
@@ -133,7 +142,7 @@ u_char FindMapCtrl()
     case 1:
         find_wrk.mode = 2;
 
-        SetMessageAddr(GetIngameMSGAddr(5, find_wrk.msg_no));
+        SetMessageAddr(GetIngameMSGAddr(IGMSG_FIND_MSG, find_wrk.msg_no));
 
         if (SetMessage() == 0)
         {
@@ -141,7 +150,7 @@ u_char FindMapCtrl()
         }
     break;
     case 2:
-        if (*key_now[5] == 1)
+        if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
             MessageWaitOff();
         }
