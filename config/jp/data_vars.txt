@@ -1509,3 +1509,6 @@ dopen_tbl_dpsk                 = 0x335910; // type:float numel:97 nosize
 dopen_tbl_dplk                 = 0x335a98; // type:float numel:69 nosize
 door_mtn_dat                   = 0x335c38; // type:DOOR_MTN_DAT numel:19 nosize
 door_move_dat                  = 0x335d68; // type:DOOR_MOVE_DAT numel:20 nosize
+
+// ingame/map/find_dat.c
+find_dat                       = 0x335f28; // type:FIND_DAT numel:250 nosize
