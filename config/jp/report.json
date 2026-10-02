@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 68.6215277301001,
+    "fuzzy_match_percent": 69.19137133206091,
     "total_code": "1165232",
-    "matched_code": "799600",
-    "matched_code_percent": 68.6215277301001,
+    "matched_code": "806240",
+    "matched_code_percent": 69.19137133206091,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 2503,
-    "matched_functions_percent": 73.74779021803182,
+    "matched_functions": 2536,
+    "matched_functions_percent": 74.72009428403064,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -19353,9 +19353,14 @@
     {
       "name": "ingame/map/furn_ctl",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "6640",
+        "matched_code": "6640",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 33,
+        "matched_functions": 33,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -19363,14 +19368,17 @@
         {
           "name": ".text",
           "size": "6712",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -19378,166 +19386,199 @@
         {
           "name": "FurnCtrlMain",
           "size": "28",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FurnAplyAmbient",
           "size": "92",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "InitFurnDispFlg",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FurnGetFurnWrk",
           "size": "44",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ChkFurnGetAlready",
           "size": "84",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FurnSetWrkNoUse",
           "size": "148",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FurnSetFurnWork",
           "size": "480",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FurnIsUsable",
           "size": "40",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FurnIsDisp",
           "size": "40",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FurnIsPicDispOnly",
           "size": "96",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FurnIsPicDisp",
           "size": "44",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetRoomFurnID",
           "size": "364",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FurnIsWrkUse",
           "size": "28",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FurnIsSeUse",
           "size": "92",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetFurnAttr",
           "size": "44",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FurnIsHit",
           "size": "40",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FurnPicExecStart",
           "size": "44",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FurnPicNoDspOff",
           "size": "164",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FurnPicDispOn",
           "size": "200",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FurnSortFurnWrk",
           "size": "484",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FurnPicExecEnd",
           "size": "44",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FurnPicNoDspOn",
           "size": "236",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FurnPicDispOff",
           "size": "164",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FurnDataRenewNow",
           "size": "72",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FurnFreeFurnWrk",
           "size": "112",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FurnDataInit",
           "size": "456",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FurnDataRenewNext",
           "size": "456",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ClearFurnAttrFlg",
           "size": "20",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "InitFurnAttrFlg",
           "size": "400",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetFurnAttrEve",
           "size": "480",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetFurnAttrF",
           "size": "52",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FurnHitCheck",
           "size": "1208",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FurnHitCheck2",
           "size": "376",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -25284,14 +25325,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 68.6215277301001,
+        "fuzzy_match_percent": 69.19137133206091,
         "total_code": "1165232",
-        "matched_code": "799600",
-        "matched_code_percent": 68.6215277301001,
+        "matched_code": "806240",
+        "matched_code_percent": 69.19137133206091,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 2503,
-        "matched_functions_percent": 73.74779021803182,
+        "matched_functions": 2536,
+        "matched_functions_percent": 74.72009428403064,
         "complete_data_percent": 100.0,
         "total_units": 154
       }

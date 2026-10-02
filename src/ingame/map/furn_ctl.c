@@ -12,10 +12,10 @@
 #include "ingame/map/furn_ctl.h"
 #include "ingame/map/furn_dat.h"
 #include "ingame/map/furn_eff.h"
-// #include "ingame/map/furn_spe/furn_spe.h" // (miss) SearchRegisterFW2FAW
+// #include "ingame/map/furn_spe/furn_spe.h"
 #include "ingame/map/map_ctrl.h"
 #include "ingame/map/map_htck.h"
-// #include "ingame/plyr/unit_ctl.h" // (miss) RotLimitChk
+// #include "ingame/plyr/unit_ctl.h"
 #include "main/glob.h"
 
 int furn_disp_flg = 0;
