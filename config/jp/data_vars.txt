@@ -1625,3 +1625,10 @@ fpc_rot_dat                    = 0x3390c0; // type:u_char numel:2 numel:8 nosize
 fefct_fire                     = 0x3390d0; // type:FURN_EFCT_FIRE numel:13 nosize
 fefct_sunshine                 = 0x339240; // type:FURN_EFCT_SUNSHINE numel:3 nosize
 fefct_deform                   = 0x3392e0; // type:FURN_EFCT_DEFORM numel:5 nosize
+
+// ingame/map/item_ctl.c
+map_item_dat                   = 0x3392f0; // type:MAP_ITEM_DAT numel:159
+map_file_dat0                  = 0x339bb0; // type:MAP_FILE_DAT numel:50
+map_file_dat1                  = 0x339e70; // type:MAP_FILE_DAT numel:50
+map_file_dat2                  = 0x33a130; // type:MAP_FILE_DAT numel:50
+map_file_dat3                  = 0x33a3f0; // type:MAP_FILE_DAT numel:50

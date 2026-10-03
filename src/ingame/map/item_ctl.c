@@ -13,7 +13,7 @@
 #include "ingame/plyr/unit_ctl.h"
 #include "main/glob.h"
 
-#include "data/map_item_dat.h" // MAP_ITEM_DAT map_item_dat[162];
+#include "data/map_item_dat.h" // MAP_ITEM_DAT map_item_dat[MAP_ITEM_DAT_NUM];
 u_char map_item_ap_type[][2] = {
     {1, 0}, {2, 0}, {2, 3}
 };
@@ -27,11 +27,19 @@ MAP_FILE_DAT *map_file_dat[4] = {
 };
 u_short item_ap[300][2] = {0};
 
+#if defined(BUILD_JP_VERSION)
+#define PAD_ACTION_CONFIRM PAD_CIRCLE
+#elif defined(BUILD_US_VERSION)
+#define PAD_ACTION_CONFIRM PAD_CROSS
+#elif defined(BUILD_EU_VERSION)
+#define PAD_ACTION_CONFIRM PAD_CROSS
+#endif
+
 void MapItemInit()
 {
     int i;
 
-    for (i = 0; i < 162; i++)
+    for (i = 0; i < MAP_ITEM_DAT_NUM; i++)
     {
         if (ingame_wrk.game == 1)
         {
@@ -55,7 +63,7 @@ void MissionStartMapItemInit(int msn_no)
 {
     int i;
 
-    for (i = 0; i < 162; i++)
+    for (i = 0; i < MAP_ITEM_DAT_NUM; i++)
     {
         if ((map_item_dat[i].msn_no & 0x80) != 0)
         {
@@ -204,7 +212,7 @@ int ItemGetMain()
     if (
         ingame_wrk.mode == INGAME_MODE_NOMAL && plyr_wrk.mode == PMODE_NORMAL &&
         (ingame_wrk.stts & 0x80) == 0 && (plyr_wrk.sta & 0x8) == 0 &&
-        find_wrk.mode == 0 && *key_now[5] == 1
+        find_wrk.mode == 0 && PAD_BTN_PRESSED(PAD_ACTION_CONFIRM)
     )
     {
         get_item = GetMapItemJudge();
@@ -270,7 +278,7 @@ void SetItemDispData(u_char id)
         return;
     }
 
-    for (i = 0, dsp_no = 0; i < 162; i++)
+    for (i = 0, dsp_no = 0; i < MAP_ITEM_DAT_NUM; i++)
     {
         if (item_ap[i][0] == 0 && item_ap[i][1] == 0)
         {
@@ -458,7 +466,7 @@ int ItemGetContinueJudge()
 
     get_item = GetMapItemJudge();
 
-    if (get_item != 0xFFFF)
+    if (get_item != 0xffff)
     {
         GetMapItem(get_item);
 

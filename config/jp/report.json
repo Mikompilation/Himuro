@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 69.31392203441031,
+    "fuzzy_match_percent": 69.56176967333543,
     "total_code": "1165232",
-    "matched_code": "807668",
-    "matched_code_percent": 69.31392203441031,
+    "matched_code": "810556",
+    "matched_code_percent": 69.56176967333543,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 2546,
-    "matched_functions_percent": 75.01473187978786,
+    "matched_functions": 2558,
+    "matched_functions_percent": 75.36829699469652,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -19731,9 +19731,14 @@
     {
       "name": "ingame/map/item_ctl",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "2888",
+        "matched_code": "2888",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 12,
+        "matched_functions": 12,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -19741,14 +19746,17 @@
         {
           "name": ".text",
           "size": "2912",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -19756,61 +19764,73 @@
         {
           "name": "MapItemInit",
           "size": "104",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MissionStartMapItemInit",
           "size": "560",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FileDateInit",
           "size": "232",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ItemGetMain__local_2",
           "size": "172",
-          "metadata": {}
+          "metadata": {},
+          "fuzzy_match_percent": 100.0
         },
         {
           "name": "GetMapItemJudge",
           "size": "436",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetMapItem",
           "size": "436",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ItemCtrl",
           "size": "72",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ItemDispCtrl",
           "size": "100",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetItemDispData",
           "size": "660",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ItemDispDataRenew",
           "size": "52",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ItemAppearCtrl",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ItemGetContinueJudge",
           "size": "56",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -25351,14 +25371,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 69.31392203441031,
+        "fuzzy_match_percent": 69.56176967333543,
         "total_code": "1165232",
-        "matched_code": "807668",
-        "matched_code_percent": 69.31392203441031,
+        "matched_code": "810556",
+        "matched_code_percent": 69.56176967333543,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 2546,
-        "matched_functions_percent": 75.01473187978786,
+        "matched_functions": 2558,
+        "matched_functions_percent": 75.36829699469652,
         "complete_data_percent": 100.0,
         "total_units": 154
       }
