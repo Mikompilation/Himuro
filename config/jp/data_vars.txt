@@ -1620,3 +1620,8 @@ furn_photo_center100           = 0x338ef0; // type:sceVu0FVECTOR numel:1 nosize
 furn_photo_center101           = 0x338f00; // type:sceVu0FVECTOR numel:1 nosize
 furn_photo_center102           = 0x338f10; // type:sceVu0FVECTOR numel:1 nosize
 fpc_rot_dat                    = 0x3390c0; // type:u_char numel:2 numel:8 nosize
+
+// ingame/map/furn_eff.c
+fefct_fire                     = 0x3390d0; // type:FURN_EFCT_FIRE numel:13 nosize
+fefct_sunshine                 = 0x339240; // type:FURN_EFCT_SUNSHINE numel:3 nosize
+fefct_deform                   = 0x3392e0; // type:FURN_EFCT_DEFORM numel:5 nosize

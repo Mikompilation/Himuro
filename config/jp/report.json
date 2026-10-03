@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 69.19377428700894,
+    "fuzzy_match_percent": 69.31392203441031,
     "total_code": "1165232",
-    "matched_code": "806268",
-    "matched_code_percent": 69.19377428700894,
+    "matched_code": "807668",
+    "matched_code_percent": 69.31392203441031,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 2537,
-    "matched_functions_percent": 74.74955804360637,
+    "matched_functions": 2546,
+    "matched_functions_percent": 75.01473187978786,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -19637,9 +19637,14 @@
     {
       "name": "ingame/map/furn_eff",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "1400",
+        "matched_code": "1400",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 9,
+        "matched_functions": 9,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -19647,14 +19652,17 @@
         {
           "name": ".text",
           "size": "1424",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -19662,46 +19670,55 @@
         {
           "name": "FurnEfctSet",
           "size": "452",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FurnEfctGetFefct",
           "size": "56",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FurnEfctSetUse",
           "size": "36",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FurnEfctSetPos1",
           "size": "68",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FurnEfctSetRot0",
           "size": "84",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FurnEfctFreeFefct",
           "size": "40",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FurnEfctFree",
           "size": "124",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FurnEfctSetPos0",
           "size": "92",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FurnHintDeformCtrl",
           "size": "448",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -25334,14 +25351,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 69.19377428700894,
+        "fuzzy_match_percent": 69.31392203441031,
         "total_code": "1165232",
-        "matched_code": "806268",
-        "matched_code_percent": 69.19377428700894,
+        "matched_code": "807668",
+        "matched_code_percent": 69.31392203441031,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 2537,
-        "matched_functions_percent": 74.74955804360637,
+        "matched_functions": 2546,
+        "matched_functions_percent": 75.01473187978786,
         "complete_data_percent": 100.0,
         "total_units": 154
       }

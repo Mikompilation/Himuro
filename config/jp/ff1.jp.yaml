@@ -167,7 +167,7 @@ segments:
           - [0xc5610,  c,   ingame/map/find_dat]
           - [0xc5610,  c,   ingame/map/furn_ctl]
           - [0xc7048,  c,   ingame/map/furn_dat]
-          - [0xc7068,  asm, ingame/map/furn_eff]
+          - [0xc7068,  c,   ingame/map/furn_eff]
           - [0xc75f8,  asm, ingame/map/item_ctl]
           - [0xc8158,  asm, ingame/map/map_htck]
           - [0xc8df8,  asm, ingame/map/furn_spe/furn_spe]
@@ -294,7 +294,7 @@ segments:
           - { start: 0x236e08, type: .data,   vram: 0x335e08, name: ingame/map/find_ctl           }
           - { start: 0x236f28, type: .data,   vram: 0x335f28, name: ingame/map/find_dat           }
           - { start: 0x2378f0, type: .data,   vram: 0x3368f0, name: ingame/map/furn_dat           }
-          - { start: 0x23a0d0, type:  data,   vram: 0x3390d0, name: ingame/map/furn_eff           }
+          - { start: 0x23a0d0, type: .data,   vram: 0x3390d0, name: ingame/map/furn_eff           }
           - { start: 0x23a2f0, type:  data,   vram: 0x3392f0, name: ingame/map/item_ctl           }
           - { start: 0x23bb70, type:  data,   vram: 0x33ab70, name: ingame/map/furn_spe/furn_spe  }
           - { start: 0x23cfa0, type:  data,   vram: 0x33bfa0, name: ingame/map/furn_spe/fsla_main }
@@ -487,7 +487,7 @@ segments:
           - { start: 0x255e38, type: .lit4,   vram: 0x354e38, name: ingame/map/rotd_ctl           }
           - { start: 0x255e44, type: .lit4,   vram: 0x354e44, name: ingame/map/find_ctl           }
           - { start: 0x255e4c, type: .lit4,   vram: 0x354e4c, name: ingame/map/furn_ctl           }
-          - { start: 0x255e50, type:  lit4,   vram: 0x354e50, name: ingame/map/furn_eff           }
+          - { start: 0x255e50, type: .lit4,   vram: 0x354e50, name: ingame/map/furn_eff           }
           - { start: 0x255e54, type:  lit4,   vram: 0x354e54, name: ingame/map/item_ctl           }
           - { start: 0x255e8c, type:  lit4,   vram: 0x354e8c, name: ingame/map/furn_spe/furn_spe  }
           - { start: 0x255ea8, type:  lit4,   vram: 0x354ea8, name: ingame/map/furn_spe/fsla_main }
@@ -580,7 +580,7 @@ segments:
           - { start: 0x2570b4, type: .sdata,  vram: 0x3560b4, name: ingame/map/map_area           }
           - { start: 0x2570b8, type: .sdata,  vram: 0x3560b8, name: ingame/map/door_ctl           }
           - { start: 0x2570bc, type: .sdata,  vram: 0x3560bc, name: ingame/map/furn_ctl           }
-          - { start: 0x2570c0, type:  sdata,  vram: 0x3560c0, name: ingame/map/furn_eff           }
+          - { start: 0x2570c0, type: .sdata,  vram: 0x3560c0, name: ingame/map/furn_eff           }
           - { start: 0x2570d0, type:  sdata,  vram: 0x3560d0, name: ingame/map/furn_spe/furn_spe  }
           - { start: 0x257108, type:  sdata,  vram: 0x356108, name: ingame/menu/pause             }
           - { start: 0x257120, type:  sdata,  vram: 0x356120, name: ingame/menu/ig_camra          }
@@ -713,7 +713,7 @@ segments:
           - { start: 0x257c00, type: .bss,    vram: 0x3ff810, name: ingame/enemy/move_ctl         }
           - { start: 0x257c00, type: .bss,    vram: 0x3ff970, name: ingame/info/inf_disp          }
           - { start: 0x257c00, type: .bss,    vram: 0x3fff80, name: ingame/map/door_ctl           }
-          - { start: 0x257c00, type:  bss,    vram: 0x3fffb0, name: ingame/map/furn_eff           }
+          - { start: 0x257c00, type: .bss,    vram: 0x3fffb0, name: ingame/map/furn_eff           }
           - { start: 0x257c00, type:  bss,    vram: 0x400050, name: ingame/map/furn_spe/adj_valg  }
           - { start: 0x257c00, type:  bss,    vram: 0x400320, name: ingame/menu/item              }
           - { start: 0x257c00, type:  bss,    vram: 0x400350, name: ingame/menu/gameover          }
