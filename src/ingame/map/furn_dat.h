@@ -3,6 +3,7 @@
 
 #include "typedefs.h"
 #include "furn_types.h"
+
 #include "graphics/graph3d/light_types.h"
 
 extern FURN_DAT furn_dat[];
