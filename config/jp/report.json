@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 69.56176967333543,
+    "fuzzy_match_percent": 69.8381094923586,
     "total_code": "1165232",
-    "matched_code": "810556",
-    "matched_code_percent": 69.56176967333543,
+    "matched_code": "813776",
+    "matched_code_percent": 69.8381094923586,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 2558,
-    "matched_functions_percent": 75.36829699469652,
+    "matched_functions": 2566,
+    "matched_functions_percent": 75.60400707130229,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -19843,9 +19843,14 @@
     {
       "name": "ingame/map/map_htck",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "3220",
+        "matched_code": "3220",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 8,
+        "matched_functions": 8,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -19853,14 +19858,17 @@
         {
           "name": ".text",
           "size": "3232",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -19868,41 +19876,49 @@
         {
           "name": "PosInAreaJudgeSub",
           "size": "440",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "Get2DLinearConstFromPos",
           "size": "36",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "Get2DLinearCrossPoint",
           "size": "104",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ChkLineCross",
           "size": "308",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ChkInsideBox",
           "size": "496",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "HitChkSegment2All",
           "size": "656",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FurnCoverCheck",
           "size": "328",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "HitChkSegment2All2D",
           "size": "852",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -25371,14 +25387,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 69.56176967333543,
+        "fuzzy_match_percent": 69.8381094923586,
         "total_code": "1165232",
-        "matched_code": "810556",
-        "matched_code_percent": 69.56176967333543,
+        "matched_code": "813776",
+        "matched_code_percent": 69.8381094923586,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 2558,
-        "matched_functions_percent": 75.36829699469652,
+        "matched_functions": 2566,
+        "matched_functions_percent": 75.60400707130229,
         "complete_data_percent": 100.0,
         "total_units": 154
       }

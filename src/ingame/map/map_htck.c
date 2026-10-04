@@ -4,7 +4,7 @@
 #include "enums.h"
 #include "map_htck.h"
 
-#include "ingame/map/door_ctl.h" // DoorCoverCheck
+#include "ingame/map/door_ctl.h"
 #include "ingame/map/furn_ctl.h"
 #include "ingame/map/map_ctrl.h"
 #include "main/glob.h"

@@ -169,7 +169,7 @@ segments:
           - [0xc7048,  c,   ingame/map/furn_dat]
           - [0xc7068,  c,   ingame/map/furn_eff]
           - [0xc75f8,  c,   ingame/map/item_ctl]
-          - [0xc8158,  asm, ingame/map/map_htck]
+          - [0xc8158,  c,   ingame/map/map_htck]
           - [0xc8df8,  asm, ingame/map/furn_spe/furn_spe]
           - [0xcc968,  asm, ingame/map/furn_spe/fsla_main]
         # - [0xcd178,  asm, ingame/map/furn_spe/fsla_dat]
