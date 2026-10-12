@@ -5,7 +5,7 @@
 
 #include "graphics/graph3d/light_types.h"
 
-// extern FSPE_LIGHT_ANM fspe_lightanm_fadein1[0];
+// extern FSPE_LIGHT_ANM fspe_lightanm_fadein1[];
 // extern FSPE_LIGHT_ANM fspe_lightanm_fadein2[];
 // extern FSPE_LIGHT_ANM fspe_lightanm_normal1[];
 // extern FSPE_LIGHT_ANM fspe_lightanm_normal2[];
@@ -23,6 +23,5 @@
 // extern FSPE_LIGHT_ANM *fspe_la_outp1[];
 // extern FSPE_LIGHT_ANM *fspe_la_outp2[];
 extern FSPE_LIGHT_ANM **fspe_la_array[];
-
 
 #endif // INGAME_MAP_FURN_SPE_FSLA_DAT_H
