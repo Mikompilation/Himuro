@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 69.8381094923586,
+    "fuzzy_match_percent": 71.13330220934543,
     "total_code": "1165232",
-    "matched_code": "813776",
-    "matched_code_percent": 69.8381094923586,
+    "matched_code": "828868",
+    "matched_code_percent": 71.13330220934543,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 2566,
-    "matched_functions_percent": 75.60400707130229,
+    "matched_functions": 2625,
+    "matched_functions_percent": 77.34236888626988,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -19931,9 +19931,14 @@
     {
       "name": "ingame/map/furn_spe/furn_spe",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "15092",
+        "matched_code": "15092",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 59,
+        "matched_functions": 59,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -19941,14 +19946,17 @@
         {
           "name": ".text",
           "size": "15216",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -19956,296 +19964,355 @@
         {
           "name": "NewgameFActInit",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "InitFurnDatSave",
           "size": "52",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PreGameInitFActWrk",
           "size": "80",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "InitFActWrk",
           "size": "72",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FreeFActFwrk",
           "size": "156",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FActWaitExecJob",
           "size": "140",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "TrembleHCtrl",
           "size": "532",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "AddRotVector",
           "size": "64",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FSpeTexAnmCtrl",
           "size": "320",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FActWrkMain",
           "size": "236",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FActExecOccur",
           "size": "2900",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FActWait",
           "size": "84",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FActCheckExec",
           "size": "208",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ThunderLight",
           "size": "568",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SearchRegisterFW2FAW",
           "size": "188",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetOpenedFAWID",
           "size": "56",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SearchFActWrkIDFromFWID",
           "size": "68",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SearchFActWrkIDFromFurnID",
           "size": "68",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RegisterFW2FAW",
           "size": "176",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ExchangeFAWFWID",
           "size": "132",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FSpeFinishFlgOff",
           "size": "64",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FurnActOffEve",
           "size": "40",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FurnActOnEve",
           "size": "44",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FACheckCondition",
           "size": "148",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FActStopAction",
           "size": "1180",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetFurnActData",
           "size": "532",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SearchFurnWrkIDFromFurnID",
           "size": "64",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FreeFActFwrkNo",
           "size": "64",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ForwardActionPointer",
           "size": "332",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ForwardConditionPointer",
           "size": "128",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "StopTrembleH",
           "size": "92",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "StopLampTremble",
           "size": "84",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FSpeDelPointLight",
           "size": "72",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CallThunderLight",
           "size": "220",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CallLampTremble",
           "size": "92",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FSpeTexAnmExe",
           "size": "268",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CallTrembleH",
           "size": "344",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FSpeSetPointLight",
           "size": "200",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CompareFloatVal",
           "size": "56",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ChkANDCondition",
           "size": "1400",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FACheckDistNear",
           "size": "344",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FACheckDistFar",
           "size": "344",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FACheckStatus",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FACheckDirect",
           "size": "324",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FACheckSpeedLess",
           "size": "300",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FACheckSquareArea",
           "size": "508",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FACheckCircleArea",
           "size": "344",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FSpeCheckOutOfRoom",
           "size": "44",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RotCheck",
           "size": "216",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CheckSquareAreaOne",
           "size": "188",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpeedLessOrVecF",
           "size": "64",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpeedLessOrVecVec",
           "size": "84",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FSpeTexAnmStop",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetRandVal",
           "size": "76",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetVacantTrembleHWrk",
           "size": "60",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FSpeTrembleCtrl",
           "size": "332",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetThunderLightEach",
           "size": "112",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SetThunderLight",
           "size": "124",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "InitThunderLight",
           "size": "80",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -25387,14 +25454,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 69.8381094923586,
+        "fuzzy_match_percent": 71.13330220934543,
         "total_code": "1165232",
-        "matched_code": "813776",
-        "matched_code_percent": 69.8381094923586,
+        "matched_code": "828868",
+        "matched_code_percent": 71.13330220934543,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 2566,
-        "matched_functions_percent": 75.60400707130229,
+        "matched_functions": 2625,
+        "matched_functions_percent": 77.34236888626988,
         "complete_data_percent": 100.0,
         "total_units": 154
       }

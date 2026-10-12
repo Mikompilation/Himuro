@@ -5,8 +5,8 @@
 #include "graphics/graph3d/libsg.h"
 
 typedef struct {
-	u_char eventflg;
-	u_char data;
+    u_char eventflg;
+    u_char data;
 } FURN_DAT_SAVE;
 
 typedef enum {
@@ -16,15 +16,15 @@ typedef enum {
 } ST_TREMBLE;
 
 typedef struct {
-	sceVu0FVECTOR *pos;
-	sceVu0FVECTOR *rot;
-	sceVu0FVECTOR ori_pos;
-	sceVu0FVECTOR ori_rot;
-	ST_TREMBLE state;
-	u_char time;
-	float speed;
-	float nowdist;
-	sceVu0FMATRIX mat;
+    sceVu0FVECTOR *pos;
+    sceVu0FVECTOR *rot;
+    sceVu0FVECTOR ori_pos;
+    sceVu0FVECTOR ori_rot;
+    ST_TREMBLE state;
+    u_char time;
+    float speed;
+    float nowdist;
+    sceVu0FMATRIX mat;
 } TREMBLE_H_WRK;
 
 #include "ingame/map/furn_dat.h"
