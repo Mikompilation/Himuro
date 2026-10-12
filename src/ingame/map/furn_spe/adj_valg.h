@@ -4,13 +4,13 @@
 #include "typedefs.h"
 
 typedef struct {
-	void *next;
-	void *pre;
-	u_short time;
-	u_short nowtime;
-	sceVu0FVECTOR *ori;
-	sceVu0FVECTOR accel;
-	sceVu0FVECTOR des;
+    void *next;
+    void *pre;
+    u_short time;
+    u_short nowtime;
+    sceVu0FVECTOR *ori;
+    sceVu0FVECTOR accel;
+    sceVu0FVECTOR des;
 } ADJ_VALG_WRK;
 
 void InitAdjValGWrk();

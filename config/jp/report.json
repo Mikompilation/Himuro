@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 71.31935957817842,
+    "fuzzy_match_percent": 71.38526919961004,
     "total_code": "1165232",
-    "matched_code": "831036",
-    "matched_code_percent": 71.31935957817842,
+    "matched_code": "831804",
+    "matched_code_percent": 71.38526919961004,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 2640,
-    "matched_functions_percent": 77.78432527990572,
+    "matched_functions": 2648,
+    "matched_functions_percent": 78.02003535651149,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -20495,9 +20495,14 @@
     {
       "name": "ingame/map/furn_spe/adj_valg",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "768",
+        "matched_code": "768",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 8,
+        "matched_functions": 8,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -20505,14 +20510,17 @@
         {
           "name": ".text",
           "size": "792",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -20520,41 +20528,49 @@
         {
           "name": "InitAdjValGWrk",
           "size": "68",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "InitAdjValGWrkOne",
           "size": "12",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SearchVacantAdjValGWrk",
           "size": "72",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ReleaseAdjValGWrkVec",
           "size": "76",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ReleaseAdjValG",
           "size": "60",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SameObjectWrkDelete",
           "size": "76",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RegisterAdjValG",
           "size": "284",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "AdjustValueG",
           "size": "120",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -25485,14 +25501,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 71.31935957817842,
+        "fuzzy_match_percent": 71.38526919961004,
         "total_code": "1165232",
-        "matched_code": "831036",
-        "matched_code_percent": 71.31935957817842,
+        "matched_code": "831804",
+        "matched_code_percent": 71.38526919961004,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 2640,
-        "matched_functions_percent": 77.78432527990572,
+        "matched_functions": 2648,
+        "matched_functions_percent": 78.02003535651149,
         "complete_data_percent": 100.0,
         "total_units": 154
       }
