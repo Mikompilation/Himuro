@@ -173,7 +173,7 @@ segments:
           - [0xc8df8,  c,   ingame/map/furn_spe/furn_spe]
           - [0xcc968,  c,   ingame/map/furn_spe/fsla_main]
           - [0xcd178,  c,   ingame/map/furn_spe/fsla_dat]
-          - [0xcd178,  asm, ingame/map/furn_spe/fspe_acs]
+          - [0xcd178,  c,   ingame/map/furn_spe/fspe_acs]
           - [0xcd208,  asm, ingame/map/furn_spe/adj_valg]
           - [0xcd520,  asm, ingame/menu/item]
           - [0xd2ca8,  asm, ingame/menu/gameover]

@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 71.30768808271658,
+    "fuzzy_match_percent": 71.31935957817842,
     "total_code": "1165232",
-    "matched_code": "830900",
-    "matched_code_percent": 71.30768808271658,
+    "matched_code": "831036",
+    "matched_code_percent": 71.31935957817842,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 2638,
-    "matched_functions_percent": 77.72539776075428,
+    "matched_functions": 2640,
+    "matched_functions_percent": 77.78432527990572,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -20443,9 +20443,14 @@
     {
       "name": "ingame/map/furn_spe/fspe_acs",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "136",
+        "matched_code": "136",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 2,
+        "matched_functions": 2,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -20453,14 +20458,17 @@
         {
           "name": ".text",
           "size": "144",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -20468,11 +20476,13 @@
         {
           "name": "FSpeMapDataMapping",
           "size": "84",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FSpeGetTopAddr",
           "size": "52",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -25475,14 +25485,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 71.30768808271658,
+        "fuzzy_match_percent": 71.31935957817842,
         "total_code": "1165232",
-        "matched_code": "830900",
-        "matched_code_percent": 71.30768808271658,
+        "matched_code": "831036",
+        "matched_code_percent": 71.31935957817842,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 2638,
-        "matched_functions_percent": 77.72539776075428,
+        "matched_functions": 2640,
+        "matched_functions_percent": 77.78432527990572,
         "complete_data_percent": 100.0,
         "total_units": 154
       }
