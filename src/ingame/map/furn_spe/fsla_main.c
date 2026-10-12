@@ -6,6 +6,9 @@
 // RAND_MAX = (2**31-1)
 #define RAND_MAX 2147483647
 
+// gcc/src/newlib/libm/math/wf_sqrt.c
+float sqrtf(float x);
+
 #include "sce/libvu0.h"
 
 #include "common/ul_math.h"
@@ -132,7 +135,7 @@ float SetPLW2PW(POINT_WRK *pw, POINT_LIGHT_WRK *plw, float obj_dist, float compa
 
     sceVu0ScaleVector(temp, *plw->diffuse, multi);
 
-    power = SgSqrtf(sceVu0InnerProduct(temp, temp));
+    power = VER_SQRTF(sceVu0InnerProduct(temp, temp));
 
     if (compare < power)
     {

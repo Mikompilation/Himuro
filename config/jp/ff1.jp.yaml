@@ -171,7 +171,7 @@ segments:
           - [0xc75f8,  c,   ingame/map/item_ctl]
           - [0xc8158,  c,   ingame/map/map_htck]
           - [0xc8df8,  c,   ingame/map/furn_spe/furn_spe]
-          - [0xcc968,  asm, ingame/map/furn_spe/fsla_main]
+          - [0xcc968,  c,   ingame/map/furn_spe/fsla_main]
         # - [0xcd178,  asm, ingame/map/furn_spe/fsla_dat]
           - [0xcd178,  asm, ingame/map/furn_spe/fspe_acs]
           - [0xcd208,  asm, ingame/map/furn_spe/adj_valg]
@@ -297,7 +297,7 @@ segments:
           - { start: 0x23a0d0, type: .data,   vram: 0x3390d0, name: ingame/map/furn_eff           }
           - { start: 0x23a2f0, type: .data,   vram: 0x3392f0, name: ingame/map/item_ctl           }
           - { start: 0x23bb70, type: .data,   vram: 0x33ab70, name: ingame/map/furn_spe/furn_spe  }
-          - { start: 0x23cfa0, type:  data,   vram: 0x33bfa0, name: ingame/map/furn_spe/fsla_main }
+          - { start: 0x23cfa0, type: .data,   vram: 0x33bfa0, name: ingame/map/furn_spe/fsla_main }
           - { start: 0x23d230, type:  data,   vram: 0x33c230, name: ingame/map/furn_spe/fsla_dat  }
           - { start: 0x23d468, type:  data,   vram: 0x33c468, name: ingame/menu/item              }
           - { start: 0x23da00, type:  data,   vram: 0x33ca00, name: ingame/menu/ig_camra          }
@@ -490,7 +490,7 @@ segments:
           - { start: 0x255e50, type: .lit4,   vram: 0x354e50, name: ingame/map/furn_eff           }
           - { start: 0x255e54, type: .lit4,   vram: 0x354e54, name: ingame/map/item_ctl           }
           - { start: 0x255e5c, type: .lit4,   vram: 0x354e5c, name: ingame/map/furn_spe/furn_spe  }
-          - { start: 0x255ea8, type:  lit4,   vram: 0x354ea8, name: ingame/map/furn_spe/fsla_main }
+          - { start: 0x255ea8, type: .lit4,   vram: 0x354ea8, name: ingame/map/furn_spe/fsla_main }
           - { start: 0x255eb0, type:  lit4,   vram: 0x354eb0, name: ingame/menu/item              }
           - { start: 0x255edc, type:  lit4,   vram: 0x354edc, name: ingame/menu/pause             }
           - { start: 0x255ee0, type:  lit4,   vram: 0x354ee0, name: ingame/menu/ig_album          }
