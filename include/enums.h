@@ -6826,4 +6826,21 @@ enum {
     M1_FRN_408 = 408
 };
 
+enum {
+    NO_USE_ITEM = 0,
+    EV_OPEN_ITEM = 1,
+    FILM_SET_ITEM = 2,
+    HP_RECOVER = 3,
+    MP_RECOVER = 4,
+    TAPE_PLAY = 5
+};
+
+enum {
+    GET_ITM_TYPE_FILE0 = 0,
+    GET_ITM_TYPE_FILE1 = 1,
+    GET_ITM_TYPE_FILE2 = 2,
+    GET_ITM_TYPE_PHOT = 3,
+    GET_ITM_TYPE_ITEM = 4
+};
+
 #endif // ENUMS_H

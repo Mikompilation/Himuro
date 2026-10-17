@@ -629,18 +629,18 @@ static void ItemUse(u_char item_no)
 
     switch (item_use_dat[item_no].type)
     {
-    case 0:
+    case NO_USE_ITEM:
         // do nothing ...
     break;
-    case 1:
+    case EV_OPEN_ITEM:
         // do nothing ...
     break;
-    case 2:
+    case FILM_SET_ITEM:
         plyr_wrk.film_no = item_use_dat[item_no].value0;
 
         SeStartFix(5, 0, 0x1000, 0x1000, 1);
     break;
-    case 3:
+    case HP_RECOVER:
         plyr_wrk.hp += item_use_dat[item_no].value1;
 
         if (plyr_wrk.hp > 500)
@@ -658,10 +658,10 @@ static void ItemUse(u_char item_no)
 
         SeStartFix(6, 0, 0x1000, 0x1000, 1);
     break;
-    case 4:
+    case MP_RECOVER:
         // do nothing ...
     break;
-    case 5:
+    case TAPE_PLAY:
         adpcm_no = CheckTape(item_no);
 
         if (adpcm_no != -1)
@@ -1165,19 +1165,19 @@ int LoadItem2D(u_char get_type, u_char get_no)
     {
         switch(get_type)
         {
-        case 0:
+        case GET_ITM_TYPE_FILE0:
             load_id = LoadReq(ITEM_00_TM2 + get_no, LOAD_ADDRESS_36);
         break;
-        case 1:
+        case GET_ITM_TYPE_FILE1:
             load_id = LoadReq(ITEM_00_TM2 + get_no, LOAD_ADDRESS_36);
         break;
-        case 2:
+        case GET_ITM_TYPE_FILE2:
             load_id = LoadReq(ITEM_00_TM2 + get_no, LOAD_ADDRESS_36);
         break;
-        case 3:
+        case GET_ITM_TYPE_PHOT:
             load_id = LoadReq(HINT_00_TM2 + get_no, LOAD_ADDRESS_36);
         break;
-        case 4:
+        case GET_ITM_TYPE_ITEM:
             load_id = LoadReq(ITEM_00_TM2 + get_no, LOAD_ADDRESS_36);
         break;
         }
