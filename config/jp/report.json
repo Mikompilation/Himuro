@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 73.29973773463139,
+    "fuzzy_match_percent": 73.42984058110316,
     "total_code": "1165232",
-    "matched_code": "854112",
-    "matched_code_percent": 73.29973773463139,
+    "matched_code": "855628",
+    "matched_code_percent": 73.42984058110316,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 2702,
-    "matched_functions_percent": 79.61107837360048,
+    "matched_functions": 2707,
+    "matched_functions_percent": 79.75839717147907,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -20947,9 +20947,14 @@
     {
       "name": "ingame/menu/gameover",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "1516",
+        "matched_code": "1516",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 5,
+        "matched_functions": 5,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -20957,14 +20962,17 @@
         {
           "name": ".text",
           "size": "1528",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -20972,26 +20980,31 @@
         {
           "name": "StartGameOver",
           "size": "136",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GameOverInit",
           "size": "60",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ReturnGameOver",
           "size": "36",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GameOverMenuMain",
           "size": "852",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GameOverMenuDisp",
           "size": "432",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -25563,14 +25576,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 73.29973773463139,
+        "fuzzy_match_percent": 73.42984058110316,
         "total_code": "1165232",
-        "matched_code": "854112",
-        "matched_code_percent": 73.29973773463139,
+        "matched_code": "855628",
+        "matched_code_percent": 73.42984058110316,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 2702,
-        "matched_functions_percent": 79.61107837360048,
+        "matched_functions": 2707,
+        "matched_functions_percent": 79.75839717147907,
         "complete_data_percent": 100.0,
         "total_units": 154
       }

@@ -37,6 +37,17 @@ static int gov_load_id;
 
 #define MAX_VOLUME 0x3fff
 
+#if defined(BUILD_JP_VERSION)
+#define PAD_ACTION_CONFIRM PAD_CIRCLE
+#define PAD_ACTION_CANCEL PAD_CROSS
+#elif defined(BUILD_US_VERSION)
+#define PAD_ACTION_CONFIRM PAD_CROSS
+#define PAD_ACTION_CANCEL PAD_CIRCLE
+#elif defined(BUILD_EU_VERSION)
+#define PAD_ACTION_CONFIRM PAD_CROSS
+#define PAD_ACTION_CANCEL PAD_CIRCLE
+#endif
+
 void StartGameOver()
 {
     ingame_wrk.mode = INGAME_MODE_GAME_OVER;
@@ -113,34 +124,39 @@ void GameOverMenuMain()
 
     if (go_wrk.mode != 0)
     {
-        if (*key_now[6] == 1 || *key_now[5] == 1)
+        if (PAD_BTN_PRESSED(PAD_SQUARE) || PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
             SeStartFix(1, 0, 0x1000, 0x1000, 0);
 
             go_wrk.fade = 3;
         }
-        else if (
-            *key_now[0] == 1 ||
-            (*key_now[0] > 25 && (*key_now[0] % 5) == 1) ||
-            Ana2PadDirCnt(0) == 1 ||
-            (Ana2PadDirCnt(0) > 25 && (Ana2PadDirCnt(0) % 5) == 1)
-        )
+#if defined(BUILD_JP_VERSION)
+        else if (PAD_BTN_PRESSED(PAD_DPAD_UP)|| PAD_LANA_PRESSED(PAD_LANA_UP))
+        {
+            SeStartFix(0, 0, 0x1000, 0x1000, 0);
+
+            go_wrk.csr = 0;
+        }
+        else if (PAD_BTN_PRESSED(PAD_DPAD_DOWN)|| PAD_LANA_PRESSED(PAD_LANA_DOWN))
+        {
+            SeStartFix(0, 0, 0x1000, 0x1000, 0);
+
+            go_wrk.csr = 1;
+        }
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+        else if (PAD_BTN_REPEAT(PAD_DPAD_UP) || PAD_LANA_REPEAT(PAD_LANA_UP))
         {
             SeStartFix(0, 0, 0x1000, 0x1000, 0);
 
             go_wrk.csr = 1 - go_wrk.csr;
         }
-        else if (
-            *key_now[1] == 1 ||
-            (*key_now[1] > 25 && (*key_now[1] % 5) == 1) ||
-            Ana2PadDirCnt(2) == 1 ||
-            (Ana2PadDirCnt(2) > 25 && (Ana2PadDirCnt(2) % 5) == 1)
-        )
+        else if (PAD_BTN_REPEAT(PAD_DPAD_DOWN) || PAD_LANA_REPEAT(PAD_LANA_DOWN))
         {
             SeStartFix(0, 0, 0x1000, 0x1000, 0);
 
             go_wrk.csr = 1 - go_wrk.csr;
         }
+#endif
     }
     else
     {
@@ -217,16 +233,32 @@ void GameOverMenuMain()
 static void GameOverMenuDisp(u_char alp)
 {
     int i;
+#if defined(BUILD_JP_VERSION)
+    char chr_num;
+    char cnt_ofs;
+#endif
 
     CmnWindow(21, 0, 0, alp, 0x80);
 
-    PutSpriteYW(534, 535, 0.0f, 0.0f, 0.0f, 0x808080, alp, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
+    PutSpriteYW(GOV_FNT1, GOV_FNT2, 0.0f, 0.0f, 0.0f, 0x808080, alp, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
     FlashStarYW(&flsh, 96, 64, 90, 0);
 
+#if defined(BUILD_JP_VERSION)
+    CmnCursol(199, go_wrk.csr * 0x1d + 0xca, 0xf2, 0x1e, flsh.alpha, go_wrk.menu_alp, 0x23000);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     CmnCursol(169, go_wrk.csr * 29 + 202, 302, 30, flsh.alpha, go_wrk.menu_alp, 0x23000);
+#endif
 
     for (i = 0; i < 2; i++)
     {
+#if defined(BUILD_JP_VERSION)
+        chr_num = ChkChrNumYW(6, i + 11);
+        cnt_ofs = ((8 - chr_num) * 24) * 0.5; // 0.5 is double
+
+        PutStringYW(6, 11 + i, cnt_ofs + 223, 204 + i * 29, 0x808080, go_wrk.menu_alp, 0x1e000, 0);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         PutStringYW(6, 11 + i, 320, 204 + i * 29, 0x808080, go_wrk.menu_alp, 0x1e000, 1);
+#endif
     }
 }
+
