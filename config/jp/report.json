@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 71.38526919961004,
+    "fuzzy_match_percent": 73.29973773463139,
     "total_code": "1165232",
-    "matched_code": "831804",
-    "matched_code_percent": 71.38526919961004,
+    "matched_code": "854112",
+    "matched_code_percent": 73.29973773463139,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 2648,
-    "matched_functions_percent": 78.02003535651149,
+    "matched_functions": 2702,
+    "matched_functions_percent": 79.61107837360048,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -20583,9 +20583,14 @@
     {
       "name": "ingame/menu/item",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "22308",
+        "matched_code": "22308",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 54,
+        "matched_functions": 54,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -20593,14 +20598,17 @@
         {
           "name": ".text",
           "size": "22408",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -20608,271 +20616,325 @@
         {
           "name": "NewgameItemInit",
           "size": "128",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "NewgameItemInit2",
           "size": "136",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MissionSelectItemInit",
           "size": "208",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MenuItemInit",
           "size": "76",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "LoadgameMenuItemInit",
           "size": "72",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "StartItemModeInit",
           "size": "100",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ItemInitAtMenuOpen",
           "size": "56",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FilmPossessionExp",
           "size": "92",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IngameMenuItem",
           "size": "1040",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IngameMenuItemDisp",
           "size": "468",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SttsRenew",
           "size": "192",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IngameMenuItemUseSlct",
           "size": "2228",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IngameMenuItemEventOpenJudge",
           "size": "148",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ItemUse",
           "size": "296",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RstMessageYW",
           "size": "20",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ItemCntInit",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ItemModeInOut",
           "size": "592",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PlayerStatusYW",
           "size": "2020",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetItemNum",
           "size": "188",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PutStringYW",
           "size": "416",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ItemList",
           "size": "1004",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ItemInTheLenz2D",
           "size": "652",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MessageWindow",
           "size": "888",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ItemModeInOut2",
           "size": "140",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ItemCntRenew",
           "size": "96",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "XYAdefaultYW",
           "size": "52",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PutSpriteYW",
           "size": "824",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GageAnime",
           "size": "204",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FilmAnime",
           "size": "712",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PutNumberYW",
           "size": "520",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PutStsBar",
           "size": "200",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ItmTrFlsh",
           "size": "292",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FlashStarYW",
           "size": "288",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CameUp",
           "size": "236",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PlaySM",
           "size": "400",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "LoadItem2D",
           "size": "124",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "VramItem2D",
           "size": "136",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DspItem2D",
           "size": "392",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PkTm2",
           "size": "236",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "YesNoCrslOKR",
           "size": "228",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PutMessageYW",
           "size": "288",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "WipeChange",
           "size": "284",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PlusZanzo",
           "size": "684",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CLRtoRGB",
           "size": "36",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RGBtoCLR",
           "size": "24",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ChkChrNumYW",
           "size": "48",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ChkPageYW",
           "size": "144",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PutPageYW",
           "size": "384",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DigiPut01",
           "size": "1548",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PolySquareYW",
           "size": "476",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "BgFusumaYW",
           "size": "220",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FromPKZ",
           "size": "240",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DcdCMP2PK2",
           "size": "40",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "YW_DBG",
           "size": "1784",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -25501,14 +25563,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 71.38526919961004,
+        "fuzzy_match_percent": 73.29973773463139,
         "total_code": "1165232",
-        "matched_code": "831804",
-        "matched_code_percent": 71.38526919961004,
+        "matched_code": "854112",
+        "matched_code_percent": 73.29973773463139,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 2648,
-        "matched_functions_percent": 78.02003535651149,
+        "matched_functions": 2702,
+        "matched_functions_percent": 79.61107837360048,
         "complete_data_percent": 100.0,
         "total_units": 154
       }
