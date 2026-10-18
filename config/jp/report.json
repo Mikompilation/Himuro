@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 73.42984058110316,
+    "fuzzy_match_percent": 73.64336029219932,
     "total_code": "1165232",
-    "matched_code": "855628",
-    "matched_code_percent": 73.42984058110316,
+    "matched_code": "858116",
+    "matched_code_percent": 73.64336029219932,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 2707,
-    "matched_functions_percent": 79.75839717147907,
+    "matched_functions": 2712,
+    "matched_functions_percent": 79.90571596935769,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -21017,9 +21017,14 @@
     {
       "name": "ingame/menu/pause",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "2488",
+        "matched_code": "2488",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 5,
+        "matched_functions": 5,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -21027,14 +21032,17 @@
         {
           "name": ".text",
           "size": "2488",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -21042,26 +21050,31 @@
         {
           "name": "PauseInit",
           "size": "64",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PauseMain",
           "size": "1328",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CanPauseCHK",
           "size": "104",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PauseDisp",
           "size": "160",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PauseDraw",
           "size": "832",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -25576,14 +25589,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 73.42984058110316,
+        "fuzzy_match_percent": 73.64336029219932,
         "total_code": "1165232",
-        "matched_code": "855628",
-        "matched_code_percent": 73.42984058110316,
+        "matched_code": "858116",
+        "matched_code_percent": 73.64336029219932,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 2707,
-        "matched_functions_percent": 79.75839717147907,
+        "matched_functions": 2712,
+        "matched_functions_percent": 79.90571596935769,
         "complete_data_percent": 100.0,
         "total_units": 154
       }
