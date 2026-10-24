@@ -28,16 +28,16 @@ static DSP_MEM_ALBM dm_albm;
 
 #if defined(BUILD_JP_VERSION)
 #define PAD_ACTION_CONFIRM PAD_CIRCLE
-#define PAD_ACTION_EXIT PAD_CROSS
-#define PAD_ACTION_MOVE PAD_TRIANGLE
+#define PAD_ACTION_CANCEL PAD_CROSS
+#define PAD_ACTION_TRANSFER_PHOTO PAD_TRIANGLE
 #elif defined(BUILD_US_VERSION)
 #define PAD_ACTION_CONFIRM PAD_CROSS
-#define PAD_ACTION_EXIT PAD_TRIANGLE
-#define PAD_ACTION_MOVE PAD_CIRCLE
+#define PAD_ACTION_CANCEL PAD_TRIANGLE
+#define PAD_ACTION_TRANSFER_PHOTO PAD_CIRCLE
 #elif defined(BUILD_EU_VERSION)
 #define PAD_ACTION_CONFIRM PAD_CROSS
-#define PAD_ACTION_EXIT PAD_TRIANGLE
-#define PAD_ACTION_MOVE PAD_CIRCLE
+#define PAD_ACTION_CANCEL PAD_TRIANGLE
+#define PAD_ACTION_TRANSFER_PHOTO PAD_CIRCLE
 #endif
 
 void MemAlbmInit(u_char h_type, u_char src_pht_max, u_char cpy_pht_max, u_char src_cl_type, u_char cpy_cl_type, u_char src_slot, u_char cpy_slot, u_char src_file, u_char cpy_file)
@@ -614,7 +614,7 @@ char NmlPadInTopPage()
 
     if (dm_albm.exit_realy == 1)
     {
-        if (PAD_BTN_PRESSED(PAD_ACTION_EXIT))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             SeStartFix(3, 0, 0x1000, 0x1000, 0);
 
@@ -783,7 +783,7 @@ char NmlPadInTopPage()
         if (dm_albm.side_chng_wait == 0 && dm_albm.copy_wait == 0 && dm_albm.paste_wait == 0)
         {
 #endif
-            if (PAD_BTN_PRESSED(PAD_ACTION_EXIT))
+            if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
             {
                 if (dm_albm.buf_set != 0)
                 {
@@ -861,7 +861,7 @@ char NmlPadInTopPage()
                     SeStartFix(2, 0, 0x1000, 0x1000, 0);
                 }
             }
-            else if (PAD_BTN_PRESSED(PAD_ACTION_MOVE))
+            else if (PAD_BTN_PRESSED(PAD_ACTION_TRANSFER_PHOTO))
             {
                 if (dm_albm.buf_set == 0)
                 {
@@ -1155,7 +1155,7 @@ char AbnPadInBigPage(u_char alp)
     }
     else
     {
-        if (PAD_BTN_PRESSED(PAD_ACTION_EXIT))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             SeStartFix(3, 0, 0x1000, 0x1000, 0);
 
@@ -1390,7 +1390,7 @@ char MenuPadCmn()
 
     if (dm_albm.yes_no == 0)
     {
-        if (PAD_BTN_PRESSED(PAD_ACTION_EXIT))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             SeStartFix(3, 0, 0x1000, 0x1000, 0);
 
@@ -1595,7 +1595,7 @@ char MenuPadCmn()
         switch (dm_albm.yes_no)
         {
         case 1:
-            if (PAD_BTN_PRESSED(PAD_ACTION_EXIT))
+            if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
             {
                 SeStartFix(3, 0, 0x1000, 0x1000, 0);
 
@@ -1744,7 +1744,7 @@ char MenuPadCmn()
             PutStringYW(IGMSG_PRE_SV_MSG, 1, 358, 390, 0x808080, 0x80, 0x1000, 1);
 #endif
 
-            if (PAD_BTN_PRESSED(PAD_ACTION_EXIT))
+            if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
             {
                 SeStartFix(3, 0, 0x1000, 0x1000, 0);
 
@@ -1794,7 +1794,7 @@ char MenuPadCmn()
             PutStringYW(IGMSG_MENU_MSG, 39, 320, 323, 0x808080, 0x80, 0x1000, 1);
             PutStringYW(IGMSG_MENU_MSG, 37, 60, 353, 0x808080, 0x80, 0x1000, 0);
 
-            if (PAD_BTN_PRESSED(PAD_ACTION_EXIT))
+            if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
             {
                 SeStartFix(3, 0, 0x1000, 0x1000, 0);
 
@@ -1889,7 +1889,7 @@ char PasteCtrl()
         PutStringYW(IGMSG_PRE_SV_MSG, 1, 475, 390, 0x808080, 0x80, 0x1000, 1);
         PutStringYW(IGMSG_MENU_MSG, 38, 60, 390, 0x808080, 0x80, 0x1000, 0);
 
-        if (PAD_BTN_PRESSED(PAD_ACTION_EXIT))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             SeStartFix(3, 0, 0x1000, 0x1000, 0);
 
@@ -1937,7 +1937,7 @@ char PasteCtrl()
         PutStringYW(IGMSG_PRE_SV_MSG, 1, 358, 390, 0x808080, 0x80, 0x1000, 1);
         PutStringYW(IGMSG_MENU_MSG, 38, 60, 390, 0x808080, 0x80, 0x1000, 0);
 
-        if (PAD_BTN_PRESSED(PAD_ACTION_EXIT))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             SeStartFix(3, 0, 0x1000, 0x1000, 0);
 
@@ -2084,7 +2084,7 @@ void BuffPadCmn()
         dm_albm.mode_chng = 20;
         dm_albm.mode = 1;
     }
-    else if (PAD_BTN_PRESSED(PAD_ACTION_MOVE))
+    else if (PAD_BTN_PRESSED(PAD_ACTION_TRANSFER_PHOTO))
     {
         SeStartFix(1, 0, 0x1000, 0x1000, 0);
 
@@ -2177,7 +2177,7 @@ void BuffPadMnu()
 {
     int i;
 
-    if (PAD_BTN_PRESSED(PAD_ACTION_EXIT))
+    if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
     {
         SeStartFix(3, 0, 0x1000, 0x1000, 0);
 
@@ -2633,8 +2633,8 @@ void InfoWin(u_char mode, u_char side, u_char alp)
 #if defined(BUILD_JP_VERSION)
         PutSpriteYW(OA_TP_FNT_MAI, OA_TP_FNT_MAI, adj1 + 102, 2.0f, 0.0f, 0x808080, alp1, 1.0f, 1.0f, 0, 0x30000, 1, 0, 0);
 #endif
-        PutNumberYW(11, dm_albm.pht_max[1], adj1 + 522, 29, 1.0f, 1.0f, 0x808080, alp1, 0x30000, 2, 0);
-        PutNumberYW(11, 24, adj1 + 564, 29, 1.0f, 1.0f, 0x808080, alp1, 0x30000, 2, 0);
+        PutNumberYW(NUM_ALBM_TOP, dm_albm.pht_max[1], adj1 + 522, 29, 1.0f, 1.0f, 0x808080, alp1, 0x30000, 2, 0);
+        PutNumberYW(NUM_ALBM_TOP, 24, adj1 + 564, 29, 1.0f, 1.0f, 0x808080, alp1, 0x30000, 2, 0);
 
 #if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         if (dm_albm.csr_mode == 2)
@@ -2642,13 +2642,13 @@ void InfoWin(u_char mode, u_char side, u_char alp)
             if (mode != 0)
             {
                 PutSpriteYW(OA_TP_FNT_SLSH, OA_TP_FNT_SLSH, adj1 + 60, 2.0f, 0.0f, 0x808080, alp1, 1.0f, 1.0f, 0, 0x30000, 1, 0, 0);
-                PutNumberYW(11, dm_albm.buf[dm_albm.csr[2]] + 1, adj1 + 480, 29, 1.0f, 1.0f, 0x808080, alp1, 0x30000, 2, 0);
+                PutNumberYW(NUM_ALBM_TOP, dm_albm.buf[dm_albm.csr[2]] + 1, adj1 + 480, 29, 1.0f, 1.0f, 0x808080, alp1, 0x30000, 2, 0);
             }
         }
         else if (dm_albm.csr[1] < dm_albm.pht_max[1])
         {
             PutSpriteYW(OA_TP_FNT_SLSH, OA_TP_FNT_SLSH, adj1 + 60, 2.0f, 0.0f, 0x808080, alp1, 1.0f, 1.0f, 0, 0x30000, 1, 0, 0);
-            PutNumberYW(11, dm_albm.csr[1] + 1, adj1 + 480, 29, 1.0f, 1.0f, 0x808080, alp1, 0x30000, 2, 0);
+            PutNumberYW(NUM_ALBM_TOP, dm_albm.csr[1] + 1, adj1 + 480, 29, 1.0f, 1.0f, 0x808080, alp1, 0x30000, 2, 0);
         }
 #endif
 
@@ -2666,18 +2666,18 @@ void InfoWin(u_char mode, u_char side, u_char alp)
                 if (alp1 == 0x80)
                 {
                     PutStringYW(IGMSG_PRE_SV_MSG, 14, adj1 + 90, 29, 0x909090, 0x80, 0x2f000, 0);
-                    PutNumberYW(0, dm_albm.file[1], adj1 + 200, 29, 1.0f, 1.0f, 0x808080, 0x80, 0x2f000, 1, 0);
+                    PutNumberYW(NUM_NORMAL, dm_albm.file[1], adj1 + 200, 29, 1.0f, 1.0f, 0x808080, 0x80, 0x2f000, 1, 0);
                 }
 
                 PutSpriteYW(OA_TP_FNT_MMC, OA_TP_FNT_MMC, adj1 + 240, 2.0f, 0.0f, 0x808080, alp1, 1.0f, 1.0f, 0, 0x2f000, 1, 0, 0);
-                PutNumberYW(11, dm_albm.slot[1], adj1 + 424, 29, 1.0f, 1.0f, 0x808080, alp1, 0x2f000, 1, 0);
+                PutNumberYW(NUM_ALBM_TOP, dm_albm.slot[1], adj1 + 424, 29, 1.0f, 1.0f, 0x808080, alp1, 0x2f000, 1, 0);
 #elif defined(BUILD_US_VERSION)
                 if (alp1 == 0x80)
                 {
                     PutStringYW(IGMSG_PRE_SV_MSG, 14, adj1 + 90, 29, 0x909090, 0x80, 0x2f000, 0);
-                    PutNumberYW(0, dm_albm.file[1], adj1 + 180, 29, 1.0f, 1.0f, 0x808080, 0x80, 0x2f000, 1, 0);
+                    PutNumberYW(NUM_NORMAL, dm_albm.file[1], adj1 + 180, 29, 1.0f, 1.0f, 0x808080, 0x80, 0x2f000, 1, 0);
                     PutStringYW(IGMSG_SV_PNT_MSG, 109, adj1 + 240, 29, 0x909090, 0x80, 0x2f000, 0);
-                    PutNumberYW(0, dm_albm.slot[1], adj1 + 422, 29, 1.0f, 1.0f, 0x808080, 0x80, 0x2f000, 1, 0);
+                    PutNumberYW(NUM_NORMAL, dm_albm.slot[1], adj1 + 422, 29, 1.0f, 1.0f, 0x808080, 0x80, 0x2f000, 1, 0);
                 }
 #elif defined(BUILD_EU_VERSION)
                 if (alp1 == 0x80)
@@ -2690,7 +2690,7 @@ void InfoWin(u_char mode, u_char side, u_char alp)
                     width = GetStrWidth((u_char *)GetIngameMSGAddr(IGMSG_PRE_SV_MSG, 14));
                     pos_x = adj1 + 102;
 
-                    PutNumberYW(0, dm_albm.file[1], pos_x + width, 29, 1.0f, 1.0f, 0x808080, 0x80, 0x2f000, 1, 0);
+                    PutNumberYW(NUM_NORMAL, dm_albm.file[1], pos_x + width, 29, 1.0f, 1.0f, 0x808080, 0x80, 0x2f000, 1, 0);
                 }
 #endif
             break;
@@ -2727,8 +2727,8 @@ void InfoWin(u_char mode, u_char side, u_char alp)
 #if defined(BUILD_JP_VERSION)
         PutSpriteYW(OA_TP_FNT_MAI, OA_TP_FNT_MAI, adj2 + 42, 2.0f, 0.0f, 0x808080, alp0, 1.0f, 1.0f, 0, 0x2b000, 1, 0, 0);
 #endif
-        PutNumberYW(11, dm_albm.pht_max[0], adj2 + 462, 29, 1.0f, 1.0f, 0x808080, alp0, 0x2b000, 2, 0);
-        PutNumberYW(11, 24, adj2 + 504, 29, 1.0f, 1.0f, 0x808080, alp0, 0x2b000, 2, 0);
+        PutNumberYW(NUM_ALBM_TOP, dm_albm.pht_max[0], adj2 + 462, 29, 1.0f, 1.0f, 0x808080, alp0, 0x2b000, 2, 0);
+        PutNumberYW(NUM_ALBM_TOP, 24, adj2 + 504, 29, 1.0f, 1.0f, 0x808080, alp0, 0x2b000, 2, 0);
 
 #if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         if (dm_albm.csr_mode == 2)
@@ -2736,13 +2736,13 @@ void InfoWin(u_char mode, u_char side, u_char alp)
             if (mode != 0)
             {
                 PutSpriteYW(OA_TP_FNT_SLSH, OA_TP_FNT_SLSH, adj2, 2.0f, 0.0f, 0x808080, alp0, 1.0f, 1.0f, 0, 0x2b000, 1, 0, 0);
-                PutNumberYW(11, dm_albm.buf[dm_albm.csr[2]] + 1, adj2 + 420, 29, 1.0f, 1.0f, 0x808080, alp0, 0x2b000, 2, 0);
+                PutNumberYW(NUM_ALBM_TOP, dm_albm.buf[dm_albm.csr[2]] + 1, adj2 + 420, 29, 1.0f, 1.0f, 0x808080, alp0, 0x2b000, 2, 0);
             }
         }
         else if (dm_albm.csr[0] < dm_albm.pht_max[0])
         {
             PutSpriteYW(OA_TP_FNT_SLSH, OA_TP_FNT_SLSH, adj2, 2.0f, 0.0f, 0x808080, alp0, 1.0f, 1.0f, 0, 0x2b000, 1, 0, 0);
-            PutNumberYW(11, dm_albm.csr[0] + 1, adj2 + 420, 29, 1.0f, 1.0f, 0x808080, alp0, 0x2b000, 2, 0);
+            PutNumberYW(NUM_ALBM_TOP, dm_albm.csr[0] + 1, adj2 + 420, 29, 1.0f, 1.0f, 0x808080, alp0, 0x2b000, 2, 0);
         }
 #endif
 
@@ -2760,18 +2760,18 @@ void InfoWin(u_char mode, u_char side, u_char alp)
                 if (alp0 == 0x80)
                 {
                     PutStringYW(IGMSG_PRE_SV_MSG, 14, adj2 + 30, 29, 0x909090, 0x80, 0x2a000, 0);
-                    PutNumberYW(0, dm_albm.file[0], adj2 + 140, 29, 1.0f, 1.0f, 0x808080, 0x80, 0x2a000, 1, 0);
+                    PutNumberYW(NUM_NORMAL, dm_albm.file[0], adj2 + 140, 29, 1.0f, 1.0f, 0x808080, 0x80, 0x2a000, 1, 0);
                 }
 
                 PutSpriteYW(OA_TP_FNT_MMC, OA_TP_FNT_MMC, adj2 + 180, 2.0f, 0.0f, 0x808080, alp0, 1.0f, 1.0f, 0, 0x2a000, 1, 0, 0);
-                PutNumberYW(11, dm_albm.slot[0], adj2 + 364, 29, 1.0f, 1.0f, 0x808080, alp0, 0x2a000, 1, 0);
+                PutNumberYW(NUM_ALBM_TOP, dm_albm.slot[0], adj2 + 364, 29, 1.0f, 1.0f, 0x808080, alp0, 0x2a000, 1, 0);
 #elif defined(BUILD_US_VERSION)
                 if (alp0 == 0x80)
                 {
                     PutStringYW(IGMSG_PRE_SV_MSG, 14, adj2 + 30, 29, 0x909090, 0x80, 0x2a000, 0);
-                    PutNumberYW(0, dm_albm.file[0], adj2 + 120, 29, 1.0f, 1.0f, 0x808080, 0x80, 0x2a000, 1, 0);
+                    PutNumberYW(NUM_NORMAL, dm_albm.file[0], adj2 + 120, 29, 1.0f, 1.0f, 0x808080, 0x80, 0x2a000, 1, 0);
                     PutStringYW(IGMSG_SV_PNT_MSG, 109, adj2 + 180, 29, 0x909090, 0x80, 0x2a000, 0);
-                    PutNumberYW(0, dm_albm.slot[0], adj2 + 362, 29, 1.0f, 1.0f, 0x808080, 0x80, 0x2a000, 1, 0);
+                    PutNumberYW(NUM_NORMAL, dm_albm.slot[0], adj2 + 362, 29, 1.0f, 1.0f, 0x808080, 0x80, 0x2a000, 1, 0);
                 }
 #elif defined(BUILD_EU_VERSION)
                 if (alp0 == 0x80)
@@ -2784,7 +2784,7 @@ void InfoWin(u_char mode, u_char side, u_char alp)
                     width = GetStrWidth((u_char *)GetIngameMSGAddr(IGMSG_PRE_SV_MSG, 14));
                     pos_x = adj2 + 42;
 
-                    PutNumberYW(0, dm_albm.file[0], pos_x + width, 29, 1.0f, 1.0f, 0x808080, 0x80, 0x2a000, 1, 0);
+                    PutNumberYW(NUM_NORMAL, dm_albm.file[0], pos_x + width, 29, 1.0f, 1.0f, 0x808080, 0x80, 0x2a000, 1, 0);
                 }
 #endif
             break;
@@ -3235,7 +3235,7 @@ void TruthPhoto(u_char mode, short int px, short int py, u_char alp)
         PutDate(&tmp_pic, px + 373, py + 340, str_alp, 0x1000);
 
         PutStringYW(30, tmp_pic.room, px + 385, py + 369, 0x808080, str_alp, 0x1000, 0);
-        PutNumberYW(0, tmp_pic.score, px + 421, py + 397, 1.0f, 1.0f, 0x808080, str_alp, 0x1000, 7, 0);
+        PutNumberYW(NUM_NORMAL, tmp_pic.score, px + 421, py + 397, 1.0f, 1.0f, 0x808080, str_alp, 0x1000, 7, 0);
     break;
     case 1:
         if (dm_albm.csr_mode == 2)
@@ -3292,7 +3292,7 @@ void TruthPhoto(u_char mode, short int px, short int py, u_char alp)
         PutDate(&tmp_pic, px + 388, py + 340, str_alp, 0x1000);
 
         PutStringYW(30, tmp_pic.room, px + 399, py + 369, 0x808080, str_alp, 0x1000, 0);
-        PutNumberYW(0, tmp_pic.score, px + 435, py + 396, 1.0f, 1.0f, 0x808080, str_alp, 0x1000, 7, 0);
+        PutNumberYW(NUM_NORMAL, tmp_pic.score, px + 435, py + 396, 1.0f, 1.0f, 0x808080, str_alp, 0x1000, 7, 0);
     break;
     }
 }
@@ -3381,12 +3381,12 @@ char InKeyTamusi()
         hit++;
     }
 
-    if (PAD_BTN_HELD(PAD_ACTION_MOVE))
+    if (PAD_BTN_HELD(PAD_ACTION_TRANSFER_PHOTO))
     {
         hit++;
     }
 
-    if (PAD_BTN_HELD(PAD_ACTION_EXIT))
+    if (PAD_BTN_HELD(PAD_ACTION_CANCEL))
     {
         hit++;
     }

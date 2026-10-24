@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 73.64336029219932,
+    "fuzzy_match_percent": 76.3295206448158,
     "total_code": "1165232",
-    "matched_code": "858116",
-    "matched_code_percent": 73.64336029219932,
+    "matched_code": "889416",
+    "matched_code_percent": 76.3295206448158,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 2712,
-    "matched_functions_percent": 79.90571596935769,
+    "matched_functions": 2751,
+    "matched_functions_percent": 81.05480259281084,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -21087,9 +21087,14 @@
     {
       "name": "ingame/menu/ig_album",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "31300",
+        "matched_code": "31300",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 39,
+        "matched_functions": 39,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -21097,14 +21102,17 @@
         {
           "name": ".text",
           "size": "31344",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -21112,196 +21120,235 @@
         {
           "name": "NewgameMenuAlbumInit",
           "size": "108",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "LoadgameMenuAlbumInit",
           "size": "108",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "StartAlbumModeInit",
           "size": "64",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IngameMenuAlbum",
           "size": "848",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IngameAlbumDisp",
           "size": "624",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IngameAlbumMenu",
           "size": "32",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IngameAlbumAllPad",
           "size": "1480",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IngameAlbumLstPad",
           "size": "976",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IngameAlbumBigPad",
           "size": "780",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SealChk",
           "size": "64",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CmndMenuClrB",
           "size": "2476",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CmndMenuVrgn",
           "size": "1424",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IngameAlbumSort",
           "size": "2248",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IngameAlbumMenuDsp",
           "size": "1088",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DspMainMenu",
           "size": "524",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DspSideMenu",
           "size": "500",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IngameAlbumDispPhotoLarge",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "AlbmCntInit",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "AlbmModeInOut",
           "size": "824",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DrawAlbum",
           "size": "1872",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "AlbmModeInOut2",
           "size": "140",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PhotOnlyLst",
           "size": "356",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PhotOnlyBig",
           "size": "640",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PhotOnlyAll",
           "size": "976",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "AlbmCntRenew",
           "size": "60",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DspNotice",
           "size": "760",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DspSumnale",
           "size": "656",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DspDetail",
           "size": "1536",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DspPhtLst",
           "size": "1248",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DspFilmCut",
           "size": "312",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DspCherry",
           "size": "380",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DspBtmDtl",
           "size": "1112",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DspSideSmnl",
           "size": "704",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetSubjectNameAddr",
           "size": "356",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "TimeIsMoney",
           "size": "32",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DspMenuWin",
           "size": "4800",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PutDate",
           "size": "752",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "AlbmTrFlsh",
           "size": "360",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MoneyIsTime",
           "size": "64",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -25589,14 +25636,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 73.64336029219932,
+        "fuzzy_match_percent": 76.3295206448158,
         "total_code": "1165232",
-        "matched_code": "858116",
-        "matched_code_percent": 73.64336029219932,
+        "matched_code": "889416",
+        "matched_code_percent": 76.3295206448158,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 2712,
-        "matched_functions_percent": 79.90571596935769,
+        "matched_functions": 2751,
+        "matched_functions_percent": 81.05480259281084,
         "complete_data_percent": 100.0,
         "total_units": 154
       }

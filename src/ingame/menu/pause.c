@@ -32,16 +32,16 @@ static FLSH_CORE flsh;
 
 #if defined(BUILD_JP_VERSION)
 #define PAD_ACTION_CONFIRM PAD_CIRCLE
-#define PAD_ACTION_BACK PAD_SQUARE
-#define PAD_ACTION_LEAVE PAD_CROSS
+#define PAD_ACTION_OPEN_MENU PAD_SQUARE
+#define PAD_ACTION_CANCEL PAD_CROSS
 #elif defined(BUILD_US_VERSION)
 #define PAD_ACTION_CONFIRM PAD_CROSS
-#define PAD_ACTION_BACK PAD_TRIANGLE
-#define PAD_ACTION_LEAVE PAD_TRIANGLE
+#define PAD_ACTION_OPEN_MENU PAD_TRIANGLE
+#define PAD_ACTION_CANCEL PAD_TRIANGLE
 #elif defined(BUILD_EU_VERSION)
 #define PAD_ACTION_CONFIRM PAD_CROSS
-#define PAD_ACTION_BACK PAD_TRIANGLE
-#define PAD_ACTION_LEAVE PAD_TRIANGLE
+#define PAD_ACTION_OPEN_MENU PAD_TRIANGLE
+#define PAD_ACTION_CANCEL PAD_TRIANGLE
 #endif
 
 void PauseInit()
@@ -119,7 +119,7 @@ int PauseMain()
 
         if (ps_dsp.yn_mode == 0)
         {
-            if (PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+            if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
             {
                 SeStartFix(3, 0, 0x1000, 0x1000, 1);
 
@@ -129,7 +129,7 @@ int PauseMain()
             {
                 SeStartFix(1, 0, 0x1000, 0x1000, 1);
 
-                *key_now[PAD_ACTION_BACK] = 2;
+                *key_now[PAD_ACTION_OPEN_MENU] = 2;
 
                 switch (pause_wrk.csr[0])
                 {
@@ -177,11 +177,11 @@ int PauseMain()
                 }
             }
         }
-        else if (PAD_BTN_HELD(PAD_ACTION_LEAVE))
+        else if (PAD_BTN_HELD(PAD_ACTION_CANCEL))
         {
                 SeStartFix(3, 0, 0x1000, 0x1000, 1);
 
-                *key_now[PAD_ACTION_LEAVE] = 2;
+                *key_now[PAD_ACTION_CANCEL] = 2;
 
                 ps_dsp.yn_mode = 0;
         }

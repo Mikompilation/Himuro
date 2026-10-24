@@ -1154,11 +1154,11 @@ void CameraDsp(short int pos_x, short int pos_y, u_char alp, u_char msg)
         {
             flsh_alp[5] = flsh2.alpha;
 
-            PutNumberYW(3, cost, 521, 289, 1.0f, 1.0f, 0x808080, alp, 0x5000, 5, 0);
+            PutNumberYW(NUM_SMALL, cost, 521, 289, 1.0f, 1.0f, 0x808080, alp, 0x5000, 5, 0);
         }
         else
         {
-            PutNumberYW(3, cost, 521, 289, 1.0f, 1.0f, 0x808080, alp * 0.5f, 0x5000, 5, 0);
+            PutNumberYW(NUM_SMALL, cost, 521, 289, 1.0f, 1.0f, 0x808080, alp * 0.5f, 0x5000, 5, 0);
         }
     }
 
@@ -1219,7 +1219,7 @@ void CameraDsp(short int pos_x, short int pos_y, u_char alp, u_char msg)
                 PutStringYW(45, 0, flm_ax[i] + 351, flm_ay[i] + 155, 0x808080, alp, 0x2000, 0);
                 PutStringYW(24, i+1, flm_ax[i] + 206, flm_ay[i] + 131, 0x808080, alp, 0x2000, 0);
 
-                PutNumberYW(3, poss_item[i+1], pos_x + 0x16f + flm_ax[i], pos_y + 0x97 + flm_ay[i], 1.0f, 1.0f, 0x808080, alp, 0x2000, 2, 1);
+                PutNumberYW(NUM_SMALL, poss_item[i+1], pos_x + 0x16f + flm_ax[i], pos_y + 0x97 + flm_ay[i], 1.0f, 1.0f, 0x808080, alp, 0x2000, 2, 1);
             }
             else if (flm_exp_flg[i+1] != 0)
             {
@@ -1227,7 +1227,7 @@ void CameraDsp(short int pos_x, short int pos_y, u_char alp, u_char msg)
                 PutStringYW(45, 0, flm_ax[i] + 351, flm_ay[i] + 155, 0x404040, alp, 0x2000, 0);
                 PutStringYW(24, i+1, flm_ax[i] + 206, flm_ay[i] + 131, 0x404040, alp, 0x2000, 0);
 
-                PutNumberYW(3, poss_item[i+1], pos_x + 0x16f + flm_ax[i], pos_y + 0x97 + flm_ay[i], 1.0f, 1.0f, 0x404040, alp, 0x2000, 2, 1);
+                PutNumberYW(NUM_SMALL, poss_item[i+1], pos_x + 0x16f + flm_ax[i], pos_y + 0x97 + flm_ay[i], 1.0f, 1.0f, 0x404040, alp, 0x2000, 2, 1);
 
                 PolySquareYW(flm_ax[i] + 204, flm_ay[i] + 129, 197, 45, 0, (int)(alp / 2), 1.0f, 1.0f, 0x2000, 0, 0, 0);
             }

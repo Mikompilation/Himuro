@@ -460,10 +460,10 @@ void DspGInf(u_char alpha)
 
     PutSpriteYW(GLST_HIT_NUM, GLST_HIT_NUM, -4.0f, 0.0f, 0.0f, 0x808080, alpha, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
 
-    PutNumberYW(8, menu_glist.g_num, 355, 51, 1.0f, 1.0f, 0x808080, alpha, -1, 3, 0);
+    PutNumberYW(NUM_GLIST, menu_glist.g_num, 355, 51, 1.0f, 1.0f, 0x808080, alpha, -1, 3, 0);
     PutSpriteYW(GLST_ALL_NUM, GLST_ALL_NUM, -4.0f, 0.0f, 0.0f, 0x808080, alpha, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
 
-    PutNumberYW(8, menu_glist.all_num, 355, 30, 1.0f, 1.0f, 0x808080, alpha, -1, 3, 0);
+    PutNumberYW(NUM_GLIST, menu_glist.all_num, 355, 30, 1.0f, 1.0f, 0x808080, alpha, -1, 3, 0);
     PutSpriteYW(GLST_SXES_PER, GLST_SXES_PER, 0.0f, 0.0f, 0.0f, 0x808080, alpha, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
 
     per = (menu_glist.g_num * 100) / menu_glist.all_num;
@@ -473,7 +473,7 @@ void DspGInf(u_char alpha)
         per = (u_int)(menu_glist.g_num != 0);
     }
 
-    PutNumberYW(8, per, 528, 41, 1.0f, 1.0f, 0x808080, alpha, -1, 3, 0);
+    PutNumberYW(NUM_GLIST, per, 528, 41, 1.0f, 1.0f, 0x808080, alpha, -1, 3, 0);
     PutSpriteYW(GLST_NUM2_PER, GLST_NUM2_PER, 0.0f, 0.0f, 0.0f, 0x808080, alpha, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
 
     if (menu_glist.complete != 0)

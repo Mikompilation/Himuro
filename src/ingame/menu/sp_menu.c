@@ -2210,7 +2210,7 @@ static void DspSpInfo(u_char file_no, u_char pos_y, u_char alp, u_char type)
     u_char end_showzo;
     u_char sv_pht;
 
-    PutNumberYW(6, file_no + 1, 218, pos_y + 50, 1.0f, 1.0f, 0x808080, alp, 0xa000, 2, 0);
+    PutNumberYW(NUM_SAVE_VERT, file_no + 1, 218, pos_y + 50, 1.0f, 1.0f, 0x808080, alp, 0xa000, 2, 0);
 
     if (mc_header_buf[file_no].game.map_flg == 0)
     {
@@ -2242,11 +2242,11 @@ static void DspSpInfo(u_char file_no, u_char pos_y, u_char alp, u_char type)
 #else
             PutStringYW(30, mc_header_buf[file_no].game.room_no, 250, pos_y + 70, 0x808080, alp, 0xa000, 0);
 #endif
-            PutNumberYW(0, mc_header_buf[file_no].game.hour, 0xff, pos_y + 91, 1.0f, 1.0f, 0x808080, alp, 0xa000, 2, 1);
+            PutNumberYW(NUM_NORMAL, mc_header_buf[file_no].game.hour, 0xff, pos_y + 91, 1.0f, 1.0f, 0x808080, alp, 0xa000, 2, 1);
             PutStringYW(8, 108, 306, pos_y + 91, 0x808080, alp, 0xa000, 0);
-            PutNumberYW(0, mc_header_buf[file_no].game.minute, 325, pos_y + 91, 1.0f, 1.0f, 0x808080, alp, 0xa000, 2, 1);
+            PutNumberYW(NUM_NORMAL, mc_header_buf[file_no].game.minute, 325, pos_y + 91, 1.0f, 1.0f, 0x808080, alp, 0xa000, 2, 1);
             PutStringYW(8, 108, 376, pos_y + 91, 0x808080, alp, 0xa000, 0);
-            PutNumberYW(0, mc_header_buf[file_no].game.sec, 395, pos_y + 91, 1.0f, 1.0f, 0x808080, alp, 0xa000, 2, 1);
+            PutNumberYW(NUM_NORMAL, mc_header_buf[file_no].game.sec, 395, pos_y + 91, 1.0f, 1.0f, 0x808080, alp, 0xa000, 2, 1);
 
             switch(mc_header_buf[file_no].game.room_no)
             {
@@ -2315,11 +2315,11 @@ static void DspSpInfo(u_char file_no, u_char pos_y, u_char alp, u_char type)
 #endif
             }
 
-            PutNumberYW(0, mc_header_buf[file_no].game.hour, 0xff, pos_y + 91, 1.0f, 1.0f, 0x808080, alp, 0xa000, 2, 1);
+            PutNumberYW(NUM_NORMAL, mc_header_buf[file_no].game.hour, 0xff, pos_y + 91, 1.0f, 1.0f, 0x808080, alp, 0xa000, 2, 1);
             PutStringYW(8, 108, 306, pos_y + 91, 0x808080, alp, 0xa000, 0);
-            PutNumberYW(0, mc_header_buf[file_no].game.minute, 325, pos_y + 91, 1.0f, 1.0f, 0x808080, alp, 0xa000, 2, 1);
+            PutNumberYW(NUM_NORMAL, mc_header_buf[file_no].game.minute, 325, pos_y + 91, 1.0f, 1.0f, 0x808080, alp, 0xa000, 2, 1);
             PutStringYW(8, 108, 376, pos_y + 91, 0x808080, alp, 0xa000, 0);
-            PutNumberYW(0, mc_header_buf[file_no].game.sec, 395, pos_y + 91, 1.0f, 1.0f, 0x808080, alp, 0xa000, 2, 1);
+            PutNumberYW(NUM_NORMAL, mc_header_buf[file_no].game.sec, 395, pos_y + 91, 1.0f, 1.0f, 0x808080, alp, 0xa000, 2, 1);
 
             switch(end_showzo)
             {
@@ -2388,9 +2388,9 @@ static void DspSpInfo2(u_char csr_no, u_char pos_y, u_char alp, u_char type)
         no = mc_ctrl.album.file_no[csr_no];
 
         PutSpriteYW(OA_LD_FNT2_ALBM, OA_LD_FNT2_ALBM, 0.0f, pos_y, 0.0f, 0x808080, alp, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
-        PutNumberYW(9, no + 1, 319, pos_y + 49, 1.0f, 1.0f, 0x808080, alp, 0xa000, 2, 0);
-        PutNumberYW(10, mc_header_buf[no].game.msn_no, 443, pos_y + 48, 1.0f, 1.0f, 0x808080, alp, 0xa000, 2, 0);
-        PutNumberYW(10, 24, 485, pos_y + 48, 1.0f, 1.0f, 0x808080, alp, 0xa000, 2, 0);
+        PutNumberYW(NUM_ALBM_LD1, no + 1, 319, pos_y + 49, 1.0f, 1.0f, 0x808080, alp, 0xa000, 2, 0);
+        PutNumberYW(NUM_ALBM_LD2, mc_header_buf[no].game.msn_no, 443, pos_y + 48, 1.0f, 1.0f, 0x808080, alp, 0xa000, 2, 0);
+        PutNumberYW(NUM_ALBM_LD2, 24, 485, pos_y + 48, 1.0f, 1.0f, 0x808080, alp, 0xa000, 2, 0);
         PutSpriteYW(OA_LD_OUT_SIR + mc_header_buf[no].game.room_no, OA_LD_OUT_SIR + mc_header_buf[no].game.room_no, 313.0f, pos_y + 1, 0.0f, 0x808080, alp, 0.25f, 0.25f, 0, 0xff, 1, 0, 0);
     break;
     case 3:

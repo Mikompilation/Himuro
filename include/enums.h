@@ -6843,4 +6843,26 @@ enum {
     GET_ITM_TYPE_ITEM = 4
 };
 
+enum {
+    ALBM_MODE_ALL = 0,
+    ALBM_MODE_LST = 1,
+    ALBM_MODE_BIG = 2,
+    ALBM_MODE_NUM = 3
+};
+
+enum {
+    ALBM_SORT_DATE = 0,
+    ALBM_SORT_SCORE = 1,
+    ALBM_SORT_SEAL = 2,
+    ALBM_SORT_NUM = 3
+};
+
+enum {
+    NRM_ALBM_CMD_SEAL = 0,
+    NRM_ALBM_CMD_DEL = 1,
+    NRM_ALBM_CMD_MODE = 2,
+    NRM_ALBM_CMD_SORT = 3,
+    NRM_ALBM_CMD_NUM = 4
+};
+
 #endif // ENUMS_H

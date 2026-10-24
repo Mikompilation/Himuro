@@ -39,13 +39,10 @@ static int gov_load_id;
 
 #if defined(BUILD_JP_VERSION)
 #define PAD_ACTION_CONFIRM PAD_CIRCLE
-#define PAD_ACTION_CANCEL PAD_CROSS
 #elif defined(BUILD_US_VERSION)
 #define PAD_ACTION_CONFIRM PAD_CROSS
-#define PAD_ACTION_CANCEL PAD_CIRCLE
 #elif defined(BUILD_EU_VERSION)
 #define PAD_ACTION_CONFIRM PAD_CROSS
-#define PAD_ACTION_CANCEL PAD_CIRCLE
 #endif
 
 void StartGameOver()
@@ -131,13 +128,13 @@ void GameOverMenuMain()
             go_wrk.fade = 3;
         }
 #if defined(BUILD_JP_VERSION)
-        else if (PAD_BTN_PRESSED(PAD_DPAD_UP)|| PAD_LANA_PRESSED(PAD_LANA_UP))
+        else if (PAD_BTN_PRESSED(PAD_DPAD_UP) || PAD_LANA_PRESSED(PAD_LANA_UP))
         {
             SeStartFix(0, 0, 0x1000, 0x1000, 0);
 
             go_wrk.csr = 0;
         }
-        else if (PAD_BTN_PRESSED(PAD_DPAD_DOWN)|| PAD_LANA_PRESSED(PAD_LANA_DOWN))
+        else if (PAD_BTN_PRESSED(PAD_DPAD_DOWN) || PAD_LANA_PRESSED(PAD_LANA_DOWN))
         {
             SeStartFix(0, 0, 0x1000, 0x1000, 0);
 

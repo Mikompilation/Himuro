@@ -186,16 +186,16 @@ static u_char butsuzo_alpha[3];
 static u_char zushi_alpha[3];
 
 #if defined(BUILD_JP_VERSION)
-#define PAD_ACTION_PUSH PAD_CIRCLE
-#define PAD_ACTION_LEAVE PAD_CROSS
+#define PAD_ACTION_CONFIRM PAD_CIRCLE
+#define PAD_ACTION_CANCEL PAD_CROSS
 #define PAD_ACTION_RESET PAD_TRIANGLE
 #elif defined(BUILD_US_VERSION)
-#define PAD_ACTION_PUSH PAD_CROSS
-#define PAD_ACTION_LEAVE PAD_TRIANGLE
+#define PAD_ACTION_CONFIRM PAD_CROSS
+#define PAD_ACTION_CANCEL PAD_TRIANGLE
 #define PAD_ACTION_RESET PAD_CIRCLE
 #elif defined(BUILD_EU_VERSION)
-#define PAD_ACTION_PUSH PAD_CROSS
-#define PAD_ACTION_LEAVE PAD_TRIANGLE
+#define PAD_ACTION_CONFIRM PAD_CROSS
+#define PAD_ACTION_CANCEL PAD_TRIANGLE
 #define PAD_ACTION_RESET PAD_CIRCLE
 #endif
 
@@ -503,7 +503,7 @@ int ButtonMarkNext(int x_off, int y_off, int se_flg)
         spev_alp_cnt = 0;
     }
 
-    if (PAD_BTN_PRESSED(PAD_ACTION_PUSH) && button_time == 0)
+    if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM) && button_time == 0)
     {
         button_time = 20;
 
@@ -962,7 +962,7 @@ int StarPuzzleMain(int pzl_no)
             star_pzl_wrk.time--;
         }
 
-        if (PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             if (star_pzl_wrk.count < star_pzl_dat[star_pzl_wrk.pzl_no].move_num)
             {
@@ -997,7 +997,7 @@ int StarPuzzleMain(int pzl_no)
                 star_pzl_wrk.mode = STAR_PZL_MODE_RESL;
             }
         }
-        else if (PAD_BTN_PRESSED(PAD_ACTION_PUSH) && star_pzl_wrk.count != 0)
+        else if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM) && star_pzl_wrk.count != 0)
         {
             if (star_pzl_wrk.line[star_pzl_wrk.slct_no][star_pzl_wrk.empty] != 0xff)
             {
@@ -1106,12 +1106,12 @@ int StarPuzzleMain(int pzl_no)
 
         if (star_pzl_wrk.menu_mode == STAR_PZL_MENU_SLCT)
         {
-            if (PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+            if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
             {
                 star_pzl_wrk.time = 15;
                 star_pzl_wrk.mode = STAR_PZL_MODE_RESL;
             }
-            else if (PAD_BTN_PRESSED(PAD_ACTION_PUSH))
+            else if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
             {
                 if (star_pzl_wrk.menu_csr[0] == 0)
                 {
@@ -1154,13 +1154,13 @@ int StarPuzzleMain(int pzl_no)
         }
         else if (star_pzl_wrk.menu_mode == STAR_PZL_MENU_RESET)
         {
-            if (PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+            if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
             {
                 star_pzl_wrk.menu_mode = STAR_PZL_MENU_SLCT;
 
                 SeStartFix(3, 0, 0x1000, 0x1000, 0);
             }
-            else if (PAD_BTN_PRESSED(PAD_ACTION_PUSH))
+            else if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
             {
                 if (star_pzl_wrk.menu_csr[1] != 0)
                 {
@@ -1192,11 +1192,11 @@ int StarPuzzleMain(int pzl_no)
         }
         else if (star_pzl_wrk.menu_mode == STAR_PZL_MENU_EXIT)
         {
-            if (PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+            if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
             {
                 star_pzl_wrk.menu_mode = STAR_PZL_MENU_SLCT;
             }
-            else if (PAD_BTN_PRESSED(PAD_ACTION_PUSH))
+            else if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
             {
                 if (star_pzl_wrk.menu_csr[1] != 0)
                 {
@@ -1259,7 +1259,7 @@ int StarPuzzleMain(int pzl_no)
         }
     break;
     case STAR_PZL_MODE_GOOD:
-        if (PAD_BTN_PRESSED(PAD_ACTION_PUSH) || PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM) || PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             star_pzl_wrk.time = 0;
         }
@@ -2413,7 +2413,7 @@ int DialKeyDoorMain()
             break;
         }
 
-        if (PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             if (dkey_wrk.count != 0)
             {
@@ -2429,7 +2429,7 @@ int DialKeyDoorMain()
                 dkey_wrk.time = 40;
             }
         }
-        else if (PAD_BTN_PRESSED(PAD_ACTION_PUSH))
+        else if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
             if (dkey_wrk.count < dkey_dat[dkey_wrk.door_no].dial_num)
             {
@@ -2939,7 +2939,7 @@ int DialKeyMSGDoorMain(int msg_no)
         }
     break;
     case DIAL_KEY_MODE_SLCT:
-        if (PAD_BTN_PRESSED(PAD_ACTION_LEAVE) || PAD_BTN_PRESSED(PAD_ACTION_PUSH))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL) || PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
             dkey_wrk.mode = DIAL_KEY_MODE_OUT;
             dkey_wrk.time = 40;
@@ -3430,7 +3430,7 @@ void DollPzlMain()
         }
     break;
     case DOLL_PZL_MODE_IN4:
-        if (PAD_BTN_PRESSED(PAD_ACTION_PUSH) || PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM) || PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             spev_wrk.time = 0;
         }
@@ -3447,7 +3447,7 @@ void DollPzlMain()
             spev_wrk.time--;
         }
 
-        if (PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             spev_wrk.mode = DOLL_PZL_MODE_OUT;
             spev_wrk.time = 40;
@@ -3455,7 +3455,7 @@ void DollPzlMain()
             SetBlackOut();
             SeStartFix(3, 0, 0x1000, 0x1000, 0);
         }
-        else if (PAD_BTN_PRESSED(PAD_ACTION_PUSH))
+        else if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
             spev_wrk.mode = DOLL_PZL_MODE_Y_N;
 
@@ -3519,13 +3519,13 @@ void DollPzlMain()
         }
     break;
     case DOLL_PZL_MODE_Y_N:
-        if (PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             spev_wrk.mode = DOLL_PZL_MODE_SLCT;
 
             SeStartFix(3, 0, 0x1000, 0x1000, 0);
         }
-        else if (PAD_BTN_PRESSED(PAD_ACTION_PUSH))
+        else if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
             SeStartFix(35, 0, 0x1000, 0x1000, 0);
             if (spev_wrk.csr[0] == evdl_dat[no].answer)
@@ -3554,13 +3554,13 @@ void DollPzlMain()
         }
     break;
     case DOLL_PZL_MODE_Y_N2:
-        if (PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             spev_wrk.mode = DOLL_PZL_MODE_SLCT;
 
             SeStartFix(3, 0, 0x1000, 0x1000, 0);
         }
-        else if (PAD_BTN_PRESSED(PAD_ACTION_PUSH))
+        else if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
             {
                 spev_wrk.mode = DOLL_PZL_MODE_SLCT;
 
@@ -3620,7 +3620,7 @@ void DollPzlMain()
     case DOLL_PZL_MODE_BAD2:
         if (IsEndAdpcmPuzzle() != 0)
         {
-            if (PAD_BTN_PRESSED(PAD_ACTION_PUSH) || PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+            if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM) || PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
             {
                 spev_wrk.mode = DOLL_PZL_MODE_BAD5;
 
@@ -3640,7 +3640,7 @@ void DollPzlMain()
     case DOLL_PZL_MODE_BAD3:
         if (IsEndAdpcmPuzzle() != 0)
         {
-            if (PAD_BTN_PRESSED(PAD_ACTION_PUSH) || PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+            if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM) || PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
             {
                 spev_wrk.mode = DOLL_PZL_MODE_BAD5;
 
@@ -3667,7 +3667,7 @@ void DollPzlMain()
     case DOLL_PZL_MODE_BAD4:
         if (IsEndAdpcmPuzzle() != 0)
         {
-            if (PAD_BTN_PRESSED(PAD_ACTION_PUSH) || PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+            if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM) || PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
             {
                 spev_wrk.mode = DOLL_PZL_MODE_BAD5;
 
@@ -3706,7 +3706,7 @@ void DollPzlMain()
 
         if (IsEndAdpcmPuzzle() != 0)
         {
-            if (PAD_BTN_PRESSED(PAD_ACTION_PUSH))
+            if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
             {
                 spev_wrk.time = 0;
 
@@ -3747,7 +3747,7 @@ void DollPzlMain()
             spev_wrk.time -= 5;
         }
 
-        if (IsEndAdpcmPuzzle() != 0 && PAD_BTN_PRESSED(PAD_ACTION_PUSH))
+        if (IsEndAdpcmPuzzle() != 0 && PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
             spev_wrk.mode = DOLL_PZL_MODE_GOOD3;
         }
@@ -3770,13 +3770,13 @@ void DollPzlMain()
             blink_dir = -1;
         }
 
-        if (PAD_BTN_PRESSED(PAD_ACTION_PUSH))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
             spev_wrk.time = 0;
 
             SeStartFix(1, 0, 0x1000, 0x1000, 0);
         }
-        else if (PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+        else if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             spev_wrk.time = 0;
 
@@ -4412,7 +4412,7 @@ void ButsuzoPzlMain()
             spev_wrk.time--;
         }
 
-        if (PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             if (order_no != 0)
             {
@@ -4433,7 +4433,7 @@ void ButsuzoPzlMain()
 
             SeStartFix(3, 0, 0x1000, 0x1000, 0);
         }
-        else if (PAD_BTN_PRESSED(PAD_ACTION_PUSH))
+        else if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
             if (evbtz_dat[spev_wrk.csr[0]].set_place == -1)
             {
@@ -4509,14 +4509,14 @@ void ButsuzoPzlMain()
             spev_wrk.time--;
         }
 
-        if (PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             evbtz_dat[spev_wrk.csr[0]].use_flg = 0;
             evbtz_dat[spev_wrk.csr[0]].set_place = -1;
 
             spev_wrk.mode = BTZ_PZL_MODE_BDSLCT;
         }
-        else if (PAD_BTN_PRESSED(PAD_ACTION_PUSH))
+        else if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
             for (i = 0; i < 5; i++)
             {
@@ -4632,12 +4632,12 @@ void ButsuzoPzlMain()
     break;
     case BTZ_PZL_MODE_SLCTYES:
     case BTZ_PZL_MODE_SLCTNO:
-        if (PAD_BTN_PRESSED(PAD_ACTION_PUSH))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
             spev_wrk.time = 0;
         }
 
-        if (PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             spev_wrk.mode = BTZ_PZL_MODE_SLCT;
             spev_wrk.time = 20;
@@ -4697,7 +4697,7 @@ void ButsuzoPzlMain()
         }
     break;
     case BTZ_PZL_MODE_CONFLICT:
-        if (PAD_BTN_PRESSED(PAD_ACTION_PUSH))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
             spev_wrk.time = 0;
         }
@@ -5374,7 +5374,7 @@ void ButsuzoMSGMain()
 
     break;
     case BTZ_PZL_MODE_PUT:
-        if (PAD_BTN_PRESSED(PAD_ACTION_PUSH) || PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM) || PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             spev_wrk.time = 0;
         }
@@ -5630,7 +5630,7 @@ void LightsOutMain()
 
         CsrInclease(&spev_wrk.csr[1], 0x54, 4);
 
-        if (PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             spev_wrk.mode = CDL_PZL_MODE_OUT;
             spev_wrk.time = 40;
@@ -5649,7 +5649,7 @@ void LightsOutMain()
 
             SeStartFix(3, 0, 0x1000, 0x1000, 0);
         }
-        else if (PAD_BTN_PRESSED(PAD_ACTION_PUSH))
+        else if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
             if (evcdl_dat.cdl_flg[0][spev_wrk.csr[0]] == 0)
             {
@@ -6338,11 +6338,11 @@ void FaceDoorMain(int face_no)
             break;
         }
 
-        if (PAD_BTN_PRESSED(PAD_ACTION_PUSH))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
             spev_wrk.time = 0;
         }
-        else if (PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+        else if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             spev_wrk.mode = OMN_PZL_MODE_OUT;
             spev_wrk.time = 40;
@@ -6459,11 +6459,11 @@ void FaceDoorMain(int face_no)
     break;
     case OMN_PZL_MODE_NISUSE:
     case OMN_PZL_MODE_NISUNUSE:
-        if (PAD_BTN_PRESSED(PAD_ACTION_PUSH))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
             spev_wrk.time = 0;
         }
-        else if (PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+        else if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             SeStartFix(3, 0, 0x1000, 0x1000, 0);
 
@@ -6522,7 +6522,7 @@ void FaceDoorMain(int face_no)
         }
     break;
     case OMN_PZL_MODE_NISDISUSE:
-        if (PAD_BTN_PRESSED(PAD_ACTION_PUSH) || PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM) || PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             spev_wrk.time = 0;
         }
@@ -6561,7 +6561,7 @@ void FaceDoorMain(int face_no)
             spev_wrk.csr[1]++;
         }
 
-        if (PAD_BTN_PRESSED(PAD_ACTION_PUSH) || PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM) || PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             spev_wrk.time = 0;
             spev_wrk.csr[0] = 0;
@@ -6583,7 +6583,7 @@ void FaceDoorMain(int face_no)
         }
     break;
     case OMN_PZL_MODE_AFTFADE:
-        if (PAD_BTN_PRESSED(PAD_ACTION_PUSH) || PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM) || PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             spev_wrk.time = 0;
 
@@ -6638,7 +6638,7 @@ void FaceDoorMain(int face_no)
     break;
     case OMN_PZL_MODE_HAVEUSE:
     case OMN_PZL_MODE_HAVEUNUSE:
-        if (PAD_BTN_PRESSED(PAD_ACTION_PUSH))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
             spev_wrk.time = 0;
         }
@@ -6651,7 +6651,7 @@ void FaceDoorMain(int face_no)
 
             SeStartFix(0, 0, 0x1000, 0x1000, 0);
         }
-        else if (PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+        else if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             spev_wrk.mode = OMN_PZL_MODE_OUT;
             spev_wrk.time = 40;
@@ -8546,11 +8546,11 @@ void SimenPillarMain(int event_no)
     break;
     case OMN_PZL_MODE_EXIST:
     case OMN_PZL_MODE_EXISTGET:
-        if (PAD_BTN_PRESSED(PAD_ACTION_PUSH))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
             spev_wrk.time = 0;
         }
-        else if (PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+        else if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             spev_wrk.mode = OMN_PZL_MODE_MSGEND;
             spev_wrk.time = 10;
@@ -8604,7 +8604,7 @@ void SimenPillarMain(int event_no)
         }
     break;
     case OMN_PZL_MODE_UNHAVE:
-        if (PAD_BTN_PRESSED(PAD_ACTION_PUSH) || PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM) || PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             spev_wrk.time = 0;
         }
@@ -8617,11 +8617,11 @@ void SimenPillarMain(int event_no)
     break;
     case OMN_PZL_MODE_HAVEUSE:
     case OMN_PZL_MODE_HAVEUNUSE:
-        if (PAD_BTN_PRESSED(PAD_ACTION_PUSH))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
             spev_wrk.time = 0;
         }
-        else if (PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+        else if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             spev_wrk.mode = OMN_PZL_MODE_MSGEND;
             spev_wrk.time = 10;
@@ -10147,14 +10147,14 @@ void ZushiBonjiMain(int bonji_no)
             break;
         }
 
-        if (PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             spev_wrk.mode = ZSI_PZL_MODE_OUT;
             spev_wrk.time = 70;
 
             SetBlackOut();
         }
-        else if (PAD_BTN_PRESSED(PAD_ACTION_PUSH))
+        else if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
             spev_wrk.mode = ZSI_PZL_MODE_PUSH;
             spev_wrk.time = 40;
@@ -10550,7 +10550,7 @@ void ZushiBonjiMSGMain()
         }
     break;
     case ZSI_PZL_MODE_MSG1:
-        if (PAD_BTN_PRESSED(PAD_ACTION_PUSH) || PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM) || PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             spev_wrk.time = 0;
         }
@@ -10562,7 +10562,7 @@ void ZushiBonjiMSGMain()
         }
     break;
     case ZSI_PZL_MODE_MSG2:
-        if (PAD_BTN_PRESSED(PAD_ACTION_PUSH) || PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM) || PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             spev_wrk.time = 0;
         }
@@ -10745,7 +10745,7 @@ void ZushiBonjiAfterMain(int bonji_no)
         }
     break;
     case ZSI_PZL_MODE_MSG1:
-        if (PAD_BTN_PRESSED(PAD_ACTION_PUSH) || PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM) || PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             spev_wrk.time = 0;
         }
@@ -10969,7 +10969,7 @@ void IdoIntoMain()
     switch(spev_wrk.mode)
     {
     case IDO_PZL_MODE_MSGYES:
-        if (PAD_BTN_PRESSED(PAD_ACTION_PUSH))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
             SeStartFix(1, 0, 0x1000, 0x1000, 0);
 
@@ -10982,9 +10982,9 @@ void IdoIntoMain()
             spev_wrk.count = 0;
         }
 #if defined(BUILD_JP_VERSION)
-        if (PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
 #elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
-        else if (PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+        else if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
 #endif
         {
             spev_wrk.mode = IDO_PZL_MODE_OUT;
@@ -11010,7 +11010,7 @@ void IdoIntoMain()
         }
     break;
     case IDO_PZL_MODE_MSGNO:
-        if (PAD_BTN_PRESSED(PAD_ACTION_PUSH) || PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM) || PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             spev_wrk.mode = IDO_PZL_MODE_OUT;
             spev_wrk.time = 20;
@@ -11172,7 +11172,7 @@ void IdoOutMain()
     switch(spev_wrk.mode)
     {
     case IDO_PZL_MODE_MSGYES:
-        if (PAD_BTN_PRESSED(PAD_ACTION_PUSH))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
             SeStartFix(1, 0, 0x1000, 0x1000, 0);
 
@@ -11185,9 +11185,9 @@ void IdoOutMain()
             spev_wrk.count = 0;
         }
 #if defined(BUILD_JP_VERSION)
-        if (PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
 #elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
-        else if (PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+        else if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
 #endif
         {
             spev_wrk.mode = IDO_PZL_MODE_OUT;
@@ -11213,7 +11213,7 @@ void IdoOutMain()
         }
     break;
     case IDO_PZL_MODE_MSGNO:
-        if (PAD_BTN_PRESSED(PAD_ACTION_PUSH) || PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM) || PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             spev_wrk.mode = IDO_PZL_MODE_OUT;
             spev_wrk.time = 20;
@@ -11693,7 +11693,7 @@ void ItemEventMain(int event_no)
         }
     break;
     case ITM_PZL_MODE_YES:
-        if (PAD_BTN_PRESSED(PAD_ACTION_PUSH))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
             spev_wrk.mode = ITM_PZL_MODE_OUT;
 
@@ -11722,7 +11722,7 @@ void ItemEventMain(int event_no)
             break;
             }
         }
-        else if (PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+        else if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             spev_wrk.mode = ITM_PZL_MODE_NOOUT;
 
@@ -11739,13 +11739,13 @@ void ItemEventMain(int event_no)
         }
     break;
     case ITM_PZL_MODE_NO:
-        if (PAD_BTN_PRESSED(PAD_ACTION_PUSH))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
             spev_wrk.mode = ITM_PZL_MODE_NOOUT;
 
             SeStartFix(3, 0, 0x1000, 0x1000, 0);
         }
-        else if (PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+        else if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             spev_wrk.mode = ITM_PZL_MODE_NOOUT;
 
@@ -12022,7 +12022,7 @@ void NawakakeFalseMain(int event_no)
         }
     break;
     case ITM_PZL_MODE_YES:
-        if (PAD_BTN_PRESSED(PAD_ACTION_PUSH))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
             spev_wrk.mode = ITM_PZL_MODE_MSG2;
 
@@ -12042,7 +12042,7 @@ void NawakakeFalseMain(int event_no)
             break;
             }
         }
-        else if (PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+        else if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             spev_wrk.mode = ITM_PZL_MODE_NOOUT;
 
@@ -12059,13 +12059,13 @@ void NawakakeFalseMain(int event_no)
         }
     break;
     case ITM_PZL_MODE_NO:
-        if (PAD_BTN_PRESSED(PAD_ACTION_PUSH))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
             spev_wrk.mode = ITM_PZL_MODE_NOOUT;
 
             SeStartFix(3, 0, 0x1000, 0x1000, 0);
         }
-        else if (PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+        else if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             spev_wrk.mode = ITM_PZL_MODE_NOOUT;
 

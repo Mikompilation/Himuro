@@ -2151,18 +2151,18 @@ void ResultDisp()
 
     clear_time = stage_dat[btl_wrk.stage_no].time - btl_wrk.time;
 
-    PutNumberYW(3, clear_time / 3600, 429, 163, 1.0f, 1.0f, 0x808080, 0x80, 0x23000, 1, 1);
+    PutNumberYW(NUM_SMALL, clear_time / 3600, 429, 163, 1.0f, 1.0f, 0x808080, 0x80, 0x23000, 1, 1);
     PutStringYW(IGMSG_BTL_MSON, 11, 442, 163, 0x808080, 0x80, 0x23000, 0);
-    PutNumberYW(3, (clear_time / 60) % 60, 456, 163, 1.0f, 1.0f, 0x808080, 0x80, 0x23000, 2, 1);
+    PutNumberYW(NUM_SMALL, (clear_time / 60) % 60, 456, 163, 1.0f, 1.0f, 0x808080, 0x80, 0x23000, 2, 1);
     PutStringYW(IGMSG_BTL_MSON, 11, 487, 163, 0x808080, 0x80, 0x23000, 0);
-    PutNumberYW(3, (clear_time * 100 / 60) % 100, 499, 163, 1.0f, 1.0f, 0x808080, 0x80, 0x23000, 2, 1);
-    PutNumberYW(3, msn_high_score, 428, 203, 1.0f, 1.0f, 0x808080, 0x80, 0x23000, 4, 0);
+    PutNumberYW(NUM_SMALL, (clear_time * 100 / 60) % 100, 499, 163, 1.0f, 1.0f, 0x808080, 0x80, 0x23000, 2, 1);
+    PutNumberYW(NUM_SMALL, msn_high_score, 428, 203, 1.0f, 1.0f, 0x808080, 0x80, 0x23000, 4, 0);
     PutStringYW(IGMSG_BTL_MSON, 12, 493, 203, 0x808080, 0x80, 0x23000, 0);
-    PutNumberYW(3, msn_total_score, 364, 243, 1.0f, 1.0f, 0x808080, 0x80, 0x23000, 8, 0);
+    PutNumberYW(NUM_SMALL, msn_total_score, 364, 243, 1.0f, 1.0f, 0x808080, 0x80, 0x23000, 8, 0);
     PutStringYW(IGMSG_BTL_MSON, 12, 493, 243, 0x808080, 0x80, 0x23000, 0);
-    PutNumberYW(3, msn_bonus, 364, 303, 1.0f, 1.0f, 0x808080, 0x80, 0x23000, 8, 0);
+    PutNumberYW(NUM_SMALL, msn_bonus, 364, 303, 1.0f, 1.0f, 0x808080, 0x80, 0x23000, 8, 0);
     PutStringYW(IGMSG_BTL_MSON, 12, 493, 303, 0x808080, 0x80, 0x23000, 0);
-    PutNumberYW(3, msn_bonus + msn_total_score, 364, 333, 1.0f, 1.0f, 0x808080, 0x80, 0x23000, 8, 0);
+    PutNumberYW(NUM_SMALL, msn_bonus + msn_total_score, 364, 333, 1.0f, 1.0f, 0x808080, 0x80, 0x23000, 8, 0);
     PutStringYW(IGMSG_BTL_MSON, 12, 493, 333, 0x808080, 0x80, 0x23000, 0);
 }
 
@@ -2802,17 +2802,17 @@ int CallStoryClear()
             PutStringYW(IGMSG_BTL_MSON, 13, 118, 123, 0x808080, 0x80, 0x18000, 0);
             PutStringYW(IGMSG_BTL_MSON, 14, 218, 123, 0x808080, 0x80, 0x18000, 0);
 
-            PutNumberYW(3, clear_time / (3600 * 60), 413, 123, 1.0f, 1.0f, 0x808080, 0x80, 0x18000, 2, 1);
+            PutNumberYW(NUM_SMALL, clear_time / (3600 * 60), 413, 123, 1.0f, 1.0f, 0x808080, 0x80, 0x18000, 2, 1);
             PutStringYW(IGMSG_BTL_MSON, 11, 442, 123, 0x808080, 0x80, 0x18000, 0);
 
-            PutNumberYW(3, (clear_time / 3600) % 60, 456, 123, 1.0f, 1.0f, 0x808080, 0x80, 0x18000, 2, 1);
+            PutNumberYW(NUM_SMALL, (clear_time / 3600) % 60, 456, 123, 1.0f, 1.0f, 0x808080, 0x80, 0x18000, 2, 1);
             PutStringYW(IGMSG_BTL_MSON, 11, 487, 123, 0x808080, 0x80, 0x18000, 0);
 
-            PutNumberYW(3, (clear_time / 60) % 60, 499, 123, 1.0f, 1.0f, 0x808080, 0x80, 0x18000, 2, 1);
+            PutNumberYW(NUM_SMALL, (clear_time / 60) % 60, 499, 123, 1.0f, 1.0f, 0x808080, 0x80, 0x18000, 2, 1);
             PutStringYW(IGMSG_BTL_MSON, 17, 118, 163, 0x808080, 0x80, 0x18000, 0);
             PutStringYW(IGMSG_BTL_MSON, 18, 218, 163, 0x808080, 0x80, 0x18000, 0);
 
-            PutNumberYW(3, t_point, 364, 163, 1.0f, 1.0f, 0x808080, 0x80, 0x18000, 8, 0);
+            PutNumberYW(NUM_SMALL, t_point, 364, 163, 1.0f, 1.0f, 0x808080, 0x80, 0x18000, 8, 0);
             PutStringYW(IGMSG_BTL_MSON, 12, 493, 163, 0x808080, 0x80, 0x18000, 0);
         }
 #if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)

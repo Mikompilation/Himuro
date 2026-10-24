@@ -641,8 +641,8 @@ static void DspRankersSTR(u_char pos, u_char rank, u_char alpha)
         PutStringYW(39, 0, 254, 34, 0x808080, alpha, 0x14000, 0);
 #endif
 
-        PutNumberYW(0, save_rank.best_score, 429, 35, 1.0f, 1.0f, 0x808080, alpha, 0x14000, 7, 0);
-        PutNumberYW(0, save_rank.pic_inf[rank-1].score, 429, 94, 1.0f, 1.0f, 0x808080, alpha, 0x14000, 7, 0);
+        PutNumberYW(NUM_NORMAL, save_rank.best_score, 429, 35, 1.0f, 1.0f, 0x808080, alpha, 0x14000, 7, 0);
+        PutNumberYW(NUM_NORMAL, save_rank.pic_inf[rank-1].score, 429, 94, 1.0f, 1.0f, 0x808080, alpha, 0x14000, 7, 0);
 
         PutDate(&save_rank.pic_inf[rank-1], 380, 123, alpha, 0x14000);
 
@@ -690,7 +690,7 @@ static void DspRankersSTR(u_char pos, u_char rank, u_char alpha)
     }
     else if (pos > 1)
     {
-        PutNumberYW(0, save_rank.pic_inf[rank-1].score, 0x1ad, (pos - 2) * 53 + 284, 1.0f, 1.0f, 0x808080, alpha, 0x14000, 7, 0);
+        PutNumberYW(NUM_NORMAL, save_rank.pic_inf[rank-1].score, 0x1ad, (pos - 2) * 53 + 284, 1.0f, 1.0f, 0x808080, alpha, 0x14000, 7, 0);
     }
 }
 
@@ -850,13 +850,13 @@ static void DspRankBigSTR(u_char rank, u_char alpha)
     PutStringYW(39, 0, 254, 34, 0x808080, alpha, 0x14000, 0);
 #endif
 
-    PutNumberYW(0, save_rank.best_score, 429, 35, 1.0f, 1.0f, 0x808080, alpha, 0x14000, 7, 0);
+    PutNumberYW(NUM_NORMAL, save_rank.best_score, 429, 35, 1.0f, 1.0f, 0x808080, alpha, 0x14000, 7, 0);
 
     PutDate(&save_rank.pic_inf[rank-1], 386, 341, alpha, 0x14000);
 
     PutStringYW(30, save_rank.pic_inf[rank-1].room, 399, 370, 0x808080, alpha, 0x14000, 0);
 
-    PutNumberYW(0, save_rank.pic_inf[rank-1].score, 435, 398, 1.0f, 1.0f, 0x808080, alpha, 0x14000, 7, 0);
+    PutNumberYW(NUM_NORMAL, save_rank.pic_inf[rank-1].score, 435, 398, 1.0f, 1.0f, 0x808080, alpha, 0x14000, 7, 0);
 
     obj_num = 0;
 

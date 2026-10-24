@@ -860,7 +860,7 @@ static void ComingOut(short int pos_x, short int pos_y, float alp, u_char shadow
 
 #ifdef BUILD_EU_VERSION
 
-    PutNumberYW(3, dy, pos_x + 222, pos_y + 130, 1.0f, 1.0f, rgb, alp, pri, 2, 0);
+    PutNumberYW(NUM_SMALL, dy, pos_x + 222, pos_y + 130, 1.0f, 1.0f, rgb, alp, pri, 2, 0);
 
     if (sys_wrk.language == LANG_GERMAN)
     {
@@ -897,11 +897,11 @@ static void ComingOut(short int pos_x, short int pos_y, float alp, u_char shadow
     PutStringYW(40, m + 23, pos_x + 267, pos_y + 130, rgb, alp, pri, 0);
 #else
     PutStringYW(40, m + 23, pos_x + 222, pos_y + 130, rgb, alp, pri, 0);
-    PutNumberYW(3, dy, pos_x + 277, pos_y + 130, 1.0f, 1.0f, rgb, alp, pri, 2, 0);
+    PutNumberYW(NUM_SMALL, dy, pos_x + 277, pos_y + 130, 1.0f, 1.0f, rgb, alp, pri, 2, 0);
 #endif
 
     PutStringYW(40, 23, pos_x + 324, pos_y + 130, rgb, alp, pri, 0);
-    PutNumberYW(3, y, pos_x + 343, pos_y + 130, 1.0f, 1.0f, rgb, alp, pri, 2, 1);
+    PutNumberYW(NUM_SMALL, y, pos_x + 343, pos_y + 130, 1.0f, 1.0f, rgb, alp, pri, 2, 1);
 
     if (h < 12)
     {
@@ -922,25 +922,25 @@ static void ComingOut(short int pos_x, short int pos_y, float alp, u_char shadow
     mn = TimeIsMoney(tmp.minute);
     sc = TimeIsMoney(tmp.second);
 
-    PutNumberYW(3, hr2, pos_x + 299, pos_y + 217, 1.0f, 1.0f, rgb, alp, pri, 2, 0);
-    PutNumberYW(3, mn, pos_x + 352, pos_y + 217, 1.0f, 1.0f, rgb, alp, pri, 2, 1);
-    PutNumberYW(3, sc, pos_x + 405, pos_y + 217, 1.0f, 1.0f, rgb, alp, pri, 2, 1);
+    PutNumberYW(NUM_SMALL, hr2, pos_x + 299, pos_y + 217, 1.0f, 1.0f, rgb, alp, pri, 2, 0);
+    PutNumberYW(NUM_SMALL, mn, pos_x + 352, pos_y + 217, 1.0f, 1.0f, rgb, alp, pri, 2, 1);
+    PutNumberYW(NUM_SMALL, sc, pos_x + 405, pos_y + 217, 1.0f, 1.0f, rgb, alp, pri, 2, 1);
 
     PutStringYW(40, 9, pos_x + 220, pos_y + 255, rgb, alp, pri, 0);
-    PutNumberYW(0, ingame_wrk.pht_cnt, pos_x + 389, pos_y + 255, 1.0f, 1.0f, rgb, alp, pri, 7, 0);
+    PutNumberYW(NUM_NORMAL, ingame_wrk.pht_cnt, pos_x + 389, pos_y + 255, 1.0f, 1.0f, rgb, alp, pri, 7, 0);
 
     PutStringYW(40, 11, pos_x + 220, pos_y + 295, rgb, alp, pri, 0);
-    PutNumberYW(0, ingame_wrk.ghost_cnt, pos_x + 425, pos_y + 295, 1.0f, 1.0f, rgb, alp, pri, 5, 0);
+    PutNumberYW(NUM_NORMAL, ingame_wrk.ghost_cnt, pos_x + 425, pos_y + 295, 1.0f, 1.0f, rgb, alp, pri, 5, 0);
 
     if (ingame_wrk.clear_count != 0)
     {
         PutStringYW(40, 15, pos_x + 220, pos_y + 335, rgb, alp, pri, 0);
-        PutNumberYW(0, ingame_wrk.clear_count, pos_x + 460, pos_y + 335, 1.0f, 1.0f, rgb, alp, pri, 3, 0);
+        PutNumberYW(NUM_NORMAL, ingame_wrk.clear_count, pos_x + 460, pos_y + 335, 1.0f, 1.0f, rgb, alp, pri, 3, 0);
 
         if (ingame_wrk.clear_count != 0)
         {
             PutStringYW(40, 17, pos_x + 220, pos_y + 375, rgb, alp, pri, 0);
-            PutNumberYW(0, save_rank.best_score, pos_x + 386, pos_y + 375, 1.0f, 1.0f, rgb, alp, pri, 7, 0);
+            PutNumberYW(NUM_NORMAL, save_rank.best_score, pos_x + 386, pos_y + 375, 1.0f, 1.0f, rgb, alp, pri, 7, 0);
         }
     }
 }

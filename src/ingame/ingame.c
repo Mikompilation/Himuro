@@ -31,11 +31,11 @@
 #include "outgame/btl_mode/btl_mode.h"
 
 #if defined(BUILD_JP_VERSION)
-#define PAD_ACTION_BACK PAD_SQUARE
+#define PAD_ACTION_OPEN_MENU PAD_SQUARE
 #elif defined(BUILD_US_VERSION)
-#define PAD_ACTION_BACK PAD_TRIANGLE
+#define PAD_ACTION_OPEN_MENU PAD_TRIANGLE
 #elif defined(BUILD_EU_VERSION)
-#define PAD_ACTION_BACK PAD_TRIANGLE
+#define PAD_ACTION_OPEN_MENU PAD_TRIANGLE
 #endif
 
 int start_msn = 0;
@@ -499,9 +499,9 @@ void InGameMain()
 
             if (
                 dbg_wrk.mode_on == 0 && dbg_wrk.cam_mode != DBG_CAM_MODE_FREE &&
-                PAD_BTN_PRESSED(PAD_ACTION_BACK) &&
+                PAD_BTN_PRESSED(PAD_ACTION_OPEN_MENU) &&
 #if defined(BUILD_EU_VERSION)
-                pad[0].push[PAD_ACTION_BACK] > 6 &&
+                pad[0].push[PAD_ACTION_OPEN_MENU] > 6 &&
 #endif
                 plyr_wrk.mode == PMODE_NORMAL &&
                 GetLoadStartLock() == 0 &&

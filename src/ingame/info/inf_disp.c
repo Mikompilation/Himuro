@@ -1631,13 +1631,13 @@ static void DameEffNumber(u_char type, u_short num, short int pos_x, short int p
         {
             adj = (keta * 18) * 0.5f;
 
-            PutNumberYW(13, num, pos_x - (adj - 135), pos_y + 92, num_siz_x / 10.0f, num_siz_y / 10.0f, 0x808080, num_alp, -1, keta, 0);
+            PutNumberYW(NUM_FNDR_DM2, num, pos_x - (adj - 135), pos_y + 92, num_siz_x / 10.0f, num_siz_y / 10.0f, 0x808080, num_alp, -1, keta, 0);
         }
         else
         {
             adj = (keta * 15) * 0.5f;
 
-            PutNumberYW(7, num, pos_x - (adj - 59), pos_y + 327, num_siz_x / 10.0f, num_siz_y / 10.0f, 0x808080, num_alp, -1, keta, 0);
+            PutNumberYW(NUM_FNDR_DM1, num, pos_x - (adj - 59), pos_y + 327, num_siz_x / 10.0f, num_siz_y / 10.0f, 0x808080, num_alp, -1, keta, 0);
             PutSpriteYW(FND_FNT_SPIRIT, FND_FNT_SPIRIT, pos_x, pos_y, 0.0f, 0x808080, num_alp, num_siz_x / 10.0f, num_siz_y / 10.0f, 0, 0xff, 1, 0, 0);
         }
     }
@@ -2911,7 +2911,7 @@ static void BukiyouMan(short int px, short int py)
         num = poss_item[5];
     }
 
-    PutNumberYW(12, num, px + 570, py + 369, 1.0f, 1.0f, 0x808080, alp_max, -1, 1, 0);
+    PutNumberYW(NUM_FNDR_WP, num, px + 570, py + 369, 1.0f, 1.0f, 0x808080, alp_max, -1, 1, 0);
 
     if (new_inf.buki_use_flg != 0)
     {

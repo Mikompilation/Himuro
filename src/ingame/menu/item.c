@@ -81,16 +81,13 @@ static ITM_EFF_WRK iew;
 
 #if defined(BUILD_JP_VERSION)
 #define PAD_ACTION_CONFIRM PAD_CIRCLE
-#define PAD_ACTION_BACK PAD_SQUARE
-#define PAD_ACTION_LEAVE PAD_CROSS
+#define PAD_ACTION_CANCEL PAD_CROSS
 #elif defined(BUILD_US_VERSION)
 #define PAD_ACTION_CONFIRM PAD_CROSS
-#define PAD_ACTION_BACK PAD_TRIANGLE
-#define PAD_ACTION_LEAVE PAD_TRIANGLE
+#define PAD_ACTION_CANCEL PAD_TRIANGLE
 #elif defined(BUILD_EU_VERSION)
 #define PAD_ACTION_CONFIRM PAD_CROSS
-#define PAD_ACTION_BACK PAD_TRIANGLE
-#define PAD_ACTION_LEAVE PAD_TRIANGLE
+#define PAD_ACTION_CANCEL PAD_TRIANGLE
 #endif
 
 void NewgameItemInit()
@@ -220,7 +217,7 @@ void IngameMenuItem()
     {
         if (yw2d.pad_lock == 0)
         {
-            if (PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+            if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
             {
                 SeStartFix(3, 0, 0x1000, 0x1000, 1);
 
@@ -230,7 +227,7 @@ void IngameMenuItem()
     }
     else if (yw2d.pad_lock == 0)
     {
-        if (PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             if (IsLoadEndAll() != 0)
             {
@@ -437,7 +434,7 @@ void IngameMenuItemUseSlct()
         }
         else if (yw2d.pad_lock == 0)
         {
-            if (PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+            if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
             {
                 ig_menu_wrk.mode = IGMENU_MODE_ITEM;
 
@@ -515,7 +512,7 @@ void IngameMenuItemUseSlct()
         return;
     }
 
-    if (PAD_BTN_PRESSED(PAD_ACTION_LEAVE))
+    if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
     {
         ig_menu_wrk.mode = IGMENU_MODE_ITEM;
 
@@ -800,14 +797,14 @@ void PlayerStatusYW(u_char alpha)
 
     PutStringYW(IGMSG_CAME_MSG, 0, 453, 59, 0x808080, alpha, 0x5000, 0);
 
-    PutNumberYW(3, poss_item[5], 463, 0x37, 1.0f, 1.0f, 0x808080, alpha, 0x5000, 2, 1);
+    PutNumberYW(NUM_SMALL, poss_item[5], 463, 0x37, 1.0f, 1.0f, 0x808080, alpha, 0x5000, 2, 1);
 
 #if defined(BUILD_JP_VERSION)
-    PutNumberYW(3, cam_custom_wrk. point, 491, 26, 1.0f, 1.0f, 0x808080, alpha, 0x5000, 7, 0);
+    PutNumberYW(NUM_SMALL, cam_custom_wrk. point, 491, 26, 1.0f, 1.0f, 0x808080, alpha, 0x5000, 7, 0);
 #elif defined(BUILD_US_VERSION)
-    PutNumberYW(3, cam_custom_wrk. point, 491, 28, 1.0f, 1.0f, 0x808080, alpha, 0x5000, 7, 0);
+    PutNumberYW(NUM_SMALL, cam_custom_wrk. point, 491, 28, 1.0f, 1.0f, 0x808080, alpha, 0x5000, 7, 0);
 #elif defined(BUILD_EU_VERSION)
-    PutNumberYW(3, cam_custom_wrk. point, 491, 27, 1.0f, 1.0f, 0x808080, alpha, 0x5000, 7, 0);
+    PutNumberYW(NUM_SMALL, cam_custom_wrk. point, 491, 27, 1.0f, 1.0f, 0x808080, alpha, 0x5000, 7, 0);
 #endif
 
     if (iew.set_sub_bak != cam_custom_wrk.set_sub)
@@ -970,7 +967,7 @@ static void FilmAnime(short int pos_x, short int pos_y, short int alpha)
 
     PutStringYW(IGMSG_CAME_MSG, 0, 347, 59, 0x808080, alpha, 0x5000, 0);
 
-    PutNumberYW(3, poss_item[plyr_wrk.film_no], 358, 55, 1.0f, 1.0f, 0x808080, alpha, 0x5000, 2, 1);
+    PutNumberYW(NUM_SMALL, poss_item[plyr_wrk.film_no], 358, 55, 1.0f, 1.0f, 0x808080, alpha, 0x5000, 2, 1);
 }
 
 static void ItemList(short int pos_x, short int pos_y, short int alpha)
@@ -1029,10 +1026,10 @@ static void ItemList(short int pos_x, short int pos_y, short int alpha)
 
 #if defined(BUILD_JP_VERSION)
         PutStringYW(IGMSG_ITEM_NAME, menu_item_wrk[i + iew.itm_lst_strt].item_no,  pos_x +  55, i * 34 + (pos_y + y_off_1), 0x808080, alp, 0xf000, 0);
-        PutNumberYW( 0, menu_item_wrk[i + iew.itm_lst_strt].item_num, pos_x + 267, i * 34 + (pos_y + y_off_1), 1.0f, 1.0f, 0x808080, alp, 0xf000, 2, 0);
+        PutNumberYW( NUM_NORMAL, menu_item_wrk[i + iew.itm_lst_strt].item_num, pos_x + 267, i * 34 + (pos_y + y_off_1), 1.0f, 1.0f, 0x808080, alp, 0xf000, 2, 0);
 #elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         PutStringYW(IGMSG_ITEM_NAME, menu_item_wrk[i + iew.itm_lst_strt].item_no,  pos_x +  52, i * 34 + (pos_y + y_off_1), 0x808080, alp, 0xf000, 0);
-        PutNumberYW( 0, menu_item_wrk[i + iew.itm_lst_strt].item_num, pos_x + 274, i * 34 + (pos_y + y_off_2), 1.0f, 1.0f, 0x808080, alp, 0xf000, 2, 0);
+        PutNumberYW( NUM_NORMAL, menu_item_wrk[i + iew.itm_lst_strt].item_num, pos_x + 274, i * 34 + (pos_y + y_off_2), 1.0f, 1.0f, 0x808080, alp, 0xf000, 2, 0);
 #endif
     }
 
@@ -2045,28 +2042,28 @@ static void DigiPut01(u_char font, u_char num, u_char no, short int pos_x, short
 
     switch(font)
     {
-    case 0:
-    case 1:
-    case 2:
-    case 3:
+    case NUM_NORMAL:
+    case NUM_TEX1:
+    case NUM_TEX2:
+    case NUM_SMALL:
         CopySprDToSpr(&ds, number_tex[font] + num);
 
         ds.x = no * fw[font] + pos_x;
         ds.y = pos_y;
     break;
-    case 4:
+    case NUM_PHT_BIG:
         CopySprDToSpr(&ds, &spr_dat[PHT_LAG_DIGIT0 + num]);
 
         ds.x = (no - 1) * fw[font] + pos_x;
         ds.y = pos_y - fh[font];
     break;
-    case 5:
+    case NUM_PHT_SCRT:
         CopySprDToSpr(&ds, &spr_dat[PHT_SCRT_NUM0 + num]);
 
         ds.x = (no - 1) * fw[font] + pos_x;
         ds.y = pos_y - fh[font];
     break;
-    case 6:
+    case NUM_SAVE_VERT:
         CopySprDToSpr(&ds, &spr_dat[SV_LNZ_NUM00 + num]);
 
         ds.x = pos_x;
@@ -2080,7 +2077,7 @@ static void DigiPut01(u_char font, u_char num, u_char no, short int pos_x, short
 
         ds.rot = -90.0f;
     break;
-    case 7:
+    case NUM_FNDR_DM1:
         CopySprDToSpr(&ds, &spr_dat[FND_DM_NUM_00 + num]);
 
         ds.x = pos_x + no * fw[font] * sx;
@@ -2092,7 +2089,7 @@ static void DigiPut01(u_char font, u_char num, u_char no, short int pos_x, short
         ds.csx = ds.x + ds.w * sx * 0.5f;
         ds.csy = ds.y + ds.h * sy * 0.5f;
     break;
-    case 8:
+    case NUM_GLIST:
         CopySprDToSpr(&ds, &spr_dat[GLST_NUM1_0 + num]);
 
         ds.x = pos_x + no * fw[font] * sx;
@@ -2104,7 +2101,7 @@ static void DigiPut01(u_char font, u_char num, u_char no, short int pos_x, short
         ds.csx = ds.x + ds.w * sx * 0.5f;
         ds.csy = ds.y + ds.h * sy * 0.5f;
     break;
-    case 9:
+    case NUM_ALBM_LD1:
         CopySprDToSpr(&ds, &spr_dat[OA_LD_FNT1_0 + num]);
 
         ds.x = pos_x + no * fw[font] * sx;
@@ -2116,7 +2113,7 @@ static void DigiPut01(u_char font, u_char num, u_char no, short int pos_x, short
         ds.csx = ds.x + ds.w * sx * 0.5f;
         ds.csy = ds.y + ds.h * sy * 0.5f;
     break;
-    case 10:
+    case NUM_ALBM_LD2:
         CopySprDToSpr(&ds, &spr_dat[OA_LD_FNT2_0 + num]);
 
         ds.x = pos_x + no * fw[font] * sx;
@@ -2128,7 +2125,7 @@ static void DigiPut01(u_char font, u_char num, u_char no, short int pos_x, short
         ds.csx = ds.x + ds.w * sx * 0.5f;
         ds.csy = ds.y + ds.h * sy * 0.5f;
     break;
-    case 11:
+    case NUM_ALBM_TOP:
         CopySprDToSpr(&ds, &spr_dat[OA_TP_FNT_0 + num]);
 
         ds.x = pos_x + no * fw[font] * sx;
@@ -2140,7 +2137,7 @@ static void DigiPut01(u_char font, u_char num, u_char no, short int pos_x, short
         ds.csx = ds.x + ds.w * sx * 0.5f;
         ds.csy = ds.y + ds.h * sy * 0.5f;
     break;
-    case 12:
+    case NUM_FNDR_WP:
         CopySprDToSpr(&ds, &spr_dat[FND_WP_NUM00 + num]);
 
         ds.x = pos_x + no * fw[font] * sx;
@@ -2152,7 +2149,7 @@ static void DigiPut01(u_char font, u_char num, u_char no, short int pos_x, short
         ds.csx = ds.x + ds.w * sx * 0.5f;
         ds.csy = ds.y + ds.h * sy * 0.5f;
     break;
-    case 13:
+    case NUM_FNDR_DM2:
         CopySprDToSpr(&ds, &spr_dat[FND_DM_NUM00 + num]);
 
         ds.x = pos_x + no * fw[font] * sx;
@@ -2170,13 +2167,13 @@ static void DigiPut01(u_char font, u_char num, u_char no, short int pos_x, short
     g = (rgb & 0x00ff00) >>  8;
     b = (rgb & 0x0000ff) >>  0;
 
-    if (font == 0)
+    if (font == NUM_NORMAL)
     {
-        SetInteger3(pri, no * fw[0] + pos_x, pos_y, 0, r, g, b, alpha, num);
+        SetInteger3(pri, no * fw[NUM_NORMAL] + pos_x, pos_y, 0, r, g, b, alpha, num);
     }
-    else if (font == 3)
+    else if (font == NUM_SMALL)
     {
-        SetInteger3(pri, no * fw[3] + pos_x, pos_y, 2, r, g, b, alpha, num);
+        SetInteger3(pri, no * fw[NUM_SMALL] + pos_x, pos_y, 2, r, g, b, alpha, num);
     }
     else
     {

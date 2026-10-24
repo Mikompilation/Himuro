@@ -121,6 +121,21 @@ void PutPageYW(u_char msg_knd, u_char msg_no, u_char open_page, short int pos_x,
 #if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 void PutPage2YW(u_char msg_knd, u_char msg_no, u_char open_page, short int pos_x, short int pos_y, int rgb, u_char alpha, int pri);
 #endif
+#define NUM_NORMAL      0
+#define NUM_TEX1        1
+#define NUM_TEX2        2
+#define NUM_SMALL       3
+#define NUM_PHT_BIG     4
+#define NUM_PHT_SCRT    5
+#define NUM_SAVE_VERT   6
+#define NUM_FNDR_DM1    7
+#define NUM_GLIST       8
+#define NUM_ALBM_LD1    9
+#define NUM_ALBM_LD2   10
+#define NUM_ALBM_TOP   11
+#define NUM_FNDR_WP    12
+#define NUM_FNDR_DM2   13
+
 void PutNumberYW(u_char font, int num, short int pos_x, short int pos_y, float sx, float sy, int rgb, short int alpha, int pri, int digit, u_char mode);
 #if defined(BUILD_JP_VERSION)
 void PolySquareYW(float pos_x, float pos_y, u_short bar_l, u_short bar_h, int rgb, float alp, float scl_x, float scl_y, int pri, u_char blnd, u_char sw_z);

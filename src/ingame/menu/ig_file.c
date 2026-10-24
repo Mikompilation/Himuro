@@ -1629,9 +1629,9 @@ static void DspFileCmmn(short int pos_x, short int pos_y, short int alpha)
 void PageInfo(u_char now, u_char all, short int pos_x, short int pos_y, u_char alpha)
 {
     PolySquareYW(pos_x + 272, pos_y + 402, 17, 2, 0x808080, alpha, 1.0f, 1.0f, 0x19000, 0, 0, 0);
-    PutNumberYW(0, now, pos_x + 291, pos_y + 390, 1.0f, 1.0f, 0x808080, alpha, 0x19000, 1, 0);
+    PutNumberYW(NUM_NORMAL, now, pos_x + 291, pos_y + 390, 1.0f, 1.0f, 0x808080, alpha, 0x19000, 1, 0);
     PutStringYW(21, 1, pos_x + 314, pos_y + 390, 0x808080, alpha, 0x19000, 0);
-    PutNumberYW(0, all, pos_x + 327, pos_y + 390, 1.0f, 1.0f, 0x808080, alpha, 0x19000, 1, 0);
+    PutNumberYW(NUM_NORMAL, all, pos_x + 327, pos_y + 390, 1.0f, 1.0f, 0x808080, alpha, 0x19000, 1, 0);
     PolySquareYW(pos_x + 353, pos_y + 402, 17, 2, 0x808080, alpha, 1.0f, 1.0f, 0x19000, 0, 0, 0);
 }
 

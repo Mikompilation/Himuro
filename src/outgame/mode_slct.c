@@ -56,13 +56,13 @@ static int ms_load_id;
 
 #if defined(BUILD_JP_VERSION)
 #define PAD_ACTION_CONFIRM PAD_CIRCLE
-#define PAD_ACTION_EXIT PAD_CROSS
+#define PAD_ACTION_CANCEL PAD_CROSS
 #elif defined(BUILD_US_VERSION)
 #define PAD_ACTION_CONFIRM PAD_CROSS
-#define PAD_ACTION_EXIT PAD_TRIANGLE
+#define PAD_ACTION_CANCEL PAD_TRIANGLE
 #elif defined(BUILD_EU_VERSION)
 #define PAD_ACTION_CONFIRM PAD_CROSS
-#define PAD_ACTION_EXIT PAD_TRIANGLE
+#define PAD_ACTION_CANCEL PAD_TRIANGLE
 #endif
 
 void ModeSlctInit(u_char top,u_char end)
@@ -374,7 +374,7 @@ char ModeSlctPad(u_char mode)
     switch (mode)
     {
     case MS_MODE_SLCT:
-        if (PAD_BTN_PRESSED(PAD_ACTION_EXIT))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             SeStartFix(3, 0, 0x1000, 0x1000, 0);
 
@@ -425,7 +425,7 @@ char ModeSlctPad(u_char mode)
         }
     break;
     case MS_STORY_MODE:
-        if (PAD_BTN_PRESSED(PAD_ACTION_EXIT))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             SeStartFix(3, 0, 0x1000, 0x1000, 0);
 
@@ -634,7 +634,7 @@ char ModeSlctPad(u_char mode)
         }
     break;
     case MS_BATTLE_MODE:
-        if (PAD_BTN_PRESSED(PAD_ACTION_EXIT))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             SeStartFix(3, 0, 0x1000, 0x1000, 0);
 
@@ -834,7 +834,7 @@ char ModeSlctPad(u_char mode)
     case MS_MISSION_SELECT:
         level = CheckClearStage();
 
-        if (PAD_BTN_PRESSED(PAD_ACTION_EXIT))
+        if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             SeStartFix(3, 0, 0x1000, 0x1000, 0);
 
@@ -1611,16 +1611,16 @@ void DspMissionSelect(u_char alp)
     {
         PutStringYW(46, 10, 85, i * 40 + 133, 0x808080, alp, 0x23000, 0);
 #if defined(BUILD_JP_VERSION)
-        PutNumberYW(3, no + i + 1, 192, i * 40 + 133, 1.0f, 1.0f, 0x808080, alp, 0x23000, 2, 1);
+        PutNumberYW(NUM_SMALL, no + i + 1, 192, i * 40 + 133, 1.0f, 1.0f, 0x808080, alp, 0x23000, 2, 1);
 #elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
-        PutNumberYW(3, no + i + 1, 204, i * 40 + 133, 1.0f, 1.0f, 0x808080, alp, 0x23000, 2, 1);
+        PutNumberYW(NUM_SMALL, no + i + 1, 204, i * 40 + 133, 1.0f, 1.0f, 0x808080, alp, 0x23000, 2, 1);
 #endif
-        PutNumberYW(3, stage_wrk[no + i].best_time / 3600, 260, i * 40 + 133, 1.0f, 1.0f, 0x808080, alp, 0x23000, 1, 1);
+        PutNumberYW(NUM_SMALL, stage_wrk[no + i].best_time / 3600, 260, i * 40 + 133, 1.0f, 1.0f, 0x808080, alp, 0x23000, 1, 1);
         PutStringYW(46, 11, 273, i * 40 + 133, 0x808080, alp, 0x23000, 0);
-        PutNumberYW(3, (stage_wrk[no + i].best_time / 60) % 60, 287, i * 40 + 133, 1.0f, 1.0f, 0x808080, alp, 0x23000, 2, 1);
+        PutNumberYW(NUM_SMALL, (stage_wrk[no + i].best_time / 60) % 60, 287, i * 40 + 133, 1.0f, 1.0f, 0x808080, alp, 0x23000, 2, 1);
         PutStringYW(46, 11, 318, i * 40 + 133, 0x808080, alp, 0x23000, 0);
-        PutNumberYW(3, ((stage_wrk[no + i].best_time * 100) / 60) % 100, 330, i * 40 + 133, 1.0f, 1.0f, 0x808080, alp, 0x23000, 2, 1);
-        PutNumberYW(3, stage_wrk[no + i].best_shot, 403, i * 40 + 133, 1.0f, 1.0f, 0x808080, alp, 0x23000, 4, 0);
+        PutNumberYW(NUM_SMALL, ((stage_wrk[no + i].best_time * 100) / 60) % 100, 330, i * 40 + 133, 1.0f, 1.0f, 0x808080, alp, 0x23000, 2, 1);
+        PutNumberYW(NUM_SMALL, stage_wrk[no + i].best_shot, 403, i * 40 + 133, 1.0f, 1.0f, 0x808080, alp, 0x23000, 4, 0);
         PutStringYW(46, 12, 468, i * 40 + 133, 0x808080, alp, 0x23000, 0);
 
         rank = stage_wrk[no + i].rank;
