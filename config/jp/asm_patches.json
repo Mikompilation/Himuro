@@ -1,0 +1,12 @@
+{
+    "ig_camra.c.S": {
+        "CameraCustomSubAbility": [
+            [254, ".p2align 3", " .p2align 2"],
+            [380, ".p2align 3", " .p2align 2"]
+        ],
+        "CameraCustomSpecialAbility": [
+            [260, ".p2align 3", " .p2align 2"],
+            [386, ".p2align 3", " .p2align 2"]
+        ]
+    }
+}

@@ -5,19 +5,23 @@
 #include "structs.h"
 
 typedef struct {
-	u_char flsh_tmr;
-	u_char alpha;
+    u_char flsh_tmr;
+    u_char alpha;
 } FLSH_CORE;
 
 typedef struct {
-	short int arw_cnt;
-	u_char sb_flsh[5];
-	u_char ex_flsh[5];
-	u_char pow_bak[3];
-	u_char pow_flr[3][4];
-	u_char film_or_perform;
-	u_char bonus_or_special;
-	u_char pfm_max[3];
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+    short int arw_cnt;
+#endif
+    u_char sb_flsh[5];
+    u_char ex_flsh[5];
+    u_char pow_bak[3];
+    u_char pow_flr[3][4];
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+    u_char film_or_perform;
+    u_char bonus_or_special;
+    u_char pfm_max[3];
+#endif
 } CAM_DSP;
 
 // extern int camera_power_up_point[3][3];
@@ -47,7 +51,9 @@ void OutGameInitCamera();
 int isCameraEnd();
 float GetCamDispAlpha();
 void OpenCameraMenu();
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 float NeonAlp(short int num, short int exe, short int dly, short int stp, short int no, short int *timer);
 float BeMax(u_char no);
+#endif
 
 #endif // INGAME_MENU_IG_CAMRA_H

@@ -19,3 +19,4 @@ config/**/objdiff.json
 config/**/[A-Z][A-Z][A-Z][A-Z]_[0-9][0-9][0-9].[0-9][0-9]
 .idea/
 .vscode/
+.local/

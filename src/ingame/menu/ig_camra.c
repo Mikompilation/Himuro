@@ -3,6 +3,9 @@
 #include "enums.h"
 #include "ig_camra.h"
 
+// gcc/src/newlib/libm/math/sf_sin.c
+float sinf(float x);
+
 #include "graphics/graph2d/message.h"
 #include "graphics/graph3d/sglib.h"
 #include "ingame/menu/ig_file.h"
@@ -26,8 +29,24 @@ int camera_spe_abi_point[5] = {
 
 static CAM_DSP cam_dsp;
 
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 extern FLSH_CORE flsh;
 extern FLSH_CORE flsh2;
+#endif
+
+#if defined(BUILD_JP_VERSION)
+#define PAD_ACTION_CONFIRM PAD_CIRCLE
+#define PAD_ACTION_CANCEL PAD_CROSS
+#define PAD_ACTION_TOGGLE_SEAL PAD_TRIANGLE
+#elif defined(BUILD_US_VERSION)
+#define PAD_ACTION_CONFIRM PAD_CROSS
+#define PAD_ACTION_CANCEL PAD_TRIANGLE
+#define PAD_ACTION_TOGGLE_SEAL PAD_CIRCLE
+#elif defined(BUILD_EU_VERSION)
+#define PAD_ACTION_CONFIRM PAD_CROSS
+#define PAD_ACTION_CANCEL PAD_TRIANGLE
+#define PAD_ACTION_TOGGLE_SEAL PAD_CIRCLE
+#endif
 
 void CameraCustomNewgameInit()
 {
@@ -53,10 +72,14 @@ void CameraCustomInit()
 {
     int i;
     u_char *pow[3] = {
-        &cam_custom_wrk.charge_range, &cam_custom_wrk.charge_speed, &cam_custom_wrk.charge_max,
+        &cam_custom_wrk.charge_range,
+        &cam_custom_wrk.charge_speed,
+        &cam_custom_wrk.charge_max,
     };
 
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     cam_dsp = (CAM_DSP){0};
+#endif
     cmr_menu_wrk = (CAMERA_MENU_WRK){0};
 
     cmr_menu_wrk.mode = 4;
@@ -67,6 +90,7 @@ void CameraCustomInit()
 
     yw2d.pad_lock = 1;
 
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     cam_dsp.arw_cnt = 0;
 
     cam_dsp.film_or_perform = 0;
@@ -84,6 +108,7 @@ void CameraCustomInit()
         cam_dsp.sb_flsh[i] = 20;
         cam_dsp.ex_flsh[i] = 20;
     }
+#endif
 }
 
 void CameraCustomMain()
@@ -116,18 +141,13 @@ void CameraCustomMenuSlct(char *err)
 {
     if (yw2d.pad_lock == 0)
     {
-        if (*key_now[4] == 1)
+        if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             SeStartFix(3, 0, 0x1000, 0x1000, 1);
 
             yw2d.out_mode_cnt = 11;
         }
-        else if (
-            *key_now[1] == 1 ||
-            (*key_now[1] > 25 && (*key_now[1] % 5) == 1) ||
-            Ana2PadDirCnt(2) == 1 ||
-            (Ana2PadDirCnt(2) > 25 && (Ana2PadDirCnt(2) % 5) == 1)
-        )
+        else if (PAD_BTN_REPEAT(PAD_DPAD_DOWN) || PAD_LANA_REPEAT(PAD_LANA_DOWN))
         {
             if (cmr_menu_wrk.csr[0] <= 2)
             {
@@ -140,12 +160,7 @@ void CameraCustomMenuSlct(char *err)
 
             SeStartFix(0, 0, 0x1000, 0x1000, 1);
         }
-        else if (
-            *key_now[0] == 1 ||
-            (*key_now[0] > 25 && (*key_now[0] % 5) == 1) ||
-            Ana2PadDirCnt(0) == 1 ||
-            (Ana2PadDirCnt(0) > 25 && (Ana2PadDirCnt(0) % 5) == 1)
-        )
+        else if (PAD_BTN_REPEAT(PAD_DPAD_UP) || PAD_LANA_REPEAT(PAD_LANA_UP))
         {
             if (cmr_menu_wrk.csr[0] != 0)
             {
@@ -158,7 +173,7 @@ void CameraCustomMenuSlct(char *err)
 
             SeStartFix(0, 0, 0x1000, 0x1000, 1);
         }
-        else if (*key_now[6] == 1 || *key_now[5] == 1)
+        else if (PAD_BTN_PRESSED(PAD_SQUARE) || PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
             cmr_menu_wrk.yn_mode = 0;
             cmr_menu_wrk.mode = cmr_menu_wrk.csr[0];
@@ -172,7 +187,7 @@ void CameraCustomFilm(char *err)
 {
     if (yw2d.pad_lock == 0)
     {
-        if (*key_now[4] == 1)
+        if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             SeStartFix(3, 0, 0x1000, 0x1000, 1);
 
@@ -188,7 +203,7 @@ void CameraCustomFilm(char *err)
             return;
         }
 
-        if (*key_now[6] == 1 || *key_now[5] == 1)
+        if (PAD_BTN_PRESSED(PAD_SQUARE) || PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
             if (*err != 0)
             {
@@ -198,7 +213,7 @@ void CameraCustomFilm(char *err)
             }
             else
             {
-                if (poss_item[cmr_menu_wrk.csr[1] + 1] != 0)
+                if (poss_item[cmr_menu_wrk.csr[1]+1] != 0)
                 {
                     if (plyr_wrk.film_no != cmr_menu_wrk.csr[1] + 1)
                     {
@@ -213,7 +228,7 @@ void CameraCustomFilm(char *err)
                         SeStartFix(2, 0, 0x1000, 0x1000, 1);
                     }
                 }
-                else if (flm_exp_flg[cmr_menu_wrk.csr[1] + 1] == 0)
+                else if (flm_exp_flg[cmr_menu_wrk.csr[1]+1] == 0)
                 {
                     SeStartFix(2, 0, 0x1000, 0x1000, 1);
                 }
@@ -225,22 +240,27 @@ void CameraCustomFilm(char *err)
                 }
             }
         }
+#if defined(BUILD_JP_VERSION)
+        else if (PAD_BTN_REPEAT(PAD_DPAD_DOWN) || PAD_LANA_REPEAT(PAD_LANA_DOWN))
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         else if (
-            (
-                *key_now[1] == 1 ||
-                (*key_now[1] > 25 && (*key_now[1] % 5) == 1) ||
-                Ana2PadDirCnt(2) == 1 ||
-                (Ana2PadDirCnt(2) > 25 && (Ana2PadDirCnt(2) % 5) == 1)
-            ) || (
-                *key_now[0] == 1 ||
-                (*key_now[0] > 25 && (*key_now[0] % 5) == 1) ||
-                Ana2PadDirCnt(0) == 1 ||
-                (Ana2PadDirCnt(0) > 25 && (Ana2PadDirCnt(0) % 5) == 1)
-            )
+            PAD_BTN_REPEAT(PAD_DPAD_DOWN) || PAD_LANA_REPEAT(PAD_LANA_DOWN) ||
+            PAD_BTN_REPEAT(PAD_DPAD_UP) || PAD_LANA_REPEAT(PAD_LANA_UP)
         )
+#endif
         {
             *err = 0;
 
+#if defined(BUILD_JP_VERSION)
+            if (cmr_menu_wrk.csr[1] < 3)
+            {
+                cmr_menu_wrk.csr[1]++;
+            }
+            else
+            {
+                cmr_menu_wrk.csr[1] = 0;
+            }
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
             switch (cmr_menu_wrk.csr[1])
             {
             case 0:
@@ -256,25 +276,31 @@ void CameraCustomFilm(char *err)
                 cmr_menu_wrk.csr[1] = 2;
             break;
             }
+#endif
 
             SeStartFix(0, 0, 0x1000, 0x1000, 1);
         }
+#if defined(BUILD_JP_VERSION)
+        else if (PAD_BTN_REPEAT(PAD_DPAD_UP) || PAD_LANA_REPEAT(PAD_LANA_UP))
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         else if (
-            (
-                *key_now[2] == 1 ||
-                (*key_now[2] > 25 && (*key_now[2] % 5) == 1) ||
-                Ana2PadDirCnt(3) == 1 ||
-                (Ana2PadDirCnt(3) > 25 && (Ana2PadDirCnt(3) % 5) == 1)
-            ) || (
-                *key_now[3] == 1 ||
-                (*key_now[3] > 25 && (*key_now[3] % 5) == 1) ||
-                Ana2PadDirCnt(1) == 1 ||
-                (Ana2PadDirCnt(1) > 25 && (Ana2PadDirCnt(1) % 5) == 1)
-            )
+            PAD_BTN_REPEAT(PAD_DPAD_LEFT) || PAD_LANA_REPEAT(PAD_LANA_LEFT) ||
+            PAD_BTN_REPEAT(PAD_DPAD_RIGHT) || PAD_LANA_REPEAT(PAD_LANA_RIGHT)
         )
+#endif
         {
             *err = 0;
 
+#if defined(BUILD_JP_VERSION)
+            if (cmr_menu_wrk.csr[1] != 0)
+            {
+                cmr_menu_wrk.csr[1]--;
+            }
+            else
+            {
+                cmr_menu_wrk.csr[1] = 3;
+            }
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
             switch (cmr_menu_wrk.csr[1])
             {
             case 0:
@@ -290,6 +316,7 @@ void CameraCustomFilm(char *err)
                 cmr_menu_wrk.csr[1] = 1;
             break;
             }
+#endif
 
             SeStartFix(0, 0, 0x1000, 0x1000, 1);
         }
@@ -299,24 +326,19 @@ void CameraCustomFilm(char *err)
 void CameraCustomPowerUp(char *err)
 {
     u_char *pow[3] = {
-        &cam_custom_wrk.charge_range, &cam_custom_wrk.charge_speed, &cam_custom_wrk.charge_max,
+        &cam_custom_wrk.charge_range,
+        &cam_custom_wrk.charge_speed,
+        &cam_custom_wrk.charge_max,
     };
-
-    u_int uVar1;
-    u_long *puVar2;
-    int bVar3;
-    char cVar4;
-    u_short uVar5;
-    u_short uVar6;
-    int se_no;
 
     if (cmr_menu_wrk.yn_mode == 0)
     {
         if (yw2d.pad_lock == 0)
         {
-            if (*key_now[4] == 1)
+            if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
             {
                 SeStartFix(3, 0, 0x1000, 0x1000, 1);
+
                 if (*err == 0)
                 {
                     cmr_menu_wrk.mode = 4;
@@ -326,12 +348,7 @@ void CameraCustomPowerUp(char *err)
                     *err = 0;
                 }
             }
-            else if (
-                *key_now[1] == 1 ||
-                (*key_now[1] > 25 && (*key_now[1] % 5) == 1) ||
-                Ana2PadDirCnt(2) == 1 ||
-                (Ana2PadDirCnt(2) > 25 && (Ana2PadDirCnt(2) % 5) == 1)
-            )
+            else if (PAD_BTN_REPEAT(PAD_DPAD_DOWN) || PAD_LANA_REPEAT(PAD_LANA_DOWN))
             {
                 *err = 0;
                 if (cmr_menu_wrk.csr[2] <= 1)
@@ -342,16 +359,13 @@ void CameraCustomPowerUp(char *err)
                 {
                     cmr_menu_wrk.csr[2] = 0;
                 }
+
                 SeStartFix(0, 0, 0x1000, 0x1000, 1);
             }
-            else if  (
-                *key_now[0] == 1 ||
-                (*key_now[0] > 25 && (*key_now[0] % 5) == 1) ||
-                Ana2PadDirCnt(0) == 1 ||
-                (Ana2PadDirCnt(0) > 25 && (Ana2PadDirCnt(0) % 5) == 1)
-            )
+            else if  (PAD_BTN_REPEAT(PAD_DPAD_UP) || PAD_LANA_REPEAT(PAD_LANA_UP))
             {
                 *err = 0;
+
                 if (cmr_menu_wrk.csr[2] != 0)
                 {
                     cmr_menu_wrk.csr[2]--;
@@ -360,13 +374,15 @@ void CameraCustomPowerUp(char *err)
                 {
                     cmr_menu_wrk.csr[2] = 2;
                 }
+
                 SeStartFix(0, 0, 0x1000, 0x1000, 1);
             }
-            else if (*key_now[6] == 1 || *key_now[5] == 1)
+            else if (PAD_BTN_PRESSED(PAD_SQUARE) || PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
             {
                 if (*err != 0)
                 {
                     SeStartFix(1, 0, 0x1000, 0x1000, 1);
+
                     *err = 0;
                 }
                 else if (*pow[cmr_menu_wrk.csr[2]] != 3)
@@ -393,7 +409,7 @@ void CameraCustomPowerUp(char *err)
     {
         if (yw2d.pad_lock == 0)
         {
-            if (*key_now[4] == 1)
+            if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
             {
                 SeStartFix(3, 0, 0x1000, 0x1000, 1);
 
@@ -406,7 +422,10 @@ void CameraCustomPowerUp(char *err)
                     cmr_menu_wrk.yn_mode = 0;
                 }
             }
-            else if (*key_now[2] == 1 || Ana2PadDirCnt(3) == 1 || *key_now[3] == 1 || Ana2PadDirCnt(1) == 1)
+            else if (
+                PAD_BTN_PRESSED(PAD_DPAD_LEFT) || PAD_LANA_PRESSED(PAD_LANA_LEFT) ||
+                PAD_BTN_PRESSED(PAD_DPAD_RIGHT) || PAD_LANA_PRESSED(PAD_LANA_RIGHT)
+            )
             {
                 *err = 0;
 
@@ -421,7 +440,7 @@ void CameraCustomPowerUp(char *err)
 
                 SeStartFix(0, 0, 0x1000, 0x1000, 1);
             }
-            else if (*key_now[6] == 1 || *key_now[5] == 1)
+            else if (PAD_BTN_PRESSED(PAD_SQUARE) || PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
             {
                 SeStartFix(1, 0, 0x1000, 0x1000, 1);
 
@@ -441,10 +460,12 @@ void CameraCustomPowerUp(char *err)
 
                     cmr_menu_wrk.yn_mode = 0;
 
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
                     if (*pow[cmr_menu_wrk.csr[2]] == 3)
                     {
                         cam_dsp.pfm_max[cmr_menu_wrk.csr[2]] = 20;
                     }
+#endif
                 }
             }
         }
@@ -459,7 +480,7 @@ void CameraCustomSubAbility(char *err)
     {
         if (yw2d.pad_lock == 0)
         {
-            if (*key_now[4] == 1)
+            if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
             {
                 SeStartFix(3, 0, 0x1000, 0x1000, 1);
 
@@ -472,12 +493,7 @@ void CameraCustomSubAbility(char *err)
                     cmr_menu_wrk.mode = 4;
                 }
             }
-            else if (
-                *key_now[3] == 1 ||
-                (*key_now[3] > 25 && (*key_now[3] % 5) == 1) ||
-                Ana2PadDirCnt(1) == 1 ||
-                (Ana2PadDirCnt(1) > 25 && (Ana2PadDirCnt(1) % 5) == 1)
-            )
+            else if (PAD_BTN_REPEAT(PAD_DPAD_RIGHT) || PAD_LANA_REPEAT(PAD_LANA_RIGHT))
             {
                 *err = 0;
 
@@ -492,12 +508,7 @@ void CameraCustomSubAbility(char *err)
 
                 SeStartFix(0, 0, 0x1000, 0x1000, 1);
             }
-            else if (
-                *key_now[2] == 1 ||
-                (*key_now[2] > 25 && (*key_now[2] % 5) == 1) ||
-                Ana2PadDirCnt(3) == 1 ||
-                (Ana2PadDirCnt(3) > 25 && (Ana2PadDirCnt(3) % 5) == 1)
-            )
+            else if (PAD_BTN_REPEAT(PAD_DPAD_LEFT) || PAD_LANA_REPEAT(PAD_LANA_LEFT))
             {
                 *err = 0;
 
@@ -512,7 +523,7 @@ void CameraCustomSubAbility(char *err)
 
                 SeStartFix(0, 0, 0x1000, 0x1000, 1);
             }
-            else if (*key_now[6] == 1 || *key_now[5] == 1)
+            else if (PAD_BTN_PRESSED(PAD_SQUARE) || PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
             {
                 if (*err != 0)
                 {
@@ -565,7 +576,7 @@ void CameraCustomSubAbility(char *err)
     {
         if (yw2d.pad_lock == 0)
         {
-            if (*key_now[4] == 1)
+            if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
             {
                 SeStartFix(3, 0, 0x1000, 0x1000, 1);
 
@@ -578,11 +589,14 @@ void CameraCustomSubAbility(char *err)
                     cmr_menu_wrk.yn_mode = 0;
                 }
             }
-            else if (*key_now[2] == 1 || Ana2PadDirCnt(3) == 1 || *key_now[3] == 1 || Ana2PadDirCnt(1) == 1)
+            else if  (
+                PAD_BTN_PRESSED(PAD_DPAD_LEFT) || PAD_LANA_PRESSED(PAD_LANA_LEFT) ||
+                PAD_BTN_PRESSED(PAD_DPAD_RIGHT) || PAD_LANA_PRESSED(PAD_LANA_RIGHT)
+            )
             {
                 *err = 0;
 
-#ifdef MATCHING_DECOMP
+#if defined(MATCHING_DECOMP)
                 do {} while(0); // HACK: mitigates assembler short loop bug
 #endif
 
@@ -597,7 +611,7 @@ void CameraCustomSubAbility(char *err)
 
                 SeStartFix(0, 0, 0x1000, 0x1000, 1);
             }
-            else if (*key_now[6] == 1 || *key_now[5] == 1)
+            else if (PAD_BTN_PRESSED(PAD_SQUARE) || PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
             {
                 SeStartFix(1, 0, 0x1000, 0x1000, 1);
 
@@ -623,7 +637,7 @@ void CameraCustomSubAbility(char *err)
     {
         if (yw2d.pad_lock == 0)
         {
-            if (*key_now[4] == 1)
+            if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
             {
                 SeStartFix(3, 0, 0x1000, 0x1000, 1);
 
@@ -636,7 +650,10 @@ void CameraCustomSubAbility(char *err)
                     cmr_menu_wrk.yn_mode = 0;
                 }
             }
-            else if (*key_now[2] == 1 || Ana2PadDirCnt(3) == 1 || *key_now[3] == 1 || Ana2PadDirCnt(1) == 1)
+            else if  (
+                PAD_BTN_PRESSED(PAD_DPAD_LEFT) || PAD_LANA_PRESSED(PAD_LANA_LEFT) ||
+                PAD_BTN_PRESSED(PAD_DPAD_RIGHT) || PAD_LANA_PRESSED(PAD_LANA_RIGHT)
+            )
             {
                 *err = 0;
 
@@ -651,7 +668,7 @@ void CameraCustomSubAbility(char *err)
 
                 SeStartFix(0, 0, 0x1000, 0x1000, 1);
             }
-            else if (*key_now[6] == 1 || *key_now[5] == 1)
+            else if (PAD_BTN_PRESSED(PAD_SQUARE) || PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
             {
                 SeStartFix(1, 0, 0x1000, 0x1000, 1);
 
@@ -685,7 +702,7 @@ void CameraCustomSubAbility(char *err)
     {
         if (yw2d.pad_lock == 0)
         {
-            if (*key_now[4] == 1)
+            if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
             {
                 SeStartFix(3, 0, 0x1000, 0x1000, 1);
 
@@ -698,7 +715,10 @@ void CameraCustomSubAbility(char *err)
                     cmr_menu_wrk.yn_mode = 0;
                 }
             }
-            else if (*key_now[2] == 1 || Ana2PadDirCnt(3) == 1 || *key_now[3] == 1 || Ana2PadDirCnt(1) == 1)
+            else if (
+                PAD_BTN_PRESSED(PAD_DPAD_LEFT) || PAD_LANA_PRESSED(PAD_LANA_LEFT) ||
+                PAD_BTN_PRESSED(PAD_DPAD_RIGHT) || PAD_LANA_PRESSED(PAD_LANA_RIGHT)
+            )
             {
                 *err = 0;
 
@@ -713,7 +733,7 @@ void CameraCustomSubAbility(char *err)
 
                 SeStartFix(0, 0, 0x1000, 0x1000, 1);
             }
-            else if (*key_now[6] == 1 || *key_now[5] == 1)
+            else if (PAD_BTN_PRESSED(PAD_SQUARE) || PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
             {
                 SeStartFix(1, 0, 0x1000, 0x1000, 1);
 
@@ -745,7 +765,7 @@ void CameraCustomSpecialAbility(char *err)
     {
         if (yw2d.pad_lock == 0)
         {
-            if (*key_now[4] == 1)
+            if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
             {
                 SeStartFix(3, 0, 0x1000, 0x1000, 1);
 
@@ -761,12 +781,7 @@ void CameraCustomSpecialAbility(char *err)
                 return;
             }
 
-            if (
-                *key_now[3] == 1 ||
-                (*key_now[3] > 25 && (*key_now[3] % 5) == 1) ||
-                Ana2PadDirCnt(1) == 1 ||
-                (Ana2PadDirCnt(1) > 25 && (Ana2PadDirCnt(1) % 5) == 1)
-            )
+            if (PAD_BTN_REPEAT(PAD_DPAD_RIGHT) || PAD_LANA_REPEAT(PAD_LANA_RIGHT))
             {
                 *err = 0;
 
@@ -781,12 +796,7 @@ void CameraCustomSpecialAbility(char *err)
 
                 SeStartFix(0, 0, 0x1000, 0x1000, 1);
             }
-            else if (
-                *key_now[2] == 1 ||
-                (*key_now[2] > 25 && (*key_now[2] % 5) == 1) ||
-                Ana2PadDirCnt(3) == 1 ||
-                (Ana2PadDirCnt(3) > 25 && (Ana2PadDirCnt(3) % 5) == 1)
-            )
+            else if (PAD_BTN_REPEAT(PAD_DPAD_LEFT) || PAD_LANA_REPEAT(PAD_LANA_LEFT))
             {
                 *err = 0;
 
@@ -801,7 +811,7 @@ void CameraCustomSpecialAbility(char *err)
 
                 SeStartFix(0, 0, 0x1000, 0x1000, 1);
             }
-            else if (*key_now[6] == 1 || *key_now[5] == 1)
+            else if (PAD_BTN_PRESSED(PAD_SQUARE) || PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
             {
                 if (*err != 0)
                 {
@@ -854,7 +864,7 @@ void CameraCustomSpecialAbility(char *err)
     {
         if (yw2d.pad_lock == 0)
         {
-            if (*key_now[4] == 1)
+            if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
             {
                 SeStartFix(3, 0, 0x1000, 0x1000, 1);
 
@@ -870,11 +880,14 @@ void CameraCustomSpecialAbility(char *err)
                 return;
             }
 
-            if (*key_now[2] == 1 || Ana2PadDirCnt(3) == 1 || *key_now[3] == 1 || Ana2PadDirCnt(1) == 1)
+            if (
+                PAD_BTN_PRESSED(PAD_DPAD_LEFT) || PAD_LANA_PRESSED(PAD_LANA_LEFT) ||
+                PAD_BTN_PRESSED(PAD_DPAD_RIGHT) || PAD_LANA_PRESSED(PAD_LANA_RIGHT)
+            )
             {
                 *err = 0;
 
-#ifdef MATCHING_DECOMP
+#if defined(MATCHING_DECOMP)
                 do {} while(0); // HACK: mitigates assembler short loop bug
 #endif
 
@@ -889,7 +902,7 @@ void CameraCustomSpecialAbility(char *err)
 
                 SeStartFix(0, 0, 0x1000, 0x1000, 1);
             }
-            else if (*key_now[6] == 1 || *key_now[5] == 1)
+            else if (PAD_BTN_PRESSED(PAD_SQUARE) || PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
             {
                 SeStartFix(1, 0, 0x1000, 0x1000, 1);
 
@@ -915,7 +928,7 @@ void CameraCustomSpecialAbility(char *err)
     {
         if (yw2d.pad_lock == 0)
         {
-            if (*key_now[4] == 1)
+            if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
             {
                 SeStartFix(3, 0, 0x1000, 0x1000, 1);
 
@@ -931,7 +944,10 @@ void CameraCustomSpecialAbility(char *err)
                 return;
             }
 
-            if (*key_now[2] == 1 || Ana2PadDirCnt(3) == 1 || *key_now[3] == 1 || Ana2PadDirCnt(1) == 1)
+            if (
+                PAD_BTN_PRESSED(PAD_DPAD_LEFT) || PAD_LANA_PRESSED(PAD_LANA_LEFT) ||
+                PAD_BTN_PRESSED(PAD_DPAD_RIGHT) || PAD_LANA_PRESSED(PAD_LANA_RIGHT)
+            )
             {
                 *err = 0;
 
@@ -946,7 +962,7 @@ void CameraCustomSpecialAbility(char *err)
 
                 SeStartFix(0, 0, 0x1000, 0x1000, 1);
             }
-            else if (*key_now[6] == 1 || *key_now[5] == 1)
+            else if (PAD_BTN_PRESSED(PAD_SQUARE) || PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
             {
                 SeStartFix(1, 0, 0x1000, 0x1000, 1);
 
@@ -980,7 +996,7 @@ void CameraCustomSpecialAbility(char *err)
     {
         if (yw2d.pad_lock == 0)
         {
-            if (*key_now[4] == 1)
+            if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
             {
                 SeStartFix(3, 0, 0x1000, 0x1000, 1);
 
@@ -996,7 +1012,10 @@ void CameraCustomSpecialAbility(char *err)
                 return;
             }
 
-            if (*key_now[2] == 1 || Ana2PadDirCnt(3) == 1 || *key_now[3] == 1 || Ana2PadDirCnt(1) == 1)
+            if (
+                PAD_BTN_PRESSED(PAD_DPAD_LEFT) || PAD_LANA_PRESSED(PAD_LANA_LEFT) ||
+                PAD_BTN_PRESSED(PAD_DPAD_RIGHT) || PAD_LANA_PRESSED(PAD_LANA_RIGHT)
+            )
             {
                  *err = 0;
 
@@ -1011,7 +1030,7 @@ void CameraCustomSpecialAbility(char *err)
 
                 SeStartFix(0, 0, 0x1000, 0x1000, 1);
             }
-            else if (*key_now[6] == 1 || *key_now[5] == 1)
+            else if (PAD_BTN_PRESSED(PAD_SQUARE) || PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
             {
                 SeStartFix(1, 0, 0x1000, 0x1000, 1);
 
@@ -1047,12 +1066,302 @@ void CameraDspCtrl(u_char err)
 
     PlayerStatusYW(yw2d.io_a[2]);
 
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     DispCaption(18, yw2d.io_a[4]);
+#endif
 
     CameraModeInOut2();
     CameraCntRenew();
 }
 
+#if defined(BUILD_JP_VERSION)
+void CameraDsp(short int pos_x, short int pos_y, u_char alp, u_char msg)
+{
+    int i;
+    int j;
+    int cost;
+    u_char rgb;
+    static FLSH_CORE flsh;
+    static FLSH_CORE flsh2;
+    u_char flsh_alp[6];
+    u_char use;
+    u_char *pow[3] = {
+        &cam_custom_wrk.charge_range,
+        &cam_custom_wrk.charge_speed,
+        &cam_custom_wrk.charge_max,
+    };
+
+    PutSpriteYW(CAM_CAM_HA, CAM_CAM_HA, pos_x, pos_y, 0.0f, 0x404040, alp, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
+
+    FlashStarYW(&flsh, 64, 96, 90, 0);
+    FlashStarYW(&flsh2, alp, (int)(alp / 2), 90, 0);
+
+    switch(cmr_menu_wrk.mode)
+    {
+    case 4:
+        flsh_alp[0] = flsh.alpha;
+        flsh_alp[4] = 0;
+        flsh_alp[1] = flsh_alp[2] = flsh_alp[3] = 0;
+    break;
+    case 0:
+        flsh_alp[1] = flsh.alpha;
+        flsh_alp[0] = 0x40;
+        flsh_alp[3] = flsh_alp[4] = 0;
+        flsh_alp[2] = 0;
+    break;
+    case 1:
+        flsh_alp[2] = flsh.alpha;
+        flsh_alp[0] = 0x40;
+        flsh_alp[4] = 0;
+        flsh_alp[1] = flsh_alp[3] = 0;
+    break;
+    case 2:
+        flsh_alp[3] = flsh.alpha;
+        flsh_alp[0] = 0x40;
+        flsh_alp[4] = 0;
+        flsh_alp[1] = flsh_alp[2] = 0;
+    break;
+    case 3:
+        flsh_alp[4] = flsh.alpha;
+        flsh_alp[0] = 0x40;
+        flsh_alp[1] = flsh_alp[2] = flsh_alp[3] = 0;
+    break;
+    }
+
+    cost = -1;
+
+    switch (cmr_menu_wrk.mode)
+    {
+    case 1:
+        if (*pow[cmr_menu_wrk.csr[2]] != 3)
+        {
+            cost = camera_power_up_point[cmr_menu_wrk.csr[2]][*pow[cmr_menu_wrk.csr[2]]];
+        }
+    break;
+    case 2:
+        if (cam_custom_wrk.func_sub[cmr_menu_wrk.csr[3]] == 1)
+        {
+            cost = camera_sub_abi_point[cmr_menu_wrk.csr[3]];
+        }
+    break;
+    case 3:
+        if (cam_custom_wrk.func_spe[cmr_menu_wrk.csr[4]] == 1)
+        {
+             cost = camera_spe_abi_point[cmr_menu_wrk.csr[4]];
+        }
+    break;
+    }
+
+    flsh_alp[5] = 0x40;
+
+    if (cost != -1)
+    {
+        if (cam_custom_wrk.point >= cost)
+        {
+            flsh_alp[5] = flsh2.alpha;
+
+            PutNumberYW(NUM_SMALL, cost, 34, 296, 1.0f, 1.0f, 0x808080, alp, 0x5000, 5, 0);
+            PutStringYW(IGMSG_CAME_MSG, 1, 118, 300, 0x808080, alp, 0x5000, 0);
+        }
+        else
+        {
+            PutNumberYW(NUM_SMALL, cost, 34, 296, 1.0f, 1.0f, 0x808080, alp * 0.5f, 0x5000, 5, 0);
+            PutStringYW(IGMSG_CAME_MSG, 1, 118, 300, 0x808080, alp * 0.5f, 0x5000, 0);
+        }
+    }
+    else
+    {
+        PutStringYW(IGMSG_CAME_MSG, 1, 118, 300, 0x808080, alp, 0x5000, 0);
+    }
+
+    DspMenuTitle(pos_x, pos_y, alp, 0x32, 7);
+
+    CmnWindow(33, pos_x - 9, pos_y, alp, flsh_alp[5]);
+
+    for (i = 0; i < 4; i++)
+    {
+        if (i == cmr_menu_wrk.csr[0])
+        {
+            rgb = 0x80;
+        }
+        else
+        {
+            rgb = 0x40;
+        }
+
+        CmnWindow(i + 34, pos_x, pos_y, alp, rgb);
+    }
+
+    PutSpriteYW(CAM_FONT_CST, CAM_FONT_SB_AB, pos_x, pos_y, 0.0f, 0x808080, alp, 1.0f, 1.0f, 0, 0xff, 0, 0, 0);
+    PutSpriteYW(CAM_FNT_HNI, CAM_FNT_MAX, pos_x, pos_y, 0.0f, 0x808080, alp, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
+
+    WakuWaku(-16, 68, alp, 4, 0x2d);
+
+    PutSpriteYW(CAM_CMND_FLM, CAM_CMND_SPC, pos_x -10, pos_y, 0.0f, 0x808080, alp, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
+
+    for (i = 0; i < 4; i++)
+    {
+        if (poss_item[i + 1] != 0)
+        {
+            PutSpriteYW(CAM_NAME_14 + i, CAM_NAME_14 + i, pos_x, pos_y, 0.0f, 0x808080, alp, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
+            PutSpriteYW(CAM_FLM_14 + i, CAM_FLM_14 + i, pos_x, pos_y, 0.0f, 0x808080, alp, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
+            PutStringYW(IGMSG_CAME_MSG, 0, 319, i * 30 + 123, 0x808080, alp, 0x2000, 0);
+
+            PutNumberYW(NUM_SMALL, poss_item[i + 1], 327, i * 30 + 119, 1.0f, 1.0f, 0x808080, alp, 0x2000, 2, 1);
+        }
+        else
+        {
+            if (flm_exp_flg[i + 1] != 0)
+            {
+                PutSpriteYW(CAM_NAME_14 + i, CAM_NAME_14 + i, pos_x, pos_y, 0.0f, 0x808080, alp, 1.0f, 1.0f, 0, 0xff, 1, 0,0);
+                PutSpriteYW(CAM_FLM_14 + i, CAM_FLM_14 + i, pos_x, pos_y, 0.0f, 0x808080, alp, 1.0f, 1.0f, 0, 0xff, 1, 0,0);
+
+                VER_POLY_SQUARE_YW(184.0f, i * 30 + 118, 182, 28, 0, (int)(alp / 2), 1.0f, 1.0f, 0x3000, 0, 0);
+            }
+        }
+    }
+    for (i = 0; i < 3; i++)
+    {
+        PutSpriteYW(CAM_FNT_LV, CAM_FNT_LV, pos_x, pos_y + i * 40, 0.0f, 0x808080, alp, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
+
+        for (j = 0; j < 4; j++)
+        {
+            if (j < *pow[i] + 1)
+            {
+                PutSpriteYW(CAM_TAMA_AST, CAM_TAMA_AST, pos_x + j * 22, pos_y + i * 40, 0.0f, 0x808080, alp, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
+            }
+            else
+            {
+                PutSpriteYW(CAM_TAMA_BAS, CAM_TAMA_BAS, pos_x + j * 22, pos_y + i * 40, 0.0f, 0x808080, alp, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
+            }
+        }
+    }
+
+    for (i = 0; i < 3; i++)
+    {
+        if (*pow[i] != cam_dsp.pow_bak[i])
+        {
+            cam_dsp.pow_flr[i][*pow[i]] = 20;
+            cam_dsp.pow_bak[i] = *pow[i];
+        }
+
+        for (j = 0; j < 4; j++)
+        {
+            if (cam_dsp.pow_flr[i][j] != 0)
+            {
+                u_char alpha;
+
+                cam_dsp.pow_flr[i][j]--;
+
+                alpha = alp * VER_SINF((cam_dsp.pow_flr[i][j] * PI) / 20.0f);
+
+                PutSpriteYW(CAM_TAMA_AST, CAM_TAMA_AST, pos_x + j * 22, pos_y + i * 40, 0.0f, 0x808080, alpha, 1.0f, 1.0f, 0, 0xff, 1, 1, 0);
+                PutSpriteYW(CAM_TAMA_FLR, CAM_TAMA_FLR, pos_x + j * 22, pos_y + i * 40, 0.0f, 0x808080, alpha, 1.0f, 1.0f, 0, 0xff, 1, 1, 0);
+            }
+        }
+    }
+
+    for (i = 0; i < 5; i++)
+    {
+        switch (cam_custom_wrk.func_sub[i])
+        {
+        case 0:
+            // do nothing ...
+        break;
+        case 1:
+            PutSpriteYW(CAM_SAB_ATU + i, CAM_SAB_ATU + i, pos_x, pos_y, 0.0f, 0x404040, alp, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
+
+            VER_POLY_SQUARE_YW(i * 42 + 184, 282.0f, 40, 40, 0, (int)(alp / 2), 1.0f, 1.0f, 0xf000, 0, 0);
+        break;
+        case 2:
+                PutSpriteYW(CAM_SAB_ATU + i, CAM_SAB_ATU + i, pos_x, pos_y, 0.0f, 0x808080, flsh2.alpha, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
+
+                cam_dsp.sb_flsh[i] = 0;
+        break;
+        case 3:
+            if (cam_dsp.sb_flsh[i] < 20)
+            {
+                u_char alpha;
+
+                PutSpriteYW(CAM_SAB_ATU + i, CAM_SAB_ATU + i, pos_x, pos_y, 0.0f, 0x808080, alp, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
+
+                alpha = alp * VER_SINF((cam_dsp.sb_flsh[i] * PI) / 20.0f);
+
+                PutSpriteYW(CAM_SAB_ATU + i, CAM_SAB_ATU + i, pos_x, pos_y, 0.0f, 0x808080, alpha, 1.0f, 1.0f, 0, 0xff, 1, 1, 0);
+
+                cam_dsp.sb_flsh[i]++;
+            }
+            else
+            {
+                PutSpriteYW(CAM_SAB_ATU + i, CAM_SAB_ATU + i, pos_x, pos_y, 0.0f, 0x808080, flsh2.alpha, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
+            }
+        break;
+        }
+    }
+    for (i = 0; i < 5; i++)
+    {
+        switch (cam_custom_wrk.func_spe[i])
+        {
+        case 0:
+            // do nothing ...
+        break;
+        case 1:
+            PutSpriteYW(CAM_EAB_KAN + i, CAM_EAB_KAN + i, pos_x, pos_y, 0.0f, 0x404040, alp, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
+
+            VER_POLY_SQUARE_YW(i * 42 + 406, 282.0f, 40, 40, 0, (int)(alp / 2), 1.0f, 1.0f, 0xa000, 0, 0);
+        break;
+        case 2:
+            PutSpriteYW(CAM_EAB_KAN + i, CAM_EAB_KAN + i, pos_x, pos_y, 0.0f, 0x808080, flsh2.alpha, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
+
+            cam_dsp.ex_flsh[i] = 0;
+        break;
+        case 3:
+            if (cam_dsp.ex_flsh[i] < 20)
+            {
+                u_char alpha;
+
+                PutSpriteYW(CAM_EAB_KAN + i, CAM_EAB_KAN + i, pos_x, pos_y, 0.0f, 0x808080, alp, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
+
+                alpha = alp * VER_SINF((cam_dsp.ex_flsh[i] * PI) / 20.0f);
+
+                PutSpriteYW(CAM_EAB_KAN + i, CAM_EAB_KAN + i, pos_x, pos_y, 0.0f, 0x808080, alpha, 1.0f, 1.0f, 0, 0xff, 1, 1, 0);
+
+                cam_dsp.ex_flsh[i]++;
+            }
+            else
+            {
+                PutSpriteYW(CAM_EAB_KAN + i, CAM_EAB_KAN + i, pos_x, pos_y, 0.0f, 0x808080, flsh2.alpha, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
+            }
+        break;
+        }
+    }
+    CmnCursol(32, cmr_menu_wrk.csr[0] * 38 + 100, 122, 30, flsh_alp[0], alp, 0xa000);
+    CmnCursol(184, cmr_menu_wrk.csr[1] * 30 + 118, 182, 28, flsh_alp[1], alp, 0x3000);
+    CmnCursol(378, cmr_menu_wrk.csr[2] * 40 + 118, 236, 38, flsh_alp[2], alp, 0xa000);
+    CmnCursol(cmr_menu_wrk.csr[3] * 42 + 184, 282, 40, 40, flsh_alp[3], alp, 0xa000);
+    CmnCursol(cmr_menu_wrk.csr[4] * 42 + 406, 282, 40, 40, flsh_alp[4], alp, 0xa000);
+
+    DrawMessageBox(0x19000, pos_x + 23, pos_y + 340, 594.0f, 84.0f, alp);
+
+    if (cmr_menu_wrk.yn_mode != 0)
+    {
+        if (msg != 0xff)
+        {
+            PutStringYW(IGMSG_CAME_MSG, msg, 318, 356, 0x808080, alp, 0x5000, 1);
+            PutStringYW(IGMSG_CAME_MSG, 2, 318, 385, 0x808080, alp, 0x5000, 1);
+
+            YesNoCrslOKR(0x14000, cmr_menu_wrk.csr[5] * 120 + 212, 382.0f, 0x808080, alp, 1.5f);
+        }
+    }
+    else
+    {
+        if (msg != 0xff)
+        {
+            PutStringYW(IGMSG_CAME_MSG, msg, 48, 356, 0x808080, alp, 0x5000, 0);
+        }
+    }
+}
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 void CameraDsp(short int pos_x, short int pos_y, u_char alp, u_char msg)
 {
     int i;
@@ -1062,7 +1371,9 @@ void CameraDsp(short int pos_x, short int pos_y, u_char alp, u_char msg)
     u_char flsh_alp[6];
     u_char use;
     u_char *pow[3] = {
-        &cam_custom_wrk.charge_range, &cam_custom_wrk.charge_speed, &cam_custom_wrk.charge_max,
+        &cam_custom_wrk.charge_range,
+        &cam_custom_wrk.charge_speed,
+        &cam_custom_wrk.charge_max,
     };
     int cst_rgb;
     short int flm_ax[4] = { 0, 0, 205, 205 };
@@ -1216,20 +1527,20 @@ void CameraDsp(short int pos_x, short int pos_y, u_char alp, u_char msg)
             if (poss_item[i+1] != 0)
             {
                 PutSpriteYW(CAM_FILM_00 + i, CAM_FILM_00 + i, pos_x, pos_y, 0.0f, 0x404040, alp, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
-                PutStringYW(45, 0, flm_ax[i] + 351, flm_ay[i] + 155, 0x808080, alp, 0x2000, 0);
-                PutStringYW(24, i+1, flm_ax[i] + 206, flm_ay[i] + 131, 0x808080, alp, 0x2000, 0);
+                PutStringYW(IGMSG_CAME_MSG, 0, flm_ax[i] + 351, flm_ay[i] + 155, 0x808080, alp, 0x2000, 0);
+                PutStringYW(IGMSG_ITEM_NAME, i+1, flm_ax[i] + 206, flm_ay[i] + 131, 0x808080, alp, 0x2000, 0);
 
                 PutNumberYW(NUM_SMALL, poss_item[i+1], pos_x + 0x16f + flm_ax[i], pos_y + 0x97 + flm_ay[i], 1.0f, 1.0f, 0x808080, alp, 0x2000, 2, 1);
             }
             else if (flm_exp_flg[i+1] != 0)
             {
                 PutSpriteYW(CAM_FILM_00 + i, CAM_FILM_00 + i, pos_x, pos_y, 0.0f, 0x404040, alp, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
-                PutStringYW(45, 0, flm_ax[i] + 351, flm_ay[i] + 155, 0x404040, alp, 0x2000, 0);
-                PutStringYW(24, i+1, flm_ax[i] + 206, flm_ay[i] + 131, 0x404040, alp, 0x2000, 0);
+                PutStringYW(IGMSG_CAME_MSG, 0, flm_ax[i] + 351, flm_ay[i] + 155, 0x404040, alp, 0x2000, 0);
+                PutStringYW(IGMSG_ITEM_NAME, i+1, flm_ax[i] + 206, flm_ay[i] + 131, 0x404040, alp, 0x2000, 0);
 
                 PutNumberYW(NUM_SMALL, poss_item[i+1], pos_x + 0x16f + flm_ax[i], pos_y + 0x97 + flm_ay[i], 1.0f, 1.0f, 0x404040, alp, 0x2000, 2, 1);
 
-                PolySquareYW(flm_ax[i] + 204, flm_ay[i] + 129, 197, 45, 0, (int)(alp / 2), 1.0f, 1.0f, 0x2000, 0, 0, 0);
+                VER_POLY_SQUARE_YW(flm_ax[i] + 204, flm_ay[i] + 129, 197, 45, 0, (int)(alp / 2), 1.0f, 1.0f, 0x2000, 0, 0);
             }
         }
     }
@@ -1298,7 +1609,7 @@ void CameraDsp(short int pos_x, short int pos_y, u_char alp, u_char msg)
 
                     cam_dsp.pow_flr[i][j]--;
 
-                    alpha = alp * SgSinf((cam_dsp.pow_flr[i][j] * PI) / 20.0f);
+                    alpha = alp * VER_SINF((cam_dsp.pow_flr[i][j] * PI) / 20.0f);
 
                     PutSpriteYW(CAM_BALL_ONN, CAM_BALL_ONN, pos_x + j * 22, pos_y + i * 32, 0.0f, 0x808080, alpha, 1.0f, 1.0f, 0, 0xff, 1, 1, 0);
                     PutSpriteYW(CAM_BALL_FLR, CAM_BALL_FLR, pos_x + j * 22, pos_y + i * 32, 0.0f, 0x808080, alpha, 1.0f, 1.0f, 0, 0xff, 1, 1, 0);
@@ -1318,7 +1629,8 @@ void CameraDsp(short int pos_x, short int pos_y, u_char alp, u_char msg)
             break;
             case 1:
                 PutSpriteYW(CAM_FONT_00 + i, CAM_FONT_00 + i, pos_x, pos_y, 0.0f, 0x404040, alp, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
-                PolySquareYW(i * 46 + 204, 271.0f, 44, 44, 0, (int)(alp / 2), 1.0f, 1.0f, 0xf000, 0, 0, 0);
+
+                VER_POLY_SQUARE_YW(i * 46 + 204, 271.0f, 44, 44, 0, (int)(alp / 2), 1.0f, 1.0f, 0xf000, 0, 0);
             break;
             case 2:
                 PutSpriteYW(CAM_FONT_00 + i, CAM_FONT_00 + i, pos_x, pos_y, 0.0f, 0x808080, flsh2.alpha, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
@@ -1356,7 +1668,7 @@ void CameraDsp(short int pos_x, short int pos_y, u_char alp, u_char msg)
             case 1:
                 PutSpriteYW(CAM_FONT_05 + i, CAM_FONT_05 + i, pos_x, pos_y, 0.0f, 0x404040, alp, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
 
-                PolySquareYW(i * 46 + 204, 271.0f, 44, 44, 0, (int)(alp / 2), 1.0f, 1.0f, 0xa000, 0, 0, 0);
+                VER_POLY_SQUARE_YW(i * 46 + 204, 271.0f, 44, 44, 0, (int)(alp / 2), 1.0f, 1.0f, 0xa000, 0, 0);
             break;
             case 2:
                 PutSpriteYW(CAM_FONT_05 + i, CAM_FONT_05 + i, pos_x, pos_y, 0.0f, 0x808080, flsh2.alpha, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
@@ -1395,8 +1707,8 @@ void CameraDsp(short int pos_x, short int pos_y, u_char alp, u_char msg)
     {
         if (msg != 0xff)
         {
-            PutStringYW(45, msg, 318, 356, 0x808080, alp, 0x5000, 1);
-            PutStringYW(45, 2, 48, 385, 0x808080, alp, 0x5000, 0);
+            PutStringYW(IGMSG_CAME_MSG, msg, 318, 356, 0x808080, alp, 0x5000, 1);
+            PutStringYW(IGMSG_CAME_MSG, 2, 48, 385, 0x808080, alp, 0x5000, 0);
 
             YesNoCrslOKR(0x14000, cmr_menu_wrk.csr[5] * 132 + 178, 380.0f, 0x808080, alp, 2.0f);
         }
@@ -1405,14 +1717,17 @@ void CameraDsp(short int pos_x, short int pos_y, u_char alp, u_char msg)
     {
         if (msg != 0xff)
         {
-            PutStringYW(45, msg, 48, 356, 0x808080, alp, 0x5000, 0);
+            PutStringYW(IGMSG_CAME_MSG, msg, 48, 356, 0x808080, alp, 0x5000, 0);
         }
     }
 }
+#endif
 
 CAMERA_MENU_WRK cmr_menu_wrk = {0};
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 FLSH_CORE flsh = {0};
 FLSH_CORE flsh2 = {0};
+#endif
 
 char StrKndChk(u_char err)
 {
@@ -1719,6 +2034,7 @@ void OpenCameraMenu()
     cribo.clear_info |= 0x4;
 }
 
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 float NeonAlp(short int num, short int exe, short int dly, short int stp, short int no, short int *timer)
 {
     float rad;
@@ -1743,7 +2059,7 @@ float NeonAlp(short int num, short int exe, short int dly, short int stp, short 
         rad = 0.0f;
     }
 
-    return (2.0f - (SgCosf(rad) + 1.0f)) * 0.5f;
+    return (2.0f - (VER_COSF(rad) + 1.0f)) * 0.5f;
 }
 
 float BeMax(u_char no)
@@ -1763,3 +2079,4 @@ float BeMax(u_char no)
 
     return per;
 }
+#endif

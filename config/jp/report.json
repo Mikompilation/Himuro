@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 76.3295206448158,
+    "fuzzy_match_percent": 77.41119365070647,
     "total_code": "1165232",
-    "matched_code": "889416",
-    "matched_code_percent": 76.3295206448158,
+    "matched_code": "902020",
+    "matched_code_percent": 77.41119365070647,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 2751,
-    "matched_functions_percent": 81.05480259281084,
+    "matched_functions": 2771,
+    "matched_functions_percent": 81.64407778432528,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -21361,9 +21361,14 @@
     {
       "name": "ingame/menu/ig_camra",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "12604",
+        "matched_code": "12604",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 20,
+        "matched_functions": 20,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -21371,14 +21376,17 @@
         {
           "name": ".text",
           "size": "12664",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -21386,101 +21394,121 @@
         {
           "name": "CameraCustomNewgameInit",
           "size": "108",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CameraCustomInit",
           "size": "132",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CameraCustomMain",
           "size": "156",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CameraCustomMenuSlct",
           "size": "604",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CameraCustomFilm",
           "size": "684",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CameraCustomPowerUp",
           "size": "1068",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CameraCustomSubAbility",
           "size": "1692",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CameraCustomSpecialAbility",
           "size": "1716",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CameraDspCtrl",
           "size": "112",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CameraModeInOut",
           "size": "652",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "StrKndChk",
           "size": "672",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CameraDsp",
           "size": "4548",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CameraModeInOut2",
           "size": "172",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CameraCntRenew",
           "size": "60",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FilmPossChk",
           "size": "96",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "isCameraTopMenu",
           "size": "16",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "OutGameInitCamera",
           "size": "44",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "isCameraEnd",
           "size": "20",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetCamDispAlpha",
           "size": "32",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "OpenCameraMenu",
           "size": "20",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -25636,14 +25664,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 76.3295206448158,
+        "fuzzy_match_percent": 77.41119365070647,
         "total_code": "1165232",
-        "matched_code": "889416",
-        "matched_code_percent": 76.3295206448158,
+        "matched_code": "902020",
+        "matched_code_percent": 77.41119365070647,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 2751,
-        "matched_functions_percent": 81.05480259281084,
+        "matched_functions": 2771,
+        "matched_functions_percent": 81.64407778432528,
         "complete_data_percent": 100.0,
         "total_units": 154
       }
