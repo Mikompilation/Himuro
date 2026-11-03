@@ -111,7 +111,11 @@ void StartAlbumModeInit()
     InitPhotoExpand();
 }
 
+#if defined(BUILD_JP_VERSION)
+void IngameMenuAlbum()
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 void IngameMenuAlbum(char is_outgame)
+#endif
 {
 #if defined(BUILD_JP_VERSION)
     IngameAlbumDisp(ig_menu_wrk.csr[1], ig_menu_wrk.csr[3], ig_menu_wrk.csr[2]);

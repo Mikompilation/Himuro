@@ -16,7 +16,11 @@ typedef struct {
 void NewgameMenuAlbumInit();
 void LoadgameMenuAlbumInit();
 void StartAlbumModeInit();
+#if defined(BUILD_JP_VERSION)
+void IngameMenuAlbum();
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 void IngameMenuAlbum(char is_outgame);
+#endif
 void IngameAlbumAllPad(u_char *csr, u_char *csr_top, u_char *mode);
 void IngameAlbumLstPad(u_char *csr, u_char *csr_top, u_char *mode);
 void IngameAlbumBigPad(u_char *csr, u_char *csr_top, u_char *mode);

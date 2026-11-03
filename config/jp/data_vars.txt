@@ -1648,3 +1648,14 @@ fspe_lightanm_fadeout2         = 0x33c3c8; // type:FSPE_LIGHT_ANM numel:6 nosize
 
 // ingame/menu/item.c
 item_use_dat                   = 0x33c468; // type:ITEM_USE_DAT numel:70
+
+// ingame/menu/ig_menu.c
+ig_menu_str                    = 0x33ca58; // type:STR_DAT
+sozai                          = 0x33ca80; // type:SPRT_DAT
+mask_l                         = 0x33caa0; // type:SPRT_DAT
+mask_s                         = 0x33cac0; // type:SPRT_DAT
+win_ptn                        = 0x34ec38; // type:WIN_PTN numel:40
+msk_dat_top                    = 0x34ee68; // type:char numel:40
+msk_siz                        = 0x34ee90; // type:MSK_SIZ numel:43
+lin_dat_top                    = 0x34f040; // type:char numel:40
+lin_ptn                        = 0x34f068; // type:PLS_LIN numel:128

@@ -51,6 +51,17 @@ static int menu_load_id;
 static int fndr_load_id;
 static int mode_load_id;
 
+#if defined(BUILD_JP_VERSION)
+#define PAD_ACTION_CONFIRM PAD_CIRCLE
+#define PAD_ACTION_CANCEL PAD_CROSS
+#elif defined(BUILD_US_VERSION)
+#define PAD_ACTION_CONFIRM PAD_CROSS
+#define PAD_ACTION_CANCEL PAD_TRIANGLE
+#elif defined(BUILD_EU_VERSION)
+#define PAD_ACTION_CONFIRM PAD_CROSS
+#define PAD_ACTION_CANCEL PAD_TRIANGLE
+#endif
+
 void NewgameMenuInit()
 {
     NewgameMenuMapInit();
@@ -175,7 +186,11 @@ void IngameMenuMain()
     case IGMENU_MODE_ALBM:
         SetSprFile(LOAD_ADDRESS_36);
 
+#if defined(BUILD_JP_VERSION)
+        IngameMenuAlbum();
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         IngameMenuAlbum(0);
+#endif
     break;
     case IGMENU_MODE_FILE:
         SetSprFile(LOAD_ADDRESS_46);
@@ -237,7 +252,7 @@ void IngameMenuModeSlct()
 
     if (yw2d.pad_lock == 0)
     {
-        if (*key_now[4] == 1)
+        if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             yw2d.menu_io_flg = 2;
             yw2d.menu_io_cnt = 45;
@@ -247,7 +262,7 @@ void IngameMenuModeSlct()
             SetTargetVolSeMenuFade(0xfff);
             SetTargetVolAdpcmMenuFade(0xfff);
         }
-        else if (*key_now[6] == 1 || *key_now[5] == 1)
+        else if (PAD_BTN_PRESSED(PAD_SQUARE) || PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
             switch(ig_menu_wrk.csr[0])
             {
@@ -338,12 +353,7 @@ void IngameMenuModeSlct()
             break;
             }
         }
-        else if (
-            *key_now[0] == 1 ||
-            (*key_now[0] > 25 && (*key_now[0] % 5) == 1) ||
-            Ana2PadDirCnt(0) == 1 ||
-            (Ana2PadDirCnt(0) > 25 && (Ana2PadDirCnt(0) % 5) == 1)
-        )
+        else if (PAD_BTN_REPEAT(PAD_DPAD_UP) || PAD_LANA_REPEAT(PAD_LANA_UP))
         {
             if (ig_menu_wrk.csr[0] != 0)
             {
@@ -356,12 +366,7 @@ void IngameMenuModeSlct()
 
             SeStartFix(0, 0, 0x1000, 0x1000, 1);
         }
-        else if (
-            *key_now[1] == 1 ||
-            (*key_now[1] > 25 && (*key_now[1] % 5) == 1) ||
-            Ana2PadDirCnt(2) == 1 ||
-            (Ana2PadDirCnt(2) > 25 && (Ana2PadDirCnt(2) % 5) == 1)
-        )
+        else if (PAD_BTN_REPEAT(PAD_DPAD_DOWN) || PAD_LANA_REPEAT(PAD_LANA_DOWN))
         {
             if (ig_menu_wrk.csr[0] < mode_limit)
             {
@@ -496,7 +501,7 @@ void DspTopMenu(short int pos_x, short int pos_y, short int alpha, u_short anm)
 
         if (StopCameraMenu() != 0)
         {
-            PolySquareYW(pos_x + 35, pos_y + 366, 121, 30, 0, alp3 * 0.5f, 1.0f, 1.0f, 0x73000, 0, 0, 0 );
+            VER_POLY_SQUARE_YW(pos_x + 35, pos_y + 366, 121, 30, 0, alp3 * 0.5f, 1.0f, 1.0f, 0x73000, 0, 0);
         }
 
         CmnCursol(pos_x + 33, (pos_y + y_off_cur) + ig_menu_wrk.csr[0] * 38, 123, 30, flsh.alpha, alp3, 0x73000);
@@ -536,18 +541,18 @@ void DspTopMenu(short int pos_x, short int pos_y, short int alpha, u_short anm)
             {
                 if (i == ig_menu_wrk.csr[0] + 191)
                 {
-                    PutSpriteYW(MNU_FNT_CAMERA, MNU_FNT_CAMERA, pos_x - 15, pos_y - 76, rot, rgb, alp3, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
+                    PutSpriteYW(MNU_FNT_CAMERA, MNU_FNT_CAMERA, pos_x - 15, pos_y - 76, 0.0f, rgb, alp3, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
                 }
                 else
                 {
-                    PutSpriteYW(MNU_FNT_CAMERA, MNU_FNT_CAMERA, pos_x - 15, pos_y - 76, rot, 0x808080, alp3, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
+                    PutSpriteYW(MNU_FNT_CAMERA, MNU_FNT_CAMERA, pos_x - 15, pos_y - 76, 0.0f, 0x808080, alp3, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
                 }
             }
         }
 
         if (StopCameraMenu() != 0)
         {
-            PolySquareYW(pos_x + 35, pos_y + 290, 121, 30, 0, alp3 * 0.5f, 1.0f, 1.0f, 0x73000, 0, 0, 0);
+            VER_POLY_SQUARE_YW(pos_x + 35, pos_y + 290, 121, 30, 0, alp3 * 0.5f, 1.0f, 1.0f, 0x73000, 0, 0);
         }
 
         CmnCursol(pos_x + 33, (pos_y + y_off_cur) + ig_menu_wrk.csr[0] * 38, 123, 30, flsh.alpha, alp3, 0x73000);
@@ -589,6 +594,7 @@ void WakuWaku(short int pos_x, short int pos_y, u_char alp, u_char num, u_char p
     PutSpriteYW(MNU_MAIN_BASE_VAT1 + (num - 1) * 2, MNU_MAIN_BASE_VAT1_B + (num - 1) * 2, pos_x + 0xa1, adj_h[num-1] + pos_y, 0.0f, 0x808080, alp, 1.0f, 1.0f, 0, pri << 12, 1, 0, 0);
 }
 
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 void WakuWaku2(short int pos_x, short int pos_y, u_char alp, u_char num, u_char pri)
 {
     int i;
@@ -606,6 +612,7 @@ void WakuWaku2(short int pos_x, short int pos_y, u_char alp, u_char num, u_char 
     PutSpriteYW(MNU_MAIN_BASE_VAT1 + num * 2, MNU_MAIN_BASE_VAT1_B + num * 2, pos_x  + 28, pos_y + 214, 0.0f, 0x808080, alp, 1.0f, 1.0f, 0, pri << 12, 1, 0, 0);
     PutSpriteYW(MNU_MAIN_BASE_VAT1 + num * 2, MNU_MAIN_BASE_VAT1_B + num * 2, pos_x + 159, pos_y + 214, 0.0f, 0x808080, alp, 1.0f, 1.0f, 0, pri << 12, 1, 0, 0);
 }
+#endif
 
 static u_char MenuInOut()
 {
@@ -766,7 +773,10 @@ void DspPlayData(short int pos_x, short int pos_y, float alpha, u_char str_mode)
         TimeZone(pos_x + 456, pos_y + 88, alpha);
 
         DspMenuTitle(pos_x, pos_y, alpha, 0x6e, 8);
+
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         DispCaption(0, alpha);
+#endif
     }
 
     if (str_mode == 0 || str_mode == 2)
@@ -851,6 +861,12 @@ static void ComingOut(short int pos_x, short int pos_y, float alp, u_char shadow
         pri = 0x2000;
     }
 
+#if defined(BUILD_JP_VERSION)
+    PutStringYW(IGMSG_MENU_TOP, 0, pos_x + 250, pos_y + 130, rgb, alp, pri, 0);
+    PutStringYW(IGMSG_MENU_TOP, 1, pos_x + 305, pos_y + 130, rgb, alp, pri, 0);
+    PutStringYW(IGMSG_MENU_TOP, 2, pos_x + 360, pos_y + 130, rgb, alp, pri, 0);
+#endif
+
     MenuAdjClock(&tmp);
 
     y = TimeIsMoney(tmp.year);
@@ -858,8 +874,17 @@ static void ComingOut(short int pos_x, short int pos_y, float alp, u_char shadow
     dy = TimeIsMoney(tmp.day);
     h = TimeIsMoney(tmp.hour);
 
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_JP_VERSION)
+    PutNumberYW(NUM_SMALL, y, pos_x + 223, pos_y + 130, 1.0f, 1.0f, rgb, alp, pri, 2, 1);
+    PutNumberYW(NUM_SMALL, m, pos_x + 278, pos_y + 130, 1.0f, 1.0f, rgb, alp, pri, 2, 0);
+    PutNumberYW(NUM_SMALL, dy, pos_x + 333, pos_y + 130, 1.0f, 1.0f, rgb, alp, pri, 2, 0);
+#elif defined(BUILD_US_VERSION)
+    PutStringYW(IGMSG_MENU_TOP, m + 23, pos_x + 222, pos_y + 130, rgb, alp, pri, 0);
+    PutNumberYW(NUM_SMALL, dy, pos_x + 277, pos_y + 130, 1.0f, 1.0f, rgb, alp, pri, 2, 0);
 
+    PutStringYW(IGMSG_MENU_TOP, 23, pos_x + 324, pos_y + 130, rgb, alp, pri, 0);
+    PutNumberYW(NUM_SMALL, y, pos_x + 343, pos_y + 130, 1.0f, 1.0f, rgb, alp, pri, 2, 1);
+#elif defined(BUILD_EU_VERSION)
     PutNumberYW(NUM_SMALL, dy, pos_x + 222, pos_y + 130, 1.0f, 1.0f, rgb, alp, pri, 2, 0);
 
     if (sys_wrk.language == LANG_GERMAN)
@@ -894,27 +919,38 @@ static void ComingOut(short int pos_x, short int pos_y, float alp, u_char shadow
         SetMessageV2(&ds);
     }
 
-    PutStringYW(40, m + 23, pos_x + 267, pos_y + 130, rgb, alp, pri, 0);
-#else
-    PutStringYW(40, m + 23, pos_x + 222, pos_y + 130, rgb, alp, pri, 0);
-    PutNumberYW(NUM_SMALL, dy, pos_x + 277, pos_y + 130, 1.0f, 1.0f, rgb, alp, pri, 2, 0);
-#endif
-
-    PutStringYW(40, 23, pos_x + 324, pos_y + 130, rgb, alp, pri, 0);
+    PutStringYW(IGMSG_MENU_TOP, m + 23, pos_x + 267, pos_y + 130, rgb, alp, pri, 0);
+    PutStringYW(IGMSG_MENU_TOP, 23, pos_x + 324, pos_y + 130, rgb, alp, pri, 0);
     PutNumberYW(NUM_SMALL, y, pos_x + 343, pos_y + 130, 1.0f, 1.0f, rgb, alp, pri, 2, 1);
+#endif
 
     if (h < 12)
     {
-        PutStringYW(40, 3, pos_x + 389, pos_y + 130, rgb, alp, pri, 0);
+#if defined(BUILD_JP_VERSION)
+        PutStringYW(IGMSG_MENU_TOP, 3, pos_x + 385, pos_y + 130, rgb, alp, pri, 0);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+        PutStringYW(IGMSG_MENU_TOP, 3, pos_x + 389, pos_y + 130, rgb, alp, pri, 0);
+#endif
     }
     else
     {
-        PutStringYW(40, 4, pos_x + 389, pos_y + 130, rgb, alp, pri, 0);
+#if defined(BUILD_JP_VERSION)
+        PutStringYW(IGMSG_MENU_TOP, 4, pos_x + 385, pos_y + 130, rgb, alp, pri, 0);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+        PutStringYW(IGMSG_MENU_TOP, 4, pos_x + 389, pos_y + 130, rgb, alp, pri, 0);
+#endif
     }
 
-    PutStringYW(40, 5, pos_x + 220, pos_y + 185, rgb, alp, pri, 0);
-    PutStringYW(40, 22, pos_x + 335, pos_y + 215, rgb, alp, pri, 0);
-    PutStringYW(40, 22, pos_x + 388, pos_y + 215, rgb, alp, pri, 0);
+#if defined(BUILD_JP_VERSION)
+    PutStringYW(IGMSG_MENU_TOP, 5, pos_x + 220, pos_y + 185, rgb, alp, pri, 0);
+    PutStringYW(IGMSG_MENU_TOP, 6, pos_x + 300, pos_y + 215, rgb, alp, pri, 0);
+    PutStringYW(IGMSG_MENU_TOP, 7, pos_x + 380, pos_y + 215, rgb, alp, pri, 0);
+    PutStringYW(IGMSG_MENU_TOP, 8, pos_x + 435, pos_y + 215, rgb, alp, pri, 0);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+    PutStringYW(IGMSG_MENU_TOP, 5, pos_x + 220, pos_y + 185, rgb, alp, pri, 0);
+    PutStringYW(IGMSG_MENU_TOP, 22, pos_x + 335, pos_y + 215, rgb, alp, pri, 0);
+    PutStringYW(IGMSG_MENU_TOP, 22, pos_x + 388, pos_y + 215, rgb, alp, pri, 0);
+#endif
 
     MenuPlayTime(&tmp);
 
@@ -922,25 +958,53 @@ static void ComingOut(short int pos_x, short int pos_y, float alp, u_char shadow
     mn = TimeIsMoney(tmp.minute);
     sc = TimeIsMoney(tmp.second);
 
+#if defined(BUILD_JP_VERSION)
+    PutNumberYW(NUM_SMALL, hr2, pos_x + 270, pos_y + 217, 1.0f, 1.0f, rgb, alp, pri, 2, 0);
+    PutNumberYW(NUM_SMALL, mn, pos_x + 352, pos_y + 217, 1.0f, 1.0f, rgb, alp, pri, 2, 0);
+    PutNumberYW(NUM_SMALL, sc, pos_x + 405, pos_y + 217, 1.0f, 1.0f, rgb, alp, pri, 2, 0);
+
+    PutStringYW(IGMSG_MENU_TOP, 9, pos_x + 220, pos_y + 255, rgb, alp, pri, 0);
+    PutStringYW(IGMSG_MENU_TOP, 10, pos_x + 500, pos_y + 255, rgb, alp, pri, 0);
+
+    PutNumberYW(NUM_NORMAL, ingame_wrk.pht_cnt, pos_x + 371, pos_y + 255, 1.0f, 1.0f, rgb, alp, pri, 7, 0);
+
+    PutStringYW(IGMSG_MENU_TOP, 11, pos_x + 220, pos_y + 295, rgb, alp, pri, 0);
+    PutStringYW(IGMSG_MENU_TOP, 12, pos_x + 500, pos_y + 295, rgb, alp, pri, 0);
+
+    PutNumberYW(NUM_NORMAL, ingame_wrk.ghost_cnt, pos_x + 407, pos_y + 295, 1.0f, 1.0f, rgb, alp, pri, 5, 0);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     PutNumberYW(NUM_SMALL, hr2, pos_x + 299, pos_y + 217, 1.0f, 1.0f, rgb, alp, pri, 2, 0);
     PutNumberYW(NUM_SMALL, mn, pos_x + 352, pos_y + 217, 1.0f, 1.0f, rgb, alp, pri, 2, 1);
     PutNumberYW(NUM_SMALL, sc, pos_x + 405, pos_y + 217, 1.0f, 1.0f, rgb, alp, pri, 2, 1);
 
-    PutStringYW(40, 9, pos_x + 220, pos_y + 255, rgb, alp, pri, 0);
+    PutStringYW(IGMSG_MENU_TOP, 9, pos_x + 220, pos_y + 255, rgb, alp, pri, 0);
+
     PutNumberYW(NUM_NORMAL, ingame_wrk.pht_cnt, pos_x + 389, pos_y + 255, 1.0f, 1.0f, rgb, alp, pri, 7, 0);
 
-    PutStringYW(40, 11, pos_x + 220, pos_y + 295, rgb, alp, pri, 0);
+    PutStringYW(IGMSG_MENU_TOP, 11, pos_x + 220, pos_y + 295, rgb, alp, pri, 0);
+
     PutNumberYW(NUM_NORMAL, ingame_wrk.ghost_cnt, pos_x + 425, pos_y + 295, 1.0f, 1.0f, rgb, alp, pri, 5, 0);
+#endif
 
     if (ingame_wrk.clear_count != 0)
     {
-        PutStringYW(40, 15, pos_x + 220, pos_y + 335, rgb, alp, pri, 0);
+        PutStringYW(IGMSG_MENU_TOP, 15, pos_x + 220, pos_y + 335, rgb, alp, pri, 0);
+#if defined(BUILD_JP_VERSION)
+        PutStringYW(IGMSG_MENU_TOP, 16, pos_x + 500, pos_y + 335, rgb, alp, pri, 0);
+        PutNumberYW(NUM_NORMAL, ingame_wrk.clear_count, pos_x + 442, pos_y + 335, 1.0f, 1.0f, rgb, alp, pri, 3, 0);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         PutNumberYW(NUM_NORMAL, ingame_wrk.clear_count, pos_x + 460, pos_y + 335, 1.0f, 1.0f, rgb, alp, pri, 3, 0);
+#endif
 
         if (ingame_wrk.clear_count != 0)
         {
-            PutStringYW(40, 17, pos_x + 220, pos_y + 375, rgb, alp, pri, 0);
+            PutStringYW(IGMSG_MENU_TOP, 17, pos_x + 220, pos_y + 375, rgb, alp, pri, 0);
+#if defined(BUILD_JP_VERSION)
+            PutStringYW(IGMSG_MENU_TOP, 18, pos_x + 500, pos_y + 375, rgb, alp, pri, 0);
+            PutNumberYW(NUM_NORMAL, save_rank.best_score, pos_x + 368, pos_y + 375, 1.0f, 1.0f, rgb, alp, pri, 7, 0);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
             PutNumberYW(NUM_NORMAL, save_rank.best_score, pos_x + 386, pos_y + 375, 1.0f, 1.0f, rgb, alp, pri, 7, 0);
+#endif
         }
     }
 }
@@ -1138,7 +1202,7 @@ static void CmnWakuForWin(short int pos_x, short int pos_y, u_short siz_x, u_sho
 
     if (msk_sw != 0)
     {
-        PolySquareYW(pos_x + l_wid, pos_y + u_hgh, siz_x - (l_wid + r_wid), siz_y - (u_hgh + d_hgh), 0, alp * 0.5, 1.0f, 1.0f, ((pri + 1) & 0xff) << 12, 0, 0, 0);
+        VER_POLY_SQUARE_YW(pos_x + l_wid, pos_y + u_hgh, siz_x - (l_wid + r_wid), siz_y - (u_hgh + d_hgh), 0, alp * 0.5, 1.0f, 1.0f, ((pri + 1) & 0xff) << 12, 0, 0);
     }
 
     h_num[2] = (float)siz_x / sozai.w;
@@ -1264,7 +1328,7 @@ static void PutParts(u_char u, u_char v, u_char w, u_char h, short int x, short 
     ds.b = rgb;
 
     ds.pri = pri;
-    ds.z = 0xfffffff - pri;
+    ds.z = 0x0fffffff - pri;
 
     ds.tex1 = SCE_GS_SET_TEX1_1(1, 0, SCE_GS_LINEAR, SCE_GS_LINEAR_MIPMAP_LINEAR, 0, 0, 0);
 
@@ -1327,7 +1391,7 @@ static void PutMask(short int pos_x, short int pos_y, u_char alp, u_char flp, in
     ds.alpha = alp;
 
     ds.pri = pri;
-    ds.z = 0xfffffff - pri;
+    ds.z = 0x0fffffff - pri;
 
     ds.tex1 = SCE_GS_SET_TEX1_1(1, 0, SCE_GS_LINEAR, SCE_GS_LINEAR_MIPMAP_LINEAR, 0, 0, 0);
 
@@ -1436,8 +1500,8 @@ void CmnWindow(u_char win_no, short int pos_x, short int pos_y, u_char alp, u_ch
     {
         while (msk_siz[i].win_no == win_no)
         {
-            PolySquareYW(msk_siz[i].pos_x + pos_x, msk_siz[i].pos_y + pos_y, msk_siz[i].siz_x, msk_siz[i].siz_y,
-                         0, 1.0f, 1.0f, 1.0f, ((win_ptn[win_no].pri - 1) & 0xff) << 12, 0, 0, 0);
+            VER_POLY_SQUARE_YW(msk_siz[i].pos_x + pos_x, msk_siz[i].pos_y + pos_y, msk_siz[i].siz_x, msk_siz[i].siz_y,
+                         0, 1.0f, 1.0f, 1.0f, ((win_ptn[win_no].pri - 1) & 0xff) << 12, 0, 0);
 
             i++;
         }
@@ -1464,7 +1528,7 @@ void CmnWindow(u_char win_no, short int pos_x, short int pos_y, u_char alp, u_ch
 
 void CmnCursol(short int pos_x, short int pos_y, short int wide, short int high, float flsh, u_char alp, int pri)
 {
-    PolySquareYW(pos_x, pos_y, wide, high, 0xe9c489, flsh * alp / 128.0f * 0.5f, 1.0f, 1.0f, pri, 1, 0, 0);
+    VER_POLY_SQUARE_YW(pos_x, pos_y, wide, high, 0xe9c489, flsh * alp / 128.0f * 0.5f, 1.0f, 1.0f, pri, 1, 0);
 }
 
 u_short Ana2PadDirCnt(u_char chk)
@@ -1565,7 +1629,11 @@ char CanYouOpenMyMind(char mode)
         can = 0;
     }
 
-    if (plyr_wrk.mode == INGAME_MODE_AREA_MOVE)
+#if defined(BUILD_JP_VERSION)
+    if (ingame_wrk.mode == INGAME_MODE_GHOST_DEAD)
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+    if (plyr_wrk.mode == PMODE_FIN_CAM)
+#endif
     {
         can = 0;
     }

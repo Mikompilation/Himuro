@@ -57,7 +57,9 @@ void IngameMenuModeSlctDispInit();
 void IngameMenuModeSlctDisp();
 void DspTopMenu(short int pos_x, short int pos_y, short int alpha, u_short anm);
 void WakuWaku(short int pos_x, short int pos_y, u_char alp, u_char num, u_char pri);
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 void WakuWaku2(short int pos_x, short int pos_y, u_char alp, u_char num, u_char pri);
+#endif
 void DspPlayData(short int pos_x, short int pos_y, float alpha, u_char str_mode);
 void DspMenuTitle(short int pos_x, short int pos_y, float alp, u_char pri, u_char mode);
 char SimpleMoveRuler(float *rslt, u_short t1, u_short t2, u_short t3, u_short dst, u_short *cnt);

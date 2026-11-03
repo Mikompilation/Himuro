@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 77.41119365070647,
+    "fuzzy_match_percent": 78.95251761022698,
     "total_code": "1165232",
-    "matched_code": "902020",
-    "matched_code_percent": 77.41119365070647,
+    "matched_code": "919980",
+    "matched_code_percent": 78.95251761022698,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 2771,
-    "matched_functions_percent": 81.64407778432528,
+    "matched_functions": 2806,
+    "matched_functions_percent": 82.67530936947554,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -21521,9 +21521,14 @@
     {
       "name": "ingame/menu/ig_menu",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "17960",
+        "matched_code": "17960",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 35,
+        "matched_functions": 35,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -21531,14 +21536,17 @@
         {
           "name": ".text",
           "size": "18032",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -21546,176 +21554,211 @@
         {
           "name": "NewgameMenuInit",
           "size": "44",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "LoadgameMenuInit",
           "size": "44",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IngameMenuInit",
           "size": "76",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IngameMenuOpenStart",
           "size": "136",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CanYouOpenMyMind",
           "size": "124",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IngameMenuOpenInit",
           "size": "188",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IngameMenuMain",
           "size": "564",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MenuInOut",
           "size": "972",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IngameMenuModeSlctDisp",
           "size": "168",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IngameMenuModeSlct",
           "size": "1404",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "StopCameraMenu",
           "size": "92",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "Ana2PadDirCnt",
           "size": "24",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "Get4Byte",
           "size": "44",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetIngameMSGAddr",
           "size": "84",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IngameMenuModeSlctDispInit",
           "size": "16",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DspTopMenu",
           "size": "2548",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DspPlayData",
           "size": "308",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CmnCursol",
           "size": "116",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "WakuWaku",
           "size": "792",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SimpleMoveRuler",
           "size": "288",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "TimeZone",
           "size": "560",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DspMenuTitle",
           "size": "1200",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ComingOut",
           "size": "1756",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MenuAdjClock",
           "size": "456",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ClockHari",
           "size": "240",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MenuPlayTime",
           "size": "232",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MoveRuler",
           "size": "232",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CmnWakuForWin",
           "size": "1640",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PutParts",
           "size": "268",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "BehindTheMask",
           "size": "328",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PutMask",
           "size": "256",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "BehindTheMask2",
           "size": "292",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CmnLineForWin",
           "size": "588",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CmnWindow",
           "size": "1704",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "AnaPonChk",
           "size": "176",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -25664,14 +25707,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 77.41119365070647,
+        "fuzzy_match_percent": 78.95251761022698,
         "total_code": "1165232",
-        "matched_code": "902020",
-        "matched_code_percent": 77.41119365070647,
+        "matched_code": "919980",
+        "matched_code_percent": 78.95251761022698,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 2771,
-        "matched_functions_percent": 81.64407778432528,
+        "matched_functions": 2806,
+        "matched_functions_percent": 82.67530936947554,
         "complete_data_percent": 100.0,
         "total_units": 154
       }
