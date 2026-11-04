@@ -4,10 +4,10 @@
 #include "typedefs.h"
 
 typedef struct {
-	u_char sopt;
-	u_char smap;
-	u_char slod;
-	u_char lod_ret;
+    u_char sopt;
+    u_char smap;
+    u_char slod;
+    u_char lod_ret;
 } SPD_MNU;
 
 extern SPD_MNU spd_mnu;

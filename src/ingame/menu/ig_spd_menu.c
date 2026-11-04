@@ -6,7 +6,7 @@
 
 #include "graphics/graph2d/effect_sub.h"
 #include "graphics/graph2d/tim2.h"
-// #include "graphics/motion/mdlwork.h" // SendManMdlTex
+// #include "graphics/motion/mdlwork.h"
 #include "ingame/menu/ig_map.h"
 #include "ingame/menu/ig_menu.h"
 #include "ingame/menu/ig_option.h"
@@ -45,7 +45,7 @@ char SpdMenuCtrl()
 
     rtrn = 0;
 
-    if (*key_now[13] == 1)
+    if (PAD_BTN_PRESSED(PAD_SELECT))
     {
         if (CanYouOpenMyMind(1) != 0 && spd_mnu.smap == 0)
         {
@@ -321,13 +321,23 @@ static void SpdOptInOut()
     case 1:
         if (sopt_load_id == -1)
         {
+#if defined(BUILD_JP_VERSION)
+            if (yw2d.menu_io_cnt < 10)
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
             if (yw2d.menu_io_cnt < 11)
+#endif
             {
                 count = yw2d.menu_io_cnt;
 
+#if defined(BUILD_JP_VERSION)
+                yw2d.io_a[0] = (count * 128) / 10.0f;
+                yw2d.io_a[1] = (count * 128) / 10.0f;
+                yw2d.io_a[4] = (count * 128) / 10.0f;
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
                 yw2d.io_a[0] = (count * 128.0f) / 10.0f;
                 yw2d.io_a[1] = (count * 128.0f) / 10.0f;
                 yw2d.io_a[4] = (count * 128.0f) / 10.0f;
+#endif
 
                 yw2d.io_x[0] = 0.0f;
             }
@@ -353,9 +363,15 @@ static void SpdOptInOut()
             {
                 count = yw2d.menu_io_cnt;
 
+#if defined(BUILD_JP_VERSION)
+                yw2d.io_a[0] = (count * 128) / 10.0f;
+                yw2d.io_a[1] = (count * 128) / 10.0f;
+                yw2d.io_a[4] = (count * 128) / 10.0f;
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
                 yw2d.io_a[0] = (count * 128.0f) / 10.0f;
                 yw2d.io_a[1] = (count * 128.0f) / 10.0f;
                 yw2d.io_a[4] = (count * 128.0f) / 10.0f;
+#endif
 
                 yw2d.io_x[0] = 0.0f;
             }

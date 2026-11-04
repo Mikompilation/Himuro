@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 78.95251761022698,
+    "fuzzy_match_percent": 79.13891825833825,
     "total_code": "1165232",
-    "matched_code": "919980",
-    "matched_code_percent": 78.95251761022698,
+    "matched_code": "922152",
+    "matched_code_percent": 79.13891825833825,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 2806,
-    "matched_functions_percent": 82.67530936947554,
+    "matched_functions": 2816,
+    "matched_functions_percent": 82.96994696523277,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -21771,9 +21771,14 @@
     {
       "name": "ingame/menu/ig_spd_menu",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "2172",
+        "matched_code": "2172",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 10,
+        "matched_functions": 10,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -21781,14 +21786,17 @@
         {
           "name": ".text",
           "size": "2192",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -21796,51 +21804,61 @@
         {
           "name": "SpdMenuInit",
           "size": "52",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpdMenuCtrl",
           "size": "120",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpdMapStart",
           "size": "120",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpdMapInit",
           "size": "96",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpdMapMain",
           "size": "232",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpdMapInOut",
           "size": "716",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpdOptStart",
           "size": "60",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpdOptInit",
           "size": "68",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpdOptMain",
           "size": "268",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SpdOptInOut",
           "size": "440",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -25707,14 +25725,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 78.95251761022698,
+        "fuzzy_match_percent": 79.13891825833825,
         "total_code": "1165232",
-        "matched_code": "919980",
-        "matched_code_percent": 78.95251761022698,
+        "matched_code": "922152",
+        "matched_code_percent": 79.13891825833825,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 2806,
-        "matched_functions_percent": 82.67530936947554,
+        "matched_functions": 2816,
+        "matched_functions_percent": 82.96994696523277,
         "complete_data_percent": 100.0,
         "total_units": 154
       }
