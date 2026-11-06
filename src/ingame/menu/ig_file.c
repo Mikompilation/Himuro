@@ -866,7 +866,7 @@ static void DspFile2D2(short int pos_x, short int pos_y, short int alpha)
                     if (menu_file.load_id == -1)
                     {
                         menu_file.loading = menu_file.csr_now;
-                        menu_file.load_id = LoadItem2D(4, menu_file.loading);
+                        menu_file.load_id = LoadItem2D(GET_ITM_TYPE_ITEM, menu_file.loading);
                         menu_file.dsp_flg = 1;
                     }
                 }
@@ -951,7 +951,7 @@ static void DspFileLst(short int pos_x, short int pos_y, short int alpha)
 
         if (file_kind[ig_menu_wrk.csr[1]] != 1)
         {
-            PutStringYW(file_kind[ig_menu_wrk.csr[1]] + 10, menu_dsp_file[i + menu_file.lst_top], pos_x + 266, i * 34 + 48 + pos_y, 0x808080, alpha, 0x23000, 0);
+            PutStringYW(file_kind[ig_menu_wrk.csr[1]] + IGMSG_FILE0_NAME, menu_dsp_file[i + menu_file.lst_top], pos_x + 266, i * 34 + 48 + pos_y, 0x808080, alpha, 0x23000, 0);
 
             if (poss_file[file_kind[ig_menu_wrk.csr[1]]][menu_dsp_file[i + menu_file.lst_top]] == 2)
             {
@@ -964,7 +964,7 @@ static void DspFileLst(short int pos_x, short int pos_y, short int alpha)
             {
                 no = menu_dsp_file[i + menu_file.lst_top];
 
-                PutStringYW(11, no, pos_x + 266, i * 34 + 48 + pos_y , 0x808080, alpha, 0x23000, 0);
+                PutStringYW(IGMSG_FILE1_NAME, no, pos_x + 266, i * 34 + 48 + pos_y , 0x808080, alpha, 0x23000, 0);
 
                 if (poss_file[1][no] == 2)
                 {
@@ -975,7 +975,7 @@ static void DspFileLst(short int pos_x, short int pos_y, short int alpha)
             {
                 no = menu_dsp_file[i + menu_file.lst_top] - 50;
 
-                PutStringYW(24, file2item[no], pos_x + 266, i * 34 + 48 + pos_y, 0x808080, alpha, 0x23000, 0);
+                PutStringYW(IGMSG_ITEM_NAME, file2item[no], pos_x + 266, i * 34 + 48 + pos_y, 0x808080, alpha, 0x23000, 0);
 
                 if (poss_file[3][no] == 2)
                 {
@@ -1161,7 +1161,7 @@ static void DspMsgWndw(short int pos_x, short int pos_y, short int alpha)
         case 1:
             if (file_kind[ig_menu_wrk.csr[1]] != 1)
             {
-                PutStringYW(file_kind[ig_menu_wrk.csr[1]] + 14, menu_dsp_file[ig_menu_wrk.csr[2]], pos_x + 48, pos_y + 356, 0x808080, alpha, 0x19000, 0);
+                PutStringYW(file_kind[ig_menu_wrk.csr[1]] + IGMSG_FILE0_MSG, menu_dsp_file[ig_menu_wrk.csr[2]], pos_x + 48, pos_y + 356, 0x808080, alpha, 0x19000, 0);
             }
             else if (menu_dsp_file[ig_menu_wrk.csr[2]] < 50)
             {
@@ -1207,7 +1207,7 @@ static void DspFileBook(short int pos_x, short int pos_y, short int alpha)
 
     CmnWindow(10, pos_x, pos_y, alpha, 0x80);
 
-    menu_file.page_all = ChkPageYW(file_kind[ig_menu_wrk.csr[1]] + 18, menu_dsp_file[ig_menu_wrk.csr[2]]);
+    menu_file.page_all = ChkPageYW(file_kind[ig_menu_wrk.csr[1]] + IGMSG_FILE0_DAT, menu_dsp_file[ig_menu_wrk.csr[2]]);
 
     PageInfo(menu_file.open_page, menu_file.page_all, pos_x, pos_y - 13, alpha);
 
@@ -1215,9 +1215,9 @@ static void DspFileBook(short int pos_x, short int pos_y, short int alpha)
 
     if (ig_menu_wrk.file_num != 0)
     {
-        PutStringYW(file_kind[ig_menu_wrk.csr[1]] + 10, menu_dsp_file[ig_menu_wrk.csr[2]], 235, 35, 0x808080, 0x80, 0x19000, 0);
+        PutStringYW(file_kind[ig_menu_wrk.csr[1]] + IGMSG_FILE0_NAME, menu_dsp_file[ig_menu_wrk.csr[2]], 235, 35, 0x808080, 0x80, 0x19000, 0);
 
-        PutPage2YW(file_kind[ig_menu_wrk.csr[1]] + 18, menu_dsp_file[ig_menu_wrk.csr[2]], menu_file.open_page, 90, 110, 0x808080, 0x80, 0x19000);
+        PutPage2YW(file_kind[ig_menu_wrk.csr[1]] + IGMSG_FILE0_DAT, menu_dsp_file[ig_menu_wrk.csr[2]], menu_file.open_page, 90, 110, 0x808080, 0x80, 0x19000);
     }
 
     DispCaption(13, alpha);
@@ -1236,19 +1236,19 @@ static void DspFilePhot(short int pos_x, short int pos_y, short int alpha)
 
     if (file_kind[ig_menu_wrk.csr[1]] != 1)
     {
-        PutStringYW(file_kind[ig_menu_wrk.csr[1]] + 10, menu_dsp_file[ig_menu_wrk.csr[2]], 235, 35, 0x808080, 0x80, 0x19000, 0);
+        PutStringYW(file_kind[ig_menu_wrk.csr[1]] + IGMSG_FILE0_NAME, menu_dsp_file[ig_menu_wrk.csr[2]], 235, 35, 0x808080, 0x80, 0x19000, 0);
     }
     else if (menu_dsp_file[ig_menu_wrk.csr[2]] < 50)
     {
         no = menu_dsp_file[ig_menu_wrk.csr[2]];
 
-        PutStringYW(11, no, 235, 35, 0x808080, 0x80, 0x19000, 0);
+        PutStringYW(IGMSG_FILE1_NAME, no, 235, 35, 0x808080, 0x80, 0x19000, 0);
     }
     else
     {
         no = menu_dsp_file[ig_menu_wrk.csr[2]] - 50;
 
-        PutStringYW(0x18, file2item[no], 235, 35, 0x808080, 0x80, 0x19000, 0);
+        PutStringYW(IGMSG_ITEM_NAME, file2item[no], 235, 35, 0x808080, 0x80, 0x19000, 0);
     }
 
     PhotDispCtrl(alpha);

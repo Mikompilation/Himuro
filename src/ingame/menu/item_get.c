@@ -4,12 +4,15 @@
 #include "enums.h"
 #include "item_get.h"
 
+// gcc/src/newlib/libm/math/sf_sin.c
+float sinf(float x);
+
 #include "graphics/graph2d/effect.h"
 #include "graphics/graph2d/effect_sub.h"
 #include "graphics/graph2d/message.h"
 #include "graphics/graph2d/tim2.h"
 #include "graphics/graph3d/sglib.h"
-// #include "graphics/motion/mdlwork.h" // SendManMdlTex
+// #include "graphics/motion/mdlwork.h"
 #define INCLUDING_FROM_ITEM_GET
 #include "ingame/map/item_ctl.h"
 #undef INCLUDING_FROM_ITEM_GET
@@ -61,6 +64,44 @@ static FILE2D file2d;
 
 #define MAX_VOLUME 0x3fff
 
+enum {
+    START = 0,
+    INIT = 1,
+    ERROR = 2,
+    END = 3,
+    STEP_B00 = 4,
+    STEP_B01 = 5,
+    STEP_B02 = 6,
+    STEP_B03 = 7,
+    STEP_B04 = 8,
+    STEP_B05 = 9,
+    STEP_B06 = 10,
+    STEP_B07 = 11,
+    STEP_P00 = 12,
+    STEP_P01 = 13,
+    STEP_P02 = 14,
+    STEP_P03 = 15,
+    STEP_P04 = 16,
+    STEP_P05 = 17,
+    STEP_P06 = 18,
+    STEP_I00 = 19,
+    STEP_I01 = 20,
+    STEP_I02 = 21,
+    STEP_I03 = 22,
+    STEP_I04 = 23
+};
+
+#if defined(BUILD_JP_VERSION)
+#define PAD_ACTION_CONFIRM PAD_CIRCLE
+#define PAD_ACTION_CANCEL PAD_CROSS
+#elif defined(BUILD_US_VERSION)
+#define PAD_ACTION_CONFIRM PAD_CROSS
+#define PAD_ACTION_CANCEL PAD_TRIANGLE
+#elif defined(BUILD_EU_VERSION)
+#define PAD_ACTION_CONFIRM PAD_CROSS
+#define PAD_ACTION_CANCEL PAD_TRIANGLE
+#endif
+
 void ItemGet(u_char get_type, u_char get_no, u_char msg0_no, u_char msg1_no)
 {
     get_ctrl = (FILE_GET_CTRL){0};
@@ -79,17 +120,18 @@ void ItemGet(u_char get_type, u_char get_no, u_char msg0_no, u_char msg1_no)
     eff_blur_off = 1;
     tape_play = 0;
 
-    if (get_type == 0 || get_type == 1 || get_type == 2)
+    if (get_type == GET_ITM_TYPE_FILE0 || get_type == GET_ITM_TYPE_FILE1 || get_type == GET_ITM_TYPE_FILE2)
     {
-        get_ctrl.flg = 1;
+        get_ctrl.flg = GET_FILE_BOOK;
     }
-    else if (get_type == 3)
+    else if (get_type == GET_ITM_TYPE_PHOT)
     {
-        get_ctrl.flg = 2;
+        get_ctrl.flg = GET_FILE_PHOT;
     }
-    else if (get_type == 4)
+    else if (get_type == GET_ITM_TYPE_ITEM)
     {
-        get_ctrl.flg = 3;
+        get_ctrl.flg = GET_FILE_ITEM;
+
         get_ctrl.itm_num = poss_item[get_no];
     }
 }
@@ -109,19 +151,19 @@ int ItemGetCtrl()
 
     switch (get_ctrl.flg)
     {
-    case 1:
+    case GET_FILE_BOOK:
         if (BookGetMain() != 0)
         {
             return 1;
         }
     break;
-    case 2:
+    case GET_FILE_PHOT:
         if (PhotGetMain() != 0)
         {
             return 1;
         }
     break;
-    case 3:
+    case GET_FILE_ITEM:
         if (ItemGetMain() != 0)
         {
             return 1;
@@ -137,9 +179,9 @@ static int BookGetMain()
     BookGetPad(get_ctrl.type,get_ctrl.no);
     BookGetDsp(get_ctrl.type,get_ctrl.no, get_ctrl.msg0, get_ctrl.msg1);
 
-    if (file_dsp.stp == 3)
+    if (file_dsp.stp == END)
     {
-        file_dsp.stp = 0;
+        file_dsp.stp = START;
         eff_blur_off = 0;
 
         SendManMdlTex();
@@ -159,51 +201,51 @@ static void BookGetPad(u_char model_type, u_char model_no)
 {
     switch (file_dsp.stp)
     {
-    case 0:
+    case START:
         // do nothing ...
     break;
-    case 1:
+    case INIT:
         // do nothing ...
     break;
-    case 2:
+    case ERROR:
         // do nothing ...
     break;
-    case 3:
+    case END:
         // do nothing ...
     break;
-    case 4:
-        if (*key_now[6] == 1 || *key_now[5] == 1)
+    case STEP_B00:
+        if (PAD_BTN_PRESSED(PAD_SQUARE) || PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
             if (fade_ctr.msg_end != 0)
             {
-                file_dsp.stp = 5;
+                file_dsp.stp = STEP_B01;
 
                 SeStartFix(0xb, 0, 0x1000, 0x1000, 0);
             }
         }
     break;
-    case 5:
+    case STEP_B01:
         // do nothing ...
     break;
-    case 6:
-        if (*key_now[6] == 1 || *key_now[5] == 1)
+    case STEP_B02:
+        if (PAD_BTN_PRESSED(PAD_SQUARE) || PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
-            file_dsp.stp = 7;
+            file_dsp.stp = STEP_B03;
         }
     break;
-    case 7:
-        file_dsp.page_all = ChkPageYW(model_type + 0x12, model_no);
+    case STEP_B03:
+        file_dsp.page_all = ChkPageYW(model_type + IGMSG_FILE0_DAT, model_no);
         file_dsp.open_page = 1;
-        file_dsp.stp = 8;
+        file_dsp.stp = STEP_B04;
     break;
-    case 8:
-        if (*key_now[4] == 1)
+    case STEP_B04:
+        if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
-            file_dsp.stp = 9;
+            file_dsp.stp = STEP_B05;
 
             SeStartFix(3, 0, 0x1000, 0x1000, 0);
         }
-        else if (*key_now[6] == 1 || *key_now[5] == 1)
+        else if (PAD_BTN_PRESSED(PAD_SQUARE) || PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
             if (file_dsp.page_all >= 2)
             {
@@ -215,32 +257,32 @@ static void BookGetPad(u_char model_type, u_char model_no)
                 }
                 else
                 {
-                    file_dsp.stp = 9;
+                    file_dsp.stp = STEP_B05;
 
                     SeStartFix(1, 0, 0x1000, 0x1000, 0);
                 }
             }
             else
             {
-                file_dsp.stp = 9;
+                file_dsp.stp = STEP_B05;
 
                 SeStartFix(1, 0, 0x1000, 0x1000, 0);
             }
         }
     break;
-    case 9:
+    case STEP_B05:
         // do nothing ...
     break;
-    case 10:
-        if (*key_now[6] == 1 || *key_now[5] == 1)
+    case STEP_B06:
+        if (PAD_BTN_PRESSED(PAD_SQUARE) || PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
             if (fade_ctr.msg_end != 0)
             {
-                file_dsp.stp = 11;
+                file_dsp.stp = STEP_B07;
             }
         }
     break;
-    case 11:
+    case STEP_B07:
         // do nothing ...
     break;
     }
@@ -267,7 +309,7 @@ static void BookGetDsp(u_char model_type, u_char model_no, u_char msg0_no, u_cha
 
     switch(file_dsp.stp)
     {
-    case 0:
+    case START:
         chng_tm = 0;
 
         file_pct = map_file_dat[msg_type][model_no].dsp_pct;
@@ -276,19 +318,19 @@ static void BookGetDsp(u_char model_type, u_char model_no, u_char msg0_no, u_cha
         {
             if (igt_load_id == -1)
             {
-                igt_load_id = LoadItem2D(4, file_pct);
+                igt_load_id = LoadItem2D(GET_ITM_TYPE_ITEM, file_pct);
             }
             else if (IsLoadEnd(igt_load_id) != 0)
             {
                 igt_load_id = -1;
-                file_dsp.stp = 1;
+                file_dsp.stp = INIT;
             }
         }
     break;
-    case 1:
-        file_dsp.stp = 4;
+    case INIT:
+        file_dsp.stp = STEP_B00;
     break;
-    case 4:
+    case STEP_B00:
         if (msg0_no != 0xff)
         {
             msg_no = msg0_no;
@@ -296,10 +338,10 @@ static void BookGetDsp(u_char model_type, u_char model_no, u_char msg0_no, u_cha
         }
         else
         {
-            file_dsp.stp = 5;
+            file_dsp.stp = STEP_B01;
         }
     break;
-    case 5:
+    case STEP_B01:
         fade_type = 3;
         name_dsp = 1;
 
@@ -318,26 +360,26 @@ static void BookGetDsp(u_char model_type, u_char model_no, u_char msg0_no, u_cha
         }
         else
         {
-            file_dsp.stp = 6;
+            file_dsp.stp = STEP_B02;
         }
     break;
-    case 6:
+    case STEP_B02:
         fade_type = 3;
         name_dsp = 1;
         msg_dsp = 3;
     break;
-    case 7:
+    case STEP_B03:
         fade_type = 4;
         msg_type = 0xff;
         msg_dsp = 3;
     break;
-    case 8:
+    case STEP_B04:
         fade_type = 4;
         msg_type = 0xff;
         msg_dsp = 3;
         str_dsp = 1;
     break;
-    case 9:
+    case STEP_B05:
         fade_type = 3;
         msg_type = 0xff;
         msg_dsp = 3;
@@ -351,10 +393,10 @@ static void BookGetDsp(u_char model_type, u_char model_no, u_char msg0_no, u_cha
         }
         else if (fade_ctr.str == 0)
         {
-            file_dsp.stp = 10;
+            file_dsp.stp = STEP_B06;
         }
     break;
-    case 10:
+    case STEP_B06:
         fade_type = 3;
 
         if (msg1_no != 0xff)
@@ -363,7 +405,7 @@ static void BookGetDsp(u_char model_type, u_char model_no, u_char msg0_no, u_cha
             msg_dsp = 2;
         }
     break;
-    case 11:
+    case STEP_B07:
         msg_type = 0xff;
         msg_dsp = 3;
 
@@ -376,7 +418,7 @@ static void BookGetDsp(u_char model_type, u_char model_no, u_char msg0_no, u_cha
         }
         else if (fade_ctr.msg == 0)
         {
-            file_dsp.stp = 3;
+            file_dsp.stp = END;
         }
     break;
     }
@@ -395,9 +437,9 @@ static int PhotGetMain()
     PhotGetPad(get_ctrl.type,get_ctrl.no);
     PhotGetDsp(get_ctrl.type,get_ctrl.no,get_ctrl.msg0,get_ctrl.msg1);
 
-    if (file_dsp.stp == 3)
+    if (file_dsp.stp == END)
     {
-        file_dsp.stp = 0;
+        file_dsp.stp = START;
         eff_blur_off = 0;
 
         SendManMdlTex();
@@ -417,65 +459,55 @@ static void PhotGetPad(u_char model_type, u_char model_no)
 {
     switch(file_dsp.stp)
     {
-    case 0:
-    case 1:
-    case 2:
-    case 3:
-    case 4:
-    case 5:
-    case 6:
-    case 7:
-    case 8:
-    case 9:
-    case 10:
-    case 11:
-    case 13:
-    case 15:
-    case 18:
+    case START:
+    case INIT:
+    case ERROR:
+    case END:
+    case STEP_B00:
+    case STEP_B01:
+    case STEP_B02:
+    case STEP_B03:
+    case STEP_B04:
+    case STEP_B05:
+    case STEP_B06:
+    case STEP_B07:
+    case STEP_P01:
+    case STEP_P03:
+    case STEP_P06:
         // do nothing ...
     break;
-    case 12:
-        if (*key_now[6] != 1 && *key_now[5] != 1)
+    case STEP_P00:
+        if (PAD_BTN_PRESSED(PAD_SQUARE) || PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
-            break;
+            if (fade_ctr.msg_end != 0)
+            {
+                file_dsp.stp = STEP_P01;
+
+                SeStartFix(11, 0, 0x1000, 0x1000, 0);
+            }
         }
-
-        if (fade_ctr.msg_end == 0)
-        {
-            break;
-        }
-
-        file_dsp.stp = 13;
-
-        SeStartFix(11, 0, 0x1000, 0x1000, 0);
     break;
-    case 14:
-        if (*key_now[6] != 1 && *key_now[5] != 1)
+    case STEP_P02:
+        if (PAD_BTN_PRESSED(PAD_SQUARE) || PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
-            break;
+            file_dsp.stp = STEP_P03;
         }
-
-        file_dsp.stp = 15;
     break;
-    case 16:
-        if (*key_now[6] != 1 && *key_now[5] != 1)
+    case STEP_P04:
+        if (PAD_BTN_PRESSED(PAD_SQUARE) || PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
-            break;
+            file2d.scl = 1.0f;
+
+            file_dsp.stp = STEP_P05;
         }
-
-        file2d.scl = 1.0f;
-
-        file_dsp.stp = 17;
     break;
-    case 17:
-        if (*key_now[6] != 1 && *key_now[5] != 1)
+    case STEP_P05:
+        if (PAD_BTN_PRESSED(PAD_SQUARE) || PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
-            break;
-        }
-
-        if (fade_ctr.msg_end != 0)
-        {
-            file_dsp.stp = 18;
+            if (fade_ctr.msg_end != 0)
+            {
+                file_dsp.stp = STEP_P06;
+            }
         }
     break;
     }
@@ -500,26 +532,26 @@ static void PhotGetDsp(u_char model_type, u_char model_no, u_char msg0_no, u_cha
 
     switch(file_dsp.stp)
     {
-    case 0:
+    case START:
         chng_tm = 0;
 
         if (file_pct != 0xff)
         {
             if (igt_load_id == -1)
             {
-                igt_load_id = LoadItem2D(4, file_pct);
+                igt_load_id = LoadItem2D(GET_ITM_TYPE_ITEM, file_pct);
             }
             else if (IsLoadEnd(igt_load_id) != 0)
             {
                 igt_load_id = -1;
-                file_dsp.stp = 1;
+                file_dsp.stp = INIT;
             }
         }
     break;
-    case 1:
-        file_dsp.stp = 12;
+    case INIT:
+        file_dsp.stp = STEP_P00;
     break;
-    case 12:
+    case STEP_P00:
         if (msg0_no != 0xff)
         {
             msg_no = msg0_no;
@@ -527,10 +559,10 @@ static void PhotGetDsp(u_char model_type, u_char model_no, u_char msg0_no, u_cha
         }
         else
         {
-            file_dsp.stp = 13;
+            file_dsp.stp = STEP_P01;
         }
     break;
-    case 13:
+    case STEP_P01:
         fade_type = 3;
         name_dsp = 1;
 
@@ -548,27 +580,27 @@ static void PhotGetDsp(u_char model_type, u_char model_no, u_char msg0_no, u_cha
         }
         else
         {
-            file_dsp.stp = 14;
+            file_dsp.stp = STEP_P02;
         }
     break;
-    case 14:
+    case STEP_P02:
         fade_type = 3;
         name_dsp = 1;
         msg_dsp = 3;
     break;
-    case 15:
+    case STEP_P03:
         fade_type = 3;
         file2d.scl = 1.5f;
-        file_dsp.stp = 16;
+        file_dsp.stp = STEP_P04;
         msg_type = 0xff;
         msg_dsp = 3;
     break;
-    case 16:
+    case STEP_P04:
         fade_type = 1;
         msg_type = 0xff;
         msg_dsp = 3;
     break;
-    case 17:
+    case STEP_P05:
         fade_type = 3;
 
         if (msg1_no != 0xff)
@@ -585,7 +617,7 @@ static void PhotGetDsp(u_char model_type, u_char model_no, u_char msg0_no, u_cha
             file2d.alp = (file_dsp.dsp * 128)  / 16.0f;
         }
     break;
-    case 18:
+    case STEP_P06:
         msg_type = 0xff;
         msg_dsp = 3;
 
@@ -598,7 +630,7 @@ static void PhotGetDsp(u_char model_type, u_char model_no, u_char msg0_no, u_cha
         }
         else if (fade_ctr.msg == 0)
         {
-            file_dsp.stp = 3;
+            file_dsp.stp = END;
         }
     break;
     }
@@ -615,9 +647,9 @@ static int ItemGetMain()
     ItemGetPad(get_ctrl.type, get_ctrl.no);
     ItemGetDsp(get_ctrl.type, get_ctrl.no, get_ctrl.msg0, get_ctrl.msg1);
 
-    if (file_dsp.stp == 3)
+    if (file_dsp.stp == END)
     {
-        file_dsp.stp = 0;
+        file_dsp.stp = START;
 
         eff_blur_off = 0;
 
@@ -651,44 +683,44 @@ static void ItemGetPad(u_char model_type, u_char model_no)
 
     switch(file_dsp.stp)
     {
-    case 0:
-    case 1:
-    case 3:
-    case 4:
-    case 5:
-    case 6:
-    case 7:
-    case 8:
-    case 9:
-    case 10:
-    case 11:
-    case 12:
-    case 13:
-    case 14:
-    case 15:
-    case 16:
-    case 17:
-    case 18:
-    case 20:
-    case 23:
+    case START:
+    case INIT:
+    case END:
+    case STEP_B00:
+    case STEP_B01:
+    case STEP_B02:
+    case STEP_B03:
+    case STEP_B04:
+    case STEP_B05:
+    case STEP_B06:
+    case STEP_B07:
+    case STEP_P00:
+    case STEP_P01:
+    case STEP_P02:
+    case STEP_P03:
+    case STEP_P04:
+    case STEP_P05:
+    case STEP_P06:
+    case STEP_I01:
+    case STEP_I04:
         // do nothing ...
     break;
-    case 19:
-        if (*key_now[6] == 1 || *key_now[5] == 1)
+    case STEP_I00:
+        if (PAD_BTN_PRESSED(PAD_SQUARE) || PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
             if (fade_ctr.msg_end != 0)
             {
-                file_dsp.stp = 20;
+                file_dsp.stp = STEP_I01;
             }
         }
     break;
-    case 21:
-        stp = 2;
+    case STEP_I02:
+        stp = ERROR;
         if (model_no == 8)
         {
             if (get_ctrl.itm_num == 0)
             {
-                file_dsp.stp = 22;
+                file_dsp.stp = STEP_I03;
                 SeStartFix(11, 0, 0x1000, 0x1000, 0);
             }
             else
@@ -700,7 +732,7 @@ static void ItemGetPad(u_char model_type, u_char model_no)
         {
             if (get_ctrl.itm_num < 99)
             {
-                file_dsp.stp = 22;
+                file_dsp.stp = STEP_I03;
                 SeStartFix(11, 0, 0x1000, 0x1000, 0);
             }
             else
@@ -709,19 +741,19 @@ static void ItemGetPad(u_char model_type, u_char model_no)
             }
         }
     break;
-    case 2:
-        if (*key_now[6] == 1 || *key_now[5] == 1)
+    case ERROR:
+        if (PAD_BTN_PRESSED(PAD_SQUARE) || PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
             file_dsp.stts = 1;
-            file_dsp.stp = 23;
+            file_dsp.stp = STEP_I04;
         }
     break;
-    case 22:
-        if (*key_now[6] == 1 || *key_now[5] == 1)
+    case STEP_I03:
+        if (PAD_BTN_PRESSED(PAD_SQUARE) || PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
             if (fade_ctr.msg_end != 0)
             {
-                file_dsp.stp = 23;
+                file_dsp.stp = STEP_I04;
             }
         }
     break;
@@ -744,7 +776,7 @@ static void ItemGetDsp(u_char model_type, u_char model_no, u_char msg0_no, u_cha
 
     switch(file_dsp.stp)
     {
-    case 0:
+    case START:
         chng_tm = 0;
 
         if (igt_load_id == -1)
@@ -754,13 +786,13 @@ static void ItemGetDsp(u_char model_type, u_char model_no, u_char msg0_no, u_cha
         else if (IsLoadEnd(igt_load_id) != 0)
         {
             igt_load_id = -1;
-            file_dsp.stp = 1;
+            file_dsp.stp = INIT;
         }
     break;
-    case 1:
-        file_dsp.stp = 19;
+    case INIT:
+        file_dsp.stp = STEP_I00;
     break;
-    case 19:
+    case STEP_I00:
         if (msg0_no != 0xff)
         {
             msg_no = msg0_no;
@@ -768,10 +800,10 @@ static void ItemGetDsp(u_char model_type, u_char model_no, u_char msg0_no, u_cha
         }
         else
         {
-            file_dsp.stp = 20;
+            file_dsp.stp = STEP_I01;
         }
     break;
-    case 20:
+    case STEP_I01:
         fade_type = 3;
 
         if (msg0_no != 0xff)
@@ -789,19 +821,19 @@ static void ItemGetDsp(u_char model_type, u_char model_no, u_char msg0_no, u_cha
         }
         else
         {
-            file_dsp.stp = 21;
+            file_dsp.stp = STEP_I02;
         }
     break;
-    case 21:
+    case STEP_I02:
         fade_type = 1;
         msg_dsp = 4;
     break;
-    case 2:
+    case ERROR:
         fade_type = 3;
-        msg_no = 0;
+        msg_no = GET_MSG_ERR;
         msg_dsp = 6;
     break;
-    case 22:
+    case STEP_I03:
         fade_type = 3;
 
         if (msg1_no != 0xff)
@@ -810,7 +842,7 @@ static void ItemGetDsp(u_char model_type, u_char model_no, u_char msg0_no, u_cha
             msg_dsp = 6;
         }
     break;
-    case 23:
+    case STEP_I04:
         msg_type = 0xff;
         msg_dsp = 3;
 
@@ -823,7 +855,7 @@ static void ItemGetDsp(u_char model_type, u_char model_no, u_char msg0_no, u_cha
         }
         else if (fade_ctr.msg == 0)
         {
-            file_dsp.stp = 3;
+            file_dsp.stp = END;
         }
     break;
     }
@@ -836,6 +868,10 @@ static void ItemGetDsp(u_char model_type, u_char model_no, u_char msg0_no, u_cha
 static void GetStr(u_char model_type, u_char model_no, u_char str_dsp)
 {
     float str_add;
+#if defined(BUILD_JP_VERSION)
+    char num;
+    char pos_y;
+#endif
 
     str_add = 8.0f;
 
@@ -865,11 +901,28 @@ static void GetStr(u_char model_type, u_char model_no, u_char str_dsp)
     if (fade_ctr.str != 0)
     {
         CmnWindow(9, -68, 0, fade_ctr.str, 0x80);
+
+#if defined(BUILD_JP_VERSION)
+        NextPageNavi(file_dsp.open_page, file_dsp.page_all, 535, fade_ctr.str, 0, 0);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         NextPageNavi(file_dsp.open_page, file_dsp.page_all, 539, fade_ctr.str, 0, 0);
-        PutStringYW(model_type + 10, model_no, 317, 35, 0x808080, fade_ctr.str, 0x19000, 1);
-        PutPage2YW(model_type + 18, model_no, file_dsp.open_page, 90, 110, 0x808080, fade_ctr.str, 0x19000);
+#endif
+
+#if defined(BUILD_JP_VERSION)
+        num = ChkChrNumYW(model_type + IGMSG_FILE0_NAME, model_no);
+        pos_y = ((13 - num) * 24) * 0.5;
+
+        PutStringYW(model_type + IGMSG_FILE0_NAME, model_no, pos_y + 162, 35, 0x808080, fade_ctr.str, 0x19000, 0);
+        PutPageYW(model_type + IGMSG_FILE0_DAT,model_no,file_dsp.open_page,0x5a,0x6e,0x808080,fade_ctr.str,0x19000);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+        PutStringYW(model_type + IGMSG_FILE0_NAME, model_no, 317, 35, 0x808080, fade_ctr.str, 0x19000, 1);
+        PutPage2YW(model_type + IGMSG_FILE0_DAT, model_no, file_dsp.open_page, 90, 110, 0x808080, fade_ctr.str, 0x19000);
+#endif
         PageInfo(file_dsp.open_page, file_dsp.page_all, 0, -13, fade_ctr.str);
+
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         DispCaption(21, fade_ctr.str);
+#endif
     }
 }
 
@@ -955,13 +1008,13 @@ static void GetFad(u_char model_type, u_char model_no, u_char fade, u_char time)
         }
     }
 
-    if (file_dsp.stp >= 2)
+    if (file_dsp.stp >= ERROR)
     {
         chr = (chr_now << 16) + (chr_now << 8) + chr_now;
 
         SetPanel2(0x1000, 0.0f, 0.0f, 640.0f, 448.0f, 1, 0, 0, 0, chr_now);
 
-        if (model_type == 4)
+        if (model_type == GET_ITM_TYPE_ITEM)
         {
             file2d.tex_addr = VramItem2D(0, 0);
 
@@ -974,7 +1027,7 @@ static void GetFad(u_char model_type, u_char model_no, u_char fade, u_char time)
             DspItem2D(file2d.tex_addr, -160.0f, 0.0f, chr, file2d.alp, 1.5f, 1.5f, 0x32);
         }
 
-        PolySquareYW(0.0f, 0.0f, 0x280, 0x1c0, 0, ply_now, 1.0f, 1.0f, 0x2d000, 0, 0, 0);
+        VER_POLY_SQUARE_YW(0.0f, 0.0f, 0x280, 0x1c0, 0, ply_now, 1.0f, 1.0f, 0x2d000, 0, 0);
     }
 }
 
@@ -983,6 +1036,10 @@ static void FileName(u_char model_type, u_char model_no, u_char fade, u_char tim
     u_char msg_knd;
     char book_adj;
     u_char val;
+#if defined(BUILD_JP_VERSION)
+    char num;
+    char pos_y;
+#endif
 
     if (fade == 0)
     {
@@ -1002,31 +1059,41 @@ static void FileName(u_char model_type, u_char model_no, u_char fade, u_char tim
         fade_ctr.nam = 100;
     }
 
-    if (file_dsp.stp > 1)
+    if (file_dsp.stp > INIT)
     {
-        if (model_type == 0 || model_type == 1 || model_type == 2)
+        if (model_type == GET_ITM_TYPE_FILE0 || model_type == GET_ITM_TYPE_FILE1 || model_type == GET_ITM_TYPE_FILE2)
         {
             book_adj = 100;
-            msg_knd = model_type + 10;
+            msg_knd = model_type + IGMSG_FILE0_NAME;
         }
-        else if (model_type == 3)
+        else if (model_type == GET_ITM_TYPE_PHOT)
         {
             book_adj = 0;
-            msg_knd = 13;
+            msg_knd = IGMSG_PHOTO_NAME;
         }
-        else if (model_type == 4)
+        else if (model_type == GET_ITM_TYPE_ITEM)
         {
             book_adj = 0;
-            msg_knd = 24;
+            msg_knd = IGMSG_ITEM_NAME;
         }
 
+#if defined(BUILD_JP_VERSION)
+        num = ChkChrNumYW(msg_knd, model_no);
+        pos_y = ((8 - num) * 24) * 0.5;
+
+        PutStringYW(msg_knd, model_no, pos_y + 215, 260 - book_adj, 0x808080, (file2d.alp * fade_ctr.nam) / 100.0f, 0x19000, 0);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         PutStringYW(msg_knd, model_no, 320, 260 - book_adj, 0x808080, (file2d.alp * fade_ctr.nam) / 100.0f, 0x19000, 1);
+#endif
     }
 }
 
 static void GetMsg(u_char msg_type, u_char msg_no, u_char msg_dsp)
 {
     float msg_add;
+#if defined(BUILD_JP_VERSION)
+    float msg_alpha;
+#endif
     float btn_alp;
 
     switch(msg_dsp)
@@ -1098,19 +1165,31 @@ static void GetMsg(u_char msg_type, u_char msg_no, u_char msg_dsp)
 
     if (msg_no != 0xff)
     {
-        if (msg_no == 1)
+        if (msg_no == GET_MSG_SLCT)
         {
-            PutStringYW(msg_type, 1, 80, 320, 0x808080, fade_ctr.msg, 0xf000, 0);
-            PutStringYW(6, 17, 48, 346, 0x808080, fade_ctr.msg, 0xf000, 0);
+            PutStringYW(msg_type, GET_MSG_SLCT, 80, 320, 0x808080, fade_ctr.msg, 0xf000, 0);
+#if defined(BUILD_JP_VERSION)
+            PutStringYW(IGMSG_MENU_MSG, MENU_MSG_YES_NO, 96, 346, 0x808080, fade_ctr.msg, 0xf000, 0);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+            PutStringYW(IGMSG_MENU_MSG, MENU_MSG_YES_NO, 48, 346, 0x808080, fade_ctr.msg, 0xf000, 0);
+#endif
 
+#if defined(BUILD_JP_VERSION)
+            YesNoCrslOKR(0x14000, (file_dsp.csr[0] * 105 + 243), 344.0f, 0x808080, fade_ctr.msg, 1.5f);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
             YesNoCrslOKR(0x14000, (file_dsp.csr[0] * 132 + 184), 344.0f, 0x808080, fade_ctr.msg, 2.0f);
+#endif
         }
         else
         {
             fade_ctr.msg_end = PutMessageYW(msg_type, msg_no, 80, 320, 0x808080, fade_ctr.msg, 0x19000);
-            btn_alp = (SgSinf((file_dsp.cnt * (PI * 2)) / 60.0f) * fade_ctr.msg + fade_ctr.msg) * 0.5f;
-
+#if defined(BUILD_JP_VERSION)
+            msg_alpha = fade_ctr.msg; btn_alp = (VER_SINF((file_dsp.cnt * (PI * 2)) / 60.0f) * msg_alpha + msg_alpha) * 0.5f;
+            DrawButtonTex(0x14000, 2, 536.0f, 368.0f, btn_alp);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+            btn_alp = (VER_SINF((file_dsp.cnt * (PI * 2)) / 60.0f) * fade_ctr.msg + fade_ctr.msg) * 0.5f;
             DrawButtonTex(0x14000, 3, 536.0f, 368.0f, btn_alp);
+#endif
         }
     }
 

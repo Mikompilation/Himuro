@@ -447,7 +447,7 @@ void EventMain()
             dat_adr += 4;
         break;
         case ITEM_FIND:
-            ItemGet(4, dat_adr[1], dat_adr[2], dat_adr[4]);
+            ItemGet(GET_ITM_TYPE_ITEM, dat_adr[1], dat_adr[2], dat_adr[4]);
 
             loop = 0;
             ev_wrk.get_item = 1;

@@ -6865,4 +6865,50 @@ enum {
     NRM_ALBM_CMD_NUM = 4
 };
 
+enum {
+    GET_FILE_BOOK = 1,
+    GET_FILE_PHOT = 2,
+    GET_FILE_ITEM = 3
+};
+
+enum {
+    SV_PNT_WIN_MSG00 = 0,
+    SV_PNT_WIN_MSG01 = 1,
+    SV_PNT_WIN_MSG02 = 2,
+    SV_PNT_WIN_MSG03 = 3,
+    SV_PNT_WIN_MSG04 = 4,
+    SV_PNT_WIN_MSG05 = 5,
+    SV_PNT_WIN_MSG06 = 6,
+    SV_PNT_WIN_MSG07 = 7,
+    SV_PNT_ALBUM_MSG00 = 8,
+    SV_PNT_ALBUM_MSG01 = 9,
+    GAME_OVER_MSG00 = 10,
+    GAME_OVER_MSG01 = 11,
+    GAME_OVER_MSG02 = 12,
+    PAUSE_MSG01 = 13,
+    PAUSE_MSG02 = 14,
+    PAUSE_MSG03 = 15,
+    PAUSE_MSG04 = 16,
+    MENU_MSG_YES_NO = 17,
+    FNDR_CHRG00 = 18,
+    FNDR_CHRG01 = 19,
+    FNDR_CHRG02 = 20,
+    FNDR_CHRG03 = 21,
+    FNDR_CHRG04 = 22,
+    FNDR_CHRG05 = 23,
+    FNDR_CHRG06 = 24,
+    FNDR_CHRG07 = 25,
+    FNDR_CHRG08 = 26,
+    FNDR_CHRG09 = 27,
+    LOCK_BTL00 = 28,
+    LOCK_BTL01 = 29
+};
+
+enum {
+    GET_MSG_ERR = 0,
+    GET_MSG_SLCT = 1,
+    GET_MSG_000B = 2,
+    GET_MSG_000A = 3
+};
+
 #endif // ENUMS_H

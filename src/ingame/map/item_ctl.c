@@ -416,7 +416,7 @@ void GetMapItem(u_short get_no)
     }
     else
     {
-        ItemGet(4, map_item_dat[get_no].item_no, map_item_dat[get_no].get_msg[0], map_item_dat[get_no].get_msg[1]);
+        ItemGet(GET_ITM_TYPE_ITEM, map_item_dat[get_no].item_no, map_item_dat[get_no].get_msg[0], map_item_dat[get_no].get_msg[1]);
 
         if (map_item_dat[get_no].item_no == 8)
         {

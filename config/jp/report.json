@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 79.13891825833825,
+    "fuzzy_match_percent": 79.74274650884973,
     "total_code": "1165232",
-    "matched_code": "922152",
-    "matched_code_percent": 79.13891825833825,
+    "matched_code": "929188",
+    "matched_code_percent": 79.74274650884973,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 2816,
-    "matched_functions_percent": 82.96994696523277,
+    "matched_functions": 2835,
+    "matched_functions_percent": 83.52975839717148,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -21871,9 +21871,14 @@
     {
       "name": "ingame/menu/item_get",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "7036",
+        "matched_code": "7036",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 19,
+        "matched_functions": 19,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -21881,14 +21886,17 @@
         {
           "name": ".text",
           "size": "7080",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -21896,96 +21904,115 @@
         {
           "name": "ItemGet",
           "size": "260",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ItemGetCtrl",
           "size": "180",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "BookGetMain",
           "size": "108",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PhotGetMain",
           "size": "108",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ItemGetMain__local_1",
           "size": "132",
-          "metadata": {}
+          "metadata": {},
+          "fuzzy_match_percent": 100.0
         },
         {
           "name": "BookGetPad",
           "size": "560",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "BookGetDsp",
           "size": "708",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetFad",
           "size": "756",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetMsg",
           "size": "832",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetStr",
           "size": "464",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FileName",
           "size": "436",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PhotGetPad",
           "size": "324",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PhotGetDsp",
           "size": "632",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ItemGetPad",
           "size": "348",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ItemGetDsp",
           "size": "548",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "NextPageNavi",
           "size": "376",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CheckTape",
           "size": "104",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PlayTape",
           "size": "48",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "StopTape",
           "size": "112",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -25725,14 +25752,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 79.13891825833825,
+        "fuzzy_match_percent": 79.74274650884973,
         "total_code": "1165232",
-        "matched_code": "922152",
-        "matched_code_percent": 79.13891825833825,
+        "matched_code": "929188",
+        "matched_code_percent": 79.74274650884973,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 2816,
-        "matched_functions_percent": 82.96994696523277,
+        "matched_functions": 2835,
+        "matched_functions_percent": 83.52975839717148,
         "complete_data_percent": 100.0,
         "total_units": 154
       }

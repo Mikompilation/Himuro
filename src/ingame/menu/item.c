@@ -1108,7 +1108,7 @@ static void ItemInTheLenz2D(short int pos_x, short int pos_y, short int alpha)
         {
             if (iew.load_id == -1) {
                 iew.itm_loading = iew.itm_csr_now;
-                iew.load_id = LoadItem2D(4, iew.itm_loading);
+                iew.load_id = LoadItem2D(GET_ITM_TYPE_ITEM, iew.itm_loading);
                 iew.itm_dsp_flg = 1;
             }
         }
