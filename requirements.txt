@@ -5,5 +5,4 @@ spimdisasm==1.35.0
 splat64[mips]==0.34.1
 pydantic>=2.0,<3.0
 pyelftools
-numpy
 tqdm

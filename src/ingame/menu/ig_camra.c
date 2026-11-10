@@ -596,10 +596,6 @@ void CameraCustomSubAbility(char *err)
             {
                 *err = 0;
 
-#if defined(MATCHING_DECOMP)
-                do {} while(0); // HACK: mitigates assembler short loop bug
-#endif
-
                 if (cmr_menu_wrk.csr[5] != 0)
                 {
                     cmr_menu_wrk.csr[5] = 0;
@@ -886,10 +882,6 @@ void CameraCustomSpecialAbility(char *err)
             )
             {
                 *err = 0;
-
-#if defined(MATCHING_DECOMP)
-                do {} while(0); // HACK: mitigates assembler short loop bug
-#endif
 
                 if (cmr_menu_wrk.csr[5] != 0)
                 {

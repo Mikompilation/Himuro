@@ -1,4 +1,5 @@
 # pyright: reportInvalidTypeForm=false
+# ruff: noqa: I001 UP035 UP006 PYI05 B009 S110 C401 PLW1510 BLE001 TRY201 PYI055
 from __future__ import annotations
 
 import os
@@ -7,10 +8,12 @@ import io
 import enum
 import math
 import tqdm
+import shutil
 import argparse
 import pydantic
 import subprocess
 
+from concurrent.futures import ThreadPoolExecutor
 from ctypes import c_uint16, c_int16, c_uint64, c_uint32, c_int32, c_uint8, c_float, sizeof as c_sizeof
 from typing import Protocol, BinaryIO, Type, Iterable, cast
 from pathlib import Path
@@ -2375,6 +2378,14 @@ def parse_data_vars(data_vars_txt: Path, strict: bool = True):
     return data_vars, addr_vals
 
 
+def format_headers(header_paths: list[Path]):
+    try:
+        subprocess.run(["clang-format", "-i", "--style=Microsoft", *header_paths])
+    except Exception:
+        # formatting is best effort for now
+        pass
+
+
 def parse_data(lang: str):
     data_vars_txt = Path("config") / lang / "data_vars.txt"
 
@@ -2402,6 +2413,8 @@ def parse_data(lang: str):
         vram_elf = VRamElf(elf)
         CStructure.__elf__ = vram_elf
 
+        header_paths: list[Path] = []
+
         for data_var in tqdm.tqdm(data_vars, desc="Extracting data"):
             header_path = include_path / f"{data_var.name}.h"
 
@@ -2413,11 +2426,17 @@ def parse_data(lang: str):
 
                 fw.write(data_var.data_var_dumps(addr_vals))
 
-            try:
-                subprocess.run(["clang-format", "-i", "--style=Microsoft", header_path])
-            except Exception:
-                # formatting is best effort for now
-                pass
+            header_paths.append(header_path)
+
+    if header_paths and shutil.which("clang-format"):
+        print(f"Formatting {len(header_paths)} headers with clang-format...", flush=True)
+
+        # One launch per core: starting clang-format costs far more than formatting a file.
+        jobs = min(os.cpu_count() or 1, len(header_paths))
+        chunks = [header_paths[i::jobs] for i in range(jobs)]
+
+        with ThreadPoolExecutor(jobs) as pool:
+            list(pool.map(format_headers, chunks))
 
 
 def main():

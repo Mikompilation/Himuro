@@ -7,255 +7,246 @@
 typedef struct RELATION_DAT RELATION_DAT;
 typedef struct RELATION_PRT RELATION_PRT;
 
-struct RELATION_PRT
-{ // 0x54
-    /* 0x00 */ RELATION_PRT *left_prt;
-    /* 0x04 */ RELATION_PRT *right_prt;
-    /* 0x08 */ SPRT_DAT *ssd_p;
-    /* 0x0c */ short int st_index[4];
-    /* 0x14 */ short int start_no;
-    /* 0x16 */ short int end_no;
-    /* 0x18 */ short int attribute;
-    /* 0x1c */ int csr_y;
-    /* 0x20 */ short int wk_scl[8][2];
-    /* 0x40 */ short int wk_pos[2][4];
-    /* 0x50 */ short int mission_no;
+struct RELATION_PRT {
+    RELATION_PRT *left_prt;
+    RELATION_PRT *right_prt;
+    SPRT_DAT *ssd_p;
+    short int st_index[4];
+    short int start_no;
+    short int end_no;
+    short int attribute;
+    int csr_y;
+    short int wk_scl[8][2];
+    short int wk_pos[2][4];
+    short int mission_no;
 };
 
-typedef struct
-{ // 0x12
-    /* 0x00 */ short int x;
-    /* 0x02 */ short int y;
-    /* 0x04 */ short int u;
-    /* 0x06 */ short int v;
-    /* 0x08 */ short int exp_u;
-    /* 0x0a */ short int exp_v;
-    /* 0x0c */ short int n_rabel;
-    /* 0x0e */ short int tbl_no;
-    /* 0x10 */ short int pad;
+typedef struct {
+    short int x;
+    short int y;
+    short int u;
+    short int v;
+    short int exp_u;
+    short int exp_v;
+    short int n_rabel;
+    short int tbl_no;
+    short int pad;
 } RELATION_NAME_PLATE;
 
-typedef struct
-{ // 0xc
-    /* 0x0 */ short int com_idx;
-    /* 0x2 */ short int attribute;
-    /* 0x4 */ short int x1;
-    /* 0x6 */ short int y1;
-    /* 0x8 */ short int len;
-    /* 0xa */ short int pad;
+typedef struct {
+    short int com_idx;
+    short int attribute;
+    short int x1;
+    short int y1;
+    short int len;
+    short int pad;
 } RELATION_YAJI;
 
-typedef struct
-{ // 0x24
-    /* 0x00 */ short int disp_pos;
-    /* 0x02 */ short int attribute;
-    /* 0x04 */ SPRT_DAT *ssd_p[4];
-    /* 0x14 */ short int flp_num[4];
-    /* 0x1c */ short int dat_idx[2];
-    /* 0x20 */ short int pad;
+typedef struct {
+    short int disp_pos;
+    short int attribute;
+    SPRT_DAT *ssd_p[4];
+    short int flp_num[4];
+    short int dat_idx[2];
+    short int pad;
 } RELATION_COM;
 
-typedef struct
-{ // 0x28
-    /* 0x00 */ short int offx;
-    /* 0x02 */ short int offy;
-    /* 0x04 */ short int a;
-    /* 0x06 */ short int attribute;
-    /* 0x08 */ short int mode;
-    /* 0x0a */ short int load_id;
-    /* 0x10 */ u_long tex_keep;
-    /* 0x18 */ short int init_switch;
-    /* 0x1c */ RELATION_DAT *now_dat;
-    /* 0x20 */ RELATION_PRT *now_prt;
-    /* 0x24 */ short int pad;
+typedef struct {
+    short int offx;
+    short int offy;
+    short int a;
+    short int attribute;
+    short int mode;
+    short int load_id;
+    u_long tex_keep;
+    short int init_switch;
+    RELATION_DAT *now_dat;
+    RELATION_PRT *now_prt;
+    short int pad;
 } RELATION_CSR;
 
-struct RELATION_DAT
-{ // 0x30
-    /* 0x00 */ RELATION_DAT *up_p;
-    /* 0x04 */ RELATION_DAT *down_p;
-    /* 0x08 */ RELATION_DAT *left_p;
-    /* 0x0c */ RELATION_DAT *right_p;
-    /* 0x10 */ RELATION_PRT *parent_p;
-    /* 0x14 */ RELATION_NAME_PLATE *plate_p;
-    /* 0x18 */ SPRT_DAT *ssd_p;
-    /* 0x1c */ SPRT_DAT *fnt_p;
-    /* 0x20 */ SPRT_DAT *fla_p;
-    /* 0x24 */ short int dat_idx;
-    /* 0x26 */ short int attribute;
-    /* 0x28 */ short int msg_idx;
-    /* 0x2a */ short int tm2_id;
-    /* 0x2c */ short int dsp_pos;
-    /* 0x2e */ short int pad;
+struct RELATION_DAT {
+    RELATION_DAT *up_p;
+    RELATION_DAT *down_p;
+    RELATION_DAT *left_p;
+    RELATION_DAT *right_p;
+    RELATION_PRT *parent_p;
+    RELATION_NAME_PLATE *plate_p;
+    SPRT_DAT *ssd_p;
+    SPRT_DAT *fnt_p;
+    SPRT_DAT *fla_p;
+    short int dat_idx;
+    short int attribute;
+    short int msg_idx;
+    short int tm2_id;
+    short int dsp_pos;
+    short int pad;
 };
 
-typedef struct
-{ // 0x6
-    /* 0x0 */ short int x;
-    /* 0x2 */ short int y;
-    /* 0x4 */ u_char mark;
-    /* 0x5 */ u_char str;
+typedef struct {
+    short int x;
+    short int y;
+    u_char mark;
+    u_char str;
 } CAPTION_DATA_SUB;
 
-typedef struct
-{ // 0x1c
-    /* 0x00 */ short int w;
-    /* 0x02 */ short int h;
-    /* 0x04 */ CAPTION_DATA_SUB cds[4];
+typedef struct {
+    short int w;
+    short int h;
+    CAPTION_DATA_SUB cds[4];
 } CAPTION_DATA;
 
-typedef struct
-{ // 0x8
-    /* 0x0 */ short int x;
-    /* 0x2 */ short int y;
-    /* 0x4 */ short int no;
-    /* 0x6 */ short int pnl;
+typedef struct {
+    short int x;
+    short int y;
+    short int no;
+    short int pnl;
 } CAPTION_LIST;
 
-typedef struct { // 0x18
-	/* 0x00 */ u_long tx;
-	/* 0x08 */ int lod_id;
-	/* 0x0c */ short int lod_no;
-	/* 0x0e */ short int vrm_no;
-	/* 0x10 */ short int dsp_ok;
+typedef struct {
+    u_long tx;
+    int lod_id;
+    short int lod_no;
+    short int vrm_no;
+    short int dsp_ok;
 } MEM_BOX;
 
-typedef struct { // 0x30
-	/* 0x00 */ u_long tex_now;
-	/* 0x08 */ u_long tex_bak;
-	/* 0x10 */ int load_id;
-	/* 0x14 */ u_char alp_now;
-	/* 0x15 */ u_char alp_bak;
-	/* 0x16 */ u_char f_mode;
-	/* 0x17 */ u_char mod;
-	/* 0x18 */ u_char knd;
-	/* 0x19 */ u_char dtl;
-	/* 0x1a */ u_char lst_top;
-	/* 0x1b */ u_char pic_alp[4];
-	/* 0x1f */ u_char page_all;
-	/* 0x20 */ u_char open_page;
-	/* 0x21 */ u_char poss_chk;
-	/* 0x22 */ u_char csr_bak;
-	/* 0x23 */ u_char csr_now;
-	/* 0x24 */ u_char loading;
-	/* 0x25 */ u_char can_dsp;
-	/* 0x26 */ u_char dsp_flg;
-	/* 0x27 */ u_char pht_alp;
-	/* 0x28 */ u_char pad_lock;
+typedef struct {
+    u_long tex_now;
+    u_long tex_bak;
+    int load_id;
+    u_char alp_now;
+    u_char alp_bak;
+    u_char f_mode;
+    u_char mod;
+    u_char knd;
+    u_char dtl;
+    u_char lst_top;
+    u_char pic_alp[4];
+    u_char page_all;
+    u_char open_page;
+    u_char poss_chk;
+    u_char csr_bak;
+    u_char csr_now;
+    u_char loading;
+    u_char can_dsp;
+    u_char dsp_flg;
+    u_char pht_alp;
+    u_char pad_lock;
 } MENU_FILE;
 
-typedef struct { // 0x10
-	/* 0x0 */ u_long tex;
-	/* 0x8 */ u_char space;
-	/* 0x9 */ u_char rot;
+typedef struct {
+    u_long tex;
+    u_char space;
+    u_char rot;
 } PHOT_FILE;
 
 enum {
-	FILE_REL_START = 0,
-	FILE_REL_LOAD_WAIT = 1,
-	FILE_REL_TATEI = 2,
-	FILE_REL_MENU_LOAD_WAIT = 3,
-	FILE_REL_END = 4
+    FILE_REL_START = 0,
+    FILE_REL_LOAD_WAIT = 1,
+    FILE_REL_TATEI = 2,
+    FILE_REL_MENU_LOAD_WAIT = 3,
+    FILE_REL_END = 4
 };
 
-typedef struct { // 0x8
-	/* 0x0 */ int load_id;
-	/* 0x4 */ char step;
+typedef struct {
+    int load_id;
+    char step;
 } FILE_REL;
 
-typedef struct { // 0x8
-	/* 0x0 */ short int px;
-	/* 0x2 */ short int py;
-	/* 0x4 */ short int sx;
-	/* 0x6 */ short int sy;
+typedef struct {
+    short int px;
+    short int py;
+    short int sx;
+    short int sy;
 } DSP_PHT;
 
-typedef struct { // 0x6
-	/* 0x0 */ short int pht_no;
-	/* 0x2 */ short int lod_rq;
-	/* 0x4 */ short int mem_no;
+typedef struct {
+    short int pht_no;
+    short int lod_rq;
+    short int mem_no;
 } DSP_BOX;
 
 enum NAME_PLATE_RABEL {
-	SAKKA = 0,
-	SAKKA2 = 1,
-	JYOSYU = 2,
-	JYOSYU2 = 3,
-	HENSYU = 4,
-	HENSYU2 = 5,
-	TOUSYU = 6,
-	TOUSYU2 = 7,
-	KIRIE = 8,
-	KIRIE2 = 9,
-	KIRIE3 = 10,
-	KIRIE4 = 11,
-	SINKAN = 12,
-	SINKAN2 = 13,
-	KIMONO = 14,
-	KIMONO2 = 15,
-	KIMONO3 = 16,
-	RYOZO = 17,
-	RYOZO2 = 18,
-	YAE = 19,
-	YAE2 = 20,
-	MIKOTO = 21,
-	MIKOTO2 = 22,
-	MIKOTO3 = 23,
-	MAFUYU = 24,
-	MAFUYU2 = 25,
-	MAFUYU3 = 26,
-	MIKU = 27,
-	MIYUKI = 28,
-	MIYUKI2 = 29,
-	OMOI = 30,
-	OMOI2 = 31
+    SAKKA = 0,
+    SAKKA2 = 1,
+    JYOSYU = 2,
+    JYOSYU2 = 3,
+    HENSYU = 4,
+    HENSYU2 = 5,
+    TOUSYU = 6,
+    TOUSYU2 = 7,
+    KIRIE = 8,
+    KIRIE2 = 9,
+    KIRIE3 = 10,
+    KIRIE4 = 11,
+    SINKAN = 12,
+    SINKAN2 = 13,
+    KIMONO = 14,
+    KIMONO2 = 15,
+    KIMONO3 = 16,
+    RYOZO = 17,
+    RYOZO2 = 18,
+    YAE = 19,
+    YAE2 = 20,
+    MIKOTO = 21,
+    MIKOTO2 = 22,
+    MIKOTO3 = 23,
+    MAFUYU = 24,
+    MAFUYU2 = 25,
+    MAFUYU3 = 26,
+    MIKU = 27,
+    MIYUKI = 28,
+    MIYUKI2 = 29,
+    OMOI = 30,
+    OMOI2 = 31
 };
 
 enum PARENT_RABEL {
-	SAKKA_PRT = 0,
-	HIMURO_PRT = 1,
-	MUNA_PRT = 2,
-	HINA_PRT = 3,
-	OMOI_PRT = 4
+    SAKKA_PRT = 0,
+    HIMURO_PRT = 1,
+    MUNA_PRT = 2,
+    HINA_PRT = 3,
+    OMOI_PRT = 4
 };
 
 enum REL_DIRECTION {
-	R_UP = 0,
-	R_DOWN = 1,
-	R_LEFT = 2,
-	R_RIGHT = 3
+    R_UP = 0,
+    R_DOWN = 1,
+    R_LEFT = 2,
+    R_RIGHT = 3
 };
 
 enum REL_ALPB {
-	R_A = 0,
-	R_B = 1,
-	R_C = 2,
-	R_D = 3,
-	R_E = 4,
-	R_F = 5,
-	R_G = 6,
-	R_G2 = 7,
-	R_H = 8,
-	R_I = 9,
-	R_J = 10,
-	R_J2 = 11,
-	R_K = 12,
-	R_K2 = 13,
-	R_L = 14,
-	R_L2 = 15,
-	R_N = 16,
-	R_O = 17,
-	R_P = 18,
-	R_Q = 19,
-	R_R = 20,
-	R_S = 21,
-	R_T = 22,
-	R_U = 23,
-	R_V = 24,
-	R_W = 25,
-	R_X = 26,
-	R_Y = 27,
-	R_Z = 28
+    R_A = 0,
+    R_B = 1,
+    R_C = 2,
+    R_D = 3,
+    R_E = 4,
+    R_F = 5,
+    R_G = 6,
+    R_G2 = 7,
+    R_H = 8,
+    R_I = 9,
+    R_J = 10,
+    R_J2 = 11,
+    R_K = 12,
+    R_K2 = 13,
+    R_L = 14,
+    R_L2 = 15,
+    R_N = 16,
+    R_O = 17,
+    R_P = 18,
+    R_Q = 19,
+    R_R = 20,
+    R_S = 21,
+    R_T = 22,
+    R_U = 23,
+    R_V = 24,
+    R_W = 25,
+    R_X = 26,
+    R_Y = 27,
+    R_Z = 28
 };
 
 extern u_char file_kind[];

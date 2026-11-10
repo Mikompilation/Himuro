@@ -1,11 +1,10 @@
+# ruff: noqa: I001 UP035 BLE001 UP006 UP045
 from __future__ import annotations
 
 import io
 import sys
 import math
 import ctypes
-import numpy as np
-import numpy.typing as npt
 from collections.abc import Sized, Sequence
 from typing import Type, TypeVar, Any, cast, TextIO, BinaryIO, Optional
 from ctypes import LittleEndianStructure, Union, Array, c_uint32
@@ -74,14 +73,15 @@ class c_addr_ptr(c_uint32):
         return f"0x{self.value:x}"
 
 
-def print_arr(arr: npt.NDArray[np.int_], lst: list[Any], file: TextIO):
-    if arr.ndim > 1:
-        for x in arr:
+def print_arr(shape: list[int], lst: Sequence[Any], file: TextIO):
+    if len(shape) > 1:
+        step = math.prod(shape[1:])
+        for i in range(shape[0]):
             file.write("{")
-            print_arr(x, lst, file)
+            print_arr(shape[1:], lst[i * step : (i + 1) * step], file)
             file.write("},")
     else:
-        file.write(",".join(str(lst[i]) for i in arr))
+        file.write(",".join(str(x) for x in lst))
 
 
 def print_carr(arr: Sequence[Any], file: TextIO):
@@ -219,8 +219,7 @@ class CStructure(LittleEndianStructure, metaclass=LittleEndianStructureFieldsFro
                     stream.write(f"{s},\n")
 
         else:
-            idxs = np.arange(tot_numel).reshape(numel)
-            print_arr(idxs, cstructs, stream)
+            print_arr(numel, cstructs, stream)
         if not noarray:
             stream.write("}")
         stream.write(";\n\n")

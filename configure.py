@@ -51,7 +51,7 @@ TOOLS_DIR = ROOT / "tools"
 CROSS = "mips-ps2-decompals-"
 
 COMPILER = "ee-gcc2.9-991111-01"
-COMPILER_FLAGS = "-DMATCHING_DECOMP -O2 -g2 -gstabs"  # -malign-functions=3
+COMPILER_FLAGS = "-DMATCHING_DECOMP -O2 -g2 -gstabs -Wa,-as=/dev/null"  # -malign-functions=3
 
 LANGUAGES: dict[str, str] = {
     "SLUS_203.88": "us",
@@ -65,7 +65,6 @@ LANGUAGES: dict[str, str] = {
 # asm will be passed to `tools/python/fix_asm_matching.py` for patching.
 ASM_PATCH_LIST: list[str] = [
     "photo.c.o",
-    "ig_camra.c.o",
 ]
 
 BIN_PATH_LIST: list[str] = [

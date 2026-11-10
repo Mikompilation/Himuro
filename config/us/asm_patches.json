@@ -5,15 +5,5 @@
             [153, "lbu $3,%lo(ingame_wrk)($4)",        "lbu $3,%lo(ingame_wrk)($2)"       ],
             [156, "addiu $5,$4,%lo(ingame_wrk) # low", "addiu $5,$2,%lo(ingame_wrk) # low"]
         ]
-    },
-    "ig_camra.c.S": {
-        "CameraCustomSubAbility": [
-            [254, ".p2align 3", " .p2align 2"],
-            [380, ".p2align 3", " .p2align 2"]
-        ],
-        "CameraCustomSpecialAbility": [
-            [260, ".p2align 3", " .p2align 2"],
-            [386, ".p2align 3", " .p2align 2"]
-        ]
     }
 }
