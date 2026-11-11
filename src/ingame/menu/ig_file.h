@@ -29,7 +29,9 @@ typedef struct {
     short int exp_u;
     short int exp_v;
     short int n_rabel;
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     short int tbl_no;
+#endif
     short int pad;
 } RELATION_NAME_PLATE;
 
@@ -46,7 +48,9 @@ typedef struct {
     short int disp_pos;
     short int attribute;
     SPRT_DAT *ssd_p[4];
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     short int flp_num[4];
+#endif
     short int dat_idx[2];
     short int pad;
 } RELATION_COM;
@@ -255,8 +259,10 @@ extern RELATION_COM rel_com[];
 extern RELATION_PRT rel_prt[];
 extern RELATION_DAT rel_dat[];
 extern RELATION_YAJI rel_yaj[];
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 extern CAPTION_LIST caption_list[];
 extern CAPTION_DATA caption_data[];
+#endif
 extern RELATION_CSR rel_csr;
 
 void NewgameMenuFileInit();
@@ -288,6 +294,8 @@ void RelDspBackGrd();
 void RelationDispMsg(RELATION_DAT *r_dat);
 void SimpleDispSprtDS(SPRT_DAT *ssd, u_int addr, int sp_no, SPRT_SROT *srot, SPRT_SSCL *sscl, u_char alp_rate);
 void TestPk2DataSou(long int sendtexaddr);
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 void DispCaption(int no, u_char alp);
+#endif
 
 #endif // INGAME_MENU_IG_FILE_H

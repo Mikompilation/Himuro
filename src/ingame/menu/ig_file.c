@@ -48,15 +48,17 @@ u_char file_kind[] = { 0,  2,  1, 0xff };
 #include "data/exp_table.h" // static char exp_table[][8][2];
 #include "data/hum_table.h" // static char hum_table[][8][2];
 #include "data/rel_com.h" // RELATION_COM rel_com[];
-#ifdef BUILD_EU_VERSION
+#if defined(BUILD_EU_VERSION)
 #include "data/rel_com_pos_adj.h" // int rel_com_pos_adj[][5][2];
 #endif
 #include "data/name_rbl.h" // static char name_rbl[][2];
 #include "data/rel_prt.h" // RELATION_PRT rel_prt[];
 #include "data/rel_dat.h" // RELATION_DAT rel_dat[];
 #include "data/rel_yaj.h" // RELATION_YAJI rel_yaj[];
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 #include "data/caption_list.h" // CAPTION_LIST caption_list[];
 #include "data/caption_data.h" // CAPTION_DATA caption_data[];
+#endif
 RELATION_CSR rel_csr = {0};
 
 static FILE_REL file_rel;
@@ -66,6 +68,20 @@ static MEM_BOX mem_box[3];
 static MENU_FILE menu_file;
 static PHOT_FILE phot_file[4];
 static short int menu_dsp_file[50];
+
+#define REL_COM_N (sizeof(rel_com) / sizeof(RELATION_COM))
+#define REL_YAJ_N (sizeof(rel_yaj) / sizeof(RELATION_YAJI))
+
+#if defined(BUILD_JP_VERSION)
+#define PAD_ACTION_CONFIRM PAD_CIRCLE
+#define PAD_ACTION_CANCEL PAD_CROSS
+#elif defined(BUILD_US_VERSION)
+#define PAD_ACTION_CONFIRM PAD_CROSS
+#define PAD_ACTION_CANCEL PAD_TRIANGLE
+#elif defined(BUILD_EU_VERSION)
+#define PAD_ACTION_CONFIRM PAD_CROSS
+#define PAD_ACTION_CANCEL PAD_TRIANGLE
+#endif
 
 void NewgameMenuFileInit()
 {
@@ -121,7 +137,7 @@ void IngameMenuFile()
 
     if (menu_file.poss_chk == 0)
     {
-        if (yw2d.pad_lock == 0 && *key_now[4] == 1)
+        if (yw2d.pad_lock == 0 && PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             yw2d.out_mode_cnt = 11;
 
@@ -139,13 +155,13 @@ void IngameMenuFile()
             break;
         }
 
-        if (*key_now[4] == 1)
+        if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             yw2d.out_mode_cnt = 11;
 
             SeStartFix(3, 0, 0x1000, 0x1000, 1);
         }
-        else if (*key_now[6] == 1 || *key_now[5] == 1)
+        else if (PAD_BTN_PRESSED(PAD_SQUARE) || PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
             if (ig_menu_wrk.csr[1] < 3)
             {
@@ -172,12 +188,7 @@ void IngameMenuFile()
                 SeStartFix(1, 0, 0x1000, 0x1000, 1);
             }
         }
-        else if (
-            *key_now[0] == 1 ||
-            (*key_now[0] > 25 && (*key_now[0] % 5) == 1) ||
-            Ana2PadDirCnt(0) == 1 ||
-            (Ana2PadDirCnt(0) > 25 && (Ana2PadDirCnt(0) % 5) == 1)
-        )
+        else if (PAD_BTN_REPEAT(PAD_DPAD_UP) || PAD_LANA_REPEAT(PAD_LANA_UP))
         {
             if (menu_file.poss_chk != 0)
             {
@@ -197,12 +208,7 @@ void IngameMenuFile()
                 SeStartFix(0, 0, 0x1000, 0x1000, 1);
             }
         }
-        else if (
-            *key_now[1] == 1 ||
-            (*key_now[1] > 25 && (*key_now[1] % 5) == 1) ||
-            Ana2PadDirCnt(2) == 1 ||
-            (Ana2PadDirCnt(2) > 25 && (Ana2PadDirCnt(2) % 5) == 1)
-        )
+        else if (PAD_BTN_REPEAT(PAD_DPAD_DOWN) || PAD_LANA_REPEAT(PAD_LANA_DOWN))
         {
             if (menu_file.poss_chk != 0)
             {
@@ -229,13 +235,13 @@ void IngameMenuFile()
             break;
         }
 
-        if (*key_now[4] == 1)
+        if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             menu_file.mod = 0;
 
             SeStartFix(3, 0, 0x1000, 0x1000, 1);
         }
-        else if (*key_now[6] == 1 || *key_now[5] == 1)
+        else if (PAD_BTN_PRESSED(PAD_SQUARE) || PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
             ig_menu_wrk.mode = IGMENU_MODE_FILE_DATA;
 
@@ -263,12 +269,7 @@ void IngameMenuFile()
 
             SeStartFix(1, 0, 0x1000, 0x1000, 1);
         }
-        else if (
-            *key_now[0] == 1 ||
-            (*key_now[0] > 25 && (*key_now[0] % 5) == 1) ||
-            Ana2PadDirCnt(0) == 1 ||
-            (Ana2PadDirCnt(0) > 25 && (Ana2PadDirCnt(0) % 5) == 1)
-        )
+        else if (PAD_BTN_REPEAT(PAD_DPAD_UP) || PAD_LANA_REPEAT(PAD_LANA_UP))
         {
             if (ig_menu_wrk.csr[2] != 0)
             {
@@ -295,12 +296,7 @@ void IngameMenuFile()
 
             SeStartFix(0, 0, 0x1000, 0x1000, 1);
         }
-        else if (
-            *key_now[1] == 1 ||
-            (*key_now[1] > 25 && (*key_now[1] % 5) == 1) ||
-            Ana2PadDirCnt(2) == 1 ||
-            (Ana2PadDirCnt(2) > 25 && (Ana2PadDirCnt(2) % 5) == 1)
-        )
+        else if (PAD_BTN_REPEAT(PAD_DPAD_DOWN) || PAD_LANA_REPEAT(PAD_LANA_DOWN))
         {
             if (ig_menu_wrk.csr[2] < ig_menu_wrk.file_num - 1)
             {
@@ -327,24 +323,19 @@ void IngameMenuFile()
             break;
         }
 
-        if (*key_now[4] == 1)
+        if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
         {
             menu_file.mod = 0;
 
             SeStartFix(3, 0, 0x1000, 0x1000, 1);
         }
-        else if (*key_now[6] == 1 || *key_now[5] == 1)
+        else if (PAD_BTN_PRESSED(PAD_SQUARE) || PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
         {
             menu_file.mod = 0;
 
             SeStartFix(1, 0, 0x1000, 0x1000, 1);
         }
-        else if (
-            *key_now[0] == 1 ||
-            (*key_now[0] > 25 && (*key_now[0] % 5) == 1) ||
-            Ana2PadDirCnt(0) == 1 ||
-            (Ana2PadDirCnt(0) > 25 && (Ana2PadDirCnt(0) % 5) == 1)
-        )
+        else if (PAD_BTN_REPEAT(PAD_DPAD_UP) || PAD_LANA_REPEAT(PAD_LANA_UP))
         {
             if (menu_file.poss_chk != 0)
             {
@@ -365,12 +356,7 @@ void IngameMenuFile()
                 SeStartFix(0, 0, 0x1000, 0x1000, 1);
             }
         }
-        else if (
-            *key_now[1] == 1 ||
-            (*key_now[1] > 25 && (*key_now[1] % 5) == 1) ||
-            Ana2PadDirCnt(2) == 1 ||
-            (Ana2PadDirCnt(2) > 25 && (Ana2PadDirCnt(2) % 5) == 1)
-        )
+        else if (PAD_BTN_REPEAT(PAD_DPAD_DOWN) || PAD_LANA_REPEAT(PAD_LANA_DOWN))
         {
             if (menu_file.poss_chk != 0)
             {
@@ -426,7 +412,7 @@ void IngameMenuFileData()
     {
         if (yw2d.pad_lock == 0 && menu_file.pad_lock == 0)
         {
-            if (*key_now[4] == 1)
+            if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
             {
                 menu_file.mod = 1;
 
@@ -434,7 +420,7 @@ void IngameMenuFileData()
 
                 SeStartFix(3, 0, 0x1000, 0x1000, 1);
             }
-            else if (*key_now[6] == 1 || *key_now[5] == 1)
+            else if (PAD_BTN_PRESSED(PAD_SQUARE) || PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
             {
                 if (menu_file.page_all >= 2)
                 {
@@ -462,12 +448,7 @@ void IngameMenuFileData()
                     SeStartFix(3, 0, 0x1000, 0x1000, 1);
                 }
             }
-            else if (
-                *key_now[3] == 1 ||
-                (*key_now[3] > 25 && (*key_now[3] % 5) == 1) ||
-                Ana2PadDirCnt(1) == 1 ||
-                (Ana2PadDirCnt(1) > 25 && (Ana2PadDirCnt(1) % 5) == 1)
-            )
+            else if (PAD_BTN_REPEAT(PAD_DPAD_RIGHT) || PAD_LANA_REPEAT(PAD_LANA_RIGHT))
             {
                 if (menu_file.page_all >= 2 && menu_file.page_all > menu_file.open_page)
                 {
@@ -476,12 +457,7 @@ void IngameMenuFileData()
                     SeStartFix(4, 0, 0x1000, 0x1000, 1);
                 }
             }
-            else if (
-                *key_now[2] == 1 ||
-                (*key_now[2] > 25 && (*key_now[2] % 5) == 1) ||
-                Ana2PadDirCnt(3) == 1 ||
-                (Ana2PadDirCnt(3) > 25 && (Ana2PadDirCnt(3) % 5) == 1)
-            )
+            else if (PAD_BTN_REPEAT(PAD_DPAD_LEFT) || PAD_LANA_REPEAT(PAD_LANA_LEFT))
             {
                 if (menu_file.page_all >= 2 && menu_file.open_page >= 2)
                 {
@@ -496,7 +472,7 @@ void IngameMenuFileData()
     {
         if (yw2d.pad_lock == 0 && menu_file.pad_lock == 0)
         {
-            if (*key_now[4] == 1)
+            if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
             {
                 if (IsLoadEndAll() != 0)
                 {
@@ -515,12 +491,7 @@ void IngameMenuFileData()
                     SeStartFix(3, 0, 0x1000, 0x1000, 1);
                 }
             }
-            else if (
-                *key_now[2] == 1 ||
-                (*key_now[2] > 25 && (*key_now[2] % 5) == 1) ||
-                Ana2PadDirCnt(3) == 1 ||
-                (Ana2PadDirCnt(3) > 25 && (Ana2PadDirCnt(3) % 5) == 1)
-            )
+            else if (PAD_BTN_REPEAT(PAD_DPAD_LEFT) || PAD_LANA_REPEAT(PAD_LANA_LEFT))
             {
                 if (ig_menu_wrk.file_num >= 2)
                 {
@@ -552,12 +523,7 @@ void IngameMenuFileData()
                     SeStartFix(0, 0, 0x1000, 0x1000, 1);
                 }
             }
-            else if (
-                *key_now[3] == 1 ||
-                (*key_now[3] > 25 && (*key_now[3] % 5) == 1) ||
-                Ana2PadDirCnt(1) == 1 ||
-                (Ana2PadDirCnt(1) > 25 && (Ana2PadDirCnt(1) % 5) == 1)
-            )
+            else if (PAD_BTN_REPEAT(PAD_DPAD_RIGHT) || PAD_LANA_REPEAT(PAD_LANA_RIGHT))
             {
                 if (ig_menu_wrk.file_num > 1)
                 {
@@ -752,10 +718,15 @@ static void FileModeInOut2()
 
 static void DspFileOut(short int pos_x, short int pos_y, short int alpha)
 {
+#if defined(BUILD_JP_VERSION)
+    DspMsgWndw(pos_x,pos_y, alpha);
+#endif
     DspKindTab(pos_x - 15, pos_y,alpha);
     DspFile2D2(pos_x - 15, pos_y,alpha);
     DspFileLst(pos_x,pos_y, alpha);
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     DspMsgWndw(pos_x,pos_y, alpha);
+#endif
 }
 
 static void DspKindTab(short int pos_x, short int pos_y, short int alpha)
@@ -934,13 +905,14 @@ static void DspFileLst(short int pos_x, short int pos_y, short int alpha)
     PutSpriteYW(FIL_SCRBAR_BASE_D, FIL_SCRBAR_BASE_D, pos_x, pos_y, 0.0f, 0x808080, alpha, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
     PutSpriteYW(FIL_SCRBAR_BASE_M, FIL_SCRBAR_BASE_M, pos_x, pos_y, 0.0f, 0x808080, alpha, 1.0f, 26.2f, 0, 0xff, 1, 0, 0);
 
-    SideBar(ig_menu_wrk.file_num, 8, 281, menu_file.lst_top, 0x199, alpha, 0, 0);
-
-    SideTri(ig_menu_wrk.file_num, 8, 407, alpha);
+    SideBar(ig_menu_wrk.file_num, 8, 281, menu_file.lst_top, FIL_SCRBAR_PICK_U, alpha, 0, 0);
+    SideTri(ig_menu_wrk.file_num, 8, FIL_SCR_TRIANGLE_U, alpha);
 
     if (file_kind[ig_menu_wrk.csr[1]] == 0xff)
     {
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         DispCaption(12, alpha);
+#endif
 
         return;
     }
@@ -951,7 +923,11 @@ static void DspFileLst(short int pos_x, short int pos_y, short int alpha)
 
         if (file_kind[ig_menu_wrk.csr[1]] != 1)
         {
+#if defined(BUILD_JP_VERSION)
+            PutStringYW(file_kind[ig_menu_wrk.csr[1]] + IGMSG_FILE0_NAME, menu_dsp_file[i + menu_file.lst_top], pos_x + 270, i * 34 + 46 + pos_y, 0x808080, alpha, 0x23000, 0);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
             PutStringYW(file_kind[ig_menu_wrk.csr[1]] + IGMSG_FILE0_NAME, menu_dsp_file[i + menu_file.lst_top], pos_x + 266, i * 34 + 48 + pos_y, 0x808080, alpha, 0x23000, 0);
+#endif
 
             if (poss_file[file_kind[ig_menu_wrk.csr[1]]][menu_dsp_file[i + menu_file.lst_top]] == 2)
             {
@@ -964,7 +940,11 @@ static void DspFileLst(short int pos_x, short int pos_y, short int alpha)
             {
                 no = menu_dsp_file[i + menu_file.lst_top];
 
+#if defined(BUILD_JP_VERSION)
+                PutStringYW(IGMSG_FILE1_NAME, no, pos_x + 270, i * 34 + 46 + pos_y , 0x808080, alpha, 0x23000, 0);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
                 PutStringYW(IGMSG_FILE1_NAME, no, pos_x + 266, i * 34 + 48 + pos_y , 0x808080, alpha, 0x23000, 0);
+#endif
 
                 if (poss_file[1][no] == 2)
                 {
@@ -975,7 +955,11 @@ static void DspFileLst(short int pos_x, short int pos_y, short int alpha)
             {
                 no = menu_dsp_file[i + menu_file.lst_top] - 50;
 
+#if defined(BUILD_JP_VERSION)
+                PutStringYW(IGMSG_ITEM_NAME, file2item[no], pos_x + 270, i * 34 + 46 + pos_y, 0x808080, alpha, 0x23000, 0);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
                 PutStringYW(IGMSG_ITEM_NAME, file2item[no], pos_x + 266, i * 34 + 48 + pos_y, 0x808080, alpha, 0x23000, 0);
+#endif
 
                 if (poss_file[3][no] == 2)
                 {
@@ -999,7 +983,9 @@ static void DspFileLst(short int pos_x, short int pos_y, short int alpha)
         }
     }
 
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     DispCaption(12, alpha);
+#endif
 }
 
 void SideBar(u_char hav_now, u_char dsp_max, u_short mov_lng, u_char lst_top, u_short chr_top, u_char alp, short int dx, short int dy)
@@ -1149,7 +1135,11 @@ static void DspMsgWndw(short int pos_x, short int pos_y, short int alpha)
 {
     short int no;
 
+#if defined(BUILD_JP_VERSION)
+    DrawMessageBox(0x64000, pos_x + 26, pos_y + 340, 588.0f, 80.0f, alpha);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     DrawMessageBox(0x1e000, pos_x + 26, pos_y + 340, 588.0f, 80.0f, alpha);
+#endif
 
     if (file_kind[ig_menu_wrk.csr[1]] != 0xff)
     {
@@ -1201,7 +1191,7 @@ static void DspFileDtl(short int pos_x, short int pos_y, short int alpha)
 
 static void DspFileBook(short int pos_x, short int pos_y, short int alpha)
 {
-    PolySquareYW(55.0f, 91.0f, 530, 328, 0, alpha * 0.5f, 1.0f, 1.0f, 0x1e000, 0, 0, 0);
+    VER_POLY_SQUARE_YW(55.0f, 91.0f, 530, 328, 0, alpha * 0.5f, 1.0f, 1.0f, 0x1e000, 0, 0);
 
     DspFileCmmn(pos_x, pos_y, alpha);
 
@@ -1211,16 +1201,22 @@ static void DspFileBook(short int pos_x, short int pos_y, short int alpha)
 
     PageInfo(menu_file.open_page, menu_file.page_all, pos_x, pos_y - 13, alpha);
 
-    SideTri(menu_file.open_page, menu_file.page_all, 539, alpha);
+    SideTri(menu_file.open_page, menu_file.page_all, TRIANGLE_LFT, alpha);
 
     if (ig_menu_wrk.file_num != 0)
     {
         PutStringYW(file_kind[ig_menu_wrk.csr[1]] + IGMSG_FILE0_NAME, menu_dsp_file[ig_menu_wrk.csr[2]], 235, 35, 0x808080, 0x80, 0x19000, 0);
 
+#if defined(BUILD_JP_VERSION)
+        PutPageYW(file_kind[ig_menu_wrk.csr[1]] + IGMSG_FILE0_DAT, menu_dsp_file[ig_menu_wrk.csr[2]],menu_file.open_page, 90, 110, 0x808080, 0x80, 0x19000);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         PutPage2YW(file_kind[ig_menu_wrk.csr[1]] + IGMSG_FILE0_DAT, menu_dsp_file[ig_menu_wrk.csr[2]], menu_file.open_page, 90, 110, 0x808080, 0x80, 0x19000);
+#endif
     }
 
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     DispCaption(13, alpha);
+#endif
 }
 
 static void DspFilePhot(short int pos_x, short int pos_y, short int alpha)
@@ -1232,7 +1228,7 @@ static void DspFilePhot(short int pos_x, short int pos_y, short int alpha)
     PutSpriteYW(FIL_PHT_FRAME_LFT1, FIL_PHT_FRAME_RGT3, pos_x, pos_y, 0.0f, 0x808080, alpha, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
     PutSpriteYW(FIL_PHT_FRAME_EMBS_LUV1, FIL_PHT_FRAME_EMBS_RDH4, pos_x, pos_y, 0.0f, 0x808080, alpha, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
 
-    SideTri(ig_menu_wrk.file_num, 8, 539, alpha);
+    SideTri(ig_menu_wrk.file_num, 8, TRIANGLE_LFT, alpha);
 
     if (file_kind[ig_menu_wrk.csr[1]] != 1)
     {
@@ -1253,7 +1249,9 @@ static void DspFilePhot(short int pos_x, short int pos_y, short int alpha)
 
     PhotDispCtrl(alpha);
 
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     DispCaption(14, alpha);
+#endif
 }
 
 static void PhotDispCtrl(u_char alp)
@@ -1421,16 +1419,16 @@ static void PhotDispCtrl(u_char alp)
             switch (i)
             {
             case 0:
-                PolySquareYW(66.0f, 237.0f, 0x4e, 0x32, 0, 1.0f, 1.0f, 1.0f, 0x1000, 0, 0, 0);
-                PolySquareYW(64.0f, 235.0f, 0x52, 0x36, 0x808080, alp, 1.0f, 1.0f, 0x3000, 0, 0, 0);
+                VER_POLY_SQUARE_YW(66.0f, 237.0f, 0x4e, 0x32, 0, 1.0f, 1.0f, 1.0f, 0x1000, 0, 0);
+                VER_POLY_SQUARE_YW(64.0f, 235.0f, 0x52, 0x36, 0x808080, alp, 1.0f, 1.0f, 0x3000, 0, 0);
             break;
             case 1:
-                PolySquareYW(176.0f, 165.0f, 0x120, 0xbc, 0, 1.0f, 1.0f, 1.0f, 0x1000, 0, 0, 0);
-                PolySquareYW(170.0f, 159.0f, 300, 200, 0x808080, alp, 1.0f, 1.0f, 0x3000, 0, 0, 0);
+                VER_POLY_SQUARE_YW(176.0f, 165.0f, 0x120, 0xbc, 0, 1.0f, 1.0f, 1.0f, 0x1000, 0, 0);
+                VER_POLY_SQUARE_YW(170.0f, 159.0f, 300, 200, 0x808080, alp, 1.0f, 1.0f, 0x3000, 0, 0);
             break;
             case 2:
-                PolySquareYW(496.0f, 237.0f, 0x4e, 0x32, 0, 1.0f, 1.0f, 1.0f, 0x1000, 0, 0, 0);
-                PolySquareYW(494.0f, 235.0f, 0x52, 0x36, 0x808080, alp, 1.0f, 1.0f, 0x3000, 0, 0, 0);
+                VER_POLY_SQUARE_YW(496.0f, 237.0f, 0x4e, 0x32, 0, 1.0f, 1.0f, 1.0f, 0x1000, 0, 0);
+                VER_POLY_SQUARE_YW(494.0f, 235.0f, 0x52, 0x36, 0x808080, alp, 1.0f, 1.0f, 0x3000, 0, 0);
             break;
             }
         }
@@ -1439,16 +1437,16 @@ static void PhotDispCtrl(u_char alp)
             switch (i)
             {
             case 0:
-                PolySquareYW(80.0f, 224.0f, 0x32, 0x4e, 0, 1.0f, 1.0f, 1.0f, 0x1000, 0, 0, 0);
-                PolySquareYW(78.0f, 222.0f, 0x36, 0x52, 0x808080, alp, 1.0f, 1.0f, 0x3000, 0, 0, 0);
+                VER_POLY_SQUARE_YW(80.0f, 224.0f, 0x32, 0x4e, 0, 1.0f, 1.0f, 1.0f, 0x1000, 0, 0);
+                VER_POLY_SQUARE_YW(78.0f, 222.0f, 0x36, 0x52, 0x808080, alp, 1.0f, 1.0f, 0x3000, 0, 0);
             break;
             case 1:
-                PolySquareYW(226.0f, 120.0f, 0xbc, 0x11c, 0, 1.0f, 1.0f, 1.0f, 0x1000, 0, 0, 0);
-                PolySquareYW(220.0f, 114.0f, 200, 0x128, 0x808080, alp, 1.0f, 1.0f, 0x3000, 0, 0, 0);
+                VER_POLY_SQUARE_YW(226.0f, 120.0f, 0xbc, 0x11c, 0, 1.0f, 1.0f, 1.0f, 0x1000, 0, 0);
+                VER_POLY_SQUARE_YW(220.0f, 114.0f, 200, 0x128, 0x808080, alp, 1.0f, 1.0f, 0x3000, 0, 0);
             break;
             case 2:
-                PolySquareYW(510.0f, 224.0f, 0x32, 0x4e, 0, 1.0f, 1.0f, 1.0f, 0x1000, 0, 0, 0);
-                PolySquareYW(508.0f, 222.0f, 0x36, 0x52, 0x808080, alp, 1.0f, 1.0f, 0x3000, 0, 0, 0);
+                VER_POLY_SQUARE_YW(510.0f, 224.0f, 0x32, 0x4e, 0, 1.0f, 1.0f, 1.0f, 0x1000, 0, 0);
+                VER_POLY_SQUARE_YW(508.0f, 222.0f, 0x36, 0x52, 0x808080, alp, 1.0f, 1.0f, 0x3000, 0, 0);
             break;
             }
         }
@@ -1613,11 +1611,11 @@ static void DspBack2D(short int pht_no, u_char rt, short int px, short int py, s
 
     if (rt == 0)
     {
-        PolySquareYW(px - sx * 0.5f, py - sy * 0.5f, sx, sy, 0, alp, 1.0f, 1.0f, 0xa000, 0, 0, 0);
+        VER_POLY_SQUARE_YW(px - sx * 0.5f, py - sy * 0.5f, sx, sy, 0, alp, 1.0f, 1.0f, 0xa000, 0, 0);
     }
     else
     {
-        PolySquareYW(px - sy * 0.5f, py - sx * 0.5f, sy, sx, 0, alp, 1.0f, 1.0f, 0xa000, 0, 0, 0);
+        VER_POLY_SQUARE_YW(px - sy * 0.5f, py - sx * 0.5f, sy, sx, 0, alp, 1.0f, 1.0f, 0xa000, 0, 0);
     }
 }
 
@@ -1628,11 +1626,11 @@ static void DspFileCmmn(short int pos_x, short int pos_y, short int alpha)
 
 void PageInfo(u_char now, u_char all, short int pos_x, short int pos_y, u_char alpha)
 {
-    PolySquareYW(pos_x + 272, pos_y + 402, 17, 2, 0x808080, alpha, 1.0f, 1.0f, 0x19000, 0, 0, 0);
+    VER_POLY_SQUARE_YW(pos_x + 272, pos_y + 402, 17, 2, 0x808080, alpha, 1.0f, 1.0f, 0x19000, 0, 0);
     PutNumberYW(NUM_NORMAL, now, pos_x + 291, pos_y + 390, 1.0f, 1.0f, 0x808080, alpha, 0x19000, 1, 0);
     PutStringYW(21, 1, pos_x + 314, pos_y + 390, 0x808080, alpha, 0x19000, 0);
     PutNumberYW(NUM_NORMAL, all, pos_x + 327, pos_y + 390, 1.0f, 1.0f, 0x808080, alpha, 0x19000, 1, 0);
-    PolySquareYW(pos_x + 353, pos_y + 402, 17, 2, 0x808080, alpha, 1.0f, 1.0f, 0x19000, 0, 0, 0);
+    VER_POLY_SQUARE_YW(pos_x + 353, pos_y + 402, 17, 2, 0x808080, alpha, 1.0f, 1.0f, 0x19000, 0, 0);
 }
 
 void DokiDokiLetter(u_char level)
@@ -1771,7 +1769,7 @@ static char TateizFreeSpace()
         RelationDispMsg(rel_csr.now_dat);
     }
 
-    for (i = 0; i < 81; i++)
+    for (i = 0; i < REL_YAJ_N; i++)
     {
         RelDspYajirusi(&rel_yaj[i]);
     }
@@ -1790,7 +1788,7 @@ void RelationMapInit()
 {
     u_int i; // STAB say it's int but to make it work as an int the 29 and 32 must be made unsigned, so changing the type here is cleaner
 
-    for (i = 0; i < 29; i++)
+    for (i = 0; i < REL_COM_N; i++)
     {
         rel_com[i].attribute = 0x2;
     }
@@ -1891,7 +1889,7 @@ void RelComAtributeChg()
     u_int j; // STAB say int but for loop has unsigned logic => index literal is probably unsigned, but making the variable unsigned is cleaner
     int k;
 
-    for (i = 0; i < 29; i++)
+    for (i = 0; i < REL_COM_N; i++)
     {
         for (j = 0; j < 8; j++)
         {
@@ -1958,12 +1956,7 @@ void RelComAtributeChg()
 
 void MoveBeyondData()
 {
-    if (
-        *key_now[2] == 1 ||
-        (*key_now[2] > 25 && (*key_now[2] % 5) == 1) ||
-        Ana2PadDirCnt(3) == 1 ||
-        (Ana2PadDirCnt(3) > 25 && (Ana2PadDirCnt(3) % 5) == 1)
-    )
+    if (PAD_BTN_REPEAT(PAD_DPAD_LEFT) || PAD_LANA_REPEAT(PAD_LANA_LEFT))
     {
         if (rel_csr.now_dat->left_p != NULL && rel_csr.now_dat->left_p->attribute != 2)
         {
@@ -1972,12 +1965,7 @@ void MoveBeyondData()
             SeStartFix(0, 0, 0x1000, 0x1000, 0x1);
         }
     }
-    else if (
-        *key_now[3] == 1 ||
-        (*key_now[3] > 25 && (*key_now[3] % 5) == 1) ||
-        Ana2PadDirCnt(1) == 1 ||
-        (Ana2PadDirCnt(1) > 25 && (Ana2PadDirCnt(1) % 5) == 1)
-    )
+    else if (PAD_BTN_REPEAT(PAD_DPAD_RIGHT) || PAD_LANA_REPEAT(PAD_LANA_RIGHT))
     {
         if (rel_csr.now_dat->right_p != NULL && rel_csr.now_dat->right_p->attribute != 2)
         {
@@ -1986,12 +1974,7 @@ void MoveBeyondData()
             SeStartFix(0, 0, 0x1000, 0x1000, 0x1);
         }
     }
-    else if (
-        *key_now[0] == 1 ||
-        (*key_now[0] > 25 && (*key_now[0] % 5) == 1) ||
-        Ana2PadDirCnt(0) == 1 ||
-        (Ana2PadDirCnt(0) > 25 && (Ana2PadDirCnt(0) % 5) == 1)
-    )
+    else if (PAD_BTN_REPEAT(PAD_DPAD_UP) || PAD_LANA_REPEAT(PAD_LANA_UP))
     {
         if (rel_csr.now_dat->up_p != NULL && rel_csr.now_dat->up_p->attribute != 2)
         {
@@ -2000,12 +1983,7 @@ void MoveBeyondData()
             SeStartFix(0, 0, 0x1000, 0x1000, 0x1);
         }
     }
-    else if (
-        *key_now[1] == 1 ||
-        (*key_now[1] > 25 && (*key_now[1] % 5) == 1) ||
-        Ana2PadDirCnt(2) == 1 ||
-        (Ana2PadDirCnt(2) > 25 && (Ana2PadDirCnt(2) % 5) == 1)
-    )
+    else if (PAD_BTN_REPEAT(PAD_DPAD_DOWN) || PAD_LANA_REPEAT(PAD_LANA_DOWN))
     {
         if (rel_csr.now_dat->down_p != NULL && rel_csr.now_dat->down_p->attribute != 2)
         {
@@ -2023,7 +2001,7 @@ void MoveBeyondGroup()
 
     temp_prt = rel_csr.now_prt;
 
-    if (*key_now[8] == 1)
+    if (PAD_BTN_PRESSED(PAD_L1))
     {
         while (temp_prt->left_prt->mission_no > ingame_wrk.msn_no && ingame_wrk.clear_count == 0)
         {
@@ -2058,7 +2036,7 @@ void MoveBeyondGroup()
 
         SeStartFix(0, 0, 0x1000, 0x1000, 0x1);
     }
-    else if (*key_now[10] == 1)
+    else if (PAD_BTN_PRESSED(PAD_R1))
     {
         while (temp_prt->right_prt->mission_no > ingame_wrk.msn_no && ingame_wrk.clear_count == 0)
         {
@@ -2154,7 +2132,7 @@ int ButtonManager()
 
     ret_num = 0;
 
-    if ((*key_now[6] == 1 || *key_now[5] == 1) && rel_csr.now_dat->attribute != 2)
+    if ((PAD_BTN_PRESSED(PAD_SQUARE) || PAD_BTN_PRESSED(PAD_ACTION_CONFIRM)) && rel_csr.now_dat->attribute != 2)
     {
         rel_csr.mode = 0;
         rel_csr.attribute ^= 0x1;
@@ -2162,7 +2140,7 @@ int ButtonManager()
         SeStartFix(1, 0, 0x1000, 0x1000, 1);
     }
 
-    if (*key_now[4] == 1)
+    if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
     {
         if (rel_csr.attribute & 0x1)
         {
@@ -2284,7 +2262,11 @@ void RelationDispDat(RELATION_DAT *r_dat)
 
         DispSprD(&ds);
 
+#if defined(BUILD_JP_VERSION)
+        ssd = spr_dat[REL_RES_FNT];
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         ssd = spr_dat[r_dat->plate_p->tbl_no];
+#endif
 
         ssd.x += r_dat->plate_p->x;
         ssd.y += r_dat->plate_p->y;
@@ -2327,10 +2309,14 @@ void RelDspYajirusi(RELATION_YAJI *r_yaj)
         yaj_r = 0x80;
         yaj_pri = 0x14000;
 
-#ifdef MATCHING_DECOMP
-        if (*key_now[3] != 1 && *key_now[2] != 1 && *key_now[2] != 1)
+#if defined(MATCHING_DECOMP)
+        if (PAD_BTN_NOT_PRESSED(PAD_DPAD_RIGHT) && PAD_BTN_NOT_PRESSED(PAD_DPAD_LEFT))
         {
-            char c = ~c; // dead code
+            yaj_r = 0x80;
+        }
+        else
+        {
+            yaj_pri = 0x14000;
         }
 #endif
     }
@@ -2339,10 +2325,14 @@ void RelDspYajirusi(RELATION_YAJI *r_yaj)
         yaj_r = 0;
         yaj_pri = 0x19000;
 
-#ifdef MATCHING_DECOMP
-        if (*key_now[3] != 1 && *key_now[2] != 1 && *key_now[2] != 1)
+#if defined(MATCHING_DECOMP)
+        if (PAD_BTN_NOT_PRESSED(PAD_DPAD_RIGHT) && PAD_BTN_NOT_PRESSED(PAD_DPAD_LEFT))
         {
-            char c = ~c; // dead code
+            yaj_r = 0;
+        }
+        else
+        {
+            yaj_pri = 0x19000;
         }
 #endif
     }
@@ -2426,7 +2416,7 @@ void RelDspComment()
 
     disp_flg = 0;
 
-    for (i = 0; i < 29U; i++)
+    for (i = 0; i < REL_COM_N; i++)
     {
         if (rel_com[i].attribute != 1 && rel_com[i].attribute != 2)
         {
@@ -2444,12 +2434,12 @@ void RelDspComment()
                 {
                     ssd = *rel_com[i].ssd_p[l];
 
-#ifdef BUILD_EU_VERSION
-                    ssd.x += rel_csr.offx + rel_com_pos_adj[i][sys_wrk.language][0];
-                    ssd.y += rel_csr.offy + rel_com_pos_adj[i][sys_wrk.language][1];
-#else
+#if defined(BUILD_JP_VERSION) || defined(BUILD_US_VERSION)
                     ssd.x += rel_csr.offx;
                     ssd.y += rel_csr.offy;
+#elif defined(BUILD_EU_VERSION)
+                    ssd.x += rel_csr.offx + rel_com_pos_adj[i][sys_wrk.language][0];
+                    ssd.y += rel_csr.offy + rel_com_pos_adj[i][sys_wrk.language][1];
 #endif
 
                     ssd.alpha = 0x80;
@@ -2458,18 +2448,20 @@ void RelDspComment()
 
                     CopySprDToSpr(&ds, &ssd);
 
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
                     if (flip_table[rel_com[i].flp_num[l]] != 0)
                     {
                         ds.crx = ssd.x;
                         ds.cry = ssd.y;
                         ds.rot = 90.0f;
                     }
+#endif
 
                     DispSprD(&ds);
 
                     l++;
 
-                    if (l >= 4U)
+                    if (l < 0 || l >= 4)
                     {
                         break;
                     }
@@ -2484,12 +2476,12 @@ void RelDspComment()
                 {
                     ssd = *rel_com[i].ssd_p[l];
 
-#ifdef BUILD_EU_VERSION
-                    ssd.x += rel_csr.offx + rel_com_pos_adj[i][sys_wrk.language][0];
-                    ssd.y += rel_csr.offy + rel_com_pos_adj[i][sys_wrk.language][1];
-#else
+#if defined(BUILD_JP_VERSION) || defined(BUILD_US_VERSION)
                     ssd.x += rel_csr.offx;
                     ssd.y += rel_csr.offy;
+#elif defined(BUILD_EU_VERSION)
+                    ssd.x += rel_csr.offx + rel_com_pos_adj[i][sys_wrk.language][0];
+                    ssd.y += rel_csr.offy + rel_com_pos_adj[i][sys_wrk.language][1];
 #endif
 
                     ssd.alpha = 0x30;
@@ -2502,12 +2494,14 @@ void RelDspComment()
                     ds.g = 0xff;
                     ds.b = 0xff;
 
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
                     if (flip_table[rel_com[i].flp_num[l]] != 0)
                     {
                         ds.crx = ssd.x;
                         ds.cry = ssd.y;
                         ds.rot = 90.0f;
                     }
+#endif
 
                     DispSprD(&ds);
 
@@ -2630,8 +2624,80 @@ void RelDspBackGrd()
 {
     int i;
     int j;
-    u_char alp_rate;
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+    u_char alp_rate = 0x64;
+#endif
     SPRT_DAT ssd;
+#if defined(BUILD_JP_VERSION)
+    SPRT_DAT ssd_skn = {
+        .tex0 = SCE_GS_SET_TEX0_1(0x29a9, 4, SCE_GS_PSMT4, 8, 6, 1, SCE_GS_MODULATE, 0x29c9, SCE_GS_PSMCT32, 0, 0, 1),
+        .u = 1,
+        .v = 1,
+        .w = 246,
+        .h = 50,
+        .x = 190,
+        .y = 32,
+        .pri = 0x1e000,
+        .alpha = 0x80,
+};
+#endif
+#if defined(BUILD_JP_VERSION)
+    SPRT_DAT ssd_fnt = {
+        .tex0 = SCE_GS_SET_TEX0_1(0x2680, 2, SCE_GS_PSMT4, 7, 7, 1, SCE_GS_MODULATE, 0x26a0, SCE_GS_PSMCT32, 0, 0, 1),
+        .u = 1,
+        .v = 1,
+        .w = 126,
+        .h = 95,
+        .x = 490,
+        .y = 122,
+        .pri = 0x1e000,
+        .alpha = 0x80,
+};
+    SPRT_DAT ssd_sakka = {
+        .tex0 = SCE_GS_SET_TEX0_1(0x2722, 2, SCE_GS_PSMT4, 7, 7, 1, SCE_GS_MODULATE, 0x2742, SCE_GS_PSMCT32, 0, 0, 1),
+        .u = 1,
+        .v = 1,
+        .w = 87,
+        .h = 25,
+        .x = 25,
+        .y = 97,
+        .pri = 0x1e000,
+        .alpha = 0x80,
+};
+    SPRT_DAT ssd_himuro = {
+        .tex0 = SCE_GS_SET_TEX0_1(0x2722, 2, SCE_GS_PSMT4, 7, 7, 1, SCE_GS_MODULATE, 0x2742, SCE_GS_PSMCT32, 0, 0, 1),
+        .u = 1,
+        .v = 26,
+        .w = 87,
+        .h = 25,
+        .x = 26,
+        .y = 337,
+        .pri = 0x1e000,
+        .alpha = 0x80,
+};
+    SPRT_DAT ssd_hina = {
+        .tex0 = SCE_GS_SET_TEX0_1(0x2722, 2, SCE_GS_PSMT4, 7, 7, 1, SCE_GS_MODULATE, 0x2742, SCE_GS_PSMCT32, 0, 0, 1),
+        .u = 1,
+        .v = 51,
+        .w = 87,
+        .h = 25,
+        .x = 512,
+        .y = 375,
+        .pri = 0x1e000,
+        .alpha = 0x80,
+};
+    SPRT_DAT ssd_muna = {
+        .tex0 = SCE_GS_SET_TEX0_1(0x2722, 2, SCE_GS_PSMT4, 7, 7, 1, SCE_GS_MODULATE, 0x2742, SCE_GS_PSMCT32, 0, 0, 1),
+        .u = 1,
+        .v = 76,
+        .w = 87,
+        .h = 25,
+        .x = 27,
+        .y = 664,
+        .pri = 0x1e000,
+        .alpha = 0x80,
+};
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     SPRT_DAT ssd_fnt = {
         .tex0 = SCE_GS_SET_TEX0_1(0x2944, 4, SCE_GS_PSMT4, 8, 7, 1, SCE_GS_MODULATE, 0x2984, SCE_GS_PSMCT32, 0, 0, 1),
         .u = 1,
@@ -2649,8 +2715,8 @@ void RelDspBackGrd()
        .v = 1,
        .w = 164,
        .h = 24,
-       .y = 0x62,
        .x = 30,
+       .y = 98,
        .pri = 0x1e000,
        .alpha = 0x80,
     };
@@ -2660,8 +2726,8 @@ void RelDspBackGrd()
        .v = 0x1b,
        .w = 164,
        .h = 24,
-       .y = 338,
        .x = 26,
+       .y = 338,
        .pri = 0x1e000,
        .alpha = 0x80,
     };
@@ -2671,8 +2737,8 @@ void RelDspBackGrd()
        .v = 53,
        .w = 164,
        .h = 24,
-       .y = 379,
        .x = 453,
+       .y = 379,
        .pri = 0x1e000,
        .alpha = 0x80,
     };
@@ -2682,25 +2748,28 @@ void RelDspBackGrd()
        .v = 79,
        .w = 164,
        .h = 24,
-       .y = 668,
        .x = 30,
+       .y = 668,
        .pri = 0x1e000,
        .alpha = 0x80,
     };
+#endif
     DISP_SPRT ds;
-    int alpha; // not in STAB
 
-    alpha = 0x64;
+#if defined(BUILD_JP_VERSION)
+    ssd = ssd_skn;
 
+    ssd.v += 10;
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     ssd = spr_dat[REL_TITLE_00];
 
     ssd.y += rel_csr.offy;
 
     CopySprDToSpr(&ds, &ssd);
-
     DispSprD(&ds);
 
     ssd = spr_dat[REL_TITLE_01];
+#endif
 
     ssd.y += rel_csr.offy;
 
@@ -2773,12 +2842,70 @@ void RelDspBackGrd()
 
     DispSprD(&ds);
 
-#ifdef BUILD_EU_VERSION
-    SetSquareS(0x1e000, 100.0f, rel_csr.offy - 0x80, 310.0f, rel_csr.offy - 13, 0x40, 0x40, 0x40, 0x40);
-#else
+#if defined(BUILD_JP_VERSION)
+    SetSquareS(0x1e000, 100.0f, rel_csr.offy - 0x63, 300.0f, rel_csr.offy - 13, 0x40, 0x40, 0x40, 0x40);
+#elif defined(BUILD_US_VERSION)
     SetSquareS(0x1e000, 100.0f, rel_csr.offy - 0x80, 300.0f, rel_csr.offy - 13, 0x40, 0x40, 0x40, 0x40);
+#elif defined(BUILD_EU_VERSION)
+    SetSquareS(0x1e000, 100.0f, rel_csr.offy - 0x80, 310.0f, rel_csr.offy - 13, 0x40, 0x40, 0x40, 0x40);
 #endif
 
+#if defined(BUILD_JP_VERSION)
+    ssd_fnt.x += 10;
+    ssd_fnt.y += rel_csr.offy;
+
+    CopySprDToSpr(&ds, &ssd_fnt);
+    DispSprD(&ds);
+
+    SetSprFile(LOAD_ADDRESS_42);
+
+    DrawButtonTex(0x14000, 2, spr_dat[MAP_DIRECTION].x - 45, spr_dat[MAP_DIRECTION].y + rel_csr.offy + 75, 0x64);
+
+    ssd = spr_dat[MAP_FNT_DOT1];
+
+    ssd.x += -45;
+    ssd.y += rel_csr.offy + 100;
+    ssd.pri = 0x14000;
+
+    CopySprDToSpr(&ds, &ssd);
+    DispSprD(&ds);
+
+    ssd = spr_dat[MAP_DIRECTION];
+
+    ssd.x += -45;
+    ssd.y += rel_csr.offy + 100;
+    ssd.pri = 0x14000;
+
+    CopySprDToSpr(&ds, &ssd);
+    DispSprD(&ds);
+
+    ssd = spr_dat[MAP_FNT_DOT2];
+
+    ssd.x += -45;
+    ssd.y += rel_csr.offy + 100;
+    ssd.pri = 0x14000;
+
+    CopySprDToSpr(&ds, &ssd);
+    DispSprD(&ds);
+
+    ssd = spr_dat[MAP_FNT_L1R1];
+
+    ssd.x += -45;
+    ssd.y += rel_csr.offy + 100;
+    ssd.pri = 0x14000;
+
+    CopySprDToSpr(&ds, &ssd);
+    DispSprD(&ds);
+
+    ssd = spr_dat[MAP_FNT_DOT3];
+
+    ssd.x += -45;
+    ssd.y += rel_csr.offy + 100;
+    ssd.pri = 0x14000;
+
+    CopySprDToSpr(&ds, &ssd);
+    DispSprD(&ds);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     ssd_fnt.w += 30;
 
     ssd_fnt.x += -18;
@@ -2823,12 +2950,13 @@ void RelDspBackGrd()
     ds.pri = 0x14000;
     ds.z = 0xfffffff - ds.pri;
 
-    ds.alpha = alpha;
+    ds.alpha = alp_rate;
 
     ds.x = 474.0f;
     ds.y = rel_csr.offy + 96;
 
     DispSprD(&ds);
+#endif
 
     DspMenuTitle(yw2d.io_x[1], yw2d.io_y[1] + rel_csr.offy - 22.0f, 128.0f, 30, 4);
 
@@ -2909,13 +3037,8 @@ void RelationDispMsg(RELATION_DAT *r_dat)
 
     SetSprFile(LOAD_ADDRESS_46);
 
-#ifdef BUILD_EU_VERSION
-    Sheet(814, 20, dsp_offy + 20, 600, 180, 0xf, 0x80);
-    Fuchidori(816, 20, dsp_offy + 20, 600, 180, 0xe, 0x80);
-#else
-    Sheet(813, 20, dsp_offy + 20, 600, 180, 0xf, 0x80);
-    Fuchidori(815, 20, dsp_offy + 20, 600, 180, 0xe, 0x80);
-#endif
+    Sheet(GLST_PHT_DAI, 20, dsp_offy + 20, 600, 180, 0xf, 0x80);
+    Fuchidori(GLST_FUTI1, 20, dsp_offy + 20, 600, 180, 0xe, 0x80);
 
     SetSprFile(LOAD_ADDRESS_38);
 }
@@ -2975,12 +3098,12 @@ void TestPk2DataSou(long int sendtexaddr)
     static int ttest_count = 0;
     SPRT_DAT ssd;
 
-    if (*key_now[8] == 1)
+    if (PAD_BTN_PRESSED(PAD_L1))
     {
         ttest_count++;
     }
 
-    if (*key_now[9] == 1)
+    if (PAD_BTN_PRESSED(PAD_L2))
     {
         ttest_count--;
     }
@@ -3001,6 +3124,7 @@ void TestPk2DataSou(long int sendtexaddr)
     SimpleDispSprtDS(&ssd, (u_int)sendtexaddr, ttest_count, NULL, NULL, 0x64);
 }
 
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 void DispCaption(int no, u_char alp)
 {
     int i;
@@ -3076,6 +3200,7 @@ void DispCaption(int no, u_char alp)
 
     }
 }
+#endif
 
 enum NAME_PLATE_RABEL NAME_PLATE_RABEL = SAKKA;
 enum PARENT_RABEL PARENT_RABEL = SAKKA_PRT;

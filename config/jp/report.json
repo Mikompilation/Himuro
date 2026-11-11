@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 79.74274650884973,
+    "fuzzy_match_percent": 82.06503082647919,
     "total_code": "1165232",
-    "matched_code": "929188",
-    "matched_code_percent": 79.74274650884973,
+    "matched_code": "956248",
+    "matched_code_percent": 82.06503082647919,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 2835,
-    "matched_functions_percent": 83.52975839717148,
+    "matched_functions": 2886,
+    "matched_functions_percent": 85.0324101355333,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -22025,9 +22025,14 @@
     {
       "name": "ingame/menu/ig_file",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "27060",
+        "matched_code": "27060",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 51,
+        "matched_functions": 51,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -22035,14 +22040,17 @@
         {
           "name": ".text",
           "size": "27144",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -22050,256 +22058,307 @@
         {
           "name": "NewgameMenuFileInit",
           "size": "56",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "LoadgameMenuFileInit",
           "size": "56",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "StartFileModeInit",
           "size": "248",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetDispMenuFile",
           "size": "292",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IngameMenuFile",
           "size": "2060",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IngameMenuFileDisp",
           "size": "336",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FileCntInit",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FileModeInOut",
           "size": "632",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DspFileOut",
           "size": "148",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FileModeInOut2",
           "size": "140",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "FileCntRenew",
           "size": "60",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IngameMenuFileData",
           "size": "1568",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IngameMenuFileDataDisp",
           "size": "124",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DspFileDtl",
           "size": "56",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DspMsgWndw",
           "size": "776",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DspKindTab",
           "size": "392",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DspFile2D2",
           "size": "908",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DspFileLst",
           "size": "1440",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DspFile2D",
           "size": "620",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SideBar",
           "size": "200",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SideTri",
           "size": "700",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PutBarScale",
           "size": "476",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DspFileBook",
           "size": "552",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DspFilePhot",
           "size": "528",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DspFileCmmn",
           "size": "32",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PageInfo",
           "size": "456",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PhotDispCtrl",
           "size": "2272",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "TargetPhot",
           "size": "148",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DspBack2D",
           "size": "296",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "AllVramTensoOK",
           "size": "88",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DspPhot2D",
           "size": "372",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DokiDokiLetter",
           "size": "260",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RelationShip",
           "size": "252",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "TateizFreeSpace",
           "size": "392",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RelationMapInit",
           "size": "152",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RelAtributeChg",
           "size": "784",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RelComAtributeChg",
           "size": "720",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ButtonManager",
           "size": "240",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MoveBeyondData",
           "size": "856",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "MoveBeyondGroup",
           "size": "656",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RelMapScroolY",
           "size": "144",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RelDspBackGrd",
           "size": "1736",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RelDspPrt",
           "size": "380",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RelDspPrtFla",
           "size": "572",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RelationDispDat",
           "size": "900",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RelationDispMsg",
           "size": "580",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RelDspYajirusi",
           "size": "960",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RelDspComment",
           "size": "724",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RelMapScroolX",
           "size": "172",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "SimpleDispSprtDS",
           "size": "372",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "TestPk2DataSou",
           "size": "168",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -25752,14 +25811,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 79.74274650884973,
+        "fuzzy_match_percent": 82.06503082647919,
         "total_code": "1165232",
-        "matched_code": "929188",
-        "matched_code_percent": 79.74274650884973,
+        "matched_code": "956248",
+        "matched_code_percent": 82.06503082647919,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 2835,
-        "matched_functions_percent": 83.52975839717148,
+        "matched_functions": 2886,
+        "matched_functions_percent": 85.0324101355333,
         "complete_data_percent": 100.0,
         "total_units": 154
       }

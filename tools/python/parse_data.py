@@ -1821,23 +1821,6 @@ class ITEM_USE_DAT(CStructure):
 
 ###########################################################################
 # typedef struct {
-#     short int disp_pos;
-#     short int attribute;
-#     SPRT_DAT *ssd_p[4];
-#     short int flp_num[4];
-#     short int dat_idx[2];
-#     short int pad;
-# } RELATION_COM;
-class RELATION_COM(CStructure):
-    disp_pos: c_int16
-    attribute: c_int16
-    ssd_p: c_addr_ptr * 4
-    flp_num: c_int16 * 4
-    dat_idx: c_int16 * 2
-    pad: c_int16
-
-
-# typedef struct {
 # 	RELATION_PRT *left_prt;
 # 	RELATION_PRT *right_prt;
 # 	SPRT_DAT *ssd_p;
@@ -1900,27 +1883,55 @@ class RELATION_DAT(CStructure):
     pad: c_int16
 
 
-# typedef struct {
-#     short int x;
-#     short int y;
-#     short int u;
-#     short int v;
-#     short int exp_u;
-#     short int exp_v;
-#     short int n_rabel;
-#     short int tbl_no;
-#     short int pad;
-# } RELATION_NAME_PLATE;
-class RELATION_NAME_PLATE(CStructure):
-    x: c_int16
-    y: c_int16
-    u: c_int16
-    v: c_int16
-    exp_u: c_int16
-    exp_v: c_int16
-    n_rabel: c_int16
-    tbl_no: c_int16
-    pad: c_int16
+def set_region_types(lang: str):
+    global RELATION_COM, RELATION_NAME_PLATE
+
+    # typedef struct {
+    #     short int disp_pos;
+    #     short int attribute;
+    #     SPRT_DAT *ssd_p[4];
+    # #if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+    #     short int flp_num[4];
+    # #endif
+    #     short int dat_idx[2];
+    #     short int pad;
+    # } RELATION_COM;
+    class RELATION_COM(CStructure):
+        disp_pos: c_int16
+        attribute: c_int16
+        ssd_p: c_addr_ptr * 4
+        if lang in ("us", "eu"):
+            flp_num: c_int16 * 4
+        dat_idx: c_int16 * 2
+        pad: c_int16
+
+    # typedef struct {
+    #     short int x;
+    #     short int y;
+    #     short int u;
+    #     short int v;
+    #     short int exp_u;
+    #     short int exp_v;
+    #     short int n_rabel;
+    # #if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+    #     short int tbl_no;
+    # #endif
+    #     short int pad;
+    # } RELATION_NAME_PLATE;
+    class RELATION_NAME_PLATE(CStructure):
+        x: c_int16
+        y: c_int16
+        u: c_int16
+        v: c_int16
+        exp_u: c_int16
+        exp_v: c_int16
+        n_rabel: c_int16
+        if lang in ("us", "eu"):
+            tbl_no: c_int16
+        pad: c_int16
+
+
+set_region_types("us")
 
 
 # typedef struct {
@@ -2387,6 +2398,7 @@ def format_headers(header_paths: list[Path]):
 
 
 def parse_data(lang: str):
+    set_region_types(lang)
     data_vars_txt = Path("config") / lang / "data_vars.txt"
 
     data_vars, addr_vals = parse_data_vars(data_vars_txt)
