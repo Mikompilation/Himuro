@@ -9,8 +9,10 @@ typedef struct {
     u_char mode;
     u_char csr_bak;
     u_char star;
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     u_char cnt;
     char exist_s_rank;
+#endif
 } MENU_RANK;
 
 typedef struct {

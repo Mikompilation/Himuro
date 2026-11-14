@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 82.06503082647919,
+    "fuzzy_match_percent": 83.13262938195999,
     "total_code": "1165232",
-    "matched_code": "956248",
-    "matched_code_percent": 82.06503082647919,
+    "matched_code": "968688",
+    "matched_code_percent": 83.13262938195999,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 2886,
-    "matched_functions_percent": 85.0324101355333,
+    "matched_functions": 2909,
+    "matched_functions_percent": 85.7100766057749,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -22371,9 +22371,14 @@
     {
       "name": "ingame/menu/ig_rank",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "12440",
+        "matched_code": "12440",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 23,
+        "matched_functions": 23,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -22381,14 +22386,17 @@
         {
           "name": ".text",
           "size": "12496",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -22396,116 +22404,139 @@
         {
           "name": "NewgameMenuRankInit",
           "size": "52",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "LoadgameMenuRankInit",
           "size": "16",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "StartRankModeInit",
           "size": "36",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IngameMenuRank",
           "size": "1208",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IngameMenuRankDisp",
           "size": "368",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RankCntInit",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RankModeInOut",
           "size": "824",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RankModeInOut2",
           "size": "140",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IngameMenuRankData",
           "size": "268",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RankCntRenew",
           "size": "60",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IngameMenuRankDataDisp",
           "size": "320",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DspTopRankLst",
           "size": "900",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DspTopRankBig",
           "size": "156",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DspRankersCHR",
           "size": "1220",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DspRankersSTR",
           "size": "944",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DspRankersPHT",
           "size": "376",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RankEngine",
           "size": "740",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DspRankBigCHR",
           "size": "1620",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DspRankBigSTR",
           "size": "800",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DspRankBigPHT",
           "size": "492",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RankingChkNow",
           "size": "764",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "RankingChkMem",
           "size": "652",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CheckSamePic",
           "size": "476",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -25811,14 +25842,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 82.06503082647919,
+        "fuzzy_match_percent": 83.13262938195999,
         "total_code": "1165232",
-        "matched_code": "956248",
-        "matched_code_percent": 82.06503082647919,
+        "matched_code": "968688",
+        "matched_code_percent": 83.13262938195999,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 2886,
-        "matched_functions_percent": 85.0324101355333,
+        "matched_functions": 2909,
+        "matched_functions_percent": 85.7100766057749,
         "complete_data_percent": 100.0,
         "total_units": 154
       }

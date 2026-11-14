@@ -184,7 +184,7 @@ segments:
           - [0xe2eb0,  c,   ingame/menu/ig_spd_menu]
           - [0xe3740,  c,   ingame/menu/item_get]
           - [0xe52e8,  c,   ingame/menu/ig_file]
-          - [0xebcf0,  asm, ingame/menu/ig_rank]
+          - [0xebcf0,  c,   ingame/menu/ig_rank]
           - [0xeedc0,  asm, ingame/menu/ig_glst]
           - [0xf11d0,  asm, ingame/menu/ig_map]
           - [0xf4678,  asm, ingame/menu/ig_option]
@@ -304,7 +304,7 @@ segments:
           - { start: 0x23da58, type: .data,   vram: 0x33ca58, name: ingame/menu/ig_menu           }
           - { start: 0x23dae0, type: .data,   vram: 0x33cae0, name: ingame/menu/item_get          }
           - { start: 0x23db28, type: .data,   vram: 0x33cb28, name: ingame/menu/ig_file           }
-          - { start: 0x23f138, type:  data,   vram: 0x33e138, name: ingame/menu/ig_rank           }
+          - { start: 0x23f138, type: .data,   vram: 0x33e138, name: ingame/menu/ig_rank           }
           - { start: 0x23f258, type:  data,   vram: 0x33e258, name: ingame/menu/ig_glst           }
           - { start: 0x23f6a8, type:  data,   vram: 0x33e6a8, name: ingame/menu/ig_map            }
           - { start: 0x23f968, type:  data,   vram: 0x33e968, name: ingame/photo/photo            }
@@ -415,7 +415,7 @@ segments:
           - { start: 0x24fb90, type: .rodata, vram: 0x34eb90, name: ingame/menu/ig_menu           }
           - { start: 0x250570, type: .rodata, vram: 0x34f570, name: ingame/menu/item_get          }
           - { start: 0x250770, type: .rodata, vram: 0x34f770, name: ingame/menu/ig_file           }
-          - { start: 0x250888, type:  rodata, vram: 0x34f888, name: ingame/menu/ig_rank           }
+          - { start: 0x250888, type: .rodata, vram: 0x34f888, name: ingame/menu/ig_rank           }
           - { start: 0x2508d0, type:  rodata, vram: 0x34f8d0, name: ingame/menu/ig_glst           }
           - { start: 0x250960, type:  rodata, vram: 0x34f960, name: ingame/menu/ig_map            }
           - { start: 0x250a10, type:  rodata, vram: 0x34fa10, name: ingame/menu/ig_option         }
@@ -497,7 +497,7 @@ segments:
           - { start: 0x255f10, type: .lit4,   vram: 0x354f10, name: ingame/menu/ig_camra          }
           - { start: 0x255f20, type: .lit4,   vram: 0x354f20, name: ingame/menu/item_get          }
           - { start: 0x255f24, type: .lit4,   vram: 0x354f24, name: ingame/menu/ig_file           }
-          - { start: 0x255f34, type:  lit4,   vram: 0x354f34, name: ingame/menu/ig_rank           }
+          - { start: 0x255f34, type: .lit4,   vram: 0x354f34, name: ingame/menu/ig_rank           }
           - { start: 0x255f4c, type:  lit4,   vram: 0x354f4c, name: ingame/menu/ig_glst           }
           - { start: 0x255f58, type:  lit4,   vram: 0x354f58, name: ingame/menu/ig_map            }
           - { start: 0x255f88, type:  lit4,   vram: 0x354f88, name: ingame/menu/ig_option         }
@@ -656,7 +656,7 @@ segments:
           - { start: 0x257800, type: .sbss,   vram: 0x356ac0, name: ingame/menu/ig_spd_menu       }
           - { start: 0x257800, type: .sbss,   vram: 0x356ad0, name: ingame/menu/item_get          }
           - { start: 0x257800, type: .sbss,   vram: 0x356ae8, name: ingame/menu/ig_file           }
-          - { start: 0x257800, type:  sbss,   vram: 0x356af8, name: ingame/menu/ig_rank           }
+          - { start: 0x257800, type: .sbss,   vram: 0x356af8, name: ingame/menu/ig_rank           }
           - { start: 0x257800, type:  sbss,   vram: 0x356b08, name: ingame/menu/ig_glst           }
           - { start: 0x257800, type:  sbss,   vram: 0x356b10, name: ingame/menu/ig_map            }
           - { start: 0x257800, type:  sbss,   vram: 0x356b18, name: ingame/menu/ig_option         }

@@ -40,6 +40,17 @@ SAVE_RANK save_rank = {0};
 static MENU_RANK menu_rank;
 static FLSH_CORE flsh;
 
+#if defined(BUILD_JP_VERSION)
+#define PAD_ACTION_CONFIRM PAD_CIRCLE
+#define PAD_ACTION_CANCEL PAD_CROSS
+#elif defined(BUILD_US_VERSION)
+#define PAD_ACTION_CONFIRM PAD_CROSS
+#define PAD_ACTION_CANCEL PAD_TRIANGLE
+#elif defined(BUILD_EU_VERSION)
+#define PAD_ACTION_CONFIRM PAD_CROSS
+#define PAD_ACTION_CANCEL PAD_TRIANGLE
+#endif
+
 void NewgameMenuRankInit()
 {
     menu_rank = (MENU_RANK){0};
@@ -50,7 +61,9 @@ void LoadgameMenuRankInit()
 {
     menu_rank = (MENU_RANK){0};
 
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     menu_rank.exist_s_rank = SrankCHK();
+#endif
 }
 
 
@@ -60,7 +73,9 @@ void StartRankModeInit()
 
     menu_rank.csr_bak = 0xff;
     menu_rank.mode = 0;
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     menu_rank.cnt = 0;
+#endif
 
     yw2d.pad_lock = 1;
 
@@ -75,7 +90,7 @@ void IngameMenuRank()
     {
         if (yw2d.pad_lock == 0)
         {
-            if (*key_now[4] == 1)
+            if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
             {
                 yw2d.out_mode_cnt = 11;
 
@@ -90,24 +105,19 @@ void IngameMenuRank()
         case 0:
             if (yw2d.pad_lock == 0)
             {
-                if (*key_now[4] == 1)
+                if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
                 {
                     yw2d.out_mode_cnt = 11;
 
                     SeStartFix(3, 0, 0x1000, 0x1000, 1);
                 }
-                else if ((*key_now[6] == 1) || (*key_now[5] == 1))
+                else if (PAD_BTN_PRESSED(PAD_SQUARE) || PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
                 {
                     menu_rank.mode = 1;
 
                     SeStartFix(1, 0, 0x1000, 0x1000, 1);
                 }
-                else if (
-                    *key_now[1] == 1 ||
-                    (*key_now[1] > 25 && (*key_now[1] % 5) == 1) ||
-                    Ana2PadDirCnt(2) == 1 ||
-                    (Ana2PadDirCnt(2) > 25 && (Ana2PadDirCnt(2) % 5) == 1)
-                )
+                else if (PAD_BTN_REPEAT(PAD_DPAD_DOWN) || PAD_LANA_REPEAT(PAD_LANA_DOWN))
                 {
                     SeStartFix(0, 0, 0x1000, 0x1000, 1);
 
@@ -120,12 +130,7 @@ void IngameMenuRank()
                         ig_menu_wrk.csr[1] = save_rank.pic_num - 1;
                     }
                 }
-                else if (
-                    *key_now[0] == 1 ||
-                    (*key_now[0] > 25 && (*key_now[0] % 5) == 1) ||
-                    Ana2PadDirCnt(0) == 1 ||
-                    (Ana2PadDirCnt(0) > 25 && (Ana2PadDirCnt(0) % 5) == 1)
-                )
+                else if (PAD_BTN_REPEAT(PAD_DPAD_UP) || PAD_LANA_REPEAT(PAD_LANA_UP))
                 {
                     SeStartFix(0, 0, 0x1000, 0x1000, 1);
 
@@ -143,18 +148,13 @@ void IngameMenuRank()
         case 1:
             if (yw2d.pad_lock == 0)
             {
-                if (*key_now[4] == 1)
+                if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
                 {
                     menu_rank.mode = 0;
 
                     SeStartFix(3, 0, 0x1000, 0x1000, 1);
                 }
-                else if (
-                    *key_now[3] == 1 ||
-                    (*key_now[3] > 25 && (*key_now[3] % 5) == 1) ||
-                    Ana2PadDirCnt(1) == 1 ||
-                    (Ana2PadDirCnt(1) > 25 && (Ana2PadDirCnt(1) % 5) == 1)
-                )
+                else if (PAD_BTN_REPEAT(PAD_DPAD_RIGHT) || PAD_LANA_REPEAT(PAD_LANA_RIGHT))
                 {
                     SeStartFix(0, 0, 0x1000, 0x1000, 1);
 
@@ -167,12 +167,7 @@ void IngameMenuRank()
                         ig_menu_wrk.csr[1] = 0;
                     }
                 }
-                else if (
-                    *key_now[2] == 1 ||
-                    (*key_now[2] > 25 && (*key_now[2] % 5) == 1) ||
-                    Ana2PadDirCnt(3) == 1 ||
-                    (Ana2PadDirCnt(3) > 25 && (Ana2PadDirCnt(3) % 5) == 1)
-                )
+                else if (PAD_BTN_REPEAT(PAD_DPAD_LEFT) || PAD_LANA_REPEAT(PAD_LANA_LEFT))
                 {
                     SeStartFix(0, 0, 0x1000, 0x1000, 1);
 
@@ -200,7 +195,7 @@ void IngameMenuRankDisp()
     {
         DrawMessageBox(0x14000, 170.0f, 210.0f, 300.0f, 60.0f, yw2d.io_a[4]);
 
-        PutStringYW(33, 0, 215, 228, 0x808080, yw2d.io_a[4], 0xf000, 0);
+        PutStringYW(IGMSG_MENU_ALBUM, 0, 215, 228, 0x808080, yw2d.io_a[4], 0xf000, 0);
 
         DspMenuTitle(yw2d.io_x[1], yw2d.io_y[1], yw2d.io_a[1], 0x32, 6);
 
@@ -266,13 +261,17 @@ static void IngameMenuRankDataDisp(u_char dsp)
         {
             DspTopRankLst(dsp, yw2d.io_x[4], yw2d.io_y[4], yw2d.io_a[4]);
 
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
             DispCaption(16, yw2d.io_a[4]);
+#endif
         }
         else
         {
             DspTopRankBig(dsp, yw2d.io_x[4], yw2d.io_y[4], yw2d.io_a[4]);
 
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
             DispCaption(17, yw2d.io_a[4]);
+#endif
         }
     break;
     case 3:
@@ -422,10 +421,17 @@ static void DspTopRankLst(u_char dsp, short int pos_x, short int pos_y, u_char a
     {
         CmnWindow(11, 0, 0, alpha, 0x80);
 
+#if defined(BUILD_JP_VERSION)
+        DspRankersCHR(1, ig_menu_wrk.csr[1] + 1, alpha);
+        DspRankersCHR(2, ig_menu_wrk.csr[1] + 2, alpha);
+        DspRankersCHR(3, ig_menu_wrk.csr[1] + 3, alpha);
+        DspRankersCHR(4, ig_menu_wrk.csr[1] + 4, alpha);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         DspRankersCHR(4, ig_menu_wrk.csr[1] + 4, alpha);
         DspRankersCHR(3, ig_menu_wrk.csr[1] + 3, alpha);
         DspRankersCHR(2, ig_menu_wrk.csr[1] + 2, alpha);
         DspRankersCHR(1, ig_menu_wrk.csr[1] + 1, alpha);
+#endif
 
         CmnWindow(14, 0, 0, alpha, 0x80);
 
@@ -435,7 +441,11 @@ static void DspTopRankLst(u_char dsp, short int pos_x, short int pos_y, u_char a
         PutSpriteYW(PHT_SCR_TRIANGLE_D, PHT_SCR_TRIANGLE_D, 0.0f, 167.0f, 0.0f, 0x808080, alpha, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
         PutSpriteYW(PHT_SCRBAR_BASE_M, PHT_SCRBAR_BASE_M, 0.0f, 92.0f, 0.0f, 0x808080, alpha, 1.0f, 28.6f, 0, 0xff, 1, 0, 0);
 
+#if defined(BUILD_JP_VERSION)
+        SideBar(save_rank.pic_num + 4, 5, 304, ig_menu_wrk.csr[1], 361, alpha, 0, 0xf);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         SideBar(save_rank.pic_num + 4, 5, 304, ig_menu_wrk.csr[1], 366, alpha, 0, 0xf);
+#endif
     }
 
     if (dsp == 0 || dsp == 2)
@@ -470,8 +480,13 @@ static void DspRankersCHR(u_char pos, u_char rank, u_char alpha)
 
         PutSpriteYW(RNK_FNT1_RNK, RNK_FNT1_RNK, 52.0f, 90.0f, 0.0f, 0x808080, alpha, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
         PutSpriteYW(RNK_FNT_TARGET2, RNK_FNT_POINT2, 0.0f, 0.0f, 0.0f, 0x808080, alpha, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
+#if defined(BUILD_JP_VERSION)
+        PutSpriteYW(rank + RNK_FNT1_MNS, rank + RNK_FNT1_MNS, 54.0f, 159.0f, 0.0f, 0x808080, alpha, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
+        PutSpriteYW(RNK_FNT1_I, RNK_FNT1_I, 54.0f, 209.0f, 0.0f, 0x808080, alpha, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         PutSpriteYW(RNK_FNT1_I, RNK_FNT1_I, 46.0f, 205.0f, -90.0f, 0x808080, alpha, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
         PutSpriteYW(rank + RNK_FNT1_MNS, rank + RNK_FNT1_MNS, 54.0f, 159.0f, -90.0f, 0x808080, alpha, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
+#endif
 
         RankEngine(rank, 52, 107, alpha);
 
@@ -488,8 +503,14 @@ static void DspRankersCHR(u_char pos, u_char rank, u_char alpha)
 
         PutSpriteYW(RNK_FNT1_RNK, RNK_FNT1_RNK, 39.0f, pos_y + 289, -90.0f, 0x808080, alpha, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
         PutSpriteYW(RNK_FNT_POINT2, RNK_FNT_POINT2, 0.0f, pos_y + 192, 0.0f, 0x808080, alpha, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
+#if defined(BUILD_JP_VERSION)
+        PutSpriteYW(rank + RNK_FNT1_MNS, rank + RNK_FNT1_MNS, 128.0f, pos_y + 279, 0.0f, 0x808080, alpha, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
+        PutSpriteYW(RNK_FNT1_I, RNK_FNT1_I, 185.0f, pos_y + 279, 0.0f, 0x808080, alpha, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
+
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         PutSpriteYW(rank + RNK_FNT1_MNS, rank + RNK_FNT1_MNS, 182.0f, pos_y + 279, 0.0f, 0x808080, alpha, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
         PutSpriteYW(RNK_FNT1_I, RNK_FNT1_I, 125.0f, pos_y + 279, 0.0f, 0x808080, alpha, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
+#endif
 
         RankEngine(rank, 66, pos_y + 280, alpha);
 
@@ -589,6 +610,7 @@ static void RankEngine(u_char rank, short int pos_x, short int pos_y, u_char alp
     }
 }
 
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
 static char SrankCHK()
 {
     int i;
@@ -607,6 +629,7 @@ static char SrankCHK()
 
     return rtrn;
 }
+#endif
 
 static void DspRankersSTR(u_char pos, u_char rank, u_char alpha)
 {
@@ -635,18 +658,25 @@ static void DspRankersSTR(u_char pos, u_char rank, u_char alpha)
 
     if (pos == 1)
     {
-#ifdef BUILD_EU_VERSION
-        PutStringYW(39, 0, 245, 34, 0x808080, alpha, 0x14000, 0);
-#else
-        PutStringYW(39, 0, 254, 34, 0x808080, alpha, 0x14000, 0);
+#if defined(BUILD_JP_VERSION)
+        PutStringYW(IGMSG_MENU_RANK, 0, 258, 33, 0x808080, alpha, 0x14000, 0);
+#elif defined(BUILD_US_VERSION)
+        PutStringYW(IGMSG_MENU_RANK, 0, 254, 34, 0x808080, alpha, 0x14000, 0);
+#elif defined(BUILD_EU_VERSION)
+        PutStringYW(IGMSG_MENU_RANK, 0, 245, 34, 0x808080, alpha, 0x14000, 0);
 #endif
 
+#if defined(BUILD_JP_VERSION)
+        PutNumberYW(NUM_NORMAL, save_rank.best_score, 429, 33, 1.0f, 1.0f, 0x808080, alpha, 0x14000, 7, 0);
+        PutNumberYW(NUM_NORMAL, save_rank.pic_inf[rank-1].score, 429, 93, 1.0f, 1.0f, 0x808080, alpha, 0x14000, 7, 0);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         PutNumberYW(NUM_NORMAL, save_rank.best_score, 429, 35, 1.0f, 1.0f, 0x808080, alpha, 0x14000, 7, 0);
         PutNumberYW(NUM_NORMAL, save_rank.pic_inf[rank-1].score, 429, 94, 1.0f, 1.0f, 0x808080, alpha, 0x14000, 7, 0);
+#endif
 
         PutDate(&save_rank.pic_inf[rank-1], 380, 123, alpha, 0x14000);
 
-        PutStringYW(30, save_rank.pic_inf[rank-1].room, 393, 153, 0x808080, alpha, 0x14000, 0);
+        PutStringYW(IGMSG_ROOM_NAME, save_rank.pic_inf[rank-1].room, 393, 153, 0x808080, alpha, 0x14000, 0);
 
         obj_num = 0;
 
@@ -671,7 +701,11 @@ static void DspRankersSTR(u_char pos, u_char rank, u_char alpha)
 
                     CopyStrDToStr(&ds, &dmy_str);
 
+#if defined(BUILD_JP_VERSION)
+                    ds.pos_x = 388;
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
                     ds.pos_x = 382;
+#endif
                     ds.pos_y = obj_py[obj_num][i] + 185;
                     ds.r = 0x80;
                     ds.g = 0x80;
@@ -685,7 +719,7 @@ static void DspRankersSTR(u_char pos, u_char rank, u_char alpha)
         }
         else
         {
-            PutStringYW(33, 3, 448, obj_py[0][0] + 185, 0x808080, alpha, 0x14000, 0);
+            PutStringYW(IGMSG_MENU_ALBUM, 3, 448, obj_py[0][0] + 185, 0x808080, alpha, 0x14000, 0);
         }
     }
     else if (pos > 1)
@@ -719,13 +753,14 @@ static void DspRankersPHT(u_char pos, u_char rank, u_char alpha)
 
         UncompressPhoto(pic_no + 24);
 
-        PolySquareYW(101.0f, 106.0f, 216, 144, 0, alpha, 1.0f, 1.0f, 0x1f000, 0, 0, 0);
+        VER_POLY_SQUARE_YW(101.0f, 106.0f, 216, 144, 0, alpha, 1.0f, 1.0f, 0x1f000, 0, 0);
 
         if (CheckPhotoExpandEnd() != 0)
         {
             DrawPhotoFromPhotoWrk(pic_no + 24, 0x1e000, 0, 101, 106, 216, 144, alpha);
         }
 
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
         if (menu_rank.star < 3)
         {
             if (menu_rank.cnt < 30 && menu_rank.exist_s_rank == 0)
@@ -747,6 +782,7 @@ static void DspRankersPHT(u_char pos, u_char rank, u_char alpha)
         {
             menu_rank.cnt = 0;
         }
+#endif
     }
     else if (pos > 1)
     {
@@ -798,8 +834,13 @@ static void DspRankBigCHR(u_char rank, u_char alpha)
     CmnWindow(6, 0, 0, alpha, 0x80);
 
     PutSpriteYW(RNK_FNT_TARGET, RNK_FNT_POINT, 0.0f, 0.0f, 0.0f, 0x808080, alpha, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
+#if defined(BUILD_JP_VERSION)
+    PutSpriteYW(rank + RNK_FNT2_MNS, rank + RNK_FNT2_MNS, 47.0f, 101.0f, 0.0f, 0x808080, alpha, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
+    PutSpriteYW(RNK_FNT3_I, RNK_FNT3_I, 47.0f, 130.0f, 0.0f, 0x808080, alpha, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     PutSpriteYW(rank + RNK_FNT2_MNS, rank + RNK_FNT2_MNS, 63.0f, 114.0f, 0.0f, 0x808080, alpha, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
     PutSpriteYW(RNK_FNT3_I, RNK_FNT3_I, 36.0f, 114.0f, 0.0f, 0x808080, alpha, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
+#endif
     PutSpriteYW(RNK_SAM_WAKU, RNK_SAM_WAKU, 38.0f, 259.0f, 0.0f, 0x808080, alpha, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
     PutSpriteYW(RNK_FNT1_RNK, RNK_FNT1_RNK, 557.0f, 107.0f, 0.0f, 0x808080, alpha, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
 
@@ -844,19 +885,31 @@ static void DspRankBigSTR(u_char rank, u_char alpha)
         .pri = 0x2,
     };
 
-#ifdef BUILD_EU_VERSION
-    PutStringYW(39, 0, 245, 34, 0x808080, alpha, 0x14000, 0);
-#else
-    PutStringYW(39, 0, 254, 34, 0x808080, alpha, 0x14000, 0);
+#if defined(BUILD_JP_VERSION)
+    PutStringYW(IGMSG_MENU_RANK, 0, 258, 33, 0x808080, alpha, 0x14000, 0);
+#elif defined(BUILD_US_VERSION)
+    PutStringYW(IGMSG_MENU_RANK, 0, 254, 34, 0x808080, alpha, 0x14000, 0);
+#elif defined(BUILD_EU_VERSION)
+    PutStringYW(IGMSG_MENU_RANK, 0, 245, 34, 0x808080, alpha, 0x14000, 0);
 #endif
 
+#if defined(BUILD_JP_VERSION)
+    PutNumberYW(NUM_NORMAL, save_rank.best_score, 429, 33, 1.0f, 1.0f, 0x808080, alpha, 0x14000, 7, 0);
+
+    PutDate(&save_rank.pic_inf[rank-1], 386, 340, alpha, 0x14000);
+
+    PutStringYW(IGMSG_ROOM_NAME, save_rank.pic_inf[rank-1].room, 399, 369, 0x808080, alpha, 0x14000, 0);
+
+    PutNumberYW(NUM_NORMAL, save_rank.pic_inf[rank-1].score, 435, 396, 1.0f, 1.0f, 0x808080, alpha, 0x14000, 7, 0);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     PutNumberYW(NUM_NORMAL, save_rank.best_score, 429, 35, 1.0f, 1.0f, 0x808080, alpha, 0x14000, 7, 0);
 
     PutDate(&save_rank.pic_inf[rank-1], 386, 341, alpha, 0x14000);
 
-    PutStringYW(30, save_rank.pic_inf[rank-1].room, 399, 370, 0x808080, alpha, 0x14000, 0);
+    PutStringYW(IGMSG_ROOM_NAME, save_rank.pic_inf[rank-1].room, 399, 370, 0x808080, alpha, 0x14000, 0);
 
     PutNumberYW(NUM_NORMAL, save_rank.pic_inf[rank-1].score, 435, 398, 1.0f, 1.0f, 0x808080, alpha, 0x14000, 7, 0);
+#endif
 
     obj_num = 0;
 
@@ -881,7 +934,11 @@ static void DspRankBigSTR(u_char rank, u_char alpha)
 
                 CopyStrDToStr(&ds, &dmy_str);
 
+#if defined(BUILD_JP_VERSION)
+                ds.pos_x = 120;
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
                 ds.pos_x = 102;
+#endif
                 ds.pos_y = obj_py[obj_num][i] + 347;
                 ds.r = 0x80;
                 ds.g = 0x80;
@@ -895,7 +952,7 @@ static void DspRankBigSTR(u_char rank, u_char alpha)
     }
     else
     {
-        PutStringYW(33, 3, 180, obj_py[0][0] + 347, 0x808080, alpha, 0x14000, 0);
+        PutStringYW(IGMSG_MENU_ALBUM, 3, 180, obj_py[0][0] + 347, 0x808080, alpha, 0x14000, 0);
     }
 }
 
@@ -917,7 +974,7 @@ static void DspRankBigPHT(u_char rank, u_char alpha)
 
     UncompressPhoto(pic_no + 24);
 
-    PolySquareYW(128.0f, 77.0f, 384, 255, 0, alpha, 1.0f, 1.0f, 0x1f000, 0, 0, 0);
+    VER_POLY_SQUARE_YW(128.0f, 77.0f, 384, 255, 0, alpha, 1.0f, 1.0f, 0x1f000, 0, 0);
 
     if (CheckPhotoExpandEnd() != 0)
     {
