@@ -1759,3 +1759,6 @@ rel_yaj                        = 0x33dd10; // type:RELATION_YAJI numel:85 nosize
 0x33db90                       = &rel_dat[24];
 0x33dc20                       = &rel_dat[27];
 0x33dc50                       = &rel_dat[28];
+
+// ingame/menu/ig_glst.c
+glist_order                    = 0x33e258; // type:GLIST_ORDER numel:109 nosize static

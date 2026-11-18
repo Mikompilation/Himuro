@@ -34,6 +34,17 @@ static FLSH_CORE flsh;
 
 static MENU_GLST menu_glist;
 
+#if defined(BUILD_JP_VERSION)
+#define PAD_ACTION_CONFIRM PAD_CIRCLE
+#define PAD_ACTION_CANCEL PAD_CROSS
+#elif defined(BUILD_US_VERSION)
+#define PAD_ACTION_CONFIRM PAD_CROSS
+#define PAD_ACTION_CANCEL PAD_TRIANGLE
+#elif defined(BUILD_EU_VERSION)
+#define PAD_ACTION_CONFIRM PAD_CROSS
+#define PAD_ACTION_CANCEL PAD_TRIANGLE
+#endif
+
 void NewgameMenuGlstInit()
 {
     u_int i;
@@ -76,7 +87,7 @@ void IngameMenuGlst()
     case 0:
         if (yw2d.pad_lock == 0)
         {
-            if (*key_now[4] == 1)
+            if (PAD_BTN_PRESSED(PAD_ACTION_CANCEL))
             {
                 if (IsLoadEndAll() != 0)
                 {
@@ -85,7 +96,7 @@ void IngameMenuGlst()
                     SeStartFix(3, 0, 0x1000, 0x1000, 1);
                 }
             }
-            else if (*key_now[6] == 1 || *key_now[5] == 1)
+            else if (PAD_BTN_PRESSED(PAD_SQUARE) || PAD_BTN_PRESSED(PAD_ACTION_CONFIRM))
             {
                 if (glist_index[ig_menu_wrk.csr[1]].disp_flg == 1 && glist_index[ig_menu_wrk.csr[1]].new_flg == 1)
                 {
@@ -111,12 +122,7 @@ void IngameMenuGlst()
                     SeStartFix(1, 0, 0x1000, 0x1000, 1);
                 }
             }
-            else if (
-                *key_now[0] == 1 ||
-                (*key_now[0] > 25 && (*key_now[0] % 5) == 1) ||
-                Ana2PadDirCnt(0) == 1 ||
-                (Ana2PadDirCnt(0) > 25 && (Ana2PadDirCnt(0) % 5) == 1)
-            )
+            else if (PAD_BTN_REPEAT(PAD_DPAD_UP) || PAD_LANA_REPEAT(PAD_LANA_UP))
             {
                 glist_photo.mode = 0;
 
@@ -145,12 +151,7 @@ void IngameMenuGlst()
 
                 SeStartFix(0, 0, 0x1000, 0x1000, 1);
             }
-            else if (
-                *key_now[1] == 1 ||
-                (*key_now[1] > 25 && (*key_now[1] % 5) == 1) ||
-                Ana2PadDirCnt(2) == 1 ||
-                (Ana2PadDirCnt(2) > 25 && (Ana2PadDirCnt(2) % 5) == 1)
-            )
+            else if (PAD_BTN_REPEAT(PAD_DPAD_DOWN) || PAD_LANA_REPEAT(PAD_LANA_DOWN))
             {
                 glist_photo.mode = 0;
 
@@ -360,7 +361,9 @@ static void DspGhostList(short int pos_x, short int pos_y, u_char alpha)
     DspGdtl(alpha);
     DspGInf(alpha);
 
+#if defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     DispCaption(15, alpha);
+#endif
 }
 
 void DspGlst(u_char alpha)
@@ -386,7 +389,11 @@ void DspGlst(u_char alpha)
     PutSpriteYW(PHT_SCR_TRIANGLE_D, PHT_SCR_TRIANGLE_D, 0.0f, 167.0f, 0.0f, 0x808080, alpha, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
     PutSpriteYW(PHT_SCRBAR_BASE_M, PHT_SCRBAR_BASE_M, 0.0f, 92.0f, 0.0f, 0x808080, alpha, 1.0f, 28.6f, 0, 0xff, 1, 0, 0);
 
+#if defined(BUILD_JP_VERSION)
+    SideBar(menu_glist.all_num, 10, 304, menu_glist.lst_top, 361, alpha, 0, 0xf);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     SideBar(menu_glist.all_num, 10, 304, menu_glist.lst_top, 366, alpha, 0, 0xf);
+#endif
 }
 
 void DspLstOfs(u_short start, u_char alpha)
@@ -397,7 +404,11 @@ void DspLstOfs(u_short start, u_char alpha)
     {
         if (glist_index[start+i].disp_flg == 1)
         {
+#if defined(BUILD_JP_VERSION)
+            PutRayName(glist_order[start+i].knd, glist_order[start+i].no, glist_order[start+i].msn, 75, i * 30 + 107, 0x808080, alpha);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
             PutRayName(glist_order[start+i].knd, glist_order[start+i].no, glist_order[start+i].msn, 72, i * 30 + 108, 0x808080, alpha);
+#endif
 
             if (glist_index[start+i].new_flg == 1)
             {
@@ -406,7 +417,7 @@ void DspLstOfs(u_short start, u_char alpha)
         }
         else
         {
-            PutStringYW(6, 33, 75, i * 30 + 107, 0x808080, alpha, 0x1000, 0);
+            PutStringYW(IGMSG_MENU_MSG, 33, 75, i * 30 + 107, 0x808080, alpha, 0x1000, 0);
         }
     }
 }
@@ -482,13 +493,21 @@ void DspGInf(u_char alpha)
         {
             scale = motLinearSupValue(20.0f, 1.0f, 1, menu_glist.cnt, 30);
 
+#if defined(BUILD_JP_VERSION)
+            PutSpriteYW(GLST_CHRY, GLST_CHRY, 442.0f, 17.0f, (menu_glist.cnt * 720.0f) / 30.0f, 0x808080, alpha, scale, scale, 0, 0xff, 1, 0, 0);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
             PutSpriteYW(GLST_CHRY, GLST_CHRY, 0.0f, 0.0f, (menu_glist.cnt * 703.0f) / 30.0f, 0x808080, alpha, scale, scale, 0, 0xff, 1, 1, 0);
+#endif
         }
         else
         {
+#if defined(BUILD_JP_VERSION)
+            PutSpriteYW(GLST_CHRY, GLST_CHRY, 442.0f, 17.0f, 0.0f, 0x808080, alpha, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
             PolySquareYW(491.0f, 39.0f, 0x7e, 30, 0, (int)(alpha / 2), 1.0f, 1.0f, 0x7000, 0, 1, 0xffef);
 
             PutSpriteYW(GLST_CHRY, GLST_CHRY, 0.0f, 0.0f, -17.0f, 0x808080, alpha, 1.0f, 1.0f, 0, 0xff, 1, 1, 0);
+#endif
         }
     }
 }
@@ -504,13 +523,13 @@ void DspGdtl(u_char alpha)
     {
         if (menu_glist.flg != 0 && menu_glist.mode != 0)
         {
-            PolySquareYW(379.0f, 157.0f, 190, 126, 0x800000, (alpha - menu_glist.dtl_alp), 1.0f, 1.0f, 0x1000, 0, 0, 0);
+            VER_POLY_SQUARE_YW(379.0f, 157.0f, 190, 126, 0x800000, (alpha - menu_glist.dtl_alp), 1.0f, 1.0f, 0x1000, 0, 0);
 
             photo_alpha = menu_glist.dtl_alp;
         }
         else if (glist_index[ig_menu_wrk.csr[1]].new_flg == 1)
         {
-            PolySquareYW(379.0f, 157.0f, 190, 126, 0x808080, (alpha - menu_glist.dtl_alp), 1.0f, 1.0f, 0x1000, 0, 0, 0);
+            VER_POLY_SQUARE_YW(379.0f, 157.0f, 190, 126, 0x808080, (alpha - menu_glist.dtl_alp), 1.0f, 1.0f, 0x1000, 0, 0);
 
             photo_alpha = menu_glist.dtl_alp;
         }
@@ -527,7 +546,12 @@ void DspGdtl(u_char alpha)
     Fuchidori(GLST_FUTI1, 322, 86, 296, 340, 0x2d, alpha);
 
     PutSpriteYW(GLST_PHT_WAKU, GLST_PHT_WAKU, 374.0f, 153.0f, 0.0f, 0x808080, alpha, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
+#if defined(BUILD_JP_VERSION)
+    PutSpriteYW(GLST_G_NAME, GLST_G_NAME, 0.0f, 0.0f, 0.0f, 0x808080, alpha, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
+    PutSpriteYW(GLST_DSP_PLACE, GLST_DSP_PLACE, 0.0f, 0.0f, 0.0f, 0x808080, alpha, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     PutSpriteYW(GLST_DSP_PLACE, GLST_DSP_PLACE, 95.0f, 0.0f, 0.0f, 0x808080, alpha, 1.0f, 1.0f, 0, 0xff, 1, 0, 0);
+#endif
 
     if (menu_glist.mode != 0)
     {
@@ -537,8 +561,8 @@ void DspGdtl(u_char alpha)
         }
         else
         {
-            menu_glist.dtl_alp = alpha;
             menu_glist.mode = 0;
+            menu_glist.dtl_alp = alpha;
         }
     }
     else
@@ -548,6 +572,10 @@ void DspGdtl(u_char alpha)
 
     if (glist_index[ig_menu_wrk.csr[1]].disp_flg == 1)
     {
+#if defined(BUILD_JP_VERSION)
+        PutRayName(glist_order[ig_menu_wrk.csr[1]].knd, glist_order[ig_menu_wrk.csr[1]].no, glist_order[ig_menu_wrk.csr[1]].msn, 395, 94, 0, photo_alpha);
+#endif
+
         if (glist_order[ig_menu_wrk.csr[1]].knd == 4)
         {
             cur = glist_order[ig_menu_wrk.csr[1]].no - 301;
@@ -557,8 +585,12 @@ void DspGdtl(u_char alpha)
             cur = ig_menu_wrk.csr[1];
         }
 
-        PutStringYW(47, cur, 469, 122, 0, photo_alpha, 0x5000, 1);
-        PutStringYW(48, cur, 335, 295, 0, photo_alpha, 0x5000, 0);
+#if defined(BUILD_JP_VERSION)
+        PutStringYW(IGMSG_GLIST_ROOM, cur, 420, 122, 0, photo_alpha, 0x5000, 0);
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
+        PutStringYW(IGMSG_GLIST_ROOM, cur, 469, 122, 0, photo_alpha, 0x5000, 1);
+#endif
+        PutStringYW(IGMSG_GLIST_MSG, cur, 335, 295, 0, photo_alpha, 0x5000, 0);
     }
 }
 
@@ -922,6 +954,23 @@ void DispGlistPhoto(u_int line, u_char alpha)
 {
     u_int id;
 
+#if defined(BUILD_JP_VERSION)
+    switch(glist_order[line].knd)
+    {
+    case 1:
+    case 2:
+    case 3:
+        id = M000_DMY_TM2 + glist_order[line].mdl_no;
+    break;
+    case 4:
+        id = PL_LIFE_PK2 + glist_order[line].no;
+    break;
+    case 5:
+    default:
+        id = REA_21_PK2 + glist_order[line].no;
+    break;
+    }
+#elif defined(BUILD_US_VERSION) || defined(BUILD_EU_VERSION)
     switch(glist_order[line].knd)
     {
     case 1:
@@ -932,10 +981,10 @@ void DispGlistPhoto(u_int line, u_char alpha)
         id = M033_LIST_TM2 + line;
     break;
     case 4:
-#ifdef BUILD_EU_VERSION
-        id = ITEM_26_TM2 + glist_order[line].no;
-#else
+#if defined(BUILD_US_VERSION)
         id = STG16TTL_PK2 + glist_order[line].no;
+#elif defined(BUILD_EU_VERSION)
+        id = ITEM_26_TM2 + glist_order[line].no;
 #endif
     break;
     case 5:
@@ -943,6 +992,7 @@ void DispGlistPhoto(u_int line, u_char alpha)
         id = M006_LIST_TM2 + glist_order[line].no;
     break;
     }
+#endif
 
     switch (glist_photo.mode)
     {

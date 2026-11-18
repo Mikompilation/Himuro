@@ -1,13 +1,13 @@
 {
   "measures": {
-    "fuzzy_match_percent": 83.13262938195999,
+    "fuzzy_match_percent": 83.91942548779986,
     "total_code": "1165232",
-    "matched_code": "968688",
-    "matched_code_percent": 83.13262938195999,
+    "matched_code": "977856",
+    "matched_code_percent": 83.91942548779986,
     "matched_data_percent": 100.0,
     "total_functions": 3394,
-    "matched_functions": 2909,
-    "matched_functions_percent": 85.7100766057749,
+    "matched_functions": 2935,
+    "matched_functions_percent": 86.47613435474366,
     "complete_data_percent": 100.0,
     "total_units": 154
   },
@@ -22549,9 +22549,14 @@
     {
       "name": "ingame/menu/ig_glst",
       "measures": {
+        "fuzzy_match_percent": 100.0,
         "total_code": "9168",
+        "matched_code": "9168",
+        "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
         "total_functions": 26,
+        "matched_functions": 26,
+        "matched_functions_percent": 100.0,
         "complete_data_percent": 100.0,
         "total_units": 1
       },
@@ -22559,14 +22564,17 @@
         {
           "name": ".text",
           "size": "9232",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".data",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": ".bss",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -22574,131 +22582,157 @@
         {
           "name": "NewgameMenuGlstInit",
           "size": "88",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "StartGlstModeInit",
           "size": "128",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetGlistAllNum",
           "size": "60",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GetGlistGNum",
           "size": "92",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CheckGlistComplete",
           "size": "148",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IngameMenuGlst",
           "size": "1364",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IngameMenuGlstDisp",
           "size": "52",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GlstCntInit",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GlstModeInOut",
           "size": "632",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IngameMenuGlstData",
           "size": "8",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GlstModeInOut2",
           "size": "140",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "GlstCntRenew",
           "size": "60",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "IngameMenuGlstDataDisp",
           "size": "148",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DspGhostList",
           "size": "52",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DspGlst",
           "size": "664",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DspGdtl",
           "size": "952",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DspGInf",
           "size": "880",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DspLstOfs",
           "size": "412",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PutRayName",
           "size": "260",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "DispGlistPhoto",
           "size": "380",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "Sheet",
           "size": "472",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "Fuchidori",
           "size": "308",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "PutPtrn",
           "size": "192",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "Naraberu",
           "size": "492",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "ReSetGhostList",
           "size": "1148",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         },
         {
           "name": "CheckGlistRareGhost",
           "size": "28",
+          "fuzzy_match_percent": 100.0,
           "metadata": {}
         }
       ],
@@ -25842,14 +25876,14 @@
       "id": "jp",
       "name": "Zero",
       "measures": {
-        "fuzzy_match_percent": 83.13262938195999,
+        "fuzzy_match_percent": 83.91942548779986,
         "total_code": "1165232",
-        "matched_code": "968688",
-        "matched_code_percent": 83.13262938195999,
+        "matched_code": "977856",
+        "matched_code_percent": 83.91942548779986,
         "matched_data_percent": 100.0,
         "total_functions": 3394,
-        "matched_functions": 2909,
-        "matched_functions_percent": 85.7100766057749,
+        "matched_functions": 2935,
+        "matched_functions_percent": 86.47613435474366,
         "complete_data_percent": 100.0,
         "total_units": 154
       }
